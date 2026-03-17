@@ -1,0 +1,379 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  extensions = [pg_trgm, uuid_ossp]
+}
+
+enum UserRole {
+  GUEST
+  STUDENT
+  TEACHER
+  LIBRARIAN
+  ADMIN
+  ANALYST
+}
+
+enum CopyStatus {
+  AVAILABLE
+  LOANED
+  RESERVED
+  LOST
+  DAMAGED
+  WRITTEN_OFF
+}
+
+enum ReservationStatus {
+  PENDING
+  READY
+  FULFILLED
+  CANCELLED
+  EXPIRED
+}
+
+enum LoanStatus {
+  ACTIVE
+  RETURNED
+  OVERDUE
+  LOST
+}
+
+enum FileAccessLevel {
+  NONE
+  METADATA
+  VIEW_ONLY
+}
+
+enum MigrationBatchStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  PARTIAL
+}
+
+enum InstitutionScopeCode {
+  UNIVERSITY
+  COLLEGE
+}
+
+enum LibraryBranchCode {
+  ECONOMIC_LIBRARY
+  TECHNOLOGICAL_LIBRARY
+  COLLEGE_LIBRARY
+}
+
+model InstitutionScope {
+  id        String               @id @default(uuid()) @db.Uuid
+  code      InstitutionScopeCode @unique
+  name      String
+  isActive  Boolean              @default(true)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  branches LibraryBranch[]
+  users    User[]
+}
+
+model LibraryBranch {
+  id        String            @id @default(uuid()) @db.Uuid
+  code      LibraryBranchCode @unique
+  name      String
+  isActive  Boolean           @default(true)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  scopeId String @db.Uuid
+  scope   InstitutionScope @relation(fields: [scopeId], references: [id], onDelete: Restrict)
+
+  users    User[]
+  books    Book[]
+  copies   BookCopy[]
+  invoices Invoice[]
+
+  @@index([scopeId])
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  universityId String   @unique
+  email        String   @unique
+  fullName     String
+  role         UserRole @default(STUDENT)
+  isActive     Boolean  @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  institutionScopeId String? @db.Uuid
+  libraryBranchId    String? @db.Uuid
+
+  institutionScope InstitutionScope? @relation(fields: [institutionScopeId], references: [id], onDelete: SetNull)
+  libraryBranch    LibraryBranch?    @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
+
+  reservations Reservation[]
+  loans        Loan[]
+  auditLogs    AuditLog[]
+
+  @@index([institutionScopeId])
+  @@index([libraryBranchId])
+}
+
+model Publisher {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  city      String?
+  country   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  books Book[]
+}
+
+model Book {
+  id           String    @id @default(uuid()) @db.Uuid
+  title        String
+  subtitle     String?
+  isbn         String?   @unique
+  issn         String?
+  udc          String?
+  bbk          String?
+  publishYear  Int?
+  edition      String?
+  language     String?
+  pageCount    Int?
+  description  String?
+  keywords     String[]
+  searchVector Unsupported("tsvector")?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  publisherId String?    @db.Uuid
+  publisher   Publisher? @relation(fields: [publisherId], references: [id], onDelete: SetNull)
+  libraryBranchId String? @db.Uuid
+  libraryBranch   LibraryBranch? @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
+
+  copies       BookCopy[]
+  files        BookFile[]
+  reservations Reservation[]
+  authors      BookAuthor[]
+  categories   BookCategory[]
+
+  @@index([title])
+  @@index([publishYear])
+  @@index([language])
+  @@index([libraryBranchId])
+}
+
+model Author {
+  id        String   @id @default(uuid()) @db.Uuid
+  fullName  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  books BookAuthor[]
+
+  @@unique([fullName])
+}
+
+model BookAuthor {
+  bookId   String @db.Uuid
+  authorId String @db.Uuid
+  role     String?
+
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  author Author @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@id([bookId, authorId])
+}
+
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  code      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parentId String?   @db.Uuid
+  parent   Category? @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryHierarchy")
+
+  books BookCategory[]
+
+  @@unique([name, parentId])
+}
+
+model BookCategory {
+  bookId     String @db.Uuid
+  categoryId String @db.Uuid
+
+  book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([bookId, categoryId])
+}
+
+model Invoice {
+  id            String   @id @default(uuid()) @db.Uuid
+  invoiceNumber String   @unique
+  supplier      String
+  invoiceDate   DateTime
+  totalAmount   Decimal? @db.Decimal(12, 2)
+  currency      String   @default("KZT")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  libraryBranchId String? @db.Uuid
+  libraryBranch   LibraryBranch? @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
+
+  copies BookCopy[]
+
+  @@index([libraryBranchId])
+}
+
+model BookCopy {
+  id              String     @id @default(uuid()) @db.Uuid
+  inventoryNumber String     @unique
+  fund            String?
+  status          CopyStatus @default(AVAILABLE)
+  condition       String?
+  acquisitionDate DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  bookId    String  @db.Uuid
+  invoiceId String? @db.Uuid
+  libraryBranchId String? @db.Uuid
+
+  book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  invoice  Invoice? @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  libraryBranch LibraryBranch? @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
+  loans    Loan[]
+  reservations Reservation[]
+
+  @@index([bookId])
+  @@index([status])
+  @@index([libraryBranchId])
+}
+
+model BookFile {
+  id          String          @id @default(uuid()) @db.Uuid
+  fileType    String
+  storagePath String
+  fileHash    String
+  fileSizeKb  Int?
+  accessLevel FileAccessLevel @default(VIEW_ONLY)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  bookId String @db.Uuid
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([bookId])
+}
+
+model Reservation {
+  id         String            @id @default(uuid()) @db.Uuid
+  status     ReservationStatus @default(PENDING)
+  reservedAt DateTime          @default(now())
+  expiresAt  DateTime?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  userId String  @db.Uuid
+  bookId String  @db.Uuid
+  copyId String? @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  copy BookCopy? @relation(fields: [copyId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([bookId])
+  @@index([status])
+}
+
+model Loan {
+  id        String     @id @default(uuid()) @db.Uuid
+  issuedBy  String?
+  loanedAt  DateTime   @default(now())
+  dueDate   DateTime
+  returnedAt DateTime?
+  status    LoanStatus @default(ACTIVE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  userId String @db.Uuid
+  copyId String @db.Uuid
+
+  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  copy BookCopy @relation(fields: [copyId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([copyId])
+  @@index([status])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  action     String
+  entityType String
+  entityId   String?
+  metadata   Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  userId String? @db.Uuid
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model MigrationBatch {
+  id               String               @id @default(uuid()) @db.Uuid
+  batchName        String               @unique
+  status           MigrationBatchStatus @default(PENDING)
+  totalRecords     Int?
+  importedRecords  Int?
+  failedRecords    Int?
+  skippedDuplicates Int?
+  checksum         String?
+  sourceFile       String?
+  startedAt        DateTime?
+  completedAt      DateTime?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  logs MigrationLog[]
+}
+
+model MigrationLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  recordId   String?
+  level      String
+  message    String
+  details    Json?
+  createdAt  DateTime @default(now())
+
+  batchId String @db.Uuid
+  batch   MigrationBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@index([batchId])
+  @@index([level])
+}
+
+model SystemSetting {
+  key        String   @id
+  value      Json
+  description String?
+  updatedBy  String?
+  updatedAt  DateTime @updatedAt
+}

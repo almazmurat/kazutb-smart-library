@@ -90,9 +90,9 @@ Modules communicate only through clearly defined service interfaces. No module i
 - UX and content style are formal and academic, suitable for university operations.
 - Every business object that belongs to the library domain must be designed for future scope isolation.
 - Scope isolation baseline:
-    - Institution scope: `UNIVERSITY` vs `COLLEGE`
-    - Branch ownership: `ECONOMIC_LIBRARY`, `TECHNOLOGICAL_LIBRARY`, `COLLEGE_LIBRARY`
-    - Librarian operations are restricted by branch ownership boundaries.
+  - Institution scope: `UNIVERSITY` vs `COLLEGE`
+  - Branch ownership: `ECONOMIC_LIBRARY`, `TECHNOLOGICAL_LIBRARY`, `COLLEGE_LIBRARY`
+  - Librarian operations are restricted by branch ownership boundaries.
 
 ### Module Dependency Rules
 

@@ -42,8 +42,8 @@ kazutb-smart-library/
 - Interface language support must include `kk`, `ru`, and `en`.
 - UI tone and text style must remain formal, academic, and institution-appropriate.
 - Library ownership must be segmented by institution scope and branch responsibility:
-	- Institution scope: `UNIVERSITY`, `COLLEGE`
-	- Branch units: `ECONOMIC_LIBRARY`, `TECHNOLOGICAL_LIBRARY`, `COLLEGE_LIBRARY`
+  - Institution scope: `UNIVERSITY`, `COLLEGE`
+  - Branch units: `ECONOMIC_LIBRARY`, `TECHNOLOGICAL_LIBRARY`, `COLLEGE_LIBRARY`
 - Librarians from one branch must not manage records owned by another branch.
 
 ## Development Workflow Policy
@@ -87,6 +87,7 @@ npm run dev
 - [Module Map](docs/architecture/module-map.md)
 - [Data Flow & Migration Concept](docs/architecture/data-flow.md)
 - [Multilingual and Segmentation Baseline](docs/architecture/multilingual-and-segmentation.md)
+- [Frontend i18n Guidelines](docs/architecture/frontend-i18n-guidelines.md)
 - [Domain Model](docs/database/domain-model.md)
 - [Roles & Access Control](docs/roles-and-access.md)
 - [Implementation Roadmap](docs/roadmap.md)

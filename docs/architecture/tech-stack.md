@@ -4,19 +4,19 @@
 
 ### Frontend
 
-| Technology      | Version | Purpose                                                        |
-| --------------- | ------- | -------------------------------------------------------------- |
-| React           | 18      | UI framework                                                   |
-| TypeScript      | 5       | Type safety across the entire frontend                         |
-| Vite            | 5       | Build tool and dev server (fast HMR)                           |
-| Tailwind CSS    | 3       | Utility-first styling                                          |
-| shadcn/ui       | latest  | Accessible, customizable component library (built on Radix UI) |
-| React Router    | 6       | Client-side routing                                            |
-| TanStack Query  | 5       | Server state management, caching, background refetch           |
-| TanStack Table  | 8       | Feature-rich tables for admin/librarian views                  |
-| React Hook Form | 7       | Form state and validation                                      |
-| Zod             | 3       | Schema validation (shared with backend DTOs)                   |
-| Axios           | 1       | HTTP client with interceptors for auth token handling          |
+| Technology             | Version         | Purpose                                                               |
+| ---------------------- | --------------- | --------------------------------------------------------------------- |
+| React                  | 18              | UI framework                                                          |
+| TypeScript             | 5               | Type safety across the entire frontend                                |
+| Vite                   | 5               | Build tool and dev server (fast HMR)                                  |
+| Tailwind CSS           | 3               | Utility-first styling                                                 |
+| shadcn/ui              | latest          | Accessible, customizable component library (built on Radix UI)        |
+| React Router           | 6               | Client-side routing                                                   |
+| TanStack Query         | 5               | Server state management, caching, background refetch                  |
+| TanStack Table         | 8               | Feature-rich tables for admin/librarian views                         |
+| React Hook Form        | 7               | Form state and validation                                             |
+| Zod                    | 3               | Schema validation (shared with backend DTOs)                          |
+| Axios                  | 1               | HTTP client with interceptors for auth token handling                 |
 | Lightweight i18n layer | internal module | Locale configuration and text dictionary loading for `kk`, `ru`, `en` |
 
 **Rationale:** React is mandated by project requirements. Vite provides the fastest development experience. Tailwind + shadcn/ui enables rapid, consistent UI development without writing much CSS. TanStack Query replaces Redux for server state — much simpler model for a data-heavy application.
