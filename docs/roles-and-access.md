@@ -86,7 +86,7 @@ Library staff. Primary operational role.
 | Change user roles                       | ❌ (Admin only) |
 | Access migration panel                  | ❌ (Admin only) |
 | Access system settings                  | ❌ (Admin only) |
-| Delete books (hard delete)              | ❌ (Admin only) |
+| Deactivate books in assigned branch     | ✅              |
 
 ---
 
@@ -129,7 +129,7 @@ Full system access. University IT or library administration.
 | `GET /books/:id`           |  ✅   |   ✅    |   ✅    |    ✅     |   ✅    |  ✅   |
 | `POST /books`              |  ❌   |   ❌    |   ❌    |    ✅     |   ❌    |  ✅   |
 | `PATCH /books/:id`         |  ❌   |   ❌    |   ❌    |    ✅     |   ❌    |  ✅   |
-| `DELETE /books/:id`        |  ❌   |   ❌    |   ❌    |    ❌     |   ❌    |  ✅   |
+| `DELETE /books/:id`        |  ❌   |   ❌    |   ❌    |    ✅     |   ❌    |  ✅   |
 | `GET /files/:id/view`      |  ❌   |   ✅    |   ✅    |    ✅     |   ❌    |  ✅   |
 | `POST /files/upload`       |  ❌   |   ❌    |   ❌    |    ✅     |   ❌    |  ✅   |
 | `POST /reservations`       |  ❌   |   ✅    |   ✅    |    ✅     |   ❌    |  ✅   |
@@ -154,6 +154,12 @@ Access is enforced via two guards applied globally:
 
 1. **`JwtAuthGuard`** — validates JWT token. Routes marked `@Public()` skip this guard (catalog, search, book details, login).
 2. **`RolesGuard`** — checks the `@Roles()` decorator on controller methods. If no `@Roles()` decorator is present, any authenticated user passes.
+
+Catalog mutation enforcement (books/copies) adds a third layer in service policy:
+
+- `CatalogOwnershipPolicy` validates branch and institution-scope ownership.
+- `ADMIN` bypasses ownership restrictions.
+- `LIBRARIAN` is denied for cross-branch and cross-scope mutations.
 
 ```typescript
 // Example usage in controller:

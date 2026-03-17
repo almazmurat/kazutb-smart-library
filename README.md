@@ -85,6 +85,7 @@ npm run dev
 - [Architecture Overview](docs/architecture/overview.md)
 - [Tech Stack Decisions](docs/architecture/tech-stack.md)
 - [Module Map](docs/architecture/module-map.md)
+- [Catalog Core Domain Decisions](docs/architecture/catalog-core-domain.md)
 - [Data Flow & Migration Concept](docs/architecture/data-flow.md)
 - [Multilingual and Segmentation Baseline](docs/architecture/multilingual-and-segmentation.md)
 - [Frontend i18n Guidelines](docs/architecture/frontend-i18n-guidelines.md)

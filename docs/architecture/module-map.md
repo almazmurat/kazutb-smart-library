@@ -56,13 +56,16 @@ Endpoints:
 - `GET    /api/v1/books/:id` — book detail (public)
 - `POST   /api/v1/books` — create book (Librarian, Admin)
 - `PATCH  /api/v1/books/:id` — update book (Librarian, Admin)
-- `DELETE /api/v1/books/:id` — soft-delete book (Admin)
+- `DELETE /api/v1/books/:id` — soft-deactivate book (Librarian, Admin; ownership-enforced)
 - `GET    /api/v1/books/:id/copies` — list physical copies
 - `POST   /api/v1/books/:id/copies` — add copy (Librarian, Admin)
+- `PATCH  /api/v1/books/:bookId/copies/:copyId` — update copy status/metadata (Librarian, Admin)
+
+Ownership policy: book and copy mutations are constrained by branch/scope for librarians.
 
 ---
 
-### `authors` — Author Registry
+### `authors` — Author Registry (Global Dictionary)
 
 **Responsibility:** Manage author entities linked to books.
 
@@ -72,11 +75,11 @@ Endpoints:
 - `GET    /api/v1/authors/:id` — author detail with book list
 - `POST   /api/v1/authors` — create (Librarian, Admin)
 - `PATCH  /api/v1/authors/:id` — update (Librarian, Admin)
-- `DELETE /api/v1/authors/:id` — soft-delete (Admin)
+- `DELETE /api/v1/authors/:id` — soft-deactivate (Librarian, Admin)
 
 ---
 
-### `categories` — Subject Categories
+### `categories` — Subject Categories (Global Dictionary)
 
 **Responsibility:** Hierarchical category/subject tree for classification.
 
@@ -84,9 +87,9 @@ Endpoints:
 
 - `GET    /api/v1/categories` — category tree
 - `GET    /api/v1/categories/:id` — category + children + books
-- `POST   /api/v1/categories` — create (Admin)
-- `PATCH  /api/v1/categories/:id` — update (Admin)
-- `DELETE /api/v1/categories/:id` — delete (Admin)
+- `POST   /api/v1/categories` — create (Librarian, Admin)
+- `PATCH  /api/v1/categories/:id` — update (Librarian, Admin)
+- `DELETE /api/v1/categories/:id` — soft-deactivate (Librarian, Admin)
 
 ---
 

@@ -59,7 +59,7 @@ GET /api/docs
 | Auth         | `/api/v1/auth`         | No (login only)        | All                       |
 | Books        | `/api/v1/books`        | Read: No; Write: Yes   | Librarian, Admin          |
 | Authors      | `/api/v1/authors`      | Read: No; Write: Yes   | Librarian, Admin          |
-| Categories   | `/api/v1/categories`   | Read: No; Write: Yes   | Admin                     |
+| Categories   | `/api/v1/categories`   | Read: No; Write: Yes   | Librarian, Admin          |
 | Search       | `/api/v1/search`       | No                     | All                       |
 | Files        | `/api/v1/files`        | View: Yes; Upload: Yes | Student+ / Librarian+     |
 | Reservations | `/api/v1/reservations` | Yes                    | Student+                  |
@@ -85,10 +85,17 @@ List endpoints support:
 
 Book list supports:
 
-- `?lang=ru` — filter by language code
-- `?year=2020` — filter by publication year
+- `?title=algebra` — filter by title fragment
+- `?authorId=<uuid>` — filter by author
 - `?categoryId=uuid` — filter by category
-- `?available=true` — only books with available copies
+- `?branchId=<uuid>` — filter by owning branch
+- `?isActive=true|false` — filter by active flag
+
+Book copy management endpoints:
+
+- `POST /api/v1/books/:bookId/copies`
+- `GET /api/v1/books/:bookId/copies`
+- `PATCH /api/v1/books/:bookId/copies/:copyId`
 
 ## Search
 

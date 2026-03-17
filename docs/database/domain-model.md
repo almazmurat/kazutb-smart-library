@@ -136,24 +136,25 @@ Note: Guest is the implicit role for unauthenticated access. Authenticated users
 
 ### Book
 
-| Field        | Type           | Notes                                   |
-| ------------ | -------------- | --------------------------------------- |
-| id           | UUID           | Primary key                             |
-| title        | String         | Required                                |
-| subtitle     | String?        | Optional subtitle                       |
-| isbn         | String? unique | ISBN-10 or ISBN-13                      |
-| issn         | String?        | For serials/periodicals                 |
-| udc          | String?        | Universal Decimal Classification        |
-| bbk          | String?        | BBK Russian library classification      |
-| publishYear  | Integer?       | Year of publication                     |
-| edition      | String?        | Edition text (e.g., "2nd ed.")          |
-| language     | String?        | ISO 639-1 code (e.g., "ru", "kk", "en") |
-| pageCount    | Integer?       |                                         |
-| description  | String?        | Annotation / abstract                   |
-| keywords     | String[]       | Free-form search tags                   |
-| publisherId  | UUID?          | FK → Publisher                          |
-| searchVector | tsvector       | Maintained by DB trigger for FTS        |
-| isActive     | Boolean        | Soft delete flag                        |
+| Field           | Type           | Notes                                   |
+| --------------- | -------------- | --------------------------------------- |
+| id              | UUID           | Primary key                             |
+| title           | String         | Required                                |
+| subtitle        | String?        | Optional subtitle                       |
+| isbn            | String? unique | ISBN-10 or ISBN-13                      |
+| issn            | String?        | For serials/periodicals                 |
+| udc             | String?        | Universal Decimal Classification        |
+| bbk             | String?        | BBK Russian library classification      |
+| publishYear     | Integer?       | Year of publication                     |
+| edition         | String?        | Edition text (e.g., "2nd ed.")          |
+| language        | String?        | ISO 639-1 code (e.g., "ru", "kk", "en") |
+| pageCount       | Integer?       |                                         |
+| description     | String?        | Annotation / abstract                   |
+| keywords        | String[]       | Free-form search tags                   |
+| publisherId     | UUID?          | FK → Publisher                          |
+| libraryBranchId | UUID           | FK → LibraryBranch (required ownership) |
+| searchVector    | tsvector       | Maintained by DB trigger for FTS        |
+| isActive        | Boolean        | Soft delete flag                        |
 
 ---
 
@@ -169,6 +170,31 @@ Note: Guest is the implicit role for unauthenticated access. Authenticated users
 | condition       | String?         | Physical condition notes                                  |
 | acquisitionDate | DateTime?       | Date received by library                                  |
 | invoiceId       | UUID?           | FK → Invoice                                              |
+| libraryBranchId | UUID            | FK → LibraryBranch (required ownership)                   |
+
+Current `CopyStatus` in schema includes `ARCHIVED` for lifecycle closure.
+
+---
+
+### Author
+
+| Field    | Type    | Notes                   |
+| -------- | ------- | ----------------------- |
+| id       | UUID    | Primary key             |
+| fullName | String  | Reusable authority name |
+| isActive | Boolean | Soft deactivate support |
+
+---
+
+### Category
+
+| Field    | Type    | Notes                        |
+| -------- | ------- | ---------------------------- |
+| id       | UUID    | Primary key                  |
+| name     | String  | Reusable normalized category |
+| code     | String? | Optional institutional code  |
+| parentId | UUID?   | Hierarchical parent category |
+| isActive | Boolean | Soft deactivate support      |
 
 ---
 
