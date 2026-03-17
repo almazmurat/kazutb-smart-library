@@ -1,0 +1,57 @@
+# ─── Node ───────────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Build outputs ──────────────────────────────────────────────────────────
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# ─── Environment / secrets ──────────────────────────────────────────────────
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Never commit actual credentials; only .env.example files are committed
+
+# ─── Migration data (keep directory structure, ignore actual data files) ─────
+migration/raw/*
+migration/clean/*
+migration/normalized/*
+migration/logs/*
+migration/checksums/*
+!migration/raw/.gitkeep
+!migration/clean/.gitkeep
+!migration/normalized/.gitkeep
+!migration/logs/.gitkeep
+!migration/checksums/.gitkeep
+
+# ─── File storage ────────────────────────────────────────────────────────────
+storage/
+uploads/
+
+# ─── Coverage / testing ──────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── OS ──────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDE ─────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
