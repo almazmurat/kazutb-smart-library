@@ -37,9 +37,6 @@ migration/checksums/*
 storage/
 uploads/
 
-# ─── Database ────────────────────────────────────────────────────────────────
-backend/prisma/migrations/
-
 # ─── Coverage / testing ──────────────────────────────────────────────────────
 coverage/
 .nyc_output/

@@ -104,8 +104,38 @@ async function main() {
     },
   });
 
-  const book = await prisma.book.create({
-    data: {
+  const author = await prisma.author.upsert({
+    where: { fullName: "Nurzhan A. Saparov" },
+    update: { isActive: true },
+    create: {
+      fullName: "Nurzhan A. Saparov",
+      isActive: true,
+    },
+  });
+
+  const existingCategory = await prisma.category.findFirst({
+    where: {
+      name: "Digital Library Systems",
+      parentId: null,
+    },
+  });
+
+  const category = existingCategory
+    ? await prisma.category.update({
+        where: { id: existingCategory.id },
+        data: { isActive: true, code: "CAT-DLS" },
+      })
+    : await prisma.category.create({
+        data: {
+          name: "Digital Library Systems",
+          code: "CAT-DLS",
+          isActive: true,
+        },
+      });
+
+  const book = await prisma.book.upsert({
+    where: { isbn: "9786010001001" },
+    update: {
       title: "Introduction to Digital Libraries",
       publishYear: 2024,
       language: "en",
@@ -114,6 +144,33 @@ async function main() {
       keywords: ["library", "digital", "catalog", "metadata"],
       publisherId: publisher.id,
       libraryBranchId: economicBranch.id,
+      isActive: true,
+      authors: {
+        deleteMany: {},
+        create: [{ authorId: author.id }],
+      },
+      categories: {
+        deleteMany: {},
+        create: [{ categoryId: category.id }],
+      },
+    },
+    create: {
+      title: "Introduction to Digital Libraries",
+      isbn: "9786010001001",
+      publishYear: 2024,
+      language: "en",
+      description:
+        "Foundational concepts for modern digital library platforms.",
+      keywords: ["library", "digital", "catalog", "metadata"],
+      publisherId: publisher.id,
+      libraryBranchId: economicBranch.id,
+      isActive: true,
+      authors: {
+        create: [{ authorId: author.id }],
+      },
+      categories: {
+        create: [{ categoryId: category.id }],
+      },
     },
   });
 

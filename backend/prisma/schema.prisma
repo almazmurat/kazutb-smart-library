@@ -23,6 +23,7 @@ enum CopyStatus {
   LOANED
   RESERVED
   LOST
+  ARCHIVED
   DAMAGED
   WRITTEN_OFF
 }
@@ -155,8 +156,8 @@ model Book {
 
   publisherId String?    @db.Uuid
   publisher   Publisher? @relation(fields: [publisherId], references: [id], onDelete: SetNull)
-  libraryBranchId String? @db.Uuid
-  libraryBranch   LibraryBranch? @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
+  libraryBranchId String @db.Uuid
+  libraryBranch   LibraryBranch @relation(fields: [libraryBranchId], references: [id], onDelete: Restrict)
 
   copies       BookCopy[]
   files        BookFile[]
@@ -173,6 +174,7 @@ model Book {
 model Author {
   id        String   @id @default(uuid()) @db.Uuid
   fullName  String
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -196,6 +198,7 @@ model Category {
   id        String   @id @default(uuid()) @db.Uuid
   name      String
   code      String?
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -248,11 +251,11 @@ model BookCopy {
 
   bookId    String  @db.Uuid
   invoiceId String? @db.Uuid
-  libraryBranchId String? @db.Uuid
+  libraryBranchId String @db.Uuid
 
   book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   invoice  Invoice? @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
-  libraryBranch LibraryBranch? @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
+  libraryBranch LibraryBranch @relation(fields: [libraryBranchId], references: [id], onDelete: Restrict)
   loans    Loan[]
   reservations Reservation[]
 
