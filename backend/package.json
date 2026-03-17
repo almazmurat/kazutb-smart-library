@@ -75,6 +75,9 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "moduleNameMapper": {
+      "^@prisma/prisma.service$": "<rootDir>/prisma/prisma.service"
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
