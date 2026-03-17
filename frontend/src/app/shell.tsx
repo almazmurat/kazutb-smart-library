@@ -10,6 +10,13 @@ export function AppShell() {
     { to: "/search", label: t("navSearch") },
     { to: "/cabinet", label: t("navCabinet") },
     { to: "/librarian", label: t("navLibrarian") },
+    { to: "/librarian/catalog/books", label: t("navCatalogBooksMgmt") },
+    { to: "/librarian/catalog/authors", label: t("navCatalogAuthorsMgmt") },
+    {
+      to: "/librarian/catalog/categories",
+      label: t("navCatalogCategoriesMgmt"),
+    },
+    { to: "/librarian/catalog/copies", label: t("navCatalogCopiesMgmt") },
     { to: "/admin", label: t("navAdmin") },
     { to: "/analytics", label: t("navAnalytics") },
     { to: "/reports", label: t("navReports") },
