@@ -47,6 +47,11 @@ export function CatalogFilters({
       apply({ [key]: event.target.value || undefined });
     };
 
+  // Provide default empty arrays when filters is not yet loaded
+  const categories = filters?.categories ?? [];
+  const branches = filters?.branches ?? [];
+  const languages = filters?.languages ?? [];
+
   return (
     <section className="rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5">
@@ -78,7 +83,7 @@ export function CatalogFilters({
             className="rounded-md border border-slate-300 bg-white px-3 py-2 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           >
             <option value="">{labels.allCategories}</option>
-            {filters?.categories.map((category) => (
+            {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
@@ -94,7 +99,7 @@ export function CatalogFilters({
             className="rounded-md border border-slate-300 bg-white px-3 py-2 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           >
             <option value="">{labels.allBranches}</option>
-            {filters?.branches.map((branch) => (
+            {branches.map((branch) => (
               <option key={branch.id} value={branch.id}>
                 {branch.name}
               </option>
@@ -110,7 +115,7 @@ export function CatalogFilters({
             className="rounded-md border border-slate-300 bg-white px-3 py-2 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           >
             <option value="">{labels.allLanguages}</option>
-            {filters?.languages.map((language) => (
+            {languages.map((language) => (
               <option key={language} value={language}>
                 {language.toUpperCase()}
               </option>
