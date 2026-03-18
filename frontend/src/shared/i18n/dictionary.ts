@@ -28,6 +28,38 @@ export type TranslationDict = {
   catalogCopiesTitle: string;
   catalogCopiesDescription: string;
   catalogScaffoldNote: string;
+  catalogInstitutionalLabel: string;
+  catalogPublicTitle: string;
+  catalogPublicDescription: string;
+  catalogFilterTitle: string;
+  catalogFilterAuthor: string;
+  catalogFilterCategory: string;
+  catalogFilterBranch: string;
+  catalogFilterLanguage: string;
+  catalogFilterReset: string;
+  catalogAllCategories: string;
+  catalogAllBranches: string;
+  catalogAllLanguages: string;
+  catalogLoading: string;
+  catalogError: string;
+  catalogEmpty: string;
+  catalogCardYear: string;
+  catalogCardLanguage: string;
+  catalogCardBranch: string;
+  catalogCardAvailable: string;
+  catalogCardTotalCopies: string;
+  catalogOpenDetails: string;
+  catalogResults: string;
+  catalogPrevPage: string;
+  catalogNextPage: string;
+  catalogBookNotFound: string;
+  catalogBackToList: string;
+  catalogMetadataTitle: string;
+  catalogAvailabilityTitle: string;
+  catalogDescriptionTitle: string;
+  catalogDescriptionEmpty: string;
+  catalogScopeLabel: string;
+  catalogDigitalAccessNotice: string;
 };
 
 export const dictionary: Record<Locale, TranslationDict> = {

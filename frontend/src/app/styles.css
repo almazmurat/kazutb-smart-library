@@ -4,12 +4,23 @@
 
 :root {
   color-scheme: light;
+  --university-blue-900: #0b3d91;
+  --university-blue-700: #1d4fa3;
+  --university-blue-100: #e8f0ff;
+  --surface-page: #f6f9ff;
+  --surface-card: #ffffff;
 }
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: radial-gradient(circle at top right, #eaf1ff 0%, #f9fbff 45%, #ffffff 100%);
+  font-family: "Segoe UI", "Arial Narrow", "Noto Sans", sans-serif;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(13, 74, 160, 0.08) 0%,
+      rgba(13, 74, 160, 0) 18%
+    ),
+    var(--surface-page);
   color: #0f172a;
 }
 
