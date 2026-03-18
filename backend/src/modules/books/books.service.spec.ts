@@ -6,7 +6,13 @@ describe("BooksService", () => {
     const prisma = {
       author: { count: jest.fn() },
       category: { count: jest.fn() },
-      book: { create: jest.fn(), findMany: jest.fn(), count: jest.fn() },
+      libraryBranch: { findMany: jest.fn() },
+      book: {
+        create: jest.fn(),
+        findMany: jest.fn(),
+        count: jest.fn(),
+        findFirst: jest.fn(),
+      },
       $transaction: jest.fn(),
     } as any;
 
@@ -76,5 +82,54 @@ describe("BooksService", () => {
     expect(response.meta.total).toBe(1);
     expect(response.data).toEqual([{ id: "book-1" }]);
     expect(prisma.$transaction).toHaveBeenCalled();
+  });
+
+  it("returns public books with active-only filter and availability summary", async () => {
+    const { service, prisma } = createService();
+
+    prisma.$transaction.mockResolvedValueOnce([
+      [
+        {
+          id: "book-public-1",
+          title: "University Finance",
+          subtitle: null,
+          publishYear: 2024,
+          language: "ru",
+          description: "Core finance textbook",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          libraryBranch: {
+            id: "branch-1",
+            code: "ECONOMIC_LIBRARY",
+            name: "Economic Library",
+            scope: {
+              id: "scope-1",
+              code: "UNIVERSITY",
+              name: "University",
+            },
+          },
+          authors: [{ author: { id: "a-1", fullName: "A. B. Author" } }],
+          categories: [{ category: { id: "c-1", name: "Economics" } }],
+          copies: [{ status: "AVAILABLE" }, { status: "LOANED" }],
+        },
+      ],
+      1,
+    ]);
+
+    const result = await service.listPublic({
+      title: "Finance",
+      author: "Author",
+      page: 1,
+      limit: 20,
+    });
+
+    expect(result.meta.total).toBe(1);
+    expect(result.data[0].availability).toEqual({ total: 2, available: 1 });
+
+    const findManyArgs = prisma.book.findMany.mock.calls[0][0];
+    expect(findManyArgs.where.isActive).toBe(true);
+    expect(findManyArgs.where.authors.some.author.fullName.contains).toBe(
+      "Author",
+    );
   });
 });

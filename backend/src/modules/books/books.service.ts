@@ -13,6 +13,7 @@ import { AuditService } from "../audit/audit.service";
 import { CreateBookCopyDto } from "./dto/create-book-copy.dto";
 import { CreateBookDto } from "./dto/create-book.dto";
 import { ListBooksQueryDto } from "./dto/list-books.query.dto";
+import { PublicBooksQueryDto } from "./dto/public-books.query.dto";
 import { UpdateBookCopyDto } from "./dto/update-book-copy.dto";
 import { UpdateBookDto } from "./dto/update-book.dto";
 
@@ -61,6 +62,18 @@ export class BooksService {
       },
     },
   } satisfies Prisma.BookInclude;
+
+  private toAvailabilitySummary(copies: Array<{ status: CopyStatus }>) {
+    const total = copies.length;
+    const available = copies.filter(
+      (copy) => copy.status === CopyStatus.AVAILABLE,
+    ).length;
+
+    return {
+      total,
+      available,
+    };
+  }
 
   async create(dto: CreateBookDto, context: MutationContext) {
     await this.ownershipPolicy.assertCanMutateBranch(
@@ -168,6 +181,258 @@ export class BooksService {
         total,
         totalPages: Math.ceil(total / limit),
       },
+    };
+  }
+
+  async listPublic(query: PublicBooksQueryDto) {
+    const page = Math.max(1, query.page || 1);
+    const limit = Math.min(100, Math.max(1, query.limit || 20));
+
+    const where: Prisma.BookWhereInput = {
+      isActive: true,
+      ...(query.title
+        ? {
+            title: {
+              contains: query.title,
+              mode: "insensitive",
+            },
+          }
+        : {}),
+      ...(query.author
+        ? {
+            authors: {
+              some: {
+                author: {
+                  fullName: {
+                    contains: query.author,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+          }
+        : {}),
+      ...(query.categoryId
+        ? {
+            categories: {
+              some: {
+                categoryId: query.categoryId,
+              },
+            },
+          }
+        : {}),
+      ...(query.branchId ? { libraryBranchId: query.branchId } : {}),
+      ...(query.language
+        ? {
+            language: {
+              equals: query.language,
+              mode: "insensitive",
+            },
+          }
+        : {}),
+    };
+
+    const [books, total] = await this.prisma.$transaction([
+      this.prisma.book.findMany({
+        where,
+        select: {
+          id: true,
+          title: true,
+          subtitle: true,
+          publishYear: true,
+          language: true,
+          description: true,
+          createdAt: true,
+          updatedAt: true,
+          libraryBranch: {
+            select: {
+              id: true,
+              code: true,
+              name: true,
+              scope: {
+                select: {
+                  id: true,
+                  code: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          authors: {
+            select: {
+              author: {
+                select: {
+                  id: true,
+                  fullName: true,
+                },
+              },
+            },
+          },
+          categories: {
+            select: {
+              category: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          copies: {
+            select: {
+              status: true,
+            },
+          },
+        },
+        orderBy: [{ createdAt: "desc" }],
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.book.count({ where }),
+    ]);
+
+    return {
+      data: books.map((book) => ({
+        id: book.id,
+        title: book.title,
+        subtitle: book.subtitle,
+        publishYear: book.publishYear,
+        language: book.language,
+        description: book.description,
+        libraryBranch: book.libraryBranch,
+        authors: book.authors.map((entry) => entry.author),
+        categories: book.categories.map((entry) => entry.category),
+        availability: this.toAvailabilitySummary(book.copies),
+      })),
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  async findPublicById(id: string) {
+    const book = await this.prisma.book.findFirst({
+      where: {
+        id,
+        isActive: true,
+      },
+      select: {
+        id: true,
+        title: true,
+        subtitle: true,
+        isbn: true,
+        publishYear: true,
+        language: true,
+        description: true,
+        libraryBranch: {
+          select: {
+            id: true,
+            code: true,
+            name: true,
+            scope: {
+              select: {
+                id: true,
+                code: true,
+                name: true,
+              },
+            },
+          },
+        },
+        authors: {
+          select: {
+            author: {
+              select: {
+                id: true,
+                fullName: true,
+              },
+            },
+          },
+        },
+        categories: {
+          select: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        copies: {
+          select: {
+            status: true,
+          },
+        },
+      },
+    });
+
+    if (!book) {
+      throw new NotFoundException("Book not found");
+    }
+
+    return {
+      id: book.id,
+      title: book.title,
+      subtitle: book.subtitle,
+      isbn: book.isbn,
+      publishYear: book.publishYear,
+      language: book.language,
+      description: book.description,
+      libraryBranch: book.libraryBranch,
+      authors: book.authors.map((entry) => entry.author),
+      categories: book.categories.map((entry) => entry.category),
+      availability: this.toAvailabilitySummary(book.copies),
+    };
+  }
+
+  async getPublicFilters() {
+    const [categories, branches, languages] = await this.prisma.$transaction([
+      this.prisma.category.findMany({
+        where: { isActive: true },
+        select: {
+          id: true,
+          name: true,
+        },
+        orderBy: [{ name: "asc" }],
+      }),
+      this.prisma.libraryBranch.findMany({
+        where: { isActive: true },
+        select: {
+          id: true,
+          code: true,
+          name: true,
+          scope: {
+            select: {
+              code: true,
+            },
+          },
+        },
+        orderBy: [{ name: "asc" }],
+      }),
+      this.prisma.book.findMany({
+        where: {
+          isActive: true,
+          language: {
+            not: null,
+          },
+        },
+        select: {
+          language: true,
+        },
+        distinct: ["language"],
+      }),
+    ]);
+
+    return {
+      categories,
+      branches,
+      languages: languages
+        .map((entry) => entry.language)
+        .filter((language): language is string => Boolean(language))
+        .sort((a, b) => a.localeCompare(b)),
     };
   }
 
