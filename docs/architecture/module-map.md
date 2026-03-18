@@ -52,6 +52,9 @@ No public endpoints. Internal service used by auth and guards.
 
 Endpoints:
 
+- `GET    /api/v1/public/books` — public catalog listing with filters and pagination
+- `GET    /api/v1/public/books/:id` — public book details
+- `GET    /api/v1/public/filters` — public filter dictionaries (categories, branches, languages)
 - `GET    /api/v1/books` — paginated book list (public, guest access)
 - `GET    /api/v1/books/:id` — book detail (public)
 - `POST   /api/v1/books` — create book (Librarian, Admin)
