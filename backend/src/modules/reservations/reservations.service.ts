@@ -141,6 +141,26 @@ export class ReservationsService {
     const [reservations, total] = await Promise.all([
       this.prisma.reservation.findMany({
         where,
+        include: {
+          book: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
+          libraryBranch: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          copy: {
+            select: {
+              id: true,
+              inventoryNumber: true,
+            },
+          },
+        },
         orderBy: { createdAt: "desc" },
         skip,
         take,
@@ -236,6 +256,12 @@ export class ReservationsService {
               name: true,
             },
           },
+          copy: {
+            select: {
+              id: true,
+              inventoryNumber: true,
+            },
+          },
         },
         orderBy: { createdAt: "desc" },
         skip,
@@ -261,6 +287,33 @@ export class ReservationsService {
   ): Promise<ReservationResponseDto> {
     const reservation = await this.prisma.reservation.findUnique({
       where: { id: reservationId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            universityId: true,
+            fullName: true,
+          },
+        },
+        book: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        libraryBranch: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        copy: {
+          select: {
+            id: true,
+            inventoryNumber: true,
+          },
+        },
+      },
     });
 
     if (!reservation) {
@@ -405,7 +458,27 @@ export class ReservationsService {
     return this.toResponseDto(updated);
   }
 
-  private toResponseDto(reservation: Reservation): ReservationResponseDto {
+  private toResponseDto(
+    reservation: Reservation & {
+      user?: {
+        id: string;
+        universityId: string;
+        fullName: string;
+      };
+      book?: {
+        id: string;
+        title: string;
+      };
+      libraryBranch?: {
+        id: string;
+        name: string;
+      };
+      copy?: {
+        id: string;
+        inventoryNumber: string;
+      } | null;
+    },
+  ): ReservationResponseDto {
     return {
       id: reservation.id,
       status: reservation.status,
@@ -417,6 +490,10 @@ export class ReservationsService {
       bookId: reservation.bookId,
       libraryBranchId: reservation.libraryBranchId,
       processedByUserId: reservation.processedByUserId ?? undefined,
+      user: reservation.user,
+      book: reservation.book,
+      libraryBranch: reservation.libraryBranch,
+      copy: reservation.copy ?? undefined,
       createdAt: reservation.createdAt,
       updatedAt: reservation.updatedAt,
     };

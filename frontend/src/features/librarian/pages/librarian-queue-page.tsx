@@ -31,7 +31,7 @@ const STATUS_COLORS: Record<
   },
   EXPIRED: {
     badge: "bg-red-50 text-red-800 border-red-100",
-    label: "reservationStatusExpired",
+    label: "librarianQueueStatusExpired",
   },
 };
 
@@ -185,13 +185,25 @@ export function LibrarianQueuePage() {
                   className="border-b border-slate-100 hover:bg-slate-50"
                 >
                   <td className="px-4 py-3 text-slate-900">
-                    <div className="font-medium">{reservation.userId}</div>
+                    <div className="font-medium">
+                      {reservation.user?.fullName || reservation.userId}
+                    </div>
                     <div className="text-xs text-slate-600">
-                      {t("commonBranchLabel")}: {reservation.libraryBranchId}
+                      {reservation.user?.universityId || reservation.userId}
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      {t("commonBranchLabel")}:{" "}
+                      {reservation.libraryBranch?.name ||
+                        reservation.libraryBranchId}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-slate-900">
-                    <div className="font-medium">{reservation.bookId}</div>
+                    <div className="font-medium">
+                      {reservation.book?.title || reservation.bookId}
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      {reservation.copy?.inventoryNumber || "-"}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <span

@@ -11,6 +11,23 @@ export class ReservationResponseDto {
   bookId!: string;
   libraryBranchId!: string;
   processedByUserId?: string;
+  user?: {
+    id: string;
+    universityId: string;
+    fullName: string;
+  };
+  book?: {
+    id: string;
+    title: string;
+  };
+  libraryBranch?: {
+    id: string;
+    name: string;
+  };
+  copy?: {
+    id: string;
+    inventoryNumber: string;
+  };
   createdAt!: Date;
   updatedAt!: Date;
 }

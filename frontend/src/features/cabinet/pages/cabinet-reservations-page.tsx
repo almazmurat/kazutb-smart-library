@@ -129,9 +129,13 @@ export function CabinetReservationsPage() {
                   className="border-b border-slate-100 hover:bg-slate-50"
                 >
                   <td className="px-4 py-3 text-slate-900">
-                    <div className="font-medium">{reservation.bookId}</div>
+                    <div className="font-medium">
+                      {reservation.book?.title || reservation.bookId}
+                    </div>
                     <div className="text-xs text-slate-500">
-                      {t("commonBranchLabel")}: {reservation.libraryBranchId}
+                      {t("commonBranchLabel")}:{" "}
+                      {reservation.libraryBranch?.name ||
+                        reservation.libraryBranchId}
                     </div>
                   </td>
                   <td className="px-4 py-3">
