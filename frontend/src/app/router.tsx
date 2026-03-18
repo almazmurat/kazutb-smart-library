@@ -35,7 +35,23 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "/cabinet/reservations",
+        element: (
+          <ProtectedRoute>
+            <CabinetPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "/librarian",
+        element: (
+          <ProtectedRoute roles={["LIBRARIAN", "ADMIN"]}>
+            <LibrarianPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/librarian/reservations",
         element: (
           <ProtectedRoute roles={["LIBRARIAN", "ADMIN"]}>
             <LibrarianPage />
