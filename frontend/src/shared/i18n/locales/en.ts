@@ -142,6 +142,7 @@ export const en = {
   librarianQueueStatusReady: "Ready for Pickup",
   librarianQueueStatusFulfilled: "Fulfilled",
   librarianQueueStatusCancelled: "Cancelled",
+  librarianQueueStatusExpired: "Expired",
   navCirculation: "Circulation Desk",
   circulationTitle: "Circulation Operations",
   circulationDescription:
@@ -243,6 +244,13 @@ export const en = {
   overviewStatScopes: "2 institutional scopes",
   overviewStatBranches: "3 library branches",
   overviewStatModules: "5 implemented service areas",
+  overviewCapabilitiesTitle: "Key MVP Capabilities",
+  overviewCapabilityCatalog:
+    "Public discovery and branch-aware catalog visibility",
+  overviewCapabilityCirculation:
+    "Reservation and circulation operations with service-state tracking",
+  overviewCapabilityAnalytics:
+    "Operational analytics and reporting for management visibility",
   overviewAudienceTitle: "Audience",
   overviewAudienceDescription:
     "Prepared for university leadership, librarians, administrators, and future rollout planning.",
@@ -252,6 +260,23 @@ export const en = {
   overviewReadinessTitle: "Presentation Readiness",
   overviewReadinessDescription:
     "The current MVP demonstrates real branch-aware operations with multilingual interface foundations.",
+  overviewDemoFlowsTitle: "Role-Based Demo Entry Paths",
+  overviewFlowGuestTitle: "Guest Path",
+  overviewFlowGuestDescription:
+    "Start with the public catalog, filters, and bibliographic detail card to establish open access value.",
+  overviewFlowGuestAction: "Open Guest Flow",
+  overviewFlowReaderTitle: "Reader Path",
+  overviewFlowReaderDescription:
+    "Continue with personal reservation status and loan history to show student and teacher self-service.",
+  overviewFlowReaderAction: "Open Reader Flow",
+  overviewFlowLibrarianTitle: "Librarian Path",
+  overviewFlowLibrarianDescription:
+    "Demonstrate reservation queue handling and circulation operations for branch staff.",
+  overviewFlowLibrarianAction: "Open Librarian Flow",
+  overviewFlowAdminTitle: "Admin and Analyst Path",
+  overviewFlowAdminDescription:
+    "Finish with analytics and reports to present institutional oversight and management visibility.",
+  overviewFlowAdminAction: "Open Management Flow",
   overviewQuickAccessTitle: "Quick Access",
   overviewAccessCatalogDescription:
     "Public-facing catalog access for bibliographic discovery, branch filtering, and title review.",

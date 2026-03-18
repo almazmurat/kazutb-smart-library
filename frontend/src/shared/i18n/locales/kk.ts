@@ -142,6 +142,7 @@ export const kk = {
   librarianQueueStatusReady: "Беруге дайын",
   librarianQueueStatusFulfilled: "Орындалды",
   librarianQueueStatusCancelled: "Бас тартылды",
+  librarianQueueStatusExpired: "Мерзімі өтті",
   navCirculation: "Кітап беру үстелі",
   circulationTitle: "Кітап беру операциялары",
   circulationDescription:
@@ -245,6 +246,12 @@ export const kk = {
   overviewStatScopes: "2 институционалдық контур",
   overviewStatBranches: "3 кітапхана филиалы",
   overviewStatModules: "5 іске асқан сервистік бағыт",
+  overviewCapabilitiesTitle: "MVP негізгі мүмкіндіктері",
+  overviewCapabilityCatalog: "Каталогтың ашық іздеуі және филиалдық көрінуі",
+  overviewCapabilityCirculation:
+    "Резервтеу мен кітап беру операциялары және қызмет мәртебесін бақылау",
+  overviewCapabilityAnalytics:
+    "Басқарушылық көріну үшін операциялық талдау және есептілік",
   overviewAudienceTitle: "Нысаналы аудитория",
   overviewAudienceDescription:
     "Материал университет басшылығына, кітапханашыларға, әкімшілерге және келесі енгізу кезеңдерін жоспарлауға арналған.",
@@ -254,6 +261,23 @@ export const kk = {
   overviewReadinessTitle: "Таныстырылымға дайындық",
   overviewReadinessDescription:
     "Қазіргі MVP көптілді интерфейс негізімен нақты филиалдық процестерді көрсетеді.",
+  overviewDemoFlowsTitle: "Рөлге негізделген демо сценарийлер",
+  overviewFlowGuestTitle: "Қонақ сценарийі",
+  overviewFlowGuestDescription:
+    "Ашық қолжетімділік құндылығын көрсету үшін каталог, сүзгілер және кітап карточкасынан бастаңыз.",
+  overviewFlowGuestAction: "Қонақ сценарийін ашу",
+  overviewFlowReaderTitle: "Оқырман сценарийі",
+  overviewFlowReaderDescription:
+    "Студенттер мен оқытушыларға арналған жеке кабинетте резервтеу мәртебесі мен беру тарихын көрсетіңіз.",
+  overviewFlowReaderAction: "Оқырман сценарийін ашу",
+  overviewFlowLibrarianTitle: "Кітапханашы сценарийі",
+  overviewFlowLibrarianDescription:
+    "Филиалдық резервтеу кезегін өңдеу және кітап беру операцияларын көрсетіңіз.",
+  overviewFlowLibrarianAction: "Кітапханашы сценарийін ашу",
+  overviewFlowAdminTitle: "Әкімші және талдаушы сценарийі",
+  overviewFlowAdminDescription:
+    "Институционалдық бақылау мен басқарушылық шолу үшін талдау және есептермен аяқтаңыз.",
+  overviewFlowAdminAction: "Басқарушылық сценарийді ашу",
   overviewQuickAccessTitle: "Жедел қолжетімділік",
   overviewAccessCatalogDescription:
     "Каталогты іздеу, филиал бойынша сүзгілеу және библиографиялық жазбаларды қарау үшін ашық қолжетімділік.",

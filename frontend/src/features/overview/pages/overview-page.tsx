@@ -48,6 +48,43 @@ export function OverviewPage() {
       description: t("overviewAccessReportsDescription"),
       secure: true,
     },
+    {
+      to: "/librarian/circulation",
+      title: t("navCirculation"),
+      description: t("overviewModuleCirculationDescription"),
+      secure: true,
+    },
+  ];
+
+  const demoFlows = [
+    {
+      to: "/catalog",
+      title: t("overviewFlowGuestTitle"),
+      description: t("overviewFlowGuestDescription"),
+      action: t("overviewFlowGuestAction"),
+      secure: false,
+    },
+    {
+      to: "/cabinet",
+      title: t("overviewFlowReaderTitle"),
+      description: t("overviewFlowReaderDescription"),
+      action: t("overviewFlowReaderAction"),
+      secure: true,
+    },
+    {
+      to: "/librarian",
+      title: t("overviewFlowLibrarianTitle"),
+      description: t("overviewFlowLibrarianDescription"),
+      action: t("overviewFlowLibrarianAction"),
+      secure: true,
+    },
+    {
+      to: "/analytics",
+      title: t("overviewFlowAdminTitle"),
+      description: t("overviewFlowAdminDescription"),
+      action: t("overviewFlowAdminAction"),
+      secure: true,
+    },
   ];
 
   const modules = [
@@ -139,7 +176,61 @@ export function OverviewPage() {
             </p>
           </div>
         </div>
+
+        <div className="mt-4">
+          <p className="mb-2 text-sm font-semibold text-slate-900">
+            {t("overviewCapabilitiesTitle")}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {[
+              t("overviewCapabilityCatalog"),
+              t("overviewCapabilityCirculation"),
+              t("overviewCapabilityAnalytics"),
+            ].map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </PageIntro>
+
+      <section className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
+        <h2 className="text-xl font-semibold text-slate-900">
+          {t("overviewDemoFlowsTitle")}
+        </h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {demoFlows.map((flow) => (
+            <article
+              key={flow.title}
+              className="flex h-full flex-col rounded-xl border border-slate-200 p-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-base font-semibold text-slate-900">
+                  {flow.title}
+                </h3>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${flow.secure ? "bg-slate-100 text-slate-700" : "bg-blue-50 text-blue-700"}`}
+                >
+                  {flow.secure ? t("shellSecureLabel") : t("shellPublicLabel")}
+                </span>
+              </div>
+              <p className="mt-3 grow text-sm leading-6 text-slate-600">
+                {flow.description}
+              </p>
+              <Link
+                to={flow.to}
+                className="mt-4 inline-flex items-center justify-center rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100"
+              >
+                {flow.action}
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
         <h2 className="text-xl font-semibold text-slate-900">

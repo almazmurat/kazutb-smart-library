@@ -84,6 +84,56 @@ Use the following sequence during the live presentation.
 
 ---
 
+## Demo Showcase Dataset
+
+The current seed is prepared for a believable institutional demonstration and includes:
+
+- 3 branches across university and college scopes
+- 8 books distributed across branches
+- multiple authors and categories with realistic combinations
+- reservations in mixed statuses: pending, ready, fulfilled, cancelled, expired
+- loans in mixed states: active, overdue, returned, lost
+- activity distribution sufficient for dashboard and report visibility
+
+This dataset is intentionally moderate in size to stay realistic for a university pilot without creating noisy, synthetic overpopulation.
+
+---
+
+## Suggested Demo Accounts and Roles
+
+Use the following seeded identities as narrative anchors during presentation:
+
+- Administrator: admin
+- Analyst: analyst1
+- Librarian (Economic branch): librarian_econ
+- Librarian (Technological branch): librarian_tech
+- Librarian (College branch): librarian_college
+- Student (University scope): student1
+- Student (College scope): student2
+- Teacher: teacher1
+
+If secure login is presented as scaffolded in the current stage, these identities should still be referenced to explain branch ownership, role boundaries, and operational responsibilities.
+
+---
+
+## Role-Oriented Walkthrough Story
+
+Use this framing to keep the demonstration understandable for leadership audiences:
+
+1. Guest story
+   Show public catalog discovery and explain open institutional visibility.
+
+2. Reader story
+   Show reservation and loan history surfaces as student/teacher self-service.
+
+3. Librarian story
+   Show reservation queue decisions and circulation handling as operational branch work.
+
+4. Administrator and analyst story
+   Show analytics and reports for institutional control, planning, and governance.
+
+---
+
 ## Suggested Talking Points For Leadership
 
 - The system is being built as a unified institutional library platform rather than a collection of separate screens.
@@ -112,7 +162,8 @@ These topics remain valid next-phase work and should be described as planned ext
 
 - Avoid presenting the authentication scaffold as production-ready identity integration.
 - Describe protected sections as role-based operational surfaces prepared for secured login.
-- When reservation or circulation tables show record identifiers, explain that the MVP currently prioritizes workflow validation and service logic over enriched display joins.
+- Use the role-based entry cards on the overview page to make the walkthrough path explicit for non-technical stakeholders.
+- Reference seeded cross-branch operational records to show that analytics and reports represent meaningful activity, not placeholder zeros.
 - Keep the emphasis on process coverage, institutional coherence, and readiness for phased expansion.
 
 ---

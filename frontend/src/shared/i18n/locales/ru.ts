@@ -144,6 +144,7 @@ export const ru = {
   librarianQueueStatusFulfilled: "Выдана",
   librarianQueueStatusCancelled: "Отменена",
   navCirculation: "Стол книговыдачи",
+  librarianQueueStatusExpired: "Истекло",
   circulationTitle: "Операции книговыдачи",
   circulationDescription:
     "Оформляйте выдачу и возврат экземпляров с соблюдением филиальных границ и статусов фонда.",
@@ -244,6 +245,12 @@ export const ru = {
   overviewStatScopes: "2 институциональных контура",
   overviewStatBranches: "3 библиотечных подразделения",
   overviewStatModules: "5 реализованных сервисных направлений",
+  overviewCapabilitiesTitle: "Ключевые возможности MVP",
+  overviewCapabilityCatalog: "Публичный поиск и филиальная видимость каталога",
+  overviewCapabilityCirculation:
+    "Резервирование и операции книговыдачи с контролем сервисных статусов",
+  overviewCapabilityAnalytics:
+    "Операционная аналитика и отчетность для управленческой видимости",
   overviewAudienceTitle: "Аудитория",
   overviewAudienceDescription:
     "Материал подготовлен для руководства университета, библиотекарей, администраторов и планирования дальнейшего внедрения.",
@@ -253,6 +260,23 @@ export const ru = {
   overviewReadinessTitle: "Готовность к презентации",
   overviewReadinessDescription:
     "Текущий MVP уже демонстрирует реальные филиальные процессы с многоязычной основой интерфейса.",
+  overviewDemoFlowsTitle: "Ролевые сценарии демонстрации",
+  overviewFlowGuestTitle: "Сценарий гостя",
+  overviewFlowGuestDescription:
+    "Начните с публичного каталога, фильтров и карточки книги, чтобы показать ценность открытого доступа.",
+  overviewFlowGuestAction: "Открыть гостевой сценарий",
+  overviewFlowReaderTitle: "Сценарий читателя",
+  overviewFlowReaderDescription:
+    "Покажите личный кабинет с резервированиями и историей выдач для студентов и преподавателей.",
+  overviewFlowReaderAction: "Открыть сценарий читателя",
+  overviewFlowLibrarianTitle: "Сценарий библиотекаря",
+  overviewFlowLibrarianDescription:
+    "Продемонстрируйте обработку очереди резервирований и операции книговыдачи по филиалу.",
+  overviewFlowLibrarianAction: "Открыть сценарий библиотекаря",
+  overviewFlowAdminTitle: "Сценарий администратора и аналитика",
+  overviewFlowAdminDescription:
+    "Завершите показ аналитикой и отчетами для институционального контроля и управленческого обзора.",
+  overviewFlowAdminAction: "Открыть управленческий сценарий",
   overviewQuickAccessTitle: "Быстрый доступ",
   overviewAccessCatalogDescription:
     "Публичный доступ к каталогу для поиска, фильтрации по филиалам и просмотра записей.",
