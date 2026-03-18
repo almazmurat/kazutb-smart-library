@@ -94,8 +94,10 @@ export const kk = {
   cabinetReservationStatusExpired: "Істі тапқан",
   librarianQueueTitle: "Резервілеу кезегі",
   librarianQueueEmpty: "Кезегіңізде қолданыстағы резервілеулер жоқ.",
-  librarianQueueError: "Резервілеу кезегін жүктеу мүмкін болмады. Қайталап көріңіз.",
-  librarianQueueAccessDenied: "Қатынасқа рұқсат жоқ. Тек кітапханашылар мен әкімшілер резервілеу кезегін құра ала.",
+  librarianQueueError:
+    "Резервілеу кезегін жүктеу мүмкін болмады. Қайталап көріңіз.",
+  librarianQueueAccessDenied:
+    "Қатынасқа рұқсат жоқ. Тек кітапханашылар мен әкімшілер резервілеу кезегін құра ала.",
   librarianQueueColumnUser: "Пайдаланушы",
   librarianQueueColumnBook: "Кітабының аты",
   librarianQueueColumnStatus: "Мәртебесі",

@@ -1,10 +1,7 @@
 /// <reference types="jest" />
 
 import { describe, expect, it, jest } from "@jest/globals";
-import {
-  BadRequestException,
-  ForbiddenException,
-} from "@nestjs/common";
+import { BadRequestException, ForbiddenException } from "@nestjs/common";
 import { ReservationStatus } from "@prisma/client";
 
 import { UserRole } from "../../common/types/user-role.enum";
@@ -32,7 +29,11 @@ describe("ReservationsService", () => {
     const auditService = { write: jest.fn() } as any;
     const ownershipPolicy = { assertCanMutateBranch: jest.fn() } as any;
 
-    const service = new ReservationsService(prisma, auditService, ownershipPolicy);
+    const service = new ReservationsService(
+      prisma,
+      auditService,
+      ownershipPolicy,
+    );
     return { service, prisma, auditService };
   }
 

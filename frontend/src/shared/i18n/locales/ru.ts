@@ -78,7 +78,8 @@ export const ru = {
   reservationStatusExpired: "Истекла",
   cabinetReservationsTitle: "Мои резервирования",
   cabinetReservationsEmpty: "У вас нет активных резервирований.",
-  cabinetReservationsError: "Не удалось загрузить резервирования. Повторите попытку.",
+  cabinetReservationsError:
+    "Не удалось загрузить резервирования. Повторите попытку.",
   cabinetReservationColumnBook: "Название книги",
   cabinetReservationColumnStatus: "Статус",
   cabinetReservationColumnDate: "Зарезервирована",
@@ -86,7 +87,8 @@ export const ru = {
   cabinetReservationColumnActions: "Действия",
   cabinetReservationCancel: "Отменить",
   cabinetReservationCancelNotAvailable: "Невозможно отменить",
-  cabinetReservationConfirmCancel: "Вы уверены, что хотите отменить это резервирование?",
+  cabinetReservationConfirmCancel:
+    "Вы уверены, что хотите отменить это резервирование?",
   cabinetReservationStatusPending: "На рассмотрении",
   cabinetReservationStatusReady: "Готова к выдаче",
   cabinetReservationStatusFulfilled: "Выдана",
@@ -94,8 +96,10 @@ export const ru = {
   cabinetReservationStatusExpired: "Истекла",
   librarianQueueTitle: "Очередь резервирований",
   librarianQueueEmpty: "Нет активных резервирований в очереди.",
-  librarianQueueError: "Не удалось загрузить очередь резервирований. Повторите попытку.",
-  librarianQueueAccessDenied: "Доступ запрещен. Только библиотекари и администраторы могут просматривать очередь резервирований.",
+  librarianQueueError:
+    "Не удалось загрузить очередь резервирований. Повторите попытку.",
+  librarianQueueAccessDenied:
+    "Доступ запрещен. Только библиотекари и администраторы могут просматривать очередь резервирований.",
   librarianQueueColumnUser: "Пользователь",
   librarianQueueColumnBook: "Название книги",
   librarianQueueColumnStatus: "Статус",

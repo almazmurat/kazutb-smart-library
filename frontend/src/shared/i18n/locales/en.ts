@@ -78,7 +78,8 @@ export const en = {
   reservationStatusExpired: "Expired",
   cabinetReservationsTitle: "My Reservations",
   cabinetReservationsEmpty: "You have no reservations yet.",
-  cabinetReservationsError: "Unable to load your reservations. Please try again.",
+  cabinetReservationsError:
+    "Unable to load your reservations. Please try again.",
   cabinetReservationColumnBook: "Book Title",
   cabinetReservationColumnStatus: "Status",
   cabinetReservationColumnDate: "Reserved On",
@@ -86,7 +87,8 @@ export const en = {
   cabinetReservationColumnActions: "Actions",
   cabinetReservationCancel: "Cancel",
   cabinetReservationCancelNotAvailable: "Cannot cancel",
-  cabinetReservationConfirmCancel: "Are you sure you want to cancel this reservation?",
+  cabinetReservationConfirmCancel:
+    "Are you sure you want to cancel this reservation?",
   cabinetReservationStatusPending: "Pending",
   cabinetReservationStatusReady: "Ready for Pickup",
   cabinetReservationStatusFulfilled: "Fulfilled",
@@ -95,7 +97,8 @@ export const en = {
   librarianQueueTitle: "Reservation Queue",
   librarianQueueEmpty: "No pending reservations in your queue.",
   librarianQueueError: "Unable to load reservation queue. Please try again.",
-  librarianQueueAccessDenied: "Access denied. Only librarians and administrators can view the reservation queue.",
+  librarianQueueAccessDenied:
+    "Access denied. Only librarians and administrators can view the reservation queue.",
   librarianQueueColumnUser: "User",
   librarianQueueColumnBook: "Book Title",
   librarianQueueColumnStatus: "Status",
