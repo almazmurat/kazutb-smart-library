@@ -22,11 +22,7 @@ export function PageIntro({
       <div className="absolute inset-x-0 top-0 hidden h-20 bg-[linear-gradient(90deg,rgba(29,79,163,0.16),rgba(255,255,255,0))] lg:block" />
       <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-4xl">
-          {eyebrow ? (
-            <p className="app-kicker">
-              {eyebrow}
-            </p>
-          ) : null}
+          {eyebrow ? <p className="app-kicker">{eyebrow}</p> : null}
           <h1 className="mt-3 max-w-4xl text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl xl:text-[2.9rem]">
             {title}
           </h1>

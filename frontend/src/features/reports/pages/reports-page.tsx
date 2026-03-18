@@ -12,7 +12,7 @@ export function ReportsPage() {
 
   if (reports.isLoading) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="app-empty-state">
         <p className="text-slate-500">{t("reportsLoading")}</p>
       </section>
     );
@@ -20,7 +20,7 @@ export function ReportsPage() {
 
   if (reports.isError) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="app-empty-state">
         <p className="text-red-600">{t("reportsError")}</p>
       </section>
     );
@@ -30,7 +30,7 @@ export function ReportsPage() {
 
   if (!data) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="app-empty-state">
         <p className="text-slate-500">{t("reportsNoData")}</p>
       </section>
     );
@@ -60,7 +60,7 @@ export function ReportsPage() {
               {t("reportsYear")}:
             </label>
             <select
-              className="rounded-md border border-slate-300 px-2 py-1 text-sm"
+              className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
               value={selectedYear}
               onChange={(event) => setSelectedYear(Number(event.target.value))}
             >
@@ -74,37 +74,35 @@ export function ReportsPage() {
         }
       />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">
+      <section className="app-panel-strong p-6">
+        <h2 className="mb-4 app-section-heading">
           {t("reportsYearly")} - {data.year}
         </h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="rounded-lg border border-slate-200 p-4">
-            <div className="text-sm text-slate-500">{t("reportsLoans")}</div>
-            <div className="mt-1 text-xl font-bold text-slate-900">
+          <div className="app-panel p-4">
+            <div className="app-kicker">{t("reportsLoans")}</div>
+            <div className="mt-3 text-2xl font-semibold text-slate-900">
               {data.yearly.loans}
             </div>
           </div>
-          <div className="rounded-lg border border-slate-200 p-4">
-            <div className="text-sm text-slate-500">{t("reportsReturns")}</div>
-            <div className="mt-1 text-xl font-bold text-slate-900">
+          <div className="app-panel p-4">
+            <div className="app-kicker">{t("reportsReturns")}</div>
+            <div className="mt-3 text-2xl font-semibold text-slate-900">
               {data.yearly.returns}
             </div>
           </div>
-          <div className="rounded-lg border border-slate-200 p-4">
-            <div className="text-sm text-slate-500">
-              {t("reportsReservations")}
-            </div>
-            <div className="mt-1 text-xl font-bold text-slate-900">
+          <div className="app-panel p-4">
+            <div className="app-kicker">{t("reportsReservations")}</div>
+            <div className="mt-3 text-2xl font-semibold text-slate-900">
               {data.yearly.reservations}
             </div>
           </div>
           <div
-            className={`rounded-lg border p-4 ${data.yearly.currentOverdue > 0 ? "border-red-300 bg-red-50" : "border-slate-200"}`}
+            className={`app-panel p-4 ${data.yearly.currentOverdue > 0 ? "border-red-300 bg-red-50/90" : ""}`}
           >
-            <div className="text-sm text-slate-500">{t("reportsOverdue")}</div>
+            <div className="app-kicker">{t("reportsOverdue")}</div>
             <div
-              className={`mt-1 text-xl font-bold ${data.yearly.currentOverdue > 0 ? "text-red-700" : "text-slate-900"}`}
+              className={`mt-3 text-2xl font-semibold ${data.yearly.currentOverdue > 0 ? "text-red-700" : "text-slate-900"}`}
             >
               {data.yearly.currentOverdue}
             </div>
@@ -112,23 +110,23 @@ export function ReportsPage() {
         </div>
       </section>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">
-          {t("reportsMonthly")}
-        </h2>
+      <section className="app-panel-strong p-6">
+        <h2 className="mb-4 app-section-heading">{t("reportsMonthly")}</h2>
         {data.monthly.length === 0 ? (
-          <p className="text-slate-500">{t("reportsNoData")}</p>
+          <div className="app-empty-state py-8">
+            <p className="text-slate-500">{t("reportsNoData")}</p>
+          </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="app-table-shell">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
+              <thead className="app-table-head border-b border-slate-200 text-xs uppercase text-slate-500">
                 <tr>
-                  <th className="px-3 py-2">{t("reportsMonth")}</th>
-                  <th className="px-3 py-2 text-right">{t("reportsLoans")}</th>
-                  <th className="px-3 py-2 text-right">
+                  <th className="px-3 py-3">{t("reportsMonth")}</th>
+                  <th className="px-3 py-3 text-right">{t("reportsLoans")}</th>
+                  <th className="px-3 py-3 text-right">
                     {t("reportsReturns")}
                   </th>
-                  <th className="px-3 py-2 text-right">
+                  <th className="px-3 py-3 text-right">
                     {t("reportsReservations")}
                   </th>
                 </tr>
@@ -139,12 +137,12 @@ export function ReportsPage() {
                     key={row.month}
                     className="border-b border-slate-100 last:border-0"
                   >
-                    <td className="px-3 py-2 font-medium text-slate-700">
+                    <td className="px-3 py-3 font-medium text-slate-700">
                       {monthNames[row.month - 1] || row.month}
                     </td>
-                    <td className="px-3 py-2 text-right">{row.loans}</td>
-                    <td className="px-3 py-2 text-right">{row.returns}</td>
-                    <td className="px-3 py-2 text-right">{row.reservations}</td>
+                    <td className="px-3 py-3 text-right">{row.loans}</td>
+                    <td className="px-3 py-3 text-right">{row.returns}</td>
+                    <td className="px-3 py-3 text-right">{row.reservations}</td>
                   </tr>
                 ))}
               </tbody>
@@ -154,20 +152,20 @@ export function ReportsPage() {
       </section>
 
       {data.branchSummary.length > 0 && (
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold text-slate-900">
+        <section className="app-panel-strong p-6">
+          <h2 className="mb-4 app-section-heading">
             {t("reportsBranchSummary")}
           </h2>
-          <div className="overflow-x-auto">
+          <div className="app-table-shell">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
+              <thead className="app-table-head border-b border-slate-200 text-xs uppercase text-slate-500">
                 <tr>
-                  <th className="px-3 py-2">{t("reportsBranch")}</th>
-                  <th className="px-3 py-2 text-right">{t("reportsLoans")}</th>
-                  <th className="px-3 py-2 text-right">
+                  <th className="px-3 py-3">{t("reportsBranch")}</th>
+                  <th className="px-3 py-3 text-right">{t("reportsLoans")}</th>
+                  <th className="px-3 py-3 text-right">
                     {t("reportsReturns")}
                   </th>
-                  <th className="px-3 py-2 text-right">
+                  <th className="px-3 py-3 text-right">
                     {t("reportsReservations")}
                   </th>
                 </tr>
@@ -178,12 +176,12 @@ export function ReportsPage() {
                     key={row.branchId}
                     className="border-b border-slate-100 last:border-0"
                   >
-                    <td className="px-3 py-2 font-medium text-slate-700">
+                    <td className="px-3 py-3 font-medium text-slate-700">
                       {row.branchName}
                     </td>
-                    <td className="px-3 py-2 text-right">{row.loans}</td>
-                    <td className="px-3 py-2 text-right">{row.returns}</td>
-                    <td className="px-3 py-2 text-right">{row.reservations}</td>
+                    <td className="px-3 py-3 text-right">{row.loans}</td>
+                    <td className="px-3 py-3 text-right">{row.returns}</td>
+                    <td className="px-3 py-3 text-right">{row.reservations}</td>
                   </tr>
                 ))}
               </tbody>

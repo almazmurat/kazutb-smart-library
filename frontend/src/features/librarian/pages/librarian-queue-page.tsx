@@ -77,27 +77,15 @@ export function LibrarianQueuePage() {
     !authStore.isAuthenticated ||
     (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
   ) {
-    return (
-      <div className="rounded-xl border border-red-100 bg-white p-8 text-center text-sm text-red-700">
-        {t("librarianQueueAccessDenied")}
-      </div>
-    );
+    return <div className="app-empty-state text-sm text-red-700">{t("librarianQueueAccessDenied")}</div>;
   }
 
   if (isLoading) {
-    return (
-      <div className="rounded-xl border border-blue-100 bg-white p-8 text-center text-sm text-slate-600">
-        {t("catalogLoading")}
-      </div>
-    );
+    return <div className="app-empty-state text-sm text-slate-600">{t("catalogLoading")}</div>;
   }
 
   if (error) {
-    return (
-      <div className="rounded-xl border border-red-100 bg-white p-8 text-center text-sm text-red-700">
-        {t("librarianQueueError")}
-      </div>
-    );
+    return <div className="app-empty-state text-sm text-red-700">{t("librarianQueueError")}</div>;
   }
 
   const reservations = data?.data || [];
@@ -109,10 +97,10 @@ export function LibrarianQueuePage() {
           eyebrow={t("shellOperationsSection")}
           title={t("librarianQueueTitle")}
           description={t("librarianQueueDescription")}
-          badges={[t("shellSecureLabel")]}
+          badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
         />
 
-        <div className="rounded-xl border border-blue-100 bg-white p-8 text-center">
+        <div className="app-empty-state">
           <p className="text-sm text-slate-600">{t("librarianQueueEmpty")}</p>
         </div>
       </div>
@@ -127,17 +115,23 @@ export function LibrarianQueuePage() {
         eyebrow={t("shellOperationsSection")}
         title={t("librarianQueueTitle")}
         description={t("librarianQueueDescription")}
-        badges={[t("shellSecureLabel")]}
+        badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
       />
 
-      <div className="flex items-center justify-end">
+      <div className="app-panel flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+        <div>
+          <p className="app-kicker">{t("librarianQueueTitle")}</p>
+          <p className="mt-2 text-sm text-slate-600">
+            {reservations.length} {t("catalogResults")}
+          </p>
+        </div>
         <select
           value={statusFilter || ""}
           onChange={(e) => {
             setStatusFilter((e.target.value as ReservationStatus) || undefined);
             setPage(1);
           }}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700"
+          className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700"
         >
           <option value="">{t("librarianQueueFilterAll")}</option>
           <option value="PENDING">{t("librarianQueueStatusPending")}</option>
@@ -151,10 +145,10 @@ export function LibrarianQueuePage() {
         </select>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-blue-100 bg-white shadow-sm">
+      <div className="app-table-shell">
         <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-blue-100 bg-blue-50">
+          <thead className="app-table-head">
+            <tr className="border-b border-blue-100/70">
               <th className="px-4 py-3 text-left font-medium text-slate-700">
                 {t("librarianQueueColumnUser")}
               </th>
@@ -182,39 +176,41 @@ export function LibrarianQueuePage() {
               return (
                 <tr
                   key={reservation.id}
-                  className="border-b border-slate-100 hover:bg-slate-50"
+                  className="border-b border-slate-100/90 hover:bg-slate-50/70"
                 >
-                  <td className="px-4 py-3 text-slate-900">
+                  <td className="px-4 py-4 text-slate-900">
                     <div className="font-medium">
                       {reservation.user?.fullName || reservation.userId}
                     </div>
                     <div className="text-xs text-slate-600">
                       {reservation.user?.universityId || reservation.userId}
                     </div>
-                    <div className="text-xs text-slate-500">
-                      {t("commonBranchLabel")}:{" "}
-                      {reservation.libraryBranch?.name ||
-                        reservation.libraryBranchId}
+                    <div className="mt-2 text-xs text-slate-500">
+                      <span className="app-chip-muted">
+                        {t("commonBranchLabel")}: {reservation.libraryBranch?.name || reservation.libraryBranchId}
+                      </span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-slate-900">
+                  <td className="px-4 py-4 text-slate-900">
                     <div className="font-medium">
                       {reservation.book?.title || reservation.bookId}
                     </div>
-                    <div className="text-xs text-slate-500">
-                      {reservation.copy?.inventoryNumber || "-"}
+                    <div className="mt-2 text-xs text-slate-500">
+                      <span className="app-chip-muted">
+                        {reservation.copy?.inventoryNumber || "-"}
+                      </span>
                     </div>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-4">
                     <span
-                      className={`inline-block rounded-md border px-2 py-1 text-xs font-medium ${statusConfig.badge}`}
+                      className={`inline-block rounded-full border px-3 py-1 text-xs font-medium ${statusConfig.badge}`}
                     >
                       {t(statusConfig.label)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{reservedDate}</td>
-                  <td className="px-4 py-3">
-                    <div className="space-x-2 flex">
+                  <td className="px-4 py-4 text-slate-600">{reservedDate}</td>
+                  <td className="px-4 py-4">
+                    <div className="flex flex-wrap gap-2">
                       {reservation.status === "PENDING" && (
                         <>
                           <button
@@ -222,7 +218,7 @@ export function LibrarianQueuePage() {
                               handleStatusChange(reservation.id, "READY")
                             }
                             disabled={updateStatusMutation.isPending}
-                            className="inline-flex rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700 hover:bg-green-200 disabled:opacity-50"
+                            className="inline-flex rounded-xl bg-green-100 px-3 py-2 text-xs font-medium text-green-700 transition hover:bg-green-200 disabled:opacity-50"
                           >
                             {t("librarianQueueConfirm")}
                           </button>
@@ -231,7 +227,7 @@ export function LibrarianQueuePage() {
                               handleStatusChange(reservation.id, "CANCELLED")
                             }
                             disabled={updateStatusMutation.isPending}
-                            className="inline-flex rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200 disabled:opacity-50"
+                            className="inline-flex rounded-xl bg-red-100 px-3 py-2 text-xs font-medium text-red-700 transition hover:bg-red-200 disabled:opacity-50"
                           >
                             {t("librarianQueueReject")}
                           </button>
@@ -243,12 +239,12 @@ export function LibrarianQueuePage() {
                             handleStatusChange(reservation.id, "FULFILLED")
                           }
                           disabled={updateStatusMutation.isPending}
-                          className="inline-flex rounded-md bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-200 disabled:opacity-50"
+                          className="inline-flex rounded-xl bg-blue-100 px-3 py-2 text-xs font-medium text-blue-700 transition hover:bg-blue-200 disabled:opacity-50"
                         >
                           {t("librarianQueueMarkReady")}
                         </button>
                       )}
-                      {!["PENDING", "READY"].includes(reservation.status) && (
+                      {!['PENDING', 'READY'].includes(reservation.status) && (
                         <span className="text-xs text-slate-400">
                           {t("librarianQueueNoActions")}
                         </span>
@@ -263,11 +259,11 @@ export function LibrarianQueuePage() {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
+        <div className="app-panel flex justify-center gap-2 px-4 py-3">
           <button
             onClick={() => setPage(Math.max(1, page - 1))}
             disabled={page === 1}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="app-button-secondary disabled:opacity-50"
           >
             {t("catalogPrevious")}
           </button>
@@ -277,7 +273,7 @@ export function LibrarianQueuePage() {
           <button
             onClick={() => setPage(Math.min(totalPages, page + 1))}
             disabled={page === totalPages}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="app-button-secondary disabled:opacity-50"
           >
             {t("catalogNext")}
           </button>

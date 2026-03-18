@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import {
   useLoans,
   useIssueLoan,
@@ -51,7 +51,6 @@ export function CirculationPage() {
   const issueMutation = useIssueLoan();
   const returnMutation = useReturnLoan();
 
-  // Issue form state
   const [issueUserId, setIssueUserId] = useState("");
   const [issueCopyId, setIssueCopyId] = useState("");
   const [issueDueDate, setIssueDueDate] = useState("");
@@ -66,13 +65,13 @@ export function CirculationPage() {
     (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
   ) {
     return (
-      <div className="rounded-xl border border-red-100 bg-white p-8 text-center text-sm text-red-700">
+      <div className="app-empty-state text-sm text-red-700">
         {t("circulationAccessDenied")}
       </div>
     );
   }
 
-  const handleIssueLoan = async (e: React.FormEvent) => {
+  const handleIssueLoan = async (e: FormEvent) => {
     e.preventDefault();
     setIssueMessage(null);
     try {
@@ -107,7 +106,7 @@ export function CirculationPage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-blue-100 bg-white p-8 text-center text-sm text-slate-600">
+      <div className="app-empty-state text-sm text-slate-600">
         {t("catalogLoading")}
       </div>
     );
@@ -115,7 +114,7 @@ export function CirculationPage() {
 
   if (error) {
     return (
-      <div className="rounded-xl border border-red-100 bg-white p-8 text-center text-sm text-red-700">
+      <div className="app-empty-state text-sm text-red-700">
         {t("circulationError")}
       </div>
     );
@@ -130,11 +129,11 @@ export function CirculationPage() {
         eyebrow={t("shellOperationsSection")}
         title={t("circulationTitle")}
         description={t("circulationDescription")}
-        badges={[t("shellSecureLabel")]}
+        badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+      <div className="app-panel flex flex-wrap items-center justify-between gap-4 px-5 py-4">
+        <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-1.5 text-sm text-slate-600">
             <input
               type="checkbox"
@@ -154,7 +153,7 @@ export function CirculationPage() {
               setOverdueFilter(false);
               setPage(1);
             }}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700"
+            className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700"
           >
             <option value="">{t("circulationFilterAll")}</option>
             <option value="ACTIVE">{t("circulationStatusActive")}</option>
@@ -164,16 +163,26 @@ export function CirculationPage() {
           </select>
           <button
             onClick={() => setShowIssueForm(!showIssueForm)}
-            className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+            className="app-button-primary"
           >
             {t("circulationIssueLoan")}
           </button>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="app-chip">
+            {loans.length} {t("catalogResults")}
+          </span>
+          {overdueFilter && (
+            <span className="app-chip-muted">
+              {t("circulationFilterOverdue")}
+            </span>
+          )}
         </div>
       </div>
 
       {issueMessage && (
         <div
-          className={`rounded-md px-4 py-3 text-sm ${
+          className={`app-panel px-4 py-3 text-sm ${
             issueMessage.type === "success"
               ? "border border-green-100 bg-green-50 text-green-900"
               : "border border-red-100 bg-red-50 text-red-900"
@@ -184,11 +193,9 @@ export function CirculationPage() {
       )}
 
       {showIssueForm && (
-        <form
-          onSubmit={handleIssueLoan}
-          className="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
-        >
-          <h2 className="text-lg font-semibold text-slate-900">
+        <form onSubmit={handleIssueLoan} className="app-panel-strong p-5">
+          <p className="app-kicker">{t("shellOperationsSection")}</p>
+          <h2 className="mt-2 text-lg font-semibold text-slate-900">
             {t("circulationIssueFormTitle")}
           </h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -201,7 +208,7 @@ export function CirculationPage() {
                 required
                 value={issueUserId}
                 onChange={(e) => setIssueUserId(e.target.value)}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
               />
             </div>
             <div>
@@ -213,7 +220,7 @@ export function CirculationPage() {
                 required
                 value={issueCopyId}
                 onChange={(e) => setIssueCopyId(e.target.value)}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
               />
             </div>
             <div>
@@ -224,7 +231,7 @@ export function CirculationPage() {
                 type="date"
                 value={issueDueDate}
                 onChange={(e) => setIssueDueDate(e.target.value)}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
               />
             </div>
             <div>
@@ -235,7 +242,7 @@ export function CirculationPage() {
                 type="text"
                 value={issueNotes}
                 onChange={(e) => setIssueNotes(e.target.value)}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
               />
             </div>
           </div>
@@ -243,7 +250,7 @@ export function CirculationPage() {
             <button
               type="submit"
               disabled={issueMutation.isPending}
-              className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:opacity-50"
+              className="app-button-primary disabled:opacity-50"
             >
               {issueMutation.isPending
                 ? t("catalogLoading")
@@ -252,7 +259,7 @@ export function CirculationPage() {
             <button
               type="button"
               onClick={() => setShowIssueForm(false)}
-              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="app-button-secondary"
             >
               {t("circulationIssueCancel")}
             </button>
@@ -261,14 +268,14 @@ export function CirculationPage() {
       )}
 
       {loans.length === 0 ? (
-        <div className="rounded-xl border border-blue-100 bg-white p-8 text-center">
+        <div className="app-empty-state">
           <p className="text-sm text-slate-600">{t("circulationEmpty")}</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-blue-100 bg-white shadow-sm">
+        <div className="app-table-shell">
           <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-blue-100 bg-blue-50">
+            <thead className="app-table-head">
+              <tr className="border-b border-blue-100/70">
                 <th className="px-4 py-3 text-left font-medium text-slate-700">
                   {t("circulationColumnUser")}
                 </th>
@@ -312,9 +319,9 @@ export function CirculationPage() {
                 return (
                   <tr
                     key={loan.id}
-                    className={`border-b border-slate-100 hover:bg-slate-50 ${isOverdue ? "bg-red-50/30" : ""}`}
+                    className={`border-b border-slate-100/90 hover:bg-slate-50/70 ${isOverdue ? "bg-red-50/30" : ""}`}
                   >
-                    <td className="px-4 py-3 text-slate-900">
+                    <td className="px-4 py-4 text-slate-900">
                       <div className="font-medium">
                         {loan.user?.fullName || "-"}
                       </div>
@@ -322,17 +329,17 @@ export function CirculationPage() {
                         {loan.user?.universityId || loan.userId}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-900">
+                    <td className="px-4 py-4 text-slate-900">
                       <div className="font-medium">
                         {loan.copy?.book?.title || "-"}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-4 text-slate-600">
                       {loan.copy?.inventoryNumber || loan.copyId}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-4">
                       <span
-                        className={`inline-block rounded-md border px-2 py-1 text-xs font-medium ${
+                        className={`inline-block rounded-full border px-3 py-1 text-xs font-medium ${
                           isOverdue
                             ? STATUS_COLORS.OVERDUE.badge
                             : statusConfig.badge
@@ -345,19 +352,19 @@ export function CirculationPage() {
                         )}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{loanedDate}</td>
+                    <td className="px-4 py-4 text-slate-600">{loanedDate}</td>
                     <td
-                      className={`px-4 py-3 ${isOverdue ? "font-medium text-red-700" : "text-slate-600"}`}
+                      className={`px-4 py-4 ${isOverdue ? "font-medium text-red-700" : "text-slate-600"}`}
                     >
                       {dueDate}
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{returnedDate}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-4 text-slate-600">{returnedDate}</td>
+                    <td className="px-4 py-4">
                       {canReturn ? (
                         <button
                           onClick={() => handleReturn(loan.id)}
                           disabled={returnMutation.isPending}
-                          className="inline-flex rounded-md bg-green-100 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-200 disabled:opacity-50"
+                          className="inline-flex rounded-xl bg-green-100 px-3 py-2 text-xs font-medium text-green-700 transition hover:bg-green-200 disabled:opacity-50"
                         >
                           {t("circulationReturnAction")}
                         </button>
@@ -376,11 +383,11 @@ export function CirculationPage() {
       )}
 
       {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
+        <div className="app-panel flex justify-center gap-2 px-4 py-3">
           <button
             onClick={() => setPage(Math.max(1, page - 1))}
             disabled={page === 1}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="app-button-secondary disabled:opacity-50"
           >
             {t("catalogPrevious")}
           </button>
@@ -390,7 +397,7 @@ export function CirculationPage() {
           <button
             onClick={() => setPage(Math.min(totalPages, page + 1))}
             disabled={page === totalPages}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="app-button-secondary disabled:opacity-50"
           >
             {t("catalogNext")}
           </button>

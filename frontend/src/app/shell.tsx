@@ -83,10 +83,7 @@ export function AppShell() {
                 {t("shellCurrentRole")}: {t(roleLabelKey[authStore.role])}
               </span>
               <LanguageSwitcher />
-              <NavLink
-                to="/login"
-                className="app-button-primary"
-              >
+              <NavLink to="/login" className="app-button-primary">
                 {t("login")}
               </NavLink>
             </div>

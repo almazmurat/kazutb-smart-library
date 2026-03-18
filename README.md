@@ -94,6 +94,7 @@ npm run dev
 - [Module Map](docs/architecture/module-map.md)
 - [Catalog Core Domain Decisions](docs/architecture/catalog-core-domain.md)
 - [Public Catalog UI Alignment](docs/architecture/public-catalog-ui.md)
+- [Premium Institutional Design System Polish](docs/architecture/design-system-polish.md)
 - [Data Flow & Migration Concept](docs/architecture/data-flow.md)
 - [Multilingual and Segmentation Baseline](docs/architecture/multilingual-and-segmentation.md)
 - [Frontend i18n Guidelines](docs/architecture/frontend-i18n-guidelines.md)
@@ -101,6 +102,7 @@ npm run dev
 - [Roles & Access Control](docs/roles-and-access.md)
 - [Implementation Roadmap](docs/roadmap.md)
 - [MVP Demo Preparation](docs/presentation/mvp-demo-preparation.md)
+- [UI Design System Demo Notes](docs/presentation/ui-design-system-demo-notes.md)
 - [Migration Pipeline](docs/migration/concept.md)
 - [Git Workflow Policy](docs/development/git-workflow.md)
 
@@ -114,3 +116,4 @@ Self-registration is not supported.
 ## License
 
 See [LICENSE](LICENSE).
+

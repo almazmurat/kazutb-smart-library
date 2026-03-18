@@ -17,11 +17,11 @@ function SummaryCard({
 }) {
   return (
     <div
-      className={`rounded-lg border p-4 ${alert ? "border-red-300 bg-red-50" : "border-slate-200 bg-white"}`}
+      className={`app-panel p-4 ${alert ? "border-red-300 bg-red-50/90" : ""}`}
     >
-      <div className="text-sm text-slate-500">{label}</div>
+      <div className="app-kicker">{label}</div>
       <div
-        className={`mt-1 text-2xl font-bold ${alert ? "text-red-700" : "text-slate-900"}`}
+        className={`mt-3 text-3xl font-semibold tracking-tight ${alert ? "text-red-700" : "text-slate-900"}`}
       >
         {value}
       </div>
@@ -37,7 +37,7 @@ export function AnalyticsPage() {
 
   if (dashboard.isLoading || popular.isLoading || activity.isLoading) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="app-empty-state">
         <p className="text-slate-500">{t("dashboardLoading")}</p>
       </section>
     );
@@ -45,7 +45,7 @@ export function AnalyticsPage() {
 
   if (dashboard.isError || popular.isError || activity.isError) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="app-empty-state">
         <p className="text-red-600">{t("dashboardError")}</p>
       </section>
     );
@@ -69,7 +69,6 @@ export function AnalyticsPage() {
         ]}
       />
 
-      {/* Summary cards */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         <SummaryCard label={t("dashboardTotalBooks")} value={d.totalBooks} />
         <SummaryCard label={t("dashboardTotalCopies")} value={d.totalCopies} />
@@ -86,76 +85,84 @@ export function AnalyticsPage() {
         <SummaryCard label={t("dashboardTotalUsers")} value={d.totalUsers} />
       </div>
 
-      {/* Activity table */}
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">
-          {t("dashboardActivityTitle")}
-        </h2>
-        <div className="overflow-x-auto">
+      <section className="app-panel-strong p-6">
+        <div className="mb-4 flex items-end justify-between gap-4">
+          <div>
+            <p className="app-kicker">{t("dashboardActivityTitle")}</p>
+            <h2 className="mt-2 app-section-heading">
+              {t("dashboardActivityTitle")}
+            </h2>
+          </div>
+          <span className="app-chip-muted">
+            {t("overviewStatusOperational")}
+          </span>
+        </div>
+        <div className="app-table-shell">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
+            <thead className="app-table-head border-b border-slate-200 text-xs uppercase text-slate-500">
               <tr>
-                <th className="px-3 py-2" />
-                <th className="px-3 py-2">{t("dashboardActivityToday")}</th>
-                <th className="px-3 py-2">{t("dashboardActivityLast7")}</th>
-                <th className="px-3 py-2">{t("dashboardActivityLast30")}</th>
+                <th className="px-3 py-3" />
+                <th className="px-3 py-3">{t("dashboardActivityToday")}</th>
+                <th className="px-3 py-3">{t("dashboardActivityLast7")}</th>
+                <th className="px-3 py-3">{t("dashboardActivityLast30")}</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-slate-100">
-                <td className="px-3 py-2 font-medium text-slate-700">
+                <td className="px-3 py-3 font-medium text-slate-700">
                   {t("dashboardActivityReservations")}
                 </td>
-                <td className="px-3 py-2">{a.reservations.today}</td>
-                <td className="px-3 py-2">{a.reservations.last7days}</td>
-                <td className="px-3 py-2">{a.reservations.last30days}</td>
+                <td className="px-3 py-3">{a.reservations.today}</td>
+                <td className="px-3 py-3">{a.reservations.last7days}</td>
+                <td className="px-3 py-3">{a.reservations.last30days}</td>
               </tr>
               <tr className="border-b border-slate-100">
-                <td className="px-3 py-2 font-medium text-slate-700">
+                <td className="px-3 py-3 font-medium text-slate-700">
                   {t("dashboardActivityLoans")}
                 </td>
-                <td className="px-3 py-2">{a.loans.today}</td>
-                <td className="px-3 py-2">{a.loans.last7days}</td>
-                <td className="px-3 py-2">{a.loans.last30days}</td>
+                <td className="px-3 py-3">{a.loans.today}</td>
+                <td className="px-3 py-3">{a.loans.last7days}</td>
+                <td className="px-3 py-3">{a.loans.last30days}</td>
               </tr>
               <tr>
-                <td className="px-3 py-2 font-medium text-slate-700">
+                <td className="px-3 py-3 font-medium text-slate-700">
                   {t("dashboardActivityReturns")}
                 </td>
-                <td className="px-3 py-2">{a.returns.today}</td>
-                <td className="px-3 py-2">{a.returns.last7days}</td>
-                <td className="px-3 py-2">{a.returns.last30days}</td>
+                <td className="px-3 py-3">{a.returns.today}</td>
+                <td className="px-3 py-3">{a.returns.last7days}</td>
+                <td className="px-3 py-3">{a.returns.last30days}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      {/* Popular books */}
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-1 text-lg font-semibold text-slate-900">
+      <section className="app-panel-strong p-6">
+        <h2 className="mb-1 app-section-heading">
           {t("dashboardPopularBooks")}
         </h2>
-        <p className="mb-4 text-xs text-slate-400">
+        <p className="mb-4 text-xs text-slate-500">
           {t("dashboardPopularBooksRanking")}: {p.rankingLogic}
         </p>
         {p.data.length === 0 ? (
-          <p className="text-slate-500">{t("dashboardPopularBooksEmpty")}</p>
+          <div className="app-empty-state py-8">
+            <p className="text-slate-500">{t("dashboardPopularBooksEmpty")}</p>
+          </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="app-table-shell">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
+              <thead className="app-table-head border-b border-slate-200 text-xs uppercase text-slate-500">
                 <tr>
-                  <th className="px-3 py-2">#</th>
-                  <th className="px-3 py-2">{t("dashboardColumnTitle")}</th>
-                  <th className="px-3 py-2">{t("dashboardColumnAuthors")}</th>
-                  <th className="px-3 py-2 text-right">
+                  <th className="px-3 py-3">#</th>
+                  <th className="px-3 py-3">{t("dashboardColumnTitle")}</th>
+                  <th className="px-3 py-3">{t("dashboardColumnAuthors")}</th>
+                  <th className="px-3 py-3 text-right">
                     {t("dashboardColumnLoans")}
                   </th>
-                  <th className="px-3 py-2 text-right">
+                  <th className="px-3 py-3 text-right">
                     {t("dashboardColumnReservations")}
                   </th>
-                  <th className="px-3 py-2 text-right">
+                  <th className="px-3 py-3 text-right">
                     {t("dashboardColumnScore")}
                   </th>
                 </tr>
@@ -166,18 +173,18 @@ export function AnalyticsPage() {
                     key={book.id}
                     className="border-b border-slate-100 last:border-0"
                   >
-                    <td className="px-3 py-2 text-slate-400">{idx + 1}</td>
-                    <td className="px-3 py-2 font-medium text-slate-900">
+                    <td className="px-3 py-3 text-slate-400">{idx + 1}</td>
+                    <td className="px-3 py-3 font-medium text-slate-900">
                       {book.title}
                     </td>
-                    <td className="px-3 py-2 text-slate-600">
+                    <td className="px-3 py-3 text-slate-600">
                       {book.authors.join(", ") || "—"}
                     </td>
-                    <td className="px-3 py-2 text-right">{book.loanCount}</td>
-                    <td className="px-3 py-2 text-right">
+                    <td className="px-3 py-3 text-right">{book.loanCount}</td>
+                    <td className="px-3 py-3 text-right">
                       {book.reservationCount}
                     </td>
-                    <td className="px-3 py-2 text-right font-semibold text-primary-700">
+                    <td className="px-3 py-3 text-right font-semibold text-primary-700">
                       {book.score}
                     </td>
                   </tr>

@@ -12,7 +12,23 @@ export function CabinetPage() {
         eyebrow={t("shellReaderSection")}
         title={t("cabinetPageTitle")}
         description={t("cabinetPageDescription")}
-        badges={[t("shellSecureLabel")]}
+        badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
+        actions={
+          <div className="grid gap-3 text-sm text-slate-600 sm:grid-cols-2">
+            <div className="app-subpanel p-4">
+              <p className="app-kicker">{t("cabinetReservationsTitle")}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {t("cabinetReservationsDescription")}
+              </p>
+            </div>
+            <div className="app-subpanel p-4">
+              <p className="app-kicker">{t("cabinetLoansTitle")}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {t("cabinetLoansDescription")}
+              </p>
+            </div>
+          </div>
+        }
       />
       <CabinetReservationsPage />
       <CabinetLoansPage />

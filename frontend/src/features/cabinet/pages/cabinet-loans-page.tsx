@@ -33,7 +33,7 @@ export function CabinetLoansPage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-blue-100 bg-white p-8 text-center text-sm text-slate-600">
+      <div className="app-empty-state text-sm text-slate-600">
         {t("catalogLoading")}
       </div>
     );
@@ -41,7 +41,7 @@ export function CabinetLoansPage() {
 
   if (error) {
     return (
-      <div className="rounded-xl border border-red-100 bg-white p-8 text-center text-sm text-red-700">
+      <div className="app-empty-state text-sm text-red-700">
         {t("cabinetLoansError")}
       </div>
     );
@@ -51,7 +51,7 @@ export function CabinetLoansPage() {
 
   if (loans.length === 0) {
     return (
-      <div className="rounded-xl border border-blue-100 bg-white p-8 text-center">
+      <div className="app-empty-state">
         <p className="text-sm text-slate-600">{t("cabinetLoansEmpty")}</p>
       </div>
     );
@@ -60,20 +60,29 @@ export function CabinetLoansPage() {
   const totalPages = data?.meta.totalPages || 1;
 
   return (
-    <section className="space-y-4">
-      <div>
-        <h2 className="text-2xl font-semibold text-slate-900">
-          {t("cabinetLoansTitle")}
-        </h2>
-        <p className="mt-1 text-sm text-slate-600">
-          {t("cabinetLoansDescription")}
-        </p>
+    <section className="space-y-5">
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="app-kicker">{t("shellReaderSection")}</p>
+          <h2 className="mt-2 app-section-heading text-2xl">
+            {t("cabinetLoansTitle")}
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            {t("cabinetLoansDescription")}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="app-chip">
+            {loans.length} {t("catalogResults")}
+          </span>
+          <span className="app-chip-muted">{t("shellSecureLabel")}</span>
+        </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-blue-100 bg-white shadow-sm">
+      <div className="app-table-shell">
         <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-blue-100 bg-blue-50">
+          <thead className="app-table-head">
+            <tr className="border-b border-blue-100/70">
               <th className="px-4 py-3 text-left font-medium text-slate-700">
                 {t("circulationColumnBook")}
               </th>
@@ -104,30 +113,30 @@ export function CabinetLoansPage() {
               return (
                 <tr
                   key={loan.id}
-                  className={`border-b border-slate-100 hover:bg-slate-50 ${isOverdue ? "bg-red-50/30" : ""}`}
+                  className={`border-b border-slate-100/90 hover:bg-slate-50/70 ${isOverdue ? "bg-red-50/30" : ""}`}
                 >
-                  <td className="px-4 py-3 text-slate-900 font-medium">
+                  <td className="px-4 py-4 text-slate-900 font-medium">
                     {loan.copy?.book?.title || "-"}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td className="px-4 py-4 text-slate-600">
                     {loan.copy?.inventoryNumber || loan.copyId}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-4">
                     <span
-                      className={`inline-block rounded-md border px-2 py-1 text-xs font-medium ${statusConfig.badge}`}
+                      className={`inline-block rounded-full border px-3 py-1 text-xs font-medium ${statusConfig.badge}`}
                     >
                       {t(statusConfig.label)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td className="px-4 py-4 text-slate-600">
                     {new Date(loan.loanedAt).toLocaleDateString()}
                   </td>
                   <td
-                    className={`px-4 py-3 ${isOverdue ? "font-medium text-red-700" : "text-slate-600"}`}
+                    className={`px-4 py-4 ${isOverdue ? "font-medium text-red-700" : "text-slate-600"}`}
                   >
                     {new Date(loan.dueDate).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td className="px-4 py-4 text-slate-600">
                     {loan.returnedAt
                       ? new Date(loan.returnedAt).toLocaleDateString()
                       : "-"}
@@ -140,11 +149,11 @@ export function CabinetLoansPage() {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
+        <div className="app-panel flex justify-center gap-2 px-4 py-3">
           <button
             onClick={() => setPage(Math.max(1, page - 1))}
             disabled={page === 1}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="app-button-secondary disabled:opacity-50"
           >
             {t("catalogPrevious")}
           </button>
@@ -154,7 +163,7 @@ export function CabinetLoansPage() {
           <button
             onClick={() => setPage(Math.min(totalPages, page + 1))}
             disabled={page === totalPages}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="app-button-secondary disabled:opacity-50"
           >
             {t("catalogNext")}
           </button>
