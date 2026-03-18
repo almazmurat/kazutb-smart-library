@@ -34,12 +34,23 @@ export function CatalogPage() {
   const currentPage = query.page || 1;
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-6">
       <PageIntro
         eyebrow={t("catalogInstitutionalLabel")}
         title={t("catalogPublicTitle")}
         description={t("catalogPublicDescription")}
         badges={[t("shellPublicLabel"), t("catalogFeatureInstitutional")]}
+        actions={
+          <div className="flex min-w-[220px] flex-col gap-2 px-3 py-2 text-left">
+            <span className="app-kicker">Catalog Snapshot</span>
+            <span className="text-3xl font-semibold tracking-tight text-slate-950">
+              {booksMeta?.total ?? 0}
+            </span>
+            <span className="text-sm text-slate-500">
+              {t("catalogResults")}
+            </span>
+          </div>
+        }
       />
 
       <CatalogFilters
@@ -60,13 +71,13 @@ export function CatalogPage() {
       />
 
       {booksQuery.isLoading ? (
-        <div className="rounded-xl border border-blue-100 bg-white p-8 text-center text-sm text-slate-600">
+        <div className="app-empty-state text-sm text-slate-600">
           {t("catalogLoading")}
         </div>
       ) : null}
 
       {booksQuery.isError ? (
-        <div className="rounded-xl border border-red-200 bg-white p-8 text-center text-sm text-red-700">
+        <div className="app-empty-state border-red-200 text-sm text-red-700">
           {t("catalogError")}
         </div>
       ) : null}
@@ -74,11 +85,11 @@ export function CatalogPage() {
       {!booksQuery.isLoading && !booksQuery.isError ? (
         <>
           {booksData.length === 0 ? (
-            <div className="rounded-xl border border-blue-100 bg-white p-8 text-center text-sm text-slate-600">
+            <div className="app-empty-state text-sm text-slate-600">
               {t("catalogEmpty")}
             </div>
           ) : (
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {booksData.map((book) => (
                 <PublicBookCard
                   key={book.id}
@@ -96,14 +107,14 @@ export function CatalogPage() {
             </div>
           )}
 
-          <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
+          <div className="app-panel flex items-center justify-between px-5 py-4">
             <p className="text-sm text-slate-600">
               {t("catalogResults")}: {booksMeta?.total ?? 0}
             </p>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 disabled:opacity-50"
+                className="app-button-secondary px-3 py-1.5 disabled:opacity-50"
                 disabled={currentPage <= 1}
                 onClick={() =>
                   setQuery((prev) => ({
@@ -119,7 +130,7 @@ export function CatalogPage() {
               </span>
               <button
                 type="button"
-                className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 disabled:opacity-50"
+                className="app-button-secondary px-3 py-1.5 disabled:opacity-50"
                 disabled={currentPage >= totalPages}
                 onClick={() =>
                   setQuery((prev) => ({
