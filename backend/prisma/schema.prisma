@@ -95,6 +95,7 @@ model LibraryBranch {
   books         Book[]
   copies        BookCopy[]
   invoices      Invoice[]
+  loans         Loan[]
   reservations  Reservation[]
 
   @@index([scopeId])
@@ -311,23 +312,27 @@ model Reservation {
 }
 
 model Loan {
-  id        String     @id @default(uuid()) @db.Uuid
-  issuedBy  String?
-  loanedAt  DateTime   @default(now())
-  dueDate   DateTime
+  id         String     @id @default(uuid()) @db.Uuid
+  issuedBy   String?    @db.Uuid
+  loanedAt   DateTime   @default(now())
+  dueDate    DateTime
   returnedAt DateTime?
-  status    LoanStatus @default(ACTIVE)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  notes      String?
+  status     LoanStatus @default(ACTIVE)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
-  userId String @db.Uuid
-  copyId String @db.Uuid
+  userId          String @db.Uuid
+  copyId          String @db.Uuid
+  libraryBranchId String @db.Uuid
 
-  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  copy BookCopy @relation(fields: [copyId], references: [id], onDelete: Cascade)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  copy          BookCopy      @relation(fields: [copyId], references: [id], onDelete: Cascade)
+  libraryBranch LibraryBranch @relation(fields: [libraryBranchId], references: [id], onDelete: Restrict)
 
   @@index([userId])
   @@index([copyId])
+  @@index([libraryBranchId])
   @@index([status])
 }
 
