@@ -62,19 +62,13 @@ export class CirculationController {
 
   @Roles(UserRole.LIBRARIAN, UserRole.ADMIN)
   @Get("loans")
-  list(
-    @Query() query: ListLoansQueryDto,
-    @CurrentUser() actor: RequestUser,
-  ) {
+  list(@Query() query: ListLoansQueryDto, @CurrentUser() actor: RequestUser) {
     return this.service.list(actor, query);
   }
 
   @Roles(UserRole.STUDENT, UserRole.TEACHER, UserRole.LIBRARIAN, UserRole.ADMIN)
   @Get("my")
-  listMy(
-    @Query() query: ListLoansQueryDto,
-    @CurrentUser() actor: RequestUser,
-  ) {
+  listMy(@Query() query: ListLoansQueryDto, @CurrentUser() actor: RequestUser) {
     return this.service.getMyLoans(actor, query);
   }
 

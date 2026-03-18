@@ -4,12 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import {
-  CopyStatus,
-  LoanStatus,
-  Prisma,
-  UserRole,
-} from "@prisma/client";
+import { CopyStatus, LoanStatus, Prisma, UserRole } from "@prisma/client";
 
 import { RequestUser } from "../../common/types/request-user.interface";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -18,10 +13,7 @@ import { AuditService } from "../audit/audit.service";
 import { CreateLoanDto } from "./dto/create-loan.dto";
 import { ReturnLoanDto } from "./dto/return-loan.dto";
 import { ListLoansQueryDto } from "./dto/list-loans.query.dto";
-import {
-  LoanResponseDto,
-  ListLoansResponseDto,
-} from "./dto/loan-response.dto";
+import { LoanResponseDto, ListLoansResponseDto } from "./dto/loan-response.dto";
 
 const DEFAULT_LOAN_DAYS = 14;
 
@@ -299,10 +291,7 @@ export class CirculationService {
 
       where.libraryBranchId = librarianUser.libraryBranchId;
 
-      if (
-        query.branchId &&
-        query.branchId !== librarianUser.libraryBranchId
-      ) {
+      if (query.branchId && query.branchId !== librarianUser.libraryBranchId) {
         throw new ForbiddenException("Cannot view loans from other branches");
       }
     } else if (query.branchId) {
@@ -351,10 +340,7 @@ export class CirculationService {
     };
   }
 
-  async getById(
-    loanId: string,
-    actor: RequestUser,
-  ): Promise<LoanResponseDto> {
+  async getById(loanId: string, actor: RequestUser): Promise<LoanResponseDto> {
     const loan = await this.prisma.loan.findUnique({
       where: { id: loanId },
       include: {
@@ -392,9 +378,7 @@ export class CirculationService {
       });
 
       if (loan.libraryBranchId !== librarianUser?.libraryBranchId) {
-        throw new ForbiddenException(
-          "Cannot access loans outside your branch",
-        );
+        throw new ForbiddenException("Cannot access loans outside your branch");
       }
 
       return this.toResponseDto(loan);
