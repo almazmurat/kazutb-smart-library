@@ -62,30 +62,30 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-4">
+      <header className="sticky top-0 z-20 border-b border-white/70 bg-[rgba(247,250,255,0.9)] backdrop-blur-xl">
+        <div className="app-container py-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <Link to="/overview" className="flex items-start gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-100 text-lg font-bold text-primary-700">
+            <Link to="/overview" className="flex items-start gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(160deg,#0b3d91,#2d64bc)] text-lg font-bold text-white shadow-[0_14px_30px_rgba(29,79,163,0.24)]">
                 K
               </div>
-              <div>
-                <div className="text-lg font-semibold text-primary-800">
+              <div className="max-w-xl">
+                <div className="text-lg font-semibold tracking-tight text-primary-900">
                   {t("appTitle")}
                 </div>
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm leading-6 text-slate-500">
                   {t("shellSubtitle")}
                 </p>
               </div>
             </Link>
             <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-              <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700">
+              <span className="app-chip-muted">
                 {t("shellCurrentRole")}: {t(roleLabelKey[authStore.role])}
               </span>
               <LanguageSwitcher />
               <NavLink
                 to="/login"
-                className="rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white"
+                className="app-button-primary"
               >
                 {t("login")}
               </NavLink>
@@ -95,13 +95,13 @@ export function AppShell() {
             {navSections.map((section) => (
               <div
                 key={section.title}
-                className="rounded-xl border border-blue-100 bg-[rgba(248,251,255,0.92)] p-3"
+                className="rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,249,255,0.9))] p-4 shadow-[0_14px_30px_rgba(15,23,42,0.06)]"
               >
                 <div className="mb-2 flex items-center justify-between gap-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                     {section.title}
                   </p>
-                  <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-medium text-slate-600">
+                  <span className="app-chip-muted px-2.5 py-1 text-[11px]">
                     {section.badge}
                   </span>
                 </div>
@@ -111,9 +111,9 @@ export function AppShell() {
                       key={item.to}
                       to={item.to}
                       className={({ isActive }) =>
-                        `rounded-md px-2.5 py-1.5 ${
+                        `rounded-xl px-3 py-2 transition ${
                           isActive
-                            ? "bg-primary-100 text-primary-700"
+                            ? "bg-[linear-gradient(135deg,rgba(232,240,255,0.96),rgba(245,248,255,0.98))] text-primary-700 shadow-[inset_0_0_0_1px_rgba(29,79,163,0.12)]"
                             : "text-slate-600 hover:bg-white hover:text-slate-900"
                         }`
                       }
@@ -127,7 +127,7 @@ export function AppShell() {
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-7xl px-4 py-8">
+      <main className="app-container py-8 md:py-10">
         <Outlet />
       </main>
     </div>
