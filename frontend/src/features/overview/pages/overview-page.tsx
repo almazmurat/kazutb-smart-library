@@ -54,6 +54,12 @@ export function OverviewPage() {
       description: t("overviewModuleCirculationDescription"),
       secure: true,
     },
+    {
+      to: "/migration/data-quality",
+      title: t("navDataQualityWorkbench"),
+      description: t("dqWorkbenchDescription"),
+      secure: true,
+    },
   ];
 
   const demoFlows = [
@@ -111,6 +117,11 @@ export function OverviewPage() {
     {
       title: t("navReports"),
       description: t("overviewModuleReportsDescription"),
+      status: t("overviewStatusMvp"),
+    },
+    {
+      title: t("navDataQualityWorkbench"),
+      description: t("dqWorkbenchDescription"),
       status: t("overviewStatusMvp"),
     },
   ];

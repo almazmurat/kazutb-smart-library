@@ -39,6 +39,10 @@ export function AppShell() {
         { to: "/librarian/circulation", label: t("navCirculation") },
         { to: "/analytics", label: t("navAnalytics") },
         { to: "/reports", label: t("navReports") },
+        {
+          to: "/migration/data-quality",
+          label: t("navDataQualityWorkbench"),
+        },
       ],
     },
     {

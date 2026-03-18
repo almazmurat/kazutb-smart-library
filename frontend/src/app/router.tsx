@@ -12,6 +12,7 @@ import { CirculationPage } from "@features/circulation/pages/circulation-page";
 import { AdminPage } from "@features/admin/pages/admin-page";
 import { AnalyticsPage } from "@features/analytics/pages/analytics-page";
 import { ReportsPage } from "../features/reports/pages/reports-page";
+import { DataQualityWorkbenchPage } from "@features/data-quality/pages/data-quality-workbench-page";
 import { ProtectedRoute } from "@shared/auth/protected-route";
 import { AuthorsManagementPage } from "@features/catalog-management/pages/authors-management-page";
 import { CategoriesManagementPage } from "@features/catalog-management/pages/categories-management-page";
@@ -90,6 +91,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute roles={["LIBRARIAN", "ANALYST", "ADMIN"]}>
             <ReportsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/migration/data-quality",
+        element: (
+          <ProtectedRoute roles={["LIBRARIAN", "ANALYST", "ADMIN"]}>
+            <DataQualityWorkbenchPage />
           </ProtectedRoute>
         ),
       },
