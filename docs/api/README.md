@@ -119,6 +119,72 @@ Book copy management endpoints:
 - `GET /api/v1/books/:bookId/copies`
 - `PATCH /api/v1/books/:bookId/copies/:copyId`
 
+Reservations endpoints:
+
+- `POST /api/v1/reservations` - create reservation (authenticated users)
+- `GET /api/v1/reservations/my` - list own reservations
+- `GET /api/v1/reservations` - queue listing for librarian/admin
+- `GET /api/v1/reservations/:id` - reservation details with visibility checks
+- `PATCH /api/v1/reservations/:id/cancel` - user self-cancel (allowed statuses only)
+- `PATCH /api/v1/reservations/:id/status` - librarian/admin status update
+
+Reservation ownership rules:
+
+- Guest users cannot create or manage reservations.
+- Users can only view and cancel their own reservations.
+- Librarians are restricted to reservations in their assigned branch.
+- Admin has global visibility and management access.
+
+Circulation endpoints:
+
+- `POST /api/v1/circulation/loans` - issue a new loan (librarian/admin)
+- `PATCH /api/v1/circulation/loans/:id/return` - process return (librarian/admin)
+- `GET /api/v1/circulation/loans` - list loans with filters (librarian/admin)
+- `GET /api/v1/circulation/loans/:id` - loan details (auth, visibility enforced)
+- `GET /api/v1/circulation/my` - current user's own loans (auth)
+
+Circulation query parameters (loan listing):
+
+- `?status=ACTIVE|RETURNED|OVERDUE|LOST` — filter by loan status
+- `?userId=<uuid>` — filter by borrower
+- `?copyId=<uuid>` — filter by copy
+- `?branchId=<uuid>` — filter by library branch
+- `?overdueOnly=true` — show only overdue active loans
+- `?page=<number>&limit=<number>` — pagination
+
+Circulation ownership rules:
+
+- Only librarians and admins can issue and return loans.
+- Librarians are restricted to copies in their assigned branch.
+- Admin has global circulation access across all branches.
+- Students and teachers can only view their own loan history via `/my`.
+- Loan details visibility: admin=all, librarian=own branch, user=own loans only.
+
+Analytics endpoints:
+
+- `GET /api/v1/analytics/dashboard` - KPI summary (librarian/analyst/admin)
+- `GET /api/v1/analytics/popular-books` - ranked book popularity (librarian/analyst/admin)
+- `GET /api/v1/analytics/activity` - recent activity buckets (librarian/analyst/admin)
+
+Analytics query parameters:
+
+- `?limit=<number>` — popular books limit (default: 10)
+
+Reports endpoints:
+
+- `GET /api/v1/reports/overview` - yearly/monthly/branch reporting summary (librarian/analyst/admin)
+
+Reports query parameters:
+
+- `?year=<number>` — target year (default: current year)
+
+Analytics/Reports access rules:
+
+- Librarian: scoped to their assigned branch.
+- Analyst and Admin: global visibility across all branches.
+- Students, teachers, and guests: access denied (HTTP 403).
+- Branch summary in reports is only included for global scope.
+
 ## Search
 
 ```

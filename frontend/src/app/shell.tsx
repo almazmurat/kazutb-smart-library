@@ -1,55 +1,134 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
+import { authStore } from "@shared/auth/auth-store";
 import { LanguageSwitcher } from "@shared/i18n/language-switcher";
 import { useI18n } from "@shared/i18n/use-i18n";
+import type { TranslationKey } from "@shared/i18n/dictionary";
 
 export function AppShell() {
   const { t } = useI18n();
 
-  const navItems = [
-    { to: "/catalog", label: t("navCatalog") },
-    { to: "/search", label: t("navSearch") },
-    { to: "/cabinet", label: t("navCabinet") },
-    { to: "/librarian", label: t("navLibrarian") },
-    { to: "/librarian/catalog/books", label: t("navCatalogBooksMgmt") },
-    { to: "/librarian/catalog/authors", label: t("navCatalogAuthorsMgmt") },
+  const roleLabelKey: Record<string, TranslationKey> = {
+    GUEST: "roleGuest",
+    STUDENT: "roleStudent",
+    TEACHER: "roleTeacher",
+    LIBRARIAN: "roleLibrarian",
+    ADMIN: "roleAdmin",
+    ANALYST: "roleAnalyst",
+  };
+
+  const navSections = [
     {
-      to: "/librarian/catalog/categories",
-      label: t("navCatalogCategoriesMgmt"),
+      title: t("shellPublicSection"),
+      badge: t("shellPublicLabel"),
+      items: [
+        { to: "/overview", label: t("navOverview") },
+        { to: "/catalog", label: t("navCatalog") },
+        { to: "/search", label: t("navSearch") },
+      ],
     },
-    { to: "/librarian/catalog/copies", label: t("navCatalogCopiesMgmt") },
-    { to: "/admin", label: t("navAdmin") },
-    { to: "/analytics", label: t("navAnalytics") },
-    { to: "/reports", label: t("navReports") },
+    {
+      title: t("shellReaderSection"),
+      badge: t("shellSecureLabel"),
+      items: [{ to: "/cabinet", label: t("navCabinet") }],
+    },
+    {
+      title: t("shellOperationsSection"),
+      badge: t("shellSecureLabel"),
+      items: [
+        { to: "/librarian", label: t("navLibrarian") },
+        { to: "/librarian/circulation", label: t("navCirculation") },
+        { to: "/analytics", label: t("navAnalytics") },
+        { to: "/reports", label: t("navReports") },
+        {
+          to: "/migration/data-quality",
+          label: t("navDataQualityWorkbench"),
+        },
+      ],
+    },
+    {
+      title: t("shellAdministrationSection"),
+      badge: t("shellSecureLabel"),
+      items: [
+        { to: "/librarian/catalog/books", label: t("navCatalogBooksMgmt") },
+        {
+          to: "/librarian/catalog/authors",
+          label: t("navCatalogAuthorsMgmt"),
+        },
+        {
+          to: "/librarian/catalog/categories",
+          label: t("navCatalogCategoriesMgmt"),
+        },
+        { to: "/librarian/catalog/copies", label: t("navCatalogCopiesMgmt") },
+        { to: "/admin", label: t("navAdmin") },
+      ],
+    },
   ];
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="font-bold text-primary-700">{t("appTitle")}</div>
-          <nav className="flex gap-3 text-sm">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `rounded-md px-2 py-1 ${isActive ? "bg-primary-100 text-primary-700" : "text-slate-600 hover:text-slate-900"}`
-                }
-              >
-                {item.label}
+      <header className="sticky top-0 z-20 border-b border-white/70 bg-[rgba(247,250,255,0.9)] backdrop-blur-xl">
+        <div className="app-container py-4">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <Link to="/overview" className="flex items-start gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(160deg,#0b3d91,#2d64bc)] text-lg font-bold text-white shadow-[0_14px_30px_rgba(29,79,163,0.24)]">
+                K
+              </div>
+              <div className="max-w-xl">
+                <div className="text-lg font-semibold tracking-tight text-primary-900">
+                  {t("appTitle")}
+                </div>
+                <p className="mt-1 text-sm leading-6 text-slate-500">
+                  {t("shellSubtitle")}
+                </p>
+              </div>
+            </Link>
+            <div className="flex flex-wrap items-center gap-3 lg:justify-end">
+              <span className="app-chip-muted">
+                {t("shellCurrentRole")}: {t(roleLabelKey[authStore.role])}
+              </span>
+              <LanguageSwitcher />
+              <NavLink to="/login" className="app-button-primary">
+                {t("login")}
               </NavLink>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-3 xl:grid-cols-4">
+            {navSections.map((section) => (
+              <div
+                key={section.title}
+                className="rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,249,255,0.9))] p-4 shadow-[0_14px_30px_rgba(15,23,42,0.06)]"
+              >
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    {section.title}
+                  </p>
+                  <span className="app-chip-muted px-2.5 py-1 text-[11px]">
+                    {section.badge}
+                  </span>
+                </div>
+                <nav className="flex flex-wrap gap-2 text-sm">
+                  {section.items.map((item) => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={({ isActive }) =>
+                        `rounded-xl px-3 py-2 transition ${
+                          isActive
+                            ? "bg-[linear-gradient(135deg,rgba(232,240,255,0.96),rgba(245,248,255,0.98))] text-primary-700 shadow-[inset_0_0_0_1px_rgba(29,79,163,0.12)]"
+                            : "text-slate-600 hover:bg-white hover:text-slate-900"
+                        }`
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  ))}
+                </nav>
+              </div>
             ))}
-            <LanguageSwitcher />
-            <NavLink
-              to="/login"
-              className="rounded-md bg-primary-600 px-3 py-1 text-white"
-            >
-              {t("login")}
-            </NavLink>
-          </nav>
+          </div>
         </div>
       </header>
-      <main className="mx-auto max-w-7xl px-4 py-6">
+      <main className="app-container py-8 md:py-10">
         <Outlet />
       </main>
     </div>

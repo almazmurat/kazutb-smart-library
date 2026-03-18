@@ -71,6 +71,13 @@ npx prisma migrate dev
 npm run start:dev
 ```
 
+Minimal variables required for backend startup:
+
+- `DATABASE_URL`
+- `JWT_SECRET`
+
+See `backend/.env.example` for the complete development template.
+
 ### Frontend
 
 ```bash
@@ -87,13 +94,22 @@ npm run dev
 - [Module Map](docs/architecture/module-map.md)
 - [Catalog Core Domain Decisions](docs/architecture/catalog-core-domain.md)
 - [Public Catalog UI Alignment](docs/architecture/public-catalog-ui.md)
+- [Premium Institutional Design System Polish](docs/architecture/design-system-polish.md)
 - [Data Flow & Migration Concept](docs/architecture/data-flow.md)
 - [Multilingual and Segmentation Baseline](docs/architecture/multilingual-and-segmentation.md)
 - [Frontend i18n Guidelines](docs/architecture/frontend-i18n-guidelines.md)
 - [Domain Model](docs/database/domain-model.md)
 - [Roles & Access Control](docs/roles-and-access.md)
 - [Implementation Roadmap](docs/roadmap.md)
+- [MVP Demo Preparation](docs/presentation/mvp-demo-preparation.md)
+- [UI Design System Demo Notes](docs/presentation/ui-design-system-demo-notes.md)
 - [Migration Pipeline](docs/migration/concept.md)
+- [Legacy DB Analysis (Artifact-Based)](docs/migration/legacy-db-analysis.md)
+- [Legacy-to-Target Mapping Draft](docs/migration/legacy-to-target-mapping-draft.md)
+- [Migration Readiness Plan](docs/migration/migration-readiness-plan.md)
+- [Data Quality Taxonomy](docs/migration/data-quality-taxonomy.md)
+- [Librarian Data Quality Workflow](docs/migration/librarian-data-quality-workbench-workflow.md)
+- [Data Quality Workbench Spec](docs/migration/data-quality-workbench-spec.md)
 - [Git Workflow Policy](docs/development/git-workflow.md)
 
 ## User Roles
