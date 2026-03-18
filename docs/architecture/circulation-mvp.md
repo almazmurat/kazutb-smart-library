@@ -19,18 +19,18 @@ The MVP does not include fines/penalties, notifications, advanced overdue automa
 
 The `Loan` model (`backend/prisma/schema.prisma`) tracks individual book copy issuances.
 
-| Field | Type | Description |
-| --- | --- | --- |
-| id | UUID | Primary key |
-| userId | UUID → User | Borrower |
-| copyId | UUID → BookCopy | Physical copy issued |
-| libraryBranchId | UUID → LibraryBranch | Branch where copy belongs |
-| issuedBy | UUID | Librarian/admin who issued the loan |
-| loanedAt | DateTime | When the loan was created |
-| dueDate | DateTime | Expected return date |
-| returnedAt | DateTime? | Actual return timestamp |
-| notes | String? | Librarian notes |
-| status | LoanStatus | Current loan state |
+| Field           | Type                 | Description                         |
+| --------------- | -------------------- | ----------------------------------- |
+| id              | UUID                 | Primary key                         |
+| userId          | UUID → User          | Borrower                            |
+| copyId          | UUID → BookCopy      | Physical copy issued                |
+| libraryBranchId | UUID → LibraryBranch | Branch where copy belongs           |
+| issuedBy        | UUID                 | Librarian/admin who issued the loan |
+| loanedAt        | DateTime             | When the loan was created           |
+| dueDate         | DateTime             | Expected return date                |
+| returnedAt      | DateTime?            | Actual return timestamp             |
+| notes           | String?              | Librarian notes                     |
+| status          | LoanStatus           | Current loan state                  |
 
 ## Loan Status Lifecycle
 
@@ -74,13 +74,13 @@ In this MVP:
 
 ## Role Behavior
 
-| Role | Issue Loan | Return Loan | View All Loans | View Own Loans |
-| --- | --- | --- | --- | --- |
-| GUEST | No | No | No | No |
-| STUDENT | No | No | No | Yes |
-| TEACHER | No | No | No | Yes |
-| LIBRARIAN | Yes (own branch) | Yes (own branch) | Yes (own branch) | Yes |
-| ADMIN | Yes (all branches) | Yes (all branches) | Yes (all branches) | Yes |
+| Role      | Issue Loan         | Return Loan        | View All Loans     | View Own Loans |
+| --------- | ------------------ | ------------------ | ------------------ | -------------- |
+| GUEST     | No                 | No                 | No                 | No             |
+| STUDENT   | No                 | No                 | No                 | Yes            |
+| TEACHER   | No                 | No                 | No                 | Yes            |
+| LIBRARIAN | Yes (own branch)   | Yes (own branch)   | Yes (own branch)   | Yes            |
+| ADMIN     | Yes (all branches) | Yes (all branches) | Yes (all branches) | Yes            |
 
 ## Branch and Scope Ownership
 
@@ -94,23 +94,23 @@ Ownership is enforced at service level:
 
 ## API Endpoints
 
-| Method | Path | Roles | Description |
-| --- | --- | --- | --- |
-| POST | /api/v1/circulation/loans | LIBRARIAN, ADMIN | Issue a new loan |
-| PATCH | /api/v1/circulation/loans/:id/return | LIBRARIAN, ADMIN | Process return |
-| GET | /api/v1/circulation/loans | LIBRARIAN, ADMIN | List loans (filterable) |
-| GET | /api/v1/circulation/loans/:id | AUTH | Get single loan details |
-| GET | /api/v1/circulation/my | AUTH | User's own loans |
+| Method | Path                                 | Roles            | Description             |
+| ------ | ------------------------------------ | ---------------- | ----------------------- |
+| POST   | /api/v1/circulation/loans            | LIBRARIAN, ADMIN | Issue a new loan        |
+| PATCH  | /api/v1/circulation/loans/:id/return | LIBRARIAN, ADMIN | Process return          |
+| GET    | /api/v1/circulation/loans            | LIBRARIAN, ADMIN | List loans (filterable) |
+| GET    | /api/v1/circulation/loans/:id        | AUTH             | Get single loan details |
+| GET    | /api/v1/circulation/my               | AUTH             | User's own loans        |
 
 List filters: status, userId, copyId, branchId, overdueOnly, page, limit.
 
 ## Frontend Routes
 
-| Path | Component | Access |
-| --- | --- | --- |
-| /librarian/circulation | CirculationPage | LIBRARIAN, ADMIN |
-| /cabinet | CabinetPage (includes loans section) | Authenticated |
-| /cabinet/reservations | CabinetPage | Authenticated |
+| Path                   | Component                            | Access           |
+| ---------------------- | ------------------------------------ | ---------------- |
+| /librarian/circulation | CirculationPage                      | LIBRARIAN, ADMIN |
+| /cabinet               | CabinetPage (includes loans section) | Authenticated    |
+| /cabinet/reservations  | CabinetPage                          | Authenticated    |
 
 ## Audit Events
 

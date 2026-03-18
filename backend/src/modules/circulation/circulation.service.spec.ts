@@ -201,7 +201,11 @@ describe("CirculationService", () => {
 
     prisma.loan.findUnique.mockResolvedValue({
       ...sampleLoan,
-      copy: { id: "copy-1", status: CopyStatus.LOANED, libraryBranchId: "branch-1" },
+      copy: {
+        id: "copy-1",
+        status: CopyStatus.LOANED,
+        libraryBranchId: "branch-1",
+      },
     });
     prisma.user.findUnique.mockResolvedValueOnce({
       libraryBranchId: "branch-1",
@@ -232,7 +236,11 @@ describe("CirculationService", () => {
     prisma.loan.findUnique.mockResolvedValue({
       ...sampleLoan,
       status: LoanStatus.OVERDUE,
-      copy: { id: "copy-1", status: CopyStatus.LOANED, libraryBranchId: "branch-1" },
+      copy: {
+        id: "copy-1",
+        status: CopyStatus.LOANED,
+        libraryBranchId: "branch-1",
+      },
     });
     prisma.user.findUnique.mockResolvedValueOnce({
       libraryBranchId: "branch-1",
@@ -251,7 +259,11 @@ describe("CirculationService", () => {
     prisma.loan.findUnique.mockResolvedValue({
       ...sampleLoan,
       status: LoanStatus.RETURNED,
-      copy: { id: "copy-1", status: CopyStatus.AVAILABLE, libraryBranchId: "branch-1" },
+      copy: {
+        id: "copy-1",
+        status: CopyStatus.AVAILABLE,
+        libraryBranchId: "branch-1",
+      },
     });
     prisma.user.findUnique.mockResolvedValueOnce({
       libraryBranchId: "branch-1",
@@ -268,7 +280,11 @@ describe("CirculationService", () => {
     prisma.loan.findUnique.mockResolvedValue({
       ...sampleLoan,
       libraryBranchId: "branch-2",
-      copy: { id: "copy-1", status: CopyStatus.LOANED, libraryBranchId: "branch-2" },
+      copy: {
+        id: "copy-1",
+        status: CopyStatus.LOANED,
+        libraryBranchId: "branch-2",
+      },
     });
     prisma.user.findUnique.mockResolvedValueOnce({
       libraryBranchId: "branch-1",
