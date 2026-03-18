@@ -236,6 +236,11 @@ export type TranslationDict = {
   dqWorkbenchAuditNoteTitle: string;
   dqWorkbenchAuditNoteDescription: string;
   dqWorkbenchEmpty: string;
+  dqWorkbenchLoading: string;
+  dqWorkbenchError: string;
+  dqWorkbenchSelectIssue: string;
+  dqIssueFieldLabel: string;
+  dqIssueRuleLabel: string;
   dqFilterAll: string;
   dqStageRaw: string;
   dqStageClean: string;

@@ -259,6 +259,13 @@ export const kk = {
   dqWorkbenchAuditNoteDescription:
     "Әр шешімде тексеруші, уақыт белгісі және негіздеме сақталуы тиіс.",
   dqWorkbenchEmpty: "Таңдалған сүзгілерге сәйкес мәселе табылмады.",
+  dqWorkbenchLoading: "Дерек сапасы мәселелері жүктелуде...",
+  dqWorkbenchError:
+    "Сапа деректерін жүктеу мүмкін болмады. Қайталап көріңіз.",
+  dqWorkbenchSelectIssue:
+    "Толық мәліметті көру үшін кезектен мәселені таңдаңыз.",
+  dqIssueFieldLabel: "Өріс",
+  dqIssueRuleLabel: "Ереже",
   dqFilterAll: "Барлығы",
   dqStageRaw: "Raw",
   dqStageClean: "Clean",

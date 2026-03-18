@@ -1,86 +1,43 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { PageIntro } from "@shared/ui/page-intro";
 import { useI18n } from "@shared/i18n/use-i18n";
 
 import type {
-  DataQualityIssue,
   DataQualityIssueClass,
-  DataQualitySeverity,
+  DataQualityFilters,
   DataQualityIssueStatus,
+  DataQualitySeverity,
   DataQualityStage,
 } from "../types";
-
-const demoIssues: DataQualityIssue[] = [
-  {
-    id: "DQ-2026-0001",
-    batchId: "2026-03-batch-001",
-    stage: "clean",
-    severity: "CRITICAL",
-    issueClass: "REFERENTIAL",
-    sourceTable: "BOOKSTATES",
-    sourceRecordKey: "IDBS:918201",
-    branch: "TECHNOLOGICAL_LIBRARY",
-    fieldName: "INV_ID",
-    status: "new",
-    autoFixable: false,
-    detectedAt: "2026-03-18",
-    summary: "Circulation state references missing inventory item.",
-  },
-  {
-    id: "DQ-2026-0002",
-    batchId: "2026-03-batch-001",
-    stage: "normalized",
-    severity: "HIGH",
-    issueClass: "SEMANTIC",
-    sourceTable: "BOOKSTATES",
-    sourceRecordKey: "IDBS:907742",
-    branch: "ECONOMIC_LIBRARY",
-    fieldName: "STATE",
-    status: "in_review",
-    autoFixable: false,
-    detectedAt: "2026-03-18",
-    reviewer: "Librarian A.",
-    summary: "Legacy state code is unmapped to target circulation lifecycle.",
-  },
-  {
-    id: "DQ-2026-0003",
-    batchId: "2026-03-batch-001",
-    stage: "clean",
-    severity: "MEDIUM",
-    issueClass: "FORMAT",
-    sourceTable: "DOC_VIEW",
-    sourceRecordKey: "DOC_ID:795116081",
-    branch: "COLLEGE_LIBRARY",
-    fieldName: "isbn",
-    status: "approved",
-    autoFixable: true,
-    detectedAt: "2026-03-18",
-    reviewer: "Analyst B.",
-    summary: "ISBN contains spacing and punctuation noise.",
-  },
-  {
-    id: "DQ-2026-0004",
-    batchId: "2026-03-batch-001",
-    stage: "normalized",
-    severity: "LOW",
-    issueClass: "DERIVED",
-    sourceTable: "DOC_VIEW",
-    sourceRecordKey: "DOC_ID:795116025",
-    fieldName: "title",
-    status: "fixed",
-    autoFixable: true,
-    detectedAt: "2026-03-18",
-    reviewer: "Librarian C.",
-    summary: "Duplicate whitespace in flattened title value.",
-  },
-];
+import {
+  useDataQualityIssue,
+  useDataQualityIssues,
+  useDataQualitySummary,
+} from "../hooks/use-data-quality";
 
 const severityOrder: DataQualitySeverity[] = [
   "CRITICAL",
   "HIGH",
   "MEDIUM",
   "LOW",
+];
+
+const issueClassOrder: DataQualityIssueClass[] = [
+  "IDENTITY",
+  "REFERENTIAL",
+  "SEMANTIC",
+  "FORMAT",
+  "GOVERNANCE",
+  "DERIVED",
+];
+
+const statusOrder: DataQualityIssueStatus[] = [
+  "new",
+  "in_review",
+  "approved",
+  "rejected",
+  "fixed",
 ];
 
 function severityBadgeClass(severity: DataQualitySeverity): string {
@@ -105,26 +62,47 @@ export function DataQualityWorkbenchPage() {
     "ALL",
   );
   const [status, setStatus] = useState<DataQualityIssueStatus | "ALL">("ALL");
+  const [sourceTable, setSourceTable] = useState<string | "ALL">("ALL");
+  const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
 
-  const filtered = useMemo(() => {
-    return demoIssues.filter((issue) => {
-      const stagePass = issue.stage === stage;
-      const severityPass = severity === "ALL" || issue.severity === severity;
-      const classPass = issueClass === "ALL" || issue.issueClass === issueClass;
-      const statusPass = status === "ALL" || issue.status === status;
-      return stagePass && severityPass && classPass && statusPass;
-    });
-  }, [issueClass, severity, stage, status]);
+  const filters: DataQualityFilters = {
+    stage,
+    severity,
+    issueClass,
+    status,
+    sourceTable,
+  };
 
-  const kpi = useMemo(() => {
-    const inStage = demoIssues.filter((item) => item.stage === stage);
-    return {
-      total: inStage.length,
-      critical: inStage.filter((item) => item.severity === "CRITICAL").length,
-      high: inStage.filter((item) => item.severity === "HIGH").length,
-      autoFixable: inStage.filter((item) => item.autoFixable).length,
-    };
-  }, [stage]);
+  const summaryQuery = useDataQualitySummary(filters);
+  const issuesQuery = useDataQualityIssues(filters);
+  const issueDetailQuery = useDataQualityIssue(selectedIssueId);
+
+  const issues = issuesQuery.data?.items ?? [];
+  const kpi = summaryQuery.data ?? {
+    total: 0,
+    critical: 0,
+    high: 0,
+    autoFixable: 0,
+  };
+
+  const sourceTables = useMemo(() => {
+    return [...new Set(issues.map((item) => item.sourceTable))].sort();
+  }, [issues]);
+
+  useEffect(() => {
+    if (!issues.length) {
+      setSelectedIssueId(null);
+      return;
+    }
+
+    if (!selectedIssueId || !issues.some((item) => item.id === selectedIssueId)) {
+      setSelectedIssueId(issues[0].id);
+    }
+  }, [issues, selectedIssueId]);
+
+  const activeIssue = issueDetailQuery.data;
+  const isLoading = summaryQuery.isLoading || issuesQuery.isLoading;
+  const hasError = summaryQuery.isError || issuesQuery.isError;
 
   return (
     <div className="space-y-6">
@@ -254,8 +232,36 @@ export function DataQualityWorkbenchPage() {
               <option value="fixed">{t("dqStatusFixed")}</option>
             </select>
           </label>
+
+          <label className="space-y-1 text-sm md:col-span-2 xl:col-span-4">
+            <span className="text-slate-600">{t("dqColumnSource")}</span>
+            <select
+              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+              value={sourceTable}
+              onChange={(event) => setSourceTable(event.target.value)}
+            >
+              <option value="ALL">{t("dqFilterAll")}</option>
+              {sourceTables.map((table) => (
+                <option key={table} value={table}>
+                  {table}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </section>
+
+      {isLoading ? (
+        <section className="app-panel p-4 text-sm text-slate-600">
+          {t("dqWorkbenchLoading")}
+        </section>
+      ) : null}
+
+      {hasError ? (
+        <section className="app-panel p-4 text-sm text-red-700">
+          {t("dqWorkbenchError")}
+        </section>
+      ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[1.8fr_1fr]">
         <div className="app-panel-strong p-6">
@@ -274,13 +280,19 @@ export function DataQualityWorkbenchPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((issue) => (
+                {issues.map((issue) => (
                   <tr
                     key={issue.id}
-                    className="border-b border-slate-100 align-top last:border-0"
+                    className={`border-b border-slate-100 align-top last:border-0 ${selectedIssueId === issue.id ? "bg-slate-50" : ""}`}
                   >
                     <td className="px-3 py-3">
-                      <p className="font-medium text-slate-900">{issue.id}</p>
+                      <button
+                        type="button"
+                        className="text-left font-medium text-slate-900 underline-offset-2 hover:underline"
+                        onClick={() => setSelectedIssueId(issue.id)}
+                      >
+                        {issue.id}
+                      </button>
                       <p className="mt-1 text-xs text-slate-500">
                         {issue.summary}
                       </p>
@@ -314,7 +326,7 @@ export function DataQualityWorkbenchPage() {
               </tbody>
             </table>
           </div>
-          {filtered.length === 0 ? (
+          {issues.length === 0 ? (
             <div className="app-empty-state mt-4 py-6">
               <p className="text-slate-600">{t("dqWorkbenchEmpty")}</p>
             </div>
@@ -328,28 +340,58 @@ export function DataQualityWorkbenchPage() {
           <p className="mb-4 text-sm leading-6 text-slate-600">
             {t("dqWorkbenchReviewPanelDescription")}
           </p>
+          {activeIssue ? (
+            <div className="mb-4 space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+              <p className="font-semibold text-slate-900">{activeIssue.id}</p>
+              <p>{activeIssue.summary}</p>
+              <p>
+                <span className="font-medium">{t("dqColumnSource")}: </span>
+                {activeIssue.sourceTable} / {activeIssue.sourceRecordKey}
+              </p>
+              {activeIssue.fieldName ? (
+                <p>
+                  <span className="font-medium">{t("dqIssueFieldLabel")}: </span>
+                  {activeIssue.fieldName}
+                </p>
+              ) : null}
+              {activeIssue.detectionRule ? (
+                <p>
+                  <span className="font-medium">{t("dqIssueRuleLabel")}: </span>
+                  {activeIssue.detectionRule}
+                </p>
+              ) : null}
+            </div>
+          ) : (
+            <div className="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+              {t("dqWorkbenchSelectIssue")}
+            </div>
+          )}
           <div className="space-y-3">
             <button
               type="button"
               className="app-button-primary w-full justify-center"
+              disabled
             >
               {t("dqActionApproveFix")}
             </button>
             <button
               type="button"
               className="app-button-secondary w-full justify-center"
+              disabled
             >
               {t("dqActionRequestRuleChange")}
             </button>
             <button
               type="button"
               className="app-button-secondary w-full justify-center"
+              disabled
             >
               {t("dqActionAcceptException")}
             </button>
             <button
               type="button"
               className="app-button-secondary w-full justify-center"
+              disabled
             >
               {t("dqActionRejectFix")}
             </button>

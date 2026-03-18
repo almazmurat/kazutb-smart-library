@@ -258,6 +258,13 @@ export const ru = {
   dqWorkbenchAuditNoteDescription:
     "Каждое решение должно сохранять проверяющего, время и обоснование.",
   dqWorkbenchEmpty: "По выбранным фильтрам проблемы не найдены.",
+  dqWorkbenchLoading: "Загрузка проблем качества данных...",
+  dqWorkbenchError:
+    "Не удалось загрузить данные по качеству. Повторите попытку.",
+  dqWorkbenchSelectIssue:
+    "Выберите проблему из очереди, чтобы увидеть подробности.",
+  dqIssueFieldLabel: "Поле",
+  dqIssueRuleLabel: "Правило",
   dqFilterAll: "Все",
   dqStageRaw: "Raw",
   dqStageClean: "Clean",

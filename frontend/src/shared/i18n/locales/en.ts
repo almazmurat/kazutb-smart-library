@@ -257,6 +257,11 @@ export const en = {
   dqWorkbenchAuditNoteDescription:
     "Every decision must preserve reviewer identity, timestamp, and rationale.",
   dqWorkbenchEmpty: "No issues match the selected filters.",
+  dqWorkbenchLoading: "Loading data quality issues...",
+  dqWorkbenchError: "Unable to load data quality data. Please try again.",
+  dqWorkbenchSelectIssue: "Select an issue from the queue to view details.",
+  dqIssueFieldLabel: "Field",
+  dqIssueRuleLabel: "Rule",
   dqFilterAll: "All",
   dqStageRaw: "Raw",
   dqStageClean: "Clean",
