@@ -91,10 +91,11 @@ model LibraryBranch {
   scopeId String @db.Uuid
   scope   InstitutionScope @relation(fields: [scopeId], references: [id], onDelete: Restrict)
 
-  users    User[]
-  books    Book[]
-  copies   BookCopy[]
-  invoices Invoice[]
+  users         User[]
+  books         Book[]
+  copies        BookCopy[]
+  invoices      Invoice[]
+  reservations  Reservation[]
 
   @@index([scopeId])
 }
@@ -113,12 +114,13 @@ model User {
   institutionScopeId String? @db.Uuid
   libraryBranchId    String? @db.Uuid
 
-  institutionScope InstitutionScope? @relation(fields: [institutionScopeId], references: [id], onDelete: SetNull)
-  libraryBranch    LibraryBranch?    @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
+  institutionScope         InstitutionScope? @relation(fields: [institutionScopeId], references: [id], onDelete: SetNull)
+  libraryBranch            LibraryBranch?    @relation(fields: [libraryBranchId], references: [id], onDelete: SetNull)
 
-  reservations Reservation[]
-  loans        Loan[]
-  auditLogs    AuditLog[]
+  reservations                Reservation[]
+  reservationsProcessedByUser Reservation[] @relation("ReservationsProcessedBy")
+  loans                       Loan[]
+  auditLogs                   AuditLog[]
 
   @@index([institutionScopeId])
   @@index([libraryBranchId])
@@ -281,23 +283,30 @@ model BookFile {
 }
 
 model Reservation {
-  id         String            @id @default(uuid()) @db.Uuid
-  status     ReservationStatus @default(PENDING)
-  reservedAt DateTime          @default(now())
-  expiresAt  DateTime?
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @updatedAt
+  id            String            @id @default(uuid()) @db.Uuid
+  status        ReservationStatus @default(PENDING)
+  reservedAt    DateTime          @default(now())
+  expiresAt     DateTime?
+  processedAt   DateTime?
+  notes         String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
 
-  userId String  @db.Uuid
-  bookId String  @db.Uuid
-  copyId String? @db.Uuid
+  userId           String @db.Uuid
+  bookId           String @db.Uuid
+  libraryBranchId  String @db.Uuid
+  copyId           String? @db.Uuid
+  processedByUserId String? @db.Uuid
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  copy BookCopy? @relation(fields: [copyId], references: [id], onDelete: SetNull)
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book              Book          @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  libraryBranch     LibraryBranch @relation(fields: [libraryBranchId], references: [id], onDelete: Restrict)
+  copy              BookCopy?     @relation(fields: [copyId], references: [id], onDelete: SetNull)
+  processedByUser   User?         @relation("ReservationsProcessedBy", fields: [processedByUserId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([bookId])
+  @@index([libraryBranchId])
   @@index([status])
 }
 
