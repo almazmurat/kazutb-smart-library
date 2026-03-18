@@ -1,13 +1,41 @@
-import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { usePublicBookDetails } from "@features/catalog/hooks/use-public-catalog";
+import { useCreateReservation } from "@features/reservations/hooks/use-reservations";
+import { authStore } from "@shared/auth/auth-store";
 import { useI18n } from "@shared/i18n/use-i18n";
 
 export function BookDetailsPage() {
   const { id = "" } = useParams();
   const { t } = useI18n();
+  const navigate = useNavigate();
+  const [reservationMessage, setReservationMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   const bookQuery = usePublicBookDetails(id);
+  const createReservationMutation = useCreateReservation();
+
+  const handleReserveClick = async () => {
+    try {
+      setReservationMessage(null);
+      await createReservationMutation.mutateAsync(id);
+      setReservationMessage({
+        type: "success",
+        text: t("reservationSuccess"),
+      });
+      setTimeout(() => {
+        navigate("/cabinet");
+      }, 2000);
+    } catch (error: any) {
+      setReservationMessage({
+        type: "error",
+        text: error.response?.data?.message || t("reservationError"),
+      });
+    }
+  };
 
   if (bookQuery.isLoading) {
     return (
@@ -26,6 +54,10 @@ export function BookDetailsPage() {
   }
 
   const book = bookQuery.data;
+  const isGuest = !authStore.isAuthenticated || authStore.role === "GUEST";
+  const isShowingReservation =
+    authStore.isAuthenticated &&
+    (authStore.role === "STUDENT" || authStore.role === "TEACHER");
 
   return (
     <section className="space-y-4">
@@ -111,6 +143,41 @@ export function BookDetailsPage() {
           <div className="mt-4 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-900">
             {t("catalogDigitalAccessNotice")}
           </div>
+
+          {isShowingReservation && (
+            <div className="mt-4">
+              <button
+                onClick={handleReserveClick}
+                disabled={
+                  createReservationMutation.isPending ||
+                  book.availability.available === 0
+                }
+                className="w-full rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:opacity-50"
+              >
+                {createReservationMutation.isPending
+                  ? t("catalogLoading")
+                  : t("reservationRequestButton")}
+              </button>
+            </div>
+          )}
+
+          {isGuest && (
+            <div className="mt-4 rounded-md border border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+              {t("reservationSignInRequired")}
+            </div>
+          )}
+
+          {reservationMessage && (
+            <div
+              className={`mt-4 rounded-md px-3 py-2 text-xs ${
+                reservationMessage.type === "success"
+                  ? "border border-green-100 bg-green-50 text-green-900"
+                  : "border border-red-100 bg-red-50 text-red-900"
+              }`}
+            >
+              {reservationMessage.text}
+            </div>
+          )}
         </article>
       </div>
 

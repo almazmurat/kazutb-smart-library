@@ -60,6 +60,34 @@ export type TranslationDict = {
   catalogDescriptionEmpty: string;
   catalogScopeLabel: string;
   catalogDigitalAccessNotice: string;
+  reservationRequestButton: string;
+  reservationSignInRequired: string;
+  reservationSuccess: string;
+  reservationError: string;
+  reservationAlreadyPending: string;
+  reservationStatusPending: string;
+  reservationStatusReady: string;
+  reservationStatusFulfilled: string;
+  reservationStatusCancelled: string;
+  reservationStatusExpired: string;
+  cabinetReservationsTitle: string;
+  cabinetReservationsEmpty: string;
+  cabinetReservationColumn_Book: string;
+  cabinetReservationColumn_Status: string;
+  cabinetReservationColumn_Date: string;
+  cabinetReservationColumn_ExpiresAt: string;
+  cabinetReservationColumn_Actions: string;
+  cabinetReservationCancel: string;
+  librarianQueueTitle: string;
+  librarianQueueEmpty: string;
+  librarianQueueColumn_User: string;
+  librarianQueueColumn_Book: string;
+  librarianQueueColumn_Status: string;
+  librarianQueueColumn_Date: string;
+  librarianQueueColumn_Actions: string;
+  librarianQueueConfirm: string;
+  librarianQueueReject: string;
+  librarianQueueReady: string;
 };
 
 export const dictionary: Record<Locale, TranslationDict> = {
