@@ -135,6 +135,31 @@ Reservation ownership rules:
 - Librarians are restricted to reservations in their assigned branch.
 - Admin has global visibility and management access.
 
+Circulation endpoints:
+
+- `POST /api/v1/circulation/loans` - issue a new loan (librarian/admin)
+- `PATCH /api/v1/circulation/loans/:id/return` - process return (librarian/admin)
+- `GET /api/v1/circulation/loans` - list loans with filters (librarian/admin)
+- `GET /api/v1/circulation/loans/:id` - loan details (auth, visibility enforced)
+- `GET /api/v1/circulation/my` - current user's own loans (auth)
+
+Circulation query parameters (loan listing):
+
+- `?status=ACTIVE|RETURNED|OVERDUE|LOST` — filter by loan status
+- `?userId=<uuid>` — filter by borrower
+- `?copyId=<uuid>` — filter by copy
+- `?branchId=<uuid>` — filter by library branch
+- `?overdueOnly=true` — show only overdue active loans
+- `?page=<number>&limit=<number>` — pagination
+
+Circulation ownership rules:
+
+- Only librarians and admins can issue and return loans.
+- Librarians are restricted to copies in their assigned branch.
+- Admin has global circulation access across all branches.
+- Students and teachers can only view their own loan history via `/my`.
+- Loan details visibility: admin=all, librarian=own branch, user=own loans only.
+
 ## Search
 
 ```
