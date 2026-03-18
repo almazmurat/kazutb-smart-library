@@ -119,6 +119,22 @@ Book copy management endpoints:
 - `GET /api/v1/books/:bookId/copies`
 - `PATCH /api/v1/books/:bookId/copies/:copyId`
 
+Reservations endpoints:
+
+- `POST /api/v1/reservations` - create reservation (authenticated users)
+- `GET /api/v1/reservations/my` - list own reservations
+- `GET /api/v1/reservations` - queue listing for librarian/admin
+- `GET /api/v1/reservations/:id` - reservation details with visibility checks
+- `PATCH /api/v1/reservations/:id/cancel` - user self-cancel (allowed statuses only)
+- `PATCH /api/v1/reservations/:id/status` - librarian/admin status update
+
+Reservation ownership rules:
+
+- Guest users cannot create or manage reservations.
+- Users can only view and cancel their own reservations.
+- Librarians are restricted to reservations in their assigned branch.
+- Admin has global visibility and management access.
+
 ## Search
 
 ```
