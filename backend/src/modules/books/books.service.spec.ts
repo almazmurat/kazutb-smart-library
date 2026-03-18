@@ -1,3 +1,7 @@
+/// <reference types="jest" />
+
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { BooksService } from "./books.service";
 import { UserRole } from "../../common/types/user-role.enum";
 

@@ -1,3 +1,7 @@
+/// <reference types="jest" />
+
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { ForbiddenException } from "@nestjs/common";
 
 import { CatalogOwnershipPolicy } from "./catalog-ownership.policy";
