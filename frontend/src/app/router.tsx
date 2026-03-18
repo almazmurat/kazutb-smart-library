@@ -11,7 +11,7 @@ import { LibrarianPage } from "@features/librarian/pages/librarian-page";
 import { CirculationPage } from "@features/circulation/pages/circulation-page";
 import { AdminPage } from "@features/admin/pages/admin-page";
 import { AnalyticsPage } from "@features/analytics/pages/analytics-page";
-import { ReportsPage } from "@features/reports/pages/reports-page";
+import { ReportsPage } from "../features/reports/pages/reports-page";
 import { ProtectedRoute } from "@shared/auth/protected-route";
 import { AuthorsManagementPage } from "@features/catalog-management/pages/authors-management-page";
 import { CategoriesManagementPage } from "@features/catalog-management/pages/categories-management-page";
