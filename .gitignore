@@ -55,3 +55,8 @@ desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+# ─── Legacy DB raw backups (large binary, store locally only) ─────────────────
+*.bak
+docs/legacy-db-discovery/*.bak
+
