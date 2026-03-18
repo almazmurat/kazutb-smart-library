@@ -71,6 +71,13 @@ npx prisma migrate dev
 npm run start:dev
 ```
 
+Minimal variables required for backend startup:
+
+- `DATABASE_URL`
+- `JWT_SECRET`
+
+See `backend/.env.example` for the complete development template.
+
 ### Frontend
 
 ```bash

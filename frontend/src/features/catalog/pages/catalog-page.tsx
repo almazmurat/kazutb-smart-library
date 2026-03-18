@@ -22,9 +22,12 @@ export function CatalogPage() {
   const booksQuery = usePublicCatalog(query);
   const filtersQuery = usePublicCatalogFilters();
 
+  const booksData = booksQuery.data?.data ?? [];
+  const booksMeta = booksQuery.data?.meta;
+
   const totalPages = useMemo(
-    () => booksQuery.data?.meta.totalPages || 1,
-    [booksQuery.data?.meta.totalPages],
+    () => booksMeta?.totalPages || 1,
+    [booksMeta?.totalPages],
   );
 
   const currentPage = query.page || 1;
@@ -72,15 +75,15 @@ export function CatalogPage() {
         </div>
       ) : null}
 
-      {!booksQuery.isLoading && !booksQuery.isError && booksQuery.data ? (
+      {!booksQuery.isLoading && !booksQuery.isError ? (
         <>
-          {booksQuery.data.data.length === 0 ? (
+          {booksData.length === 0 ? (
             <div className="rounded-xl border border-blue-100 bg-white p-8 text-center text-sm text-slate-600">
               {t("catalogEmpty")}
             </div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {booksQuery.data.data.map((book) => (
+              {booksData.map((book) => (
                 <PublicBookCard
                   key={book.id}
                   book={book}
@@ -99,7 +102,7 @@ export function CatalogPage() {
 
           <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-white px-4 py-3">
             <p className="text-sm text-slate-600">
-              {t("catalogResults")}: {booksQuery.data.meta.total}
+              {t("catalogResults")}: {booksMeta?.total ?? 0}
             </p>
             <div className="flex items-center gap-2">
               <button

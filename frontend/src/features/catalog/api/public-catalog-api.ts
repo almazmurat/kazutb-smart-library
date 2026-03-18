@@ -83,7 +83,16 @@ export async function fetchPublicBooks(
   const { data } = await api.get<PublicCatalogBooksResponse>("/public/books", {
     params: query,
   });
-  return data;
+
+  return {
+    data: Array.isArray(data?.data) ? data.data : [],
+    meta: {
+      page: data?.meta?.page ?? query.page ?? 1,
+      limit: data?.meta?.limit ?? query.limit ?? 20,
+      total: data?.meta?.total ?? 0,
+      totalPages: data?.meta?.totalPages ?? 1,
+    },
+  };
 }
 
 export async function fetchPublicBookById(
