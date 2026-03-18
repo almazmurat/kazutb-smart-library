@@ -7,6 +7,7 @@ import {
 import { type LoanStatus } from "../api/circulation-api";
 import { useI18n } from "@shared/i18n/use-i18n";
 import { authStore } from "@shared/auth/auth-store";
+import { PageIntro } from "@shared/ui/page-intro";
 import type { TranslationKey } from "@shared/i18n/dictionary";
 
 const STATUS_COLORS: Record<
@@ -125,10 +126,14 @@ export function CirculationPage() {
 
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          {t("circulationTitle")}
-        </h1>
+      <PageIntro
+        eyebrow={t("shellOperationsSection")}
+        title={t("circulationTitle")}
+        description={t("circulationDescription")}
+        badges={[t("shellSecureLabel")]}
+      />
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-1.5 text-sm text-slate-600">
             <input

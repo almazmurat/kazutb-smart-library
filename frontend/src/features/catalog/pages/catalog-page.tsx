@@ -8,6 +8,7 @@ import {
   usePublicCatalogFilters,
 } from "../hooks/use-public-catalog";
 import { useI18n } from "@shared/i18n/use-i18n";
+import { PageIntro } from "@shared/ui/page-intro";
 
 const PAGE_SIZE = 12;
 
@@ -34,17 +35,12 @@ export function CatalogPage() {
 
   return (
     <section className="space-y-4">
-      <header className="rounded-xl border border-blue-100 bg-white p-6 shadow-sm">
-        <p className="text-xs uppercase tracking-[0.16em] text-blue-700">
-          {t("catalogInstitutionalLabel")}
-        </p>
-        <h1 className="mt-2 text-3xl font-semibold text-slate-900">
-          {t("catalogPublicTitle")}
-        </h1>
-        <p className="mt-2 max-w-3xl text-sm text-slate-600">
-          {t("catalogPublicDescription")}
-        </p>
-      </header>
+      <PageIntro
+        eyebrow={t("catalogInstitutionalLabel")}
+        title={t("catalogPublicTitle")}
+        description={t("catalogPublicDescription")}
+        badges={[t("shellPublicLabel"), t("catalogFeatureInstitutional")]}
+      />
 
       <CatalogFilters
         labels={{
@@ -100,7 +96,7 @@ export function CatalogPage() {
             </div>
           )}
 
-          <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-white px-4 py-3">
+          <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
             <p className="text-sm text-slate-600">
               {t("catalogResults")}: {booksMeta?.total ?? 0}
             </p>

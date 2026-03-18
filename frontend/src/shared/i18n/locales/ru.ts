@@ -1,18 +1,39 @@
 export const ru = {
   appTitle: "Умная библиотека KazUTB",
+  navOverview: "Обзор",
   navCatalog: "Каталог",
-  navSearch: "Поиск",
-  navCabinet: "Кабинет",
-  navLibrarian: "Библиотекарь",
-  navCatalogBooksMgmt: "Книги (управление)",
-  navCatalogAuthorsMgmt: "Авторы (управление)",
-  navCatalogCategoriesMgmt: "Категории (управление)",
-  navCatalogCopiesMgmt: "Экземпляры (управление)",
-  navAdmin: "Админ",
-  navAnalytics: "Аналитика",
-  navReports: "Отчеты",
+  navSearch: "Поиск по каталогу",
+  navCabinet: "Личный кабинет читателя",
+  navLibrarian: "Стол резервирований",
+  navCatalogBooksMgmt: "Реестр книг",
+  navCatalogAuthorsMgmt: "Реестр авторов",
+  navCatalogCategoriesMgmt: "Реестр категорий",
+  navCatalogCopiesMgmt: "Реестр экземпляров",
+  navAdmin: "Администрирование",
+  navAnalytics: "Операционная аналитика",
+  navReports: "Операционные отчёты",
   login: "Вход",
+  loginTitle: "Защищённый вход",
+  loginDescription:
+    "Защищённые сервисы предназначены для пользователей KazUTB с институциональными учетными данными и ролевым доступом.",
+  loginScaffoldNote:
+    "Интеграция аутентификации пока остается на уровне каркаса для MVP-демонстрации; рабочий вход будет использовать университетские каталожные службы.",
   language: "Язык",
+  shellSubtitle:
+    "Институциональная цифровая библиотечная платформа для университетских и колледжных подразделений KazUTB.",
+  shellPublicSection: "Публичный доступ",
+  shellReaderSection: "Сервисы для читателей",
+  shellOperationsSection: "Библиотечные операции",
+  shellAdministrationSection: "Администрирование",
+  shellPublicLabel: "Публично",
+  shellSecureLabel: "Защищённый доступ",
+  shellCurrentRole: "Текущий режим",
+  roleGuest: "Гость",
+  roleStudent: "Студент",
+  roleTeacher: "Преподаватель",
+  roleLibrarian: "Библиотекарь",
+  roleAdmin: "Администратор",
+  roleAnalyst: "Аналитик",
   catalogAuthorsTitle: "Управление авторами",
   catalogAuthorsDescription:
     "Ведение институционального справочника авторов каталога.",
@@ -28,9 +49,9 @@ export const ru = {
   catalogScaffoldNote:
     "Подготовлен каркас для следующего этапа: формы, таблицы и API-операции.",
   catalogInstitutionalLabel: "Библиотека университета KazUTB",
-  catalogPublicTitle: "Публичный библиотечный каталог",
+  catalogPublicTitle: "Единый библиотечный каталог",
   catalogPublicDescription:
-    "Просматривайте проверенные библиографические записи библиотечных подразделений KazUTB в едином институциональном каталоге.",
+    "Просматривайте проверенные библиографические записи библиотечных подразделений KazUTB в едином институциональном каталоге для образовательного и управленческого использования.",
   catalogFilterTitle: "Название",
   catalogFilterAuthor: "Автор",
   catalogFilterCategory: "Категория",
@@ -48,7 +69,8 @@ export const ru = {
   catalogCardBranch: "Подразделение",
   catalogCardAvailable: "Доступно",
   catalogCardTotalCopies: "Всего экземпляров",
-  catalogOpenDetails: "Открыть карточку",
+  catalogOpenDetails: "Открыть запись",
+  catalogFeatureInstitutional: "Публичный каталог с учетом филиалов",
   catalogResults: "Результаты",
   catalogPrevPage: "Назад",
   catalogNextPage: "Вперед",
@@ -76,7 +98,12 @@ export const ru = {
   reservationStatusFulfilled: "Выдана",
   reservationStatusCancelled: "Отменена",
   reservationStatusExpired: "Истекла",
+  cabinetPageTitle: "Личный кабинет читателя",
+  cabinetPageDescription:
+    "Просматривайте собственные резервирования и историю книговыдачи в едином рабочем пространстве.",
   cabinetReservationsTitle: "Мои резервирования",
+  cabinetReservationsDescription:
+    "Показывает статус обслуживания заявки и сроки действия резервирования.",
   cabinetReservationsEmpty: "У вас нет активных резервирований.",
   cabinetReservationsError:
     "Не удалось загрузить резервирования. Повторите попытку.",
@@ -94,7 +121,9 @@ export const ru = {
   cabinetReservationStatusFulfilled: "Выдана",
   cabinetReservationStatusCancelled: "Отменена",
   cabinetReservationStatusExpired: "Истекла",
-  librarianQueueTitle: "Очередь резервирований",
+  librarianQueueTitle: "Сервисная очередь резервирований",
+  librarianQueueDescription:
+    "Обработка резервирований в пределах закрепленного филиала: подтверждение, отклонение и завершение.",
   librarianQueueEmpty: "Нет активных резервирований в очереди.",
   librarianQueueError:
     "Не удалось загрузить очередь резервирований. Повторите попытку.",
@@ -114,8 +143,10 @@ export const ru = {
   librarianQueueStatusReady: "Готова к выдаче",
   librarianQueueStatusFulfilled: "Выдана",
   librarianQueueStatusCancelled: "Отменена",
-  navCirculation: "Книговыдача",
-  circulationTitle: "Книговыдача — Управление выдачами",
+  navCirculation: "Стол книговыдачи",
+  circulationTitle: "Операции книговыдачи",
+  circulationDescription:
+    "Оформляйте выдачу и возврат экземпляров с соблюдением филиальных границ и статусов фонда.",
   circulationEmpty: "Записи выдач не найдены.",
   circulationError: "Не удалось загрузить записи выдач. Повторите попытку.",
   circulationAccessDenied:
@@ -125,7 +156,7 @@ export const ru = {
   circulationColumnBook: "Название книги",
   circulationColumnStatus: "Статус",
   circulationColumnLoanedAt: "Дата выдачи",
-  circulationColumnDueDate: "Дата возврата",
+  circulationColumnDueDate: "Срок возврата",
   circulationColumnReturnedAt: "Возвращён",
   circulationColumnActions: "Действия",
   circulationIssueLoan: "Выдать книгу",
@@ -150,13 +181,17 @@ export const ru = {
   circulationConfirmReturn:
     "Вы уверены, что хотите отметить экземпляр как возвращённый?",
   cabinetLoansTitle: "Мои выдачи",
+  cabinetLoansDescription:
+    "История выдач и сроки возврата, доступные читателю для самостоятельного контроля.",
   cabinetLoansEmpty: "Записи выдач отсутствуют.",
   cabinetLoansError: "Не удалось загрузить выдачи. Повторите попытку.",
   cabinetLoanStatusActive: "Активная",
   cabinetLoanStatusReturned: "Возвращена",
   cabinetLoanStatusOverdue: "Просрочена",
   cabinetLoanStatusLost: "Утеряна",
-  dashboardTitle: "Панель мониторинга",
+  dashboardTitle: "Операционная панель",
+  dashboardDescription:
+    "Контролируйте текущую библиотечную активность, популярные книги и просроченные выдачи.",
   dashboardTotalBooks: "Активных книг",
   dashboardTotalCopies: "Всего экземпляров",
   dashboardActiveReservations: "Активных бронирований",
@@ -182,7 +217,9 @@ export const ru = {
   dashboardColumnLoans: "Выдачи",
   dashboardColumnReservations: "Бронирования",
   dashboardColumnScore: "Рейтинг",
-  reportsTitle: "Отчёты",
+  reportsTitle: "Институциональные отчёты",
+  reportsDescription:
+    "Помесячные и годовые сводки для филиальных операций и управленческого обзора.",
   reportsYearly: "Годовой итог",
   reportsMonthly: "Помесячная разбивка",
   reportsBranchSummary: "Сводка по филиалам",
@@ -197,4 +234,72 @@ export const ru = {
   reportsError: "Не удалось загрузить отчёты. Повторите попытку.",
   reportsNoData: "Данные отчётов за выбранный год отсутствуют.",
   reportsMonthNames: "Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек",
+  commonBranchLabel: "Филиал",
+  overviewEyebrow: "Цифровая библиотека KazUTB",
+  overviewTitle: "Обзор университетской библиотечной платформы",
+  overviewDescription:
+    "Единая институциональная платформа для каталогизации, резервирований, книговыдачи и операционной отчетности по библиотечным подразделениям KazUTB.",
+  overviewHeroPrimary: "Открыть публичный каталог",
+  overviewHeroSecondary: "Перейти к защищённому входу",
+  overviewStatScopes: "2 институциональных контура",
+  overviewStatBranches: "3 библиотечных подразделения",
+  overviewStatModules: "5 реализованных сервисных направлений",
+  overviewAudienceTitle: "Аудитория",
+  overviewAudienceDescription:
+    "Материал подготовлен для руководства университета, библиотекарей, администраторов и планирования дальнейшего внедрения.",
+  overviewProcessTitle: "Бизнес-покрытие",
+  overviewProcessDescription:
+    "Платформа объединяет каталог, резервирование, книговыдачу и операционную аналитику в одной среде.",
+  overviewReadinessTitle: "Готовность к презентации",
+  overviewReadinessDescription:
+    "Текущий MVP уже демонстрирует реальные филиальные процессы с многоязычной основой интерфейса.",
+  overviewQuickAccessTitle: "Быстрый доступ",
+  overviewAccessCatalogDescription:
+    "Публичный доступ к каталогу для поиска, фильтрации по филиалам и просмотра записей.",
+  overviewAccessCabinetDescription:
+    "Персональное рабочее пространство для отслеживания резервирований и истории выдач.",
+  overviewAccessLibrarianDescription:
+    "Операционная очередь для библиотекарей, обрабатывающих заявки на резервирование.",
+  overviewAccessAnalyticsDescription:
+    "Операционные показатели и индикаторы активности для библиотекарей, аналитиков и администраторов.",
+  overviewAccessReportsDescription:
+    "Помесячные и годовые сводки для управленческой видимости и институциональной отчетности.",
+  overviewModuleTitle: "Текущие модули MVP",
+  overviewModuleCatalogDescription:
+    "Публичный каталог, маршрутизация поиска, библиографическая карточка и видимость с учетом филиала.",
+  overviewModuleReservationsDescription:
+    "Заявки на резервирование, личный кабинет читателя и сервисная очередь библиотекаря.",
+  overviewModuleCirculationDescription:
+    "Оформление выдачи, возвратов, согласованность статусов экземпляров и история заемщика.",
+  overviewModuleAnalyticsDescription:
+    "Операционная панель с популярными книгами, временными срезами активности и контролем просрочки.",
+  overviewModuleReportsDescription:
+    "Годовые и помесячные сводки с филиальным операционным контекстом.",
+  overviewRoleTitle: "Ролевой доступ",
+  overviewRoleStudentsTitle: "Студенты и преподаватели",
+  overviewRoleStudentsDescription:
+    "Просматривают каталог, оформляют резервирование и отслеживают собственную историю заявок и выдач после входа.",
+  overviewRoleLibrarianTitle: "Библиотекари",
+  overviewRoleLibrarianDescription:
+    "Управляют очередями резервирований, операциями книговыдачи и филиальной операционной видимостью.",
+  overviewRoleAdminTitle: "Администраторы и аналитики",
+  overviewRoleAdminDescription:
+    "Просматривают глобальную аналитику и отчёты, контролируют институциональную структуру и готовят управленческую отчетность.",
+  overviewBranchTitle: "Институциональный и филиальный контекст",
+  overviewBranchUniversity: "Университетский контур",
+  overviewBranchUniversityDescription:
+    "Экономическая и Технологическая библиотеки работают в университетском контуре с филиальными границами доступа.",
+  overviewBranchCollege: "Колледжный контур",
+  overviewBranchCollegeDescription:
+    "Библиотека колледжа выделена в отдельный контур для поэтапной миграции и управленческой изоляции.",
+  overviewRoadmapTitle: "Следующие темы для презентации",
+  overviewRoadmapAdmin:
+    "Административное управление пользователями, назначение филиалов и системные настройки.",
+  overviewRoadmapMigration:
+    "Инструменты миграции данных из legacy MARC SQL и поэтапная верификация загрузки.",
+  overviewRoadmapDigital:
+    "Защищенные цифровые материалы, сценарии просмотра и усиленный контроль доступа.",
+  overviewStatusOperational: "Работает",
+  overviewStatusMvp: "MVP",
+  overviewStatusPlanned: "Следующий этап",
 } as const;

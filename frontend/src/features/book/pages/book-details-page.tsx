@@ -5,6 +5,7 @@ import { usePublicBookDetails } from "@features/catalog/hooks/use-public-catalog
 import { useCreateReservation } from "@features/reservations/hooks/use-reservations";
 import { authStore } from "@shared/auth/auth-store";
 import { useI18n } from "@shared/i18n/use-i18n";
+import { PageIntro } from "@shared/ui/page-intro";
 
 export function BookDetailsPage() {
   const { id = "" } = useParams();
@@ -61,25 +62,24 @@ export function BookDetailsPage() {
 
   return (
     <section className="space-y-4">
-      <div className="rounded-xl border border-blue-100 bg-white p-6 shadow-sm">
+      <div className="flex items-center justify-between gap-3">
         <Link
           to="/catalog"
           className="text-sm text-blue-700 hover:text-blue-800"
         >
           {t("catalogBackToList")}
         </Link>
-
-        <h1 className="mt-3 text-3xl font-semibold text-slate-900">
-          {book.title}
-        </h1>
-        {book.subtitle ? (
-          <p className="mt-2 text-lg text-slate-600">{book.subtitle}</p>
-        ) : null}
-
-        <p className="mt-4 text-sm text-slate-700">
-          {book.authors.map((author) => author.fullName).join(", ")}
-        </p>
       </div>
+
+      <PageIntro
+        eyebrow={t("catalogInstitutionalLabel")}
+        title={book.title}
+        description={
+          book.subtitle ||
+          book.authors.map((author) => author.fullName).join(", ")
+        }
+        badges={[book.libraryBranch.name, book.libraryBranch.scope.name]}
+      />
 
       <div className="grid gap-4 md:grid-cols-2">
         <article className="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
@@ -140,7 +140,7 @@ export function BookDetailsPage() {
             </div>
           </dl>
 
-          <div className="mt-4 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-900">
+          <div className="mt-4 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs leading-5 text-blue-900">
             {t("catalogDigitalAccessNotice")}
           </div>
 

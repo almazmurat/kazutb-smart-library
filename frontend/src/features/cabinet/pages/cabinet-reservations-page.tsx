@@ -1,15 +1,36 @@
 import { useState } from "react";
-import { useMyReservations, useCancelReservation } from "@features/reservations/hooks/use-reservations";
+import {
+  useMyReservations,
+  useCancelReservation,
+} from "@features/reservations/hooks/use-reservations";
 import { type ReservationStatus } from "@features/reservations/api/reservations-api";
 import { useI18n } from "@shared/i18n/use-i18n";
 import type { TranslationKey } from "@shared/i18n/dictionary";
 
-const STATUS_COLORS: Record<ReservationStatus, { badge: string; label: TranslationKey }> = {
-  PENDING: { badge: "bg-yellow-50 text-yellow-800 border-yellow-100", label: "cabinetReservationStatusPending" },
-  READY: { badge: "bg-blue-50 text-blue-800 border-blue-100", label: "cabinetReservationStatusReady" },
-  FULFILLED: { badge: "bg-green-50 text-green-800 border-green-100", label: "cabinetReservationStatusFulfilled" },
-  CANCELLED: { badge: "bg-gray-50 text-gray-800 border-gray-100", label: "cabinetReservationStatusCancelled" },
-  EXPIRED: { badge: "bg-red-50 text-red-800 border-red-100", label: "cabinetReservationStatusExpired" },
+const STATUS_COLORS: Record<
+  ReservationStatus,
+  { badge: string; label: TranslationKey }
+> = {
+  PENDING: {
+    badge: "bg-yellow-50 text-yellow-800 border-yellow-100",
+    label: "cabinetReservationStatusPending",
+  },
+  READY: {
+    badge: "bg-blue-50 text-blue-800 border-blue-100",
+    label: "cabinetReservationStatusReady",
+  },
+  FULFILLED: {
+    badge: "bg-green-50 text-green-800 border-green-100",
+    label: "cabinetReservationStatusFulfilled",
+  },
+  CANCELLED: {
+    badge: "bg-gray-50 text-gray-800 border-gray-100",
+    label: "cabinetReservationStatusCancelled",
+  },
+  EXPIRED: {
+    badge: "bg-red-50 text-red-800 border-red-100",
+    label: "cabinetReservationStatusExpired",
+  },
 };
 
 export function CabinetReservationsPage() {
@@ -48,7 +69,9 @@ export function CabinetReservationsPage() {
   if (reservations.length === 0) {
     return (
       <div className="rounded-xl border border-blue-100 bg-white p-8 text-center">
-        <p className="text-sm text-slate-600">{t("cabinetReservationsEmpty")}</p>
+        <p className="text-sm text-slate-600">
+          {t("cabinetReservationsEmpty")}
+        </p>
       </div>
     );
   }
@@ -57,9 +80,14 @@ export function CabinetReservationsPage() {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-semibold text-slate-900">
-        {t("cabinetReservationsTitle")}
-      </h1>
+      <div>
+        <h2 className="text-2xl font-semibold text-slate-900">
+          {t("cabinetReservationsTitle")}
+        </h2>
+        <p className="mt-1 text-sm text-slate-600">
+          {t("cabinetReservationsDescription")}
+        </p>
+      </div>
 
       <div className="overflow-x-auto rounded-xl border border-blue-100 bg-white shadow-sm">
         <table className="w-full text-sm">
@@ -85,17 +113,26 @@ export function CabinetReservationsPage() {
           <tbody>
             {reservations.map((reservation) => {
               const statusConfig = STATUS_COLORS[reservation.status];
-              const reservedDate = new Date(reservation.reservedAt).toLocaleDateString();
+              const reservedDate = new Date(
+                reservation.reservedAt,
+              ).toLocaleDateString();
               const expiresDate = reservation.expiresAt
                 ? new Date(reservation.expiresAt).toLocaleDateString()
                 : "-";
-              const canCancel = reservation.status === "PENDING" || reservation.status === "READY";
+              const canCancel =
+                reservation.status === "PENDING" ||
+                reservation.status === "READY";
 
               return (
-                <tr key={reservation.id} className="border-b border-slate-100 hover:bg-slate-50">
+                <tr
+                  key={reservation.id}
+                  className="border-b border-slate-100 hover:bg-slate-50"
+                >
                   <td className="px-4 py-3 text-slate-900">
-                    <div className="font-medium">Book Details</div>
-                    <div className="text-xs text-slate-600">{reservation.bookId}</div>
+                    <div className="font-medium">{reservation.bookId}</div>
+                    <div className="text-xs text-slate-500">
+                      {t("commonBranchLabel")}: {reservation.libraryBranchId}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <span
@@ -113,11 +150,15 @@ export function CabinetReservationsPage() {
                         disabled={cancelMutation.isPending}
                         className="inline-flex rounded-md bg-red-100 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-200 disabled:opacity-50"
                       >
-                        {cancelMutation.isPending ? t("catalogLoading") : t("cabinetReservationCancel")}
+                        {cancelMutation.isPending
+                          ? t("catalogLoading")
+                          : t("cabinetReservationCancel")}
                       </button>
                     )}
                     {!canCancel && (
-                      <span className="text-xs text-slate-400">{t("cabinetReservationCancelNotAvailable")}</span>
+                      <span className="text-xs text-slate-400">
+                        {t("cabinetReservationCancelNotAvailable")}
+                      </span>
                     )}
                   </td>
                 </tr>

@@ -61,9 +61,14 @@ export function CabinetLoansPage() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-900">
-        {t("cabinetLoansTitle")}
-      </h2>
+      <div>
+        <h2 className="text-2xl font-semibold text-slate-900">
+          {t("cabinetLoansTitle")}
+        </h2>
+        <p className="mt-1 text-sm text-slate-600">
+          {t("cabinetLoansDescription")}
+        </p>
+      </div>
 
       <div className="overflow-x-auto rounded-xl border border-blue-100 bg-white shadow-sm">
         <table className="w-full text-sm">

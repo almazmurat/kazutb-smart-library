@@ -1,18 +1,39 @@
 export const en = {
   appTitle: "KazUTB Smart Library",
+  navOverview: "Overview",
   navCatalog: "Catalog",
-  navSearch: "Search",
-  navCabinet: "Cabinet",
-  navLibrarian: "Librarian",
-  navCatalogBooksMgmt: "Books (Mgmt)",
-  navCatalogAuthorsMgmt: "Authors (Mgmt)",
-  navCatalogCategoriesMgmt: "Categories (Mgmt)",
-  navCatalogCopiesMgmt: "Book Copies (Mgmt)",
-  navAdmin: "Admin",
-  navAnalytics: "Analytics",
-  navReports: "Reports",
+  navSearch: "Catalog Search",
+  navCabinet: "Reader Cabinet",
+  navLibrarian: "Reservations Desk",
+  navCatalogBooksMgmt: "Books Registry",
+  navCatalogAuthorsMgmt: "Author Registry",
+  navCatalogCategoriesMgmt: "Category Registry",
+  navCatalogCopiesMgmt: "Copy Registry",
+  navAdmin: "Administration",
+  navAnalytics: "Operational Analytics",
+  navReports: "Operational Reports",
   login: "Login",
+  loginTitle: "Secure Sign-In",
+  loginDescription:
+    "Authenticated services are intended for KazUTB users with institutional credentials and role-based access.",
+  loginScaffoldNote:
+    "Authentication integration remains in scaffold state for MVP presentation; production sign-in will use university directory services.",
   language: "Language",
+  shellSubtitle:
+    "Institutional digital library platform for KazUTB university and college branches.",
+  shellPublicSection: "Public Access",
+  shellReaderSection: "Reader Services",
+  shellOperationsSection: "Library Operations",
+  shellAdministrationSection: "Administration",
+  shellPublicLabel: "Public",
+  shellSecureLabel: "Secure Access",
+  shellCurrentRole: "Current View",
+  roleGuest: "Guest",
+  roleStudent: "Student",
+  roleTeacher: "Teacher",
+  roleLibrarian: "Librarian",
+  roleAdmin: "Administrator",
+  roleAnalyst: "Analyst",
   catalogAuthorsTitle: "Authors Management",
   catalogAuthorsDescription:
     "Maintain the institutional authority list of catalog authors.",
@@ -28,9 +49,9 @@ export const en = {
   catalogScaffoldNote:
     "Scaffold is prepared for the next implementation phase: forms, tables, and API transactions.",
   catalogInstitutionalLabel: "KazUTB University Library",
-  catalogPublicTitle: "Public Library Catalog",
+  catalogPublicTitle: "Unified Library Catalog",
   catalogPublicDescription:
-    "Browse verified bibliographic records from KazUTB library branches in a unified institutional catalog.",
+    "Browse verified bibliographic records from KazUTB library branches in a unified institutional catalog prepared for formal educational use.",
   catalogFilterTitle: "Title",
   catalogFilterAuthor: "Author",
   catalogFilterCategory: "Category",
@@ -48,7 +69,8 @@ export const en = {
   catalogCardBranch: "Branch",
   catalogCardAvailable: "Available",
   catalogCardTotalCopies: "Total Copies",
-  catalogOpenDetails: "Open Details",
+  catalogOpenDetails: "View Record",
+  catalogFeatureInstitutional: "Branch-aware public catalog",
   catalogResults: "Results",
   catalogPrevPage: "Previous",
   catalogNextPage: "Next",
@@ -76,7 +98,12 @@ export const en = {
   reservationStatusFulfilled: "Fulfilled",
   reservationStatusCancelled: "Cancelled",
   reservationStatusExpired: "Expired",
+  cabinetPageTitle: "Reader Cabinet",
+  cabinetPageDescription:
+    "Review personal reservations and circulation history in one institutional workspace.",
   cabinetReservationsTitle: "My Reservations",
+  cabinetReservationsDescription:
+    "Reservation requests are shown with service status and expiry information.",
   cabinetReservationsEmpty: "You have no reservations yet.",
   cabinetReservationsError:
     "Unable to load your reservations. Please try again.",
@@ -94,7 +121,9 @@ export const en = {
   cabinetReservationStatusFulfilled: "Fulfilled",
   cabinetReservationStatusCancelled: "Cancelled",
   cabinetReservationStatusExpired: "Expired",
-  librarianQueueTitle: "Reservation Queue",
+  librarianQueueTitle: "Reservation Service Queue",
+  librarianQueueDescription:
+    "Branch-scoped reservation handling for confirmation, rejection, and fulfillment decisions.",
   librarianQueueEmpty: "No pending reservations in your queue.",
   librarianQueueError: "Unable to load reservation queue. Please try again.",
   librarianQueueAccessDenied:
@@ -113,8 +142,10 @@ export const en = {
   librarianQueueStatusReady: "Ready for Pickup",
   librarianQueueStatusFulfilled: "Fulfilled",
   librarianQueueStatusCancelled: "Cancelled",
-  navCirculation: "Circulation",
-  circulationTitle: "Circulation — Loan Management",
+  navCirculation: "Circulation Desk",
+  circulationTitle: "Circulation Operations",
+  circulationDescription:
+    "Issue and return physical copies while maintaining branch ownership and status consistency.",
   circulationEmpty: "No loan records found.",
   circulationError: "Unable to load loan records. Please try again.",
   circulationAccessDenied:
@@ -149,13 +180,17 @@ export const en = {
   circulationConfirmReturn:
     "Are you sure you want to mark this copy as returned?",
   cabinetLoansTitle: "My Loans",
+  cabinetLoansDescription:
+    "Loan history and due dates are presented for borrower self-service review.",
   cabinetLoansEmpty: "You have no loan records.",
   cabinetLoansError: "Unable to load your loans. Please try again.",
   cabinetLoanStatusActive: "Active",
   cabinetLoanStatusReturned: "Returned",
   cabinetLoanStatusOverdue: "Overdue",
   cabinetLoanStatusLost: "Lost",
-  dashboardTitle: "Dashboard",
+  dashboardTitle: "Operational Dashboard",
+  dashboardDescription:
+    "Monitor current library activity, popular books, and overdue indicators for institutional operations.",
   dashboardTotalBooks: "Active Books",
   dashboardTotalCopies: "Total Copies",
   dashboardActiveReservations: "Active Reservations",
@@ -181,7 +216,9 @@ export const en = {
   dashboardColumnLoans: "Loans",
   dashboardColumnReservations: "Reservations",
   dashboardColumnScore: "Score",
-  reportsTitle: "Reports",
+  reportsTitle: "Institutional Reports",
+  reportsDescription:
+    "Monthly and yearly reporting summaries for branch operations and university oversight.",
   reportsYearly: "Yearly Summary",
   reportsMonthly: "Monthly Breakdown",
   reportsBranchSummary: "Branch Summary",
@@ -196,4 +233,72 @@ export const en = {
   reportsError: "Unable to load reports. Please try again.",
   reportsNoData: "No report data available for the selected year.",
   reportsMonthNames: "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
+  commonBranchLabel: "Branch",
+  overviewEyebrow: "KazUTB Digital Library",
+  overviewTitle: "University Library Platform Overview",
+  overviewDescription:
+    "A unified institutional platform for catalog discovery, reservations, circulation control, and operational reporting across KazUTB branches.",
+  overviewHeroPrimary: "Open Public Catalog",
+  overviewHeroSecondary: "Open Secure Access",
+  overviewStatScopes: "2 institutional scopes",
+  overviewStatBranches: "3 library branches",
+  overviewStatModules: "5 implemented service areas",
+  overviewAudienceTitle: "Audience",
+  overviewAudienceDescription:
+    "Prepared for university leadership, librarians, administrators, and future rollout planning.",
+  overviewProcessTitle: "Business Coverage",
+  overviewProcessDescription:
+    "Supports catalog discovery, reservation processing, circulation workflows, and operational analytics in one environment.",
+  overviewReadinessTitle: "Presentation Readiness",
+  overviewReadinessDescription:
+    "The current MVP demonstrates real branch-aware operations with multilingual interface foundations.",
+  overviewQuickAccessTitle: "Quick Access",
+  overviewAccessCatalogDescription:
+    "Public-facing catalog access for bibliographic discovery, branch filtering, and title review.",
+  overviewAccessCabinetDescription:
+    "Personal workspace for reservation status tracking and loan history review.",
+  overviewAccessLibrarianDescription:
+    "Operational queue for branch librarians processing reservation requests.",
+  overviewAccessAnalyticsDescription:
+    "Operational metrics and activity indicators for librarians, analysts, and administrators.",
+  overviewAccessReportsDescription:
+    "Monthly and yearly summaries prepared for management visibility and institutional reporting.",
+  overviewModuleTitle: "Current MVP Modules",
+  overviewModuleCatalogDescription:
+    "Public catalog, search routing, bibliographic details, and branch-aware visibility.",
+  overviewModuleReservationsDescription:
+    "Reservation request flow, reader cabinet visibility, and librarian queue handling.",
+  overviewModuleCirculationDescription:
+    "Loan issuance, returns processing, copy status consistency, and borrower history.",
+  overviewModuleAnalyticsDescription:
+    "Operational dashboard with popular books, activity buckets, and overdue indicators.",
+  overviewModuleReportsDescription:
+    "Yearly and monthly reporting summaries with branch-level operational context.",
+  overviewRoleTitle: "Role-Oriented Access",
+  overviewRoleStudentsTitle: "Students and Teachers",
+  overviewRoleStudentsDescription:
+    "Browse the catalog, place reservations, and review personal reservation and loan history after sign-in.",
+  overviewRoleLibrarianTitle: "Librarians",
+  overviewRoleLibrarianDescription:
+    "Manage reservation queues, circulation operations, and branch-scoped operational visibility.",
+  overviewRoleAdminTitle: "Administrators and Analysts",
+  overviewRoleAdminDescription:
+    "Review global analytics and reports, oversee institutional structure, and prepare management reporting.",
+  overviewBranchTitle: "Institutional and Branch Context",
+  overviewBranchUniversity: "University Scope",
+  overviewBranchUniversityDescription:
+    "Economic Library and Technological Library operate within the university scope with branch-aware access boundaries.",
+  overviewBranchCollege: "College Scope",
+  overviewBranchCollegeDescription:
+    "College Library remains isolated within the college scope to support staged migration and governance.",
+  overviewRoadmapTitle: "Next Presentation Themes",
+  overviewRoadmapAdmin:
+    "Administrative user management, branch assignment, and system settings.",
+  overviewRoadmapMigration:
+    "Migration tooling for legacy MARC SQL data import and staged verification.",
+  overviewRoadmapDigital:
+    "Protected digital materials, viewer workflows, and strengthened access control.",
+  overviewStatusOperational: "Operational",
+  overviewStatusMvp: "MVP",
+  overviewStatusPlanned: "Next Phase",
 } as const;

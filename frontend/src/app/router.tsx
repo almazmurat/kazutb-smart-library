@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { AppShell } from "./shell";
+import { OverviewPage } from "@features/overview/pages/overview-page";
 import { CatalogPage } from "@features/catalog/pages/catalog-page";
 import { SearchPage } from "@features/search/pages/search-page";
 import { BookDetailsPage } from "@features/book/pages/book-details-page";
@@ -22,7 +23,8 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AppShell />,
     children: [
-      { index: true, element: <Navigate to="/catalog" replace /> },
+      { index: true, element: <OverviewPage /> },
+      { path: "/overview", element: <OverviewPage /> },
       { path: "/catalog", element: <CatalogPage /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/books/:id", element: <BookDetailsPage /> },

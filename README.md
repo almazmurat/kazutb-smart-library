@@ -100,6 +100,7 @@ npm run dev
 - [Domain Model](docs/database/domain-model.md)
 - [Roles & Access Control](docs/roles-and-access.md)
 - [Implementation Roadmap](docs/roadmap.md)
+- [MVP Demo Preparation](docs/presentation/mvp-demo-preparation.md)
 - [Migration Pipeline](docs/migration/concept.md)
 - [Git Workflow Policy](docs/development/git-workflow.md)
 

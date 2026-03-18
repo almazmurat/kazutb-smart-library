@@ -1,4 +1,5 @@
 import { useI18n } from "@shared/i18n/use-i18n";
+import { PageIntro } from "@shared/ui/page-intro";
 import {
   useDashboard,
   usePopularBooks,
@@ -56,19 +57,17 @@ export function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900">
-            {t("dashboardTitle")}
-          </h1>
-          <span className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-700">
-            {d.scope === "global"
-              ? t("dashboardScopeGlobal")
-              : t("dashboardScopeBranch")}
-          </span>
-        </div>
-      </section>
+      <PageIntro
+        eyebrow={t("shellOperationsSection")}
+        title={t("dashboardTitle")}
+        description={t("dashboardDescription")}
+        badges={[
+          d.scope === "global"
+            ? t("dashboardScopeGlobal")
+            : t("dashboardScopeBranch"),
+          t("shellSecureLabel"),
+        ]}
+      />
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">

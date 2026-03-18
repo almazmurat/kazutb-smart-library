@@ -6,6 +6,7 @@ import {
 import { type ReservationStatus } from "@features/reservations/api/reservations-api";
 import { useI18n } from "@shared/i18n/use-i18n";
 import { authStore } from "@shared/auth/auth-store";
+import { PageIntro } from "@shared/ui/page-intro";
 import type { TranslationKey } from "@shared/i18n/dictionary";
 
 const STATUS_COLORS: Record<
@@ -104,11 +105,12 @@ export function LibrarianQueuePage() {
   if (reservations.length === 0) {
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-slate-900">
-            {t("librarianQueueTitle")}
-          </h1>
-        </div>
+        <PageIntro
+          eyebrow={t("shellOperationsSection")}
+          title={t("librarianQueueTitle")}
+          description={t("librarianQueueDescription")}
+          badges={[t("shellSecureLabel")]}
+        />
 
         <div className="rounded-xl border border-blue-100 bg-white p-8 text-center">
           <p className="text-sm text-slate-600">{t("librarianQueueEmpty")}</p>
@@ -121,10 +123,14 @@ export function LibrarianQueuePage() {
 
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          {t("librarianQueueTitle")}
-        </h1>
+      <PageIntro
+        eyebrow={t("shellOperationsSection")}
+        title={t("librarianQueueTitle")}
+        description={t("librarianQueueDescription")}
+        badges={[t("shellSecureLabel")]}
+      />
+
+      <div className="flex items-center justify-end">
         <select
           value={statusFilter || ""}
           onChange={(e) => {
@@ -179,16 +185,13 @@ export function LibrarianQueuePage() {
                   className="border-b border-slate-100 hover:bg-slate-50"
                 >
                   <td className="px-4 py-3 text-slate-900">
-                    <div className="font-medium">User Details</div>
+                    <div className="font-medium">{reservation.userId}</div>
                     <div className="text-xs text-slate-600">
-                      {reservation.userId}
+                      {t("commonBranchLabel")}: {reservation.libraryBranchId}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-slate-900">
-                    <div className="font-medium">Book</div>
-                    <div className="text-xs text-slate-600">
-                      {reservation.bookId}
-                    </div>
+                    <div className="font-medium">{reservation.bookId}</div>
                   </td>
                   <td className="px-4 py-3">
                     <span

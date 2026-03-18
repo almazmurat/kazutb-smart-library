@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { useI18n } from "@shared/i18n/use-i18n";
+
 import { useReportsOverview } from "@features/analytics/hooks/use-analytics";
+import { useI18n } from "@shared/i18n/use-i18n";
+import { PageIntro } from "@shared/ui/page-intro";
 
 export function ReportsPage() {
   const { t } = useI18n();
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const { data, isLoading, isError } = useReportsOverview(selectedYear);
+  const reports = useReportsOverview(selectedYear);
 
-  const monthNames = t("reportsMonthNames").split(",");
-
-  if (isLoading) {
+  if (reports.isLoading) {
     return (
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <p className="text-slate-500">{t("reportsLoading")}</p>
@@ -18,13 +18,15 @@ export function ReportsPage() {
     );
   }
 
-  if (isError) {
+  if (reports.isError) {
     return (
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <p className="text-red-600">{t("reportsError")}</p>
       </section>
     );
   }
+
+  const data = reports.data;
 
   if (!data) {
     return (
@@ -34,16 +36,25 @@ export function ReportsPage() {
     );
   }
 
-  const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - i);
+  const yearOptions = Array.from(
+    { length: 5 },
+    (_, index) => currentYear - index,
+  );
+  const monthNames = t("reportsMonthNames").split(",");
 
   return (
     <div className="space-y-6">
-      {/* Header + year selector */}
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900">
-            {t("reportsTitle")}
-          </h1>
+      <PageIntro
+        eyebrow={t("shellOperationsSection")}
+        title={t("reportsTitle")}
+        description={t("reportsDescription")}
+        badges={[
+          data.scope === "global"
+            ? t("dashboardScopeGlobal")
+            : t("dashboardScopeBranch"),
+          t("shellSecureLabel"),
+        ]}
+        actions={
           <div className="flex items-center gap-2">
             <label className="text-sm text-slate-600">
               {t("reportsYear")}:
@@ -51,22 +62,21 @@ export function ReportsPage() {
             <select
               className="rounded-md border border-slate-300 px-2 py-1 text-sm"
               value={selectedYear}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
+              onChange={(event) => setSelectedYear(Number(event.target.value))}
             >
-              {yearOptions.map((y) => (
-                <option key={y} value={y}>
-                  {y}
+              {yearOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
                 </option>
               ))}
             </select>
           </div>
-        </div>
-      </section>
+        }
+      />
 
-      {/* Yearly summary cards */}
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2 className="mb-4 text-lg font-semibold text-slate-900">
-          {t("reportsYearly")} — {data.year}
+          {t("reportsYearly")} - {data.year}
         </h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div className="rounded-lg border border-slate-200 p-4">
@@ -102,7 +112,6 @@ export function ReportsPage() {
         </div>
       </section>
 
-      {/* Monthly breakdown */}
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2 className="mb-4 text-lg font-semibold text-slate-900">
           {t("reportsMonthly")}
@@ -144,7 +153,6 @@ export function ReportsPage() {
         )}
       </section>
 
-      {/* Branch summary (global scope only) */}
       {data.branchSummary.length > 0 && (
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold text-slate-900">
