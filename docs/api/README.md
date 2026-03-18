@@ -160,6 +160,31 @@ Circulation ownership rules:
 - Students and teachers can only view their own loan history via `/my`.
 - Loan details visibility: admin=all, librarian=own branch, user=own loans only.
 
+Analytics endpoints:
+
+- `GET /api/v1/analytics/dashboard` - KPI summary (librarian/analyst/admin)
+- `GET /api/v1/analytics/popular-books` - ranked book popularity (librarian/analyst/admin)
+- `GET /api/v1/analytics/activity` - recent activity buckets (librarian/analyst/admin)
+
+Analytics query parameters:
+
+- `?limit=<number>` — popular books limit (default: 10)
+
+Reports endpoints:
+
+- `GET /api/v1/reports/overview` - yearly/monthly/branch reporting summary (librarian/analyst/admin)
+
+Reports query parameters:
+
+- `?year=<number>` — target year (default: current year)
+
+Analytics/Reports access rules:
+
+- Librarian: scoped to their assigned branch.
+- Analyst and Admin: global visibility across all branches.
+- Students, teachers, and guests: access denied (HTTP 403).
+- Branch summary in reports is only included for global scope.
+
 ## Search
 
 ```
