@@ -34,3 +34,9 @@ Avoid colloquial text and entertainment-style wording.
 2. Use `useI18n().t('key')` in components.
 3. Keep keys concise and domain-oriented.
 4. Do not hardcode user-facing strings directly in feature components.
+
+## Public Catalog Notes
+
+- Public catalog and book details pages must use i18n keys for all labels, empty states, and notices.
+- Public-facing texts should remain concise, formal, and institution-oriented.
+- Access restriction notices (digital materials) must remain explicit and consistent across locales.

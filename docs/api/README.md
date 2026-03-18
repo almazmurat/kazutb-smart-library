@@ -54,23 +54,24 @@ GET /api/docs
 
 ## Key Endpoint Groups
 
-| Group        | Base Path              | Auth Required          | Roles                     |
-| ------------ | ---------------------- | ---------------------- | ------------------------- |
-| Auth         | `/api/v1/auth`         | No (login only)        | All                       |
-| Books        | `/api/v1/books`        | Read: No; Write: Yes   | Librarian, Admin          |
-| Authors      | `/api/v1/authors`      | Read: No; Write: Yes   | Librarian, Admin          |
-| Categories   | `/api/v1/categories`   | Read: No; Write: Yes   | Librarian, Admin          |
-| Search       | `/api/v1/search`       | No                     | All                       |
-| Files        | `/api/v1/files`        | View: Yes; Upload: Yes | Student+ / Librarian+     |
-| Reservations | `/api/v1/reservations` | Yes                    | Student+                  |
-| Circulation  | `/api/v1/circulation`  | Yes                    | Librarian, Admin          |
-| Users        | `/api/v1/users`        | Yes                    | Admin                     |
-| Reports      | `/api/v1/reports`      | Yes                    | Librarian, Analyst, Admin |
-| Analytics    | `/api/v1/analytics`    | Yes                    | Librarian, Analyst, Admin |
-| Migration    | `/api/v1/migration`    | Yes                    | Admin                     |
-| Audit        | `/api/v1/audit`        | Yes                    | Admin                     |
-| Settings     | `/api/v1/settings`     | Yes                    | Admin                     |
-| Health       | `/api/v1/health`       | No                     | All                       |
+| Group          | Base Path              | Auth Required          | Roles                     |
+| -------------- | ---------------------- | ---------------------- | ------------------------- |
+| Auth           | `/api/v1/auth`         | No (login only)        | All                       |
+| Public Catalog | `/api/v1/public`       | No                     | All                       |
+| Books          | `/api/v1/books`        | Read: No; Write: Yes   | Librarian, Admin          |
+| Authors        | `/api/v1/authors`      | Read: No; Write: Yes   | Librarian, Admin          |
+| Categories     | `/api/v1/categories`   | Read: No; Write: Yes   | Librarian, Admin          |
+| Search         | `/api/v1/search`       | No                     | All                       |
+| Files          | `/api/v1/files`        | View: Yes; Upload: Yes | Student+ / Librarian+     |
+| Reservations   | `/api/v1/reservations` | Yes                    | Student+                  |
+| Circulation    | `/api/v1/circulation`  | Yes                    | Librarian, Admin          |
+| Users          | `/api/v1/users`        | Yes                    | Admin                     |
+| Reports        | `/api/v1/reports`      | Yes                    | Librarian, Analyst, Admin |
+| Analytics      | `/api/v1/analytics`    | Yes                    | Librarian, Analyst, Admin |
+| Migration      | `/api/v1/migration`    | Yes                    | Admin                     |
+| Audit          | `/api/v1/audit`        | Yes                    | Admin                     |
+| Settings       | `/api/v1/settings`     | Yes                    | Admin                     |
+| Health         | `/api/v1/health`       | No                     | All                       |
 
 ## Pagination
 
@@ -90,6 +91,27 @@ Book list supports:
 - `?categoryId=uuid` — filter by category
 - `?branchId=<uuid>` — filter by owning branch
 - `?isActive=true|false` — filter by active flag
+
+Public catalog endpoints:
+
+- `GET /api/v1/public/books`
+- `GET /api/v1/public/books/:id`
+- `GET /api/v1/public/filters`
+
+Public catalog query parameters:
+
+- `?title=<text>` — search by title fragment
+- `?author=<text>` — search by author name fragment
+- `?categoryId=<uuid>` — filter by category
+- `?branchId=<uuid>` — filter by library branch
+- `?language=<code>` — filter by language code
+- `?page=<number>&limit=<number>` — pagination
+
+Public response visibility policy:
+
+- Returns only active catalog records.
+- Excludes admin-only operational metadata.
+- Does not expose direct digital file access.
 
 Book copy management endpoints:
 
