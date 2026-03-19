@@ -133,7 +133,7 @@ export function OverviewPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="app-page">
       <PageIntro
         eyebrow={t("overviewEyebrow")}
         title={t("overviewTitle")}
@@ -145,24 +145,18 @@ export function OverviewPage() {
           `${t("shellCurrentRole")}: ${t(roleKey[authStore.role] ?? "roleGuest")}`,
         ]}
         actions={
-          <div className="flex flex-wrap gap-3">
-            <Link
-              to="/catalog"
-              className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
-            >
+          <div className="flex flex-wrap gap-2.5">
+            <Link to="/catalog" className="app-button-primary">
               {t("overviewHeroPrimary")}
             </Link>
-            <Link
-              to="/login"
-              className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-            >
+            <Link to="/login" className="app-button-secondary">
               {t("overviewHeroSecondary")}
             </Link>
           </div>
         }
       >
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-[24px] border border-white/70 bg-white/88 p-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
+        <div className="app-card-grid md:grid-cols-3">
+          <div className="app-subpanel p-5">
             <p className="text-sm font-semibold text-slate-900">
               {t("overviewAudienceTitle")}
             </p>
@@ -170,7 +164,7 @@ export function OverviewPage() {
               {t("overviewAudienceDescription")}
             </p>
           </div>
-          <div className="rounded-[24px] border border-white/70 bg-white/88 p-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
+          <div className="app-subpanel p-5">
             <p className="text-sm font-semibold text-slate-900">
               {t("overviewProcessTitle")}
             </p>
@@ -178,7 +172,7 @@ export function OverviewPage() {
               {t("overviewProcessDescription")}
             </p>
           </div>
-          <div className="rounded-[24px] border border-white/70 bg-white/88 p-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
+          <div className="app-subpanel p-5">
             <p className="text-sm font-semibold text-slate-900">
               {t("overviewReadinessTitle")}
             </p>
@@ -209,13 +203,13 @@ export function OverviewPage() {
         </div>
       </PageIntro>
 
-      <section className="app-panel p-6 md:p-7">
+      <section className="app-panel-strong p-6 md:p-7">
         <h2 className="app-section-heading">{t("overviewDemoFlowsTitle")}</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-4">
           {demoFlows.map((flow) => (
             <article
               key={flow.title}
-              className="flex h-full flex-col rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,248,255,0.9))] p-5 shadow-[0_16px_32px_rgba(15,23,42,0.05)]"
+              className="flex h-full flex-col rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,248,255,0.9))] p-5 shadow-[0_16px_32px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(15,23,42,0.08)]"
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-base font-semibold text-slate-900">
@@ -243,7 +237,7 @@ export function OverviewPage() {
 
       <section className="app-panel p-6 md:p-7">
         <h2 className="app-section-heading">{t("overviewQuickAccessTitle")}</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-3">
           {quickAccess.map((item) => (
             <Link
               key={item.to}
@@ -270,11 +264,11 @@ export function OverviewPage() {
 
       <section className="app-panel p-6 md:p-7">
         <h2 className="app-section-heading">{t("overviewModuleTitle")}</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-3">
           {modules.map((module) => (
             <article
               key={module.title}
-              className="rounded-[24px] border border-slate-200/80 bg-white/92 p-5"
+              className="rounded-[24px] border border-slate-200/80 bg-white/92 p-5 shadow-[0_8px_20px_rgba(15,23,42,0.05)]"
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-base font-semibold text-slate-900">
@@ -295,7 +289,7 @@ export function OverviewPage() {
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <section className="app-panel p-6 md:p-7">
           <h2 className="app-section-heading">{t("overviewRoleTitle")}</h2>
-          <div className="mt-4 grid gap-4 md:grid-cols-3">
+          <div className="app-card-grid mt-4 md:grid-cols-3">
             <article className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5">
               <h3 className="text-base font-semibold text-slate-900">
                 {t("overviewRoleStudentsTitle")}
@@ -344,7 +338,7 @@ export function OverviewPage() {
 
       <section className="app-panel p-6 md:p-7">
         <h2 className="app-section-heading">{t("overviewRoadmapTitle")}</h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
+        <div className="app-card-grid mt-4 md:grid-cols-3">
           {nextPhase.map((item, index) => (
             <div
               key={item}

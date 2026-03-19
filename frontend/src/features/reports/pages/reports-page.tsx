@@ -20,8 +20,8 @@ export function ReportsPage() {
 
   if (reports.isError) {
     return (
-      <section className="app-empty-state">
-        <p className="text-red-600">{t("reportsError")}</p>
+      <section className="app-state-error">
+        <p>{t("reportsError")}</p>
       </section>
     );
   }
@@ -43,7 +43,7 @@ export function ReportsPage() {
   const monthNames = t("reportsMonthNames").split(",");
 
   return (
-    <div className="space-y-6">
+    <div className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
         title={t("reportsTitle")}

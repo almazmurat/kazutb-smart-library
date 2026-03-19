@@ -45,8 +45,8 @@ export function AnalyticsPage() {
 
   if (dashboard.isError || popular.isError || activity.isError) {
     return (
-      <section className="app-empty-state">
-        <p className="text-red-600">{t("dashboardError")}</p>
+      <section className="app-state-error">
+        <p>{t("dashboardError")}</p>
       </section>
     );
   }
@@ -56,7 +56,7 @@ export function AnalyticsPage() {
   const a = activity.data!;
 
   return (
-    <div className="space-y-6">
+    <div className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
         title={t("dashboardTitle")}

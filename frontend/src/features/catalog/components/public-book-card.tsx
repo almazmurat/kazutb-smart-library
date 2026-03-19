@@ -17,7 +17,7 @@ interface PublicBookCardProps {
 
 export function PublicBookCard({ book, labels }: PublicBookCardProps) {
   return (
-    <article className="app-panel group flex h-full flex-col overflow-hidden p-4 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_22px_42px_rgba(15,23,42,0.1)] md:p-5">
+    <article className="app-panel group flex h-full flex-col overflow-hidden p-4 transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_22px_42px_rgba(15,23,42,0.1)] md:p-5">
       <BookCoverMock
         title={book.title}
         subtitle={book.subtitle}
@@ -36,21 +36,21 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
           </span>
         </div>
 
-        <h3 className="mt-4 text-xl font-semibold leading-tight text-slate-950">
+        <h3 className="mt-4 text-lg font-semibold leading-tight text-slate-950 md:text-xl">
           {book.title}
         </h3>
         {book.subtitle ? (
-          <p className="mt-2 text-sm leading-6 text-slate-600">
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
             {book.subtitle}
           </p>
         ) : null}
 
-        <p className="mt-3 text-sm font-medium text-slate-700">
+        <p className="mt-3 line-clamp-2 text-sm font-medium text-slate-700">
           {book.authors.map((author) => author.fullName).join(", ") || "-"}
         </p>
 
-        <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-600">
-          <div className="rounded-2xl bg-slate-50 px-3 py-2.5">
+        <div className="mt-4 grid grid-cols-2 gap-2.5 text-xs text-slate-600">
+          <div className="rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">
             <span className="block font-medium text-slate-500">
               {labels.year}
             </span>
@@ -58,7 +58,7 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
               {book.publishYear || "-"}
             </span>
           </div>
-          <div className="rounded-2xl bg-slate-50 px-3 py-2.5">
+          <div className="rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">
             <span className="block font-medium text-slate-500">
               {labels.language}
             </span>
@@ -66,7 +66,7 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
               {book.language?.toUpperCase() || "-"}
             </span>
           </div>
-          <div className="col-span-2 rounded-2xl bg-slate-50 px-3 py-2.5">
+          <div className="col-span-2 rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">
             <span className="block font-medium text-slate-500">
               {labels.branch}
             </span>

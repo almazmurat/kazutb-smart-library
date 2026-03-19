@@ -34,14 +34,14 @@ export function CatalogPage() {
   const currentPage = query.page || 1;
 
   return (
-    <section className="space-y-6">
+    <section className="app-page">
       <PageIntro
         eyebrow={t("catalogInstitutionalLabel")}
         title={t("catalogPublicTitle")}
         description={t("catalogPublicDescription")}
         badges={[t("shellPublicLabel"), t("catalogFeatureInstitutional")]}
         actions={
-          <div className="flex min-w-[220px] flex-col gap-2 px-3 py-2 text-left">
+          <div className="flex min-w-[220px] flex-col gap-1.5 px-3 py-2 text-left">
             <span className="app-kicker">Catalog Snapshot</span>
             <span className="text-3xl font-semibold tracking-tight text-slate-950">
               {booksMeta?.total ?? 0}
@@ -77,9 +77,7 @@ export function CatalogPage() {
       ) : null}
 
       {booksQuery.isError ? (
-        <div className="app-empty-state border-red-200 text-sm text-red-700">
-          {t("catalogError")}
-        </div>
+        <div className="app-state-error">{t("catalogError")}</div>
       ) : null}
 
       {!booksQuery.isLoading && !booksQuery.isError ? (
@@ -89,7 +87,7 @@ export function CatalogPage() {
               {t("catalogEmpty")}
             </div>
           ) : (
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <div className="app-card-grid md:grid-cols-2 xl:grid-cols-3">
               {booksData.map((book) => (
                 <PublicBookCard
                   key={book.id}
@@ -107,7 +105,7 @@ export function CatalogPage() {
             </div>
           )}
 
-          <div className="app-panel flex items-center justify-between px-5 py-4">
+          <div className="app-toolbar">
             <p className="text-sm text-slate-600">
               {t("catalogResults")}: {booksMeta?.total ?? 0}
             </p>

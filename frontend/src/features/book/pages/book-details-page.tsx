@@ -41,7 +41,7 @@ export function BookDetailsPage() {
 
   if (bookQuery.isLoading) {
     return (
-      <section className="rounded-xl border border-blue-100 bg-white p-8 text-center text-sm text-slate-600">
+      <section className="app-empty-state text-sm text-slate-600">
         {t("catalogLoading")}
       </section>
     );
@@ -49,9 +49,7 @@ export function BookDetailsPage() {
 
   if (bookQuery.isError || !bookQuery.data) {
     return (
-      <section className="rounded-xl border border-red-200 bg-white p-8 text-center text-sm text-red-700">
-        {t("catalogBookNotFound")}
-      </section>
+      <section className="app-state-error">{t("catalogBookNotFound")}</section>
     );
   }
 
@@ -62,7 +60,7 @@ export function BookDetailsPage() {
     (authStore.role === "STUDENT" || authStore.role === "TEACHER");
 
   return (
-    <section className="space-y-6">
+    <section className="app-page">
       <div className="flex items-center justify-between gap-3">
         <Link
           to="/catalog"
@@ -86,7 +84,7 @@ export function BookDetailsPage() {
         ]}
       />
 
-      <div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
+      <div className="grid gap-6 xl:grid-cols-[0.84fr_1.16fr]">
         <div className="space-y-6">
           <BookCoverMock
             title={book.title}
@@ -94,7 +92,7 @@ export function BookDetailsPage() {
             accent={book.language?.toUpperCase() || book.libraryBranch.name}
           />
 
-          <article className="app-panel p-6">
+          <article className="app-panel-strong p-6">
             <h2 className="app-section-heading">
               {t("catalogAvailabilityTitle")}
             </h2>
@@ -139,7 +137,7 @@ export function BookDetailsPage() {
             )}
 
             {isGuest && (
-              <div className="mt-4 rounded-[20px] border border-amber-100 bg-amber-50/90 px-4 py-3 text-sm leading-6 text-amber-900">
+              <div className="app-state-warning mt-4">
                 {t("reservationSignInRequired")}
               </div>
             )}

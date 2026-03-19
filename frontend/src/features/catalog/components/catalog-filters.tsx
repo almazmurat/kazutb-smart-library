@@ -53,11 +53,11 @@ export function CatalogFilters({
   const languages = filters?.languages ?? [];
 
   return (
-    <section className="app-panel p-5 md:p-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <section className="app-panel-strong p-5 md:p-6">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="app-kicker">Search and Filters</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+          <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
             {labels.search}
           </h2>
         </div>
@@ -75,14 +75,14 @@ export function CatalogFilters({
         </button>
       </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div className="app-filter-grid xl:grid-cols-5">
         <label className="flex flex-col gap-1 text-sm text-slate-700">
           <span className="font-medium">{labels.search}</span>
           <input
             type="text"
             value={value.title || ""}
             onChange={onTextChange("title")}
-            className="rounded-xl border border-slate-200 bg-[rgba(248,250,252,0.72)] px-3.5 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="app-form-control"
           />
         </label>
 
@@ -92,7 +92,7 @@ export function CatalogFilters({
             type="text"
             value={value.author || ""}
             onChange={onTextChange("author")}
-            className="rounded-xl border border-slate-200 bg-[rgba(248,250,252,0.72)] px-3.5 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="app-form-control"
           />
         </label>
 
@@ -101,7 +101,7 @@ export function CatalogFilters({
           <select
             value={value.categoryId || ""}
             onChange={onSelectChange("categoryId")}
-            className="rounded-xl border border-slate-200 bg-[rgba(248,250,252,0.72)] px-3.5 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="app-form-control"
           >
             <option value="">{labels.allCategories}</option>
             {categories.map((category) => (
@@ -117,7 +117,7 @@ export function CatalogFilters({
           <select
             value={value.branchId || ""}
             onChange={onSelectChange("branchId")}
-            className="rounded-xl border border-slate-200 bg-[rgba(248,250,252,0.72)] px-3.5 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="app-form-control"
           >
             <option value="">{labels.allBranches}</option>
             {branches.map((branch) => (
@@ -133,7 +133,7 @@ export function CatalogFilters({
           <select
             value={value.language || ""}
             onChange={onSelectChange("language")}
-            className="rounded-xl border border-slate-200 bg-[rgba(248,250,252,0.72)] px-3.5 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="app-form-control"
           >
             <option value="">{labels.allLanguages}</option>
             {languages.map((language) => (

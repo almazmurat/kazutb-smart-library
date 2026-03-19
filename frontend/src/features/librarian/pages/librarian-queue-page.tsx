@@ -77,15 +77,21 @@ export function LibrarianQueuePage() {
     !authStore.isAuthenticated ||
     (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
   ) {
-    return <div className="app-empty-state text-sm text-red-700">{t("librarianQueueAccessDenied")}</div>;
+    return (
+      <div className="app-state-error">{t("librarianQueueAccessDenied")}</div>
+    );
   }
 
   if (isLoading) {
-    return <div className="app-empty-state text-sm text-slate-600">{t("catalogLoading")}</div>;
+    return (
+      <div className="app-empty-state text-sm text-slate-600">
+        {t("catalogLoading")}
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="app-empty-state text-sm text-red-700">{t("librarianQueueError")}</div>;
+    return <div className="app-state-error">{t("librarianQueueError")}</div>;
   }
 
   const reservations = data?.data || [];
@@ -110,7 +116,7 @@ export function LibrarianQueuePage() {
   const totalPages = data?.meta.totalPages || 1;
 
   return (
-    <section className="space-y-4">
+    <section className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
         title={t("librarianQueueTitle")}
@@ -118,7 +124,7 @@ export function LibrarianQueuePage() {
         badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
       />
 
-      <div className="app-panel flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+      <div className="app-toolbar">
         <div>
           <p className="app-kicker">{t("librarianQueueTitle")}</p>
           <p className="mt-2 text-sm text-slate-600">
@@ -131,7 +137,7 @@ export function LibrarianQueuePage() {
             setStatusFilter((e.target.value as ReservationStatus) || undefined);
             setPage(1);
           }}
-          className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700"
+          className="app-form-control w-auto min-w-[210px]"
         >
           <option value="">{t("librarianQueueFilterAll")}</option>
           <option value="PENDING">{t("librarianQueueStatusPending")}</option>
@@ -187,7 +193,9 @@ export function LibrarianQueuePage() {
                     </div>
                     <div className="mt-2 text-xs text-slate-500">
                       <span className="app-chip-muted">
-                        {t("commonBranchLabel")}: {reservation.libraryBranch?.name || reservation.libraryBranchId}
+                        {t("commonBranchLabel")}:{" "}
+                        {reservation.libraryBranch?.name ||
+                          reservation.libraryBranchId}
                       </span>
                     </div>
                   </td>
@@ -244,7 +252,7 @@ export function LibrarianQueuePage() {
                           {t("librarianQueueMarkReady")}
                         </button>
                       )}
-                      {!['PENDING', 'READY'].includes(reservation.status) && (
+                      {!["PENDING", "READY"].includes(reservation.status) && (
                         <span className="text-xs text-slate-400">
                           {t("librarianQueueNoActions")}
                         </span>

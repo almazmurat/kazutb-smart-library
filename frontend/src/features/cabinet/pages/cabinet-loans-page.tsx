@@ -40,11 +40,7 @@ export function CabinetLoansPage() {
   }
 
   if (error) {
-    return (
-      <div className="app-empty-state text-sm text-red-700">
-        {t("cabinetLoansError")}
-      </div>
-    );
+    return <div className="app-state-error">{t("cabinetLoansError")}</div>;
   }
 
   const loans = data?.data || [];
@@ -61,7 +57,7 @@ export function CabinetLoansPage() {
 
   return (
     <section className="space-y-5">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div className="app-toolbar">
         <div>
           <p className="app-kicker">{t("shellReaderSection")}</p>
           <h2 className="mt-2 app-section-heading text-2xl">

@@ -110,6 +110,8 @@ npm run dev
 - [Data Quality Taxonomy](docs/migration/data-quality-taxonomy.md)
 - [Librarian Data Quality Workflow](docs/migration/librarian-data-quality-workbench-workflow.md)
 - [Data Quality Workbench Spec](docs/migration/data-quality-workbench-spec.md)
+- [Data Quality Live Read-Only Phase](docs/migration/data-quality-live-readonly-phase.md)
+- [Data Quality Review Persistence Phase](docs/migration/data-quality-review-persistence-phase.md)
 - [Git Workflow Policy](docs/development/git-workflow.md)
 
 ## User Roles

@@ -57,6 +57,15 @@ enum MigrationBatchStatus {
   PARTIAL
 }
 
+enum DataQualityReviewStatus {
+  OPEN
+  IN_REVIEW
+  NEEDS_METADATA_COMPLETION
+  DUPLICATE_CANDIDATE
+  ESCALATED
+  REVIEWED
+}
+
 enum InstitutionScopeCode {
   UNIVERSITY
   COLLEGE
@@ -122,6 +131,9 @@ model User {
   reservationsProcessedByUser Reservation[] @relation("ReservationsProcessedBy")
   loans                       Loan[]
   auditLogs                   AuditLog[]
+  assignedDataQualityIssues   DataQualityIssueReview[] @relation("DqAssignedReviewer")
+  reviewedDataQualityIssues   DataQualityIssueReview[] @relation("DqLastReviewer")
+  dataQualityReviewNotes      DataQualityIssueReviewNote[]
 
   @@index([institutionScopeId])
   @@index([libraryBranchId])
@@ -385,6 +397,49 @@ model MigrationLog {
 
   @@index([batchId])
   @@index([level])
+}
+
+model DataQualityIssueReview {
+  id               String                  @id @default(uuid()) @db.Uuid
+  issueId          String                  @unique
+  sourceTable      String
+  sourceRecordKey  String
+  issueClass       String
+  severity         String
+  status           DataQualityReviewStatus @default(OPEN)
+  latestNote       String?
+  priority         Int?
+  metadata         Json?
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+
+  assignedToUserId   String? @db.Uuid
+  lastReviewedByUserId String? @db.Uuid
+
+  assignedToUser   User? @relation("DqAssignedReviewer", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  lastReviewedByUser User? @relation("DqLastReviewer", fields: [lastReviewedByUserId], references: [id], onDelete: SetNull)
+
+  notes DataQualityIssueReviewNote[]
+
+  @@index([status])
+  @@index([sourceTable])
+  @@index([sourceRecordKey])
+}
+
+model DataQualityIssueReviewNote {
+  id        String   @id @default(uuid()) @db.Uuid
+  note      String
+  createdAt DateTime @default(now())
+
+  reviewId String @db.Uuid
+  userId   String @db.Uuid
+
+  review DataQualityIssueReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user   User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId])
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model SystemSetting {

@@ -65,9 +65,7 @@ export function CirculationPage() {
     (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
   ) {
     return (
-      <div className="app-empty-state text-sm text-red-700">
-        {t("circulationAccessDenied")}
-      </div>
+      <div className="app-state-error">{t("circulationAccessDenied")}</div>
     );
   }
 
@@ -113,18 +111,14 @@ export function CirculationPage() {
   }
 
   if (error) {
-    return (
-      <div className="app-empty-state text-sm text-red-700">
-        {t("circulationError")}
-      </div>
-    );
+    return <div className="app-state-error">{t("circulationError")}</div>;
   }
 
   const loans = data?.data || [];
   const totalPages = data?.meta.totalPages || 1;
 
   return (
-    <section className="space-y-4">
+    <section className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
         title={t("circulationTitle")}
@@ -132,7 +126,7 @@ export function CirculationPage() {
         badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
       />
 
-      <div className="app-panel flex flex-wrap items-center justify-between gap-4 px-5 py-4">
+      <div className="app-toolbar">
         <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-1.5 text-sm text-slate-600">
             <input
@@ -153,7 +147,7 @@ export function CirculationPage() {
               setOverdueFilter(false);
               setPage(1);
             }}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700"
+            className="app-form-control w-auto min-w-[210px]"
           >
             <option value="">{t("circulationFilterAll")}</option>
             <option value="ACTIVE">{t("circulationStatusActive")}</option>
@@ -182,10 +176,10 @@ export function CirculationPage() {
 
       {issueMessage && (
         <div
-          className={`app-panel px-4 py-3 text-sm ${
+          className={`px-4 py-3 text-sm ${
             issueMessage.type === "success"
-              ? "border border-green-100 bg-green-50 text-green-900"
-              : "border border-red-100 bg-red-50 text-red-900"
+              ? "app-state-success"
+              : "app-state-error"
           }`}
         >
           {issueMessage.text}
@@ -208,7 +202,7 @@ export function CirculationPage() {
                 required
                 value={issueUserId}
                 onChange={(e) => setIssueUserId(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
+                className="app-form-control mt-1"
               />
             </div>
             <div>
@@ -220,7 +214,7 @@ export function CirculationPage() {
                 required
                 value={issueCopyId}
                 onChange={(e) => setIssueCopyId(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
+                className="app-form-control mt-1"
               />
             </div>
             <div>
@@ -231,7 +225,7 @@ export function CirculationPage() {
                 type="date"
                 value={issueDueDate}
                 onChange={(e) => setIssueDueDate(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
+                className="app-form-control mt-1"
               />
             </div>
             <div>
@@ -242,7 +236,7 @@ export function CirculationPage() {
                 type="text"
                 value={issueNotes}
                 onChange={(e) => setIssueNotes(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
+                className="app-form-control mt-1"
               />
             </div>
           </div>
