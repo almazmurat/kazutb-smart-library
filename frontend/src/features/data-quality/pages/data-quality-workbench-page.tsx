@@ -4,16 +4,19 @@ import { PageIntro } from "@shared/ui/page-intro";
 import { useI18n } from "@shared/i18n/use-i18n";
 
 import type {
-  DataQualityIssueClass,
   DataQualityFilters,
-  DataQualityIssueStatus,
+  DataQualityIssueClass,
+  DataQualityReviewStatus,
   DataQualitySeverity,
   DataQualityStage,
 } from "../types";
 import {
+  useAddDataQualityNote,
+  useAssignDataQualityIssue,
   useDataQualityIssue,
   useDataQualityIssues,
   useDataQualitySummary,
+  useUpdateDataQualityReview,
 } from "../hooks/use-data-quality";
 
 const severityOrder: DataQualitySeverity[] = [
@@ -32,12 +35,13 @@ const issueClassOrder: DataQualityIssueClass[] = [
   "DERIVED",
 ];
 
-const statusOrder: DataQualityIssueStatus[] = [
-  "new",
-  "in_review",
-  "approved",
-  "rejected",
-  "fixed",
+const reviewStatuses: DataQualityReviewStatus[] = [
+  "OPEN",
+  "IN_REVIEW",
+  "NEEDS_METADATA_COMPLETION",
+  "DUPLICATE_CANDIDATE",
+  "ESCALATED",
+  "REVIEWED",
 ];
 
 function severityBadgeClass(severity: DataQualitySeverity): string {
@@ -61,9 +65,15 @@ export function DataQualityWorkbenchPage() {
   const [issueClass, setIssueClass] = useState<DataQualityIssueClass | "ALL">(
     "ALL",
   );
-  const [status, setStatus] = useState<DataQualityIssueStatus | "ALL">("ALL");
+  const [status, setStatus] = useState<DataQualityReviewStatus | "ALL">("ALL");
   const [sourceTable, setSourceTable] = useState<string | "ALL">("ALL");
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
+
+  const [reviewStatusDraft, setReviewStatusDraft] =
+    useState<DataQualityReviewStatus>("OPEN");
+  const [reviewNoteDraft, setReviewNoteDraft] = useState("");
+  const [newNoteDraft, setNewNoteDraft] = useState("");
+  const [assigneeDraft, setAssigneeDraft] = useState("");
 
   const filters: DataQualityFilters = {
     stage,
@@ -77,17 +87,22 @@ export function DataQualityWorkbenchPage() {
   const issuesQuery = useDataQualityIssues(filters);
   const issueDetailQuery = useDataQualityIssue(selectedIssueId);
 
+  const updateReview = useUpdateDataQualityReview();
+  const addNote = useAddDataQualityNote();
+  const assignIssue = useAssignDataQualityIssue();
+
   const issues = issuesQuery.data?.items ?? [];
   const kpi = summaryQuery.data ?? {
     total: 0,
     critical: 0,
     high: 0,
-    autoFixable: 0,
+    reviewed: 0,
   };
 
-  const sourceTables = useMemo(() => {
-    return [...new Set(issues.map((item) => item.sourceTable))].sort();
-  }, [issues]);
+  const sourceTables = useMemo(
+    () => [...new Set(issues.map((item) => item.sourceTable))].sort(),
+    [issues],
+  );
 
   useEffect(() => {
     if (!issues.length) {
@@ -100,7 +115,18 @@ export function DataQualityWorkbenchPage() {
     }
   }, [issues, selectedIssueId]);
 
-  const activeIssue = issueDetailQuery.data;
+  useEffect(() => {
+    const current = issueDetailQuery.data?.data;
+    if (!current) {
+      return;
+    }
+    setReviewStatusDraft(current.review.status);
+    setAssigneeDraft(current.review.assignedToUserId ?? "");
+  }, [issueDetailQuery.data]);
+
+  const activeIssue = issueDetailQuery.data?.data;
+  const notes = issueDetailQuery.data?.notes ?? [];
+
   const isLoading = summaryQuery.isLoading || issuesQuery.isLoading;
   const hasError = summaryQuery.isError || issuesQuery.isError;
 
@@ -116,53 +142,41 @@ export function DataQualityWorkbenchPage() {
         ]}
       />
 
+      <section className="app-subpanel border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        {t("dqWorkbenchSafetyReadonlyLegacy")}
+      </section>
+
       <section className="app-panel-strong p-6">
-        <h2 className="mb-4 app-section-heading">
-          {t("dqWorkbenchSummaryTitle")}
-        </h2>
+        <h2 className="mb-4 app-section-heading">{t("dqWorkbenchSummaryTitle")}</h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="app-panel p-4">
             <p className="app-kicker">{t("dqWorkbenchSummaryTotal")}</p>
-            <p className="mt-3 text-3xl font-semibold text-slate-900">
-              {kpi.total}
-            </p>
+            <p className="mt-3 text-3xl font-semibold text-slate-900">{kpi.total}</p>
           </div>
           <div className="app-panel p-4">
             <p className="app-kicker">{t("dqWorkbenchSummaryCritical")}</p>
-            <p className="mt-3 text-3xl font-semibold text-red-700">
-              {kpi.critical}
-            </p>
+            <p className="mt-3 text-3xl font-semibold text-red-700">{kpi.critical}</p>
           </div>
           <div className="app-panel p-4">
             <p className="app-kicker">{t("dqWorkbenchSummaryHigh")}</p>
-            <p className="mt-3 text-3xl font-semibold text-orange-700">
-              {kpi.high}
-            </p>
+            <p className="mt-3 text-3xl font-semibold text-orange-700">{kpi.high}</p>
           </div>
           <div className="app-panel p-4">
-            <p className="app-kicker">{t("dqWorkbenchSummaryAutoFixable")}</p>
-            <p className="mt-3 text-3xl font-semibold text-slate-900">
-              {kpi.autoFixable}
-            </p>
+            <p className="app-kicker">{t("dqWorkbenchSummaryReviewed")}</p>
+            <p className="mt-3 text-3xl font-semibold text-emerald-700">{kpi.reviewed}</p>
           </div>
         </div>
       </section>
 
       <section className="app-panel-strong p-6">
-        <h2 className="mb-4 app-section-heading">
-          {t("dqWorkbenchFiltersTitle")}
-        </h2>
+        <h2 className="mb-4 app-section-heading">{t("dqWorkbenchFiltersTitle")}</h2>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">
-              {t("dqWorkbenchFilterStage")}
-            </span>
+            <span className="text-slate-600">{t("dqWorkbenchFilterStage")}</span>
             <select
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
               value={stage}
-              onChange={(event) =>
-                setStage(event.target.value as DataQualityStage)
-              }
+              onChange={(event) => setStage(event.target.value as DataQualityStage)}
             >
               <option value="raw">{t("dqStageRaw")}</option>
               <option value="clean">{t("dqStageClean")}</option>
@@ -171,9 +185,7 @@ export function DataQualityWorkbenchPage() {
           </label>
 
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">
-              {t("dqWorkbenchFilterSeverity")}
-            </span>
+            <span className="text-slate-600">{t("dqWorkbenchFilterSeverity")}</span>
             <select
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
               value={severity}
@@ -191,45 +203,38 @@ export function DataQualityWorkbenchPage() {
           </label>
 
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">
-              {t("dqWorkbenchFilterIssueClass")}
-            </span>
+            <span className="text-slate-600">{t("dqWorkbenchFilterIssueClass")}</span>
             <select
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
               value={issueClass}
               onChange={(event) =>
-                setIssueClass(
-                  event.target.value as DataQualityIssueClass | "ALL",
-                )
+                setIssueClass(event.target.value as DataQualityIssueClass | "ALL")
               }
             >
               <option value="ALL">{t("dqFilterAll")}</option>
-              <option value="IDENTITY">IDENTITY</option>
-              <option value="REFERENTIAL">REFERENTIAL</option>
-              <option value="SEMANTIC">SEMANTIC</option>
-              <option value="FORMAT">FORMAT</option>
-              <option value="GOVERNANCE">GOVERNANCE</option>
-              <option value="DERIVED">DERIVED</option>
+              {issueClassOrder.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
             </select>
           </label>
 
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">
-              {t("dqWorkbenchFilterStatus")}
-            </span>
+            <span className="text-slate-600">{t("dqWorkbenchFilterStatus")}</span>
             <select
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
               value={status}
               onChange={(event) =>
-                setStatus(event.target.value as DataQualityIssueStatus | "ALL")
+                setStatus(event.target.value as DataQualityReviewStatus | "ALL")
               }
             >
               <option value="ALL">{t("dqFilterAll")}</option>
-              <option value="new">{t("dqStatusNew")}</option>
-              <option value="in_review">{t("dqStatusInReview")}</option>
-              <option value="approved">{t("dqStatusApproved")}</option>
-              <option value="rejected">{t("dqStatusRejected")}</option>
-              <option value="fixed">{t("dqStatusFixed")}</option>
+              {reviewStatuses.map((value) => (
+                <option key={value} value={value}>
+                  {t(`dqReviewStatus${value}` as never)}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -252,22 +257,16 @@ export function DataQualityWorkbenchPage() {
       </section>
 
       {isLoading ? (
-        <section className="app-panel p-4 text-sm text-slate-600">
-          {t("dqWorkbenchLoading")}
-        </section>
+        <section className="app-panel p-4 text-sm text-slate-600">{t("dqWorkbenchLoading")}</section>
       ) : null}
 
       {hasError ? (
-        <section className="app-panel p-4 text-sm text-red-700">
-          {t("dqWorkbenchError")}
-        </section>
+        <section className="app-panel p-4 text-sm text-red-700">{t("dqWorkbenchError")}</section>
       ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[1.8fr_1fr]">
         <div className="app-panel-strong p-6">
-          <h2 className="mb-4 app-section-heading">
-            {t("dqWorkbenchIssueListTitle")}
-          </h2>
+          <h2 className="mb-4 app-section-heading">{t("dqWorkbenchIssueListTitle")}</h2>
           <div className="app-table-shell">
             <table className="w-full text-left text-sm">
               <thead className="app-table-head border-b border-slate-200 text-xs uppercase text-slate-500">
@@ -293,9 +292,7 @@ export function DataQualityWorkbenchPage() {
                       >
                         {issue.id}
                       </button>
-                      <p className="mt-1 text-xs text-slate-500">
-                        {issue.summary}
-                      </p>
+                      <p className="mt-1 text-xs text-slate-500">{issue.summary}</p>
                     </td>
                     <td className="px-3 py-3">
                       <span
@@ -304,21 +301,15 @@ export function DataQualityWorkbenchPage() {
                         {issue.severity}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-slate-700">
-                      {issue.issueClass}
-                    </td>
+                    <td className="px-3 py-3 text-slate-700">{issue.issueClass}</td>
                     <td className="px-3 py-3 text-slate-700">
                       <div>{issue.sourceTable}</div>
-                      <div className="text-xs text-slate-500">
-                        {issue.sourceRecordKey}
-                      </div>
+                      <div className="text-xs text-slate-500">{issue.sourceRecordKey}</div>
                     </td>
                     <td className="px-3 py-3 text-slate-700">
-                      {issue.status}
-                      {issue.reviewer ? (
-                        <div className="text-xs text-slate-500">
-                          {issue.reviewer}
-                        </div>
+                      {t(`dqReviewStatus${issue.review.status}` as never)}
+                      {issue.review.assignedToName ? (
+                        <div className="text-xs text-slate-500">{issue.review.assignedToName}</div>
                       ) : null}
                     </td>
                   </tr>
@@ -334,74 +325,143 @@ export function DataQualityWorkbenchPage() {
         </div>
 
         <aside className="app-panel-strong p-6">
-          <h2 className="mb-4 app-section-heading">
-            {t("dqWorkbenchReviewPanelTitle")}
-          </h2>
-          <p className="mb-4 text-sm leading-6 text-slate-600">
-            {t("dqWorkbenchReviewPanelDescription")}
-          </p>
+          <h2 className="mb-4 app-section-heading">{t("dqWorkbenchReviewPanelTitle")}</h2>
+          <p className="mb-4 text-sm leading-6 text-slate-600">{t("dqWorkbenchReviewPanelDescription")}</p>
+
           {activeIssue ? (
-            <div className="mb-4 space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
-              <p className="font-semibold text-slate-900">{activeIssue.id}</p>
-              <p>{activeIssue.summary}</p>
-              <p>
-                <span className="font-medium">{t("dqColumnSource")}: </span>
-                {activeIssue.sourceTable} / {activeIssue.sourceRecordKey}
-              </p>
-              {activeIssue.fieldName ? (
+            <>
+              <div className="mb-4 space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                <p className="font-semibold text-slate-900">{activeIssue.id}</p>
+                <p>{activeIssue.summary}</p>
                 <p>
-                  <span className="font-medium">{t("dqIssueFieldLabel")}: </span>
-                  {activeIssue.fieldName}
+                  <span className="font-medium">{t("dqColumnSource")}: </span>
+                  {activeIssue.sourceTable} / {activeIssue.sourceRecordKey}
                 </p>
-              ) : null}
-              {activeIssue.detectionRule ? (
-                <p>
-                  <span className="font-medium">{t("dqIssueRuleLabel")}: </span>
-                  {activeIssue.detectionRule}
-                </p>
-              ) : null}
-            </div>
+                {activeIssue.fieldName ? (
+                  <p>
+                    <span className="font-medium">{t("dqIssueFieldLabel")}: </span>
+                    {activeIssue.fieldName}
+                  </p>
+                ) : null}
+                {activeIssue.detectionRule ? (
+                  <p>
+                    <span className="font-medium">{t("dqIssueRuleLabel")}: </span>
+                    {activeIssue.detectionRule}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="space-y-3 rounded-xl border border-slate-200 p-4">
+                <label className="space-y-1 text-sm">
+                  <span className="text-slate-600">{t("dqReviewStatusLabel")}</span>
+                  <select
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    value={reviewStatusDraft}
+                    onChange={(event) =>
+                      setReviewStatusDraft(event.target.value as DataQualityReviewStatus)
+                    }
+                  >
+                    {reviewStatuses.map((value) => (
+                      <option key={value} value={value}>
+                        {t(`dqReviewStatus${value}` as never)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="space-y-1 text-sm">
+                  <span className="text-slate-600">{t("dqReviewDecisionNoteLabel")}</span>
+                  <textarea
+                    className="min-h-20 w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    value={reviewNoteDraft}
+                    onChange={(event) => setReviewNoteDraft(event.target.value)}
+                    placeholder={t("dqReviewDecisionNotePlaceholder")}
+                  />
+                </label>
+
+                <button
+                  type="button"
+                  className="app-button-primary w-full justify-center"
+                  onClick={() =>
+                    updateReview.mutate({
+                      id: activeIssue.id,
+                      status: reviewStatusDraft,
+                      note: reviewNoteDraft.trim() || undefined,
+                    })
+                  }
+                  disabled={updateReview.isPending}
+                >
+                  {t("dqActionUpdateStatus")}
+                </button>
+
+                <label className="space-y-1 text-sm">
+                  <span className="text-slate-600">{t("dqAssignmentLabel")}</span>
+                  <input
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    value={assigneeDraft}
+                    onChange={(event) => setAssigneeDraft(event.target.value)}
+                    placeholder={t("dqAssignmentPlaceholder")}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="app-button-secondary w-full justify-center"
+                  onClick={() =>
+                    assignIssue.mutate({
+                      id: activeIssue.id,
+                      assigneeUserId: assigneeDraft.trim() || undefined,
+                    })
+                  }
+                  disabled={assignIssue.isPending}
+                >
+                  {t("dqActionAssignIssue")}
+                </button>
+
+                <label className="space-y-1 text-sm">
+                  <span className="text-slate-600">{t("dqReviewNewNoteLabel")}</span>
+                  <textarea
+                    className="min-h-20 w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    value={newNoteDraft}
+                    onChange={(event) => setNewNoteDraft(event.target.value)}
+                    placeholder={t("dqReviewNewNotePlaceholder")}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="app-button-secondary w-full justify-center"
+                  onClick={() => addNote.mutate({ id: activeIssue.id, note: newNoteDraft })}
+                  disabled={addNote.isPending || !newNoteDraft.trim()}
+                >
+                  {t("dqActionAddNote")}
+                </button>
+              </div>
+
+              <div className="app-subpanel mt-4 p-4 text-sm text-slate-600">
+                <p className="font-medium text-slate-800">{t("dqWorkbenchAuditNoteTitle")}</p>
+                <p className="mt-2">{t("dqWorkbenchAuditNoteDescription")}</p>
+              </div>
+
+              <div className="mt-4 space-y-2">
+                <p className="text-sm font-medium text-slate-800">{t("dqReviewNotesTitle")}</p>
+                {notes.length === 0 ? (
+                  <p className="text-sm text-slate-500">{t("dqReviewNotesEmpty")}</p>
+                ) : (
+                  notes.map((note) => (
+                    <div key={note.id} className="rounded-xl border border-slate-200 p-3 text-sm">
+                      <p className="text-slate-700">{note.note}</p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {note.userName} · {new Date(note.createdAt).toLocaleString()}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
           ) : (
             <div className="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
               {t("dqWorkbenchSelectIssue")}
             </div>
           )}
-          <div className="space-y-3">
-            <button
-              type="button"
-              className="app-button-primary w-full justify-center"
-              disabled
-            >
-              {t("dqActionApproveFix")}
-            </button>
-            <button
-              type="button"
-              className="app-button-secondary w-full justify-center"
-              disabled
-            >
-              {t("dqActionRequestRuleChange")}
-            </button>
-            <button
-              type="button"
-              className="app-button-secondary w-full justify-center"
-              disabled
-            >
-              {t("dqActionAcceptException")}
-            </button>
-            <button
-              type="button"
-              className="app-button-secondary w-full justify-center"
-              disabled
-            >
-              {t("dqActionRejectFix")}
-            </button>
-          </div>
-          <div className="app-subpanel mt-4 p-4 text-sm text-slate-600">
-            <p className="font-medium text-slate-800">
-              {t("dqWorkbenchAuditNoteTitle")}
-            </p>
-            <p className="mt-2">{t("dqWorkbenchAuditNoteDescription")}</p>
-          </div>
         </aside>
       </section>
     </div>

@@ -3,7 +3,9 @@ import axios from "axios";
 import type {
   DataQualityFilters,
   DataQualityIssue,
+  DataQualityIssueDetailResponse,
   DataQualityIssuesResponse,
+  DataQualityReviewStatus,
   DataQualitySummary,
 } from "../types";
 
@@ -54,9 +56,42 @@ export async function fetchDataQualityIssues(
 
 export async function fetchDataQualityIssueById(
   id: string,
-): Promise<DataQualityIssue> {
-  const { data } = await axios.get<{ data: DataQualityIssue }>(
+): Promise<DataQualityIssueDetailResponse> {
+  const { data } = await axios.get<DataQualityIssueDetailResponse>(
     `${API_BASE}/issues/${id}`,
   );
-  return data.data;
+  return data;
+}
+
+export async function patchDataQualityIssueReview(
+  id: string,
+  payload: { status: DataQualityReviewStatus; note?: string },
+): Promise<DataQualityIssueDetailResponse> {
+  const { data } = await axios.patch<DataQualityIssueDetailResponse>(
+    `${API_BASE}/issues/${id}/review`,
+    payload,
+  );
+  return data;
+}
+
+export async function postDataQualityIssueNote(
+  id: string,
+  payload: { note: string },
+): Promise<DataQualityIssueDetailResponse> {
+  const { data } = await axios.post<DataQualityIssueDetailResponse>(
+    `${API_BASE}/issues/${id}/notes`,
+    payload,
+  );
+  return data;
+}
+
+export async function patchDataQualityIssueAssignee(
+  id: string,
+  payload: { assigneeUserId?: string },
+): Promise<DataQualityIssueDetailResponse> {
+  const { data } = await axios.patch<DataQualityIssueDetailResponse>(
+    `${API_BASE}/issues/${id}/assign`,
+    payload,
+  );
+  return data;
 }
