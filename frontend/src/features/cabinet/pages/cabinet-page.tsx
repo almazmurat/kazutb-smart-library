@@ -7,7 +7,7 @@ export function CabinetPage() {
   const { t } = useI18n();
 
   return (
-    <div className="space-y-8">
+    <div className="app-page">
       <PageIntro
         eyebrow={t("shellReaderSection")}
         title={t("cabinetPageTitle")}

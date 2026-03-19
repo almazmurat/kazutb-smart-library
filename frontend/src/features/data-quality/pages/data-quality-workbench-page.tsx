@@ -131,7 +131,7 @@ export function DataQualityWorkbenchPage() {
   const hasError = summaryQuery.isError || issuesQuery.isError;
 
   return (
-    <div className="space-y-6">
+    <div className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
         title={t("dqWorkbenchTitle")}
@@ -142,7 +142,7 @@ export function DataQualityWorkbenchPage() {
         ]}
       />
 
-      <section className="app-subpanel border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+      <section className="app-state-warning">
         {t("dqWorkbenchSafetyReadonlyLegacy")}
       </section>
 
@@ -174,7 +174,7 @@ export function DataQualityWorkbenchPage() {
           <label className="space-y-1 text-sm">
             <span className="text-slate-600">{t("dqWorkbenchFilterStage")}</span>
             <select
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+              className="app-form-control"
               value={stage}
               onChange={(event) => setStage(event.target.value as DataQualityStage)}
             >
@@ -187,7 +187,7 @@ export function DataQualityWorkbenchPage() {
           <label className="space-y-1 text-sm">
             <span className="text-slate-600">{t("dqWorkbenchFilterSeverity")}</span>
             <select
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+              className="app-form-control"
               value={severity}
               onChange={(event) =>
                 setSeverity(event.target.value as DataQualitySeverity | "ALL")
@@ -205,7 +205,7 @@ export function DataQualityWorkbenchPage() {
           <label className="space-y-1 text-sm">
             <span className="text-slate-600">{t("dqWorkbenchFilterIssueClass")}</span>
             <select
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+              className="app-form-control"
               value={issueClass}
               onChange={(event) =>
                 setIssueClass(event.target.value as DataQualityIssueClass | "ALL")
@@ -223,7 +223,7 @@ export function DataQualityWorkbenchPage() {
           <label className="space-y-1 text-sm">
             <span className="text-slate-600">{t("dqWorkbenchFilterStatus")}</span>
             <select
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+              className="app-form-control"
               value={status}
               onChange={(event) =>
                 setStatus(event.target.value as DataQualityReviewStatus | "ALL")
@@ -241,7 +241,7 @@ export function DataQualityWorkbenchPage() {
           <label className="space-y-1 text-sm md:col-span-2 xl:col-span-4">
             <span className="text-slate-600">{t("dqColumnSource")}</span>
             <select
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+              className="app-form-control"
               value={sourceTable}
               onChange={(event) => setSourceTable(event.target.value)}
             >
@@ -261,7 +261,7 @@ export function DataQualityWorkbenchPage() {
       ) : null}
 
       {hasError ? (
-        <section className="app-panel p-4 text-sm text-red-700">{t("dqWorkbenchError")}</section>
+        <section className="app-state-error">{t("dqWorkbenchError")}</section>
       ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[1.8fr_1fr]">
@@ -355,7 +355,7 @@ export function DataQualityWorkbenchPage() {
                 <label className="space-y-1 text-sm">
                   <span className="text-slate-600">{t("dqReviewStatusLabel")}</span>
                   <select
-                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    className="app-form-control"
                     value={reviewStatusDraft}
                     onChange={(event) =>
                       setReviewStatusDraft(event.target.value as DataQualityReviewStatus)
@@ -372,7 +372,7 @@ export function DataQualityWorkbenchPage() {
                 <label className="space-y-1 text-sm">
                   <span className="text-slate-600">{t("dqReviewDecisionNoteLabel")}</span>
                   <textarea
-                    className="min-h-20 w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    className="app-form-control min-h-20"
                     value={reviewNoteDraft}
                     onChange={(event) => setReviewNoteDraft(event.target.value)}
                     placeholder={t("dqReviewDecisionNotePlaceholder")}
@@ -397,7 +397,7 @@ export function DataQualityWorkbenchPage() {
                 <label className="space-y-1 text-sm">
                   <span className="text-slate-600">{t("dqAssignmentLabel")}</span>
                   <input
-                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    className="app-form-control"
                     value={assigneeDraft}
                     onChange={(event) => setAssigneeDraft(event.target.value)}
                     placeholder={t("dqAssignmentPlaceholder")}
@@ -420,7 +420,7 @@ export function DataQualityWorkbenchPage() {
                 <label className="space-y-1 text-sm">
                   <span className="text-slate-600">{t("dqReviewNewNoteLabel")}</span>
                   <textarea
-                    className="min-h-20 w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+                    className="app-form-control min-h-20"
                     value={newNoteDraft}
                     onChange={(event) => setNewNoteDraft(event.target.value)}
                     placeholder={t("dqReviewNewNotePlaceholder")}

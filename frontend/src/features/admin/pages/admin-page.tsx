@@ -1,11 +1,19 @@
 export function AdminPage() {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h1 className="text-2xl font-bold text-slate-900">Admin Panel</h1>
-      <p className="mt-2 text-slate-600">User management, roles, settings, and migration controls.</p>
-      <div className="mt-6 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
-        Feature scaffold is ready. Business logic and UI flows will be implemented in iterative phases.
-      </div>
+    <section className="app-page">
+      <article className="app-panel-strong p-6 md:p-7">
+        <p className="app-kicker">Administration</p>
+        <h1 className="mt-2 text-2xl font-semibold text-slate-900">Admin Panel</h1>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+          User management, roles, settings, and migration controls.
+        </p>
+      </article>
+
+      <article className="app-panel p-6">
+        <div className="app-state-warning">
+          Feature scaffold is ready. Business logic and UI flows will be implemented in iterative phases.
+        </div>
+      </article>
     </section>
   );
 }

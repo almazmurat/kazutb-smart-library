@@ -58,7 +58,7 @@ export function CabinetReservationsPage() {
 
   if (error) {
     return (
-      <div className="app-empty-state text-sm text-red-700">
+      <div className="app-state-error">
         {t("cabinetReservationsError")}
       </div>
     );
@@ -80,7 +80,7 @@ export function CabinetReservationsPage() {
 
   return (
     <section className="space-y-5">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div className="app-toolbar">
         <div>
           <p className="app-kicker">{t("shellReaderSection")}</p>
           <h2 className="mt-2 app-section-heading text-2xl">
