@@ -6,6 +6,8 @@ First UI scaffold for migration quality triage. This is a review-oriented founda
 
 Current phase status: the workbench is now connected to a read-only backend API that derives issues from committed legacy artifacts.
 
+Current extension status: reviewer decisions are now persisted in the Smart Library staging database (review status, notes, assignment) without mutating legacy source records.
+
 ## MVP Capabilities
 
 - Batch and stage selection UI.
@@ -13,7 +15,8 @@ Current phase status: the workbench is now connected to a read-only backend API 
 - Multi-filter panel (severity, issue class, source table, branch, status).
 - Issue list table with institutional context.
 - Read-only issue detail panel (source key, field, detection rule, summary).
-- Disabled review action buttons to preserve safety in this phase.
+- Persisted reviewer actions: status change, note creation, assignment.
+- Audit events for reviewer actions.
 
 ## Implemented Detection Rules (Code)
 
@@ -40,6 +43,12 @@ All rules are currently computed from `docs/legacy-db-discovery/dbo_DOC_VIEW.csv
 - No automatic bulk correction in UI.
 - No correction persistence or approval state writes in this phase.
 - No full workflow orchestration backend in this phase.
+
+## Safety and Separation
+
+- Detection layer: deterministic, artifact-driven.
+- Review layer: persisted in new app DB (`DataQualityIssueReview`, `DataQualityIssueReviewNote`).
+- Legacy source remains read-only.
 
 ## Suggested Data Contract (Future)
 
