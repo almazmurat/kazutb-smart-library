@@ -19,7 +19,8 @@
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "reconstruct:legacy-db": "node scripts/legacy-reconstruction/reconstruct-legacy-db.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -38,6 +39,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-ldapauth": "^3.0.1",
+    "pg": "^8.20.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "uuid": "^9.0.0"
