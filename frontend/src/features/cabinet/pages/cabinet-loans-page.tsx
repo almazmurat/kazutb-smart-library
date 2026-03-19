@@ -40,11 +40,7 @@ export function CabinetLoansPage() {
   }
 
   if (error) {
-    return (
-      <div className="app-state-error">
-        {t("cabinetLoansError")}
-      </div>
-    );
+    return <div className="app-state-error">{t("cabinetLoansError")}</div>;
   }
 
   const loans = data?.data || [];

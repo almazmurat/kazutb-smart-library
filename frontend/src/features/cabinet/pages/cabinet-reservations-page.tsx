@@ -58,9 +58,7 @@ export function CabinetReservationsPage() {
 
   if (error) {
     return (
-      <div className="app-state-error">
-        {t("cabinetReservationsError")}
-      </div>
+      <div className="app-state-error">{t("cabinetReservationsError")}</div>
     );
   }
 

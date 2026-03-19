@@ -77,11 +77,17 @@ export function LibrarianQueuePage() {
     !authStore.isAuthenticated ||
     (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
   ) {
-    return <div className="app-state-error">{t("librarianQueueAccessDenied")}</div>;
+    return (
+      <div className="app-state-error">{t("librarianQueueAccessDenied")}</div>
+    );
   }
 
   if (isLoading) {
-    return <div className="app-empty-state text-sm text-slate-600">{t("catalogLoading")}</div>;
+    return (
+      <div className="app-empty-state text-sm text-slate-600">
+        {t("catalogLoading")}
+      </div>
+    );
   }
 
   if (error) {
@@ -187,7 +193,9 @@ export function LibrarianQueuePage() {
                     </div>
                     <div className="mt-2 text-xs text-slate-500">
                       <span className="app-chip-muted">
-                        {t("commonBranchLabel")}: {reservation.libraryBranch?.name || reservation.libraryBranchId}
+                        {t("commonBranchLabel")}:{" "}
+                        {reservation.libraryBranch?.name ||
+                          reservation.libraryBranchId}
                       </span>
                     </div>
                   </td>
@@ -244,7 +252,7 @@ export function LibrarianQueuePage() {
                           {t("librarianQueueMarkReady")}
                         </button>
                       )}
-                      {!['PENDING', 'READY'].includes(reservation.status) && (
+                      {!["PENDING", "READY"].includes(reservation.status) && (
                         <span className="text-xs text-slate-400">
                           {t("librarianQueueNoActions")}
                         </span>

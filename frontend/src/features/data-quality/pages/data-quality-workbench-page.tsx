@@ -110,7 +110,10 @@ export function DataQualityWorkbenchPage() {
       return;
     }
 
-    if (!selectedIssueId || !issues.some((item) => item.id === selectedIssueId)) {
+    if (
+      !selectedIssueId ||
+      !issues.some((item) => item.id === selectedIssueId)
+    ) {
       setSelectedIssueId(issues[0].id);
     }
   }, [issues, selectedIssueId]);
@@ -147,36 +150,52 @@ export function DataQualityWorkbenchPage() {
       </section>
 
       <section className="app-panel-strong p-6">
-        <h2 className="mb-4 app-section-heading">{t("dqWorkbenchSummaryTitle")}</h2>
+        <h2 className="mb-4 app-section-heading">
+          {t("dqWorkbenchSummaryTitle")}
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="app-panel p-4">
             <p className="app-kicker">{t("dqWorkbenchSummaryTotal")}</p>
-            <p className="mt-3 text-3xl font-semibold text-slate-900">{kpi.total}</p>
+            <p className="mt-3 text-3xl font-semibold text-slate-900">
+              {kpi.total}
+            </p>
           </div>
           <div className="app-panel p-4">
             <p className="app-kicker">{t("dqWorkbenchSummaryCritical")}</p>
-            <p className="mt-3 text-3xl font-semibold text-red-700">{kpi.critical}</p>
+            <p className="mt-3 text-3xl font-semibold text-red-700">
+              {kpi.critical}
+            </p>
           </div>
           <div className="app-panel p-4">
             <p className="app-kicker">{t("dqWorkbenchSummaryHigh")}</p>
-            <p className="mt-3 text-3xl font-semibold text-orange-700">{kpi.high}</p>
+            <p className="mt-3 text-3xl font-semibold text-orange-700">
+              {kpi.high}
+            </p>
           </div>
           <div className="app-panel p-4">
             <p className="app-kicker">{t("dqWorkbenchSummaryReviewed")}</p>
-            <p className="mt-3 text-3xl font-semibold text-emerald-700">{kpi.reviewed}</p>
+            <p className="mt-3 text-3xl font-semibold text-emerald-700">
+              {kpi.reviewed}
+            </p>
           </div>
         </div>
       </section>
 
       <section className="app-panel-strong p-6">
-        <h2 className="mb-4 app-section-heading">{t("dqWorkbenchFiltersTitle")}</h2>
+        <h2 className="mb-4 app-section-heading">
+          {t("dqWorkbenchFiltersTitle")}
+        </h2>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">{t("dqWorkbenchFilterStage")}</span>
+            <span className="text-slate-600">
+              {t("dqWorkbenchFilterStage")}
+            </span>
             <select
               className="app-form-control"
               value={stage}
-              onChange={(event) => setStage(event.target.value as DataQualityStage)}
+              onChange={(event) =>
+                setStage(event.target.value as DataQualityStage)
+              }
             >
               <option value="raw">{t("dqStageRaw")}</option>
               <option value="clean">{t("dqStageClean")}</option>
@@ -185,7 +204,9 @@ export function DataQualityWorkbenchPage() {
           </label>
 
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">{t("dqWorkbenchFilterSeverity")}</span>
+            <span className="text-slate-600">
+              {t("dqWorkbenchFilterSeverity")}
+            </span>
             <select
               className="app-form-control"
               value={severity}
@@ -203,12 +224,16 @@ export function DataQualityWorkbenchPage() {
           </label>
 
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">{t("dqWorkbenchFilterIssueClass")}</span>
+            <span className="text-slate-600">
+              {t("dqWorkbenchFilterIssueClass")}
+            </span>
             <select
               className="app-form-control"
               value={issueClass}
               onChange={(event) =>
-                setIssueClass(event.target.value as DataQualityIssueClass | "ALL")
+                setIssueClass(
+                  event.target.value as DataQualityIssueClass | "ALL",
+                )
               }
             >
               <option value="ALL">{t("dqFilterAll")}</option>
@@ -221,7 +246,9 @@ export function DataQualityWorkbenchPage() {
           </label>
 
           <label className="space-y-1 text-sm">
-            <span className="text-slate-600">{t("dqWorkbenchFilterStatus")}</span>
+            <span className="text-slate-600">
+              {t("dqWorkbenchFilterStatus")}
+            </span>
             <select
               className="app-form-control"
               value={status}
@@ -257,7 +284,9 @@ export function DataQualityWorkbenchPage() {
       </section>
 
       {isLoading ? (
-        <section className="app-panel p-4 text-sm text-slate-600">{t("dqWorkbenchLoading")}</section>
+        <section className="app-panel p-4 text-sm text-slate-600">
+          {t("dqWorkbenchLoading")}
+        </section>
       ) : null}
 
       {hasError ? (
@@ -266,7 +295,9 @@ export function DataQualityWorkbenchPage() {
 
       <section className="grid gap-6 xl:grid-cols-[1.8fr_1fr]">
         <div className="app-panel-strong p-6">
-          <h2 className="mb-4 app-section-heading">{t("dqWorkbenchIssueListTitle")}</h2>
+          <h2 className="mb-4 app-section-heading">
+            {t("dqWorkbenchIssueListTitle")}
+          </h2>
           <div className="app-table-shell">
             <table className="w-full text-left text-sm">
               <thead className="app-table-head border-b border-slate-200 text-xs uppercase text-slate-500">
@@ -292,7 +323,9 @@ export function DataQualityWorkbenchPage() {
                       >
                         {issue.id}
                       </button>
-                      <p className="mt-1 text-xs text-slate-500">{issue.summary}</p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {issue.summary}
+                      </p>
                     </td>
                     <td className="px-3 py-3">
                       <span
@@ -301,15 +334,21 @@ export function DataQualityWorkbenchPage() {
                         {issue.severity}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-slate-700">{issue.issueClass}</td>
+                    <td className="px-3 py-3 text-slate-700">
+                      {issue.issueClass}
+                    </td>
                     <td className="px-3 py-3 text-slate-700">
                       <div>{issue.sourceTable}</div>
-                      <div className="text-xs text-slate-500">{issue.sourceRecordKey}</div>
+                      <div className="text-xs text-slate-500">
+                        {issue.sourceRecordKey}
+                      </div>
                     </td>
                     <td className="px-3 py-3 text-slate-700">
                       {t(`dqReviewStatus${issue.review.status}` as never)}
                       {issue.review.assignedToName ? (
-                        <div className="text-xs text-slate-500">{issue.review.assignedToName}</div>
+                        <div className="text-xs text-slate-500">
+                          {issue.review.assignedToName}
+                        </div>
                       ) : null}
                     </td>
                   </tr>
@@ -325,8 +364,12 @@ export function DataQualityWorkbenchPage() {
         </div>
 
         <aside className="app-panel-strong p-6">
-          <h2 className="mb-4 app-section-heading">{t("dqWorkbenchReviewPanelTitle")}</h2>
-          <p className="mb-4 text-sm leading-6 text-slate-600">{t("dqWorkbenchReviewPanelDescription")}</p>
+          <h2 className="mb-4 app-section-heading">
+            {t("dqWorkbenchReviewPanelTitle")}
+          </h2>
+          <p className="mb-4 text-sm leading-6 text-slate-600">
+            {t("dqWorkbenchReviewPanelDescription")}
+          </p>
 
           {activeIssue ? (
             <>
@@ -339,13 +382,17 @@ export function DataQualityWorkbenchPage() {
                 </p>
                 {activeIssue.fieldName ? (
                   <p>
-                    <span className="font-medium">{t("dqIssueFieldLabel")}: </span>
+                    <span className="font-medium">
+                      {t("dqIssueFieldLabel")}:{" "}
+                    </span>
                     {activeIssue.fieldName}
                   </p>
                 ) : null}
                 {activeIssue.detectionRule ? (
                   <p>
-                    <span className="font-medium">{t("dqIssueRuleLabel")}: </span>
+                    <span className="font-medium">
+                      {t("dqIssueRuleLabel")}:{" "}
+                    </span>
                     {activeIssue.detectionRule}
                   </p>
                 ) : null}
@@ -353,12 +400,16 @@ export function DataQualityWorkbenchPage() {
 
               <div className="space-y-3 rounded-xl border border-slate-200 p-4">
                 <label className="space-y-1 text-sm">
-                  <span className="text-slate-600">{t("dqReviewStatusLabel")}</span>
+                  <span className="text-slate-600">
+                    {t("dqReviewStatusLabel")}
+                  </span>
                   <select
                     className="app-form-control"
                     value={reviewStatusDraft}
                     onChange={(event) =>
-                      setReviewStatusDraft(event.target.value as DataQualityReviewStatus)
+                      setReviewStatusDraft(
+                        event.target.value as DataQualityReviewStatus,
+                      )
                     }
                   >
                     {reviewStatuses.map((value) => (
@@ -370,7 +421,9 @@ export function DataQualityWorkbenchPage() {
                 </label>
 
                 <label className="space-y-1 text-sm">
-                  <span className="text-slate-600">{t("dqReviewDecisionNoteLabel")}</span>
+                  <span className="text-slate-600">
+                    {t("dqReviewDecisionNoteLabel")}
+                  </span>
                   <textarea
                     className="app-form-control min-h-20"
                     value={reviewNoteDraft}
@@ -395,7 +448,9 @@ export function DataQualityWorkbenchPage() {
                 </button>
 
                 <label className="space-y-1 text-sm">
-                  <span className="text-slate-600">{t("dqAssignmentLabel")}</span>
+                  <span className="text-slate-600">
+                    {t("dqAssignmentLabel")}
+                  </span>
                   <input
                     className="app-form-control"
                     value={assigneeDraft}
@@ -418,7 +473,9 @@ export function DataQualityWorkbenchPage() {
                 </button>
 
                 <label className="space-y-1 text-sm">
-                  <span className="text-slate-600">{t("dqReviewNewNoteLabel")}</span>
+                  <span className="text-slate-600">
+                    {t("dqReviewNewNoteLabel")}
+                  </span>
                   <textarea
                     className="app-form-control min-h-20"
                     value={newNoteDraft}
@@ -429,7 +486,9 @@ export function DataQualityWorkbenchPage() {
                 <button
                   type="button"
                   className="app-button-secondary w-full justify-center"
-                  onClick={() => addNote.mutate({ id: activeIssue.id, note: newNoteDraft })}
+                  onClick={() =>
+                    addNote.mutate({ id: activeIssue.id, note: newNoteDraft })
+                  }
                   disabled={addNote.isPending || !newNoteDraft.trim()}
                 >
                   {t("dqActionAddNote")}
@@ -437,20 +496,30 @@ export function DataQualityWorkbenchPage() {
               </div>
 
               <div className="app-subpanel mt-4 p-4 text-sm text-slate-600">
-                <p className="font-medium text-slate-800">{t("dqWorkbenchAuditNoteTitle")}</p>
+                <p className="font-medium text-slate-800">
+                  {t("dqWorkbenchAuditNoteTitle")}
+                </p>
                 <p className="mt-2">{t("dqWorkbenchAuditNoteDescription")}</p>
               </div>
 
               <div className="mt-4 space-y-2">
-                <p className="text-sm font-medium text-slate-800">{t("dqReviewNotesTitle")}</p>
+                <p className="text-sm font-medium text-slate-800">
+                  {t("dqReviewNotesTitle")}
+                </p>
                 {notes.length === 0 ? (
-                  <p className="text-sm text-slate-500">{t("dqReviewNotesEmpty")}</p>
+                  <p className="text-sm text-slate-500">
+                    {t("dqReviewNotesEmpty")}
+                  </p>
                 ) : (
                   notes.map((note) => (
-                    <div key={note.id} className="rounded-xl border border-slate-200 p-3 text-sm">
+                    <div
+                      key={note.id}
+                      className="rounded-xl border border-slate-200 p-3 text-sm"
+                    >
                       <p className="text-slate-700">{note.note}</p>
                       <p className="mt-1 text-xs text-slate-500">
-                        {note.userName} · {new Date(note.createdAt).toLocaleString()}
+                        {note.userName} ·{" "}
+                        {new Date(note.createdAt).toLocaleString()}
                       </p>
                     </div>
                   ))

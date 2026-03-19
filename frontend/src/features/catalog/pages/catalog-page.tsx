@@ -77,9 +77,7 @@ export function CatalogPage() {
       ) : null}
 
       {booksQuery.isError ? (
-        <div className="app-state-error">
-          {t("catalogError")}
-        </div>
+        <div className="app-state-error">{t("catalogError")}</div>
       ) : null}
 
       {!booksQuery.isLoading && !booksQuery.isError ? (

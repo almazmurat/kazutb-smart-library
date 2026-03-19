@@ -65,9 +65,7 @@ export function CirculationPage() {
     (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
   ) {
     return (
-      <div className="app-state-error">
-        {t("circulationAccessDenied")}
-      </div>
+      <div className="app-state-error">{t("circulationAccessDenied")}</div>
     );
   }
 
@@ -113,11 +111,7 @@ export function CirculationPage() {
   }
 
   if (error) {
-    return (
-      <div className="app-state-error">
-        {t("circulationError")}
-      </div>
-    );
+    return <div className="app-state-error">{t("circulationError")}</div>;
   }
 
   const loans = data?.data || [];

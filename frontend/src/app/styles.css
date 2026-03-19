@@ -82,7 +82,7 @@ a {
   }
 
   .app-panel {
-    @apply rounded-[26px] border bg-white/92 backdrop-blur-sm;
+    @apply rounded-[26px] border bg-white/90 backdrop-blur-sm;
     border-color: var(--line-soft);
     box-shadow: var(--shadow-soft);
   }

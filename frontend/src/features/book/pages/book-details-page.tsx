@@ -49,9 +49,7 @@ export function BookDetailsPage() {
 
   if (bookQuery.isError || !bookQuery.data) {
     return (
-      <section className="app-state-error">
-        {t("catalogBookNotFound")}
-      </section>
+      <section className="app-state-error">{t("catalogBookNotFound")}</section>
     );
   }
 

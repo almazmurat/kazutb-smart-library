@@ -146,16 +146,10 @@ export function OverviewPage() {
         ]}
         actions={
           <div className="flex flex-wrap gap-2.5">
-            <Link
-              to="/catalog"
-              className="app-button-primary"
-            >
+            <Link to="/catalog" className="app-button-primary">
               {t("overviewHeroPrimary")}
             </Link>
-            <Link
-              to="/login"
-              className="app-button-secondary"
-            >
+            <Link to="/login" className="app-button-secondary">
               {t("overviewHeroSecondary")}
             </Link>
           </div>

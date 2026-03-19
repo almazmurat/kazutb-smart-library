@@ -9,10 +9,10 @@ export function BookCopiesManagementPage() {
       <h1 className="mt-2 text-2xl font-semibold text-slate-900">
         {t("catalogCopiesTitle")}
       </h1>
-      <p className="mt-3 text-sm leading-7 text-slate-600">{t("catalogCopiesDescription")}</p>
-      <div className="app-state-warning mt-6">
-        {t("catalogScaffoldNote")}
-      </div>
+      <p className="mt-3 text-sm leading-7 text-slate-600">
+        {t("catalogCopiesDescription")}
+      </p>
+      <div className="app-state-warning mt-6">{t("catalogScaffoldNote")}</div>
     </section>
   );
 }
