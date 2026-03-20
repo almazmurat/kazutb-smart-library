@@ -14,7 +14,7 @@ export function CabinetPage() {
         description={t("cabinetPageDescription")}
         badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
         actions={
-          <div className="grid gap-2 text-sm text-slate-600">
+          <div className="grid gap-2 text-sm text-[var(--ink-500)]">
             <p>{t("cabinetReservationsDescription")}</p>
             <p>{t("cabinetLoansDescription")}</p>
           </div>

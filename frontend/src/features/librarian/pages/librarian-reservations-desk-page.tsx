@@ -95,7 +95,7 @@ export function LibrarianReservationsDeskPage() {
           <p className="font-medium">
             Не удалось загрузить очередь резервирований.
           </p>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-[var(--ink-500)]">
             Попробуйте обновить страницу или продолжите работу в других
             разделах.
           </p>
@@ -123,7 +123,7 @@ export function LibrarianReservationsDeskPage() {
       <div className="app-toolbar">
         <div>
           <p className="app-kicker">Текущая очередь</p>
-          <p className="mt-2 text-sm text-slate-600">{total} записей</p>
+          <p className="mt-2 text-sm text-[var(--ink-500)]">{total} записей</p>
         </div>
 
         <select
@@ -144,14 +144,14 @@ export function LibrarianReservationsDeskPage() {
       </div>
 
       {statusMessage ? (
-        <div className="app-subpanel p-4 text-sm text-slate-700">
+        <div className="app-subpanel p-4 text-sm text-[var(--ink-700)]">
           {statusMessage}
         </div>
       ) : null}
 
       {reservations.length === 0 ? (
         <div className="app-empty-state">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-[var(--ink-500)]">
             Активных резервирований не найдено.
           </p>
         </div>
@@ -191,7 +191,7 @@ export function LibrarianReservationsDeskPage() {
                 return (
                   <tr
                     key={reservation.id}
-                    className="border-b border-slate-100/90 hover:bg-slate-50/70"
+                    className="border-b border-slate-100/90 hover:bg-[var(--surface-muted)]"
                   >
                     <td className="px-4 py-4 text-slate-900">
                       <div className="font-medium">

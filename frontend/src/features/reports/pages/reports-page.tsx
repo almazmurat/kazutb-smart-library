@@ -66,11 +66,11 @@ export function ReportsPage() {
         ]}
         actions={
           <div className="flex items-center gap-2">
-            <label className="text-sm text-slate-600">
+            <label className="text-sm text-[var(--ink-500)]">
               {t("reportsYear")}:
             </label>
             <select
-              className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
+              className="app-form-control w-auto"
               value={selectedYear}
               onChange={(event) => setSelectedYear(Number(event.target.value))}
             >
@@ -85,7 +85,7 @@ export function ReportsPage() {
       />
 
       {hasError ? (
-        <section className="app-subpanel p-4 text-sm text-slate-700">
+        <section className="app-state-warning">
           Источник отчетных данных временно недоступен. Маршрут работает
           стабильно, можно продолжать работу в других разделах.
         </section>
@@ -98,19 +98,19 @@ export function ReportsPage() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div className="app-panel p-4">
             <div className="app-kicker">{t("reportsLoans")}</div>
-            <div className="mt-3 text-2xl font-semibold text-slate-900">
+            <div className="mt-3 text-2xl font-semibold text-[var(--ink-900)]">
               {data.yearly.loans}
             </div>
           </div>
           <div className="app-panel p-4">
             <div className="app-kicker">{t("reportsReturns")}</div>
-            <div className="mt-3 text-2xl font-semibold text-slate-900">
+            <div className="mt-3 text-2xl font-semibold text-[var(--ink-900)]">
               {data.yearly.returns}
             </div>
           </div>
           <div className="app-panel p-4">
             <div className="app-kicker">{t("reportsReservations")}</div>
-            <div className="mt-3 text-2xl font-semibold text-slate-900">
+            <div className="mt-3 text-2xl font-semibold text-[var(--ink-900)]">
               {data.yearly.reservations}
             </div>
           </div>
@@ -131,7 +131,7 @@ export function ReportsPage() {
         <h2 className="mb-4 app-section-heading">{t("reportsMonthly")}</h2>
         {data.monthly.length === 0 ? (
           <div className="app-empty-state py-8">
-            <p className="text-slate-500">{t("reportsNoData")}</p>
+            <p className="text-[var(--ink-500)]">{t("reportsNoData")}</p>
           </div>
         ) : (
           <div className="app-table-shell">

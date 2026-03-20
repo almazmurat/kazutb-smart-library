@@ -15,11 +15,13 @@ const STATUS_COLORS: Record<
   { badge: string; label: TranslationKey }
 > = {
   ACTIVE: {
-    badge: "bg-blue-50 text-blue-800 border-blue-100",
+    badge:
+      "bg-[var(--university-blue-100)] text-[var(--university-blue-900)] border-[rgba(18,59,114,0.26)]",
     label: "circulationStatusActive",
   },
   RETURNED: {
-    badge: "bg-green-50 text-green-800 border-green-100",
+    badge:
+      "bg-[var(--university-teal-100)] text-[#0f5f68] border-[rgba(19,137,150,0.3)]",
     label: "circulationStatusReturned",
   },
   OVERDUE: {
@@ -27,7 +29,8 @@ const STATUS_COLORS: Record<
     label: "circulationStatusOverdue",
   },
   LOST: {
-    badge: "bg-gray-50 text-gray-800 border-gray-100",
+    badge:
+      "bg-[var(--surface-muted)] text-[var(--ink-700)] border-[rgba(19,34,56,0.18)]",
     label: "circulationStatusLost",
   },
 };
@@ -362,7 +365,7 @@ export function CirculationPage() {
                 return (
                   <tr
                     key={loan.id}
-                    className={`border-b border-slate-100/90 hover:bg-slate-50/70 ${isOverdue ? "bg-red-50/30" : ""}`}
+                    className={`border-b border-slate-100/90 hover:bg-[var(--surface-muted)] ${isOverdue ? "bg-red-50/30" : ""}`}
                   >
                     <td className="px-4 py-4 text-slate-900">
                       <div className="font-medium">
@@ -407,7 +410,7 @@ export function CirculationPage() {
                         <button
                           onClick={() => handleReturn(loan.id)}
                           disabled={returnMutation.isPending}
-                          className="inline-flex rounded-xl bg-green-100 px-3 py-2 text-xs font-medium text-green-700 transition hover:bg-green-200 disabled:opacity-50"
+                          className="inline-flex rounded-xl border border-[rgba(19,137,150,0.3)] bg-[var(--university-teal-100)] px-3 py-2 text-xs font-medium text-[#0f5f68] transition hover:bg-[#c8e8ec] disabled:opacity-50"
                         >
                           {t("circulationReturnAction")}
                         </button>

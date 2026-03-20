@@ -21,7 +21,7 @@ function SummaryCard({
     >
       <div className="app-kicker">{label}</div>
       <div
-        className={`mt-3 text-3xl font-semibold tracking-tight ${alert ? "text-red-700" : "text-slate-900"}`}
+        className={`mt-3 text-3xl font-semibold tracking-tight ${alert ? "text-red-700" : "text-[var(--ink-900)]"}`}
       >
         {value}
       </div>
@@ -65,7 +65,7 @@ export function AnalyticsPage() {
           badges={[t("dashboardScopeGlobal"), t("shellSecureLabel")]}
         />
         <section className="app-empty-state">
-          <p className="text-slate-500">{t("dashboardLoading")}</p>
+          <p className="text-[var(--ink-500)]">{t("dashboardLoading")}</p>
         </section>
       </div>
     );
@@ -90,7 +90,7 @@ export function AnalyticsPage() {
       />
 
       {hasError ? (
-        <div className="app-subpanel p-4 text-sm text-slate-700">
+        <div className="app-state-warning">
           Источник аналитических данных временно недоступен. Маршрут работает
           стабильно, можно продолжать навигацию по системе.
         </div>
@@ -189,7 +189,9 @@ export function AnalyticsPage() {
         </p>
         {popularData.data.length === 0 ? (
           <div className="app-empty-state py-8">
-            <p className="text-slate-500">{t("dashboardPopularBooksEmpty")}</p>
+            <p className="text-[var(--ink-500)]">
+              {t("dashboardPopularBooksEmpty")}
+            </p>
           </div>
         ) : (
           <div className="app-table-shell">

@@ -61,7 +61,7 @@ export function OverviewPage() {
       <PageIntro
         eyebrow={t("overviewEyebrow")}
         title={t("overviewTitle")}
-        description="Цифровая библиотечная платформа для поиска, обслуживания читателей и операционной работы сотрудников."
+        description="Официальная цифровая библиотечная платформа KazUTB для поиска литературы, обслуживания читателей и операционной работы подразделений."
         badges={[
           `${t("shellCurrentRole")}: ${t(roleKey[auth.role] ?? "roleGuest")}`,
         ]}
@@ -76,7 +76,7 @@ export function OverviewPage() {
           </div>
         }
       >
-        <p className="text-sm leading-7 text-slate-600">
+        <p className="text-sm leading-7 text-[var(--ink-500)]">
           Основные сценарии: поиск книги, просмотр карточки, проверка наличия по
           филиалам, работа читателя в кабинете, обработка задач библиотекарем,
           административный и аналитический контроль.
@@ -88,10 +88,10 @@ export function OverviewPage() {
         <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-4">
           {quickAccess.map((item) => (
             <Link key={item.to} to={item.to} className="app-feature-card">
-              <h3 className="text-base font-semibold text-slate-900">
+              <h3 className="text-base font-semibold text-[var(--ink-900)]">
                 {item.title}
               </h3>
-              <p className="mt-4 text-sm leading-6 text-slate-600">
+              <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
                 {item.description}
               </p>
             </Link>
@@ -104,10 +104,10 @@ export function OverviewPage() {
         <div className="app-card-grid mt-5 md:grid-cols-3">
           {modules.map((module) => (
             <article key={module.title} className="app-stat-card">
-              <h3 className="text-base font-semibold text-slate-900">
+              <h3 className="text-base font-semibold text-[var(--ink-900)]">
                 {module.title}
               </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
+              <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
                 {module.description}
               </p>
             </article>

@@ -54,22 +54,22 @@ export function BookDetailsPage() {
               {t("catalogBackToList")}
             </Link>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="rounded-2xl bg-slate-50 px-3 py-2">
-                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+              <div className="rounded-2xl border border-[rgba(18,59,114,0.16)] bg-[var(--surface-muted)] px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-[var(--ink-500)]">
                   Доступно
                 </div>
-                <div className="mt-1 font-semibold text-slate-950">
+                <div className="mt-1 font-semibold text-[var(--ink-900)]">
                   {availability.reduce(
                     (sum, row) => sum + row.copies.available,
                     0,
                   )}
                 </div>
               </div>
-              <div className="rounded-2xl bg-slate-50 px-3 py-2">
-                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+              <div className="rounded-2xl border border-[rgba(18,59,114,0.16)] bg-[var(--surface-muted)] px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-[var(--ink-500)]">
                   Экземпляров
                 </div>
-                <div className="mt-1 font-semibold text-slate-950">
+                <div className="mt-1 font-semibold text-[var(--ink-900)]">
                   {availability.reduce((sum, row) => sum + row.copies.total, 0)}
                 </div>
               </div>
@@ -86,23 +86,23 @@ export function BookDetailsPage() {
             accent={book.language.code?.toUpperCase() || "BOOK"}
           />
 
-          <dl className="mt-4 grid grid-cols-2 gap-2 text-sm text-slate-700">
-            <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-              <dt className="text-xs text-slate-500">
+          <dl className="mt-4 grid grid-cols-2 gap-2 text-sm text-[var(--ink-700)]">
+            <div className="rounded-lg border border-[rgba(18,59,114,0.16)] bg-[var(--surface-muted)] px-3 py-2">
+              <dt className="text-xs text-[var(--ink-500)]">
                 {t("catalogCardAvailable")}
               </dt>
-              <dd className="mt-1 text-xl font-semibold text-slate-900">
+              <dd className="mt-1 text-xl font-semibold text-[var(--ink-900)]">
                 {availability.reduce(
                   (sum, row) => sum + row.copies.available,
                   0,
                 )}
               </dd>
             </div>
-            <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-              <dt className="text-xs text-slate-500">
+            <div className="rounded-lg border border-[rgba(18,59,114,0.16)] bg-[var(--surface-muted)] px-3 py-2">
+              <dt className="text-xs text-[var(--ink-500)]">
                 {t("catalogCardTotalCopies")}
               </dt>
-              <dd className="mt-1 text-xl font-semibold text-slate-900">
+              <dd className="mt-1 text-xl font-semibold text-[var(--ink-900)]">
                 {availability.reduce((sum, row) => sum + row.copies.total, 0)}
               </dd>
             </div>
@@ -112,20 +112,20 @@ export function BookDetailsPage() {
         <div className="space-y-5">
           <article className="app-panel p-5">
             <h2 className="app-section-heading">{t("catalogMetadataTitle")}</h2>
-            <dl className="mt-5 grid gap-4 md:grid-cols-2 text-sm text-slate-700">
-              <div className="rounded-[22px] bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+            <dl className="mt-5 grid gap-4 md:grid-cols-2 text-sm text-[var(--ink-700)]">
+              <div className="rounded-[22px] border border-[rgba(18,59,114,0.14)] bg-[var(--surface-muted)] px-4 py-3">
+                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--ink-500)]">
                   {t("catalogCardYear")}
                 </dt>
-                <dd className="mt-1 text-base font-semibold text-slate-950">
+                <dd className="mt-1 text-base font-semibold text-[var(--ink-900)]">
                   {book.publication.year || "-"}
                 </dd>
               </div>
-              <div className="rounded-[22px] bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <div className="rounded-[22px] border border-[rgba(18,59,114,0.14)] bg-[var(--surface-muted)] px-4 py-3">
+                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--ink-500)]">
                   {t("catalogCardLanguage")}
                 </dt>
-                <dd className="mt-1 text-base font-semibold text-slate-950">
+                <dd className="mt-1 text-base font-semibold text-[var(--ink-900)]">
                   {(
                     book.language.code ||
                     book.language.raw ||
@@ -133,35 +133,35 @@ export function BookDetailsPage() {
                   ).toUpperCase()}
                 </dd>
               </div>
-              <div className="rounded-[22px] bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <div className="rounded-[22px] border border-[rgba(18,59,114,0.14)] bg-[var(--surface-muted)] px-4 py-3">
+                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--ink-500)]">
                   ISBN
                 </dt>
-                <dd className="mt-1 text-base font-semibold text-slate-950">
+                <dd className="mt-1 text-base font-semibold text-[var(--ink-900)]">
                   {book.isbn.normalized || book.isbn.raw || "-"}
                 </dd>
               </div>
-              <div className="rounded-[22px] bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <div className="rounded-[22px] border border-[rgba(18,59,114,0.14)] bg-[var(--surface-muted)] px-4 py-3">
+                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--ink-500)]">
                   Издатель
                 </dt>
-                <dd className="mt-1 text-base font-semibold text-slate-950">
+                <dd className="mt-1 text-base font-semibold text-[var(--ink-900)]">
                   {book.publisher?.name || "-"}
                 </dd>
               </div>
-              <div className="rounded-[22px] bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <div className="rounded-[22px] border border-[rgba(18,59,114,0.14)] bg-[var(--surface-muted)] px-4 py-3">
+                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--ink-500)]">
                   Авторы
                 </dt>
-                <dd className="mt-1 text-base font-semibold text-slate-950">
+                <dd className="mt-1 text-base font-semibold text-[var(--ink-900)]">
                   {authorList || "-"}
                 </dd>
               </div>
-              <div className="rounded-[22px] bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <div className="rounded-[22px] border border-[rgba(18,59,114,0.14)] bg-[var(--surface-muted)] px-4 py-3">
+                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--ink-500)]">
                   Служебный номер
                 </dt>
-                <dd className="mt-1 text-base font-semibold text-slate-950">
+                <dd className="mt-1 text-base font-semibold text-[var(--ink-900)]">
                   {book.controlNumber || "Не указан"}
                 </dd>
               </div>
@@ -181,7 +181,7 @@ export function BookDetailsPage() {
                     key={`${row.campus?.code || "campus"}-${row.servicePoint?.code || index}`}
                     className="app-feature-card p-4"
                   >
-                    <p className="text-sm font-semibold text-slate-900">
+                    <p className="text-sm font-semibold text-[var(--ink-900)]">
                       {toReadableLocation(
                         row.campus?.name || row.campus?.code || "Кампус",
                       )}{" "}
@@ -190,7 +190,7 @@ export function BookDetailsPage() {
                         row.servicePoint?.code ||
                         "Пункт обслуживания"}
                     </p>
-                    <p className="mt-2 text-xs text-slate-600">
+                    <p className="mt-2 text-xs text-[var(--ink-500)]">
                       Доступно {row.copies.available} / {row.copies.total} •
                       Проблемы {row.copies.problem} • На проверке{" "}
                       {row.copies.review}

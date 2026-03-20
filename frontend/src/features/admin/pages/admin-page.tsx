@@ -91,10 +91,10 @@ export function AdminPage() {
     <section className="app-page">
       <article className="app-panel-strong p-6 md:p-7">
         <p className="app-kicker">Администрирование</p>
-        <h1 className="mt-2 text-2xl font-semibold text-slate-900">
+        <h1 className="mt-2 text-2xl font-semibold text-[var(--ink-900)]">
           Панель администратора
         </h1>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--ink-500)]">
           Управление пользователями, ролями и доступом к операционным разделам.
         </p>
       </article>
@@ -105,19 +105,19 @@ export function AdminPage() {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <div className="app-stat-card">
             <p className="app-kicker">Всего</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">
+            <p className="mt-2 text-2xl font-semibold text-[var(--ink-900)]">
               {usersQuery.data?.meta.total ?? 0}
             </p>
           </div>
           <div className="app-stat-card">
             <p className="app-kicker">Активные</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">
+            <p className="mt-2 text-2xl font-semibold text-[var(--ink-900)]">
               {activeCount}
             </p>
           </div>
           <div className="app-stat-card">
             <p className="app-kicker">Роли</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">
+            <p className="mt-2 text-2xl font-semibold text-[var(--ink-900)]">
               {roles.length}
             </p>
           </div>
@@ -145,7 +145,7 @@ export function AdminPage() {
         </div>
 
         {statusMessage ? (
-          <div className="app-subpanel mt-4 p-4 text-sm text-slate-700">
+          <div className="app-subpanel mt-4 p-4 text-sm text-[var(--ink-700)]">
             {statusMessage}
           </div>
         ) : null}
@@ -155,7 +155,7 @@ export function AdminPage() {
         ) : null}
 
         {usersQuery.isError ? (
-          <div className="app-subpanel mt-4 p-4 text-sm text-slate-700">
+          <div className="app-state-warning mt-4">
             Не удалось загрузить пользователей. Раздел работает в безопасном
             режиме.
           </div>
@@ -190,7 +190,7 @@ export function AdminPage() {
                   {users.map((user) => (
                     <tr
                       key={user.id}
-                      className="border-b border-slate-100/90 hover:bg-slate-50/70"
+                      className="border-b border-slate-100/90 hover:bg-[var(--surface-muted)]"
                     >
                       <td className="px-4 py-4">
                         <div className="font-medium text-slate-900">
