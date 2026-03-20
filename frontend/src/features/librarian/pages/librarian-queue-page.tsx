@@ -60,6 +60,14 @@ export function LibrarianQueuePage() {
   const detailQuery = useAppReviewIssueDetail(selectedFlagId);
   const actionMutation = useAppReviewAction();
 
+  // useMemo must be called unconditionally — before any early returns
+  const suggestedId = useMemo(() => {
+    if (!detailQuery.data?.issue?.details) {
+      return undefined;
+    }
+    return extractSuggestionId(detailQuery.data.issue.details);
+  }, [detailQuery.data]);
+
   if (
     !auth.isAuthenticated ||
     (auth.role !== "LIBRARIAN" && auth.role !== "ADMIN")
@@ -110,13 +118,6 @@ export function LibrarianQueuePage() {
   const campuses = facetsQuery.data?.campuses ?? [];
   const servicePoints = facetsQuery.data?.servicePoints ?? [];
   const detail = detailQuery.data;
-
-  const suggestedId = useMemo(() => {
-    if (!detail?.issue?.details) {
-      return undefined;
-    }
-    return extractSuggestionId(detail.issue.details);
-  }, [detail]);
 
   if (issues.length === 0) {
     return (

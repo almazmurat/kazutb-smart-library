@@ -29,6 +29,14 @@ export function LoginPage() {
     [],
   );
 
+  const rolePrettyNames: Record<string, string> = {
+    STUDENT: "Студент",
+    LIBRARIAN: "Библиотекарь",
+    ADMIN: "Администратор",
+    ANALYST: "Аналитик",
+    TEACHER: "Преподаватель",
+  };
+
   const orderedUsers = useMemo(() => {
     const users = demoUsers.data ?? [];
     return [...users].sort((left, right) => {
@@ -172,7 +180,9 @@ export function LoginPage() {
                       <p className="font-semibold text-slate-900">
                         {displayName}
                       </p>
-                      <p className="text-xs text-slate-500">{user.role}</p>
+                      <p className="text-xs text-[var(--ink-500)]">
+                        {rolePrettyNames[user.role] ?? user.role}
+                      </p>
                     </div>
                     <button
                       type="button"

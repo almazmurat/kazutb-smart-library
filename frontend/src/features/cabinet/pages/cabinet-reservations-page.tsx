@@ -58,17 +58,20 @@ export function CabinetReservationsPage() {
 
   if (error) {
     return (
-      <div className="app-subpanel p-5 text-sm text-slate-700">
-        <p className="font-medium">{t("cabinetReservationsError")}</p>
-        <p className="mt-2 text-slate-600">
-          Раздел работает в безопасном режиме. Попробуйте обновить страницу.
+      <div className="app-subpanel p-5">
+        <p className="font-medium text-[var(--ink-900)]">
+          {t("cabinetReservationsError")}
+        </p>
+        <p className="mt-2 text-sm text-[var(--ink-500)]">
+          Данные временно недоступны. Ваши бронирования сохранены — они появятся
+          при следующем открытии.
         </p>
         <button
           type="button"
           className="app-button-secondary mt-4"
           onClick={() => window.location.reload()}
         >
-          Обновить страницу
+          Попробовать снова
         </button>
       </div>
     );
@@ -79,7 +82,10 @@ export function CabinetReservationsPage() {
   if (reservations.length === 0) {
     return (
       <div className="app-empty-state">
-        <p className="text-sm text-slate-600">
+        <p className="font-medium text-[var(--ink-700)]">
+          Бронирований пока нет
+        </p>
+        <p className="mt-1 text-sm text-[var(--ink-500)]">
           {t("cabinetReservationsEmpty")}
         </p>
       </div>
