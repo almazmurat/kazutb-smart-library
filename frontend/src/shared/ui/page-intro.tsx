@@ -19,11 +19,13 @@ export function PageIntro({
 }: PageIntroProps) {
   return (
     <section className="app-panel-strong relative overflow-hidden p-6 md:p-8 xl:p-10">
-      <div className="absolute inset-x-0 top-0 hidden h-20 bg-[linear-gradient(90deg,rgba(29,79,163,0.16),rgba(255,255,255,0))] lg:block" />
+      <div className="absolute -left-10 top-0 h-36 w-36 rounded-full bg-[radial-gradient(circle,rgba(36,83,166,0.24),rgba(36,83,166,0))] blur-2xl" />
+      <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(194,141,47,0.2),rgba(194,141,47,0))] blur-2xl" />
+      <div className="absolute inset-x-0 top-0 hidden h-24 bg-[linear-gradient(90deg,rgba(16,45,99,0.18),rgba(255,255,255,0))] lg:block" />
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-4xl">
           {eyebrow ? <p className="app-kicker">{eyebrow}</p> : null}
-          <h1 className="mt-2 max-w-4xl text-[2rem] font-semibold tracking-tight text-slate-950 md:text-4xl xl:text-[2.85rem]">
+          <h1 className="app-display-title mt-2 max-w-4xl text-[2.2rem] font-semibold text-slate-950 md:text-[3.15rem] xl:text-[3.55rem]">
             {title}
           </h1>
           <p className="mt-4 max-w-3xl text-[15px] leading-7 text-slate-600 md:text-base">
@@ -46,7 +48,9 @@ export function PageIntro({
         ) : null}
       </div>
       {children ? (
-        <div className="relative mt-6 md:mt-8">{children}</div>
+        <div className="relative mt-6 border-t border-[rgba(16,45,99,0.08)] pt-6 md:mt-8 md:pt-8">
+          {children}
+        </div>
       ) : null}
     </section>
   );

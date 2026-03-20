@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 
-import { authStore } from "@shared/auth/auth-store";
+import { useAuthState } from "@shared/auth/auth-store";
 import { useI18n } from "@shared/i18n/use-i18n";
 import { PageIntro } from "@shared/ui/page-intro";
 import type { TranslationKey } from "@shared/i18n/dictionary";
 
 export function OverviewPage() {
   const { t } = useI18n();
+  const auth = useAuthState();
 
   const roleKey: Record<string, TranslationKey> = {
     GUEST: "roleGuest",
@@ -52,12 +53,6 @@ export function OverviewPage() {
       to: "/librarian/circulation",
       title: t("navCirculation"),
       description: t("overviewModuleCirculationDescription"),
-      secure: true,
-    },
-    {
-      to: "/migration/data-quality",
-      title: t("navDataQualityWorkbench"),
-      description: t("dqWorkbenchDescription"),
       secure: true,
     },
   ];
@@ -119,18 +114,9 @@ export function OverviewPage() {
       description: t("overviewModuleReportsDescription"),
       status: t("overviewStatusMvp"),
     },
-    {
-      title: t("navDataQualityWorkbench"),
-      description: t("dqWorkbenchDescription"),
-      status: t("overviewStatusMvp"),
-    },
   ];
 
-  const nextPhase = [
-    t("overviewRoadmapAdmin"),
-    t("overviewRoadmapMigration"),
-    t("overviewRoadmapDigital"),
-  ];
+  const nextPhase = [t("overviewRoadmapAdmin"), t("overviewRoadmapDigital")];
 
   return (
     <div className="app-page">
@@ -142,7 +128,7 @@ export function OverviewPage() {
           t("overviewStatScopes"),
           t("overviewStatBranches"),
           t("overviewStatModules"),
-          `${t("shellCurrentRole")}: ${t(roleKey[authStore.role] ?? "roleGuest")}`,
+          `${t("shellCurrentRole")}: ${t(roleKey[auth.role] ?? "roleGuest")}`,
         ]}
         actions={
           <div className="flex flex-wrap gap-2.5">
@@ -155,30 +141,54 @@ export function OverviewPage() {
           </div>
         }
       >
-        <div className="app-card-grid md:grid-cols-3">
-          <div className="app-subpanel p-5">
-            <p className="text-sm font-semibold text-slate-900">
-              {t("overviewAudienceTitle")}
-            </p>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              {t("overviewAudienceDescription")}
-            </p>
+        <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="app-stat-card">
+              <p className="text-sm font-semibold text-slate-900">
+                {t("overviewAudienceTitle")}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                {t("overviewAudienceDescription")}
+              </p>
+            </div>
+            <div className="app-stat-card">
+              <p className="text-sm font-semibold text-slate-900">
+                {t("overviewProcessTitle")}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                {t("overviewProcessDescription")}
+              </p>
+            </div>
+            <div className="app-stat-card">
+              <p className="text-sm font-semibold text-slate-900">
+                {t("overviewReadinessTitle")}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                {t("overviewReadinessDescription")}
+              </p>
+            </div>
           </div>
-          <div className="app-subpanel p-5">
-            <p className="text-sm font-semibold text-slate-900">
-              {t("overviewProcessTitle")}
+
+          <div className="app-flow-step">
+            <p className="app-kicker text-white/70">Сценарий работы</p>
+            <h2 className="app-display-title mt-2 text-2xl font-semibold">
+              Единая точка доступа для читателей и сотрудников
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-white/82">
+              Начните с поиска в каталоге, откройте карточку книги, затем
+              перейдите в профильные разделы по роли.
             </p>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              {t("overviewProcessDescription")}
-            </p>
-          </div>
-          <div className="app-subpanel p-5">
-            <p className="text-sm font-semibold text-slate-900">
-              {t("overviewReadinessTitle")}
-            </p>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              {t("overviewReadinessDescription")}
-            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="rounded-full bg-white/12 px-3 py-1 text-xs font-medium text-white">
+                Единая навигация
+              </span>
+              <span className="rounded-full bg-white/12 px-3 py-1 text-xs font-medium text-white">
+                Ролевой доступ
+              </span>
+              <span className="rounded-full bg-white/12 px-3 py-1 text-xs font-medium text-white">
+                Рабочие процессы библиотеки
+              </span>
+            </div>
           </div>
         </div>
 
@@ -204,12 +214,23 @@ export function OverviewPage() {
       </PageIntro>
 
       <section className="app-panel-strong p-6 md:p-7">
-        <h2 className="app-section-heading">{t("overviewDemoFlowsTitle")}</h2>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="app-kicker">Сценарии</p>
+            <h2 className="app-section-heading">
+              {t("overviewDemoFlowsTitle")}
+            </h2>
+          </div>
+          <p className="max-w-xl text-sm leading-6 text-slate-600">
+            Основные пользовательские сценарии сгруппированы так, чтобы быстро
+            переходить от поиска к профильным рабочим разделам.
+          </p>
+        </div>
         <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-4">
           {demoFlows.map((flow) => (
             <article
               key={flow.title}
-              className="flex h-full flex-col rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,248,255,0.9))] p-5 shadow-[0_16px_32px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(15,23,42,0.08)]"
+              className="app-feature-card flex h-full flex-col"
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-base font-semibold text-slate-900">
@@ -236,14 +257,11 @@ export function OverviewPage() {
       </section>
 
       <section className="app-panel p-6 md:p-7">
+        <p className="app-kicker">Разделы</p>
         <h2 className="app-section-heading">{t("overviewQuickAccessTitle")}</h2>
         <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-3">
           {quickAccess.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(245,249,255,0.92))] p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-[0_18px_36px_rgba(15,23,42,0.08)]"
-            >
+            <Link key={item.to} to={item.to} className="app-feature-card">
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-base font-semibold text-slate-900">
                   {item.title}
@@ -263,13 +281,11 @@ export function OverviewPage() {
       </section>
 
       <section className="app-panel p-6 md:p-7">
+        <p className="app-kicker">Модули</p>
         <h2 className="app-section-heading">{t("overviewModuleTitle")}</h2>
         <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-3">
           {modules.map((module) => (
-            <article
-              key={module.title}
-              className="rounded-[24px] border border-slate-200/80 bg-white/92 p-5 shadow-[0_8px_20px_rgba(15,23,42,0.05)]"
-            >
+            <article key={module.title} className="app-stat-card">
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-base font-semibold text-slate-900">
                   {module.title}
@@ -288,9 +304,10 @@ export function OverviewPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <section className="app-panel p-6 md:p-7">
+          <p className="app-kicker">Пользователи</p>
           <h2 className="app-section-heading">{t("overviewRoleTitle")}</h2>
           <div className="app-card-grid mt-4 md:grid-cols-3">
-            <article className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5">
+            <article className="app-stat-card">
               <h3 className="text-base font-semibold text-slate-900">
                 {t("overviewRoleStudentsTitle")}
               </h3>
@@ -298,7 +315,7 @@ export function OverviewPage() {
                 {t("overviewRoleStudentsDescription")}
               </p>
             </article>
-            <article className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5">
+            <article className="app-stat-card">
               <h3 className="text-base font-semibold text-slate-900">
                 {t("overviewRoleLibrarianTitle")}
               </h3>
@@ -306,7 +323,7 @@ export function OverviewPage() {
                 {t("overviewRoleLibrarianDescription")}
               </p>
             </article>
-            <article className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5">
+            <article className="app-stat-card">
               <h3 className="text-base font-semibold text-slate-900">
                 {t("overviewRoleAdminTitle")}
               </h3>
@@ -318,15 +335,16 @@ export function OverviewPage() {
         </section>
 
         <section className="app-panel p-6 md:p-7">
+          <p className="app-kicker">Локации</p>
           <h2 className="app-section-heading">{t("overviewBranchTitle")}</h2>
           <div className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-            <div className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5">
+            <div className="app-stat-card">
               <p className="font-semibold text-slate-900">
                 {t("overviewBranchUniversity")}
               </p>
               <p>{t("overviewBranchUniversityDescription")}</p>
             </div>
-            <div className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5">
+            <div className="app-stat-card">
               <p className="font-semibold text-slate-900">
                 {t("overviewBranchCollege")}
               </p>
@@ -337,13 +355,11 @@ export function OverviewPage() {
       </div>
 
       <section className="app-panel p-6 md:p-7">
+        <p className="app-kicker">Дальнейшее развитие</p>
         <h2 className="app-section-heading">{t("overviewRoadmapTitle")}</h2>
         <div className="app-card-grid mt-4 md:grid-cols-3">
           {nextPhase.map((item, index) => (
-            <div
-              key={item}
-              className="rounded-[24px] border border-slate-200/80 bg-white/92 p-5"
-            >
+            <div key={item} className="app-stat-card">
               <span className="app-chip-muted">
                 {t("overviewStatusPlanned")}
               </span>

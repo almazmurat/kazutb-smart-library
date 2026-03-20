@@ -2,8 +2,46 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 
-import { UsersService } from "@modules/users/users.service";
 import { UserRole } from "@common/types/user-role.enum";
+
+interface DemoCredential {
+  username: string;
+  password: string;
+  role: UserRole;
+  fullName: string;
+  email: string;
+}
+
+const DEMO_CREDENTIALS: DemoCredential[] = [
+  {
+    username: "student_demo",
+    password: "Student123!",
+    role: UserRole.STUDENT,
+    fullName: "Demo Student",
+    email: "student_demo@kazutb.edu.kz",
+  },
+  {
+    username: "librarian_demo",
+    password: "Librarian123!",
+    role: UserRole.LIBRARIAN,
+    fullName: "Demo Librarian",
+    email: "librarian_demo@kazutb.edu.kz",
+  },
+  {
+    username: "admin_demo",
+    password: "Admin123!",
+    role: UserRole.ADMIN,
+    fullName: "Demo Administrator",
+    email: "admin_demo@kazutb.edu.kz",
+  },
+  {
+    username: "analyst_demo",
+    password: "Analyst123!",
+    role: UserRole.ANALYST,
+    fullName: "Demo Analyst",
+    email: "analyst_demo@kazutb.edu.kz",
+  },
+];
 
 export interface LoginResult {
   accessToken: string;
@@ -21,17 +59,29 @@ export interface LoginResult {
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly usersService: UsersService,
     private readonly configService: ConfigService,
   ) {}
 
+  private buildDemoUser(credential: DemoCredential) {
+    return {
+      id: `demo:${credential.username}`,
+      universityId: credential.username,
+      email: credential.email,
+      fullName: credential.fullName,
+      role: credential.role,
+    };
+  }
+
+  private findDemoCredentialByUsername(username: string) {
+    return DEMO_CREDENTIALS.find((item) => item.username === username);
+  }
+
   async login(username: string, password: string): Promise<LoginResult> {
-    // TODO: Replace with real LDAP verification (passport-ldapauth strategy)
-    // Dev-mock mode to unblock local development
+    // Demo local auth mode to unblock product demo delivery without LDAP dependency.
     const ldapDevMock = this.configService.get<boolean>("ldap.devMock", true);
     if (!ldapDevMock) {
       throw new UnauthorizedException(
-        "LDAP integration is not implemented yet",
+        "Local demo auth is disabled. Enable ldap.devMock to use seeded users.",
       );
     }
 
@@ -39,12 +89,12 @@ export class AuthService {
       throw new UnauthorizedException("Invalid credentials");
     }
 
-    const user = await this.usersService.findOrProvisionByUniversityAccount({
-      universityId: username,
-      email: `${username}@kazutb.edu.kz`,
-      fullName: username,
-      defaultRole: UserRole.STUDENT,
-    });
+    const credential = this.findDemoCredentialByUsername(username);
+    if (!credential || credential.password !== password) {
+      throw new UnauthorizedException("Invalid demo credentials");
+    }
+
+    const user = this.buildDemoUser(credential);
 
     const payload = {
       sub: user.id,
@@ -66,8 +116,6 @@ export class AuthService {
         expiresIn: this.configService.get<string>("jwt.refreshExpiresIn", "7d"),
       },
     );
-
-    await this.usersService.markLastLogin(user.id);
 
     return {
       accessToken,
@@ -92,10 +140,13 @@ export class AuthService {
         throw new UnauthorizedException("Invalid refresh token");
       }
 
-      const user = await this.usersService.findById(payload.sub);
-      if (!user) {
+      const username = String(payload.sub).replace(/^demo:/, "");
+      const credential = this.findDemoCredentialByUsername(username);
+      if (!credential) {
         throw new UnauthorizedException("User not found");
       }
+
+      const user = this.buildDemoUser(credential);
 
       const newAccessToken = await this.jwtService.signAsync(
         {
@@ -115,5 +166,14 @@ export class AuthService {
     } catch {
       throw new UnauthorizedException("Invalid refresh token");
     }
+  }
+
+  getDemoUsers() {
+    return DEMO_CREDENTIALS.map(({ username, password, role, fullName }) => ({
+      username,
+      password,
+      role,
+      fullName,
+    }));
   }
 }

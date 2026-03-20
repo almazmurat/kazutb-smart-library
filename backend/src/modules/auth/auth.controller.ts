@@ -25,6 +25,18 @@ export class AuthController {
     return this.authService.refresh(dto.refreshToken);
   }
 
+  @Public()
+  @Get("demo-users")
+  demoUsers() {
+    return { data: this.authService.getDemoUsers() };
+  }
+
+  @ApiBearerAuth()
+  @Post("logout")
+  logout() {
+    return { data: { ok: true } };
+  }
+
   @ApiBearerAuth()
   @Get("profile")
   profile(@CurrentUser() user: RequestUser) {

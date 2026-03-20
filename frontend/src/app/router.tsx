@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { AppShell } from "./shell";
+import { AppErrorPage } from "./app-error-page";
 import { OverviewPage } from "@features/overview/pages/overview-page";
 import { CatalogPage } from "@features/catalog/pages/catalog-page";
 import { SearchPage } from "@features/search/pages/search-page";
@@ -23,8 +24,10 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <AppShell />,
+    errorElement: <AppErrorPage />,
     children: [
       { index: true, element: <OverviewPage /> },
+      { path: "/home", element: <Navigate to="/overview" replace /> },
       { path: "/overview", element: <OverviewPage /> },
       { path: "/catalog", element: <CatalogPage /> },
       { path: "/search", element: <SearchPage /> },
@@ -48,6 +51,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "/librarian",
+        element: (
+          <ProtectedRoute roles={["LIBRARIAN", "ADMIN"]}>
+            <LibrarianPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/librarian/review",
         element: (
           <ProtectedRoute roles={["LIBRARIAN", "ADMIN"]}>
             <LibrarianPage />
@@ -134,6 +145,7 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      { path: "*", element: <Navigate to="/overview" replace /> },
     ],
   },
 ]);

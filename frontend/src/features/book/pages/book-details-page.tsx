@@ -1,45 +1,22 @@
-import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-import { usePublicBookDetails } from "@features/catalog/hooks/use-public-catalog";
-import { useCreateReservation } from "@features/reservations/hooks/use-reservations";
-import { authStore } from "@shared/auth/auth-store";
+import {
+  usePublicBookAvailability,
+  usePublicBookDetails,
+} from "@features/catalog/hooks/use-public-catalog";
 import { useI18n } from "@shared/i18n/use-i18n";
 import { BookCoverMock } from "@shared/ui/book-cover-mock";
 import { PageIntro } from "@shared/ui/page-intro";
+import { toReadableLocation } from "@shared/catalog/location-labels";
 
 export function BookDetailsPage() {
   const { id = "" } = useParams();
   const { t } = useI18n();
-  const navigate = useNavigate();
-  const [reservationMessage, setReservationMessage] = useState<{
-    type: "success" | "error";
-    text: string;
-  } | null>(null);
 
   const bookQuery = usePublicBookDetails(id);
-  const createReservationMutation = useCreateReservation();
+  const availabilityQuery = usePublicBookAvailability(id);
 
-  const handleReserveClick = async () => {
-    try {
-      setReservationMessage(null);
-      await createReservationMutation.mutateAsync(id);
-      setReservationMessage({
-        type: "success",
-        text: t("reservationSuccess"),
-      });
-      setTimeout(() => {
-        navigate("/cabinet");
-      }, 2000);
-    } catch (error: any) {
-      setReservationMessage({
-        type: "error",
-        text: error.response?.data?.message || t("reservationError"),
-      });
-    }
-  };
-
-  if (bookQuery.isLoading) {
+  if (bookQuery.isLoading || availabilityQuery.isLoading) {
     return (
       <section className="app-empty-state text-sm text-slate-600">
         {t("catalogLoading")}
@@ -54,42 +31,59 @@ export function BookDetailsPage() {
   }
 
   const book = bookQuery.data;
-  const isGuest = !authStore.isAuthenticated || authStore.role === "GUEST";
-  const isShowingReservation =
-    authStore.isAuthenticated &&
-    (authStore.role === "STUDENT" || authStore.role === "TEACHER");
+  const availability = availabilityQuery.data?.items ?? [];
+  const authorList = (book.authors as Array<Record<string, unknown>>)
+    .map((author) => String(author?.fullName || author?.name || "").trim())
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <section className="app-page">
-      <div className="flex items-center justify-between gap-3">
-        <Link
-          to="/catalog"
-          className="text-sm font-medium text-blue-700 hover:text-blue-800"
-        >
-          {t("catalogBackToList")}
-        </Link>
-      </div>
-
       <PageIntro
         eyebrow={t("catalogInstitutionalLabel")}
-        title={book.title}
-        description={
-          book.subtitle ||
-          book.authors.map((author) => author.fullName).join(", ")
-        }
+        title={book.title.display || book.title.raw || "Без названия"}
+        description={book.title.subtitle || authorList}
         badges={[
-          book.libraryBranch.name,
-          book.libraryBranch.scope.name,
-          `${t("catalogCardAvailable")}: ${book.availability.available}/${book.availability.total}`,
+          book.language.code || "Нет",
+          `ISBN: ${book.isbn.normalized || book.isbn.raw || "Нет"}`,
+          `${t("catalogCardYear")}: ${book.publication.year || "Нет"}`,
         ]}
+        actions={
+          <div className="grid gap-2 text-left">
+            <Link to="/catalog" className="app-button-secondary justify-start">
+              {t("catalogBackToList")}
+            </Link>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Доступно
+                </div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {availability.reduce(
+                    (sum, row) => sum + row.copies.available,
+                    0,
+                  )}
+                </div>
+              </div>
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Экземпляров
+                </div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {availability.reduce((sum, row) => sum + row.copies.total, 0)}
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       />
 
       <div className="grid gap-6 xl:grid-cols-[0.84fr_1.16fr]">
         <div className="space-y-6">
           <BookCoverMock
-            title={book.title}
-            subtitle={book.subtitle}
-            accent={book.language?.toUpperCase() || book.libraryBranch.name}
+            title={book.title.display || book.title.raw || "Без названия"}
+            subtitle={book.title.subtitle}
+            accent={book.language.code?.toUpperCase() || "BOOK"}
           />
 
           <article className="app-panel-strong p-6">
@@ -102,7 +96,10 @@ export function BookDetailsPage() {
                   {t("catalogCardAvailable")}
                 </dt>
                 <dd className="mt-1 text-2xl font-semibold text-slate-950">
-                  {book.availability.available}
+                  {availability.reduce(
+                    (sum, row) => sum + row.copies.available,
+                    0,
+                  )}
                 </dd>
               </div>
               <div className="rounded-2xl bg-slate-50 px-4 py-3">
@@ -110,49 +107,23 @@ export function BookDetailsPage() {
                   {t("catalogCardTotalCopies")}
                 </dt>
                 <dd className="mt-1 text-2xl font-semibold text-slate-950">
-                  {book.availability.total}
+                  {availability.reduce((sum, row) => sum + row.copies.total, 0)}
                 </dd>
               </div>
             </dl>
 
             <div className="mt-5 rounded-[20px] border border-blue-100 bg-blue-50/80 px-4 py-3 text-sm leading-6 text-blue-950">
-              {t("catalogDigitalAccessNotice")}
+              Ниже показана доступность экземпляров по кампусам и пунктам
+              обслуживания.
             </div>
 
-            {isShowingReservation && (
-              <div className="mt-5">
-                <button
-                  onClick={handleReserveClick}
-                  disabled={
-                    createReservationMutation.isPending ||
-                    book.availability.available === 0
-                  }
-                  className="app-button-primary w-full disabled:opacity-50"
-                >
-                  {createReservationMutation.isPending
-                    ? t("catalogLoading")
-                    : t("reservationRequestButton")}
-                </button>
-              </div>
-            )}
-
-            {isGuest && (
-              <div className="app-state-warning mt-4">
-                {t("reservationSignInRequired")}
-              </div>
-            )}
-
-            {reservationMessage && (
-              <div
-                className={`mt-4 rounded-[18px] px-4 py-3 text-sm ${
-                  reservationMessage.type === "success"
-                    ? "border border-green-100 bg-green-50 text-green-900"
-                    : "border border-red-100 bg-red-50 text-red-900"
-                }`}
-              >
-                {reservationMessage.text}
-              </div>
-            )}
+            <div className="mt-4 app-stat-card">
+              <p className="app-kicker">Для читателя</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                На этой странице удобно подтвердить, где находится книга и есть
+                ли сейчас доступные экземпляры.
+              </p>
+            </div>
           </article>
         </div>
 
@@ -165,7 +136,7 @@ export function BookDetailsPage() {
                   {t("catalogCardYear")}
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
-                  {book.publishYear || "-"}
+                  {book.publication.year || "-"}
                 </dd>
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
@@ -173,7 +144,11 @@ export function BookDetailsPage() {
                   {t("catalogCardLanguage")}
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
-                  {book.language?.toUpperCase() || "-"}
+                  {(
+                    book.language.code ||
+                    book.language.raw ||
+                    "-"
+                  ).toUpperCase()}
                 </dd>
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
@@ -181,45 +156,68 @@ export function BookDetailsPage() {
                   ISBN
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
-                  {book.isbn || "-"}
+                  {book.isbn.normalized || book.isbn.raw || "-"}
                 </dd>
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
                 <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  {t("catalogCardBranch")}
+                  Издатель
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
-                  {book.libraryBranch.name}
+                  {book.publisher?.name || "-"}
                 </dd>
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
                 <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  {t("catalogScopeLabel")}
+                  Авторы
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
-                  {book.libraryBranch.scope.name}
+                  {authorList || "-"}
                 </dd>
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
                 <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  {t("catalogFilterCategory")}
+                  Служебный номер
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
-                  {book.categories
-                    .map((category) => category.name)
-                    .join(", ") || "-"}
+                  {book.controlNumber || "Не указан"}
                 </dd>
               </div>
             </dl>
           </article>
 
           <article className="app-panel p-6">
-            <h2 className="app-section-heading">
-              {t("catalogDescriptionTitle")}
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-700">
-              {book.description || t("catalogDescriptionEmpty")}
-            </p>
+            <p className="app-kicker">Доступность по локациям</p>
+            <h2 className="app-section-heading">Наличие экземпляров</h2>
+            <div className="mt-4 space-y-3">
+              {availability.length === 0 ? (
+                <p className="text-sm text-slate-600">
+                  Данные о наличии отсутствуют.
+                </p>
+              ) : (
+                availability.map((row, index) => (
+                  <div
+                    key={`${row.campus?.code || "campus"}-${row.servicePoint?.code || index}`}
+                    className="app-feature-card p-4"
+                  >
+                    <p className="text-sm font-semibold text-slate-900">
+                      {toReadableLocation(
+                        row.campus?.name || row.campus?.code || "Кампус",
+                      )}{" "}
+                      •{" "}
+                      {row.servicePoint?.name ||
+                        row.servicePoint?.code ||
+                        "Пункт обслуживания"}
+                    </p>
+                    <p className="mt-2 text-xs text-slate-600">
+                      Доступно {row.copies.available} / {row.copies.total} •
+                      Проблемы {row.copies.problem} • На проверке{" "}
+                      {row.copies.review}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
           </article>
         </div>
       </div>

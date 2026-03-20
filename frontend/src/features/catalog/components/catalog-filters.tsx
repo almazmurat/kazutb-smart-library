@@ -1,24 +1,30 @@
 import { ChangeEvent } from "react";
 
 import {
-  PublicCatalogFilters,
+  CatalogFacetsResponse,
   PublicCatalogQuery,
 } from "../api/public-catalog-api";
 
 interface CatalogFiltersProps {
   labels: {
-    search: string;
+    query: string;
+    title: string;
     author: string;
-    category: string;
-    branch: string;
+    isbn: string;
+    campus: string;
+    servicePoint: string;
     language: string;
-    reset: string;
-    allCategories: string;
-    allBranches: string;
+    availability: string;
+    allCampuses: string;
+    allServicePoints: string;
+    allAvailability: string;
     allLanguages: string;
+    searchAction: string;
+    reset: string;
   };
   value: PublicCatalogQuery;
-  filters?: PublicCatalogFilters;
+  filters?: CatalogFacetsResponse;
+  onSubmit: () => void;
   onChange: (next: PublicCatalogQuery) => void;
 }
 
@@ -26,31 +32,32 @@ export function CatalogFilters({
   labels,
   value,
   filters,
+  onSubmit,
   onChange,
 }: CatalogFiltersProps) {
   const apply = (patch: Partial<PublicCatalogQuery>) => {
     onChange({
       ...value,
       ...patch,
-      page: 1,
     });
   };
 
   const onTextChange =
-    (key: "title" | "author") => (event: ChangeEvent<HTMLInputElement>) => {
+    (key: "q" | "title" | "author" | "isbn") =>
+    (event: ChangeEvent<HTMLInputElement>) => {
       apply({ [key]: event.target.value || undefined });
     };
 
   const onSelectChange =
-    (key: "categoryId" | "branchId" | "language") =>
+    (key: "campusCode" | "servicePointCode" | "language" | "availability") =>
     (event: ChangeEvent<HTMLSelectElement>) => {
       apply({ [key]: event.target.value || undefined });
     };
 
-  // Provide default empty arrays when filters is not yet loaded
-  const categories = filters?.categories ?? [];
-  const branches = filters?.branches ?? [];
+  const campuses = filters?.campuses ?? [];
+  const servicePoints = filters?.servicePoints ?? [];
   const languages = filters?.languages ?? [];
+  const availabilityValues = filters?.availability ?? [];
 
   return (
     <section className="app-panel-strong p-5 md:p-6">
@@ -58,26 +65,45 @@ export function CatalogFilters({
         <div>
           <p className="app-kicker">Search and Filters</p>
           <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
-            {labels.search}
+            {labels.query}
           </h2>
         </div>
-        <button
-          type="button"
-          className="app-button-secondary self-start"
-          onClick={() =>
-            onChange({
-              page: 1,
-              limit: value.limit,
-            })
-          }
-        >
-          {labels.reset}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="app-button-primary self-start"
+            onClick={onSubmit}
+          >
+            {labels.searchAction}
+          </button>
+          <button
+            type="button"
+            className="app-button-secondary self-start"
+            onClick={() =>
+              onChange({
+                page: 1,
+                limit: value.limit,
+              })
+            }
+          >
+            {labels.reset}
+          </button>
+        </div>
       </div>
 
-      <div className="app-filter-grid xl:grid-cols-5">
+      <div className="app-filter-grid xl:grid-cols-4">
         <label className="flex flex-col gap-1 text-sm text-slate-700">
-          <span className="font-medium">{labels.search}</span>
+          <span className="font-medium">{labels.query}</span>
+          <input
+            type="text"
+            value={value.q || ""}
+            onChange={onTextChange("q")}
+            className="app-form-control"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm text-slate-700">
+          <span className="font-medium">{labels.title}</span>
           <input
             type="text"
             value={value.title || ""}
@@ -97,32 +123,42 @@ export function CatalogFilters({
         </label>
 
         <label className="flex flex-col gap-1 text-sm text-slate-700">
-          <span className="font-medium">{labels.category}</span>
+          <span className="font-medium">{labels.isbn}</span>
+          <input
+            type="text"
+            value={value.isbn || ""}
+            onChange={onTextChange("isbn")}
+            className="app-form-control"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm text-slate-700">
+          <span className="font-medium">{labels.campus}</span>
           <select
-            value={value.categoryId || ""}
-            onChange={onSelectChange("categoryId")}
+            value={value.campusCode || ""}
+            onChange={onSelectChange("campusCode")}
             className="app-form-control"
           >
-            <option value="">{labels.allCategories}</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
+            <option value="">{labels.allCampuses}</option>
+            {campuses.map((campus) => (
+              <option key={campus.value} value={campus.value}>
+                {campus.label}
               </option>
             ))}
           </select>
         </label>
 
         <label className="flex flex-col gap-1 text-sm text-slate-700">
-          <span className="font-medium">{labels.branch}</span>
+          <span className="font-medium">{labels.servicePoint}</span>
           <select
-            value={value.branchId || ""}
-            onChange={onSelectChange("branchId")}
+            value={value.servicePointCode || ""}
+            onChange={onSelectChange("servicePointCode")}
             className="app-form-control"
           >
-            <option value="">{labels.allBranches}</option>
-            {branches.map((branch) => (
-              <option key={branch.id} value={branch.id}>
-                {branch.name}
+            <option value="">{labels.allServicePoints}</option>
+            {servicePoints.map((servicePoint) => (
+              <option key={servicePoint.value} value={servicePoint.value}>
+                {servicePoint.label}
               </option>
             ))}
           </select>
@@ -137,8 +173,24 @@ export function CatalogFilters({
           >
             <option value="">{labels.allLanguages}</option>
             {languages.map((language) => (
-              <option key={language} value={language}>
-                {language.toUpperCase()}
+              <option key={language.value} value={language.value}>
+                {language.label}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm text-slate-700">
+          <span className="font-medium">{labels.availability}</span>
+          <select
+            value={value.availability || ""}
+            onChange={onSelectChange("availability")}
+            className="app-form-control"
+          >
+            <option value="">{labels.allAvailability}</option>
+            {availabilityValues.map((value) => (
+              <option key={value.value} value={value.value}>
+                {value.label}
               </option>
             ))}
           </select>

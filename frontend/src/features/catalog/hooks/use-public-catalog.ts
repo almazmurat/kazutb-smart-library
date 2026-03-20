@@ -1,9 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  AppReviewActionPayload,
+  AppReviewQuery,
   fetchPublicBookById,
+  fetchAppReviewIssueDetail,
+  fetchAppReviewQueue,
+  fetchCatalogFacets,
+  fetchLocationSummary,
+  postAppReviewAction,
+  fetchPublicBookAvailability,
   fetchPublicBooks,
-  fetchPublicFilters,
   PublicCatalogQuery,
 } from "../api/public-catalog-api";
 
@@ -17,7 +24,7 @@ export function usePublicCatalog(query: PublicCatalogQuery) {
 export function usePublicCatalogFilters() {
   return useQuery({
     queryKey: ["public-catalog-filters"],
-    queryFn: fetchPublicFilters,
+    queryFn: fetchCatalogFacets,
     staleTime: 60_000,
   });
 }
@@ -27,5 +34,69 @@ export function usePublicBookDetails(id: string) {
     queryKey: ["public-catalog-book", id],
     queryFn: () => fetchPublicBookById(id),
     enabled: Boolean(id),
+  });
+}
+
+export function usePublicBookAvailability(
+  id: string,
+  query?: Pick<
+    PublicCatalogQuery,
+    "institutionUnitCode" | "campusCode" | "servicePointCode"
+  >,
+) {
+  return useQuery({
+    queryKey: ["public-catalog-book-availability", id, query],
+    queryFn: () => fetchPublicBookAvailability(id, query),
+    enabled: Boolean(id),
+  });
+}
+
+export function useLocationSummary(
+  query?: Pick<
+    PublicCatalogQuery,
+    "institutionUnitCode" | "campusCode" | "servicePointCode"
+  >,
+) {
+  return useQuery({
+    queryKey: ["location-summary", query],
+    queryFn: () => fetchLocationSummary(query),
+    staleTime: 60_000,
+  });
+}
+
+export function useAppReviewQueue(query: AppReviewQuery) {
+  return useQuery({
+    queryKey: ["app-review-queue", query],
+    queryFn: () => fetchAppReviewQueue(query),
+  });
+}
+
+export function useAppReviewIssueDetail(flagId: string) {
+  return useQuery({
+    queryKey: ["app-review-issue", flagId],
+    queryFn: () => fetchAppReviewIssueDetail(flagId),
+    enabled: Boolean(flagId),
+  });
+}
+
+export function useAppReviewAction() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      flagId,
+      payload,
+    }: {
+      flagId: string;
+      payload: AppReviewActionPayload;
+    }) => postAppReviewAction(flagId, payload),
+    onSuccess: (_, variables) => {
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["app-review-queue"] }),
+        queryClient.removeQueries({
+          queryKey: ["app-review-issue", variables.flagId],
+        }),
+      ]);
+    },
   });
 }

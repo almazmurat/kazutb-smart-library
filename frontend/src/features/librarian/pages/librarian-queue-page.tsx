@@ -1,88 +1,74 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-  useLibrarianReservationQueue,
-  useUpdateReservationStatus,
-} from "@features/reservations/hooks/use-reservations";
-import { type ReservationStatus } from "@features/reservations/api/reservations-api";
+  useAppReviewAction,
+  useAppReviewIssueDetail,
+  useAppReviewQueue,
+  usePublicCatalogFilters,
+} from "@features/catalog/hooks/use-public-catalog";
 import { useI18n } from "@shared/i18n/use-i18n";
-import { authStore } from "@shared/auth/auth-store";
+import { useAuthState } from "@shared/auth/auth-store";
 import { PageIntro } from "@shared/ui/page-intro";
-import type { TranslationKey } from "@shared/i18n/dictionary";
+import { toReadableLocation } from "@shared/catalog/location-labels";
 
-const STATUS_COLORS: Record<
-  ReservationStatus,
-  { badge: string; label: TranslationKey }
-> = {
-  PENDING: {
-    badge: "bg-yellow-50 text-yellow-800 border-yellow-100",
-    label: "librarianQueueStatusPending",
-  },
-  READY: {
-    badge: "bg-blue-50 text-blue-800 border-blue-100",
-    label: "librarianQueueStatusReady",
-  },
-  FULFILLED: {
-    badge: "bg-green-50 text-green-800 border-green-100",
-    label: "librarianQueueStatusFulfilled",
-  },
-  CANCELLED: {
-    badge: "bg-gray-50 text-gray-800 border-gray-100",
-    label: "librarianQueueStatusCancelled",
-  },
-  EXPIRED: {
-    badge: "bg-red-50 text-red-800 border-red-100",
-    label: "librarianQueueStatusExpired",
-  },
-};
+function extractSuggestionId(
+  details: Record<string, unknown>,
+): string | undefined {
+  const snake = details.suggestion_id;
+  const camel = details.suggestionId;
+  const value = typeof snake === "string" ? snake : camel;
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function getManualFieldByEntityType(entityType: string): string {
+  if (entityType === "document") {
+    return "title_display";
+  }
+  if (entityType === "book_copy") {
+    return "inventory_number_normalized";
+  }
+  if (entityType === "reader") {
+    return "full_name_normalized";
+  }
+  return "title_display";
+}
 
 export function LibrarianQueuePage() {
   const { t } = useI18n();
+  const auth = useAuthState();
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<
-    ReservationStatus | undefined
-  >(undefined);
+  const [severity, setSeverity] = useState<string>("");
+  const [issueCode, setIssueCode] = useState<string>("");
+  const [entityType, setEntityType] = useState<string>("");
+  const [campusCode, setCampusCode] = useState<string>("");
+  const [servicePointCode, setServicePointCode] = useState<string>("");
+  const [selectedFlagId, setSelectedFlagId] = useState<string>("");
+  const [noteDraft, setNoteDraft] = useState("");
+  const [manualValue, setManualValue] = useState("");
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  const { data, isLoading, error } = useLibrarianReservationQueue(
-    statusFilter,
+  const queueQuery = useAppReviewQueue({
     page,
-    20,
-  );
-  const updateStatusMutation = useUpdateReservationStatus();
-  const [selectedNotes, setSelectedNotes] = useState<Record<string, string>>(
-    {},
-  );
-
-  const handleStatusChange = async (
-    reservationId: string,
-    newStatus: ReservationStatus,
-  ) => {
-    try {
-      const notes = selectedNotes[reservationId] || undefined;
-      await updateStatusMutation.mutateAsync({
-        reservationId,
-        status: newStatus,
-        notes,
-      });
-      setSelectedNotes((prev) => {
-        const updated = { ...prev };
-        delete updated[reservationId];
-        return updated;
-      });
-    } catch (err) {
-      console.error("Failed to update reservation status:", err);
-    }
-  };
+    limit: 20,
+    severity: severity || undefined,
+    issueCode: issueCode || undefined,
+    entityType: entityType || undefined,
+    campusCode: campusCode || undefined,
+    servicePointCode: servicePointCode || undefined,
+  });
+  const facetsQuery = usePublicCatalogFilters();
+  const detailQuery = useAppReviewIssueDetail(selectedFlagId);
+  const actionMutation = useAppReviewAction();
 
   if (
-    !authStore.isAuthenticated ||
-    (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
+    !auth.isAuthenticated ||
+    (auth.role !== "LIBRARIAN" && auth.role !== "ADMIN")
   ) {
     return (
       <div className="app-state-error">{t("librarianQueueAccessDenied")}</div>
     );
   }
 
-  if (isLoading) {
+  if (queueQuery.isLoading) {
     return (
       <div className="app-empty-state text-sm text-slate-600">
         {t("catalogLoading")}
@@ -90,20 +76,30 @@ export function LibrarianQueuePage() {
     );
   }
 
-  if (error) {
+  if (queueQuery.isError) {
     return <div className="app-state-error">{t("librarianQueueError")}</div>;
   }
 
-  const reservations = data?.data || [];
+  const issues = queueQuery.data?.data || [];
+  const campuses = facetsQuery.data?.campuses ?? [];
+  const servicePoints = facetsQuery.data?.servicePoints ?? [];
+  const detail = detailQuery.data;
 
-  if (reservations.length === 0) {
+  const suggestedId = useMemo(() => {
+    if (!detail?.issue?.details) {
+      return undefined;
+    }
+    return extractSuggestionId(detail.issue.details);
+  }, [detail]);
+
+  if (issues.length === 0) {
     return (
       <div className="space-y-4">
         <PageIntro
           eyebrow={t("shellOperationsSection")}
-          title={t("librarianQueueTitle")}
-          description={t("librarianQueueDescription")}
-          badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
+          title="Очередь проверки"
+          description="По выбранным фильтрам замечаний не найдено."
+          badges={[t("shellSecureLabel"), "Контроль качества данных"]}
         />
 
         <div className="app-empty-state">
@@ -113,157 +109,359 @@ export function LibrarianQueuePage() {
     );
   }
 
-  const totalPages = data?.meta.totalPages || 1;
+  const totalPages = queueQuery.data?.meta.totalPages || 1;
 
   return (
     <section className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
-        title={t("librarianQueueTitle")}
-        description={t("librarianQueueDescription")}
-        badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
+        title="Очередь проверки библиотекаря"
+        description="Проверяйте проблемные записи и выполняйте корректировки по приоритету и локации."
+        badges={[t("shellSecureLabel"), "Проверка записей"]}
       />
 
       <div className="app-toolbar">
         <div>
-          <p className="app-kicker">{t("librarianQueueTitle")}</p>
+          <p className="app-kicker">Открытые замечания</p>
           <p className="mt-2 text-sm text-slate-600">
-            {reservations.length} {t("catalogResults")}
+            {queueQuery.data?.meta.total ?? 0} {t("catalogResults")}
           </p>
         </div>
-        <select
-          value={statusFilter || ""}
-          onChange={(e) => {
-            setStatusFilter((e.target.value as ReservationStatus) || undefined);
-            setPage(1);
-          }}
-          className="app-form-control w-auto min-w-[210px]"
-        >
-          <option value="">{t("librarianQueueFilterAll")}</option>
-          <option value="PENDING">{t("librarianQueueStatusPending")}</option>
-          <option value="READY">{t("librarianQueueStatusReady")}</option>
-          <option value="FULFILLED">
-            {t("librarianQueueStatusFulfilled")}
-          </option>
-          <option value="CANCELLED">
-            {t("librarianQueueStatusCancelled")}
-          </option>
-        </select>
+        <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-5">
+          <select
+            value={severity}
+            onChange={(event) => {
+              setSeverity(event.target.value);
+              setPage(1);
+            }}
+            className="app-form-control"
+          >
+            <option value="">Все уровни критичности</option>
+            <option value="CRITICAL">CRITICAL</option>
+            <option value="HIGH">HIGH</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="LOW">LOW</option>
+          </select>
+          <input
+            className="app-form-control"
+            placeholder="Код замечания"
+            value={issueCode}
+            onChange={(event) => {
+              setIssueCode(event.target.value);
+              setPage(1);
+            }}
+          />
+          <input
+            className="app-form-control"
+            placeholder="Тип сущности"
+            value={entityType}
+            onChange={(event) => {
+              setEntityType(event.target.value);
+              setPage(1);
+            }}
+          />
+          <select
+            value={campusCode}
+            onChange={(event) => {
+              setCampusCode(event.target.value);
+              setPage(1);
+            }}
+            className="app-form-control"
+          >
+            <option value="">Все кампусы</option>
+            {campuses.map((campus) => (
+              <option key={campus.value} value={campus.value}>
+                {campus.label}
+              </option>
+            ))}
+          </select>
+          <select
+            value={servicePointCode}
+            onChange={(event) => {
+              setServicePointCode(event.target.value);
+              setPage(1);
+            }}
+            className="app-form-control"
+          >
+            <option value="">Все пункты обслуживания</option>
+            {servicePoints.map((servicePoint) => (
+              <option key={servicePoint.value} value={servicePoint.value}>
+                {servicePoint.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="app-table-shell">
-        <table className="w-full text-sm">
-          <thead className="app-table-head">
-            <tr className="border-b border-blue-100/70">
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnUser")}
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnBook")}
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnStatus")}
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnDate")}
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnActions")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {reservations.map((reservation) => {
-              const statusConfig = STATUS_COLORS[reservation.status];
-              const reservedDate = new Date(
-                reservation.reservedAt,
+      <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+        <section className="app-panel p-4 md:p-5">
+          <div className="flex items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+            <div>
+              <p className="app-kicker">Текущие задачи</p>
+              <h2 className="app-section-heading">Список очереди</h2>
+            </div>
+            <span className="app-chip-muted">
+              {queueQuery.data?.meta.total ?? 0} записей
+            </span>
+          </div>
+
+          <div className="mt-4 space-y-3">
+            {issues.map((issue) => {
+              const flaggedDate = new Date(
+                issue.flaggedAt,
               ).toLocaleDateString();
+              const isSelected = selectedFlagId === issue.flagId;
 
               return (
-                <tr
-                  key={reservation.id}
-                  className="border-b border-slate-100/90 hover:bg-slate-50/70"
+                <button
+                  key={issue.flagId}
+                  type="button"
+                  className={`app-queue-card w-full ${isSelected ? "app-queue-card-active" : ""}`}
+                  onClick={() => setSelectedFlagId(issue.flagId)}
                 >
-                  <td className="px-4 py-4 text-slate-900">
-                    <div className="font-medium">
-                      {reservation.user?.fullName || reservation.userId}
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="text-left">
+                      <div className="text-base font-semibold text-slate-950">
+                        {issue.issueCode}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-500">
+                        {issue.entityType} • {flaggedDate}
+                      </div>
                     </div>
-                    <div className="text-xs text-slate-600">
-                      {reservation.user?.universityId || reservation.userId}
-                    </div>
-                    <div className="mt-2 text-xs text-slate-500">
-                      <span className="app-chip-muted">
-                        {t("commonBranchLabel")}:{" "}
-                        {reservation.libraryBranch?.name ||
-                          reservation.libraryBranchId}
+                    <span className="app-chip-muted">{issue.severity}</span>
+                  </div>
+
+                  <p className="mt-3 text-sm font-medium text-slate-900">
+                    {issue.context.title ||
+                      issue.values.raw ||
+                      "Название не указано"}
+                  </p>
+
+                  <div className="mt-3 grid gap-2 text-xs text-slate-600 md:grid-cols-2">
+                    <div>
+                      <span className="font-medium text-slate-700">
+                        Кампус:{" "}
                       </span>
+                      {(issue.context.campusCodes || [])
+                        .map((code) => toReadableLocation(code))
+                        .join(", ") || "-"}
                     </div>
-                  </td>
-                  <td className="px-4 py-4 text-slate-900">
-                    <div className="font-medium">
-                      {reservation.book?.title || reservation.bookId}
-                    </div>
-                    <div className="mt-2 text-xs text-slate-500">
-                      <span className="app-chip-muted">
-                        {reservation.copy?.inventoryNumber || "-"}
+                    <div>
+                      <span className="font-medium text-slate-700">
+                        Пункт обслуживания:{" "}
                       </span>
+                      {issue.context.servicePointCodes.join(", ") || "-"}
                     </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span
-                      className={`inline-block rounded-full border px-3 py-1 text-xs font-medium ${statusConfig.badge}`}
-                    >
-                      {t(statusConfig.label)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-slate-600">{reservedDate}</td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-wrap gap-2">
-                      {reservation.status === "PENDING" && (
-                        <>
-                          <button
-                            onClick={() =>
-                              handleStatusChange(reservation.id, "READY")
-                            }
-                            disabled={updateStatusMutation.isPending}
-                            className="inline-flex rounded-xl bg-green-100 px-3 py-2 text-xs font-medium text-green-700 transition hover:bg-green-200 disabled:opacity-50"
-                          >
-                            {t("librarianQueueConfirm")}
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleStatusChange(reservation.id, "CANCELLED")
-                            }
-                            disabled={updateStatusMutation.isPending}
-                            className="inline-flex rounded-xl bg-red-100 px-3 py-2 text-xs font-medium text-red-700 transition hover:bg-red-200 disabled:opacity-50"
-                          >
-                            {t("librarianQueueReject")}
-                          </button>
-                        </>
-                      )}
-                      {reservation.status === "READY" && (
-                        <button
-                          onClick={() =>
-                            handleStatusChange(reservation.id, "FULFILLED")
-                          }
-                          disabled={updateStatusMutation.isPending}
-                          className="inline-flex rounded-xl bg-blue-100 px-3 py-2 text-xs font-medium text-blue-700 transition hover:bg-blue-200 disabled:opacity-50"
-                        >
-                          {t("librarianQueueMarkReady")}
-                        </button>
-                      )}
-                      {!["PENDING", "READY"].includes(reservation.status) && (
-                        <span className="text-xs text-slate-400">
-                          {t("librarianQueueNoActions")}
-                        </span>
-                      )}
-                    </div>
-                  </td>
-                </tr>
+                  </div>
+
+                  <div className="mt-3 rounded-2xl bg-white/80 px-3 py-2 text-sm text-slate-600">
+                    Предложение: {issue.values.suggested || "Не найдено"}
+                  </div>
+                </button>
               );
             })}
-          </tbody>
-        </table>
+          </div>
+        </section>
+
+        {selectedFlagId && detail ? (
+          <article className="app-panel-strong p-5 xl:sticky xl:top-24 xl:h-fit">
+            <p className="app-kicker">Рабочая область исправления</p>
+            <h3 className="mt-2 text-base font-semibold text-slate-900">
+              Детали замечания и действия
+            </h3>
+            <p className="mt-2 text-sm text-slate-600">
+              {detail.issue.issueCode} • {detail.issue.severity} •{" "}
+              {detail.issue.entityType}
+            </p>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="app-stat-card p-3">
+                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Исходное значение
+                </p>
+                <p className="mt-2 text-sm text-slate-900">
+                  {detail.issue.values.raw || "-"}
+                </p>
+              </div>
+              <div className="app-stat-card p-3">
+                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Текущее нормализованное
+                </p>
+                <p className="mt-2 text-sm text-slate-900">
+                  {detail.issue.values.normalized || "-"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 md:col-span-2">
+                <p className="text-xs uppercase tracking-[0.14em] text-emerald-700">
+                  Рекомендуемое исправление
+                </p>
+                <p className="mt-2 text-sm font-medium text-emerald-900">
+                  {detail.issue.values.suggested || "-"}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-2 text-sm text-slate-700">
+              <p>
+                <span className="font-medium">Документ: </span>
+                {detail.issue.context.title || "-"}
+              </p>
+              <p>
+                <span className="font-medium">Кампус: </span>
+                {(detail.issue.context.campusCodes || [])
+                  .map((code) => toReadableLocation(code))
+                  .join(", ") || "-"}
+              </p>
+              <p>
+                <span className="font-medium">Статус: </span>
+                {detail.issue.flagStatus}
+              </p>
+            </div>
+
+            <div className="mt-4 space-y-3 rounded-[24px] border border-slate-200 bg-white/75 p-4">
+              <label className="space-y-1 text-sm">
+                <span className="text-slate-600">
+                  Комментарий (необязательно)
+                </span>
+                <textarea
+                  className="app-form-control min-h-[84px]"
+                  value={noteDraft}
+                  onChange={(event) => setNoteDraft(event.target.value)}
+                  placeholder="Добавьте комментарий"
+                />
+              </label>
+
+              <label className="space-y-1 text-sm">
+                <span className="text-slate-600">
+                  Значение для ручного исправления
+                </span>
+                <input
+                  className="app-form-control"
+                  value={manualValue}
+                  onChange={(event) => setManualValue(event.target.value)}
+                  placeholder="Введите новое значение"
+                />
+              </label>
+
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  className="app-button-primary"
+                  disabled={actionMutation.isPending}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    actionMutation.mutate(
+                      {
+                        flagId: selectedFlagId,
+                        payload: {
+                          action: "accept_suggestion",
+                          suggestionId: suggestedId,
+                          note: noteDraft || undefined,
+                        },
+                      },
+                      {
+                        onSuccess: () => {
+                          setStatusMessage(
+                            "Предложение принято, запись обновлена.",
+                          );
+                          setSelectedFlagId("");
+                          setNoteDraft("");
+                        },
+                      },
+                    );
+                  }}
+                >
+                  Принять предложение
+                </button>
+
+                <button
+                  type="button"
+                  className="app-button-secondary"
+                  disabled={actionMutation.isPending}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    actionMutation.mutate(
+                      {
+                        flagId: selectedFlagId,
+                        payload: {
+                          action: "reject_suggestion",
+                          suggestionId: suggestedId,
+                          note: noteDraft || undefined,
+                        },
+                      },
+                      {
+                        onSuccess: () => {
+                          setStatusMessage(
+                            "Предложение отклонено, замечание закрыто.",
+                          );
+                          setSelectedFlagId("");
+                          setNoteDraft("");
+                        },
+                      },
+                    );
+                  }}
+                >
+                  Отклонить предложение
+                </button>
+
+                <button
+                  type="button"
+                  className="app-button-secondary"
+                  disabled={actionMutation.isPending || !manualValue.trim()}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    actionMutation.mutate(
+                      {
+                        flagId: selectedFlagId,
+                        payload: {
+                          action: "manual_edit",
+                          fieldName: getManualFieldByEntityType(
+                            detail.issue.entityType,
+                          ),
+                          manualValue: manualValue.trim(),
+                          suggestionId: suggestedId,
+                          note: noteDraft || undefined,
+                        },
+                      },
+                      {
+                        onSuccess: () => {
+                          setStatusMessage(
+                            "Ручное исправление применено, запись обновлена.",
+                          );
+                          setSelectedFlagId("");
+                          setManualValue("");
+                          setNoteDraft("");
+                        },
+                      },
+                    );
+                  }}
+                >
+                  Применить исправление
+                </button>
+              </div>
+
+              {actionMutation.isError ? (
+                <div className="app-state-error">
+                  Не удалось выполнить действие. Проверьте данные и повторите.
+                </div>
+              ) : null}
+
+              {statusMessage ? (
+                <div className="app-state-success">{statusMessage}</div>
+              ) : null}
+            </div>
+
+            <p className="mt-4 text-sm text-slate-700">
+              Связанные замечания: {detail.relatedIssues.length}
+            </p>
+          </article>
+        ) : (
+          <aside className="app-flow-step flex min-h-[22rem] items-center justify-center p-8 text-center text-sm leading-7 text-white/88">
+            Выберите запись из очереди, чтобы открыть рабочую область
+            исправления. Справа отобразятся исходное значение, нормализованное
+            значение, предложенное исправление и доступные действия.
+          </aside>
+        )}
       </div>
 
       {totalPages > 1 && (

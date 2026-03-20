@@ -23,6 +23,13 @@ interface AuditWriteInput {
 export class AuditService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private isUnavailableSchemaError(error: unknown) {
+    return (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      (error.code === "P2021" || error.code === "P2022")
+    );
+  }
+
   async list(query: AuditListQuery = {}) {
     const page = Math.max(1, query.page || 1);
     const limit = Math.min(100, Math.max(1, query.limit || 20));
@@ -32,38 +39,62 @@ export class AuditService {
       ...(query.entityId ? { entityId: query.entityId } : {}),
     };
 
-    const [data, total] = await this.prisma.$transaction([
-      this.prisma.auditLog.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      this.prisma.auditLog.count({ where }),
-    ]);
+    try {
+      const [data, total] = await this.prisma.$transaction([
+        this.prisma.auditLog.findMany({
+          where,
+          orderBy: { createdAt: "desc" },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        this.prisma.auditLog.count({ where }),
+      ]);
 
-    return {
-      data,
-      meta: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-      },
-    };
+      return {
+        data,
+        meta: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit),
+        },
+      };
+    } catch (error) {
+      if (!this.isUnavailableSchemaError(error)) {
+        throw error;
+      }
+
+      return {
+        data: [],
+        meta: {
+          page,
+          limit,
+          total: 0,
+          totalPages: 0,
+        },
+      };
+    }
   }
 
   async write(input: AuditWriteInput) {
-    return this.prisma.auditLog.create({
-      data: {
-        action: input.action,
-        entityType: input.entityType,
-        entityId: input.entityId,
-        metadata: input.metadata as Prisma.InputJsonValue | undefined,
-        userId: input.userId,
-        ipAddress: input.ipAddress,
-        userAgent: input.userAgent,
-      },
-    });
+    try {
+      return await this.prisma.auditLog.create({
+        data: {
+          action: input.action,
+          entityType: input.entityType,
+          entityId: input.entityId,
+          metadata: input.metadata as Prisma.InputJsonValue | undefined,
+          userId: input.userId,
+          ipAddress: input.ipAddress,
+          userAgent: input.userAgent,
+        },
+      });
+    } catch (error) {
+      if (!this.isUnavailableSchemaError(error)) {
+        throw error;
+      }
+
+      return null;
+    }
   }
 }

@@ -1,91 +1,286 @@
-import axios from "axios";
+import { apiClient } from "@shared/api/client";
 
-export interface PublicCatalogBookItem {
-  id: string;
-  title: string;
-  subtitle?: string | null;
-  publishYear?: number | null;
-  language?: string | null;
-  description?: string | null;
-  libraryBranch: {
-    id: string;
-    code: string;
-    name: string;
-    scope: {
-      id: string;
-      code: string;
-      name: string;
-    };
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
   };
-  authors: Array<{
+}
+
+export interface CatalogSearchItem {
+  id: string;
+  legacyDocId: number;
+  title: {
+    display: string | null;
+    normalized: string | null;
+    raw: string | null;
+    subtitle: string | null;
+  };
+  primaryAuthor: string | null;
+  authors: unknown[];
+  publisher: {
     id: string;
-    fullName: string;
-  }>;
-  categories: Array<{
-    id: string;
-    name: string;
-  }>;
-  availability: {
+    name: string | null;
+  } | null;
+  publicationYear: number | null;
+  language: {
+    code: string | null;
+    raw: string | null;
+  };
+  isbn: {
+    raw: string | null;
+    normalized: string | null;
+    isValid: boolean;
+  };
+  copies: {
     total: number;
     available: number;
+    unavailable: number;
+    review: number;
+    problem: number;
+    orphan: number;
+  };
+  locations: {
+    institutionUnitCodes: string[];
+    campusCodes: string[];
+    campusNames: string[];
+    servicePointCodes: string[];
+    servicePointNames: string[];
+  };
+  review: {
+    documentNeedsReview: boolean;
+    hasOpenReview: boolean;
+    highestSeverity: string | null;
+    issueCodes: string[];
+    openTaskCount: number;
+    documentFlagCount: number;
+    copyFlagCount: number;
   };
 }
 
-export interface PublicCatalogPagination {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
-
-export interface PublicCatalogBooksResponse {
-  data: PublicCatalogBookItem[];
-  meta: PublicCatalogPagination;
-}
-
-export interface PublicCatalogBookDetails extends PublicCatalogBookItem {
-  isbn?: string | null;
-}
-
-export interface PublicCatalogFilters {
-  categories: Array<{
+export interface CatalogDetailResponse {
+  id: string;
+  legacyDocId: number;
+  controlNumber: string | null;
+  title: {
+    display: string | null;
+    normalized: string | null;
+    raw: string | null;
+    subtitle: string | null;
+    variants: unknown[];
+  };
+  publisher: {
     id: string;
-    name: string;
-  }>;
-  branches: Array<{
-    id: string;
-    code: string;
-    name: string;
-    scope: {
+    name: string | null;
+  } | null;
+  publication: {
+    placeRaw: string | null;
+    placeNormalized: string | null;
+    year: number | null;
+  };
+  language: {
+    code: string | null;
+    raw: string | null;
+  };
+  isbn: {
+    raw: string | null;
+    normalized: string | null;
+    isValid: boolean;
+  };
+  authors: unknown[];
+  subjects: unknown[];
+  keywords: unknown[];
+  classification: {
+    faculty: { raw: string | null; normalized: string | null };
+    department: { raw: string | null; normalized: string | null };
+    specialization: { raw: string | null; normalized: string | null };
+    literatureType: { raw: string | null; normalized: string | null };
+  };
+  copySummary: Record<string, unknown>;
+  campusDistribution: unknown[];
+  servicePointDistribution: unknown[];
+}
+
+export interface CatalogAvailabilityResponse {
+  documentId: string;
+  legacyDocId: number;
+  title: string | null;
+  items: Array<{
+    institutionUnit: {
+      id: string | null;
       code: string;
+      name: string | null;
+    } | null;
+    campus: { id: string | null; code: string; name: string | null } | null;
+    servicePoint: {
+      id: string | null;
+      code: string;
+      name: string | null;
+    } | null;
+    copies: {
+      total: number;
+      available: number;
+      unavailable: number;
+      review: number;
+      problem: number;
+      orphan: number;
     };
   }>;
-  languages: string[];
+}
+
+export interface CatalogFacetItem {
+  type: string;
+  value: string;
+  label: string;
+  counts: {
+    documents: number;
+    total: number;
+    totalCopies: number;
+    availableCopies: number;
+    reviewDocuments: number;
+  };
+}
+
+export interface CatalogFacetsResponse {
+  languages: CatalogFacetItem[];
+  campuses: CatalogFacetItem[];
+  servicePoints: CatalogFacetItem[];
+  availability: CatalogFacetItem[];
+}
+
+export interface AppReviewQueueItem {
+  flagId: string;
+  taskId: string | null;
+  entityType: string;
+  entityId: string;
+  issueCode: string;
+  severity: string;
+  flagStatus: string;
+  task: {
+    id: string;
+    type: string | null;
+    priority: string | null;
+    status: string | null;
+    title: string | null;
+    description: string | null;
+    assignedTo: string | null;
+    createdAt: string | null;
+  } | null;
+  values: {
+    raw: string | null;
+    normalized: string | null;
+    suggested: string | null;
+    confidenceScore: number | null;
+  };
+  context: {
+    documentId: string | null;
+    legacyDocId: number | null;
+    title: string | null;
+    isbnNormalized: string | null;
+    languageCode: string | null;
+    copyId: string | null;
+    legacyInvId: number | null;
+    inventoryNumber: string | null;
+    readerId: string | null;
+    legacyReaderId: string | null;
+    readerName: string | null;
+    institutionUnitCode: string | null;
+    campusCodes: string[];
+    servicePointCodes: string[];
+    readerServicePointNames: string[];
+  };
+  details: Record<string, unknown>;
+  flaggedAt: string;
+}
+
+export interface AppReviewIssueDetailResponse {
+  issue: AppReviewQueueItem;
+  document: CatalogDetailResponse | null;
+  availability: CatalogAvailabilityResponse["items"];
+  relatedIssues: AppReviewQueueItem[];
+}
+
+export interface AppReviewActionPayload {
+  action: "accept_suggestion" | "reject_suggestion" | "manual_edit";
+  suggestionId?: string;
+  fieldName?: string;
+  manualValue?: string;
+  note?: string;
+}
+
+export interface AppReviewActionResponse {
+  ok: boolean;
+  flagId: string;
 }
 
 export interface PublicCatalogQuery {
+  q?: string;
   title?: string;
   author?: string;
-  categoryId?: string;
-  branchId?: string;
+  isbn?: string;
   language?: string;
+  institutionUnitCode?: string;
+  campusCode?: string;
+  servicePointCode?: string;
+  availability?: "all" | "available" | "unavailable";
+  minCopies?: number;
   page?: number;
   limit?: number;
 }
 
-const api = axios.create({
-  baseURL: "/api/v1",
-});
+export interface AppReviewQuery {
+  entityType?: string;
+  issueCode?: string;
+  severity?: string;
+  campusCode?: string;
+  servicePointCode?: string;
+  page?: number;
+  limit?: number;
+}
 
 export async function fetchPublicBooks(
   query: PublicCatalogQuery,
-): Promise<PublicCatalogBooksResponse> {
-  const { data } = await api.get<PublicCatalogBooksResponse>("/public/books", {
-    params: query,
-  });
+): Promise<PaginatedResponse<CatalogSearchItem>> {
+  const { data } = await apiClient.get<PaginatedResponse<CatalogSearchItem>>(
+    "/catalog",
+    {
+      params: query,
+    },
+  );
 
   return {
-    data: Array.isArray(data?.data) ? data.data : [],
+    data: Array.isArray(data?.data)
+      ? data.data.map((item) => ({
+          ...item,
+          copies: {
+            total: item?.copies?.total ?? 0,
+            available: item?.copies?.available ?? 0,
+            unavailable: item?.copies?.unavailable ?? 0,
+            review: item?.copies?.review ?? 0,
+            problem: item?.copies?.problem ?? 0,
+            orphan: item?.copies?.orphan ?? 0,
+          },
+          locations: {
+            institutionUnitCodes: item?.locations?.institutionUnitCodes ?? [],
+            campusCodes: item?.locations?.campusCodes ?? [],
+            campusNames: item?.locations?.campusNames ?? [],
+            servicePointCodes: item?.locations?.servicePointCodes ?? [],
+            servicePointNames: item?.locations?.servicePointNames ?? [],
+          },
+          review: {
+            documentNeedsReview: item?.review?.documentNeedsReview ?? false,
+            hasOpenReview: item?.review?.hasOpenReview ?? false,
+            highestSeverity: item?.review?.highestSeverity ?? null,
+            issueCodes: item?.review?.issueCodes ?? [],
+            openTaskCount: item?.review?.openTaskCount ?? 0,
+            documentFlagCount: item?.review?.documentFlagCount ?? 0,
+            copyFlagCount: item?.review?.copyFlagCount ?? 0,
+          },
+        }))
+      : [],
     meta: {
       page: data?.meta?.page ?? query.page ?? 1,
       limit: data?.meta?.limit ?? query.limit ?? 20,
@@ -97,14 +292,146 @@ export async function fetchPublicBooks(
 
 export async function fetchPublicBookById(
   id: string,
-): Promise<PublicCatalogBookDetails> {
-  const { data } = await api.get<PublicCatalogBookDetails>(
-    `/public/books/${id}`,
+): Promise<CatalogDetailResponse> {
+  const { data } = await apiClient.get<{ data: CatalogDetailResponse }>(
+    `/catalog/${id}`,
   );
-  return data;
+  return data.data;
 }
 
-export async function fetchPublicFilters(): Promise<PublicCatalogFilters> {
-  const { data } = await api.get<PublicCatalogFilters>("/public/filters");
-  return data;
+export async function fetchPublicBookAvailability(
+  id: string,
+  query?: Pick<
+    PublicCatalogQuery,
+    "institutionUnitCode" | "campusCode" | "servicePointCode"
+  >,
+): Promise<CatalogAvailabilityResponse> {
+  const { data } = await apiClient.get<{ data: CatalogAvailabilityResponse }>(
+    `/catalog/${id}/availability`,
+    {
+      params: query,
+    },
+  );
+  return {
+    ...data.data,
+    items: (data.data?.items ?? []).map((item) => ({
+      ...item,
+      copies: {
+        total: item?.copies?.total ?? 0,
+        available: item?.copies?.available ?? 0,
+        unavailable: item?.copies?.unavailable ?? 0,
+        review: item?.copies?.review ?? 0,
+        problem: item?.copies?.problem ?? 0,
+        orphan: item?.copies?.orphan ?? 0,
+      },
+    })),
+  };
+}
+
+export async function fetchCatalogFacets(): Promise<CatalogFacetsResponse> {
+  const { data } = await apiClient.get<{ data: CatalogFacetsResponse }>(
+    "/catalog/facets",
+  );
+  return data.data;
+}
+
+export async function fetchLocationSummary(
+  query?: Pick<
+    PublicCatalogQuery,
+    "institutionUnitCode" | "campusCode" | "servicePointCode"
+  >,
+): Promise<CatalogAvailabilityResponse["items"]> {
+  const { data } = await apiClient.get<{
+    data: {
+      items: CatalogAvailabilityResponse["items"];
+    };
+  }>("/catalog/locations/summary", {
+    params: query,
+  });
+
+  return data.data.items ?? [];
+}
+
+export async function fetchAppReviewQueue(
+  query: AppReviewQuery,
+): Promise<PaginatedResponse<AppReviewQueueItem>> {
+  const { data } = await apiClient.get<PaginatedResponse<AppReviewQueueItem>>(
+    "/migration/app-review/issues",
+    {
+      params: query,
+    },
+  );
+
+  return {
+    data: Array.isArray(data?.data)
+      ? data.data.map((item) => ({
+          ...item,
+          values: {
+            raw: item?.values?.raw ?? null,
+            normalized: item?.values?.normalized ?? null,
+            suggested: item?.values?.suggested ?? null,
+            confidenceScore: item?.values?.confidenceScore ?? null,
+          },
+          context: {
+            documentId: item?.context?.documentId ?? null,
+            legacyDocId: item?.context?.legacyDocId ?? null,
+            title: item?.context?.title ?? null,
+            isbnNormalized: item?.context?.isbnNormalized ?? null,
+            languageCode: item?.context?.languageCode ?? null,
+            copyId: item?.context?.copyId ?? null,
+            legacyInvId: item?.context?.legacyInvId ?? null,
+            inventoryNumber: item?.context?.inventoryNumber ?? null,
+            readerId: item?.context?.readerId ?? null,
+            legacyReaderId: item?.context?.legacyReaderId ?? null,
+            readerName: item?.context?.readerName ?? null,
+            institutionUnitCode: item?.context?.institutionUnitCode ?? null,
+            campusCodes: item?.context?.campusCodes ?? [],
+            servicePointCodes: item?.context?.servicePointCodes ?? [],
+            readerServicePointNames:
+              item?.context?.readerServicePointNames ?? [],
+          },
+          details: item?.details ?? {},
+        }))
+      : [],
+    meta: {
+      page: data?.meta?.page ?? query.page ?? 1,
+      limit: data?.meta?.limit ?? query.limit ?? 20,
+      total: data?.meta?.total ?? 0,
+      totalPages: data?.meta?.totalPages ?? 1,
+    },
+  };
+}
+
+export async function fetchAppReviewIssueDetail(
+  flagId: string,
+): Promise<AppReviewIssueDetailResponse> {
+  const { data } = await apiClient.get<{ data: AppReviewIssueDetailResponse }>(
+    `/migration/app-review/issues/${flagId}`,
+  );
+  return {
+    ...data.data,
+    availability: (data.data?.availability ?? []).map((item) => ({
+      ...item,
+      copies: {
+        total: item?.copies?.total ?? 0,
+        available: item?.copies?.available ?? 0,
+        unavailable: item?.copies?.unavailable ?? 0,
+        review: item?.copies?.review ?? 0,
+        problem: item?.copies?.problem ?? 0,
+        orphan: item?.copies?.orphan ?? 0,
+      },
+    })),
+    relatedIssues: data.data?.relatedIssues ?? [],
+  };
+}
+
+export async function postAppReviewAction(
+  flagId: string,
+  payload: AppReviewActionPayload,
+): Promise<AppReviewActionResponse> {
+  const { data } = await apiClient.post<{ data: AppReviewActionResponse }>(
+    `/migration/app-review/issues/${flagId}/actions`,
+    payload,
+  );
+  return data.data;
 }
