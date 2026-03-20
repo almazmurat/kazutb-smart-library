@@ -1,11 +1,11 @@
 const locationMap: Record<string, string> = {
-  COLLEGE_MAIN: "College",
-  UNIVERSITY_ECONOMIC: "University Economic",
-  UNIVERSITY_TECHNOLOGICAL: "University Technological",
-  UNIVERSITY_CENTRAL: "University Central",
-  ECONOMIC_LIBRARY: "University Economic",
-  TECHNOLOGICAL_LIBRARY: "University Technological",
-  COLLEGE_LIBRARY: "College",
+  COLLEGE_MAIN: "Колледж",
+  UNIVERSITY_ECONOMIC: "Университет Экономический",
+  UNIVERSITY_TECHNOLOGICAL: "Университет Технологический",
+  UNIVERSITY_CENTRAL: "Университет Центральный",
+  ECONOMIC_LIBRARY: "Университет Экономический",
+  TECHNOLOGICAL_LIBRARY: "Университет Технологический",
+  COLLEGE_LIBRARY: "Колледж",
 };
 
 export function toReadableLocation(value?: string | null): string {

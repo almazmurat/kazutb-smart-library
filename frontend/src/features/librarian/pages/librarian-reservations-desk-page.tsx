@@ -88,23 +88,22 @@ export function LibrarianReservationsDeskPage() {
         <PageIntro
           eyebrow={t("shellOperationsSection")}
           title="Стол резервирований"
-          description="Сервис резервирований временно недоступен. Маршрут работает в безопасном режиме."
+          description="Данные резервирований временно недоступны."
           badges={[t("shellSecureLabel"), "Рабочее место библиотекаря"]}
         />
-        <div className="app-subpanel p-6 text-sm text-slate-700">
-          <p className="font-medium">
+        <div className="app-subpanel p-6">
+          <p className="font-medium text-[var(--ink-900)]">
             Не удалось загрузить очередь резервирований.
           </p>
-          <p className="mt-2 text-[var(--ink-500)]">
-            Попробуйте обновить страницу или продолжите работу в других
-            разделах.
+          <p className="mt-2 text-sm text-[var(--ink-500)]">
+            Попробуйте обновить страницу или продолжите работу в других разделах.
           </p>
           <button
             type="button"
             className="app-button-primary mt-4"
             onClick={() => window.location.reload()}
           >
-            Обновить страницу
+            Повторить
           </button>
         </div>
       </div>

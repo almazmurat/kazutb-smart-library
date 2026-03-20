@@ -18,7 +18,18 @@ export function OverviewPage() {
     ANALYST: "roleAnalyst",
   };
 
-  const quickAccess = [
+  const workspaceHref =
+    !auth.isAuthenticated
+      ? "/login"
+      : auth.role === "ADMIN"
+        ? "/admin"
+        : auth.role === "LIBRARIAN"
+          ? "/librarian"
+          : auth.role === "ANALYST"
+            ? "/analytics"
+            : "/cabinet";
+
+  const guestQuickAccess = [
     {
       to: "/search",
       title: t("navSearch"),
@@ -34,12 +45,27 @@ export function OverviewPage() {
       title: "Вход в систему",
       description: "Авторизация для личного кабинета и служебных разделов.",
     },
+  ];
+
+  const authQuickAccess = [
     {
-      to: "/cabinet",
-      title: t("navCabinet"),
-      description: "Личные бронирования, выдачи и статус книг.",
+      to: "/search",
+      title: t("navSearch"),
+      description: "Поиск по названию, автору, ISBN и доступности.",
+    },
+    {
+      to: "/catalog",
+      title: t("navCatalog"),
+      description: "Результаты каталога и карточки книг.",
+    },
+    {
+      to: workspaceHref,
+      title: "Рабочий раздел",
+      description: "Перейти в персональный рабочий раздел.",
     },
   ];
+
+  const quickAccess = auth.isAuthenticated ? authQuickAccess : guestQuickAccess;
 
   const modules = [
     {
@@ -70,9 +96,15 @@ export function OverviewPage() {
             <Link to="/search" className="app-button-primary">
               Открыть поиск
             </Link>
-            <Link to="/login" className="app-button-secondary">
-              Войти
-            </Link>
+            {!auth.isAuthenticated ? (
+              <Link to="/login" className="app-button-secondary">
+                Войти
+              </Link>
+            ) : (
+              <Link to={workspaceHref} className="app-button-secondary">
+                Рабочий раздел
+              </Link>
+            )}
           </div>
         }
       >
@@ -85,7 +117,7 @@ export function OverviewPage() {
 
       <section className="app-panel p-6 md:p-7">
         <h2 className="app-section-heading">Быстрый доступ</h2>
-        <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-3">
           {quickAccess.map((item) => (
             <Link key={item.to} to={item.to} className="app-feature-card">
               <h3 className="text-base font-semibold text-[var(--ink-900)]">

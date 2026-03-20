@@ -61,7 +61,7 @@ export function AnalyticsPage() {
         <PageIntro
           eyebrow={t("shellOperationsSection")}
           title={t("dashboardTitle")}
-          description="Загружка аналитических данных..."
+          description="Загрузка аналитических данных..."
           badges={[t("dashboardScopeGlobal"), t("shellSecureLabel")]}
         />
         <section className="app-empty-state">
@@ -78,7 +78,7 @@ export function AnalyticsPage() {
         title={t("dashboardTitle")}
         description={
           hasError
-            ? "Раздел аналитики временно работает в безопасном режиме: отображаются базовые метрики без детализации."
+            ? "Аналитические данные временно недоступны. Отображаются данные, доступные в данный момент."
             : t("dashboardDescription")
         }
         badges={[
@@ -91,8 +91,8 @@ export function AnalyticsPage() {
 
       {hasError ? (
         <div className="app-state-warning">
-          Источник аналитических данных временно недоступен. Маршрут работает
-          стабильно, можно продолжать навигацию по системе.
+          Источник аналитических данных временно недоступен. Показываются
+          последние закешированные данные.
         </div>
       ) : null}
 
