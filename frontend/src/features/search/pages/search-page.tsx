@@ -33,21 +33,11 @@ export function SearchPage() {
         title={t("navSearch")}
         description={t("catalogPublicDescription")}
         badges={[t("shellPublicLabel"), t("catalogFeatureInstitutional")]}
-        actions={
-          <span className="app-chip">Колледж и университетские кампусы</span>
-        }
       />
 
-      <div className="grid gap-5 lg:grid-cols-[1.3fr_0.7fr]">
+      <div className="grid gap-5 lg:grid-cols-[1fr_0.7fr]">
         <form className="app-panel-strong p-6" onSubmit={submitSearch}>
-          <p className="app-kicker">Публичный каталог</p>
-          <h2 className="mt-2 text-lg font-semibold text-slate-900">
-            Найти книги по всем кампусам
-          </h2>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
-            Начните с общего запроса, затем уточните выдачу по языку, кампусу и
-            доступности экземпляров.
-          </p>
+          <h2 className="app-section-heading">Параметры поиска</h2>
 
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             <input
@@ -117,10 +107,7 @@ export function SearchPage() {
         </form>
 
         <article className="app-panel p-5">
-          <p className="app-kicker">Подсказка</p>
-          <h2 className="mt-2 text-lg font-semibold text-slate-900">
-            Как работать с поиском
-          </h2>
+          <h2 className="app-section-heading">Подсказка по сценарию</h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
             1) Выполните поиск в каталоге. 2) Откройте карточку книги и
             проверьте доступность по локациям. 3) При необходимости перейдите в
