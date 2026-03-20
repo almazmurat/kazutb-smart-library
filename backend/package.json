@@ -20,7 +20,11 @@
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "prisma:seed": "ts-node prisma/seed.ts",
-    "reconstruct:legacy-db": "node scripts/legacy-reconstruction/reconstruct-legacy-db.js"
+    "reconstruct:legacy-db": "node scripts/legacy-reconstruction/reconstruct-legacy-db.js",
+    "reconstruct:legacy-raw-mirror": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-mirror.js",
+    "reconstruct:legacy-raw-phase2a": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-phase2a.js",
+    "reconstruct:legacy-raw-complete": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-complete.js",
+    "build:app-ready-schema": "node scripts/legacy-reconstruction/build-app-ready-schema.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
