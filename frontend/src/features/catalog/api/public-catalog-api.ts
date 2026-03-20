@@ -35,7 +35,7 @@ export interface CatalogSearchItem {
     normalized: string | null;
     isValid: boolean;
   };
-  availability: {
+  copies: {
     total: number;
     available: number;
     unavailable: number;
@@ -211,6 +211,11 @@ export interface AppReviewActionPayload {
   note?: string;
 }
 
+export interface AppReviewActionResponse {
+  ok: boolean;
+  flagId: string;
+}
+
 export interface PublicCatalogQuery {
   q?: string;
   title?: string;
@@ -247,7 +252,35 @@ export async function fetchPublicBooks(
   );
 
   return {
-    data: Array.isArray(data?.data) ? data.data : [],
+    data: Array.isArray(data?.data)
+      ? data.data.map((item) => ({
+          ...item,
+          copies: {
+            total: item?.copies?.total ?? 0,
+            available: item?.copies?.available ?? 0,
+            unavailable: item?.copies?.unavailable ?? 0,
+            review: item?.copies?.review ?? 0,
+            problem: item?.copies?.problem ?? 0,
+            orphan: item?.copies?.orphan ?? 0,
+          },
+          locations: {
+            institutionUnitCodes: item?.locations?.institutionUnitCodes ?? [],
+            campusCodes: item?.locations?.campusCodes ?? [],
+            campusNames: item?.locations?.campusNames ?? [],
+            servicePointCodes: item?.locations?.servicePointCodes ?? [],
+            servicePointNames: item?.locations?.servicePointNames ?? [],
+          },
+          review: {
+            documentNeedsReview: item?.review?.documentNeedsReview ?? false,
+            hasOpenReview: item?.review?.hasOpenReview ?? false,
+            highestSeverity: item?.review?.highestSeverity ?? null,
+            issueCodes: item?.review?.issueCodes ?? [],
+            openTaskCount: item?.review?.openTaskCount ?? 0,
+            documentFlagCount: item?.review?.documentFlagCount ?? 0,
+            copyFlagCount: item?.review?.copyFlagCount ?? 0,
+          },
+        }))
+      : [],
     meta: {
       page: data?.meta?.page ?? query.page ?? 1,
       limit: data?.meta?.limit ?? query.limit ?? 20,
@@ -279,7 +312,20 @@ export async function fetchPublicBookAvailability(
       params: query,
     },
   );
-  return data.data;
+  return {
+    ...data.data,
+    items: (data.data?.items ?? []).map((item) => ({
+      ...item,
+      copies: {
+        total: item?.copies?.total ?? 0,
+        available: item?.copies?.available ?? 0,
+        unavailable: item?.copies?.unavailable ?? 0,
+        review: item?.copies?.review ?? 0,
+        problem: item?.copies?.problem ?? 0,
+        orphan: item?.copies?.orphan ?? 0,
+      },
+    })),
+  };
 }
 
 export async function fetchCatalogFacets(): Promise<CatalogFacetsResponse> {
@@ -317,7 +363,36 @@ export async function fetchAppReviewQueue(
   );
 
   return {
-    data: Array.isArray(data?.data) ? data.data : [],
+    data: Array.isArray(data?.data)
+      ? data.data.map((item) => ({
+          ...item,
+          values: {
+            raw: item?.values?.raw ?? null,
+            normalized: item?.values?.normalized ?? null,
+            suggested: item?.values?.suggested ?? null,
+            confidenceScore: item?.values?.confidenceScore ?? null,
+          },
+          context: {
+            documentId: item?.context?.documentId ?? null,
+            legacyDocId: item?.context?.legacyDocId ?? null,
+            title: item?.context?.title ?? null,
+            isbnNormalized: item?.context?.isbnNormalized ?? null,
+            languageCode: item?.context?.languageCode ?? null,
+            copyId: item?.context?.copyId ?? null,
+            legacyInvId: item?.context?.legacyInvId ?? null,
+            inventoryNumber: item?.context?.inventoryNumber ?? null,
+            readerId: item?.context?.readerId ?? null,
+            legacyReaderId: item?.context?.legacyReaderId ?? null,
+            readerName: item?.context?.readerName ?? null,
+            institutionUnitCode: item?.context?.institutionUnitCode ?? null,
+            campusCodes: item?.context?.campusCodes ?? [],
+            servicePointCodes: item?.context?.servicePointCodes ?? [],
+            readerServicePointNames:
+              item?.context?.readerServicePointNames ?? [],
+          },
+          details: item?.details ?? {},
+        }))
+      : [],
     meta: {
       page: data?.meta?.page ?? query.page ?? 1,
       limit: data?.meta?.limit ?? query.limit ?? 20,
@@ -333,14 +408,28 @@ export async function fetchAppReviewIssueDetail(
   const { data } = await apiClient.get<{ data: AppReviewIssueDetailResponse }>(
     `/migration/app-review/issues/${flagId}`,
   );
-  return data.data;
+  return {
+    ...data.data,
+    availability: (data.data?.availability ?? []).map((item) => ({
+      ...item,
+      copies: {
+        total: item?.copies?.total ?? 0,
+        available: item?.copies?.available ?? 0,
+        unavailable: item?.copies?.unavailable ?? 0,
+        review: item?.copies?.review ?? 0,
+        problem: item?.copies?.problem ?? 0,
+        orphan: item?.copies?.orphan ?? 0,
+      },
+    })),
+    relatedIssues: data.data?.relatedIssues ?? [],
+  };
 }
 
 export async function postAppReviewAction(
   flagId: string,
   payload: AppReviewActionPayload,
-): Promise<AppReviewIssueDetailResponse> {
-  const { data } = await apiClient.post<{ data: AppReviewIssueDetailResponse }>(
+): Promise<AppReviewActionResponse> {
+  const { data } = await apiClient.post<{ data: AppReviewActionResponse }>(
     `/migration/app-review/issues/${flagId}/actions`,
     payload,
   );

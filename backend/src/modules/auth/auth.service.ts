@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 
-import { UsersService } from "@modules/users/users.service";
 import { UserRole } from "@common/types/user-role.enum";
 
 interface DemoCredential {
@@ -60,9 +59,22 @@ export interface LoginResult {
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly usersService: UsersService,
     private readonly configService: ConfigService,
   ) {}
+
+  private buildDemoUser(credential: DemoCredential) {
+    return {
+      id: `demo:${credential.username}`,
+      universityId: credential.username,
+      email: credential.email,
+      fullName: credential.fullName,
+      role: credential.role,
+    };
+  }
+
+  private findDemoCredentialByUsername(username: string) {
+    return DEMO_CREDENTIALS.find((item) => item.username === username);
+  }
 
   async login(username: string, password: string): Promise<LoginResult> {
     // Demo local auth mode to unblock product demo delivery without LDAP dependency.
@@ -77,19 +89,12 @@ export class AuthService {
       throw new UnauthorizedException("Invalid credentials");
     }
 
-    const credential = DEMO_CREDENTIALS.find(
-      (item) => item.username === username,
-    );
+    const credential = this.findDemoCredentialByUsername(username);
     if (!credential || credential.password !== password) {
       throw new UnauthorizedException("Invalid demo credentials");
     }
 
-    const user = await this.usersService.findOrProvisionByUniversityAccount({
-      universityId: credential.username,
-      email: credential.email,
-      fullName: credential.fullName,
-      defaultRole: credential.role,
-    });
+    const user = this.buildDemoUser(credential);
 
     const payload = {
       sub: user.id,
@@ -111,8 +116,6 @@ export class AuthService {
         expiresIn: this.configService.get<string>("jwt.refreshExpiresIn", "7d"),
       },
     );
-
-    await this.usersService.markLastLogin(user.id);
 
     return {
       accessToken,
@@ -137,10 +140,13 @@ export class AuthService {
         throw new UnauthorizedException("Invalid refresh token");
       }
 
-      const user = await this.usersService.findById(payload.sub);
-      if (!user) {
+      const username = String(payload.sub).replace(/^demo:/, "");
+      const credential = this.findDemoCredentialByUsername(username);
+      if (!credential) {
         throw new UnauthorizedException("User not found");
       }
+
+      const user = this.buildDemoUser(credential);
 
       const newAccessToken = await this.jwtService.signAsync(
         {

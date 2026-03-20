@@ -70,7 +70,7 @@ export function LoginPage() {
         ]}
       />
 
-      <div className="grid gap-5 lg:grid-cols-[1fr_1fr]">
+      <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <article className="app-panel-strong p-6 md:p-7">
           <p className="app-kicker">Sign In</p>
           <h2 className="mt-2 app-section-heading">University demo accounts</h2>
@@ -80,6 +80,27 @@ export function LoginPage() {
           </p>
 
           <div className="mt-6 space-y-3">
+            <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+              {orderedUsers.map((user) => (
+                <button
+                  key={user.username}
+                  type="button"
+                  className="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-[0_10px_22px_rgba(15,23,42,0.06)]"
+                  onClick={() => {
+                    setUsername(user.username);
+                    setPassword(user.password);
+                  }}
+                >
+                  <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                    {user.role}
+                  </div>
+                  <div className="mt-2 text-sm font-semibold text-slate-900">
+                    {user.username}
+                  </div>
+                </button>
+              ))}
+            </div>
+
             <label className="space-y-1 text-sm">
               <span className="text-slate-600">Username</span>
               <input
@@ -147,7 +168,7 @@ export function LoginPage() {
             {orderedUsers.map((user) => (
               <div
                 key={user.username}
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-3"
+                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-[0_8px_18px_rgba(15,23,42,0.04)]"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
@@ -177,6 +198,15 @@ export function LoginPage() {
           <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900">
             Role landing: Guest → Search, Student → Cabinet, Librarian → Review
             Queue, Analyst → Analytics, Admin → Admin Overview.
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-700">
+            <p className="font-semibold text-slate-900">
+              Suggested live demo order
+            </p>
+            <p>1. Guest search and book details.</p>
+            <p>2. Librarian login and issue queue review.</p>
+            <p>3. Admin login and overview navigation.</p>
           </div>
         </article>
       </div>

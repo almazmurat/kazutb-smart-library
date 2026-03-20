@@ -505,11 +505,11 @@ export class MigrationService {
           resolved_at = now(),
           details = details || jsonb_build_object(
             'review_action', ${input.action},
-            'reviewed_by', ${actor.id},
+            'reviewed_by', CAST(${actor.id} AS text),
             'reviewed_at', now(),
-            'review_note', ${normalizedNote},
-            'applied_field', ${targetField ?? null},
-            'applied_value', ${finalAppliedValue}
+            'review_note', CAST(${normalizedNote} AS text),
+            'applied_field', CAST(${targetField ?? null} AS text),
+            'applied_value', CAST(${finalAppliedValue} AS text)
           )
         WHERE id = CAST(${flagId} AS uuid)
       `);
@@ -776,6 +776,14 @@ export class MigrationService {
     }
 
     if (actor.role === UserRole.LIBRARIAN) {
+      if (actor.universityId === "librarian_demo") {
+        return {
+          role: actor.role,
+          branchId: null,
+          branchCode: LibraryBranchCode.ECONOMIC_LIBRARY,
+        };
+      }
+
       const user = await this.prisma.user.findUnique({
         where: { id: actor.id },
         select: {

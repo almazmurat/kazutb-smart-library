@@ -17,15 +17,18 @@ Add a safe, explainable, auditable correction-suggestion layer for high-confiden
 Three correction classes are enforced:
 
 1. `auto_apply`
+
 - deterministic and low-risk fixes only
 - reversible via run-level rollback
 - applied only to app-facing fields in `app.*`
 
 2. `suggest_only`
+
 - likely useful but requires librarian confirmation
 - never silently updates display value
 
 3. `flag_only`
+
 - suspicious/noisy patterns that are too risky to auto-correct
 - captured for librarian triage only
 

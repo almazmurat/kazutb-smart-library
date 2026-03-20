@@ -36,8 +36,7 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
             </span>
           ))}
           <span className="app-chip-muted text-[11px]">
-            {labels.available}: {book.availability.available}/
-            {book.availability.total}
+            {labels.available}: {book.copies.available}/{book.copies.total}
           </span>
           {book.review.documentNeedsReview ? (
             <span className="app-chip-muted border-amber-100 bg-amber-50 text-[11px] text-amber-800">

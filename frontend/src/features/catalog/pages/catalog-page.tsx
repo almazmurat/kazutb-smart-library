@@ -109,6 +109,32 @@ export function CatalogPage() {
         }
       />
 
+      <section className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="app-panel p-5 md:p-6">
+          <p className="app-kicker">How to read this catalog</p>
+          <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
+            Search first, then confirm real availability by location
+          </h2>
+          <p className="mt-3 text-sm leading-7 text-slate-600">
+            Results show title, author, publisher, year, language, ISBN and live
+            copy counts. Open any book to see detailed campus and service-point
+            availability.
+          </p>
+        </div>
+
+        <div className="app-panel p-5 md:p-6">
+          <p className="app-kicker">Demo Paths</p>
+          <div className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+            <p>Guest: search by title or author and open a detail page.</p>
+            <p>
+              Librarian: inspect results, then move to review queue for
+              corrections.
+            </p>
+            <p>Admin: verify navigation and overview access after login.</p>
+          </div>
+        </div>
+      </section>
+
       <CatalogFilters
         labels={{
           query: "Global query",
@@ -139,7 +165,10 @@ export function CatalogPage() {
       ) : null}
 
       {booksQuery.isError ? (
-        <div className="app-state-error">{t("catalogError")}</div>
+        <div className="app-state-error">
+          Catalog data could not be loaded from the backend. Please verify
+          backend availability and database connectivity.
+        </div>
       ) : null}
 
       {!booksQuery.isLoading && !booksQuery.isError ? (

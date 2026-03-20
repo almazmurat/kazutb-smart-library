@@ -109,7 +109,10 @@ export class MigrationController {
     await this.service.applyAppReviewAction(actor, flagId, body);
 
     return {
-      data: await this.readLayerService.getReviewIssueDetail(flagId),
+      data: {
+        ok: true,
+        flagId,
+      },
     };
   }
 

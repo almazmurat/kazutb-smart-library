@@ -130,7 +130,7 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-white/70 bg-[rgba(247,250,255,0.9)] shadow-[0_8px_26px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+      <header className="sticky top-0 z-20 border-b border-white/70 bg-[rgba(247,250,255,0.94)] shadow-[0_8px_26px_rgba(15,23,42,0.08)] backdrop-blur-xl">
         <div className="border-b border-white/80 bg-[linear-gradient(90deg,rgba(232,240,255,0.82),rgba(255,255,255,0.6))]">
           <div className="app-container flex flex-wrap items-center justify-between gap-2 py-2.5 text-xs text-slate-600">
             <span className="font-medium text-slate-700">
@@ -149,7 +149,7 @@ export function AppShell() {
         </div>
 
         <div className="app-container py-4">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr] xl:items-stretch">
             <Link to="/overview" className="flex items-start gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(160deg,#0b3d91,#2d64bc)] text-lg font-bold text-white shadow-[0_14px_30px_rgba(29,79,163,0.24)]">
                 K
@@ -161,59 +161,102 @@ export function AppShell() {
                 <p className="mt-1 text-sm leading-6 text-slate-500">
                   {t("shellSubtitle")}
                 </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="app-chip">Guest catalog browsing</span>
+                  <span className="app-chip">Role-based demo login</span>
+                  <span className="app-chip">Librarian review workflow</span>
+                </div>
               </div>
             </Link>
-            <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-              {!auth.isAuthenticated ? (
-                <NavLink to="/login" className="app-button-primary">
-                  {t("login")}
-                </NavLink>
-              ) : (
-                <button
-                  type="button"
-                  className="app-button-secondary"
-                  disabled={logout.isPending}
-                  onClick={() => logout.mutate()}
-                >
-                  Logout
-                </button>
-              )}
+            <div className="app-panel-strong flex flex-col justify-between p-5">
+              <div>
+                <p className="app-kicker">Demo Status</p>
+                <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
+                  {auth.isAuthenticated
+                    ? `Signed in as ${auth.user?.fullName ?? auth.role}`
+                    : "Ready for guest or role-based testing"}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  Use the login page for seeded accounts, or stay in guest mode
+                  to demonstrate public search and book availability.
+                </p>
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                {!auth.isAuthenticated ? (
+                  <>
+                    <NavLink to="/login" className="app-button-primary">
+                      Open demo login
+                    </NavLink>
+                    <NavLink to="/search" className="app-button-secondary">
+                      Search as guest
+                    </NavLink>
+                  </>
+                ) : (
+                  <>
+                    <NavLink
+                      to={
+                        auth.role === "ADMIN"
+                          ? "/admin"
+                          : auth.role === "LIBRARIAN"
+                            ? "/librarian"
+                            : auth.role === "ANALYST"
+                              ? "/analytics"
+                              : "/cabinet"
+                      }
+                      className="app-button-primary"
+                    >
+                      Open role workspace
+                    </NavLink>
+                    <button
+                      type="button"
+                      className="app-button-secondary"
+                      disabled={logout.isPending}
+                      onClick={() => logout.mutate()}
+                    >
+                      Logout
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="mt-4 grid gap-3 lg:grid-cols-2 xl:grid-cols-4">
-            {visibleSections.map((section) => (
-              <div
-                key={section.title}
-                className="rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(245,249,255,0.92))] p-4 shadow-[0_14px_30px_rgba(15,23,42,0.06)]"
-              >
-                <div className="mb-2 flex items-center justify-between gap-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                    {section.title}
-                  </p>
-                  <span className="app-chip-muted px-2.5 py-1 text-[11px]">
-                    {section.badge}
-                  </span>
+          <div className="mt-4 app-panel p-3 md:p-4">
+            <div className="grid gap-3 xl:grid-cols-4">
+              {visibleSections.map((section) => (
+                <div
+                  key={section.title}
+                  className="rounded-[20px] border border-slate-200/70 bg-white/80 p-3.5"
+                >
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                      {section.title}
+                    </p>
+                    <span className="app-chip-muted px-2.5 py-1 text-[11px]">
+                      {section.badge}
+                    </span>
+                  </div>
+                  <nav className="flex flex-wrap gap-1.5 text-sm">
+                    {section.items.map((item) => (
+                      <NavLink
+                        key={item.to}
+                        to={item.to}
+                        className={({ isActive }) =>
+                          `rounded-xl px-3 py-2 transition duration-200 ${
+                            isActive
+                              ? "bg-[linear-gradient(135deg,rgba(232,240,255,0.96),rgba(245,248,255,0.98))] text-primary-700 shadow-[inset_0_0_0_1px_rgba(29,79,163,0.12)]"
+                              : "text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
+                          }`
+                        }
+                      >
+                        {item.label}
+                      </NavLink>
+                    ))}
+                  </nav>
                 </div>
-                <nav className="flex flex-wrap gap-1.5 text-sm">
-                  {section.items.map((item) => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className={({ isActive }) =>
-                        `rounded-xl px-3 py-2 transition duration-200 ${
-                          isActive
-                            ? "bg-[linear-gradient(135deg,rgba(232,240,255,0.96),rgba(245,248,255,0.98))] text-primary-700 shadow-[inset_0_0_0_1px_rgba(29,79,163,0.12)]"
-                            : "text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
-                        }`
-                      }
-                    >
-                      {item.label}
-                    </NavLink>
-                  ))}
-                </nav>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </header>

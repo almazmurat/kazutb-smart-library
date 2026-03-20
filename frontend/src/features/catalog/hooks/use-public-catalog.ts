@@ -93,7 +93,7 @@ export function useAppReviewAction() {
     onSuccess: (_, variables) => {
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: ["app-review-queue"] }),
-        queryClient.invalidateQueries({
+        queryClient.removeQueries({
           queryKey: ["app-review-issue", variables.flagId],
         }),
       ]);

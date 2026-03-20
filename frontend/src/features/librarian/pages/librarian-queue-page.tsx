@@ -193,260 +193,273 @@ export function LibrarianQueuePage() {
         </div>
       </div>
 
-      <div className="app-table-shell overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="app-table-head">
-            <tr className="border-b border-blue-100/70">
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                Issue
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                Context
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                Severity
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                Flagged at
-              </th>
-              <th className="px-4 py-3 text-left font-medium text-slate-700">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {issues.map((issue) => {
-              const flaggedDate = new Date(
-                issue.flaggedAt,
-              ).toLocaleDateString();
+      <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+        <section className="app-table-shell overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="app-table-head">
+              <tr className="border-b border-blue-100/70">
+                <th className="px-4 py-3 text-left font-medium text-slate-700">
+                  Issue
+                </th>
+                <th className="px-4 py-3 text-left font-medium text-slate-700">
+                  Context
+                </th>
+                <th className="px-4 py-3 text-left font-medium text-slate-700">
+                  Severity
+                </th>
+                <th className="px-4 py-3 text-left font-medium text-slate-700">
+                  Flagged at
+                </th>
+                <th className="px-4 py-3 text-left font-medium text-slate-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {issues.map((issue) => {
+                const flaggedDate = new Date(
+                  issue.flaggedAt,
+                ).toLocaleDateString();
 
-              return (
-                <tr
-                  key={issue.flagId}
-                  className="border-b border-slate-100/90 hover:bg-slate-50/70"
-                >
-                  <td className="px-4 py-4 text-slate-900">
-                    <div className="font-medium">{issue.issueCode}</div>
-                    <div className="text-xs text-slate-600">
-                      {issue.entityType} • {issue.entityId}
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 text-slate-900">
-                    <div className="font-medium">
-                      {issue.context.title || "-"}
-                    </div>
-                    <div className="mt-2 text-xs text-slate-500">
-                      Campus: {issue.context.campusCodes.join(", ") || "-"}
-                    </div>
-                    <div className="mt-1 text-xs text-slate-500">
-                      Service point:{" "}
-                      {issue.context.servicePointCodes.join(", ") || "-"}
-                    </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className="app-chip-muted">{issue.severity}</span>
-                  </td>
-                  <td className="px-4 py-4 text-slate-600">{flaggedDate}</td>
-                  <td className="px-4 py-4">
-                    <button
-                      className="app-button-secondary px-3 py-1.5"
-                      onClick={() => setSelectedFlagId(issue.flagId)}
-                    >
-                      View detail
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                return (
+                  <tr
+                    key={issue.flagId}
+                    className={`border-b border-slate-100/90 hover:bg-slate-50/70 ${selectedFlagId === issue.flagId ? "bg-blue-50/60" : ""}`}
+                  >
+                    <td className="px-4 py-4 text-slate-900">
+                      <div className="font-medium">{issue.issueCode}</div>
+                      <div className="text-xs text-slate-600">
+                        {issue.entityType} • {issue.entityId}
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-slate-900">
+                      <div className="font-medium">
+                        {issue.context.title || "-"}
+                      </div>
+                      <div className="mt-2 text-xs text-slate-500">
+                        Campus:{" "}
+                        {(issue.context.campusCodes || [])
+                          .map((code) => toReadableLocation(code))
+                          .join(", ") || "-"}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-500">
+                        Service point:{" "}
+                        {issue.context.servicePointCodes.join(", ") || "-"}
+                      </div>
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className="app-chip-muted">{issue.severity}</span>
+                    </td>
+                    <td className="px-4 py-4 text-slate-600">{flaggedDate}</td>
+                    <td className="px-4 py-4">
+                      <button
+                        className="app-button-secondary px-3 py-1.5"
+                        onClick={() => setSelectedFlagId(issue.flagId)}
+                      >
+                        View detail
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
 
-      {selectedFlagId && detail ? (
-        <article className="app-panel p-5">
-          <h3 className="text-base font-semibold text-slate-900">
-            Issue detail and review action
-          </h3>
-          <p className="mt-2 text-sm text-slate-600">
-            {detail.issue.issueCode} • {detail.issue.severity} •{" "}
-            {detail.issue.entityType}
-          </p>
-
-          <div className="mt-4 grid gap-3 md:grid-cols-2">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-              <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                Raw value
-              </p>
-              <p className="mt-2 text-sm text-slate-900">
-                {detail.issue.values.raw || "-"}
-              </p>
-            </div>
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-              <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                Current normalized
-              </p>
-              <p className="mt-2 text-sm text-slate-900">
-                {detail.issue.values.normalized || "-"}
-              </p>
-            </div>
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 md:col-span-2">
-              <p className="text-xs uppercase tracking-[0.14em] text-emerald-700">
-                Suggested corrected value
-              </p>
-              <p className="mt-2 text-sm font-medium text-emerald-900">
-                {detail.issue.values.suggested || "-"}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-4 grid gap-2 text-sm text-slate-700">
-            <p>
-              <span className="font-medium">Document: </span>
-              {detail.issue.context.title || "-"}
+        {selectedFlagId && detail ? (
+          <article className="app-panel p-5 xl:sticky xl:top-32 xl:h-fit">
+            <h3 className="text-base font-semibold text-slate-900">
+              Issue detail and review action
+            </h3>
+            <p className="mt-2 text-sm text-slate-600">
+              {detail.issue.issueCode} • {detail.issue.severity} •{" "}
+              {detail.issue.entityType}
             </p>
-            <p>
-              <span className="font-medium">Campus: </span>
-              {(detail.issue.context.campusCodes || [])
-                .map((code) => toReadableLocation(code))
-                .join(", ") || "-"}
-            </p>
-            <p>
-              <span className="font-medium">Flag status: </span>
-              {detail.issue.flagStatus}
-            </p>
-          </div>
 
-          <div className="mt-4 space-y-3 rounded-xl border border-slate-200 p-4">
-            <label className="space-y-1 text-sm">
-              <span className="text-slate-600">Note (optional)</span>
-              <textarea
-                className="app-form-control min-h-[84px]"
-                value={noteDraft}
-                onChange={(event) => setNoteDraft(event.target.value)}
-                placeholder="Add short librarian note"
-              />
-            </label>
-
-            <label className="space-y-1 text-sm">
-              <span className="text-slate-600">Manual correction value</span>
-              <input
-                className="app-form-control"
-                value={manualValue}
-                onChange={(event) => setManualValue(event.target.value)}
-                placeholder="Type replacement value for manual edit"
-              />
-            </label>
-
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                className="app-button-primary"
-                disabled={actionMutation.isPending}
-                onClick={() => {
-                  setStatusMessage(null);
-                  actionMutation.mutate(
-                    {
-                      flagId: selectedFlagId,
-                      payload: {
-                        action: "accept_suggestion",
-                        suggestionId: suggestedId,
-                        note: noteDraft || undefined,
-                      },
-                    },
-                    {
-                      onSuccess: () => {
-                        setStatusMessage(
-                          "Suggestion accepted and issue updated.",
-                        );
-                        setNoteDraft("");
-                      },
-                    },
-                  );
-                }}
-              >
-                Accept suggestion
-              </button>
-
-              <button
-                type="button"
-                className="app-button-secondary"
-                disabled={actionMutation.isPending}
-                onClick={() => {
-                  setStatusMessage(null);
-                  actionMutation.mutate(
-                    {
-                      flagId: selectedFlagId,
-                      payload: {
-                        action: "reject_suggestion",
-                        suggestionId: suggestedId,
-                        note: noteDraft || undefined,
-                      },
-                    },
-                    {
-                      onSuccess: () => {
-                        setStatusMessage(
-                          "Suggestion rejected and issue closed.",
-                        );
-                        setNoteDraft("");
-                      },
-                    },
-                  );
-                }}
-              >
-                Reject suggestion
-              </button>
-
-              <button
-                type="button"
-                className="app-button-secondary"
-                disabled={actionMutation.isPending || !manualValue.trim()}
-                onClick={() => {
-                  setStatusMessage(null);
-                  actionMutation.mutate(
-                    {
-                      flagId: selectedFlagId,
-                      payload: {
-                        action: "manual_edit",
-                        fieldName: getManualFieldByEntityType(
-                          detail.issue.entityType,
-                        ),
-                        manualValue: manualValue.trim(),
-                        suggestionId: suggestedId,
-                        note: noteDraft || undefined,
-                      },
-                    },
-                    {
-                      onSuccess: () => {
-                        setStatusMessage(
-                          "Manual correction applied and issue updated.",
-                        );
-                        setManualValue("");
-                        setNoteDraft("");
-                      },
-                    },
-                  );
-                }}
-              >
-                Apply manual edit
-              </button>
-            </div>
-
-            {actionMutation.isError ? (
-              <div className="app-state-error">
-                Action failed. Please check input and try again.
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Raw value
+                </p>
+                <p className="mt-2 text-sm text-slate-900">
+                  {detail.issue.values.raw || "-"}
+                </p>
               </div>
-            ) : null}
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Current normalized
+                </p>
+                <p className="mt-2 text-sm text-slate-900">
+                  {detail.issue.values.normalized || "-"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 md:col-span-2">
+                <p className="text-xs uppercase tracking-[0.14em] text-emerald-700">
+                  Suggested corrected value
+                </p>
+                <p className="mt-2 text-sm font-medium text-emerald-900">
+                  {detail.issue.values.suggested || "-"}
+                </p>
+              </div>
+            </div>
 
-            {statusMessage ? (
-              <div className="app-state-success">{statusMessage}</div>
-            ) : null}
-          </div>
+            <div className="mt-4 grid gap-2 text-sm text-slate-700">
+              <p>
+                <span className="font-medium">Document: </span>
+                {detail.issue.context.title || "-"}
+              </p>
+              <p>
+                <span className="font-medium">Campus: </span>
+                {(detail.issue.context.campusCodes || [])
+                  .map((code) => toReadableLocation(code))
+                  .join(", ") || "-"}
+              </p>
+              <p>
+                <span className="font-medium">Flag status: </span>
+                {detail.issue.flagStatus}
+              </p>
+            </div>
 
-          <p className="mt-4 text-sm text-slate-700">
-            Related issues: {detail.relatedIssues.length}
-          </p>
-        </article>
-      ) : null}
+            <div className="mt-4 space-y-3 rounded-xl border border-slate-200 p-4">
+              <label className="space-y-1 text-sm">
+                <span className="text-slate-600">Note (optional)</span>
+                <textarea
+                  className="app-form-control min-h-[84px]"
+                  value={noteDraft}
+                  onChange={(event) => setNoteDraft(event.target.value)}
+                  placeholder="Add short librarian note"
+                />
+              </label>
+
+              <label className="space-y-1 text-sm">
+                <span className="text-slate-600">Manual correction value</span>
+                <input
+                  className="app-form-control"
+                  value={manualValue}
+                  onChange={(event) => setManualValue(event.target.value)}
+                  placeholder="Type replacement value for manual edit"
+                />
+              </label>
+
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  className="app-button-primary"
+                  disabled={actionMutation.isPending}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    actionMutation.mutate(
+                      {
+                        flagId: selectedFlagId,
+                        payload: {
+                          action: "accept_suggestion",
+                          suggestionId: suggestedId,
+                          note: noteDraft || undefined,
+                        },
+                      },
+                      {
+                        onSuccess: () => {
+                          setStatusMessage(
+                            "Suggestion accepted and issue updated.",
+                          );
+                          setSelectedFlagId("");
+                          setNoteDraft("");
+                        },
+                      },
+                    );
+                  }}
+                >
+                  Accept suggestion
+                </button>
+
+                <button
+                  type="button"
+                  className="app-button-secondary"
+                  disabled={actionMutation.isPending}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    actionMutation.mutate(
+                      {
+                        flagId: selectedFlagId,
+                        payload: {
+                          action: "reject_suggestion",
+                          suggestionId: suggestedId,
+                          note: noteDraft || undefined,
+                        },
+                      },
+                      {
+                        onSuccess: () => {
+                          setStatusMessage(
+                            "Suggestion rejected and issue closed.",
+                          );
+                          setSelectedFlagId("");
+                          setNoteDraft("");
+                        },
+                      },
+                    );
+                  }}
+                >
+                  Reject suggestion
+                </button>
+
+                <button
+                  type="button"
+                  className="app-button-secondary"
+                  disabled={actionMutation.isPending || !manualValue.trim()}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    actionMutation.mutate(
+                      {
+                        flagId: selectedFlagId,
+                        payload: {
+                          action: "manual_edit",
+                          fieldName: getManualFieldByEntityType(
+                            detail.issue.entityType,
+                          ),
+                          manualValue: manualValue.trim(),
+                          suggestionId: suggestedId,
+                          note: noteDraft || undefined,
+                        },
+                      },
+                      {
+                        onSuccess: () => {
+                          setStatusMessage(
+                            "Manual correction applied and issue updated.",
+                          );
+                          setSelectedFlagId("");
+                          setManualValue("");
+                          setNoteDraft("");
+                        },
+                      },
+                    );
+                  }}
+                >
+                  Apply manual edit
+                </button>
+              </div>
+
+              {actionMutation.isError ? (
+                <div className="app-state-error">
+                  Action failed. Please check input and try again.
+                </div>
+              ) : null}
+
+              {statusMessage ? (
+                <div className="app-state-success">{statusMessage}</div>
+              ) : null}
+            </div>
+
+            <p className="mt-4 text-sm text-slate-700">
+              Related issues: {detail.relatedIssues.length}
+            </p>
+          </article>
+        ) : (
+          <aside className="app-panel flex items-center justify-center p-8 text-center text-sm leading-7 text-slate-600">
+            Select any row from the queue to review raw value, normalized value,
+            suggested correction, and available actions.
+          </aside>
+        )}
+      </div>
 
       {totalPages > 1 && (
         <div className="app-panel flex justify-center gap-2 px-4 py-3">
