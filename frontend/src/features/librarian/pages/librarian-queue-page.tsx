@@ -1,77 +1,34 @@
 import { useState } from "react";
 import {
-  useLibrarianReservationQueue,
-  useUpdateReservationStatus,
-} from "@features/reservations/hooks/use-reservations";
-import { type ReservationStatus } from "@features/reservations/api/reservations-api";
+  useAppReviewIssueDetail,
+  useAppReviewQueue,
+  usePublicCatalogFilters,
+} from "@features/catalog/hooks/use-public-catalog";
 import { useI18n } from "@shared/i18n/use-i18n";
 import { authStore } from "@shared/auth/auth-store";
 import { PageIntro } from "@shared/ui/page-intro";
-import type { TranslationKey } from "@shared/i18n/dictionary";
-
-const STATUS_COLORS: Record<
-  ReservationStatus,
-  { badge: string; label: TranslationKey }
-> = {
-  PENDING: {
-    badge: "bg-yellow-50 text-yellow-800 border-yellow-100",
-    label: "librarianQueueStatusPending",
-  },
-  READY: {
-    badge: "bg-blue-50 text-blue-800 border-blue-100",
-    label: "librarianQueueStatusReady",
-  },
-  FULFILLED: {
-    badge: "bg-green-50 text-green-800 border-green-100",
-    label: "librarianQueueStatusFulfilled",
-  },
-  CANCELLED: {
-    badge: "bg-gray-50 text-gray-800 border-gray-100",
-    label: "librarianQueueStatusCancelled",
-  },
-  EXPIRED: {
-    badge: "bg-red-50 text-red-800 border-red-100",
-    label: "librarianQueueStatusExpired",
-  },
-};
 
 export function LibrarianQueuePage() {
   const { t } = useI18n();
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<
-    ReservationStatus | undefined
-  >(undefined);
+  const [severity, setSeverity] = useState<string>("");
+  const [issueCode, setIssueCode] = useState<string>("");
+  const [entityType, setEntityType] = useState<string>("");
+  const [campusCode, setCampusCode] = useState<string>("");
+  const [servicePointCode, setServicePointCode] = useState<string>("");
+  const [selectedFlagId, setSelectedFlagId] = useState<string>("");
 
-  const { data, isLoading, error } = useLibrarianReservationQueue(
-    statusFilter,
+  const queueQuery = useAppReviewQueue({
     page,
-    20,
-  );
-  const updateStatusMutation = useUpdateReservationStatus();
-  const [selectedNotes, setSelectedNotes] = useState<Record<string, string>>(
-    {},
-  );
-
-  const handleStatusChange = async (
-    reservationId: string,
-    newStatus: ReservationStatus,
-  ) => {
-    try {
-      const notes = selectedNotes[reservationId] || undefined;
-      await updateStatusMutation.mutateAsync({
-        reservationId,
-        status: newStatus,
-        notes,
-      });
-      setSelectedNotes((prev) => {
-        const updated = { ...prev };
-        delete updated[reservationId];
-        return updated;
-      });
-    } catch (err) {
-      console.error("Failed to update reservation status:", err);
-    }
-  };
+    limit: 20,
+    severity: severity || undefined,
+    issueCode: issueCode || undefined,
+    entityType: entityType || undefined,
+    campusCode: campusCode || undefined,
+    servicePointCode: servicePointCode || undefined,
+  });
+  const facetsQuery = usePublicCatalogFilters();
+  const detailQuery = useAppReviewIssueDetail(selectedFlagId);
 
   if (
     !authStore.isAuthenticated ||
@@ -82,7 +39,7 @@ export function LibrarianQueuePage() {
     );
   }
 
-  if (isLoading) {
+  if (queueQuery.isLoading) {
     return (
       <div className="app-empty-state text-sm text-slate-600">
         {t("catalogLoading")}
@@ -90,20 +47,22 @@ export function LibrarianQueuePage() {
     );
   }
 
-  if (error) {
+  if (queueQuery.isError) {
     return <div className="app-state-error">{t("librarianQueueError")}</div>;
   }
 
-  const reservations = data?.data || [];
+  const issues = queueQuery.data?.data || [];
+  const campuses = facetsQuery.data?.campuses ?? [];
+  const servicePoints = facetsQuery.data?.servicePoints ?? [];
 
-  if (reservations.length === 0) {
+  if (issues.length === 0) {
     return (
       <div className="space-y-4">
         <PageIntro
           eyebrow={t("shellOperationsSection")}
-          title={t("librarianQueueTitle")}
-          description={t("librarianQueueDescription")}
-          badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
+          title="Librarian review queue"
+          description="No issues found for current filters."
+          badges={[t("shellSecureLabel"), "Data quality review"]}
         />
 
         <div className="app-empty-state">
@@ -113,151 +72,151 @@ export function LibrarianQueuePage() {
     );
   }
 
-  const totalPages = data?.meta.totalPages || 1;
+  const totalPages = queueQuery.data?.meta.totalPages || 1;
 
   return (
     <section className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
-        title={t("librarianQueueTitle")}
-        description={t("librarianQueueDescription")}
-        badges={[t("shellSecureLabel"), t("overviewStatusOperational")]}
+        title="Librarian review queue"
+        description="Review flagged rows from the new app-review endpoint and prioritize manual correction by severity and location."
+        badges={[t("shellSecureLabel"), "App review API"]}
       />
 
       <div className="app-toolbar">
         <div>
-          <p className="app-kicker">{t("librarianQueueTitle")}</p>
+          <p className="app-kicker">Open issues</p>
           <p className="mt-2 text-sm text-slate-600">
-            {reservations.length} {t("catalogResults")}
+            {queueQuery.data?.meta.total ?? 0} {t("catalogResults")}
           </p>
         </div>
-        <select
-          value={statusFilter || ""}
-          onChange={(e) => {
-            setStatusFilter((e.target.value as ReservationStatus) || undefined);
-            setPage(1);
-          }}
-          className="app-form-control w-auto min-w-[210px]"
-        >
-          <option value="">{t("librarianQueueFilterAll")}</option>
-          <option value="PENDING">{t("librarianQueueStatusPending")}</option>
-          <option value="READY">{t("librarianQueueStatusReady")}</option>
-          <option value="FULFILLED">
-            {t("librarianQueueStatusFulfilled")}
-          </option>
-          <option value="CANCELLED">
-            {t("librarianQueueStatusCancelled")}
-          </option>
-        </select>
+        <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-5">
+          <select
+            value={severity}
+            onChange={(event) => {
+              setSeverity(event.target.value);
+              setPage(1);
+            }}
+            className="app-form-control"
+          >
+            <option value="">All severities</option>
+            <option value="CRITICAL">CRITICAL</option>
+            <option value="HIGH">HIGH</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="LOW">LOW</option>
+          </select>
+          <input
+            className="app-form-control"
+            placeholder="Issue code"
+            value={issueCode}
+            onChange={(event) => {
+              setIssueCode(event.target.value);
+              setPage(1);
+            }}
+          />
+          <input
+            className="app-form-control"
+            placeholder="Entity type"
+            value={entityType}
+            onChange={(event) => {
+              setEntityType(event.target.value);
+              setPage(1);
+            }}
+          />
+          <select
+            value={campusCode}
+            onChange={(event) => {
+              setCampusCode(event.target.value);
+              setPage(1);
+            }}
+            className="app-form-control"
+          >
+            <option value="">All campuses</option>
+            {campuses.map((campus) => (
+              <option key={campus.value} value={campus.value}>
+                {campus.label}
+              </option>
+            ))}
+          </select>
+          <select
+            value={servicePointCode}
+            onChange={(event) => {
+              setServicePointCode(event.target.value);
+              setPage(1);
+            }}
+            className="app-form-control"
+          >
+            <option value="">All service points</option>
+            {servicePoints.map((servicePoint) => (
+              <option key={servicePoint.value} value={servicePoint.value}>
+                {servicePoint.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="app-table-shell">
+      <div className="app-table-shell overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="app-table-head">
             <tr className="border-b border-blue-100/70">
               <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnUser")}
+                Issue
               </th>
               <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnBook")}
+                Context
               </th>
               <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnStatus")}
+                Severity
               </th>
               <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnDate")}
+                Flagged at
               </th>
               <th className="px-4 py-3 text-left font-medium text-slate-700">
-                {t("librarianQueueColumnActions")}
+                Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {reservations.map((reservation) => {
-              const statusConfig = STATUS_COLORS[reservation.status];
-              const reservedDate = new Date(
-                reservation.reservedAt,
+            {issues.map((issue) => {
+              const flaggedDate = new Date(
+                issue.flaggedAt,
               ).toLocaleDateString();
 
               return (
                 <tr
-                  key={reservation.id}
+                  key={issue.flagId}
                   className="border-b border-slate-100/90 hover:bg-slate-50/70"
                 >
                   <td className="px-4 py-4 text-slate-900">
-                    <div className="font-medium">
-                      {reservation.user?.fullName || reservation.userId}
-                    </div>
+                    <div className="font-medium">{issue.issueCode}</div>
                     <div className="text-xs text-slate-600">
-                      {reservation.user?.universityId || reservation.userId}
-                    </div>
-                    <div className="mt-2 text-xs text-slate-500">
-                      <span className="app-chip-muted">
-                        {t("commonBranchLabel")}:{" "}
-                        {reservation.libraryBranch?.name ||
-                          reservation.libraryBranchId}
-                      </span>
+                      {issue.entityType} • {issue.entityId}
                     </div>
                   </td>
                   <td className="px-4 py-4 text-slate-900">
                     <div className="font-medium">
-                      {reservation.book?.title || reservation.bookId}
+                      {issue.context.title || "-"}
                     </div>
                     <div className="mt-2 text-xs text-slate-500">
-                      <span className="app-chip-muted">
-                        {reservation.copy?.inventoryNumber || "-"}
-                      </span>
+                      Campus: {issue.context.campusCodes.join(", ") || "-"}
+                    </div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      Service point:{" "}
+                      {issue.context.servicePointCodes.join(", ") || "-"}
                     </div>
                   </td>
                   <td className="px-4 py-4">
-                    <span
-                      className={`inline-block rounded-full border px-3 py-1 text-xs font-medium ${statusConfig.badge}`}
+                    <span className="app-chip-muted">{issue.severity}</span>
+                  </td>
+                  <td className="px-4 py-4 text-slate-600">{flaggedDate}</td>
+                  <td className="px-4 py-4">
+                    <button
+                      className="app-button-secondary px-3 py-1.5"
+                      onClick={() => setSelectedFlagId(issue.flagId)}
                     >
-                      {t(statusConfig.label)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-slate-600">{reservedDate}</td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-wrap gap-2">
-                      {reservation.status === "PENDING" && (
-                        <>
-                          <button
-                            onClick={() =>
-                              handleStatusChange(reservation.id, "READY")
-                            }
-                            disabled={updateStatusMutation.isPending}
-                            className="inline-flex rounded-xl bg-green-100 px-3 py-2 text-xs font-medium text-green-700 transition hover:bg-green-200 disabled:opacity-50"
-                          >
-                            {t("librarianQueueConfirm")}
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleStatusChange(reservation.id, "CANCELLED")
-                            }
-                            disabled={updateStatusMutation.isPending}
-                            className="inline-flex rounded-xl bg-red-100 px-3 py-2 text-xs font-medium text-red-700 transition hover:bg-red-200 disabled:opacity-50"
-                          >
-                            {t("librarianQueueReject")}
-                          </button>
-                        </>
-                      )}
-                      {reservation.status === "READY" && (
-                        <button
-                          onClick={() =>
-                            handleStatusChange(reservation.id, "FULFILLED")
-                          }
-                          disabled={updateStatusMutation.isPending}
-                          className="inline-flex rounded-xl bg-blue-100 px-3 py-2 text-xs font-medium text-blue-700 transition hover:bg-blue-200 disabled:opacity-50"
-                        >
-                          {t("librarianQueueMarkReady")}
-                        </button>
-                      )}
-                      {!["PENDING", "READY"].includes(reservation.status) && (
-                        <span className="text-xs text-slate-400">
-                          {t("librarianQueueNoActions")}
-                        </span>
-                      )}
-                    </div>
+                      View detail
+                    </button>
                   </td>
                 </tr>
               );
@@ -265,6 +224,24 @@ export function LibrarianQueuePage() {
           </tbody>
         </table>
       </div>
+
+      {selectedFlagId && detailQuery.data ? (
+        <article className="app-panel p-5">
+          <h3 className="text-base font-semibold text-slate-900">
+            Selected issue detail
+          </h3>
+          <p className="mt-2 text-sm text-slate-600">
+            {detailQuery.data.issue.issueCode} •{" "}
+            {detailQuery.data.issue.severity}
+          </p>
+          <p className="mt-2 text-sm text-slate-700">
+            Suggested value: {detailQuery.data.issue.values.suggested || "-"}
+          </p>
+          <p className="mt-1 text-sm text-slate-700">
+            Related issues: {detailQuery.data.relatedIssues.length}
+          </p>
+        </article>
+      ) : null}
 
       {totalPages > 1 && (
         <div className="app-panel flex justify-center gap-2 px-4 py-3">

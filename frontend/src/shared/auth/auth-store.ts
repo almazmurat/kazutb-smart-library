@@ -7,6 +7,6 @@ export interface AuthState {
 
 // TODO: Replace with real auth state from JWT profile endpoint.
 export const authStore: AuthState = {
-  isAuthenticated: false,
-  role: "GUEST",
+  isAuthenticated: true,
+  role: "LIBRARIAN",
 };

@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { CatalogFilters } from "../components/catalog-filters";
 import { PublicBookCard } from "../components/public-book-card";
@@ -12,13 +13,44 @@ import { PageIntro } from "@shared/ui/page-intro";
 
 const PAGE_SIZE = 12;
 
+function readQueryFromParams(params: URLSearchParams): PublicCatalogQuery {
+  return {
+    q: params.get("q") || undefined,
+    title: params.get("title") || undefined,
+    author: params.get("author") || undefined,
+    isbn: params.get("isbn") || undefined,
+    language: params.get("language") || undefined,
+    campusCode: params.get("campusCode") || undefined,
+    servicePointCode: params.get("servicePointCode") || undefined,
+    availability:
+      (params.get("availability") as PublicCatalogQuery["availability"]) ||
+      undefined,
+    page: Number(params.get("page") || "1"),
+    limit: Number(params.get("limit") || String(PAGE_SIZE)),
+  };
+}
+
+function toParams(query: PublicCatalogQuery) {
+  const params = new URLSearchParams();
+  Object.entries(query).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      params.set(key, String(value));
+    }
+  });
+  return params;
+}
+
 export function CatalogPage() {
   const { t } = useI18n();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const serverQuery = readQueryFromParams(searchParams);
 
-  const [query, setQuery] = useState<PublicCatalogQuery>({
-    page: 1,
-    limit: PAGE_SIZE,
-  });
+  const [draftQuery, setDraftQuery] = useState<PublicCatalogQuery>(serverQuery);
+  const query = serverQuery;
+
+  useEffect(() => {
+    setDraftQuery(serverQuery);
+  }, [searchParams]);
 
   const booksQuery = usePublicCatalog(query);
   const filtersQuery = usePublicCatalogFilters();
@@ -33,6 +65,30 @@ export function CatalogPage() {
 
   const currentPage = query.page || 1;
 
+  const submitSearch = () => {
+    setSearchParams(
+      toParams({
+        ...draftQuery,
+        page: 1,
+        limit: draftQuery.limit || PAGE_SIZE,
+      }),
+    );
+  };
+
+  const updateQuery = (next: PublicCatalogQuery) => {
+    setDraftQuery(next);
+  };
+
+  const goToPage = (page: number) => {
+    setSearchParams(
+      toParams({
+        ...query,
+        page,
+        limit: query.limit || PAGE_SIZE,
+      }),
+    );
+  };
+
   return (
     <section className="app-page">
       <PageIntro
@@ -42,7 +98,7 @@ export function CatalogPage() {
         badges={[t("shellPublicLabel"), t("catalogFeatureInstitutional")]}
         actions={
           <div className="flex min-w-[220px] flex-col gap-1.5 px-3 py-2 text-left">
-            <span className="app-kicker">Catalog Snapshot</span>
+            <span className="app-kicker">Catalog Results</span>
             <span className="text-3xl font-semibold tracking-tight text-slate-950">
               {booksMeta?.total ?? 0}
             </span>
@@ -55,19 +111,25 @@ export function CatalogPage() {
 
       <CatalogFilters
         labels={{
-          search: t("catalogFilterTitle"),
+          query: "Global query",
+          title: t("catalogFilterTitle"),
           author: t("catalogFilterAuthor"),
-          category: t("catalogFilterCategory"),
-          branch: t("catalogFilterBranch"),
+          isbn: "ISBN",
+          campus: "Campus",
+          servicePoint: "Service point",
           language: t("catalogFilterLanguage"),
+          availability: "Availability",
+          allCampuses: "All campuses",
+          allServicePoints: "All service points",
+          allAvailability: "Any availability",
           reset: t("catalogFilterReset"),
-          allCategories: t("catalogAllCategories"),
-          allBranches: t("catalogAllBranches"),
+          searchAction: "Search",
           allLanguages: t("catalogAllLanguages"),
         }}
-        value={query}
+        value={draftQuery}
         filters={filtersQuery.data}
-        onChange={setQuery}
+        onSubmit={submitSearch}
+        onChange={updateQuery}
       />
 
       {booksQuery.isLoading ? (
@@ -95,10 +157,12 @@ export function CatalogPage() {
                   labels={{
                     year: t("catalogCardYear"),
                     language: t("catalogCardLanguage"),
-                    branch: t("catalogCardBranch"),
+                    campus: "Campus",
                     available: t("catalogCardAvailable"),
                     totalCopies: t("catalogCardTotalCopies"),
+                    isbn: "ISBN",
                     openDetails: t("catalogOpenDetails"),
+                    reviewTag: "Needs review",
                   }}
                 />
               ))}
@@ -114,12 +178,7 @@ export function CatalogPage() {
                 type="button"
                 className="app-button-secondary px-3 py-1.5 disabled:opacity-50"
                 disabled={currentPage <= 1}
-                onClick={() =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    page: (prev.page || 1) - 1,
-                  }))
-                }
+                onClick={() => goToPage(Math.max(1, currentPage - 1))}
               >
                 {t("catalogPrevPage")}
               </button>
@@ -130,12 +189,7 @@ export function CatalogPage() {
                 type="button"
                 className="app-button-secondary px-3 py-1.5 disabled:opacity-50"
                 disabled={currentPage >= totalPages}
-                onClick={() =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    page: (prev.page || 1) + 1,
-                  }))
-                }
+                onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
               >
                 {t("catalogNextPage")}
               </button>
