@@ -25,7 +25,8 @@
     "reconstruct:legacy-raw-phase2a": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-phase2a.js",
     "reconstruct:legacy-raw-complete": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-complete.js",
     "build:app-ready-schema": "node scripts/legacy-reconstruction/build-app-ready-schema.js",
-    "build:app-location-model": "node scripts/legacy-reconstruction/build-app-location-model.js"
+    "build:app-location-model": "node scripts/legacy-reconstruction/build-app-location-model.js",
+    "build:app-read-layer": "node scripts/legacy-reconstruction/build-app-read-layer.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
