@@ -194,81 +194,71 @@ export function LibrarianQueuePage() {
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
-        <section className="app-table-shell overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="app-table-head">
-              <tr className="border-b border-blue-100/70">
-                <th className="px-4 py-3 text-left font-medium text-slate-700">
-                  Issue
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-slate-700">
-                  Context
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-slate-700">
-                  Severity
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-slate-700">
-                  Flagged at
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-slate-700">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {issues.map((issue) => {
-                const flaggedDate = new Date(
-                  issue.flaggedAt,
-                ).toLocaleDateString();
+        <section className="app-panel p-4 md:p-5">
+          <div className="flex items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+            <div>
+              <p className="app-kicker">Open Work</p>
+              <h2 className="app-section-heading">Queue list</h2>
+            </div>
+            <span className="app-chip-muted">
+              {queueQuery.data?.meta.total ?? 0} items
+            </span>
+          </div>
 
-                return (
-                  <tr
-                    key={issue.flagId}
-                    className={`border-b border-slate-100/90 hover:bg-slate-50/70 ${selectedFlagId === issue.flagId ? "bg-blue-50/60" : ""}`}
-                  >
-                    <td className="px-4 py-4 text-slate-900">
-                      <div className="font-medium">{issue.issueCode}</div>
-                      <div className="text-xs text-slate-600">
-                        {issue.entityType} • {issue.entityId}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 text-slate-900">
-                      <div className="font-medium">
-                        {issue.context.title || "-"}
-                      </div>
-                      <div className="mt-2 text-xs text-slate-500">
-                        Campus:{" "}
-                        {(issue.context.campusCodes || [])
-                          .map((code) => toReadableLocation(code))
-                          .join(", ") || "-"}
+          <div className="mt-4 space-y-3">
+            {issues.map((issue) => {
+              const flaggedDate = new Date(issue.flaggedAt).toLocaleDateString();
+              const isSelected = selectedFlagId === issue.flagId;
+
+              return (
+                <button
+                  key={issue.flagId}
+                  type="button"
+                  className={`app-queue-card w-full ${isSelected ? "app-queue-card-active" : ""}`}
+                  onClick={() => setSelectedFlagId(issue.flagId)}
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="text-left">
+                      <div className="text-base font-semibold text-slate-950">
+                        {issue.issueCode}
                       </div>
                       <div className="mt-1 text-xs text-slate-500">
-                        Service point:{" "}
-                        {issue.context.servicePointCodes.join(", ") || "-"}
+                        {issue.entityType} • {flaggedDate}
                       </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span className="app-chip-muted">{issue.severity}</span>
-                    </td>
-                    <td className="px-4 py-4 text-slate-600">{flaggedDate}</td>
-                    <td className="px-4 py-4">
-                      <button
-                        className="app-button-secondary px-3 py-1.5"
-                        onClick={() => setSelectedFlagId(issue.flagId)}
-                      >
-                        View detail
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                    </div>
+                    <span className="app-chip-muted">{issue.severity}</span>
+                  </div>
+
+                  <p className="mt-3 text-sm font-medium text-slate-900">
+                    {issue.context.title || issue.values.raw || "No title context"}
+                  </p>
+
+                  <div className="mt-3 grid gap-2 text-xs text-slate-600 md:grid-cols-2">
+                    <div>
+                      <span className="font-medium text-slate-700">Campus: </span>
+                      {(issue.context.campusCodes || [])
+                        .map((code) => toReadableLocation(code))
+                        .join(", ") || "-"}
+                    </div>
+                    <div>
+                      <span className="font-medium text-slate-700">Service point: </span>
+                      {issue.context.servicePointCodes.join(", ") || "-"}
+                    </div>
+                  </div>
+
+                  <div className="mt-3 rounded-2xl bg-white/80 px-3 py-2 text-sm text-slate-600">
+                    Suggested: {issue.values.suggested || "No suggestion"}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </section>
 
         {selectedFlagId && detail ? (
-          <article className="app-panel p-5 xl:sticky xl:top-32 xl:h-fit">
-            <h3 className="text-base font-semibold text-slate-900">
+          <article className="app-panel-strong p-5 xl:sticky xl:top-24 xl:h-fit">
+            <p className="app-kicker">Correction Workspace</p>
+            <h3 className="mt-2 text-base font-semibold text-slate-900">
               Issue detail and review action
             </h3>
             <p className="mt-2 text-sm text-slate-600">
@@ -277,7 +267,7 @@ export function LibrarianQueuePage() {
             </p>
 
             <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+              <div className="app-stat-card p-3">
                 <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
                   Raw value
                 </p>
@@ -285,7 +275,7 @@ export function LibrarianQueuePage() {
                   {detail.issue.values.raw || "-"}
                 </p>
               </div>
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+              <div className="app-stat-card p-3">
                 <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
                   Current normalized
                 </p>
@@ -320,7 +310,7 @@ export function LibrarianQueuePage() {
               </p>
             </div>
 
-            <div className="mt-4 space-y-3 rounded-xl border border-slate-200 p-4">
+            <div className="mt-4 space-y-3 rounded-[24px] border border-slate-200 bg-white/75 p-4">
               <label className="space-y-1 text-sm">
                 <span className="text-slate-600">Note (optional)</span>
                 <textarea
@@ -454,9 +444,10 @@ export function LibrarianQueuePage() {
             </p>
           </article>
         ) : (
-          <aside className="app-panel flex items-center justify-center p-8 text-center text-sm leading-7 text-slate-600">
-            Select any row from the queue to review raw value, normalized value,
-            suggested correction, and available actions.
+          <aside className="app-flow-step flex min-h-[22rem] items-center justify-center p-8 text-center text-sm leading-7 text-white/88">
+            Select a queue item to open the correction workspace. The right-hand
+            panel will show raw value, normalized value, suggested correction,
+            and the action buttons used in the live librarian demo.
           </aside>
         )}
       </div>

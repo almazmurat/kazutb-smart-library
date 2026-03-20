@@ -128,140 +128,138 @@ export function AppShell() {
     }))
     .filter((section) => section.items.length > 0);
 
+  const primaryWorkspaceHref = !auth.isAuthenticated
+    ? "/login"
+    : auth.role === "ADMIN"
+      ? "/admin"
+      : auth.role === "LIBRARIAN"
+        ? "/librarian"
+        : auth.role === "ANALYST"
+          ? "/analytics"
+          : "/cabinet";
+
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-white/70 bg-[rgba(247,250,255,0.94)] shadow-[0_8px_26px_rgba(15,23,42,0.08)] backdrop-blur-xl">
-        <div className="border-b border-white/80 bg-[linear-gradient(90deg,rgba(232,240,255,0.82),rgba(255,255,255,0.6))]">
-          <div className="app-container flex flex-wrap items-center justify-between gap-2 py-2.5 text-xs text-slate-600">
-            <span className="font-medium text-slate-700">
-              KazUTB Smart Library Platform
+      <header className="sticky top-0 z-20 border-b border-white/70 bg-[rgba(251,248,241,0.88)] shadow-[0_8px_24px_rgba(16,24,40,0.08)] backdrop-blur-xl">
+        <div className="app-container flex flex-wrap items-center justify-between gap-4 py-4">
+          <Link to="/overview" className="flex min-w-0 items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(160deg,#102d63,#356dc8)] text-lg font-bold text-white shadow-[0_14px_30px_rgba(16,45,99,0.22)]">
+              K
+            </div>
+            <div className="min-w-0">
+              <div className="app-display-title truncate text-xl font-semibold text-slate-950">
+                {t("appTitle")}
+              </div>
+              <p className="truncate text-sm text-slate-500">
+                {t("shellSubtitle")}
+              </p>
+            </div>
+          </Link>
+
+          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
+            <span className="app-chip-muted">
+              {t("shellCurrentRole")}: {t(roleLabelKey[auth.role])}
             </span>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="app-chip-muted">
-                {t("shellCurrentRole")}: {t(roleLabelKey[auth.role])}
-              </span>
-              {auth.user ? (
-                <span className="app-chip-muted">{auth.user.fullName}</span>
-              ) : null}
-              <LanguageSwitcher />
-            </div>
-          </div>
-        </div>
-
-        <div className="app-container py-4">
-          <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr] xl:items-stretch">
-            <Link to="/overview" className="flex items-start gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(160deg,#0b3d91,#2d64bc)] text-lg font-bold text-white shadow-[0_14px_30px_rgba(29,79,163,0.24)]">
-                K
-              </div>
-              <div className="max-w-xl">
-                <div className="text-lg font-semibold tracking-tight text-primary-900">
-                  {t("appTitle")}
-                </div>
-                <p className="mt-1 text-sm leading-6 text-slate-500">
-                  {t("shellSubtitle")}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="app-chip">Guest catalog browsing</span>
-                  <span className="app-chip">Role-based demo login</span>
-                  <span className="app-chip">Librarian review workflow</span>
-                </div>
-              </div>
-            </Link>
-            <div className="app-panel-strong flex flex-col justify-between p-5">
-              <div>
-                <p className="app-kicker">Demo Status</p>
-                <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
-                  {auth.isAuthenticated
-                    ? `Signed in as ${auth.user?.fullName ?? auth.role}`
-                    : "Ready for guest or role-based testing"}
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-slate-600">
-                  Use the login page for seeded accounts, or stay in guest mode
-                  to demonstrate public search and book availability.
-                </p>
-              </div>
-
-              <div className="mt-4 flex flex-wrap items-center gap-3">
-                {!auth.isAuthenticated ? (
-                  <>
-                    <NavLink to="/login" className="app-button-primary">
-                      Open demo login
-                    </NavLink>
-                    <NavLink to="/search" className="app-button-secondary">
-                      Search as guest
-                    </NavLink>
-                  </>
-                ) : (
-                  <>
-                    <NavLink
-                      to={
-                        auth.role === "ADMIN"
-                          ? "/admin"
-                          : auth.role === "LIBRARIAN"
-                            ? "/librarian"
-                            : auth.role === "ANALYST"
-                              ? "/analytics"
-                              : "/cabinet"
-                      }
-                      className="app-button-primary"
-                    >
-                      Open role workspace
-                    </NavLink>
-                    <button
-                      type="button"
-                      className="app-button-secondary"
-                      disabled={logout.isPending}
-                      onClick={() => logout.mutate()}
-                    >
-                      Logout
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 app-panel p-3 md:p-4">
-            <div className="grid gap-3 xl:grid-cols-4">
-              {visibleSections.map((section) => (
-                <div
-                  key={section.title}
-                  className="rounded-[20px] border border-slate-200/70 bg-white/80 p-3.5"
-                >
-                  <div className="mb-2 flex items-center justify-between gap-3">
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                      {section.title}
-                    </p>
-                    <span className="app-chip-muted px-2.5 py-1 text-[11px]">
-                      {section.badge}
-                    </span>
-                  </div>
-                  <nav className="flex flex-wrap gap-1.5 text-sm">
-                    {section.items.map((item) => (
-                      <NavLink
-                        key={item.to}
-                        to={item.to}
-                        className={({ isActive }) =>
-                          `rounded-xl px-3 py-2 transition duration-200 ${
-                            isActive
-                              ? "bg-[linear-gradient(135deg,rgba(232,240,255,0.96),rgba(245,248,255,0.98))] text-primary-700 shadow-[inset_0_0_0_1px_rgba(29,79,163,0.12)]"
-                              : "text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
-                          }`
-                        }
-                      >
-                        {item.label}
-                      </NavLink>
-                    ))}
-                  </nav>
-                </div>
-              ))}
-            </div>
+            {auth.user ? (
+              <span className="app-chip-muted">{auth.user.fullName}</span>
+            ) : (
+              <span className="app-chip-muted">Guest mode available</span>
+            )}
+            <LanguageSwitcher />
           </div>
         </div>
       </header>
-      <main className="app-container py-7 md:py-9">
-        <Outlet />
+
+      <main className="app-container py-6 md:py-8">
+        <div className="grid gap-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
+          <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
+            <section className="app-sidebar-card overflow-hidden p-5">
+              <p className="app-kicker">Demo Control</p>
+              <h2 className="app-display-title mt-2 text-2xl font-semibold text-slate-950">
+                {auth.isAuthenticated
+                  ? (auth.user?.fullName ?? t(roleLabelKey[auth.role]))
+                  : "Start with a public search or one-click role login"}
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                This shell is connected to the cleaned live runtime. Use it to
+                move through guest, reader, librarian, and admin demo flows.
+              </p>
+
+              <div className="mt-4 grid gap-3 text-sm text-slate-700">
+                <div className="app-stat-card">
+                  <p className="app-kicker">Current Mode</p>
+                  <p className="mt-2 text-lg font-semibold text-slate-950">
+                    {auth.isAuthenticated
+                      ? t(roleLabelKey[auth.role])
+                      : t("roleGuest")}
+                  </p>
+                </div>
+                <div className="app-stat-card">
+                  <p className="app-kicker">Recommended Order</p>
+                  <p className="mt-2 leading-6 text-slate-600">
+                    Guest catalog, book detail, librarian review, then admin
+                    overview.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                <NavLink
+                  to={primaryWorkspaceHref}
+                  className="app-button-primary"
+                >
+                  {auth.isAuthenticated ? "Open workspace" : "Open demo login"}
+                </NavLink>
+                {!auth.isAuthenticated ? (
+                  <NavLink to="/search" className="app-button-secondary">
+                    Search as guest
+                  </NavLink>
+                ) : (
+                  <button
+                    type="button"
+                    className="app-button-secondary"
+                    disabled={logout.isPending}
+                    onClick={() => logout.mutate()}
+                  >
+                    Logout
+                  </button>
+                )}
+              </div>
+            </section>
+
+            {visibleSections.map((section) => (
+              <section key={section.title} className="app-sidebar-card p-4">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <p className="app-kicker text-slate-500">{section.title}</p>
+                  <span className="app-chip-muted px-2.5 py-1 text-[11px]">
+                    {section.badge}
+                  </span>
+                </div>
+                <nav className="grid gap-2">
+                  {section.items.map((item) => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={({ isActive }) =>
+                        `rounded-2xl px-3.5 py-3 text-sm transition duration-200 ${
+                          isActive
+                            ? "bg-[linear-gradient(135deg,rgba(16,45,99,0.96),rgba(53,109,200,0.92))] text-white shadow-[0_18px_32px_rgba(16,45,99,0.18)]"
+                            : "border border-transparent bg-white/78 text-slate-700 hover:border-[rgba(16,45,99,0.12)] hover:bg-white"
+                        }`
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  ))}
+                </nav>
+              </section>
+            ))}
+          </aside>
+
+          <section className="min-w-0">
+            <Outlet />
+          </section>
+        </div>
       </main>
 
       <footer className="app-footer">

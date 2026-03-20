@@ -1,52 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   color-scheme: light;
-  --university-blue-900: #0b3d91;
-  --university-blue-700: #1d4fa3;
-  --university-blue-100: #e8f0ff;
-  --university-blue-050: #f3f7ff;
-  --university-blue-600: #2d64bc;
-  --university-gold-500: #b68a1f;
-  --ink-900: #0f172a;
-  --ink-700: #334155;
-  --ink-500: #64748b;
-  --ink-400: #94a3b8;
-  --line-soft: rgba(148, 163, 184, 0.24);
-  --line-strong: rgba(29, 79, 163, 0.18);
-  --line-focus: rgba(29, 79, 163, 0.42);
-  --surface-page: #f3f7fc;
-  --surface-card: rgba(255, 255, 255, 0.92);
-  --surface-elevated: rgba(255, 255, 255, 0.98);
-  --surface-muted: rgba(248, 250, 252, 0.86);
-  --shadow-soft: 0 18px 44px rgba(15, 23, 42, 0.08);
-  --shadow-panel: 0 22px 50px rgba(15, 23, 42, 0.1);
-  --shadow-crisp: 0 10px 24px rgba(15, 23, 42, 0.08);
+  --university-blue-950: #0a1f44;
+  --university-blue-900: #102d63;
+  --university-blue-700: #2453a6;
+  --university-blue-100: #dce7ff;
+  --university-blue-050: #eef4ff;
+  --university-blue-600: #356dc8;
+  --university-gold-500: #c28d2f;
+  --ink-900: #101828;
+  --ink-700: #344054;
+  --ink-500: #667085;
+  --ink-400: #98a2b3;
+  --line-soft: rgba(16, 45, 99, 0.12);
+  --line-strong: rgba(16, 45, 99, 0.22);
+  --line-focus: rgba(36, 83, 166, 0.35);
+  --surface-page: #f4f1e8;
+  --surface-card: rgba(255, 252, 247, 0.9);
+  --surface-elevated: rgba(255, 255, 255, 0.96);
+  --surface-muted: rgba(249, 246, 239, 0.92);
+  --shadow-soft: 0 18px 44px rgba(16, 24, 40, 0.08);
+  --shadow-panel: 0 24px 60px rgba(16, 24, 40, 0.12);
+  --shadow-crisp: 0 12px 28px rgba(16, 24, 40, 0.08);
   --radius-panel: 28px;
 }
 
 body {
   margin: 0;
-  font-family: "Noto Sans", "Segoe UI", sans-serif;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   background:
     radial-gradient(
       circle at top left,
-      rgba(29, 79, 163, 0.14) 0%,
-      rgba(29, 79, 163, 0) 30%
+      rgba(36, 83, 166, 0.15) 0%,
+      rgba(36, 83, 166, 0) 32%
     ),
     radial-gradient(
-      circle at top right,
-      rgba(148, 184, 255, 0.18) 0%,
-      rgba(148, 184, 255, 0) 22%
+      circle at right 18%,
+      rgba(194, 141, 47, 0.18) 0%,
+      rgba(194, 141, 47, 0) 26%
     ),
-    linear-gradient(
-      180deg,
-      rgba(13, 74, 160, 0.08) 0%,
-      rgba(13, 74, 160, 0) 18%
-    ),
+    linear-gradient(180deg, rgba(16, 45, 99, 0.08) 0%, rgba(16, 45, 99, 0) 16%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.32) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.32) 1px, transparent 1px),
     var(--surface-page);
+  background-size:
+    auto,
+    auto,
+    auto,
+    28px 28px,
+    28px 28px,
+    auto;
   color: var(--ink-900);
 }
 
@@ -82,13 +90,23 @@ a {
   }
 
   .app-panel {
-    @apply rounded-[26px] border bg-white/90 backdrop-blur-sm;
+    @apply rounded-[26px] border backdrop-blur-sm;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 252, 247, 0.94),
+      rgba(255, 255, 255, 0.88)
+    );
     border-color: var(--line-soft);
     box-shadow: var(--shadow-soft);
   }
 
   .app-panel-strong {
-    @apply rounded-[30px] border bg-white/95 backdrop-blur-sm;
+    @apply rounded-[30px] border backdrop-blur-sm;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(250, 246, 239, 0.96)
+    );
     border-color: var(--line-strong);
     box-shadow: var(--shadow-panel);
   }
@@ -100,8 +118,8 @@ a {
 
   .app-chip {
     @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium leading-5;
-    border-color: rgba(29, 79, 163, 0.12);
-    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(16, 45, 99, 0.12);
+    background: rgba(255, 255, 255, 0.78);
     color: var(--university-blue-900);
   }
 
@@ -113,8 +131,8 @@ a {
 
   .app-button-primary {
     @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium text-white transition duration-200;
-    background: linear-gradient(135deg, #17479d 0%, #2d64bc 100%);
-    box-shadow: 0 12px 28px rgba(29, 79, 163, 0.24);
+    background: linear-gradient(135deg, #102d63 0%, #2453a6 58%, #356dc8 100%);
+    box-shadow: 0 14px 28px rgba(16, 45, 99, 0.26);
   }
 
   .app-button-primary:hover {
@@ -123,8 +141,8 @@ a {
 
   .app-button-secondary {
     @apply inline-flex items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-medium text-slate-700 transition duration-200;
-    border-color: rgba(148, 163, 184, 0.26);
-    background: rgba(255, 255, 255, 0.94);
+    border-color: rgba(16, 45, 99, 0.16);
+    background: rgba(255, 255, 255, 0.74);
   }
 
   .app-button-secondary:hover {
@@ -150,6 +168,93 @@ a {
     @apply rounded-[24px] border bg-white/90 p-7 text-center md:p-10;
     border-color: var(--line-soft);
     box-shadow: var(--shadow-soft);
+  }
+
+  .app-sidebar-card {
+    @apply rounded-[28px] border p-4 backdrop-blur-sm;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(248, 243, 233, 0.93)
+    );
+    border-color: rgba(16, 45, 99, 0.14);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .app-stat-card {
+    @apply rounded-[24px] border p-4 md:p-5;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(246, 248, 252, 0.92)
+    );
+    border-color: rgba(16, 45, 99, 0.12);
+    box-shadow: var(--shadow-crisp);
+  }
+
+  .app-feature-card {
+    @apply rounded-[28px] border p-5 md:p-6 transition duration-200;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(247, 243, 235, 0.92)
+    );
+    border-color: rgba(16, 45, 99, 0.12);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .app-feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 42px rgba(16, 24, 40, 0.12);
+  }
+
+  .app-flow-step {
+    @apply rounded-[24px] border p-5;
+    background: linear-gradient(
+      180deg,
+      rgba(16, 45, 99, 0.98),
+      rgba(33, 78, 153, 0.96)
+    );
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 18px 38px rgba(16, 45, 99, 0.24);
+    color: white;
+  }
+
+  .app-flow-step p,
+  .app-flow-step h3,
+  .app-flow-step span {
+    color: inherit;
+  }
+
+  .app-queue-card {
+    @apply rounded-[24px] border p-4 text-left transition duration-200;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(249, 246, 239, 0.92)
+    );
+    border-color: rgba(16, 45, 99, 0.1);
+    box-shadow: var(--shadow-crisp);
+  }
+
+  .app-queue-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 36px rgba(16, 24, 40, 0.1);
+  }
+
+  .app-queue-card-active {
+    border-color: rgba(36, 83, 166, 0.32);
+    background: linear-gradient(
+      180deg,
+      rgba(232, 239, 255, 0.98),
+      rgba(250, 246, 239, 0.92)
+    );
+    box-shadow: 0 20px 40px rgba(36, 83, 166, 0.14);
+  }
+
+  .app-display-title {
+    font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+    letter-spacing: -0.04em;
   }
 
   .app-state-error {
@@ -191,10 +296,12 @@ a {
 
   .app-section-heading {
     @apply text-xl font-semibold tracking-tight text-slate-900;
+    font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
   }
 
   .app-kicker {
     @apply text-xs uppercase tracking-[0.22em] text-primary-700;
+    font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
   }
 
   .app-footer {

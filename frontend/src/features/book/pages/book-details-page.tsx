@@ -39,15 +39,6 @@ export function BookDetailsPage() {
 
   return (
     <section className="app-page">
-      <div className="flex items-center justify-between gap-3">
-        <Link
-          to="/catalog"
-          className="text-sm font-medium text-blue-700 hover:text-blue-800"
-        >
-          {t("catalogBackToList")}
-        </Link>
-      </div>
-
       <PageIntro
         eyebrow={t("catalogInstitutionalLabel")}
         title={book.title.display || book.title.raw || "Untitled"}
@@ -57,6 +48,34 @@ export function BookDetailsPage() {
           `ISBN: ${book.isbn.normalized || book.isbn.raw || "N/A"}`,
           `${t("catalogCardYear")}: ${book.publication.year || "N/A"}`,
         ]}
+        actions={
+          <div className="grid gap-2 text-left">
+            <Link to="/catalog" className="app-button-secondary justify-start">
+              {t("catalogBackToList")}
+            </Link>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Available
+                </div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {availability.reduce(
+                    (sum, row) => sum + row.copies.available,
+                    0,
+                  )}
+                </div>
+              </div>
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Copies
+                </div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {availability.reduce((sum, row) => sum + row.copies.total, 0)}
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       />
 
       <div className="grid gap-6 xl:grid-cols-[0.84fr_1.16fr]">
@@ -97,6 +116,15 @@ export function BookDetailsPage() {
               Campus and service-point availability is shown below for College,
               University Economic, University Technological, and University
               Central.
+            </div>
+
+            <div className="mt-4 app-stat-card">
+              <p className="app-kicker">Why this matters</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                This page is where non-technical users confirm that a search
+                result is actionable: they can see the item, the exact campus,
+                and whether a copy is currently available.
+              </p>
             </div>
           </article>
         </div>
@@ -161,6 +189,7 @@ export function BookDetailsPage() {
           </article>
 
           <article className="app-panel p-6">
+            <p className="app-kicker">Location Availability</p>
             <h2 className="app-section-heading">Availability by location</h2>
             <div className="mt-4 space-y-3">
               {availability.length === 0 ? (
@@ -169,7 +198,7 @@ export function BookDetailsPage() {
                 availability.map((row, index) => (
                   <div
                     key={`${row.campus?.code || "campus"}-${row.servicePoint?.code || index}`}
-                    className="rounded-[18px] border border-slate-200 bg-slate-50 p-4"
+                    className="app-feature-card p-4"
                   >
                     <p className="text-sm font-semibold text-slate-900">
                       {toReadableLocation(

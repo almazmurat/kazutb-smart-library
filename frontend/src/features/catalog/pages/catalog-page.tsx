@@ -57,6 +57,14 @@ export function CatalogPage() {
 
   const booksData = booksQuery.data?.data ?? [];
   const booksMeta = booksQuery.data?.meta;
+  const availableCopies = useMemo(
+    () => booksData.reduce((sum, item) => sum + item.copies.available, 0),
+    [booksData],
+  );
+  const totalCopies = useMemo(
+    () => booksData.reduce((sum, item) => sum + item.copies.total, 0),
+    [booksData],
+  );
 
   const totalPages = useMemo(
     () => booksMeta?.totalPages || 1,
@@ -97,19 +105,39 @@ export function CatalogPage() {
         description={t("catalogPublicDescription")}
         badges={[t("shellPublicLabel"), t("catalogFeatureInstitutional")]}
         actions={
-          <div className="flex min-w-[220px] flex-col gap-1.5 px-3 py-2 text-left">
-            <span className="app-kicker">Catalog Results</span>
-            <span className="text-3xl font-semibold tracking-tight text-slate-950">
-              {booksMeta?.total ?? 0}
-            </span>
-            <span className="text-sm text-slate-500">
-              {t("catalogResults")}
-            </span>
+          <div className="grid min-w-[220px] gap-3 px-3 py-2 text-left">
+            <div>
+              <span className="app-kicker">Catalog Results</span>
+              <div className="text-3xl font-semibold tracking-tight text-slate-950">
+                {booksMeta?.total ?? 0}
+              </div>
+              <span className="text-sm text-slate-500">
+                {t("catalogResults")}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Available
+                </div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {availableCopies}
+                </div>
+              </div>
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Total
+                </div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {totalCopies}
+                </div>
+              </div>
+            </div>
           </div>
         }
       />
 
-      <section className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+      <section className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr_0.8fr]">
         <div className="app-panel p-5 md:p-6">
           <p className="app-kicker">How to read this catalog</p>
           <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
@@ -132,6 +160,17 @@ export function CatalogPage() {
             </p>
             <p>Admin: verify navigation and overview access after login.</p>
           </div>
+        </div>
+
+        <div className="app-flow-step">
+          <p className="app-kicker text-white/70">Live Runtime</p>
+          <h2 className="app-display-title mt-2 text-2xl font-semibold">
+            Browser-visible catalog now reads the fixed backend on port 3000
+          </h2>
+          <p className="mt-3 text-sm leading-7 text-white/82">
+            The result cards, detail navigation, and availability rows come from
+            the same cleaned runtime baseline now used by the browser.
+          </p>
         </div>
       </section>
 

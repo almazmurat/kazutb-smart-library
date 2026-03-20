@@ -37,6 +37,33 @@ export function LoginPage() {
     });
   }, [demoUsers.data, roleOrder]);
 
+  const roleMessages: Record<
+    string,
+    { title: string; summary: string; destination: string }
+  > = {
+    STUDENT: {
+      title: "Reader self-service",
+      summary: "Use for cabinet, reservations, and reader-facing navigation.",
+      destination: "Cabinet",
+    },
+    LIBRARIAN: {
+      title: "Operational review",
+      summary:
+        "Use for issue queue, circulation, and metadata correction flow.",
+      destination: "Review queue",
+    },
+    ADMIN: {
+      title: "Executive overview",
+      summary: "Use for system navigation and broader demo control.",
+      destination: "Admin overview",
+    },
+    ANALYST: {
+      title: "Reporting and trends",
+      summary: "Use for analytics and report-oriented walkthroughs.",
+      destination: "Analytics",
+    },
+  };
+
   const submit = () => {
     if (!username.trim() || !password.trim()) {
       return;
@@ -72,7 +99,7 @@ export function LoginPage() {
 
       <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <article className="app-panel-strong p-6 md:p-7">
-          <p className="app-kicker">Sign In</p>
+          <p className="app-kicker">Choose a Persona</p>
           <h2 className="mt-2 app-section-heading">University demo accounts</h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
             Select one of the prepared accounts or enter credentials manually.
@@ -85,7 +112,7 @@ export function LoginPage() {
                 <button
                   key={user.username}
                   type="button"
-                  className="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-[0_10px_22px_rgba(15,23,42,0.06)]"
+                  className="app-feature-card px-4 py-4 text-left"
                   onClick={() => {
                     setUsername(user.username);
                     setPassword(user.password);
@@ -96,6 +123,12 @@ export function LoginPage() {
                   </div>
                   <div className="mt-2 text-sm font-semibold text-slate-900">
                     {user.username}
+                  </div>
+                  <p className="mt-2 text-xs leading-5 text-slate-600">
+                    {roleMessages[user.role]?.summary}
+                  </p>
+                  <div className="mt-3 inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-700">
+                    Landing: {roleMessages[user.role]?.destination}
                   </div>
                 </button>
               ))}
@@ -151,7 +184,7 @@ export function LoginPage() {
         </article>
 
         <article className="app-panel p-6 md:p-7">
-          <p className="app-kicker">Demo Accounts</p>
+          <p className="app-kicker">Walkthrough Guide</p>
           <h2 className="mt-2 app-section-heading">How to test quickly</h2>
           <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-600">
             1) Choose a role account below. 2) Login. 3) Use role-specific quick
@@ -166,10 +199,7 @@ export function LoginPage() {
             ) : null}
 
             {orderedUsers.map((user) => (
-              <div
-                key={user.username}
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-[0_8px_18px_rgba(15,23,42,0.04)]"
-              >
+              <div key={user.username} className="app-stat-card">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className="font-semibold text-slate-900">
@@ -191,6 +221,9 @@ export function LoginPage() {
                 <p className="mt-2 text-sm text-slate-700">
                   {user.username} / {user.password}
                 </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  {roleMessages[user.role]?.title}
+                </p>
               </div>
             ))}
           </div>
@@ -207,6 +240,27 @@ export function LoginPage() {
             <p>1. Guest search and book details.</p>
             <p>2. Librarian login and issue queue review.</p>
             <p>3. Admin login and overview navigation.</p>
+          </div>
+
+          <div className="mt-4 app-flow-step">
+            <p className="app-kicker text-white/70">Guest Option</p>
+            <h3 className="app-display-title mt-2 text-2xl font-semibold">
+              No login required for the public catalog
+            </h3>
+            <p className="mt-3 text-sm leading-7 text-white/82">
+              Use guest mode when you want to start with visible search, result
+              cards, and book availability before showing role-based features.
+            </p>
+            <button
+              type="button"
+              className="app-button-secondary mt-4 border-white/20 bg-white/12 text-white hover:bg-white/20"
+              onClick={() => {
+                authStore.setGuestMode();
+                navigate("/search");
+              }}
+            >
+              Continue as guest
+            </button>
           </div>
         </article>
       </div>
