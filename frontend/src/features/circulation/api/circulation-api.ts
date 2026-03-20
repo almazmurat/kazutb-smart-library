@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_BASE = "/api/v1";
+import { apiClient } from "@shared/api/client";
 
 export type LoanStatus = "ACTIVE" | "RETURNED" | "OVERDUE" | "LOST";
 
@@ -44,7 +42,7 @@ export interface IssueLoanPayload {
 }
 
 export async function issueLoan(payload: IssueLoanPayload): Promise<Loan> {
-  const response = await axios.post(`${API_BASE}/circulation/loans`, payload);
+  const response = await apiClient.post("/circulation/loans", payload);
   return response.data;
 }
 
@@ -52,9 +50,11 @@ export async function returnLoan(
   loanId: string,
   notes?: string,
 ): Promise<Loan> {
-  const response = await axios.patch(
-    `${API_BASE}/circulation/loans/${loanId}/return`,
-    { notes },
+  const response = await apiClient.patch(
+    `/circulation/loans/${loanId}/return`,
+    {
+      notes,
+    },
   );
   return response.data;
 }
@@ -66,14 +66,14 @@ export async function listLoans(
   branchId?: string,
   overdueOnly?: boolean,
 ): Promise<ListLoansResponse> {
-  const response = await axios.get(`${API_BASE}/circulation/loans`, {
+  const response = await apiClient.get("/circulation/loans", {
     params: { status, page, limit, branchId, overdueOnly },
   });
   return response.data;
 }
 
 export async function getLoanById(loanId: string): Promise<Loan> {
-  const response = await axios.get(`${API_BASE}/circulation/loans/${loanId}`);
+  const response = await apiClient.get(`/circulation/loans/${loanId}`);
   return response.data;
 }
 
@@ -82,7 +82,7 @@ export async function getMyLoans(
   limit?: number,
   status?: LoanStatus,
 ): Promise<ListLoansResponse> {
-  const response = await axios.get(`${API_BASE}/circulation/my`, {
+  const response = await apiClient.get("/circulation/my", {
     params: { page, limit, status },
   });
   return response.data;

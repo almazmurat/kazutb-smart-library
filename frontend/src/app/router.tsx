@@ -9,6 +9,7 @@ import { BookDetailsPage } from "@features/book/pages/book-details-page";
 import { LoginPage } from "@features/auth/pages/login-page";
 import { CabinetPage } from "@features/cabinet/pages/cabinet-page";
 import { LibrarianPage } from "@features/librarian/pages/librarian-page";
+import { LibrarianReservationsDeskPage } from "@features/librarian/pages/librarian-reservations-desk-page";
 import { CirculationPage } from "@features/circulation/pages/circulation-page";
 import { AdminPage } from "@features/admin/pages/admin-page";
 import { AnalyticsPage } from "@features/analytics/pages/analytics-page";
@@ -69,7 +70,7 @@ export const router = createBrowserRouter([
         path: "/librarian/reservations",
         element: (
           <ProtectedRoute roles={["LIBRARIAN", "ADMIN"]}>
-            <LibrarianPage />
+            <LibrarianReservationsDeskPage />
           </ProtectedRoute>
         ),
       },

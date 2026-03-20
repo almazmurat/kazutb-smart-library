@@ -10,31 +10,37 @@ export function ReportsPage() {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const reports = useReportsOverview(selectedYear);
 
+  const fallbackData = {
+    year: selectedYear,
+    scope: "global" as const,
+    yearly: {
+      loans: 0,
+      returns: 0,
+      reservations: 0,
+      currentOverdue: 0,
+    },
+    monthly: [],
+    branchSummary: [],
+  };
+
   if (reports.isLoading) {
     return (
-      <section className="app-empty-state">
-        <p className="text-slate-500">{t("reportsLoading")}</p>
-      </section>
+      <div className="app-page">
+        <PageIntro
+          eyebrow={t("shellOperationsSection")}
+          title={t("reportsTitle")}
+          description={t("reportsLoading")}
+          badges={[t("shellSecureLabel")]}
+        />
+        <section className="app-empty-state">
+          <p className="text-slate-500">{t("reportsLoading")}</p>
+        </section>
+      </div>
     );
   }
 
-  if (reports.isError) {
-    return (
-      <section className="app-state-error">
-        <p>{t("reportsError")}</p>
-      </section>
-    );
-  }
-
-  const data = reports.data;
-
-  if (!data) {
-    return (
-      <section className="app-empty-state">
-        <p className="text-slate-500">{t("reportsNoData")}</p>
-      </section>
-    );
-  }
+  const hasError = reports.isError;
+  const data = reports.data ?? fallbackData;
 
   const yearOptions = Array.from(
     { length: 5 },
@@ -47,7 +53,11 @@ export function ReportsPage() {
       <PageIntro
         eyebrow={t("shellOperationsSection")}
         title={t("reportsTitle")}
-        description={t("reportsDescription")}
+        description={
+          hasError
+            ? "Отчеты временно работают в безопасном режиме. Показаны базовые значения без детализации."
+            : t("reportsDescription")
+        }
         badges={[
           data.scope === "global"
             ? t("dashboardScopeGlobal")
@@ -73,6 +83,13 @@ export function ReportsPage() {
           </div>
         }
       />
+
+      {hasError ? (
+        <section className="app-subpanel p-4 text-sm text-slate-700">
+          Источник отчетных данных временно недоступен. Маршрут работает
+          стабильно, можно продолжать работу в других разделах.
+        </section>
+      ) : null}
 
       <section className="app-panel-strong p-6">
         <h2 className="mb-4 app-section-heading">

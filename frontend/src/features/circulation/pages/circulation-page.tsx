@@ -59,6 +59,10 @@ export function CirculationPage() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [returnMessage, setReturnMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   if (
     !authStore.isAuthenticated ||
@@ -95,10 +99,20 @@ export function CirculationPage() {
 
   const handleReturn = async (loanId: string) => {
     if (!confirm(t("circulationConfirmReturn"))) return;
+
+    setReturnMessage(null);
+
     try {
       await returnMutation.mutateAsync({ loanId });
-    } catch (err) {
-      console.error("Failed to return loan:", err);
+      setReturnMessage({
+        type: "success",
+        text: t("circulationReturnSuccess"),
+      });
+    } catch (err: any) {
+      setReturnMessage({
+        type: "error",
+        text: err?.response?.data?.message || t("circulationError"),
+      });
     }
   };
 
@@ -111,7 +125,30 @@ export function CirculationPage() {
   }
 
   if (error) {
-    return <div className="app-state-error">{t("circulationError")}</div>;
+    return (
+      <div className="space-y-4">
+        <PageIntro
+          eyebrow={t("shellOperationsSection")}
+          title={t("circulationTitle")}
+          description="Сервис книговыдачи временно недоступен. Маршрут работает в безопасном режиме."
+          badges={[t("shellSecureLabel"), "Операционная стабильность"]}
+        />
+        <div className="app-subpanel p-6 text-sm text-slate-700">
+          <p className="font-medium">{t("circulationError")}</p>
+          <p className="mt-2 text-slate-600">
+            Попробуйте обновить страницу или перейдите в другой служебный
+            раздел.
+          </p>
+          <button
+            type="button"
+            className="app-button-primary mt-4"
+            onClick={() => window.location.reload()}
+          >
+            Обновить страницу
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const loans = data?.data || [];
@@ -183,6 +220,18 @@ export function CirculationPage() {
           }`}
         >
           {issueMessage.text}
+        </div>
+      )}
+
+      {returnMessage && (
+        <div
+          className={`px-4 py-3 text-sm ${
+            returnMessage.type === "success"
+              ? "app-state-success"
+              : "app-state-error"
+          }`}
+        >
+          {returnMessage.text}
         </div>
       )}
 

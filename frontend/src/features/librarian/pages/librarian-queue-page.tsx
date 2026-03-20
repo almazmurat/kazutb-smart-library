@@ -45,6 +45,7 @@ export function LibrarianQueuePage() {
   const [noteDraft, setNoteDraft] = useState("");
   const [manualValue, setManualValue] = useState("");
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const queueQuery = useAppReviewQueue({
     page,
@@ -242,7 +243,11 @@ export function LibrarianQueuePage() {
                   key={issue.flagId}
                   type="button"
                   className={`app-queue-card w-full ${isSelected ? "app-queue-card-active" : ""}`}
-                  onClick={() => setSelectedFlagId(issue.flagId)}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    setErrorMessage(null);
+                    setSelectedFlagId(issue.flagId);
+                  }}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="text-left">
@@ -376,6 +381,7 @@ export function LibrarianQueuePage() {
                   disabled={actionMutation.isPending}
                   onClick={() => {
                     setStatusMessage(null);
+                    setErrorMessage(null);
                     actionMutation.mutate(
                       {
                         flagId: selectedFlagId,
@@ -393,6 +399,12 @@ export function LibrarianQueuePage() {
                           setSelectedFlagId("");
                           setNoteDraft("");
                         },
+                        onError: (error: any) => {
+                          setErrorMessage(
+                            error?.response?.data?.message ||
+                              "Не удалось принять предложение.",
+                          );
+                        },
                       },
                     );
                   }}
@@ -406,6 +418,7 @@ export function LibrarianQueuePage() {
                   disabled={actionMutation.isPending}
                   onClick={() => {
                     setStatusMessage(null);
+                    setErrorMessage(null);
                     actionMutation.mutate(
                       {
                         flagId: selectedFlagId,
@@ -423,6 +436,12 @@ export function LibrarianQueuePage() {
                           setSelectedFlagId("");
                           setNoteDraft("");
                         },
+                        onError: (error: any) => {
+                          setErrorMessage(
+                            error?.response?.data?.message ||
+                              "Не удалось отклонить предложение.",
+                          );
+                        },
                       },
                     );
                   }}
@@ -436,6 +455,7 @@ export function LibrarianQueuePage() {
                   disabled={actionMutation.isPending || !manualValue.trim()}
                   onClick={() => {
                     setStatusMessage(null);
+                    setErrorMessage(null);
                     actionMutation.mutate(
                       {
                         flagId: selectedFlagId,
@@ -458,6 +478,12 @@ export function LibrarianQueuePage() {
                           setManualValue("");
                           setNoteDraft("");
                         },
+                        onError: (error: any) => {
+                          setErrorMessage(
+                            error?.response?.data?.message ||
+                              "Не удалось применить ручное исправление.",
+                          );
+                        },
                       },
                     );
                   }}
@@ -470,6 +496,10 @@ export function LibrarianQueuePage() {
                 <div className="app-state-error">
                   Не удалось выполнить действие. Проверьте данные и повторите.
                 </div>
+              ) : null}
+
+              {errorMessage ? (
+                <div className="app-state-error">{errorMessage}</div>
               ) : null}
 
               {statusMessage ? (

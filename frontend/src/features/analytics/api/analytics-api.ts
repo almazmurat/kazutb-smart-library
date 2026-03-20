@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_BASE = "/api/v1";
+import { apiClient } from "@shared/api/client";
 
 /* ── Dashboard ──────────────────────────────────────────── */
 
@@ -88,35 +86,30 @@ export interface ReportsOverview {
 /* ── API functions ──────────────────────────────────────── */
 
 export async function fetchDashboard(): Promise<DashboardData> {
-  const { data } = await axios.get<DashboardData>(
-    `${API_BASE}/analytics/dashboard`,
-  );
+  const { data } = await apiClient.get<DashboardData>("/analytics/dashboard");
   return data;
 }
 
 export async function fetchPopularBooks(
   limit = 10,
 ): Promise<PopularBooksResponse> {
-  const { data } = await axios.get<PopularBooksResponse>(
-    `${API_BASE}/analytics/popular-books`,
+  const { data } = await apiClient.get<PopularBooksResponse>(
+    "/analytics/popular-books",
     { params: { limit } },
   );
   return data;
 }
 
 export async function fetchActivity(): Promise<ActivityData> {
-  const { data } = await axios.get<ActivityData>(
-    `${API_BASE}/analytics/activity`,
-  );
+  const { data } = await apiClient.get<ActivityData>("/analytics/activity");
   return data;
 }
 
 export async function fetchReportsOverview(
   year?: number,
 ): Promise<ReportsOverview> {
-  const { data } = await axios.get<ReportsOverview>(
-    `${API_BASE}/reports/overview`,
-    { params: year ? { year } : {} },
-  );
+  const { data } = await apiClient.get<ReportsOverview>("/reports/overview", {
+    params: year ? { year } : {},
+  });
   return data;
 }

@@ -40,7 +40,21 @@ export function CabinetLoansPage() {
   }
 
   if (error) {
-    return <div className="app-state-error">{t("cabinetLoansError")}</div>;
+    return (
+      <div className="app-subpanel p-5 text-sm text-slate-700">
+        <p className="font-medium">{t("cabinetLoansError")}</p>
+        <p className="mt-2 text-slate-600">
+          Раздел работает в безопасном режиме. Попробуйте обновить страницу.
+        </p>
+        <button
+          type="button"
+          className="app-button-secondary mt-4"
+          onClick={() => window.location.reload()}
+        >
+          Обновить страницу
+        </button>
+      </div>
+    );
   }
 
   const loans = data?.data || [];

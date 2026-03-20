@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_BASE = "/api/v1";
+import { apiClient } from "@shared/api/client";
 
 export type ReservationStatus =
   | "PENDING"
@@ -52,7 +50,7 @@ export interface ListReservationsResponse {
 }
 
 export async function createReservation(bookId: string): Promise<Reservation> {
-  const response = await axios.post(`${API_BASE}/reservations`, {
+  const response = await apiClient.post("/reservations", {
     bookId,
   });
   return response.data;
@@ -62,7 +60,7 @@ export async function getMyReservations(
   page?: number,
   limit?: number,
 ): Promise<ListReservationsResponse> {
-  const response = await axios.get(`${API_BASE}/reservations/my`, {
+  const response = await apiClient.get("/reservations/my", {
     params: { page, limit },
   });
   return response.data;
@@ -71,15 +69,15 @@ export async function getMyReservations(
 export async function getReservationById(
   reservationId: string,
 ): Promise<Reservation> {
-  const response = await axios.get(`${API_BASE}/reservations/${reservationId}`);
+  const response = await apiClient.get(`/reservations/${reservationId}`);
   return response.data;
 }
 
 export async function cancelReservation(
   reservationId: string,
 ): Promise<Reservation> {
-  const response = await axios.patch(
-    `${API_BASE}/reservations/${reservationId}/cancel`,
+  const response = await apiClient.patch(
+    `/reservations/${reservationId}/cancel`,
   );
   return response.data;
 }
@@ -90,7 +88,7 @@ export async function listReservations(
   limit?: number,
   branchId?: string,
 ): Promise<ListReservationsResponse> {
-  const response = await axios.get(`${API_BASE}/reservations`, {
+  const response = await apiClient.get("/reservations", {
     params: { status, page, limit, branchId },
   });
   return response.data;
@@ -101,9 +99,12 @@ export async function updateReservationStatus(
   status: ReservationStatus,
   notes?: string,
 ): Promise<Reservation> {
-  const response = await axios.patch(
-    `${API_BASE}/reservations/${reservationId}/status`,
-    { status, notes },
+  const response = await apiClient.patch(
+    `/reservations/${reservationId}/status`,
+    {
+      status,
+      notes,
+    },
   );
   return response.data;
 }

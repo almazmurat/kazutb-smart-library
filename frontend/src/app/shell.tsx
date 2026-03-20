@@ -68,6 +68,11 @@ export function AppShell() {
             roles: ["LIBRARIAN", "ADMIN"],
           },
           {
+            to: "/librarian/reservations",
+            label: "Резервирования",
+            roles: ["LIBRARIAN", "ADMIN"],
+          },
+          {
             to: "/analytics",
             label: t("navAnalytics"),
             roles: ["LIBRARIAN", "ANALYST", "ADMIN"],
