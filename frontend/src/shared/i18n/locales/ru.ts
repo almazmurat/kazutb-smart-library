@@ -28,7 +28,7 @@ export const ru = {
   shellAdministrationSection: "Администрирование",
   shellPublicLabel: "Публично",
   shellSecureLabel: "Защищённый доступ",
-  shellCurrentRole: "Текущий режим",
+  shellCurrentRole: "Роль",
   roleGuest: "Гость",
   roleStudent: "Студент",
   roleTeacher: "Преподаватель",

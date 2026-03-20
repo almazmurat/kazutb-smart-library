@@ -78,57 +78,32 @@ export function BookDetailsPage() {
         }
       />
 
-      <div className="grid gap-6 xl:grid-cols-[0.84fr_1.16fr]">
-        <div className="space-y-6">
+      <div className="grid gap-6 xl:grid-cols-[0.78fr_1.22fr]">
+        <article className="app-panel p-5">
           <BookCoverMock
             title={book.title.display || book.title.raw || "Без названия"}
             subtitle={book.title.subtitle}
             accent={book.language.code?.toUpperCase() || "BOOK"}
           />
 
-          <article className="app-panel-strong p-6">
-            <h2 className="app-section-heading">
-              {t("catalogAvailabilityTitle")}
-            </h2>
-            <dl className="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-700">
-              <div className="rounded-2xl bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  {t("catalogCardAvailable")}
-                </dt>
-                <dd className="mt-1 text-2xl font-semibold text-slate-950">
-                  {availability.reduce(
-                    (sum, row) => sum + row.copies.available,
-                    0,
-                  )}
-                </dd>
-              </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-3">
-                <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  {t("catalogCardTotalCopies")}
-                </dt>
-                <dd className="mt-1 text-2xl font-semibold text-slate-950">
-                  {availability.reduce((sum, row) => sum + row.copies.total, 0)}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-5 rounded-[20px] border border-blue-100 bg-blue-50/80 px-4 py-3 text-sm leading-6 text-blue-950">
-              Ниже показана доступность экземпляров по кампусам и пунктам
-              обслуживания.
+          <dl className="mt-4 grid grid-cols-2 gap-2 text-sm text-slate-700">
+            <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+              <dt className="text-xs text-slate-500">{t("catalogCardAvailable")}</dt>
+              <dd className="mt-1 text-xl font-semibold text-slate-900">
+                {availability.reduce((sum, row) => sum + row.copies.available, 0)}
+              </dd>
             </div>
-
-            <div className="mt-4 app-stat-card">
-              <p className="app-kicker">Для читателя</p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                На этой странице удобно подтвердить, где находится книга и есть
-                ли сейчас доступные экземпляры.
-              </p>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+              <dt className="text-xs text-slate-500">{t("catalogCardTotalCopies")}</dt>
+              <dd className="mt-1 text-xl font-semibold text-slate-900">
+                {availability.reduce((sum, row) => sum + row.copies.total, 0)}
+              </dd>
             </div>
-          </article>
-        </div>
+          </dl>
+        </article>
 
-        <div className="space-y-6">
-          <article className="app-panel p-6">
+        <div className="space-y-5">
+          <article className="app-panel p-5">
             <h2 className="app-section-heading">{t("catalogMetadataTitle")}</h2>
             <dl className="mt-5 grid gap-4 md:grid-cols-2 text-sm text-slate-700">
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
@@ -186,8 +161,7 @@ export function BookDetailsPage() {
             </dl>
           </article>
 
-          <article className="app-panel p-6">
-            <p className="app-kicker">Доступность по локациям</p>
+          <article className="app-panel p-5">
             <h2 className="app-section-heading">Наличие экземпляров</h2>
             <div className="mt-4 space-y-3">
               {availability.length === 0 ? (

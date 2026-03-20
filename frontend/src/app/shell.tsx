@@ -123,6 +123,8 @@ export function AppShell() {
     }))
     .filter((section) => section.items.length > 0);
 
+  const visibleNavItems = visibleSections.flatMap((section) => section.items);
+
   const primaryWorkspaceHref = !auth.isAuthenticated
     ? "/login"
     : auth.role === "ADMIN"
@@ -135,127 +137,66 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-white/70 bg-[rgba(251,248,241,0.88)] shadow-[0_8px_24px_rgba(16,24,40,0.08)] backdrop-blur-xl">
-        <div className="app-container flex flex-wrap items-center justify-between gap-4 py-4">
-          <Link to="/overview" className="flex min-w-0 items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(160deg,#102d63,#356dc8)] text-lg font-bold text-white shadow-[0_14px_30px_rgba(16,45,99,0.22)]">
-              K
-            </div>
-            <div className="min-w-0">
-              <div className="app-display-title truncate text-xl font-semibold text-slate-950">
-                {t("appTitle")}
-              </div>
-              <p className="truncate text-sm text-slate-500">
-                {t("shellSubtitle")}
-              </p>
-            </div>
-          </Link>
+      <header className="border-b border-slate-200 bg-white">
+        <div className="app-container py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <Link to="/overview" className="min-w-0">
+              <p className="text-lg font-semibold text-slate-900">{t("appTitle")}</p>
+              <p className="text-sm text-slate-500">{t("shellSubtitle")}</p>
+            </Link>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
-            <span className="app-chip-muted">
-              {t("shellCurrentRole")}: {t(roleLabelKey[auth.role])}
-            </span>
-            {auth.user ? (
-              <span className="app-chip-muted">{auth.user.fullName}</span>
-            ) : (
-              <span className="app-chip-muted">Гостевой доступ</span>
-            )}
-            <LanguageSwitcher />
+            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
+              <span className="app-chip-muted">
+                {t("shellCurrentRole")}: {t(roleLabelKey[auth.role])}
+              </span>
+              {auth.user ? (
+                <span className="app-chip-muted">{auth.user.fullName}</span>
+              ) : null}
+              <LanguageSwitcher />
+              <NavLink to={primaryWorkspaceHref} className="app-button-secondary px-3 py-2">
+                {auth.isAuthenticated ? "Раздел" : "Вход"}
+              </NavLink>
+              {!auth.isAuthenticated ? (
+                <NavLink to="/search" className="app-button-secondary px-3 py-2">
+                  Поиск
+                </NavLink>
+              ) : (
+                <button
+                  type="button"
+                  className="app-button-secondary px-3 py-2"
+                  disabled={logout.isPending}
+                  onClick={() => logout.mutate()}
+                >
+                  Выйти
+                </button>
+              )}
+            </div>
           </div>
+
+          <nav className="mt-4 flex flex-wrap gap-2 border-t border-slate-100 pt-3">
+            {visibleNavItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `rounded-md px-3 py-1.5 text-sm transition ${
+                    isActive
+                      ? "bg-slate-900 text-white"
+                      : "text-slate-700 hover:bg-slate-100"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
         </div>
       </header>
 
       <main className="app-container py-6 md:py-8">
-        <div className="grid gap-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
-          <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
-            <section className="app-sidebar-card overflow-hidden p-5">
-              <p className="app-kicker">Рабочее пространство</p>
-              <h2 className="app-display-title mt-2 text-2xl font-semibold text-slate-950">
-                {auth.isAuthenticated
-                  ? (auth.user?.fullName ?? t(roleLabelKey[auth.role]))
-                  : "Начните с поиска или выполните вход"}
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Используйте разделы слева для перехода между поиском,
-                читательским кабинетом и служебными интерфейсами.
-              </p>
-
-              <div className="mt-4 grid gap-3 text-sm text-slate-700">
-                <div className="app-stat-card">
-                  <p className="app-kicker">Текущая роль</p>
-                  <p className="mt-2 text-lg font-semibold text-slate-950">
-                    {auth.isAuthenticated
-                      ? t(roleLabelKey[auth.role])
-                      : t("roleGuest")}
-                  </p>
-                </div>
-                <div className="app-stat-card">
-                  <p className="app-kicker">Быстрый маршрут</p>
-                  <p className="mt-2 leading-6 text-slate-600">
-                    Поиск, карточка книги, личный кабинет и служебные разделы.
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <NavLink
-                  to={primaryWorkspaceHref}
-                  className="app-button-primary"
-                >
-                  {auth.isAuthenticated
-                    ? "Открыть рабочий раздел"
-                    : "Открыть вход"}
-                </NavLink>
-                {!auth.isAuthenticated ? (
-                  <NavLink to="/search" className="app-button-secondary">
-                    Поиск как гость
-                  </NavLink>
-                ) : (
-                  <button
-                    type="button"
-                    className="app-button-secondary"
-                    disabled={logout.isPending}
-                    onClick={() => logout.mutate()}
-                  >
-                    Выйти
-                  </button>
-                )}
-              </div>
-            </section>
-
-            {visibleSections.map((section) => (
-              <section key={section.title} className="app-sidebar-card p-4">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="app-kicker text-slate-500">{section.title}</p>
-                  <span className="app-chip-muted px-2.5 py-1 text-[11px]">
-                    {section.badge}
-                  </span>
-                </div>
-                <nav className="grid gap-2">
-                  {section.items.map((item) => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className={({ isActive }) =>
-                        `rounded-2xl px-3.5 py-3 text-sm transition duration-200 ${
-                          isActive
-                            ? "bg-[linear-gradient(135deg,rgba(16,45,99,0.96),rgba(53,109,200,0.92))] text-white shadow-[0_18px_32px_rgba(16,45,99,0.18)]"
-                            : "border border-transparent bg-white/78 text-slate-700 hover:border-[rgba(16,45,99,0.12)] hover:bg-white"
-                        }`
-                      }
-                    >
-                      {item.label}
-                    </NavLink>
-                  ))}
-                </nav>
-              </section>
-            ))}
-          </aside>
-
-          <section className="min-w-0">
-            <Outlet />
-          </section>
-        </div>
+        <section className="min-w-0">
+          <Outlet />
+        </section>
       </main>
 
       <footer className="app-footer">

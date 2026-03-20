@@ -250,7 +250,7 @@ export function LibrarianQueuePage() {
                       <span className="font-medium text-slate-700">
                         Пункт обслуживания:{" "}
                       </span>
-                      {issue.context.servicePointCodes.join(", ") || "-"}
+                      {(issue.context.servicePointCodes || []).join(", ") || "-"}
                     </div>
                   </div>
 
@@ -452,11 +452,11 @@ export function LibrarianQueuePage() {
             </div>
 
             <p className="mt-4 text-sm text-slate-700">
-              Связанные замечания: {detail.relatedIssues.length}
+              Связанные замечания: {(detail.relatedIssues || []).length}
             </p>
           </article>
         ) : (
-          <aside className="app-flow-step flex min-h-[22rem] items-center justify-center p-8 text-center text-sm leading-7 text-white/88">
+          <aside className="app-panel flex min-h-[22rem] items-center justify-center p-8 text-center text-sm leading-7 text-slate-700">
             Выберите запись из очереди, чтобы открыть рабочую область
             исправления. Справа отобразятся исходное значение, нормализованное
             значение, предложенное исправление и доступные действия.

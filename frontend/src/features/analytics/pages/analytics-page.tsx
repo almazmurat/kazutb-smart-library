@@ -35,6 +35,26 @@ export function AnalyticsPage() {
   const popular = usePopularBooks(10);
   const activity = useActivity();
 
+  const hasError = dashboard.isError || popular.isError || activity.isError;
+
+  const summary = dashboard.data ?? {
+    totalBooks: 0,
+    totalCopies: 0,
+    activeReservations: 0,
+    activeLoans: 0,
+    overdueLoans: 0,
+    totalUsers: 0,
+    scope: "global" as const,
+  };
+
+  const activityData = activity.data ?? {
+    reservations: { today: 0, last7days: 0, last30days: 0 },
+    loans: { today: 0, last7days: 0, last30days: 0 },
+    returns: { today: 0, last7days: 0, last30days: 0 },
+  };
+
+  const popularData = popular.data ?? { data: [], rankingLogic: "" };
+
   if (dashboard.isLoading || popular.isLoading || activity.isLoading) {
     return (
       <section className="app-empty-state">
@@ -43,46 +63,54 @@ export function AnalyticsPage() {
     );
   }
 
-  if (dashboard.isError || popular.isError || activity.isError) {
-    return (
-      <section className="app-state-error">
-        <p>{t("dashboardError")}</p>
-      </section>
-    );
-  }
-
-  const d = dashboard.data!;
-  const p = popular.data!;
-  const a = activity.data!;
-
   return (
     <div className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
         title={t("dashboardTitle")}
-        description={t("dashboardDescription")}
+        description={
+          hasError
+            ? "Раздел аналитики временно работает в безопасном режиме: отображаются базовые метрики без детализации."
+            : t("dashboardDescription")
+        }
         badges={[
-          d.scope === "global"
+          summary.scope === "global"
             ? t("dashboardScopeGlobal")
             : t("dashboardScopeBranch"),
           t("shellSecureLabel"),
         ]}
       />
 
+      {hasError ? (
+        <div className="app-subpanel p-4 text-sm text-slate-700">
+          Источник аналитических данных временно недоступен. Маршрут работает
+          стабильно, можно продолжать навигацию по системе.
+        </div>
+      ) : null}
+
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-        <SummaryCard label={t("dashboardTotalBooks")} value={d.totalBooks} />
-        <SummaryCard label={t("dashboardTotalCopies")} value={d.totalCopies} />
+        <SummaryCard
+          label={t("dashboardTotalBooks")}
+          value={summary.totalBooks}
+        />
+        <SummaryCard
+          label={t("dashboardTotalCopies")}
+          value={summary.totalCopies}
+        />
         <SummaryCard
           label={t("dashboardActiveReservations")}
-          value={d.activeReservations}
+          value={summary.activeReservations}
         />
-        <SummaryCard label={t("dashboardActiveLoans")} value={d.activeLoans} />
+        <SummaryCard
+          label={t("dashboardActiveLoans")}
+          value={summary.activeLoans}
+        />
         <SummaryCard
           label={t("dashboardOverdueLoans")}
-          value={d.overdueLoans}
-          alert={d.overdueLoans > 0}
+          value={summary.overdueLoans}
+          alert={summary.overdueLoans > 0}
         />
-        <SummaryCard label={t("dashboardTotalUsers")} value={d.totalUsers} />
+        <SummaryCard label={t("dashboardTotalUsers")} value={summary.totalUsers} />
       </div>
 
       <section className="app-panel-strong p-6">
@@ -112,25 +140,25 @@ export function AnalyticsPage() {
                 <td className="px-3 py-3 font-medium text-slate-700">
                   {t("dashboardActivityReservations")}
                 </td>
-                <td className="px-3 py-3">{a.reservations.today}</td>
-                <td className="px-3 py-3">{a.reservations.last7days}</td>
-                <td className="px-3 py-3">{a.reservations.last30days}</td>
+                <td className="px-3 py-3">{activityData.reservations.today}</td>
+                <td className="px-3 py-3">{activityData.reservations.last7days}</td>
+                <td className="px-3 py-3">{activityData.reservations.last30days}</td>
               </tr>
               <tr className="border-b border-slate-100">
                 <td className="px-3 py-3 font-medium text-slate-700">
                   {t("dashboardActivityLoans")}
                 </td>
-                <td className="px-3 py-3">{a.loans.today}</td>
-                <td className="px-3 py-3">{a.loans.last7days}</td>
-                <td className="px-3 py-3">{a.loans.last30days}</td>
+                <td className="px-3 py-3">{activityData.loans.today}</td>
+                <td className="px-3 py-3">{activityData.loans.last7days}</td>
+                <td className="px-3 py-3">{activityData.loans.last30days}</td>
               </tr>
               <tr>
                 <td className="px-3 py-3 font-medium text-slate-700">
                   {t("dashboardActivityReturns")}
                 </td>
-                <td className="px-3 py-3">{a.returns.today}</td>
-                <td className="px-3 py-3">{a.returns.last7days}</td>
-                <td className="px-3 py-3">{a.returns.last30days}</td>
+                <td className="px-3 py-3">{activityData.returns.today}</td>
+                <td className="px-3 py-3">{activityData.returns.last7days}</td>
+                <td className="px-3 py-3">{activityData.returns.last30days}</td>
               </tr>
             </tbody>
           </table>
@@ -142,9 +170,9 @@ export function AnalyticsPage() {
           {t("dashboardPopularBooks")}
         </h2>
         <p className="mb-4 text-xs text-slate-500">
-          {t("dashboardPopularBooksRanking")}: {p.rankingLogic}
+          {t("dashboardPopularBooksRanking")}: {popularData.rankingLogic || "-"}
         </p>
-        {p.data.length === 0 ? (
+        {popularData.data.length === 0 ? (
           <div className="app-empty-state py-8">
             <p className="text-slate-500">{t("dashboardPopularBooksEmpty")}</p>
           </div>
@@ -168,7 +196,7 @@ export function AnalyticsPage() {
                 </tr>
               </thead>
               <tbody>
-                {p.data.map((book, idx) => (
+                {popularData.data.map((book, idx) => (
                   <tr
                     key={book.id}
                     className="border-b border-slate-100 last:border-0"

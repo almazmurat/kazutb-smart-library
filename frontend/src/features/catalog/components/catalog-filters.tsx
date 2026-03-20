@@ -63,7 +63,7 @@ export function CatalogFilters({
     <section className="app-panel-strong p-5 md:p-6">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="app-kicker">Search and Filters</p>
+          <p className="app-kicker">Поиск и фильтры</p>
           <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
             {labels.query}
           </h2>

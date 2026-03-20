@@ -22,7 +22,7 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
   return (
     <article className="app-panel group flex h-full flex-col overflow-hidden p-4 transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_22px_42px_rgba(15,23,42,0.1)] md:p-5">
       <BookCoverMock
-        title={book.title.display || book.title.raw || "Untitled"}
+        title={book.title.display || book.title.raw || "Без названия"}
         subtitle={book.title.subtitle}
         accent={book.language.code?.toUpperCase() || labels.language}
         compact
@@ -46,7 +46,7 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
         </div>
 
         <h3 className="mt-4 text-lg font-semibold leading-tight text-slate-950 md:text-xl">
-          {book.title.display || book.title.raw || "Untitled"}
+          {book.title.display || book.title.raw || "Без названия"}
         </h3>
         {book.title.subtitle ? (
           <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
