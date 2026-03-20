@@ -2,21 +2,12 @@ import { Link } from "react-router-dom";
 
 import { useAuthState } from "@shared/auth/auth-store";
 import { useI18n } from "@shared/i18n/use-i18n";
-import { PageIntro } from "@shared/ui/page-intro";
-import type { TranslationKey } from "@shared/i18n/dictionary";
+import { HeroSlider } from "../components/hero-slider";
+import { PlatformNovelties } from "../components/platform-novelties";
 
 export function OverviewPage() {
   const { t } = useI18n();
   const auth = useAuthState();
-
-  const roleKey: Record<string, TranslationKey> = {
-    GUEST: "roleGuest",
-    STUDENT: "roleStudent",
-    TEACHER: "roleTeacher",
-    LIBRARIAN: "roleLibrarian",
-    ADMIN: "roleAdmin",
-    ANALYST: "roleAnalyst",
-  };
 
   const workspaceHref =
     !auth.isAuthenticated
@@ -67,53 +58,10 @@ export function OverviewPage() {
 
   const quickAccess = auth.isAuthenticated ? authQuickAccess : guestQuickAccess;
 
-  const modules = [
-    {
-      title: "Каталог и поиск",
-      description: "Поиск литературы, фильтры и доступность по филиалам.",
-    },
-    {
-      title: "Кабинет читателя",
-      description: "Бронирования, выдачи и история операций пользователя.",
-    },
-    {
-      title: "Рабочее место библиотекаря",
-      description: "Очередь замечаний и инструменты корректировки данных.",
-    },
-  ];
-
   return (
     <div className="app-page">
-      <PageIntro
-        eyebrow={t("overviewEyebrow")}
-        title={t("overviewTitle")}
-        description="Официальная цифровая библиотечная платформа KazUTB для поиска литературы, обслуживания читателей и операционной работы подразделений."
-        badges={[
-          `${t("shellCurrentRole")}: ${t(roleKey[auth.role] ?? "roleGuest")}`,
-        ]}
-        actions={
-          <div className="flex flex-wrap gap-2.5">
-            <Link to="/search" className="app-button-primary">
-              Открыть поиск
-            </Link>
-            {!auth.isAuthenticated ? (
-              <Link to="/login" className="app-button-secondary">
-                Войти
-              </Link>
-            ) : (
-              <Link to={workspaceHref} className="app-button-secondary">
-                Рабочий раздел
-              </Link>
-            )}
-          </div>
-        }
-      >
-        <p className="text-sm leading-7 text-[var(--ink-500)]">
-          Основные сценарии: поиск книги, просмотр карточки, проверка наличия по
-          филиалам, работа читателя в кабинете, обработка задач библиотекарем,
-          административный и аналитический контроль.
-        </p>
-      </PageIntro>
+      <HeroSlider />
+      <PlatformNovelties />
 
       <section className="app-panel p-6 md:p-7">
         <h2 className="app-section-heading">Быстрый доступ</h2>
@@ -127,22 +75,6 @@ export function OverviewPage() {
                 {item.description}
               </p>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="app-panel p-6 md:p-7">
-        <h2 className="app-section-heading">Ключевые разделы</h2>
-        <div className="app-card-grid mt-5 md:grid-cols-3">
-          {modules.map((module) => (
-            <article key={module.title} className="app-stat-card">
-              <h3 className="text-base font-semibold text-[var(--ink-900)]">
-                {module.title}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
-                {module.description}
-              </p>
-            </article>
           ))}
         </div>
       </section>

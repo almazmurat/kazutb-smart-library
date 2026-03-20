@@ -60,3 +60,5 @@ desktop.ini
 *.bak
 docs/legacy-db-discovery/*.bak
 
+
+kazutb_library.dump

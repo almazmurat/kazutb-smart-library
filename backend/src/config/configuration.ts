@@ -24,6 +24,7 @@ export default () => ({
     baseDn: process.env.LDAP_BASE_DN,
     usersOu: process.env.LDAP_USERS_OU,
     searchFilter: process.env.LDAP_SEARCH_FILTER || '(sAMAccountName={{username}})',
+    tlsRejectUnauthorized: process.env.LDAP_TLS_REJECT_UNAUTHORIZED !== 'false',
     devMock: process.env.LDAP_DEV_MOCK === 'true',
   },
 
