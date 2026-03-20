@@ -151,31 +151,36 @@ export function AppShell() {
               <KazutbBrand subtitle={t("shellSubtitle")} />
             </Link>
 
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="app-chip-muted">
+            <div className="app-header-action-cluster">
+              <span className="app-header-action app-header-meta">
                 {t("shellCurrentRole")}: {t(roleLabelKey[auth.role])}
               </span>
               {auth.user ? (
-                <span className="app-chip-muted">{auth.user.fullName}</span>
+                <span
+                  className="app-header-action app-header-meta"
+                  title={auth.user.fullName}
+                >
+                  {auth.user.fullName}
+                </span>
               ) : null}
               <LanguageSwitcher />
               <NavLink
                 to={primaryWorkspaceHref}
-                className="app-button-secondary px-3 py-2"
+                className="app-button-secondary app-header-action-button px-3"
               >
                 {auth.isAuthenticated ? "Рабочий раздел" : "Вход"}
               </NavLink>
               {!auth.isAuthenticated ? (
                 <NavLink
                   to="/search"
-                  className="app-button-secondary px-3 py-2"
+                  className="app-button-secondary app-header-action-button px-3"
                 >
                   Поиск
                 </NavLink>
               ) : (
                 <button
                   type="button"
-                  className="app-button-secondary px-3 py-2"
+                  className="app-button-secondary app-header-action-button px-3"
                   disabled={logout.isPending}
                   onClick={() => logout.mutate()}
                 >

@@ -6,31 +6,31 @@
 
 :root {
   color-scheme: light;
-  --university-blue-950: #08254d;
-  --university-blue-900: #123b72;
-  --university-blue-700: #1f5ca2;
-  --university-blue-100: #dce8f8;
-  --university-blue-050: #f1f6fc;
-  --university-blue-600: #2a6ab2;
-  --university-gold-500: #c39a3f;
+  --university-blue-950: #0a2348;
+  --university-blue-900: #133767;
+  --university-blue-700: #27578f;
+  --university-blue-100: #d9e5f4;
+  --university-blue-050: #edf3fa;
+  --university-blue-600: #31649a;
+  --university-gold-500: #bf9440;
   --university-gold-100: #f7eed8;
-  --university-teal-500: #138996;
+  --university-teal-500: #1f7f86;
   --university-teal-100: #d7eef1;
-  --ink-900: #132238;
-  --ink-700: #2d3f56;
-  --ink-500: #5f6f83;
-  --ink-400: #8f9bae;
-  --line-soft: rgba(8, 37, 77, 0.12);
-  --line-strong: rgba(8, 37, 77, 0.2);
-  --line-focus: rgba(19, 88, 155, 0.34);
-  --surface-page: #f4f7fb;
+  --ink-900: #192a3f;
+  --ink-700: #34475f;
+  --ink-500: #64778f;
+  --ink-400: #90a0b2;
+  --line-soft: rgba(19, 55, 103, 0.13);
+  --line-strong: rgba(19, 55, 103, 0.22);
+  --line-focus: rgba(39, 87, 143, 0.3);
+  --surface-page: #f3f6fa;
   --surface-card: #ffffff;
   --surface-elevated: #ffffff;
-  --surface-muted: #eef3f9;
-  --shadow-soft: 0 2px 8px rgba(8, 37, 77, 0.08);
-  --shadow-panel: 0 8px 20px rgba(8, 37, 77, 0.09);
-  --shadow-crisp: 0 1px 2px rgba(8, 37, 77, 0.06);
-  --radius-panel: 12px;
+  --surface-muted: #edf2f8;
+  --shadow-soft: 0 1px 3px rgba(10, 35, 72, 0.06);
+  --shadow-panel: 0 4px 12px rgba(10, 35, 72, 0.08);
+  --shadow-crisp: 0 1px 2px rgba(10, 35, 72, 0.05);
+  --radius-panel: 14px;
 }
 
 body {
@@ -76,21 +76,24 @@ a:hover {
   }
 
   .app-panel {
-    @apply rounded-xl border;
+    @apply border;
+    border-radius: var(--radius-panel);
     background: var(--surface-card);
     border-color: var(--line-soft);
     box-shadow: var(--shadow-soft);
   }
 
   .app-panel-strong {
-    @apply rounded-xl border;
+    @apply border;
+    border-radius: var(--radius-panel);
     background: var(--surface-elevated);
     border-color: rgba(18, 59, 114, 0.2);
     box-shadow: var(--shadow-panel);
   }
 
   .app-subpanel {
-    @apply rounded-lg border bg-white;
+    @apply border bg-white;
+    border-radius: calc(var(--radius-panel) - 2px);
     border-color: var(--line-soft);
   }
 
@@ -127,22 +130,92 @@ a:hover {
   .app-brand-subtitle {
     @apply text-xs;
     color: var(--ink-500);
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
+  }
+
+  .app-header-action-cluster {
+    @apply flex flex-wrap items-center gap-2;
+    padding: 6px;
+    border: 1px solid rgba(19, 55, 103, 0.16);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.96);
+  }
+
+  .app-header-action {
+    @apply inline-flex items-center;
+    min-height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(19, 55, 103, 0.15);
+    background: #fff;
+    color: var(--ink-700);
+  }
+
+  .app-header-meta {
+    @apply px-3 text-xs font-medium;
+    max-width: 14rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .app-header-action-button {
+    min-height: 36px;
+  }
+
+  .app-lang-switcher {
+    @apply gap-2 pl-2 pr-1;
+  }
+
+  .app-lang-label {
+    @apply text-[11px] font-semibold uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-500);
+  }
+
+  .app-lang-segmented {
+    @apply inline-flex items-center gap-1;
+    padding: 2px;
+    border-radius: 9px;
+    background: var(--surface-muted);
+  }
+
+  .app-lang-option {
+    @apply inline-flex items-center justify-center border-0 bg-transparent px-2 text-[11px] font-semibold transition;
+    height: 28px;
+    min-width: 34px;
+    border-radius: 7px;
+    color: var(--ink-500);
+  }
+
+  .app-lang-option:hover {
+    color: var(--university-blue-900);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .app-lang-option-active {
+    background: #fff;
+    color: var(--university-blue-900);
+    box-shadow: inset 0 0 0 1px rgba(19, 55, 103, 0.2);
   }
 
   .app-nav-link {
-    @apply rounded-md px-3 py-1.5 text-sm transition;
+    @apply px-3 text-sm transition;
+    min-height: 38px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
     color: var(--ink-700);
   }
 
   .app-nav-link:hover {
-    background: var(--university-blue-050);
+    background: #e8eff8;
     color: var(--university-blue-900);
   }
 
   .app-nav-link-active {
-    background: var(--university-blue-900);
-    color: #fff;
+    background: rgba(19, 55, 103, 0.1);
+    color: var(--university-blue-900);
+    box-shadow: inset 0 -2px 0 var(--university-gold-500);
   }
 
   .app-chip {
@@ -160,7 +233,9 @@ a:hover {
   }
 
   .app-button-primary {
-    @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium text-white transition duration-200;
+    @apply inline-flex items-center justify-center px-4 text-sm font-medium text-white transition duration-200;
+    min-height: 38px;
+    border-radius: 10px;
     background: var(--university-blue-900);
     box-shadow: none;
   }
@@ -170,7 +245,9 @@ a:hover {
   }
 
   .app-button-secondary {
-    @apply inline-flex items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-medium transition duration-200;
+    @apply inline-flex items-center justify-center border px-4 text-sm font-medium transition duration-200;
+    min-height: 38px;
+    border-radius: 10px;
     color: var(--ink-700);
     border-color: rgba(18, 59, 114, 0.22);
     background: #fff;
@@ -204,7 +281,8 @@ a:hover {
   }
 
   .app-empty-state {
-    @apply rounded-xl border bg-white p-7 text-center md:p-10;
+    @apply border bg-white p-7 text-center md:p-10;
+    border-radius: var(--radius-panel);
     border-color: rgba(18, 59, 114, 0.16);
     box-shadow: none;
   }
@@ -217,14 +295,16 @@ a:hover {
   }
 
   .app-stat-card {
-    @apply rounded-lg border p-4 md:p-5;
+    @apply border p-4 md:p-5;
+    border-radius: calc(var(--radius-panel) - 2px);
     background: #fff;
     border-color: var(--line-soft);
     box-shadow: none;
   }
 
   .app-feature-card {
-    @apply rounded-lg border p-5 md:p-6 transition duration-200;
+    @apply border p-5 md:p-6 transition duration-200;
+    border-radius: calc(var(--radius-panel) - 2px);
     background: #fff;
     border-color: var(--line-soft);
     box-shadow: none;
@@ -236,7 +316,8 @@ a:hover {
   }
 
   .app-flow-step {
-    @apply rounded-lg border p-5;
+    @apply border p-5;
+    border-radius: calc(var(--radius-panel) - 2px);
     background: #f8fafc;
     border-color: var(--line-soft);
     box-shadow: none;
@@ -250,7 +331,8 @@ a:hover {
   }
 
   .app-queue-card {
-    @apply rounded-lg border p-4 text-left transition duration-200;
+    @apply border p-4 text-left transition duration-200;
+    border-radius: calc(var(--radius-panel) - 2px);
     background: #fff;
     border-color: var(--line-soft);
     box-shadow: none;
@@ -269,7 +351,7 @@ a:hover {
 
   .app-display-title {
     font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.016em;
   }
 
   .app-state-error {
@@ -291,7 +373,9 @@ a:hover {
   }
 
   .app-form-control {
-    @apply w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm transition;
+    @apply w-full border bg-white px-3.5 py-2.5 text-sm transition;
+    border-radius: 10px;
+    min-height: 38px;
     border-color: rgba(19, 34, 56, 0.18);
     color: var(--ink-700);
   }
@@ -307,7 +391,7 @@ a:hover {
   }
 
   .app-filter-grid {
-    @apply mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4;
+    @apply mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4;
   }
 
   .app-kpi-grid {
@@ -319,13 +403,13 @@ a:hover {
   }
 
   .app-section-heading {
-    @apply text-xl font-semibold tracking-tight;
+    @apply text-[1.32rem] font-semibold tracking-tight;
     color: var(--ink-900);
     font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
   }
 
   .app-kicker {
-    @apply text-xs uppercase tracking-[0.2em];
+    @apply text-[11px] uppercase tracking-[0.17em];
     color: var(--university-blue-700);
     font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
   }
