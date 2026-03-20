@@ -25,6 +25,7 @@ export const router = createBrowserRouter([
     element: <AppShell />,
     children: [
       { index: true, element: <OverviewPage /> },
+      { path: "/home", element: <Navigate to="/overview" replace /> },
       { path: "/overview", element: <OverviewPage /> },
       { path: "/catalog", element: <CatalogPage /> },
       { path: "/search", element: <SearchPage /> },
@@ -48,6 +49,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "/librarian",
+        element: (
+          <ProtectedRoute roles={["LIBRARIAN", "ADMIN"]}>
+            <LibrarianPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/librarian/review",
         element: (
           <ProtectedRoute roles={["LIBRARIAN", "ADMIN"]}>
             <LibrarianPage />
@@ -134,6 +143,7 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      { path: "*", element: <Navigate to="/overview" replace /> },
     ],
   },
 ]);

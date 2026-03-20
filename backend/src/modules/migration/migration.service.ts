@@ -7,6 +7,7 @@ import {
 import {
   DataQualityReviewStatus,
   LibraryBranchCode,
+  Prisma,
   UserRole as PrismaUserRole,
 } from "@prisma/client";
 import { existsSync, readFileSync } from "node:fs";
@@ -94,6 +95,24 @@ interface ScopeContext {
   branchCode: LibraryBranchCode | null;
 }
 
+interface AppReviewActionInput {
+  action: "accept_suggestion" | "reject_suggestion" | "manual_edit";
+  suggestionId?: string;
+  fieldName?: string;
+  manualValue?: string;
+  note?: string;
+}
+
+interface AppReviewFlagRow {
+  flag_id: string;
+  task_id: string | null;
+  entity_type: string;
+  entity_id: string;
+  issue_code: string;
+  details: unknown;
+  suggested_value: string | null;
+}
+
 @Injectable()
 export class MigrationService {
   private cache: DataQualitySnapshot | null = null;
@@ -107,8 +126,14 @@ export class MigrationService {
     return [];
   }
 
-  async getDataQualitySummary(actor: RequestUser, filters: DataQualityFilters = {}) {
-    const { issues, artifactStats, detectedAt } = await this.getFilteredIssues(actor, filters);
+  async getDataQualitySummary(
+    actor: RequestUser,
+    filters: DataQualityFilters = {},
+  ) {
+    const { issues, artifactStats, detectedAt } = await this.getFilteredIssues(
+      actor,
+      filters,
+    );
 
     const bySeverity: Record<DataQualitySeverity, number> = {
       CRITICAL: 0,
@@ -154,8 +179,14 @@ export class MigrationService {
     };
   }
 
-  async getDataQualityIssues(actor: RequestUser, filters: DataQualityFilters = {}) {
-    const { issues, artifactStats, detectedAt } = await this.getFilteredIssues(actor, filters);
+  async getDataQualityIssues(
+    actor: RequestUser,
+    filters: DataQualityFilters = {},
+  ) {
+    const { issues, artifactStats, detectedAt } = await this.getFilteredIssues(
+      actor,
+      filters,
+    );
     const limit =
       typeof filters.limit === "number"
         ? filters.limit
@@ -300,7 +331,11 @@ export class MigrationService {
     const issue = await this.resolveIssueForActor(actor, id, true);
     const scope = await this.resolveActorScope(actor);
 
-    if (actor.role === UserRole.LIBRARIAN && assigneeUserId && assigneeUserId !== actor.id) {
+    if (
+      actor.role === UserRole.LIBRARIAN &&
+      assigneeUserId &&
+      assigneeUserId !== actor.id
+    ) {
       throw new ForbiddenException("Librarian can only self-assign issues");
     }
 
@@ -324,7 +359,9 @@ export class MigrationService {
         scope.branchId &&
         assignee.libraryBranchId !== scope.branchId
       ) {
-        throw new ForbiddenException("Librarian can assign only within own branch");
+        throw new ForbiddenException(
+          "Librarian can assign only within own branch",
+        );
       }
 
       if (
@@ -332,7 +369,9 @@ export class MigrationService {
         assignee.role !== PrismaUserRole.ADMIN &&
         assignee.role !== PrismaUserRole.ANALYST
       ) {
-        throw new BadRequestException("Assignee must be librarian, analyst, or admin");
+        throw new BadRequestException(
+          "Assignee must be librarian, analyst, or admin",
+        );
       }
     }
 
@@ -367,7 +406,148 @@ export class MigrationService {
     return this.getDataQualityIssueById(actor, id);
   }
 
-  private async getFilteredIssues(actor: RequestUser, filters: DataQualityFilters) {
+  async applyAppReviewAction(
+    actor: RequestUser,
+    flagId: string,
+    input: AppReviewActionInput,
+  ) {
+    await this.resolveActorScope(actor);
+
+    const flags = await this.prisma.$queryRaw<AppReviewFlagRow[]>(Prisma.sql`
+      SELECT
+        dqf.id AS flag_id,
+        rt.id AS task_id,
+        dqf.entity_type,
+        dqf.entity_id,
+        dqf.issue_code,
+        dqf.details,
+        dqf.suggested_value
+      FROM app.data_quality_flags dqf
+      LEFT JOIN app.review_tasks rt ON rt.related_flag_id = dqf.id
+      WHERE dqf.id = CAST(${flagId} AS uuid)
+      LIMIT 1
+    `);
+
+    const flag = flags[0];
+    if (!flag) {
+      throw new NotFoundException("App review issue not found");
+    }
+
+    if (input.action === "manual_edit" && !input.manualValue?.trim()) {
+      throw new BadRequestException(
+        "manualValue is required for manual_edit action",
+      );
+    }
+
+    const normalizedNote = input.note?.trim() || null;
+    const details = this.parseJsonObject(flag.details);
+    const resolvedSuggestionId =
+      input.suggestionId ||
+      this.readString(details, "suggestion_id") ||
+      this.readString(details, "suggestionId");
+
+    let finalAppliedValue: string | null = null;
+
+    await this.prisma.$transaction(async (tx) => {
+      if (input.action === "accept_suggestion") {
+        finalAppliedValue = flag.suggested_value?.trim() || null;
+        if (!finalAppliedValue) {
+          throw new BadRequestException(
+            "No suggested value available to accept",
+          );
+        }
+      }
+
+      if (input.action === "manual_edit") {
+        finalAppliedValue = input.manualValue!.trim();
+      }
+
+      const targetField =
+        input.fieldName ||
+        this.readString(details, "field_name") ||
+        this.readString(details, "fieldName");
+
+      if (finalAppliedValue && targetField) {
+        await this.applyEntityFieldUpdate(
+          tx,
+          flag.entity_type,
+          flag.entity_id,
+          targetField,
+          finalAppliedValue,
+        );
+      }
+
+      if (resolvedSuggestionId) {
+        const reviewStatus =
+          input.action === "reject_suggestion" ? "REJECTED" : "ACCEPTED";
+        await tx.$executeRaw(Prisma.sql`
+          UPDATE app.text_correction_suggestions
+          SET
+            reviewed = true,
+            review_status = ${reviewStatus},
+            reviewed_by = ${actor.id},
+            reviewed_at = now(),
+            review_notes = ${normalizedNote},
+            updated_at = now()
+          WHERE id = CAST(${resolvedSuggestionId} AS uuid)
+        `);
+      }
+
+      const nextFlagStatus =
+        input.action === "reject_suggestion" ? "REJECTED" : "RESOLVED";
+      const nextTaskStatus =
+        input.action === "reject_suggestion" ? "CANCELLED" : "COMPLETED";
+
+      await tx.$executeRaw(Prisma.sql`
+        UPDATE app.data_quality_flags
+        SET
+          status = ${nextFlagStatus},
+          resolved_at = now(),
+          details = details || jsonb_build_object(
+            'review_action', ${input.action},
+            'reviewed_by', ${actor.id},
+            'reviewed_at', now(),
+            'review_note', ${normalizedNote},
+            'applied_field', ${targetField ?? null},
+            'applied_value', ${finalAppliedValue}
+          )
+        WHERE id = CAST(${flagId} AS uuid)
+      `);
+
+      if (flag.task_id) {
+        await tx.$executeRaw(Prisma.sql`
+          UPDATE app.review_tasks
+          SET
+            status = ${nextTaskStatus},
+            completed_at = now(),
+            assigned_to = coalesce(assigned_to, ${actor.fullName})
+          WHERE id = CAST(${flag.task_id} AS uuid)
+        `);
+      }
+    });
+
+    await this.auditService.write({
+      action: "APP_REVIEW_ACTION_APPLIED",
+      entityType: "AppDataQualityFlag",
+      entityId: flagId,
+      userId: actor.id,
+      metadata: {
+        action: input.action,
+        suggestionId: resolvedSuggestionId ?? null,
+        note: normalizedNote,
+        appliedValue: finalAppliedValue,
+      },
+    });
+
+    return {
+      ok: true,
+    };
+  }
+
+  private async getFilteredIssues(
+    actor: RequestUser,
+    filters: DataQualityFilters,
+  ) {
     const scope = await this.resolveActorScope(actor);
     const snapshot = this.getSnapshot();
 
@@ -377,19 +557,24 @@ export class MigrationService {
 
     const merged = await this.mergeWithReviewState(scopedDetected);
 
-    const statusFilter = (filters.status?.toUpperCase() || "ALL") as DataQualityIssueFilterStatus;
+    const statusFilter = (filters.status?.toUpperCase() ||
+      "ALL") as DataQualityIssueFilterStatus;
 
     const issues = merged.filter((issue) => {
-      const stagePass = !filters.stage || filters.stage === "ALL" || issue.stage === filters.stage;
+      const stagePass =
+        !filters.stage ||
+        filters.stage === "ALL" ||
+        issue.stage === filters.stage;
       const severityPass =
-        !filters.severity || filters.severity === "ALL" || issue.severity === filters.severity;
+        !filters.severity ||
+        filters.severity === "ALL" ||
+        issue.severity === filters.severity;
       const classPass =
         !filters.issueClass ||
         filters.issueClass === "ALL" ||
         issue.issueClass === filters.issueClass;
       const statusPass =
-        statusFilter === "ALL" ||
-        issue.review.status === statusFilter;
+        statusFilter === "ALL" || issue.review.status === statusFilter;
       const sourcePass =
         !filters.sourceTable ||
         filters.sourceTable === "ALL" ||
@@ -403,6 +588,70 @@ export class MigrationService {
       artifactStats: snapshot.artifactStats,
       detectedAt: snapshot.detectedAt,
     };
+  }
+
+  private async applyEntityFieldUpdate(
+    tx: Prisma.TransactionClient,
+    entityType: string,
+    entityId: string,
+    fieldName: string,
+    value: string,
+  ) {
+    const entityMap: Record<string, { table: string; fields: Set<string> }> = {
+      document: {
+        table: "app.documents",
+        fields: new Set([
+          "title_display",
+          "title_normalized",
+          "subtitle_normalized",
+          "language_code",
+          "isbn_normalized",
+        ]),
+      },
+      book_copy: {
+        table: "app.book_copies",
+        fields: new Set(["inventory_number_normalized"]),
+      },
+      reader: {
+        table: "app.readers",
+        fields: new Set(["full_name_normalized"]),
+      },
+    };
+
+    const mapping = entityMap[entityType];
+    if (!mapping) {
+      throw new BadRequestException(
+        `Unsupported entity type for manual update: ${entityType}`,
+      );
+    }
+
+    if (!mapping.fields.has(fieldName)) {
+      throw new BadRequestException(
+        `Field ${fieldName} is not editable for entity type ${entityType}`,
+      );
+    }
+
+    await tx.$executeRawUnsafe(
+      `UPDATE ${mapping.table} SET ${fieldName} = $1, updated_at = now() WHERE id = CAST($2 AS uuid)`,
+      value,
+      entityId,
+    );
+  }
+
+  private parseJsonObject(value: unknown): Record<string, unknown> {
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      return value as Record<string, unknown>;
+    }
+
+    return {};
+  }
+
+  private readString(
+    record: Record<string, unknown>,
+    key: string,
+  ): string | undefined {
+    const value = record[key];
+    return typeof value === "string" && value.trim() ? value.trim() : undefined;
   }
 
   private async resolveIssueForActor(
@@ -423,7 +672,9 @@ export class MigrationService {
     }
 
     if (writeMode && actor.role === UserRole.ANALYST) {
-      throw new ForbiddenException("Analyst role is read-only for data quality actions");
+      throw new ForbiddenException(
+        "Analyst role is read-only for data quality actions",
+      );
     }
 
     const [mergedIssue] = await this.mergeWithReviewState([detected]);
@@ -717,7 +968,8 @@ export class MigrationService {
           stage: "clean",
           autoFixable: false,
           detectionRule: "missing_title",
-          summary: "Title is missing in bibliographic payload (MARC 245$a/245$b).",
+          summary:
+            "Title is missing in bibliographic payload (MARC 245$a/245$b).",
           sourceContext: sharedContext,
         }),
       );
@@ -752,7 +1004,8 @@ export class MigrationService {
           stage: "clean",
           autoFixable: false,
           detectionRule: "missing_publication_year",
-          summary: "Publication year is missing or not detectable from MARC 260$c.",
+          summary:
+            "Publication year is missing or not detectable from MARC 260$c.",
           sourceContext: sharedContext,
         }),
       );
@@ -939,7 +1192,8 @@ export class MigrationService {
       }
 
       const checkChar = normalized[9];
-      const checkValue = checkChar === "X" ? 10 : Number.parseInt(checkChar, 10);
+      const checkValue =
+        checkChar === "X" ? 10 : Number.parseInt(checkChar, 10);
       if (Number.isNaN(checkValue)) {
         return false;
       }

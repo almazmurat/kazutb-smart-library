@@ -1,12 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  AppReviewActionPayload,
   AppReviewQuery,
   fetchPublicBookById,
   fetchAppReviewIssueDetail,
   fetchAppReviewQueue,
   fetchCatalogFacets,
   fetchLocationSummary,
+  postAppReviewAction,
   fetchPublicBookAvailability,
   fetchPublicBooks,
   PublicCatalogQuery,
@@ -74,5 +76,27 @@ export function useAppReviewIssueDetail(flagId: string) {
     queryKey: ["app-review-issue", flagId],
     queryFn: () => fetchAppReviewIssueDetail(flagId),
     enabled: Boolean(flagId),
+  });
+}
+
+export function useAppReviewAction() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      flagId,
+      payload,
+    }: {
+      flagId: string;
+      payload: AppReviewActionPayload;
+    }) => postAppReviewAction(flagId, payload),
+    onSuccess: (_, variables) => {
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["app-review-queue"] }),
+        queryClient.invalidateQueries({
+          queryKey: ["app-review-issue", variables.flagId],
+        }),
+      ]);
+    },
   });
 }

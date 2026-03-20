@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import { CatalogSearchItem } from "../api/public-catalog-api";
 import { BookCoverMock } from "@shared/ui/book-cover-mock";
+import { toReadableLocation } from "@shared/catalog/location-labels";
 
 interface PublicBookCardProps {
   book: CatalogSearchItem;
@@ -31,7 +32,7 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
         <div className="flex flex-wrap items-center gap-2">
           {book.locations.campusNames.slice(0, 1).map((campusName) => (
             <span key={campusName} className="app-chip text-[11px]">
-              {campusName}
+              {toReadableLocation(campusName)}
             </span>
           ))}
           <span className="app-chip-muted text-[11px]">
@@ -80,7 +81,10 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
               {labels.campus}
             </span>
             <span className="mt-1 block text-sm font-semibold text-slate-900">
-              {book.locations.campusNames.slice(0, 2).join(" • ") || "-"}
+              {book.locations.campusNames
+                .slice(0, 2)
+                .map((name) => toReadableLocation(name))
+                .join(" • ") || "-"}
             </span>
           </div>
           <div className="col-span-2 rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">

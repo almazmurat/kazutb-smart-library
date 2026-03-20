@@ -1,15 +1,40 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
+  useAppReviewAction,
   useAppReviewIssueDetail,
   useAppReviewQueue,
   usePublicCatalogFilters,
 } from "@features/catalog/hooks/use-public-catalog";
 import { useI18n } from "@shared/i18n/use-i18n";
-import { authStore } from "@shared/auth/auth-store";
+import { useAuthState } from "@shared/auth/auth-store";
 import { PageIntro } from "@shared/ui/page-intro";
+import { toReadableLocation } from "@shared/catalog/location-labels";
+
+function extractSuggestionId(
+  details: Record<string, unknown>,
+): string | undefined {
+  const snake = details.suggestion_id;
+  const camel = details.suggestionId;
+  const value = typeof snake === "string" ? snake : camel;
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function getManualFieldByEntityType(entityType: string): string {
+  if (entityType === "document") {
+    return "title_display";
+  }
+  if (entityType === "book_copy") {
+    return "inventory_number_normalized";
+  }
+  if (entityType === "reader") {
+    return "full_name_normalized";
+  }
+  return "title_display";
+}
 
 export function LibrarianQueuePage() {
   const { t } = useI18n();
+  const auth = useAuthState();
   const [page, setPage] = useState(1);
   const [severity, setSeverity] = useState<string>("");
   const [issueCode, setIssueCode] = useState<string>("");
@@ -17,6 +42,9 @@ export function LibrarianQueuePage() {
   const [campusCode, setCampusCode] = useState<string>("");
   const [servicePointCode, setServicePointCode] = useState<string>("");
   const [selectedFlagId, setSelectedFlagId] = useState<string>("");
+  const [noteDraft, setNoteDraft] = useState("");
+  const [manualValue, setManualValue] = useState("");
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const queueQuery = useAppReviewQueue({
     page,
@@ -29,10 +57,11 @@ export function LibrarianQueuePage() {
   });
   const facetsQuery = usePublicCatalogFilters();
   const detailQuery = useAppReviewIssueDetail(selectedFlagId);
+  const actionMutation = useAppReviewAction();
 
   if (
-    !authStore.isAuthenticated ||
-    (authStore.role !== "LIBRARIAN" && authStore.role !== "ADMIN")
+    !auth.isAuthenticated ||
+    (auth.role !== "LIBRARIAN" && auth.role !== "ADMIN")
   ) {
     return (
       <div className="app-state-error">{t("librarianQueueAccessDenied")}</div>
@@ -54,6 +83,14 @@ export function LibrarianQueuePage() {
   const issues = queueQuery.data?.data || [];
   const campuses = facetsQuery.data?.campuses ?? [];
   const servicePoints = facetsQuery.data?.servicePoints ?? [];
+  const detail = detailQuery.data;
+
+  const suggestedId = useMemo(() => {
+    if (!detail?.issue?.details) {
+      return undefined;
+    }
+    return extractSuggestionId(detail.issue.details);
+  }, [detail]);
 
   if (issues.length === 0) {
     return (
@@ -225,20 +262,188 @@ export function LibrarianQueuePage() {
         </table>
       </div>
 
-      {selectedFlagId && detailQuery.data ? (
+      {selectedFlagId && detail ? (
         <article className="app-panel p-5">
           <h3 className="text-base font-semibold text-slate-900">
-            Selected issue detail
+            Issue detail and review action
           </h3>
           <p className="mt-2 text-sm text-slate-600">
-            {detailQuery.data.issue.issueCode} •{" "}
-            {detailQuery.data.issue.severity}
+            {detail.issue.issueCode} • {detail.issue.severity} •{" "}
+            {detail.issue.entityType}
           </p>
-          <p className="mt-2 text-sm text-slate-700">
-            Suggested value: {detailQuery.data.issue.values.suggested || "-"}
-          </p>
-          <p className="mt-1 text-sm text-slate-700">
-            Related issues: {detailQuery.data.relatedIssues.length}
+
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                Raw value
+              </p>
+              <p className="mt-2 text-sm text-slate-900">
+                {detail.issue.values.raw || "-"}
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                Current normalized
+              </p>
+              <p className="mt-2 text-sm text-slate-900">
+                {detail.issue.values.normalized || "-"}
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 md:col-span-2">
+              <p className="text-xs uppercase tracking-[0.14em] text-emerald-700">
+                Suggested corrected value
+              </p>
+              <p className="mt-2 text-sm font-medium text-emerald-900">
+                {detail.issue.values.suggested || "-"}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-2 text-sm text-slate-700">
+            <p>
+              <span className="font-medium">Document: </span>
+              {detail.issue.context.title || "-"}
+            </p>
+            <p>
+              <span className="font-medium">Campus: </span>
+              {(detail.issue.context.campusCodes || [])
+                .map((code) => toReadableLocation(code))
+                .join(", ") || "-"}
+            </p>
+            <p>
+              <span className="font-medium">Flag status: </span>
+              {detail.issue.flagStatus}
+            </p>
+          </div>
+
+          <div className="mt-4 space-y-3 rounded-xl border border-slate-200 p-4">
+            <label className="space-y-1 text-sm">
+              <span className="text-slate-600">Note (optional)</span>
+              <textarea
+                className="app-form-control min-h-[84px]"
+                value={noteDraft}
+                onChange={(event) => setNoteDraft(event.target.value)}
+                placeholder="Add short librarian note"
+              />
+            </label>
+
+            <label className="space-y-1 text-sm">
+              <span className="text-slate-600">Manual correction value</span>
+              <input
+                className="app-form-control"
+                value={manualValue}
+                onChange={(event) => setManualValue(event.target.value)}
+                placeholder="Type replacement value for manual edit"
+              />
+            </label>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                className="app-button-primary"
+                disabled={actionMutation.isPending}
+                onClick={() => {
+                  setStatusMessage(null);
+                  actionMutation.mutate(
+                    {
+                      flagId: selectedFlagId,
+                      payload: {
+                        action: "accept_suggestion",
+                        suggestionId: suggestedId,
+                        note: noteDraft || undefined,
+                      },
+                    },
+                    {
+                      onSuccess: () => {
+                        setStatusMessage(
+                          "Suggestion accepted and issue updated.",
+                        );
+                        setNoteDraft("");
+                      },
+                    },
+                  );
+                }}
+              >
+                Accept suggestion
+              </button>
+
+              <button
+                type="button"
+                className="app-button-secondary"
+                disabled={actionMutation.isPending}
+                onClick={() => {
+                  setStatusMessage(null);
+                  actionMutation.mutate(
+                    {
+                      flagId: selectedFlagId,
+                      payload: {
+                        action: "reject_suggestion",
+                        suggestionId: suggestedId,
+                        note: noteDraft || undefined,
+                      },
+                    },
+                    {
+                      onSuccess: () => {
+                        setStatusMessage(
+                          "Suggestion rejected and issue closed.",
+                        );
+                        setNoteDraft("");
+                      },
+                    },
+                  );
+                }}
+              >
+                Reject suggestion
+              </button>
+
+              <button
+                type="button"
+                className="app-button-secondary"
+                disabled={actionMutation.isPending || !manualValue.trim()}
+                onClick={() => {
+                  setStatusMessage(null);
+                  actionMutation.mutate(
+                    {
+                      flagId: selectedFlagId,
+                      payload: {
+                        action: "manual_edit",
+                        fieldName: getManualFieldByEntityType(
+                          detail.issue.entityType,
+                        ),
+                        manualValue: manualValue.trim(),
+                        suggestionId: suggestedId,
+                        note: noteDraft || undefined,
+                      },
+                    },
+                    {
+                      onSuccess: () => {
+                        setStatusMessage(
+                          "Manual correction applied and issue updated.",
+                        );
+                        setManualValue("");
+                        setNoteDraft("");
+                      },
+                    },
+                  );
+                }}
+              >
+                Apply manual edit
+              </button>
+            </div>
+
+            {actionMutation.isError ? (
+              <div className="app-state-error">
+                Action failed. Please check input and try again.
+              </div>
+            ) : null}
+
+            {statusMessage ? (
+              <div className="app-state-success">{statusMessage}</div>
+            ) : null}
+          </div>
+
+          <p className="mt-4 text-sm text-slate-700">
+            Related issues: {detail.relatedIssues.length}
           </p>
         </article>
       ) : null}

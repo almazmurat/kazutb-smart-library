@@ -1,7 +1,7 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
-import { authStore } from './auth-store';
-import { Role } from '@shared/types/role';
+import { useAuthState } from "./auth-store";
+import { Role } from "@shared/types/role";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -9,11 +9,13 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
-  if (!authStore.isAuthenticated) {
+  const auth = useAuthState();
+
+  if (!auth.isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  if (roles && !roles.includes(authStore.role)) {
+  if (roles && !roles.includes(auth.role)) {
     return <Navigate to="/catalog" replace />;
   }
 

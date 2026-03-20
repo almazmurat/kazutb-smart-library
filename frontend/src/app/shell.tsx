@@ -1,12 +1,25 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { authStore } from "@shared/auth/auth-store";
+import { useAuthState } from "@shared/auth/auth-store";
 import { LanguageSwitcher } from "@shared/i18n/language-switcher";
 import { useI18n } from "@shared/i18n/use-i18n";
 import type { TranslationKey } from "@shared/i18n/dictionary";
+import { useAuthProfile, useLogout } from "@features/auth/hooks/use-auth";
+import type { Role } from "@shared/types/role";
+
+interface NavItem {
+  to: string;
+  label: string;
+  public?: boolean;
+  roles?: Role[];
+}
 
 export function AppShell() {
   const { t } = useI18n();
   const currentYear = new Date().getFullYear();
+  const auth = useAuthState();
+  const logout = useLogout();
+
+  useAuthProfile(auth.isAuthenticated);
 
   const roleLabelKey: Record<string, TranslationKey> = {
     GUEST: "roleGuest",
@@ -17,53 +30,103 @@ export function AppShell() {
     ANALYST: "roleAnalyst",
   };
 
-  const navSections = [
-    {
-      title: t("shellPublicSection"),
-      badge: t("shellPublicLabel"),
-      items: [
-        { to: "/overview", label: t("navOverview") },
-        { to: "/catalog", label: t("navCatalog") },
-        { to: "/search", label: t("navSearch") },
-      ],
-    },
-    {
-      title: t("shellReaderSection"),
-      badge: t("shellSecureLabel"),
-      items: [{ to: "/cabinet", label: t("navCabinet") }],
-    },
-    {
-      title: t("shellOperationsSection"),
-      badge: t("shellSecureLabel"),
-      items: [
-        { to: "/librarian", label: t("navLibrarian") },
-        { to: "/librarian/circulation", label: t("navCirculation") },
-        { to: "/analytics", label: t("navAnalytics") },
-        { to: "/reports", label: t("navReports") },
-        {
-          to: "/migration/data-quality",
-          label: t("navDataQualityWorkbench"),
-        },
-      ],
-    },
-    {
-      title: t("shellAdministrationSection"),
-      badge: t("shellSecureLabel"),
-      items: [
-        { to: "/librarian/catalog/books", label: t("navCatalogBooksMgmt") },
-        {
-          to: "/librarian/catalog/authors",
-          label: t("navCatalogAuthorsMgmt"),
-        },
-        {
-          to: "/librarian/catalog/categories",
-          label: t("navCatalogCategoriesMgmt"),
-        },
-        { to: "/librarian/catalog/copies", label: t("navCatalogCopiesMgmt") },
-        { to: "/admin", label: t("navAdmin") },
-      ],
-    },
-  ];
+  const navSections: Array<{ title: string; badge: string; items: NavItem[] }> =
+    [
+      {
+        title: t("shellPublicSection"),
+        badge: t("shellPublicLabel"),
+        items: [
+          { to: "/overview", label: t("navOverview"), public: true },
+          { to: "/catalog", label: t("navCatalog"), public: true },
+          { to: "/search", label: t("navSearch"), public: true },
+          { to: "/login", label: "Demo Login", public: true },
+        ],
+      },
+      {
+        title: t("shellReaderSection"),
+        badge: t("shellSecureLabel"),
+        items: [
+          {
+            to: "/cabinet",
+            label: t("navCabinet"),
+            roles: ["STUDENT", "TEACHER", "LIBRARIAN", "ADMIN", "ANALYST"],
+          },
+        ],
+      },
+      {
+        title: t("shellOperationsSection"),
+        badge: t("shellSecureLabel"),
+        items: [
+          {
+            to: "/librarian",
+            label: t("navLibrarian"),
+            roles: ["LIBRARIAN", "ADMIN"],
+          },
+          {
+            to: "/librarian/circulation",
+            label: t("navCirculation"),
+            roles: ["LIBRARIAN", "ADMIN"],
+          },
+          {
+            to: "/analytics",
+            label: t("navAnalytics"),
+            roles: ["LIBRARIAN", "ANALYST", "ADMIN"],
+          },
+          {
+            to: "/reports",
+            label: t("navReports"),
+            roles: ["LIBRARIAN", "ANALYST", "ADMIN"],
+          },
+          {
+            to: "/migration/data-quality",
+            label: t("navDataQualityWorkbench"),
+            roles: ["LIBRARIAN", "ANALYST", "ADMIN"],
+          },
+        ],
+      },
+      {
+        title: t("shellAdministrationSection"),
+        badge: t("shellSecureLabel"),
+        items: [
+          {
+            to: "/librarian/catalog/books",
+            label: t("navCatalogBooksMgmt"),
+            roles: ["LIBRARIAN", "ADMIN"],
+          },
+          {
+            to: "/librarian/catalog/authors",
+            label: t("navCatalogAuthorsMgmt"),
+            roles: ["LIBRARIAN", "ADMIN"],
+          },
+          {
+            to: "/librarian/catalog/categories",
+            label: t("navCatalogCategoriesMgmt"),
+            roles: ["LIBRARIAN", "ADMIN"],
+          },
+          {
+            to: "/librarian/catalog/copies",
+            label: t("navCatalogCopiesMgmt"),
+            roles: ["LIBRARIAN", "ADMIN"],
+          },
+          { to: "/admin", label: t("navAdmin"), roles: ["ADMIN"] },
+        ],
+      },
+    ];
+
+  const visibleSections = navSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => {
+        if (item.public) {
+          return true;
+        }
+        if (!auth.isAuthenticated) {
+          return false;
+        }
+        return !item.roles || item.roles.includes(auth.role);
+      }),
+    }))
+    .filter((section) => section.items.length > 0);
 
   return (
     <div className="min-h-screen">
@@ -75,8 +138,11 @@ export function AppShell() {
             </span>
             <div className="flex flex-wrap items-center gap-2">
               <span className="app-chip-muted">
-                {t("shellCurrentRole")}: {t(roleLabelKey[authStore.role])}
+                {t("shellCurrentRole")}: {t(roleLabelKey[auth.role])}
               </span>
+              {auth.user ? (
+                <span className="app-chip-muted">{auth.user.fullName}</span>
+              ) : null}
               <LanguageSwitcher />
             </div>
           </div>
@@ -98,14 +164,25 @@ export function AppShell() {
               </div>
             </Link>
             <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-              <NavLink to="/login" className="app-button-primary">
-                {t("login")}
-              </NavLink>
+              {!auth.isAuthenticated ? (
+                <NavLink to="/login" className="app-button-primary">
+                  {t("login")}
+                </NavLink>
+              ) : (
+                <button
+                  type="button"
+                  className="app-button-secondary"
+                  disabled={logout.isPending}
+                  onClick={() => logout.mutate()}
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
 
           <div className="mt-4 grid gap-3 lg:grid-cols-2 xl:grid-cols-4">
-            {navSections.map((section) => (
+            {visibleSections.map((section) => (
               <div
                 key={section.title}
                 className="rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(245,249,255,0.92))] p-4 shadow-[0_14px_30px_rgba(15,23,42,0.06)]"

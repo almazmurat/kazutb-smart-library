@@ -16,6 +16,7 @@ import { Roles } from "@common/decorators/roles.decorator";
 import { RequestUser } from "@common/types/request-user.interface";
 import { UserRole } from "@common/types/user-role.enum";
 import { ReadLayerService } from "@modules/read-layer/read-layer.service";
+import { AppReviewActionDto } from "./dto/app-review-action.dto";
 import { AppReviewQueueQueryDto } from "./dto/app-review-queue.query.dto";
 import { MigrationService } from "./migration.service";
 
@@ -93,6 +94,20 @@ export class MigrationController {
   async getAppReviewIssueDetail(
     @Param("flagId", new ParseUUIDPipe()) flagId: string,
   ) {
+    return {
+      data: await this.readLayerService.getReviewIssueDetail(flagId),
+    };
+  }
+
+  @Roles(UserRole.LIBRARIAN, UserRole.ADMIN)
+  @Post("app-review/issues/:flagId/actions")
+  async applyAppReviewAction(
+    @CurrentUser() actor: RequestUser,
+    @Param("flagId", new ParseUUIDPipe()) flagId: string,
+    @Body() body: AppReviewActionDto,
+  ) {
+    await this.service.applyAppReviewAction(actor, flagId, body);
+
     return {
       data: await this.readLayerService.getReviewIssueDetail(flagId),
     };

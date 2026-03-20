@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 
-import { authStore } from "@shared/auth/auth-store";
+import { useAuthState } from "@shared/auth/auth-store";
 import { useI18n } from "@shared/i18n/use-i18n";
 import { PageIntro } from "@shared/ui/page-intro";
 import type { TranslationKey } from "@shared/i18n/dictionary";
 
 export function OverviewPage() {
   const { t } = useI18n();
+  const auth = useAuthState();
 
   const roleKey: Record<string, TranslationKey> = {
     GUEST: "roleGuest",
@@ -142,7 +143,7 @@ export function OverviewPage() {
           t("overviewStatScopes"),
           t("overviewStatBranches"),
           t("overviewStatModules"),
-          `${t("shellCurrentRole")}: ${t(roleKey[authStore.role] ?? "roleGuest")}`,
+          `${t("shellCurrentRole")}: ${t(roleKey[auth.role] ?? "roleGuest")}`,
         ]}
         actions={
           <div className="flex flex-wrap gap-2.5">

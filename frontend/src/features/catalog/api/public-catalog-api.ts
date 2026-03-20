@@ -1,4 +1,4 @@
-import axios from "axios";
+import { apiClient } from "@shared/api/client";
 
 export interface PaginatedResponse<T> {
   data: T[];
@@ -203,6 +203,14 @@ export interface AppReviewIssueDetailResponse {
   relatedIssues: AppReviewQueueItem[];
 }
 
+export interface AppReviewActionPayload {
+  action: "accept_suggestion" | "reject_suggestion" | "manual_edit";
+  suggestionId?: string;
+  fieldName?: string;
+  manualValue?: string;
+  note?: string;
+}
+
 export interface PublicCatalogQuery {
   q?: string;
   title?: string;
@@ -228,14 +236,10 @@ export interface AppReviewQuery {
   limit?: number;
 }
 
-const api = axios.create({
-  baseURL: "/api/v1",
-});
-
 export async function fetchPublicBooks(
   query: PublicCatalogQuery,
 ): Promise<PaginatedResponse<CatalogSearchItem>> {
-  const { data } = await api.get<PaginatedResponse<CatalogSearchItem>>(
+  const { data } = await apiClient.get<PaginatedResponse<CatalogSearchItem>>(
     "/catalog",
     {
       params: query,
@@ -256,7 +260,7 @@ export async function fetchPublicBooks(
 export async function fetchPublicBookById(
   id: string,
 ): Promise<CatalogDetailResponse> {
-  const { data } = await api.get<{ data: CatalogDetailResponse }>(
+  const { data } = await apiClient.get<{ data: CatalogDetailResponse }>(
     `/catalog/${id}`,
   );
   return data.data;
@@ -269,7 +273,7 @@ export async function fetchPublicBookAvailability(
     "institutionUnitCode" | "campusCode" | "servicePointCode"
   >,
 ): Promise<CatalogAvailabilityResponse> {
-  const { data } = await api.get<{ data: CatalogAvailabilityResponse }>(
+  const { data } = await apiClient.get<{ data: CatalogAvailabilityResponse }>(
     `/catalog/${id}/availability`,
     {
       params: query,
@@ -279,7 +283,7 @@ export async function fetchPublicBookAvailability(
 }
 
 export async function fetchCatalogFacets(): Promise<CatalogFacetsResponse> {
-  const { data } = await api.get<{ data: CatalogFacetsResponse }>(
+  const { data } = await apiClient.get<{ data: CatalogFacetsResponse }>(
     "/catalog/facets",
   );
   return data.data;
@@ -291,7 +295,7 @@ export async function fetchLocationSummary(
     "institutionUnitCode" | "campusCode" | "servicePointCode"
   >,
 ): Promise<CatalogAvailabilityResponse["items"]> {
-  const { data } = await api.get<{
+  const { data } = await apiClient.get<{
     data: {
       items: CatalogAvailabilityResponse["items"];
     };
@@ -305,7 +309,7 @@ export async function fetchLocationSummary(
 export async function fetchAppReviewQueue(
   query: AppReviewQuery,
 ): Promise<PaginatedResponse<AppReviewQueueItem>> {
-  const { data } = await api.get<PaginatedResponse<AppReviewQueueItem>>(
+  const { data } = await apiClient.get<PaginatedResponse<AppReviewQueueItem>>(
     "/migration/app-review/issues",
     {
       params: query,
@@ -326,8 +330,19 @@ export async function fetchAppReviewQueue(
 export async function fetchAppReviewIssueDetail(
   flagId: string,
 ): Promise<AppReviewIssueDetailResponse> {
-  const { data } = await api.get<{ data: AppReviewIssueDetailResponse }>(
+  const { data } = await apiClient.get<{ data: AppReviewIssueDetailResponse }>(
     `/migration/app-review/issues/${flagId}`,
+  );
+  return data.data;
+}
+
+export async function postAppReviewAction(
+  flagId: string,
+  payload: AppReviewActionPayload,
+): Promise<AppReviewIssueDetailResponse> {
+  const { data } = await apiClient.post<{ data: AppReviewIssueDetailResponse }>(
+    `/migration/app-review/issues/${flagId}/actions`,
+    payload,
   );
   return data.data;
 }

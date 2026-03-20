@@ -5,6 +5,45 @@ import { ConfigService } from "@nestjs/config";
 import { UsersService } from "@modules/users/users.service";
 import { UserRole } from "@common/types/user-role.enum";
 
+interface DemoCredential {
+  username: string;
+  password: string;
+  role: UserRole;
+  fullName: string;
+  email: string;
+}
+
+const DEMO_CREDENTIALS: DemoCredential[] = [
+  {
+    username: "student_demo",
+    password: "Student123!",
+    role: UserRole.STUDENT,
+    fullName: "Demo Student",
+    email: "student_demo@kazutb.edu.kz",
+  },
+  {
+    username: "librarian_demo",
+    password: "Librarian123!",
+    role: UserRole.LIBRARIAN,
+    fullName: "Demo Librarian",
+    email: "librarian_demo@kazutb.edu.kz",
+  },
+  {
+    username: "admin_demo",
+    password: "Admin123!",
+    role: UserRole.ADMIN,
+    fullName: "Demo Administrator",
+    email: "admin_demo@kazutb.edu.kz",
+  },
+  {
+    username: "analyst_demo",
+    password: "Analyst123!",
+    role: UserRole.ANALYST,
+    fullName: "Demo Analyst",
+    email: "analyst_demo@kazutb.edu.kz",
+  },
+];
+
 export interface LoginResult {
   accessToken: string;
   refreshToken: string;
@@ -26,12 +65,11 @@ export class AuthService {
   ) {}
 
   async login(username: string, password: string): Promise<LoginResult> {
-    // TODO: Replace with real LDAP verification (passport-ldapauth strategy)
-    // Dev-mock mode to unblock local development
+    // Demo local auth mode to unblock product demo delivery without LDAP dependency.
     const ldapDevMock = this.configService.get<boolean>("ldap.devMock", true);
     if (!ldapDevMock) {
       throw new UnauthorizedException(
-        "LDAP integration is not implemented yet",
+        "Local demo auth is disabled. Enable ldap.devMock to use seeded users.",
       );
     }
 
@@ -39,11 +77,18 @@ export class AuthService {
       throw new UnauthorizedException("Invalid credentials");
     }
 
+    const credential = DEMO_CREDENTIALS.find(
+      (item) => item.username === username,
+    );
+    if (!credential || credential.password !== password) {
+      throw new UnauthorizedException("Invalid demo credentials");
+    }
+
     const user = await this.usersService.findOrProvisionByUniversityAccount({
-      universityId: username,
-      email: `${username}@kazutb.edu.kz`,
-      fullName: username,
-      defaultRole: UserRole.STUDENT,
+      universityId: credential.username,
+      email: credential.email,
+      fullName: credential.fullName,
+      defaultRole: credential.role,
     });
 
     const payload = {
@@ -115,5 +160,14 @@ export class AuthService {
     } catch {
       throw new UnauthorizedException("Invalid refresh token");
     }
+  }
+
+  getDemoUsers() {
+    return DEMO_CREDENTIALS.map(({ username, password, role, fullName }) => ({
+      username,
+      password,
+      role,
+      fullName,
+    }));
   }
 }

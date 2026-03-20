@@ -7,6 +7,7 @@ import {
 import { useI18n } from "@shared/i18n/use-i18n";
 import { BookCoverMock } from "@shared/ui/book-cover-mock";
 import { PageIntro } from "@shared/ui/page-intro";
+import { toReadableLocation } from "@shared/catalog/location-labels";
 
 export function BookDetailsPage() {
   const { id = "" } = useParams();
@@ -171,7 +172,10 @@ export function BookDetailsPage() {
                     className="rounded-[18px] border border-slate-200 bg-slate-50 p-4"
                   >
                     <p className="text-sm font-semibold text-slate-900">
-                      {row.campus?.name || row.campus?.code || "Campus"} •{" "}
+                      {toReadableLocation(
+                        row.campus?.name || row.campus?.code || "Campus",
+                      )}{" "}
+                      •{" "}
                       {row.servicePoint?.name ||
                         row.servicePoint?.code ||
                         "Service point"}
