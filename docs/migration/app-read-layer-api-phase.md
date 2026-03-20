@@ -129,3 +129,18 @@ Validated in this pass:
 - Existing legacy/raw/core/review structures are still not exposed to the frontend.
 - Existing Prisma catalog models were left intact to avoid unnecessary breakage.
 - The backend now has a clean SQL-backed contract for first product screens while the rest of the app can migrate incrementally.
+
+## Revalidation Snapshot (2026-03-20)
+
+Revalidated after follow-up changes:
+
+- `npm run build`: passed
+- `npm test -- --runInBand`: passed (9 suites, 39 tests)
+- runtime smoke checks passed:
+  - `GET /api/v1/catalog?limit=2` -> 200
+  - `GET /api/v1/catalog/:documentId` -> 200
+  - `GET /api/v1/catalog/:documentId/availability` -> 200
+  - `GET /api/v1/catalog/facets` -> 200
+  - `GET /api/v1/catalog/locations/summary` -> 200
+- librarian route access policy confirmed:
+  - `GET /api/v1/migration/app-review/issues?limit=1` without valid JWT -> 401 (expected)

@@ -61,19 +61,23 @@ Interpretation used:
 Implemented hierarchy:
 
 1. Institution unit
+
 - `COLLEGE`
 - `UNIVERSITY`
 
 2. Campus / site
+
 - `COLLEGE_MAIN`
 - `UNIVERSITY_ECONOMIC`
 - `UNIVERSITY_TECHNOLOGICAL`
 - `UNIVERSITY_CENTRAL`
 
 3. Service point
+
 - stored in existing extended `app.branches`
 
 4. Storage / sigla
+
 - stored in existing extended `app.siglas`
 
 ## 4) App Schema Changes Implemented

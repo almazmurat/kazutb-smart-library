@@ -10,7 +10,11 @@ From `backend/`:
 
 ```bash
 npm run reconstruct:legacy-db
+npm run reconstruct:legacy-raw-mirror
 ```
+
+Use `reconstruct:legacy-db` for the curated reconstruction pass and
+`reconstruct:legacy-raw-mirror` for the second-pass complete raw mirror.
 
 ## Direct Source Read
 
@@ -93,6 +97,11 @@ The runner writes:
 
 - exported NDJSON table snapshots under `migration/raw/legacy-reconstruction/<timestamp>/`
 - batch summaries under `migration/logs/`
+
+The second-pass full raw mirror writes:
+
+- exported NDJSON snapshots under `migration/raw/legacy-full-mirror/<timestamp>/`
+- per-run summaries under `migration/logs/legacy-raw-mirror-summary-<batchId>.json`
 
 ## Current Scope Notes
 
