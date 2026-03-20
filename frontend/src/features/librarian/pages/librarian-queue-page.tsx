@@ -97,9 +97,9 @@ export function LibrarianQueuePage() {
       <div className="space-y-4">
         <PageIntro
           eyebrow={t("shellOperationsSection")}
-          title="Librarian review queue"
-          description="No issues found for current filters."
-          badges={[t("shellSecureLabel"), "Data quality review"]}
+          title="Очередь проверки"
+          description="По выбранным фильтрам замечаний не найдено."
+          badges={[t("shellSecureLabel"), "Контроль качества данных"]}
         />
 
         <div className="app-empty-state">
@@ -115,14 +115,14 @@ export function LibrarianQueuePage() {
     <section className="app-page">
       <PageIntro
         eyebrow={t("shellOperationsSection")}
-        title="Librarian review queue"
-        description="Review flagged rows from the new app-review endpoint and prioritize manual correction by severity and location."
-        badges={[t("shellSecureLabel"), "App review API"]}
+        title="Очередь проверки библиотекаря"
+        description="Проверяйте проблемные записи и выполняйте корректировки по приоритету и локации."
+        badges={[t("shellSecureLabel"), "Проверка записей"]}
       />
 
       <div className="app-toolbar">
         <div>
-          <p className="app-kicker">Open issues</p>
+          <p className="app-kicker">Открытые замечания</p>
           <p className="mt-2 text-sm text-slate-600">
             {queueQuery.data?.meta.total ?? 0} {t("catalogResults")}
           </p>
@@ -136,7 +136,7 @@ export function LibrarianQueuePage() {
             }}
             className="app-form-control"
           >
-            <option value="">All severities</option>
+            <option value="">Все уровни критичности</option>
             <option value="CRITICAL">CRITICAL</option>
             <option value="HIGH">HIGH</option>
             <option value="MEDIUM">MEDIUM</option>
@@ -144,7 +144,7 @@ export function LibrarianQueuePage() {
           </select>
           <input
             className="app-form-control"
-            placeholder="Issue code"
+            placeholder="Код замечания"
             value={issueCode}
             onChange={(event) => {
               setIssueCode(event.target.value);
@@ -153,7 +153,7 @@ export function LibrarianQueuePage() {
           />
           <input
             className="app-form-control"
-            placeholder="Entity type"
+            placeholder="Тип сущности"
             value={entityType}
             onChange={(event) => {
               setEntityType(event.target.value);
@@ -168,7 +168,7 @@ export function LibrarianQueuePage() {
             }}
             className="app-form-control"
           >
-            <option value="">All campuses</option>
+            <option value="">Все кампусы</option>
             {campuses.map((campus) => (
               <option key={campus.value} value={campus.value}>
                 {campus.label}
@@ -183,7 +183,7 @@ export function LibrarianQueuePage() {
             }}
             className="app-form-control"
           >
-            <option value="">All service points</option>
+            <option value="">Все пункты обслуживания</option>
             {servicePoints.map((servicePoint) => (
               <option key={servicePoint.value} value={servicePoint.value}>
                 {servicePoint.label}
@@ -197,17 +197,19 @@ export function LibrarianQueuePage() {
         <section className="app-panel p-4 md:p-5">
           <div className="flex items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
             <div>
-              <p className="app-kicker">Open Work</p>
-              <h2 className="app-section-heading">Queue list</h2>
+              <p className="app-kicker">Текущие задачи</p>
+              <h2 className="app-section-heading">Список очереди</h2>
             </div>
             <span className="app-chip-muted">
-              {queueQuery.data?.meta.total ?? 0} items
+              {queueQuery.data?.meta.total ?? 0} записей
             </span>
           </div>
 
           <div className="mt-4 space-y-3">
             {issues.map((issue) => {
-              const flaggedDate = new Date(issue.flaggedAt).toLocaleDateString();
+              const flaggedDate = new Date(
+                issue.flaggedAt,
+              ).toLocaleDateString();
               const isSelected = selectedFlagId === issue.flagId;
 
               return (
@@ -230,24 +232,30 @@ export function LibrarianQueuePage() {
                   </div>
 
                   <p className="mt-3 text-sm font-medium text-slate-900">
-                    {issue.context.title || issue.values.raw || "No title context"}
+                    {issue.context.title ||
+                      issue.values.raw ||
+                      "Название не указано"}
                   </p>
 
                   <div className="mt-3 grid gap-2 text-xs text-slate-600 md:grid-cols-2">
                     <div>
-                      <span className="font-medium text-slate-700">Campus: </span>
+                      <span className="font-medium text-slate-700">
+                        Кампус:{" "}
+                      </span>
                       {(issue.context.campusCodes || [])
                         .map((code) => toReadableLocation(code))
                         .join(", ") || "-"}
                     </div>
                     <div>
-                      <span className="font-medium text-slate-700">Service point: </span>
+                      <span className="font-medium text-slate-700">
+                        Пункт обслуживания:{" "}
+                      </span>
                       {issue.context.servicePointCodes.join(", ") || "-"}
                     </div>
                   </div>
 
                   <div className="mt-3 rounded-2xl bg-white/80 px-3 py-2 text-sm text-slate-600">
-                    Suggested: {issue.values.suggested || "No suggestion"}
+                    Предложение: {issue.values.suggested || "Не найдено"}
                   </div>
                 </button>
               );
@@ -257,9 +265,9 @@ export function LibrarianQueuePage() {
 
         {selectedFlagId && detail ? (
           <article className="app-panel-strong p-5 xl:sticky xl:top-24 xl:h-fit">
-            <p className="app-kicker">Correction Workspace</p>
+            <p className="app-kicker">Рабочая область исправления</p>
             <h3 className="mt-2 text-base font-semibold text-slate-900">
-              Issue detail and review action
+              Детали замечания и действия
             </h3>
             <p className="mt-2 text-sm text-slate-600">
               {detail.issue.issueCode} • {detail.issue.severity} •{" "}
@@ -269,7 +277,7 @@ export function LibrarianQueuePage() {
             <div className="mt-4 grid gap-3 md:grid-cols-2">
               <div className="app-stat-card p-3">
                 <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                  Raw value
+                  Исходное значение
                 </p>
                 <p className="mt-2 text-sm text-slate-900">
                   {detail.issue.values.raw || "-"}
@@ -277,7 +285,7 @@ export function LibrarianQueuePage() {
               </div>
               <div className="app-stat-card p-3">
                 <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                  Current normalized
+                  Текущее нормализованное
                 </p>
                 <p className="mt-2 text-sm text-slate-900">
                   {detail.issue.values.normalized || "-"}
@@ -285,7 +293,7 @@ export function LibrarianQueuePage() {
               </div>
               <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 md:col-span-2">
                 <p className="text-xs uppercase tracking-[0.14em] text-emerald-700">
-                  Suggested corrected value
+                  Рекомендуемое исправление
                 </p>
                 <p className="mt-2 text-sm font-medium text-emerald-900">
                   {detail.issue.values.suggested || "-"}
@@ -295,39 +303,43 @@ export function LibrarianQueuePage() {
 
             <div className="mt-4 grid gap-2 text-sm text-slate-700">
               <p>
-                <span className="font-medium">Document: </span>
+                <span className="font-medium">Документ: </span>
                 {detail.issue.context.title || "-"}
               </p>
               <p>
-                <span className="font-medium">Campus: </span>
+                <span className="font-medium">Кампус: </span>
                 {(detail.issue.context.campusCodes || [])
                   .map((code) => toReadableLocation(code))
                   .join(", ") || "-"}
               </p>
               <p>
-                <span className="font-medium">Flag status: </span>
+                <span className="font-medium">Статус: </span>
                 {detail.issue.flagStatus}
               </p>
             </div>
 
             <div className="mt-4 space-y-3 rounded-[24px] border border-slate-200 bg-white/75 p-4">
               <label className="space-y-1 text-sm">
-                <span className="text-slate-600">Note (optional)</span>
+                <span className="text-slate-600">
+                  Комментарий (необязательно)
+                </span>
                 <textarea
                   className="app-form-control min-h-[84px]"
                   value={noteDraft}
                   onChange={(event) => setNoteDraft(event.target.value)}
-                  placeholder="Add short librarian note"
+                  placeholder="Добавьте комментарий"
                 />
               </label>
 
               <label className="space-y-1 text-sm">
-                <span className="text-slate-600">Manual correction value</span>
+                <span className="text-slate-600">
+                  Значение для ручного исправления
+                </span>
                 <input
                   className="app-form-control"
                   value={manualValue}
                   onChange={(event) => setManualValue(event.target.value)}
-                  placeholder="Type replacement value for manual edit"
+                  placeholder="Введите новое значение"
                 />
               </label>
 
@@ -350,7 +362,7 @@ export function LibrarianQueuePage() {
                       {
                         onSuccess: () => {
                           setStatusMessage(
-                            "Suggestion accepted and issue updated.",
+                            "Предложение принято, запись обновлена.",
                           );
                           setSelectedFlagId("");
                           setNoteDraft("");
@@ -359,7 +371,7 @@ export function LibrarianQueuePage() {
                     );
                   }}
                 >
-                  Accept suggestion
+                  Принять предложение
                 </button>
 
                 <button
@@ -380,7 +392,7 @@ export function LibrarianQueuePage() {
                       {
                         onSuccess: () => {
                           setStatusMessage(
-                            "Suggestion rejected and issue closed.",
+                            "Предложение отклонено, замечание закрыто.",
                           );
                           setSelectedFlagId("");
                           setNoteDraft("");
@@ -389,7 +401,7 @@ export function LibrarianQueuePage() {
                     );
                   }}
                 >
-                  Reject suggestion
+                  Отклонить предложение
                 </button>
 
                 <button
@@ -414,7 +426,7 @@ export function LibrarianQueuePage() {
                       {
                         onSuccess: () => {
                           setStatusMessage(
-                            "Manual correction applied and issue updated.",
+                            "Ручное исправление применено, запись обновлена.",
                           );
                           setSelectedFlagId("");
                           setManualValue("");
@@ -424,13 +436,13 @@ export function LibrarianQueuePage() {
                     );
                   }}
                 >
-                  Apply manual edit
+                  Применить исправление
                 </button>
               </div>
 
               {actionMutation.isError ? (
                 <div className="app-state-error">
-                  Action failed. Please check input and try again.
+                  Не удалось выполнить действие. Проверьте данные и повторите.
                 </div>
               ) : null}
 
@@ -440,14 +452,14 @@ export function LibrarianQueuePage() {
             </div>
 
             <p className="mt-4 text-sm text-slate-700">
-              Related issues: {detail.relatedIssues.length}
+              Связанные замечания: {detail.relatedIssues.length}
             </p>
           </article>
         ) : (
           <aside className="app-flow-step flex min-h-[22rem] items-center justify-center p-8 text-center text-sm leading-7 text-white/88">
-            Select a queue item to open the correction workspace. The right-hand
-            panel will show raw value, normalized value, suggested correction,
-            and the action buttons used in the live librarian demo.
+            Выберите запись из очереди, чтобы открыть рабочую область
+            исправления. Справа отобразятся исходное значение, нормализованное
+            значение, предложенное исправление и доступные действия.
           </aside>
         )}
       </div>

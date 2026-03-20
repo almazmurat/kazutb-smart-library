@@ -34,26 +34,26 @@ export function SearchPage() {
         description={t("catalogPublicDescription")}
         badges={[t("shellPublicLabel"), t("catalogFeatureInstitutional")]}
         actions={
-          <span className="app-chip">College + University Campuses</span>
+          <span className="app-chip">Колледж и университетские кампусы</span>
         }
       />
 
       <div className="grid gap-5 lg:grid-cols-[1.3fr_0.7fr]">
         <form className="app-panel-strong p-6" onSubmit={submitSearch}>
-          <p className="app-kicker">Public catalog</p>
+          <p className="app-kicker">Публичный каталог</p>
           <h2 className="mt-2 text-lg font-semibold text-slate-900">
-            Find books across KazUTB campuses
+            Найти книги по всем кампусам
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            Start with a broad query, then refine by campus, language, and
-            current availability in the results screen.
+            Начните с общего запроса, затем уточните выдачу по языку, кампусу и
+            доступности экземпляров.
           </p>
 
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             <input
               type="text"
               className="app-form-control md:col-span-2"
-              placeholder="Title, author, keyword, ISBN"
+              placeholder="Название, автор, ключевое слово, ISBN"
               value={form.q}
               onChange={(event) =>
                 setForm((prev) => ({ ...prev, q: event.target.value }))
@@ -66,10 +66,10 @@ export function SearchPage() {
                 setForm((prev) => ({ ...prev, language: event.target.value }))
               }
             >
-              <option value="">All languages</option>
-              <option value="kaz">Kazakh</option>
-              <option value="rus">Russian</option>
-              <option value="eng">English</option>
+              <option value="">Все языки</option>
+              <option value="kaz">Казахский</option>
+              <option value="rus">Русский</option>
+              <option value="eng">Английский</option>
             </select>
             <select
               className="app-form-control"
@@ -81,9 +81,9 @@ export function SearchPage() {
                 }))
               }
             >
-              <option value="">Any availability</option>
-              <option value="available">Available now</option>
-              <option value="unavailable">Currently unavailable</option>
+              <option value="">Любая доступность</option>
+              <option value="available">Доступно сейчас</option>
+              <option value="unavailable">Временно недоступно</option>
             </select>
             <select
               className="app-form-control md:col-span-2"
@@ -92,40 +92,45 @@ export function SearchPage() {
                 setForm((prev) => ({ ...prev, campusCode: event.target.value }))
               }
             >
-              <option value="">All campuses</option>
-              <option value="COLLEGE_MAIN">College</option>
-              <option value="UNIVERSITY_ECONOMIC">University Economic</option>
-              <option value="UNIVERSITY_TECHNOLOGICAL">
-                University Technological
+              <option value="">Все кампусы</option>
+              <option value="COLLEGE_MAIN">Колледж</option>
+              <option value="UNIVERSITY_ECONOMIC">
+                Университет Экономический
               </option>
-              <option value="UNIVERSITY_CENTRAL">University Central</option>
+              <option value="UNIVERSITY_TECHNOLOGICAL">
+                Университет Технологический
+              </option>
+              <option value="UNIVERSITY_CENTRAL">
+                Университет Центральный
+              </option>
             </select>
           </div>
 
           <div className="mt-5 flex gap-2">
             <button type="submit" className="app-button-primary">
-              Search catalog
+              Найти в каталоге
             </button>
             <Link to="/catalog" className="app-button-secondary">
-              Open results page
+              Открыть результаты
             </Link>
           </div>
         </form>
 
         <article className="app-panel p-5">
-          <p className="app-kicker">Quick demo flow</p>
+          <p className="app-kicker">Подсказка</p>
           <h2 className="mt-2 text-lg font-semibold text-slate-900">
-            Public to detail to librarian review
+            Как работать с поиском
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            1) Search in public catalog. 2) Open book details for location-level
-            availability. 3) Open librarian queue to review flagged issues.
+            1) Выполните поиск в каталоге. 2) Откройте карточку книги и
+            проверьте доступность по локациям. 3) При необходимости перейдите в
+            служебные разделы для работы с данными.
           </p>
           <div className="mt-4 space-y-2 text-sm text-slate-600">
-            <p>• College</p>
-            <p>• University Economic</p>
-            <p>• University Technological</p>
-            <p>• University Central</p>
+            <p>• Колледж</p>
+            <p>• Университет Экономический</p>
+            <p>• Университет Технологический</p>
+            <p>• Университет Центральный</p>
           </div>
         </article>
       </div>

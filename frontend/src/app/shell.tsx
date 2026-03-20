@@ -39,7 +39,7 @@ export function AppShell() {
           { to: "/overview", label: t("navOverview"), public: true },
           { to: "/catalog", label: t("navCatalog"), public: true },
           { to: "/search", label: t("navSearch"), public: true },
-          { to: "/login", label: "Demo Login", public: true },
+          { to: "/login", label: "Вход", public: true },
         ],
       },
       {
@@ -75,11 +75,6 @@ export function AppShell() {
           {
             to: "/reports",
             label: t("navReports"),
-            roles: ["LIBRARIAN", "ANALYST", "ADMIN"],
-          },
-          {
-            to: "/migration/data-quality",
-            label: t("navDataQualityWorkbench"),
             roles: ["LIBRARIAN", "ANALYST", "ADMIN"],
           },
         ],
@@ -163,7 +158,7 @@ export function AppShell() {
             {auth.user ? (
               <span className="app-chip-muted">{auth.user.fullName}</span>
             ) : (
-              <span className="app-chip-muted">Guest mode available</span>
+              <span className="app-chip-muted">Гостевой доступ</span>
             )}
             <LanguageSwitcher />
           </div>
@@ -174,20 +169,20 @@ export function AppShell() {
         <div className="grid gap-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
           <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
             <section className="app-sidebar-card overflow-hidden p-5">
-              <p className="app-kicker">Demo Control</p>
+              <p className="app-kicker">Рабочее пространство</p>
               <h2 className="app-display-title mt-2 text-2xl font-semibold text-slate-950">
                 {auth.isAuthenticated
                   ? (auth.user?.fullName ?? t(roleLabelKey[auth.role]))
-                  : "Start with a public search or one-click role login"}
+                  : "Начните с поиска или выполните вход"}
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                This shell is connected to the cleaned live runtime. Use it to
-                move through guest, reader, librarian, and admin demo flows.
+                Используйте разделы слева для перехода между поиском,
+                читательским кабинетом и служебными интерфейсами.
               </p>
 
               <div className="mt-4 grid gap-3 text-sm text-slate-700">
                 <div className="app-stat-card">
-                  <p className="app-kicker">Current Mode</p>
+                  <p className="app-kicker">Текущая роль</p>
                   <p className="mt-2 text-lg font-semibold text-slate-950">
                     {auth.isAuthenticated
                       ? t(roleLabelKey[auth.role])
@@ -195,10 +190,9 @@ export function AppShell() {
                   </p>
                 </div>
                 <div className="app-stat-card">
-                  <p className="app-kicker">Recommended Order</p>
+                  <p className="app-kicker">Быстрый маршрут</p>
                   <p className="mt-2 leading-6 text-slate-600">
-                    Guest catalog, book detail, librarian review, then admin
-                    overview.
+                    Поиск, карточка книги, личный кабинет и служебные разделы.
                   </p>
                 </div>
               </div>
@@ -208,11 +202,13 @@ export function AppShell() {
                   to={primaryWorkspaceHref}
                   className="app-button-primary"
                 >
-                  {auth.isAuthenticated ? "Open workspace" : "Open demo login"}
+                  {auth.isAuthenticated
+                    ? "Открыть рабочий раздел"
+                    : "Открыть вход"}
                 </NavLink>
                 {!auth.isAuthenticated ? (
                   <NavLink to="/search" className="app-button-secondary">
-                    Search as guest
+                    Поиск как гость
                   </NavLink>
                 ) : (
                   <button
@@ -221,7 +217,7 @@ export function AppShell() {
                     disabled={logout.isPending}
                     onClick={() => logout.mutate()}
                   >
-                    Logout
+                    Выйти
                   </button>
                 )}
               </div>

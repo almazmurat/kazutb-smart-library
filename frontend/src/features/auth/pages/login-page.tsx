@@ -42,25 +42,24 @@ export function LoginPage() {
     { title: string; summary: string; destination: string }
   > = {
     STUDENT: {
-      title: "Reader self-service",
-      summary: "Use for cabinet, reservations, and reader-facing navigation.",
-      destination: "Cabinet",
+      title: "Читательский интерфейс",
+      summary: "Личный кабинет, бронирования и доступ к заказам.",
+      destination: "Кабинет",
     },
     LIBRARIAN: {
-      title: "Operational review",
-      summary:
-        "Use for issue queue, circulation, and metadata correction flow.",
-      destination: "Review queue",
+      title: "Рабочий интерфейс библиотекаря",
+      summary: "Очередь задач, обслуживание и корректировка данных.",
+      destination: "Очередь проверки",
     },
     ADMIN: {
-      title: "Executive overview",
-      summary: "Use for system navigation and broader demo control.",
-      destination: "Admin overview",
+      title: "Администрирование",
+      summary: "Системные разделы, роли и контроль настроек.",
+      destination: "Панель администратора",
     },
     ANALYST: {
-      title: "Reporting and trends",
-      summary: "Use for analytics and report-oriented walkthroughs.",
-      destination: "Analytics",
+      title: "Аналитика и отчеты",
+      summary: "Показатели, динамика и аналитические отчеты.",
+      destination: "Аналитика",
     },
   };
 
@@ -86,8 +85,8 @@ export function LoginPage() {
     <section className="app-page">
       <PageIntro
         eyebrow={t("shellSecureLabel")}
-        title="Demo login and role testing"
-        description="Use seeded demo users to test student, librarian, analyst, and admin flows. You can also continue as guest to test public catalog behavior."
+        title="Вход в библиотечную систему"
+        description="Выберите учетную запись по роли или выполните вход вручную. После авторизации откроется соответствующий рабочий раздел."
         badges={[
           t("shellSecureLabel"),
           t("roleGuest"),
@@ -99,11 +98,11 @@ export function LoginPage() {
 
       <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <article className="app-panel-strong p-6 md:p-7">
-          <p className="app-kicker">Choose a Persona</p>
-          <h2 className="mt-2 app-section-heading">University demo accounts</h2>
+          <p className="app-kicker">Учетные записи</p>
+          <h2 className="mt-2 app-section-heading">Выбор роли</h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            Select one of the prepared accounts or enter credentials manually.
-            After login, the menu and landing page adjust automatically by role.
+            Выберите подготовленную учетную запись или введите логин и пароль
+            вручную. Меню и стартовая страница меняются автоматически по роли.
           </p>
 
           <div className="mt-6 space-y-3">
@@ -128,29 +127,29 @@ export function LoginPage() {
                     {roleMessages[user.role]?.summary}
                   </p>
                   <div className="mt-3 inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-700">
-                    Landing: {roleMessages[user.role]?.destination}
+                    Раздел: {roleMessages[user.role]?.destination}
                   </div>
                 </button>
               ))}
             </div>
 
             <label className="space-y-1 text-sm">
-              <span className="text-slate-600">Username</span>
+              <span className="text-slate-600">Логин</span>
               <input
                 className="app-form-control"
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
-                placeholder="student_demo"
+                placeholder="student"
               />
             </label>
             <label className="space-y-1 text-sm">
-              <span className="text-slate-600">Password</span>
+              <span className="text-slate-600">Пароль</span>
               <input
                 type="password"
                 className="app-form-control"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="Student123!"
+                placeholder="Введите пароль"
               />
             </label>
 
@@ -161,7 +160,7 @@ export function LoginPage() {
                 disabled={login.isPending}
                 onClick={submit}
               >
-                {login.isPending ? "Signing in..." : "Login"}
+                {login.isPending ? "Выполняется вход..." : "Войти"}
               </button>
               <button
                 type="button"
@@ -171,30 +170,30 @@ export function LoginPage() {
                   navigate("/search");
                 }}
               >
-                Continue as guest
+                Продолжить как гость
               </button>
             </div>
 
             {login.isError ? (
               <div className="app-state-error">
-                Login failed. Check username/password and try again.
+                Не удалось выполнить вход. Проверьте логин и пароль.
               </div>
             ) : null}
           </div>
         </article>
 
         <article className="app-panel p-6 md:p-7">
-          <p className="app-kicker">Walkthrough Guide</p>
-          <h2 className="mt-2 app-section-heading">How to test quickly</h2>
+          <p className="app-kicker">Навигация</p>
+          <h2 className="mt-2 app-section-heading">Как начать работу</h2>
           <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-600">
-            1) Choose a role account below. 2) Login. 3) Use role-specific quick
-            links from the top menu. 4) Logout and test another role.
+            1) Выберите роль. 2) Выполните вход. 3) Перейдите в нужные разделы
+            из меню. 4) При необходимости смените роль.
           </div>
 
           <div className="mt-4 space-y-3">
             {demoUsers.isLoading ? (
               <div className="app-empty-state p-4 text-sm text-slate-600">
-                Loading demo accounts...
+                Загрузка учетных записей...
               </div>
             ) : null}
 
@@ -215,7 +214,7 @@ export function LoginPage() {
                       setPassword(user.password);
                     }}
                   >
-                    Use
+                    Выбрать
                   </button>
                 </div>
                 <p className="mt-2 text-sm text-slate-700">
@@ -229,27 +228,28 @@ export function LoginPage() {
           </div>
 
           <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900">
-            Role landing: Guest → Search, Student → Cabinet, Librarian → Review
-            Queue, Analyst → Analytics, Admin → Admin Overview.
+            Разделы по ролям: Гость → Поиск, Студент → Кабинет, Библиотекарь →
+            Очередь проверки, Аналитик → Аналитика, Администратор → Панель
+            администратора.
           </div>
 
           <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-700">
             <p className="font-semibold text-slate-900">
-              Suggested live demo order
+              Рекомендуемая последовательность
             </p>
-            <p>1. Guest search and book details.</p>
-            <p>2. Librarian login and issue queue review.</p>
-            <p>3. Admin login and overview navigation.</p>
+            <p>1. Поиск книги и просмотр карточки.</p>
+            <p>2. Вход библиотекаря и работа с очередью.</p>
+            <p>3. Вход администратора и управление системой.</p>
           </div>
 
           <div className="mt-4 app-flow-step">
-            <p className="app-kicker text-white/70">Guest Option</p>
+            <p className="app-kicker text-white/70">Гостевой доступ</p>
             <h3 className="app-display-title mt-2 text-2xl font-semibold">
-              No login required for the public catalog
+              Для публичного каталога вход не требуется
             </h3>
             <p className="mt-3 text-sm leading-7 text-white/82">
-              Use guest mode when you want to start with visible search, result
-              cards, and book availability before showing role-based features.
+              Используйте гостевой режим, если нужно быстро открыть поиск,
+              результаты и доступность книг по локациям.
             </p>
             <button
               type="button"
@@ -259,7 +259,7 @@ export function LoginPage() {
                 navigate("/search");
               }}
             >
-              Continue as guest
+              Продолжить как гость
             </button>
           </div>
         </article>

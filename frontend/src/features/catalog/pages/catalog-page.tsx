@@ -107,7 +107,7 @@ export function CatalogPage() {
         actions={
           <div className="grid min-w-[220px] gap-3 px-3 py-2 text-left">
             <div>
-              <span className="app-kicker">Catalog Results</span>
+              <span className="app-kicker">Результаты каталога</span>
               <div className="text-3xl font-semibold tracking-tight text-slate-950">
                 {booksMeta?.total ?? 0}
               </div>
@@ -118,7 +118,7 @@ export function CatalogPage() {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div className="rounded-2xl bg-slate-50 px-3 py-2">
                 <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                  Available
+                  Доступно
                 </div>
                 <div className="mt-1 font-semibold text-slate-950">
                   {availableCopies}
@@ -126,7 +126,7 @@ export function CatalogPage() {
               </div>
               <div className="rounded-2xl bg-slate-50 px-3 py-2">
                 <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                  Total
+                  Всего
                 </div>
                 <div className="mt-1 font-semibold text-slate-950">
                   {totalCopies}
@@ -139,56 +139,55 @@ export function CatalogPage() {
 
       <section className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr_0.8fr]">
         <div className="app-panel p-5 md:p-6">
-          <p className="app-kicker">How to read this catalog</p>
+          <p className="app-kicker">Как пользоваться каталогом</p>
           <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
-            Search first, then confirm real availability by location
+            Сначала найдите книгу, затем проверьте доступность по локациям
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            Results show title, author, publisher, year, language, ISBN and live
-            copy counts. Open any book to see detailed campus and service-point
-            availability.
+            В выдаче отображаются название, автор, издатель, год, язык, ISBN и
+            количество экземпляров. Откройте карточку книги, чтобы увидеть
+            наличие по кампусам и пунктам обслуживания.
           </p>
         </div>
 
         <div className="app-panel p-5 md:p-6">
-          <p className="app-kicker">Demo Paths</p>
+          <p className="app-kicker">Маршруты работы</p>
           <div className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
-            <p>Guest: search by title or author and open a detail page.</p>
+            <p>Гость: выполните поиск и откройте карточку книги.</p>
             <p>
-              Librarian: inspect results, then move to review queue for
-              corrections.
+              Библиотекарь: проверьте выдачу и перейдите к очереди исправлений.
             </p>
-            <p>Admin: verify navigation and overview access after login.</p>
+            <p>Администратор: откройте системные разделы после входа.</p>
           </div>
         </div>
 
         <div className="app-flow-step">
-          <p className="app-kicker text-white/70">Live Runtime</p>
+          <p className="app-kicker text-white/70">Навигация</p>
           <h2 className="app-display-title mt-2 text-2xl font-semibold">
-            Browser-visible catalog now reads the fixed backend on port 3000
+            Каталог объединяет поиск, карточки книг и переход в рабочие разделы
           </h2>
           <p className="mt-3 text-sm leading-7 text-white/82">
-            The result cards, detail navigation, and availability rows come from
-            the same cleaned runtime baseline now used by the browser.
+            Используйте этот экран как стартовую точку для читателей и
+            сотрудников библиотеки.
           </p>
         </div>
       </section>
 
       <CatalogFilters
         labels={{
-          query: "Global query",
+          query: "Общий запрос",
           title: t("catalogFilterTitle"),
           author: t("catalogFilterAuthor"),
           isbn: "ISBN",
-          campus: "Campus",
-          servicePoint: "Service point",
+          campus: "Кампус",
+          servicePoint: "Пункт обслуживания",
           language: t("catalogFilterLanguage"),
-          availability: "Availability",
-          allCampuses: "All campuses",
-          allServicePoints: "All service points",
-          allAvailability: "Any availability",
+          availability: "Доступность",
+          allCampuses: "Все кампусы",
+          allServicePoints: "Все пункты обслуживания",
+          allAvailability: "Любая доступность",
           reset: t("catalogFilterReset"),
-          searchAction: "Search",
+          searchAction: "Найти",
           allLanguages: t("catalogAllLanguages"),
         }}
         value={draftQuery}
@@ -205,8 +204,7 @@ export function CatalogPage() {
 
       {booksQuery.isError ? (
         <div className="app-state-error">
-          Catalog data could not be loaded from the backend. Please verify
-          backend availability and database connectivity.
+          Не удалось загрузить данные каталога. Проверьте доступность сервиса.
         </div>
       ) : null}
 
@@ -225,12 +223,12 @@ export function CatalogPage() {
                   labels={{
                     year: t("catalogCardYear"),
                     language: t("catalogCardLanguage"),
-                    campus: "Campus",
+                    campus: "Кампус",
                     available: t("catalogCardAvailable"),
                     totalCopies: t("catalogCardTotalCopies"),
                     isbn: "ISBN",
                     openDetails: t("catalogOpenDetails"),
-                    reviewTag: "Needs review",
+                    reviewTag: "Требует проверки",
                   }}
                 />
               ))}

@@ -55,12 +55,6 @@ export function OverviewPage() {
       description: t("overviewModuleCirculationDescription"),
       secure: true,
     },
-    {
-      to: "/migration/data-quality",
-      title: t("navDataQualityWorkbench"),
-      description: t("dqWorkbenchDescription"),
-      secure: true,
-    },
   ];
 
   const demoFlows = [
@@ -120,18 +114,9 @@ export function OverviewPage() {
       description: t("overviewModuleReportsDescription"),
       status: t("overviewStatusMvp"),
     },
-    {
-      title: t("navDataQualityWorkbench"),
-      description: t("dqWorkbenchDescription"),
-      status: t("overviewStatusMvp"),
-    },
   ];
 
-  const nextPhase = [
-    t("overviewRoadmapAdmin"),
-    t("overviewRoadmapMigration"),
-    t("overviewRoadmapDigital"),
-  ];
+  const nextPhase = [t("overviewRoadmapAdmin"), t("overviewRoadmapDigital")];
 
   return (
     <div className="app-page">
@@ -185,23 +170,23 @@ export function OverviewPage() {
           </div>
 
           <div className="app-flow-step">
-            <p className="app-kicker text-white/70">Demo Narrative</p>
+            <p className="app-kicker text-white/70">Сценарий работы</p>
             <h2 className="app-display-title mt-2 text-2xl font-semibold">
-              One browser, four roles, one live backend baseline
+              Единая точка доступа для читателей и сотрудников
             </h2>
             <p className="mt-3 text-sm leading-7 text-white/82">
-              Start as a guest, open a real book record, sign in as librarian to
-              resolve a queue item, then switch to admin for overview access.
+              Начните с поиска в каталоге, откройте карточку книги, затем
+              перейдите в профильные разделы по роли.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <span className="rounded-full bg-white/12 px-3 py-1 text-xs font-medium text-white">
-                Browser runtime cleaned
+                Единая навигация
               </span>
               <span className="rounded-full bg-white/12 px-3 py-1 text-xs font-medium text-white">
-                Seeded demo accounts
+                Ролевой доступ
               </span>
               <span className="rounded-full bg-white/12 px-3 py-1 text-xs font-medium text-white">
-                Review workflow proven
+                Рабочие процессы библиотеки
               </span>
             </div>
           </div>
@@ -231,15 +216,14 @@ export function OverviewPage() {
       <section className="app-panel-strong p-6 md:p-7">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="app-kicker">Demo Flows</p>
+            <p className="app-kicker">Сценарии</p>
             <h2 className="app-section-heading">
               {t("overviewDemoFlowsTitle")}
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-6 text-slate-600">
-            These flows are arranged to keep the demo understandable for
-            non-technical viewers and to surface the strongest live behaviors
-            first.
+            Основные пользовательские сценарии сгруппированы так, чтобы быстро
+            переходить от поиска к профильным рабочим разделам.
           </p>
         </div>
         <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-4">
@@ -273,7 +257,7 @@ export function OverviewPage() {
       </section>
 
       <section className="app-panel p-6 md:p-7">
-        <p className="app-kicker">Workspaces</p>
+        <p className="app-kicker">Разделы</p>
         <h2 className="app-section-heading">{t("overviewQuickAccessTitle")}</h2>
         <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-3">
           {quickAccess.map((item) => (
@@ -297,7 +281,7 @@ export function OverviewPage() {
       </section>
 
       <section className="app-panel p-6 md:p-7">
-        <p className="app-kicker">Coverage</p>
+        <p className="app-kicker">Модули</p>
         <h2 className="app-section-heading">{t("overviewModuleTitle")}</h2>
         <div className="app-card-grid mt-5 md:grid-cols-2 xl:grid-cols-3">
           {modules.map((module) => (
@@ -320,7 +304,7 @@ export function OverviewPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <section className="app-panel p-6 md:p-7">
-          <p className="app-kicker">Audience</p>
+          <p className="app-kicker">Пользователи</p>
           <h2 className="app-section-heading">{t("overviewRoleTitle")}</h2>
           <div className="app-card-grid mt-4 md:grid-cols-3">
             <article className="app-stat-card">
@@ -351,7 +335,7 @@ export function OverviewPage() {
         </section>
 
         <section className="app-panel p-6 md:p-7">
-          <p className="app-kicker">Coverage</p>
+          <p className="app-kicker">Локации</p>
           <h2 className="app-section-heading">{t("overviewBranchTitle")}</h2>
           <div className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
             <div className="app-stat-card">
@@ -371,7 +355,7 @@ export function OverviewPage() {
       </div>
 
       <section className="app-panel p-6 md:p-7">
-        <p className="app-kicker">Next</p>
+        <p className="app-kicker">Дальнейшее развитие</p>
         <h2 className="app-section-heading">{t("overviewRoadmapTitle")}</h2>
         <div className="app-card-grid mt-4 md:grid-cols-3">
           {nextPhase.map((item, index) => (

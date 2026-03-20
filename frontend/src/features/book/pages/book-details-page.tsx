@@ -41,12 +41,12 @@ export function BookDetailsPage() {
     <section className="app-page">
       <PageIntro
         eyebrow={t("catalogInstitutionalLabel")}
-        title={book.title.display || book.title.raw || "Untitled"}
+        title={book.title.display || book.title.raw || "Без названия"}
         description={book.title.subtitle || authorList}
         badges={[
-          book.language.code || "N/A",
-          `ISBN: ${book.isbn.normalized || book.isbn.raw || "N/A"}`,
-          `${t("catalogCardYear")}: ${book.publication.year || "N/A"}`,
+          book.language.code || "Нет",
+          `ISBN: ${book.isbn.normalized || book.isbn.raw || "Нет"}`,
+          `${t("catalogCardYear")}: ${book.publication.year || "Нет"}`,
         ]}
         actions={
           <div className="grid gap-2 text-left">
@@ -56,7 +56,7 @@ export function BookDetailsPage() {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div className="rounded-2xl bg-slate-50 px-3 py-2">
                 <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                  Available
+                  Доступно
                 </div>
                 <div className="mt-1 font-semibold text-slate-950">
                   {availability.reduce(
@@ -67,7 +67,7 @@ export function BookDetailsPage() {
               </div>
               <div className="rounded-2xl bg-slate-50 px-3 py-2">
                 <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
-                  Copies
+                  Экземпляров
                 </div>
                 <div className="mt-1 font-semibold text-slate-950">
                   {availability.reduce((sum, row) => sum + row.copies.total, 0)}
@@ -81,7 +81,7 @@ export function BookDetailsPage() {
       <div className="grid gap-6 xl:grid-cols-[0.84fr_1.16fr]">
         <div className="space-y-6">
           <BookCoverMock
-            title={book.title.display || book.title.raw || "Untitled"}
+            title={book.title.display || book.title.raw || "Без названия"}
             subtitle={book.title.subtitle}
             accent={book.language.code?.toUpperCase() || "BOOK"}
           />
@@ -113,17 +113,15 @@ export function BookDetailsPage() {
             </dl>
 
             <div className="mt-5 rounded-[20px] border border-blue-100 bg-blue-50/80 px-4 py-3 text-sm leading-6 text-blue-950">
-              Campus and service-point availability is shown below for College,
-              University Economic, University Technological, and University
-              Central.
+              Ниже показана доступность экземпляров по кампусам и пунктам
+              обслуживания.
             </div>
 
             <div className="mt-4 app-stat-card">
-              <p className="app-kicker">Why this matters</p>
+              <p className="app-kicker">Для читателя</p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                This page is where non-technical users confirm that a search
-                result is actionable: they can see the item, the exact campus,
-                and whether a copy is currently available.
+                На этой странице удобно подтвердить, где находится книга и есть
+                ли сейчас доступные экземпляры.
               </p>
             </div>
           </article>
@@ -163,7 +161,7 @@ export function BookDetailsPage() {
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
                 <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  Publisher
+                  Издатель
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
                   {book.publisher?.name || "-"}
@@ -171,7 +169,7 @@ export function BookDetailsPage() {
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
                 <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  Authors
+                  Авторы
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
                   {authorList || "-"}
@@ -179,21 +177,23 @@ export function BookDetailsPage() {
               </div>
               <div className="rounded-[22px] bg-slate-50 px-4 py-3">
                 <dt className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-                  Metadata
+                  Служебный номер
                 </dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">
-                  {book.controlNumber || "No control number"}
+                  {book.controlNumber || "Не указан"}
                 </dd>
               </div>
             </dl>
           </article>
 
           <article className="app-panel p-6">
-            <p className="app-kicker">Location Availability</p>
-            <h2 className="app-section-heading">Availability by location</h2>
+            <p className="app-kicker">Доступность по локациям</p>
+            <h2 className="app-section-heading">Наличие экземпляров</h2>
             <div className="mt-4 space-y-3">
               {availability.length === 0 ? (
-                <p className="text-sm text-slate-600">No availability rows.</p>
+                <p className="text-sm text-slate-600">
+                  Данные о наличии отсутствуют.
+                </p>
               ) : (
                 availability.map((row, index) => (
                   <div
@@ -202,16 +202,17 @@ export function BookDetailsPage() {
                   >
                     <p className="text-sm font-semibold text-slate-900">
                       {toReadableLocation(
-                        row.campus?.name || row.campus?.code || "Campus",
+                        row.campus?.name || row.campus?.code || "Кампус",
                       )}{" "}
                       •{" "}
                       {row.servicePoint?.name ||
                         row.servicePoint?.code ||
-                        "Service point"}
+                        "Пункт обслуживания"}
                     </p>
                     <p className="mt-2 text-xs text-slate-600">
-                      Available {row.copies.available} / {row.copies.total} •
-                      Problem {row.copies.problem} • Review {row.copies.review}
+                      Доступно {row.copies.available} / {row.copies.total} •
+                      Проблемы {row.copies.problem} • На проверке{" "}
+                      {row.copies.review}
                     </p>
                   </div>
                 ))

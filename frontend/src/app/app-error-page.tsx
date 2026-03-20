@@ -5,16 +5,16 @@ export function AppErrorPage() {
 
   const title = isRouteErrorResponse(error)
     ? `${error.status} ${error.statusText}`
-    : "Something went wrong";
+    : "Произошла ошибка";
 
   const description = isRouteErrorResponse(error)
-    ? "This page could not be opened. Use the links below to continue the demo without reloading the whole application."
-    : "The application hit an unexpected UI error. A friendly fallback is shown instead of a raw crash screen.";
+    ? "Не удалось открыть страницу. Перейдите в другой раздел по кнопкам ниже."
+    : "В интерфейсе произошла непредвиденная ошибка. Откройте нужный раздел снова.";
 
   return (
     <section className="app-page">
       <div className="app-panel-strong overflow-hidden p-8 md:p-10">
-        <p className="app-kicker">Demo Recovery</p>
+        <p className="app-kicker">Восстановление</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
           {title}
         </h1>
@@ -24,13 +24,13 @@ export function AppErrorPage() {
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Link to="/overview" className="app-button-primary">
-            Return to overview
+            На главную
           </Link>
           <Link to="/search" className="app-button-secondary">
-            Open search
+            Открыть поиск
           </Link>
           <Link to="/login" className="app-button-secondary">
-            Open demo login
+            Войти в систему
           </Link>
         </div>
       </div>

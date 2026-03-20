@@ -329,7 +329,7 @@ export const ru = {
   overviewReadinessTitle: "Готовность к презентации",
   overviewReadinessDescription:
     "Текущий MVP уже демонстрирует реальные филиальные процессы с многоязычной основой интерфейса.",
-  overviewDemoFlowsTitle: "Ролевые сценарии демонстрации",
+  overviewDemoFlowsTitle: "Ролевые сценарии",
   overviewFlowGuestTitle: "Сценарий гостя",
   overviewFlowGuestDescription:
     "Начните с публичного каталога, фильтров и карточки книги, чтобы показать ценность открытого доступа.",
