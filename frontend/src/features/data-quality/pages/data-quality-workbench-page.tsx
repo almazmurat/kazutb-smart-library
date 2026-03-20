@@ -2,6 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { PageIntro } from "@shared/ui/page-intro";
 import { useI18n } from "@shared/i18n/use-i18n";
+import {
+  getDataQualityDetectionRuleLabel,
+  getDataQualityIssueClassLabel,
+  getDataQualitySeverityLabel,
+} from "@shared/i18n/domain-labels";
 
 import type {
   DataQualityFilters,
@@ -58,7 +63,7 @@ function severityBadgeClass(severity: DataQualitySeverity): string {
 }
 
 export function DataQualityWorkbenchPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const [stage, setStage] = useState<DataQualityStage>("clean");
   const [severity, setSeverity] = useState<DataQualitySeverity | "ALL">("ALL");
@@ -217,7 +222,7 @@ export function DataQualityWorkbenchPage() {
               <option value="ALL">{t("dqFilterAll")}</option>
               {severityOrder.map((level) => (
                 <option key={level} value={level}>
-                  {level}
+                  {getDataQualitySeverityLabel(locale, level)}
                 </option>
               ))}
             </select>
@@ -239,7 +244,7 @@ export function DataQualityWorkbenchPage() {
               <option value="ALL">{t("dqFilterAll")}</option>
               {issueClassOrder.map((option) => (
                 <option key={option} value={option}>
-                  {option}
+                  {getDataQualityIssueClassLabel(locale, option)}
                 </option>
               ))}
             </select>
@@ -331,11 +336,11 @@ export function DataQualityWorkbenchPage() {
                       <span
                         className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${severityBadgeClass(issue.severity)}`}
                       >
-                        {issue.severity}
+                        {getDataQualitySeverityLabel(locale, issue.severity)}
                       </span>
                     </td>
                     <td className="px-3 py-3 text-slate-700">
-                      {issue.issueClass}
+                      {getDataQualityIssueClassLabel(locale, issue.issueClass)}
                     </td>
                     <td className="px-3 py-3 text-slate-700">
                       <div>{issue.sourceTable}</div>
@@ -393,7 +398,10 @@ export function DataQualityWorkbenchPage() {
                     <span className="font-medium">
                       {t("dqIssueRuleLabel")}:{" "}
                     </span>
-                    {activeIssue.detectionRule}
+                    {getDataQualityDetectionRuleLabel(
+                      locale,
+                      activeIssue.detectionRule,
+                    )}
                   </p>
                 ) : null}
               </div>

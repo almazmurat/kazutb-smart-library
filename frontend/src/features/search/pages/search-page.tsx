@@ -106,18 +106,46 @@ export function SearchPage() {
           </div>
         </form>
 
-        <article className="app-panel p-5">
-          <h2 className="app-section-heading">Подсказка по сценарию</h2>
-          <p className="mt-3 text-sm leading-7 text-[var(--ink-500)]">
-            1) Выполните поиск в каталоге. 2) Откройте карточку книги и
-            проверьте доступность по локациям. 3) При необходимости перейдите в
-            служебные разделы для работы с данными.
-          </p>
-          <div className="mt-4 space-y-2 text-sm text-[var(--ink-500)]">
-            <p>• Колледж</p>
-            <p>• Университет Экономический</p>
-            <p>• Университет Технологический</p>
-            <p>• Университет Центральный</p>
+        <article className="app-panel p-5 flex flex-col gap-4">
+          <div>
+            <p className="app-kicker">Советы по поиску</p>
+            <h2 className="mt-2 app-section-heading">Как искать эффективно</h2>
+          </div>
+          <div className="space-y-3 text-sm text-[var(--ink-700)]">
+            <div className="app-subpanel p-3">
+              <p className="font-medium text-[var(--ink-900)]">
+                По названию или автору
+              </p>
+              <p className="mt-1 text-[var(--ink-500)]">
+                Введите часть названия или фамилию автора — система найдёт
+                совпадения.
+              </p>
+            </div>
+            <div className="app-subpanel p-3">
+              <p className="font-medium text-[var(--ink-900)]">
+                Фильтр по доступности
+              </p>
+              <p className="mt-1 text-[var(--ink-500)]">
+                Выберите «Доступно сейчас», чтобы найти книги, которые можно
+                получить сегодня.
+              </p>
+            </div>
+            <div className="app-subpanel p-3">
+              <p className="font-medium text-[var(--ink-900)]">
+                Поиск по кампусу
+              </p>
+              <p className="mt-1 text-[var(--ink-500)]">
+                Укажите свой кампус, чтобы видеть фонды ближайшей библиотеки.
+              </p>
+            </div>
+          </div>
+          <div className="mt-auto pt-2 border-t border-[rgba(18,59,114,0.1)]">
+            <Link
+              to="/catalog"
+              className="app-button-secondary text-sm w-full text-center block"
+            >
+              Открыть весь каталог
+            </Link>
           </div>
         </article>
       </div>

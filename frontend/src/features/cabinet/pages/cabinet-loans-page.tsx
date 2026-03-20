@@ -41,17 +41,20 @@ export function CabinetLoansPage() {
 
   if (error) {
     return (
-      <div className="app-subpanel p-5 text-sm text-slate-700">
-        <p className="font-medium">{t("cabinetLoansError")}</p>
-        <p className="mt-2 text-slate-600">
-          Раздел работает в безопасном режиме. Попробуйте обновить страницу.
+      <div className="app-subpanel p-5">
+        <p className="font-medium text-[var(--ink-900)]">
+          {t("cabinetLoansError")}
+        </p>
+        <p className="mt-2 text-sm text-[var(--ink-500)]">
+          Информация о выдачах временно недоступна. История выдач сохранена —
+          повторите позже.
         </p>
         <button
           type="button"
           className="app-button-secondary mt-4"
           onClick={() => window.location.reload()}
         >
-          Обновить страницу
+          Попробовать снова
         </button>
       </div>
     );
@@ -62,7 +65,10 @@ export function CabinetLoansPage() {
   if (loans.length === 0) {
     return (
       <div className="app-empty-state">
-        <p className="text-sm text-slate-600">{t("cabinetLoansEmpty")}</p>
+        <p className="font-medium text-[var(--ink-700)]">Активных выдач нет</p>
+        <p className="mt-1 text-sm text-[var(--ink-500)]">
+          {t("cabinetLoansEmpty")}
+        </p>
       </div>
     );
   }

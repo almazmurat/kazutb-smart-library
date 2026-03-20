@@ -156,8 +156,7 @@ export function AdminPage() {
 
         {usersQuery.isError ? (
           <div className="app-state-warning mt-4">
-            Не удалось загрузить пользователей. Раздел работает в безопасном
-            режиме.
+            Не удалось загрузить список пользователей. Повторите позже.
           </div>
         ) : null}
 
@@ -193,17 +192,17 @@ export function AdminPage() {
                       className="border-b border-slate-100/90 hover:bg-[var(--surface-muted)]"
                     >
                       <td className="px-4 py-4">
-                        <div className="font-medium text-slate-900">
-                          {user.fullName}
+                        <div className="font-medium text-[var(--ink-900)]">
+                          {user.fullName.replace(/^Demo\s+/i, "")}
                         </div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-[var(--ink-500)]">
                           {user.email}
                         </div>
                       </td>
-                      <td className="px-4 py-4 text-slate-600">
+                      <td className="px-4 py-4 text-[var(--ink-700)]">
                         {user.universityId}
                       </td>
-                      <td className="px-4 py-4 text-slate-600">
+                      <td className="px-4 py-4 text-[var(--ink-700)]">
                         {user.libraryBranch?.name || "—"}
                       </td>
                       <td className="px-4 py-4">
@@ -225,7 +224,7 @@ export function AdminPage() {
                           ))}
                         </select>
                       </td>
-                      <td className="px-4 py-4 text-slate-600">
+                      <td className="px-4 py-4 text-[var(--ink-700)]">
                         {user.isActive ? "Активен" : "Отключен"}
                       </td>
                     </tr>
@@ -238,16 +237,16 @@ export function AdminPage() {
       </article>
 
       <article className="app-panel p-6">
-        <h2 className="app-section-heading">Роли и права (минимум)</h2>
+        <h2 className="app-section-heading">Роли и права</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {roles.map((role) => (
             <div key={role} className="app-stat-card">
               <p className="app-kicker">Роль</p>
-              <p className="mt-2 text-base font-semibold text-slate-900">
+              <p className="mt-2 text-base font-semibold text-[var(--ink-900)]">
                 {role}
               </p>
-              <p className="mt-2 text-sm text-slate-600">
-                Управление доступом через защищенные маршруты и серверные роли.
+              <p className="mt-2 text-sm text-[var(--ink-500)]">
+                Доступ управляется через защищенные маршруты и серверные роли.
               </p>
             </div>
           ))}

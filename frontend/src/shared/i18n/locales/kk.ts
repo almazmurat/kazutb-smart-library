@@ -260,8 +260,7 @@ export const kk = {
     "Әр шешімде тексеруші, уақыт белгісі және негіздеме сақталуы тиіс.",
   dqWorkbenchEmpty: "Таңдалған сүзгілерге сәйкес мәселе табылмады.",
   dqWorkbenchLoading: "Дерек сапасы мәселелері жүктелуде...",
-  dqWorkbenchError:
-    "Сапа деректерін жүктеу мүмкін болмады. Қайталап көріңіз.",
+  dqWorkbenchError: "Сапа деректерін жүктеу мүмкін болмады. Қайталап көріңіз.",
   dqWorkbenchSelectIssue:
     "Толық мәліметті көру үшін кезектен мәселені таңдаңыз.",
   dqWorkbenchSafetyReadonlyLegacy:
@@ -288,9 +287,9 @@ export const kk = {
   dqReviewStatusESCALATED: "Эскалацияланды",
   dqReviewStatusREVIEWED: "Қаралды",
   dqFilterAll: "Барлығы",
-  dqStageRaw: "Raw",
-  dqStageClean: "Clean",
-  dqStageNormalized: "Normalized",
+  dqStageRaw: "Бастапқы",
+  dqStageClean: "Тазартылған",
+  dqStageNormalized: "Нормаланған",
   dqStatusNew: "Жаңа",
   dqStatusInReview: "Қаралуда",
   dqStatusApproved: "Мақұлданды",

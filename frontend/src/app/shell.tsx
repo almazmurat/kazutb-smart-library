@@ -11,6 +11,7 @@ interface NavItem {
   to: string;
   label: string;
   public?: boolean;
+  onlyGuest?: boolean;
   roles?: Role[];
 }
 
@@ -40,7 +41,7 @@ export function AppShell() {
           { to: "/overview", label: t("navOverview"), public: true },
           { to: "/catalog", label: t("navCatalog"), public: true },
           { to: "/search", label: t("navSearch"), public: true },
-          { to: "/login", label: "Вход", public: true },
+          { to: "/login", label: "Вход", public: true, onlyGuest: true },
         ],
       },
       {
@@ -118,6 +119,9 @@ export function AppShell() {
     .map((section) => ({
       ...section,
       items: section.items.filter((item) => {
+        if (item.onlyGuest) {
+          return !auth.isAuthenticated;
+        }
         if (item.public) {
           return true;
         }
@@ -160,7 +164,7 @@ export function AppShell() {
                   className="app-header-action app-header-meta"
                   title={auth.user.fullName}
                 >
-                  {auth.user.fullName}
+                  {auth.user.fullName.replace(/^Demo\s+/i, "")}
                 </span>
               ) : null}
               <LanguageSwitcher />

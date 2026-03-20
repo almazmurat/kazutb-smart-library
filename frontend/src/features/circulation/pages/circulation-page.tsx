@@ -133,12 +133,12 @@ export function CirculationPage() {
         <PageIntro
           eyebrow={t("shellOperationsSection")}
           title={t("circulationTitle")}
-          description="Сервис книговыдачи временно недоступен. Маршрут работает в безопасном режиме."
-          badges={[t("shellSecureLabel"), "Операционная стабильность"]}
+          description="Данные книговыдачи временно недоступны."
+          badges={[t("shellSecureLabel"), "Книговыдача"]}
         />
-        <div className="app-subpanel p-6 text-sm text-slate-700">
-          <p className="font-medium">{t("circulationError")}</p>
-          <p className="mt-2 text-slate-600">
+        <div className="app-subpanel p-6">
+          <p className="font-medium text-[var(--ink-900)]">{t("circulationError")}</p>
+          <p className="mt-2 text-sm text-[var(--ink-500)]">
             Попробуйте обновить страницу или перейдите в другой служебный
             раздел.
           </p>
