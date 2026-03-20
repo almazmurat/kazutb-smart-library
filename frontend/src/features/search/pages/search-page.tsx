@@ -108,12 +108,12 @@ export function SearchPage() {
 
         <article className="app-panel p-5">
           <h2 className="app-section-heading">Подсказка по сценарию</h2>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
+          <p className="mt-3 text-sm leading-7 text-[var(--ink-500)]">
             1) Выполните поиск в каталоге. 2) Откройте карточку книги и
             проверьте доступность по локациям. 3) При необходимости перейдите в
             служебные разделы для работы с данными.
           </p>
-          <div className="mt-4 space-y-2 text-sm text-slate-600">
+          <div className="mt-4 space-y-2 text-sm text-[var(--ink-500)]">
             <p>• Колледж</p>
             <p>• Университет Экономический</p>
             <p>• Университет Технологический</p>

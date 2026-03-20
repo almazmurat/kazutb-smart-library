@@ -45,6 +45,7 @@ export function LibrarianQueuePage() {
   const [noteDraft, setNoteDraft] = useState("");
   const [manualValue, setManualValue] = useState("");
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const queueQuery = useAppReviewQueue({
     page,
@@ -70,7 +71,7 @@ export function LibrarianQueuePage() {
 
   if (queueQuery.isLoading) {
     return (
-      <div className="app-empty-state text-sm text-slate-600">
+      <div className="app-empty-state text-sm text-[var(--ink-500)]">
         {t("catalogLoading")}
       </div>
     );
@@ -85,11 +86,11 @@ export function LibrarianQueuePage() {
           description="Сервис временно недоступен. Попробуйте обновить страницу или вернитесь позже."
           badges={[t("shellSecureLabel"), "Контроль качества данных"]}
         />
-        <div className="app-subpanel p-6 text-sm text-slate-700">
+        <div className="app-state-warning">
           <p className="font-medium">
             Не удалось загрузить данные очереди проверки.
           </p>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-[var(--ink-500)]">
             Система будет снова доступна через несколько минут. Вы можете
             перейти в другие рабочие разделы.
           </p>
@@ -128,7 +129,9 @@ export function LibrarianQueuePage() {
         />
 
         <div className="app-empty-state">
-          <p className="text-sm text-slate-600">{t("librarianQueueEmpty")}</p>
+          <p className="text-sm text-[var(--ink-500)]">
+            {t("librarianQueueEmpty")}
+          </p>
         </div>
       </div>
     );
@@ -148,7 +151,7 @@ export function LibrarianQueuePage() {
       <div className="app-toolbar">
         <div>
           <p className="app-kicker">Открытые замечания</p>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-[var(--ink-500)]">
             {queueQuery.data?.meta.total ?? 0} {t("catalogResults")}
           </p>
         </div>
@@ -220,7 +223,7 @@ export function LibrarianQueuePage() {
 
       <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
         <section className="app-panel p-4 md:p-5">
-          <div className="flex items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+          <div className="flex items-center justify-between gap-3 border-b border-[rgba(18,59,114,0.14)] pb-4">
             <div>
               <p className="app-kicker">Текущие задачи</p>
               <h2 className="app-section-heading">Список очереди</h2>
@@ -242,29 +245,33 @@ export function LibrarianQueuePage() {
                   key={issue.flagId}
                   type="button"
                   className={`app-queue-card w-full ${isSelected ? "app-queue-card-active" : ""}`}
-                  onClick={() => setSelectedFlagId(issue.flagId)}
+                  onClick={() => {
+                    setStatusMessage(null);
+                    setErrorMessage(null);
+                    setSelectedFlagId(issue.flagId);
+                  }}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="text-left">
                       <div className="text-base font-semibold text-slate-950">
                         {issue.issueCode}
                       </div>
-                      <div className="mt-1 text-xs text-slate-500">
+                      <div className="mt-1 text-xs text-[var(--ink-500)]">
                         {issue.entityType} • {flaggedDate}
                       </div>
                     </div>
                     <span className="app-chip-muted">{issue.severity}</span>
                   </div>
 
-                  <p className="mt-3 text-sm font-medium text-slate-900">
+                  <p className="mt-3 text-sm font-medium text-[var(--ink-900)]">
                     {issue.context.title ||
                       issue.values.raw ||
                       "Название не указано"}
                   </p>
 
-                  <div className="mt-3 grid gap-2 text-xs text-slate-600 md:grid-cols-2">
+                  <div className="mt-3 grid gap-2 text-xs text-[var(--ink-500)] md:grid-cols-2">
                     <div>
-                      <span className="font-medium text-slate-700">
+                      <span className="font-medium text-[var(--ink-700)]">
                         Кампус:{" "}
                       </span>
                       {(issue.context.campusCodes || [])
@@ -272,7 +279,7 @@ export function LibrarianQueuePage() {
                         .join(", ") || "-"}
                     </div>
                     <div>
-                      <span className="font-medium text-slate-700">
+                      <span className="font-medium text-[var(--ink-700)]">
                         Пункт обслуживания:{" "}
                       </span>
                       {(issue.context.servicePointCodes || []).join(", ") ||
@@ -280,7 +287,7 @@ export function LibrarianQueuePage() {
                     </div>
                   </div>
 
-                  <div className="mt-3 rounded-2xl bg-white/80 px-3 py-2 text-sm text-slate-600">
+                  <div className="mt-3 rounded-2xl border border-[rgba(18,59,114,0.13)] bg-[var(--surface-muted)] px-3 py-2 text-sm text-[var(--ink-500)]">
                     Предложение: {issue.values.suggested || "Не найдено"}
                   </div>
                 </button>
@@ -292,28 +299,28 @@ export function LibrarianQueuePage() {
         {selectedFlagId && detail ? (
           <article className="app-panel-strong p-5 xl:sticky xl:top-24 xl:h-fit">
             <p className="app-kicker">Рабочая область исправления</p>
-            <h3 className="mt-2 text-base font-semibold text-slate-900">
+            <h3 className="mt-2 text-base font-semibold text-[var(--ink-900)]">
               Детали замечания и действия
             </h3>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-[var(--ink-500)]">
               {detail.issue.issueCode} • {detail.issue.severity} •{" "}
               {detail.issue.entityType}
             </p>
 
             <div className="mt-4 grid gap-3 md:grid-cols-2">
               <div className="app-stat-card p-3">
-                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                <p className="text-xs uppercase tracking-[0.14em] text-[var(--ink-500)]">
                   Исходное значение
                 </p>
-                <p className="mt-2 text-sm text-slate-900">
+                <p className="mt-2 text-sm text-[var(--ink-900)]">
                   {detail.issue.values.raw || "-"}
                 </p>
               </div>
               <div className="app-stat-card p-3">
-                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                <p className="text-xs uppercase tracking-[0.14em] text-[var(--ink-500)]">
                   Текущее нормализованное
                 </p>
-                <p className="mt-2 text-sm text-slate-900">
+                <p className="mt-2 text-sm text-[var(--ink-900)]">
                   {detail.issue.values.normalized || "-"}
                 </p>
               </div>
@@ -327,7 +334,7 @@ export function LibrarianQueuePage() {
               </div>
             </div>
 
-            <div className="mt-4 grid gap-2 text-sm text-slate-700">
+            <div className="mt-4 grid gap-2 text-sm text-[var(--ink-700)]">
               <p>
                 <span className="font-medium">Документ: </span>
                 {detail.issue.context.title || "-"}
@@ -344,9 +351,9 @@ export function LibrarianQueuePage() {
               </p>
             </div>
 
-            <div className="mt-4 space-y-3 rounded-[24px] border border-slate-200 bg-white/75 p-4">
+            <div className="mt-4 space-y-3 rounded-[24px] border border-[rgba(18,59,114,0.15)] bg-white/85 p-4">
               <label className="space-y-1 text-sm">
-                <span className="text-slate-600">
+                <span className="text-[var(--ink-500)]">
                   Комментарий (необязательно)
                 </span>
                 <textarea
@@ -358,7 +365,7 @@ export function LibrarianQueuePage() {
               </label>
 
               <label className="space-y-1 text-sm">
-                <span className="text-slate-600">
+                <span className="text-[var(--ink-500)]">
                   Значение для ручного исправления
                 </span>
                 <input
@@ -376,6 +383,7 @@ export function LibrarianQueuePage() {
                   disabled={actionMutation.isPending}
                   onClick={() => {
                     setStatusMessage(null);
+                    setErrorMessage(null);
                     actionMutation.mutate(
                       {
                         flagId: selectedFlagId,
@@ -393,6 +401,12 @@ export function LibrarianQueuePage() {
                           setSelectedFlagId("");
                           setNoteDraft("");
                         },
+                        onError: (error: any) => {
+                          setErrorMessage(
+                            error?.response?.data?.message ||
+                              "Не удалось принять предложение.",
+                          );
+                        },
                       },
                     );
                   }}
@@ -406,6 +420,7 @@ export function LibrarianQueuePage() {
                   disabled={actionMutation.isPending}
                   onClick={() => {
                     setStatusMessage(null);
+                    setErrorMessage(null);
                     actionMutation.mutate(
                       {
                         flagId: selectedFlagId,
@@ -423,6 +438,12 @@ export function LibrarianQueuePage() {
                           setSelectedFlagId("");
                           setNoteDraft("");
                         },
+                        onError: (error: any) => {
+                          setErrorMessage(
+                            error?.response?.data?.message ||
+                              "Не удалось отклонить предложение.",
+                          );
+                        },
                       },
                     );
                   }}
@@ -436,6 +457,7 @@ export function LibrarianQueuePage() {
                   disabled={actionMutation.isPending || !manualValue.trim()}
                   onClick={() => {
                     setStatusMessage(null);
+                    setErrorMessage(null);
                     actionMutation.mutate(
                       {
                         flagId: selectedFlagId,
@@ -458,6 +480,12 @@ export function LibrarianQueuePage() {
                           setManualValue("");
                           setNoteDraft("");
                         },
+                        onError: (error: any) => {
+                          setErrorMessage(
+                            error?.response?.data?.message ||
+                              "Не удалось применить ручное исправление.",
+                          );
+                        },
                       },
                     );
                   }}
@@ -472,17 +500,21 @@ export function LibrarianQueuePage() {
                 </div>
               ) : null}
 
+              {errorMessage ? (
+                <div className="app-state-error">{errorMessage}</div>
+              ) : null}
+
               {statusMessage ? (
                 <div className="app-state-success">{statusMessage}</div>
               ) : null}
             </div>
 
-            <p className="mt-4 text-sm text-slate-700">
+            <p className="mt-4 text-sm text-[var(--ink-700)]">
               Связанные замечания: {(detail.relatedIssues || []).length}
             </p>
           </article>
         ) : (
-          <aside className="app-panel flex min-h-[22rem] items-center justify-center p-8 text-center text-sm leading-7 text-slate-700">
+          <aside className="app-panel flex min-h-[22rem] items-center justify-center p-8 text-center text-sm leading-7 text-[var(--ink-700)]">
             Выберите запись из очереди, чтобы открыть рабочую область
             исправления. Справа отобразятся исходное значение, нормализованное
             значение, предложенное исправление и доступные действия.
@@ -499,7 +531,7 @@ export function LibrarianQueuePage() {
           >
             {t("catalogPrevious")}
           </button>
-          <span className="flex items-center px-3 text-sm text-slate-600">
+          <span className="flex items-center px-3 text-sm text-[var(--ink-500)]">
             {page} {t("catalogOf")} {totalPages}
           </span>
           <button

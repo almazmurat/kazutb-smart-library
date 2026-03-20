@@ -22,10 +22,10 @@ export function PageIntro({
       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-4xl">
           {eyebrow ? <p className="app-kicker">{eyebrow}</p> : null}
-          <h1 className="app-display-title mt-2 max-w-4xl text-3xl font-semibold text-slate-950 md:text-4xl">
+          <h1 className="app-display-title mt-2 max-w-4xl text-3xl font-semibold text-[var(--ink-900)] md:text-4xl">
             {title}
           </h1>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600 md:text-base">
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--ink-500)] md:text-base">
             {description}
           </p>
           {badges?.length ? (
@@ -39,13 +39,13 @@ export function PageIntro({
           ) : null}
         </div>
         {actions ? (
-          <div className="shrink-0 rounded-[24px] border border-white/60 bg-white/86 p-2.5 shadow-[0_16px_34px_rgba(15,23,42,0.08)]">
+          <div className="shrink-0 rounded-[20px] border border-[rgba(18,59,114,0.2)] bg-[rgba(255,255,255,0.96)] p-2.5">
             {actions}
           </div>
         ) : null}
       </div>
       {children ? (
-        <div className="mt-6 border-t border-slate-200 pt-6 md:mt-7 md:pt-7">
+        <div className="mt-6 border-t border-[rgba(18,59,114,0.12)] pt-6 md:mt-7 md:pt-7">
           {children}
         </div>
       ) : null}

@@ -20,7 +20,7 @@ interface PublicBookCardProps {
 
 export function PublicBookCard({ book, labels }: PublicBookCardProps) {
   return (
-    <article className="app-panel group flex h-full flex-col overflow-hidden p-4 transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_22px_42px_rgba(15,23,42,0.1)] md:p-5">
+    <article className="app-panel group flex h-full flex-col overflow-hidden p-4 transition duration-200 hover:border-[rgba(18,59,114,0.24)] md:p-5">
       <BookCoverMock
         title={book.title.display || book.title.raw || "Без названия"}
         subtitle={book.title.subtitle}
@@ -45,52 +45,52 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
           ) : null}
         </div>
 
-        <h3 className="mt-4 text-lg font-semibold leading-tight text-slate-950 md:text-xl">
+        <h3 className="mt-4 text-lg font-semibold leading-tight text-[var(--ink-900)] md:text-xl">
           {book.title.display || book.title.raw || "Без названия"}
         </h3>
         {book.title.subtitle ? (
-          <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-[var(--ink-500)]">
             {book.title.subtitle}
           </p>
         ) : null}
 
-        <p className="mt-3 line-clamp-2 text-sm font-medium text-slate-700">
+        <p className="mt-3 line-clamp-2 text-sm font-medium text-[var(--ink-700)]">
           {book.primaryAuthor || "-"}
         </p>
 
-        <div className="mt-4 grid grid-cols-2 gap-2.5 text-xs text-slate-600">
-          <div className="rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">
-            <span className="block font-medium text-slate-500">
+        <div className="mt-4 grid grid-cols-2 gap-2.5 text-xs text-[var(--ink-500)]">
+          <div className="rounded-2xl border border-[rgba(18,59,114,0.15)] bg-[var(--surface-muted)] px-3 py-2.5">
+            <span className="block font-medium text-[var(--ink-500)]">
               {labels.year}
             </span>
-            <span className="mt-1 block text-sm font-semibold text-slate-900">
+            <span className="mt-1 block text-sm font-semibold text-[var(--ink-900)]">
               {book.publicationYear || "-"}
             </span>
           </div>
-          <div className="rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">
-            <span className="block font-medium text-slate-500">
+          <div className="rounded-2xl border border-[rgba(18,59,114,0.15)] bg-[var(--surface-muted)] px-3 py-2.5">
+            <span className="block font-medium text-[var(--ink-500)]">
               {labels.language}
             </span>
-            <span className="mt-1 block text-sm font-semibold text-slate-900">
+            <span className="mt-1 block text-sm font-semibold text-[var(--ink-900)]">
               {(book.language.code || book.language.raw || "-").toUpperCase()}
             </span>
           </div>
-          <div className="col-span-2 rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">
-            <span className="block font-medium text-slate-500">
+          <div className="col-span-2 rounded-2xl border border-[rgba(18,59,114,0.15)] bg-[var(--surface-muted)] px-3 py-2.5">
+            <span className="block font-medium text-[var(--ink-500)]">
               {labels.campus}
             </span>
-            <span className="mt-1 block text-sm font-semibold text-slate-900">
+            <span className="mt-1 block text-sm font-semibold text-[var(--ink-900)]">
               {book.locations.campusNames
                 .slice(0, 2)
                 .map((name) => toReadableLocation(name))
                 .join(" • ") || "-"}
             </span>
           </div>
-          <div className="col-span-2 rounded-2xl border border-slate-200/70 bg-slate-50 px-3 py-2.5">
-            <span className="block font-medium text-slate-500">
+          <div className="col-span-2 rounded-2xl border border-[rgba(18,59,114,0.15)] bg-[var(--surface-muted)] px-3 py-2.5">
+            <span className="block font-medium text-[var(--ink-500)]">
               {labels.isbn}
             </span>
-            <span className="mt-1 block text-sm font-semibold text-slate-900">
+            <span className="mt-1 block text-sm font-semibold text-[var(--ink-900)]">
               {book.isbn.normalized || book.isbn.raw || "-"}
             </span>
           </div>

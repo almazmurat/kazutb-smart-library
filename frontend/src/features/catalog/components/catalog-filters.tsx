@@ -64,7 +64,7 @@ export function CatalogFilters({
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="app-kicker">Поиск и фильтры</p>
-          <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
+          <h2 className="mt-2 text-xl font-semibold tracking-tight text-[var(--ink-900)] md:text-2xl">
             {labels.query}
           </h2>
         </div>
@@ -92,7 +92,7 @@ export function CatalogFilters({
       </div>
 
       <div className="app-filter-grid xl:grid-cols-4">
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.query}</span>
           <input
             type="text"
@@ -102,7 +102,7 @@ export function CatalogFilters({
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.title}</span>
           <input
             type="text"
@@ -112,7 +112,7 @@ export function CatalogFilters({
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.author}</span>
           <input
             type="text"
@@ -122,7 +122,7 @@ export function CatalogFilters({
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.isbn}</span>
           <input
             type="text"
@@ -132,7 +132,7 @@ export function CatalogFilters({
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.campus}</span>
           <select
             value={value.campusCode || ""}
@@ -148,7 +148,7 @@ export function CatalogFilters({
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.servicePoint}</span>
           <select
             value={value.servicePointCode || ""}
@@ -164,7 +164,7 @@ export function CatalogFilters({
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.language}</span>
           <select
             value={value.language || ""}
@@ -180,7 +180,7 @@ export function CatalogFilters({
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-slate-700">
+        <label className="flex flex-col gap-1 text-sm text-[var(--ink-700)]">
           <span className="font-medium">{labels.availability}</span>
           <select
             value={value.availability || ""}

@@ -108,23 +108,23 @@ export function CatalogPage() {
           <div className="grid min-w-[220px] gap-2 px-3 py-2 text-left">
             <div>
               <span className="app-kicker">Результаты</span>
-              <div className="text-3xl font-semibold tracking-tight text-slate-950">
+              <div className="text-3xl font-semibold tracking-tight text-[var(--ink-900)]">
                 {booksMeta?.total ?? 0}
               </div>
-              <span className="text-sm text-slate-500">
+              <span className="text-sm text-[var(--ink-500)]">
                 {t("catalogResults")}
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-                <div className="text-xs text-slate-500">Доступно</div>
-                <div className="mt-1 font-semibold text-slate-950">
+              <div className="rounded-lg border border-[rgba(18,59,114,0.15)] bg-[var(--surface-muted)] px-3 py-2">
+                <div className="text-xs text-[var(--ink-500)]">Доступно</div>
+                <div className="mt-1 font-semibold text-[var(--ink-900)]">
                   {availableCopies}
                 </div>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-                <div className="text-xs text-slate-500">Всего</div>
-                <div className="mt-1 font-semibold text-slate-950">
+              <div className="rounded-lg border border-[rgba(18,59,114,0.15)] bg-[var(--surface-muted)] px-3 py-2">
+                <div className="text-xs text-[var(--ink-500)]">Всего</div>
+                <div className="mt-1 font-semibold text-[var(--ink-900)]">
                   {totalCopies}
                 </div>
               </div>
@@ -157,13 +157,13 @@ export function CatalogPage() {
       />
 
       {booksQuery.isLoading ? (
-        <div className="app-empty-state text-sm text-slate-600">
+        <div className="app-empty-state text-sm text-[var(--ink-500)]">
           {t("catalogLoading")}
         </div>
       ) : null}
 
       {booksQuery.isError ? (
-        <div className="app-empty-state text-sm text-slate-600">
+        <div className="app-empty-state text-sm text-[var(--ink-500)]">
           Временная ошибка загрузки каталога. Попробуйте обновить страницу.
         </div>
       ) : null}
@@ -171,7 +171,7 @@ export function CatalogPage() {
       {!booksQuery.isLoading && !booksQuery.isError ? (
         <>
           {booksData.length === 0 ? (
-            <div className="app-empty-state text-sm text-slate-600">
+            <div className="app-empty-state text-sm text-[var(--ink-500)]">
               {t("catalogEmpty")}
             </div>
           ) : (
@@ -196,7 +196,7 @@ export function CatalogPage() {
           )}
 
           <div className="app-toolbar">
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-[var(--ink-500)]">
               {t("catalogResults")}: {booksMeta?.total ?? 0}
             </p>
             <div className="flex items-center gap-2">
@@ -208,7 +208,7 @@ export function CatalogPage() {
               >
                 {t("catalogPrevPage")}
               </button>
-              <span className="text-sm text-slate-700">
+              <span className="text-sm text-[var(--ink-700)]">
                 {currentPage} / {totalPages}
               </span>
               <button

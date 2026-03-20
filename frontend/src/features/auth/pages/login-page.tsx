@@ -6,6 +6,7 @@ import { PageIntro } from "@shared/ui/page-intro";
 import { useDemoUsers, useLogin } from "../hooks/use-auth";
 import { authStore, useAuthState } from "@shared/auth/auth-store";
 import { getLandingRouteByRole } from "@shared/auth/role-routing";
+import { KazutbBrand } from "@shared/ui/kazutb-brand";
 
 export function LoginPage() {
   const { t } = useI18n();
@@ -86,7 +87,7 @@ export function LoginPage() {
       <PageIntro
         eyebrow={t("shellSecureLabel")}
         title="Вход в библиотечную систему"
-        description="Выберите учетную запись по роли или выполните вход вручную. После авторизации откроется соответствующий рабочий раздел."
+        description="Официальная цифровая библиотечная платформа KazUTB. Выберите учетную запись по роли или выполните вход вручную."
         badges={[
           t("shellSecureLabel"),
           t("roleGuest"),
@@ -98,10 +99,13 @@ export function LoginPage() {
 
       <div className="grid gap-5 xl:grid-cols-[1fr_0.9fr]">
         <article className="app-panel-strong p-6 md:p-7">
+          <div className="mb-5 border-b border-[rgba(18,59,114,0.12)] pb-4">
+            <KazutbBrand subtitle="Институциональный вход в библиотечную систему" />
+          </div>
           <h2 className="app-section-heading">Вход</h2>
           <div className="mt-5 space-y-3">
             <label className="space-y-1 text-sm">
-              <span className="text-slate-600">Логин</span>
+              <span className="text-[var(--ink-700)]">Логин</span>
               <input
                 className="app-form-control"
                 value={username}
@@ -110,7 +114,7 @@ export function LoginPage() {
               />
             </label>
             <label className="space-y-1 text-sm">
-              <span className="text-slate-600">Пароль</span>
+              <span className="text-[var(--ink-700)]">Пароль</span>
               <input
                 type="password"
                 className="app-form-control"
@@ -181,17 +185,17 @@ export function LoginPage() {
                       Выбрать
                     </button>
                   </div>
-                  <p className="mt-2 text-sm text-slate-700">
+                  <p className="mt-2 text-sm text-[var(--ink-700)]">
                     {user.username} / {user.password}
                   </p>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-[var(--ink-500)]">
                     {roleMessages[user.role]?.title}
                   </p>
                 </div>
               );
             })}
           </div>
-          <div className="mt-5 app-subpanel p-4 text-sm text-slate-700">
+          <div className="mt-5 app-subpanel p-4 text-sm text-[var(--ink-700)]">
             Для публичного поиска можно продолжить без входа.
             <div className="mt-3">
               <button
