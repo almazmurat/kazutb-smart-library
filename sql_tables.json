@@ -1,0 +1,678 @@
+[
+  {
+    "table": "ACQUCUSTOMERS",
+    "rowCount": 0
+  },
+  {
+    "table": "ACQUGOT",
+    "rowCount": 0
+  },
+  {
+    "table": "ACQUORD",
+    "rowCount": 0
+  },
+  {
+    "table": "ACQUSRC",
+    "rowCount": 19
+  },
+  {
+    "table": "ACQUTENDER",
+    "rowCount": 0
+  },
+  {
+    "table": "AGE",
+    "rowCount": 4
+  },
+  {
+    "table": "BOOKPOINTS",
+    "rowCount": 5
+  },
+  {
+    "table": "BOOKSTATES",
+    "rowCount": 1
+  },
+  {
+    "table": "CYRHAVKINA",
+    "rowCount": 890
+  },
+  {
+    "table": "DBRES",
+    "rowCount": 118107
+  },
+  {
+    "table": "DISCP",
+    "rowCount": 0
+  },
+  {
+    "table": "DISCPX",
+    "rowCount": 0
+  },
+  {
+    "table": "DOC",
+    "rowCount": 8930
+  },
+  {
+    "table": "DOC_EDIT",
+    "rowCount": 7523
+  },
+  {
+    "table": "DOC_EMBEDDINGS",
+    "rowCount": 8971
+  },
+  {
+    "table": "DOCIDXX",
+    "rowCount": 6415740
+  },
+  {
+    "table": "DOCPHASE",
+    "rowCount": 0
+  },
+  {
+    "table": "DOCXSUPPORT",
+    "rowCount": 114013
+  },
+  {
+    "table": "EXTDICTS",
+    "rowCount": 2
+  },
+  {
+    "table": "IDX0010",
+    "rowCount": 8734
+  },
+  {
+    "table": "IDX0010X",
+    "rowCount": 8931
+  },
+  {
+    "table": "IDX0050",
+    "rowCount": 36499
+  },
+  {
+    "table": "IDX0050X",
+    "rowCount": 130112
+  },
+  {
+    "table": "IDX020a",
+    "rowCount": 6934
+  },
+  {
+    "table": "IDX020aX",
+    "rowCount": 8957
+  },
+  {
+    "table": "IDX022a",
+    "rowCount": 2
+  },
+  {
+    "table": "IDX022aX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX040d",
+    "rowCount": 3
+  },
+  {
+    "table": "IDX040dX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX041a",
+    "rowCount": 8
+  },
+  {
+    "table": "IDX041aX",
+    "rowCount": 8931
+  },
+  {
+    "table": "IDX080a",
+    "rowCount": 170
+  },
+  {
+    "table": "IDX080aX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX090a",
+    "rowCount": 553
+  },
+  {
+    "table": "IDX090aX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX097b",
+    "rowCount": 13
+  },
+  {
+    "table": "IDX097bX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX100a",
+    "rowCount": 6368
+  },
+  {
+    "table": "IDX100a1",
+    "rowCount": 5117
+  },
+  {
+    "table": "IDX100a1X",
+    "rowCount": 8932
+  },
+  {
+    "table": "IDX100aX",
+    "rowCount": 10561
+  },
+  {
+    "table": "IDX245a",
+    "rowCount": 7839
+  },
+  {
+    "table": "IDX245aX",
+    "rowCount": 8931
+  },
+  {
+    "table": "IDX245b",
+    "rowCount": 264
+  },
+  {
+    "table": "IDX245bX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX245z",
+    "rowCount": 3
+  },
+  {
+    "table": "IDX245zX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX260a",
+    "rowCount": 120
+  },
+  {
+    "table": "IDX260aX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX260b",
+    "rowCount": 817
+  },
+  {
+    "table": "IDX260bX",
+    "rowCount": 8942
+  },
+  {
+    "table": "IDX260c",
+    "rowCount": 67
+  },
+  {
+    "table": "IDX260cX",
+    "rowCount": 8932
+  },
+  {
+    "table": "IDX440a",
+    "rowCount": 147
+  },
+  {
+    "table": "IDX440aX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX650a",
+    "rowCount": 104
+  },
+  {
+    "table": "IDX650aX",
+    "rowCount": 8931
+  },
+  {
+    "table": "IDX653a",
+    "rowCount": 5183
+  },
+  {
+    "table": "IDX653aX",
+    "rowCount": 13094
+  },
+  {
+    "table": "IDX773w",
+    "rowCount": 1
+  },
+  {
+    "table": "IDX773wX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX901t",
+    "rowCount": 4
+  },
+  {
+    "table": "IDX901tX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX952a",
+    "rowCount": 23
+  },
+  {
+    "table": "IDX952aX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX952d",
+    "rowCount": 5
+  },
+  {
+    "table": "IDX952dX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX952e",
+    "rowCount": 16
+  },
+  {
+    "table": "IDX952eX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX952i",
+    "rowCount": 78
+  },
+  {
+    "table": "IDX952iX",
+    "rowCount": 8932
+  },
+  {
+    "table": "IDX952j",
+    "rowCount": 68
+  },
+  {
+    "table": "IDX952jX",
+    "rowCount": 8991
+  },
+  {
+    "table": "IDX990b",
+    "rowCount": 1
+  },
+  {
+    "table": "IDX990bX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX990c",
+    "rowCount": 7
+  },
+  {
+    "table": "IDX990cX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX990w",
+    "rowCount": 15
+  },
+  {
+    "table": "IDX990wX",
+    "rowCount": 8930
+  },
+  {
+    "table": "IDX998a",
+    "rowCount": 5
+  },
+  {
+    "table": "IDX998aX",
+    "rowCount": 8930
+  },
+  {
+    "table": "INV",
+    "rowCount": 49620
+  },
+  {
+    "table": "ko_books",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_dict_protos",
+    "rowCount": 4
+  },
+  {
+    "table": "ko_dicts",
+    "rowCount": 23
+  },
+  {
+    "table": "ko_disc_protos",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_discs",
+    "rowCount": 1
+  },
+  {
+    "table": "ko_ext_protos",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_model_nodes",
+    "rowCount": 134
+  },
+  {
+    "table": "ko_plans",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_pnp",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_settings",
+    "rowCount": 1
+  },
+  {
+    "table": "ko_struct_nodes",
+    "rowCount": 1
+  },
+  {
+    "table": "ko_t1_vars",
+    "rowCount": 1
+  },
+  {
+    "table": "ko_t2_vars",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_t3_vars",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_t4_vars",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_users",
+    "rowCount": 1
+  },
+  {
+    "table": "ko_users_discs",
+    "rowCount": 0
+  },
+  {
+    "table": "ko_users_t2_vars",
+    "rowCount": 0
+  },
+  {
+    "table": "KSU_0",
+    "rowCount": 33
+  },
+  {
+    "table": "KSU_05",
+    "rowCount": 0
+  },
+  {
+    "table": "ksu1",
+    "rowCount": 20
+  },
+  {
+    "table": "ksu2",
+    "rowCount": 0
+  },
+  {
+    "table": "ksu3",
+    "rowCount": 0
+  },
+  {
+    "table": "LANG",
+    "rowCount": 0
+  },
+  {
+    "table": "LATHAVKINA",
+    "rowCount": 90
+  },
+  {
+    "table": "LIBS",
+    "rowCount": 0
+  },
+  {
+    "table": "LIBS_BOOKPOINTS",
+    "rowCount": 0
+  },
+  {
+    "table": "LIBS_EVENTS",
+    "rowCount": 0
+  },
+  {
+    "table": "LIBS_EXHIBITS",
+    "rowCount": 0
+  },
+  {
+    "table": "LIBS_EXHIBITS_DOCS",
+    "rowCount": 0
+  },
+  {
+    "table": "LIBS_PERSON",
+    "rowCount": 0
+  },
+  {
+    "table": "LIBS_SIGLAS",
+    "rowCount": 0
+  },
+  {
+    "table": "MARCSTAT",
+    "rowCount": 389672
+  },
+  {
+    "table": "METAIDX",
+    "rowCount": 36
+  },
+  {
+    "table": "MOBJECT",
+    "rowCount": 0
+  },
+  {
+    "table": "MOIDX",
+    "rowCount": 20324
+  },
+  {
+    "table": "MOIDXX",
+    "rowCount": 0
+  },
+  {
+    "table": "OLDDOC",
+    "rowCount": 9410
+  },
+  {
+    "table": "OTRZN",
+    "rowCount": 0
+  },
+  {
+    "table": "PER0_PERIOD",
+    "rowCount": 1
+  },
+  {
+    "table": "PER1_ADDRESS",
+    "rowCount": 0
+  },
+  {
+    "table": "PER1_CATALOG",
+    "rowCount": 0
+  },
+  {
+    "table": "PER1_CUSTOMER",
+    "rowCount": 0
+  },
+  {
+    "table": "PER1_ISSUE",
+    "rowCount": 0
+  },
+  {
+    "table": "PER1_ISSUE2",
+    "rowCount": 0
+  },
+  {
+    "table": "PER1_ORDER",
+    "rowCount": 0
+  },
+  {
+    "table": "PER1_STRUCT",
+    "rowCount": 0
+  },
+  {
+    "table": "PER1_SUPPLIER",
+    "rowCount": 0
+  },
+  {
+    "table": "POINTSIGLA",
+    "rowCount": 4
+  },
+  {
+    "table": "PREORDERS",
+    "rowCount": 0
+  },
+  {
+    "table": "PUBLISHER",
+    "rowCount": 0
+  },
+  {
+    "table": "r8",
+    "rowCount": 403
+  },
+  {
+    "table": "RDRBP",
+    "rowCount": 6367
+  },
+  {
+    "table": "RDRPHOTO",
+    "rowCount": 0
+  },
+  {
+    "table": "READERS",
+    "rowCount": 2319
+  },
+  {
+    "table": "REFS",
+    "rowCount": 10
+  },
+  {
+    "table": "REPLACEDOC",
+    "rowCount": 0
+  },
+  {
+    "table": "SERVICE_TYPE",
+    "rowCount": 8
+  },
+  {
+    "table": "SERVICES",
+    "rowCount": 0
+  },
+  {
+    "table": "SIGLAS",
+    "rowCount": 4
+  },
+  {
+    "table": "SPPER",
+    "rowCount": 0
+  },
+  {
+    "table": "SPR_THEMES",
+    "rowCount": 6
+  },
+  {
+    "table": "STAFF",
+    "rowCount": 9
+  },
+  {
+    "table": "STATES",
+    "rowCount": 14
+  },
+  {
+    "table": "STRUCT",
+    "rowCount": 0
+  },
+  {
+    "table": "sysdiagrams",
+    "rowCount": 0
+  },
+  {
+    "table": "T008A",
+    "rowCount": 70
+  },
+  {
+    "table": "T008H",
+    "rowCount": 612
+  },
+  {
+    "table": "T008X",
+    "rowCount": 118
+  },
+  {
+    "table": "T6NK_1",
+    "rowCount": 0
+  },
+  {
+    "table": "T6NK_2",
+    "rowCount": 0
+  },
+  {
+    "table": "T6NK_3",
+    "rowCount": 0
+  },
+  {
+    "table": "T6NK_4",
+    "rowCount": 0
+  },
+  {
+    "table": "T6NK_5",
+    "rowCount": 0
+  },
+  {
+    "table": "T6NK_6",
+    "rowCount": 0
+  },
+  {
+    "table": "T6NK_7",
+    "rowCount": 0
+  },
+  {
+    "table": "TAG",
+    "rowCount": 1121
+  },
+  {
+    "table": "TIMETABLE",
+    "rowCount": 0
+  },
+  {
+    "table": "TRANSFER1",
+    "rowCount": 0
+  },
+  {
+    "table": "TRANSFER2",
+    "rowCount": 0
+  },
+  {
+    "table": "TY_POST",
+    "rowCount": 10
+  },
+  {
+    "table": "TYPE_LIT",
+    "rowCount": 35
+  },
+  {
+    "table": "TYPEIZD",
+    "rowCount": 0
+  },
+  {
+    "table": "TYPEWWW",
+    "rowCount": 0
+  },
+  {
+    "table": "VFILE",
+    "rowCount": 12
+  },
+  {
+    "table": "WEBHISTORY",
+    "rowCount": 250
+  },
+  {
+    "table": "WWWACTIV",
+    "rowCount": 0
+  }
+]

@@ -1,0 +1,14 @@
+bookpoints
+bookstates
+doc
+doc_view
+inv
+libs
+libs_bookpoints
+libs_siglas
+pointsigla
+preorders
+publisher
+rdrbp
+readers
+siglas

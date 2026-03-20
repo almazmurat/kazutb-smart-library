@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -14,13 +15,18 @@ import { CurrentUser } from "@common/decorators/current-user.decorator";
 import { Roles } from "@common/decorators/roles.decorator";
 import { RequestUser } from "@common/types/request-user.interface";
 import { UserRole } from "@common/types/user-role.enum";
+import { ReadLayerService } from "@modules/read-layer/read-layer.service";
+import { AppReviewQueueQueryDto } from "./dto/app-review-queue.query.dto";
 import { MigrationService } from "./migration.service";
 
 @ApiTags("migration")
 @ApiBearerAuth()
 @Controller({ path: "migration", version: "1" })
 export class MigrationController {
-  constructor(private readonly service: MigrationService) {}
+  constructor(
+    private readonly service: MigrationService,
+    private readonly readLayerService: ReadLayerService,
+  ) {}
 
   @Roles(UserRole.ADMIN)
   @Get()
@@ -69,6 +75,26 @@ export class MigrationController {
         sourceTable,
         limit: limit ? Number.parseInt(limit, 10) : undefined,
       }),
+    };
+  }
+
+  @Roles(UserRole.LIBRARIAN, UserRole.ANALYST, UserRole.ADMIN)
+  @Get("app-review/issues")
+  getAppReviewQueue(@Query() query: AppReviewQueueQueryDto) {
+    return this.readLayerService.getReviewQueue({
+      ...query,
+      page: query.page ?? 1,
+      limit: query.limit ?? 20,
+    });
+  }
+
+  @Roles(UserRole.LIBRARIAN, UserRole.ANALYST, UserRole.ADMIN)
+  @Get("app-review/issues/:flagId")
+  async getAppReviewIssueDetail(
+    @Param("flagId", new ParseUUIDPipe()) flagId: string,
+  ) {
+    return {
+      data: await this.readLayerService.getReviewIssueDetail(flagId),
     };
   }
 

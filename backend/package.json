@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "start": "node dist/main",
+    "start": "node dist/src/main.js",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -24,7 +24,9 @@
     "reconstruct:legacy-raw-mirror": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-mirror.js",
     "reconstruct:legacy-raw-phase2a": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-phase2a.js",
     "reconstruct:legacy-raw-complete": "node scripts/legacy-reconstruction/reconstruct-legacy-raw-complete.js",
-    "build:app-ready-schema": "node scripts/legacy-reconstruction/build-app-ready-schema.js"
+    "build:app-ready-schema": "node scripts/legacy-reconstruction/build-app-ready-schema.js",
+    "build:app-location-model": "node scripts/legacy-reconstruction/build-app-location-model.js",
+    "build:app-read-layer": "node scripts/legacy-reconstruction/build-app-read-layer.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
