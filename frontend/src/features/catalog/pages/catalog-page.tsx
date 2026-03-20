@@ -111,16 +111,22 @@ export function CatalogPage() {
               <div className="text-3xl font-semibold tracking-tight text-slate-950">
                 {booksMeta?.total ?? 0}
               </div>
-              <span className="text-sm text-slate-500">{t("catalogResults")}</span>
+              <span className="text-sm text-slate-500">
+                {t("catalogResults")}
+              </span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
                 <div className="text-xs text-slate-500">Доступно</div>
-                <div className="mt-1 font-semibold text-slate-950">{availableCopies}</div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {availableCopies}
+                </div>
               </div>
               <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
                 <div className="text-xs text-slate-500">Всего</div>
-                <div className="mt-1 font-semibold text-slate-950">{totalCopies}</div>
+                <div className="mt-1 font-semibold text-slate-950">
+                  {totalCopies}
+                </div>
               </div>
             </div>
           </div>

@@ -88,13 +88,20 @@ export function BookDetailsPage() {
 
           <dl className="mt-4 grid grid-cols-2 gap-2 text-sm text-slate-700">
             <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-              <dt className="text-xs text-slate-500">{t("catalogCardAvailable")}</dt>
+              <dt className="text-xs text-slate-500">
+                {t("catalogCardAvailable")}
+              </dt>
               <dd className="mt-1 text-xl font-semibold text-slate-900">
-                {availability.reduce((sum, row) => sum + row.copies.available, 0)}
+                {availability.reduce(
+                  (sum, row) => sum + row.copies.available,
+                  0,
+                )}
               </dd>
             </div>
             <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-              <dt className="text-xs text-slate-500">{t("catalogCardTotalCopies")}</dt>
+              <dt className="text-xs text-slate-500">
+                {t("catalogCardTotalCopies")}
+              </dt>
               <dd className="mt-1 text-xl font-semibold text-slate-900">
                 {availability.reduce((sum, row) => sum + row.copies.total, 0)}
               </dd>

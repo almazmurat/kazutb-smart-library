@@ -57,9 +57,17 @@ export function AnalyticsPage() {
 
   if (dashboard.isLoading || popular.isLoading || activity.isLoading) {
     return (
-      <section className="app-empty-state">
-        <p className="text-slate-500">{t("dashboardLoading")}</p>
-      </section>
+      <div className="app-page">
+        <PageIntro
+          eyebrow={t("shellOperationsSection")}
+          title={t("dashboardTitle")}
+          description="Загружка аналитических данных..."
+          badges={[t("dashboardScopeGlobal"), t("shellSecureLabel")]}
+        />
+        <section className="app-empty-state">
+          <p className="text-slate-500">{t("dashboardLoading")}</p>
+        </section>
+      </div>
     );
   }
 
@@ -110,7 +118,10 @@ export function AnalyticsPage() {
           value={summary.overdueLoans}
           alert={summary.overdueLoans > 0}
         />
-        <SummaryCard label={t("dashboardTotalUsers")} value={summary.totalUsers} />
+        <SummaryCard
+          label={t("dashboardTotalUsers")}
+          value={summary.totalUsers}
+        />
       </div>
 
       <section className="app-panel-strong p-6">
@@ -141,8 +152,12 @@ export function AnalyticsPage() {
                   {t("dashboardActivityReservations")}
                 </td>
                 <td className="px-3 py-3">{activityData.reservations.today}</td>
-                <td className="px-3 py-3">{activityData.reservations.last7days}</td>
-                <td className="px-3 py-3">{activityData.reservations.last30days}</td>
+                <td className="px-3 py-3">
+                  {activityData.reservations.last7days}
+                </td>
+                <td className="px-3 py-3">
+                  {activityData.reservations.last30days}
+                </td>
               </tr>
               <tr className="border-b border-slate-100">
                 <td className="px-3 py-3 font-medium text-slate-700">

@@ -141,7 +141,9 @@ export function AppShell() {
         <div className="app-container py-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Link to="/overview" className="min-w-0">
-              <p className="text-lg font-semibold text-slate-900">{t("appTitle")}</p>
+              <p className="text-lg font-semibold text-slate-900">
+                {t("appTitle")}
+              </p>
               <p className="text-sm text-slate-500">{t("shellSubtitle")}</p>
             </Link>
 
@@ -153,11 +155,17 @@ export function AppShell() {
                 <span className="app-chip-muted">{auth.user.fullName}</span>
               ) : null}
               <LanguageSwitcher />
-              <NavLink to={primaryWorkspaceHref} className="app-button-secondary px-3 py-2">
+              <NavLink
+                to={primaryWorkspaceHref}
+                className="app-button-secondary px-3 py-2"
+              >
                 {auth.isAuthenticated ? "Раздел" : "Вход"}
               </NavLink>
               {!auth.isAuthenticated ? (
-                <NavLink to="/search" className="app-button-secondary px-3 py-2">
+                <NavLink
+                  to="/search"
+                  className="app-button-secondary px-3 py-2"
+                >
                   Поиск
                 </NavLink>
               ) : (

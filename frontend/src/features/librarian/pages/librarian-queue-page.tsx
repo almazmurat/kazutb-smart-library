@@ -77,7 +77,32 @@ export function LibrarianQueuePage() {
   }
 
   if (queueQuery.isError) {
-    return <div className="app-state-error">{t("librarianQueueError")}</div>;
+    return (
+      <div className="space-y-4">
+        <PageIntro
+          eyebrow={t("shellOperationsSection")}
+          title="Очередь проверки"
+          description="Сервис временно недоступен. Попробуйте обновить страницу или вернитесь позже."
+          badges={[t("shellSecureLabel"), "Контроль качества данных"]}
+        />
+        <div className="app-subpanel p-6 text-sm text-slate-700">
+          <p className="font-medium">
+            Не удалось загрузить данные очереди проверки.
+          </p>
+          <p className="mt-2 text-slate-600">
+            Система будет снова доступна через несколько минут. Вы можете
+            перейти в другие рабочие разделы.
+          </p>
+          <button
+            type="button"
+            className="app-button-primary mt-4"
+            onClick={() => window.location.reload()}
+          >
+            Обновить страницу
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const issues = queueQuery.data?.data || [];
@@ -250,7 +275,8 @@ export function LibrarianQueuePage() {
                       <span className="font-medium text-slate-700">
                         Пункт обслуживания:{" "}
                       </span>
-                      {(issue.context.servicePointCodes || []).join(", ") || "-"}
+                      {(issue.context.servicePointCodes || []).join(", ") ||
+                        "-"}
                     </div>
                   </div>
 

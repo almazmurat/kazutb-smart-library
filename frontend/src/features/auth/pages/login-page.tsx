@@ -159,34 +159,37 @@ export function LoginPage() {
               </div>
             ) : null}
 
-            {orderedUsers.map((user) => (
-              <div key={user.username} className="app-stat-card">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <p className="font-semibold text-slate-900">
-                      {user.fullName}
-                    </p>
-                    <p className="text-xs text-slate-500">{user.role}</p>
+            {orderedUsers.map((user) => {
+              const displayName = user.fullName.replace(/^Demo\s+/, "");
+              return (
+                <div key={user.username} className="app-stat-card">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <p className="font-semibold text-slate-900">
+                        {displayName}
+                      </p>
+                      <p className="text-xs text-slate-500">{user.role}</p>
+                    </div>
+                    <button
+                      type="button"
+                      className="app-button-secondary px-3 py-1.5"
+                      onClick={() => {
+                        setUsername(user.username);
+                        setPassword(user.password);
+                      }}
+                    >
+                      Выбрать
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className="app-button-secondary px-3 py-1.5"
-                    onClick={() => {
-                      setUsername(user.username);
-                      setPassword(user.password);
-                    }}
-                  >
-                    Выбрать
-                  </button>
+                  <p className="mt-2 text-sm text-slate-700">
+                    {user.username} / {user.password}
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {roleMessages[user.role]?.title}
+                  </p>
                 </div>
-                <p className="mt-2 text-sm text-slate-700">
-                  {user.username} / {user.password}
-                </p>
-                <p className="mt-1 text-xs text-slate-500">
-                  {roleMessages[user.role]?.title}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="mt-5 app-subpanel p-4 text-sm text-slate-700">
             Для публичного поиска можно продолжить без входа.
