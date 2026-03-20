@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CatalogSearchItem } from "../api/public-catalog-api";
 import { BookCoverMock } from "@shared/ui/book-cover-mock";
 import { toReadableLocation } from "@shared/catalog/location-labels";
+import { useI18n } from "@shared/i18n/use-i18n";
 
 interface PublicBookCardProps {
   book: CatalogSearchItem;
@@ -19,6 +20,8 @@ interface PublicBookCardProps {
 }
 
 export function PublicBookCard({ book, labels }: PublicBookCardProps) {
+  const { locale } = useI18n();
+
   return (
     <article className="app-panel group flex h-full flex-col overflow-hidden p-4 transition duration-200 hover:border-[rgba(18,59,114,0.24)] md:p-5">
       <BookCoverMock
@@ -30,9 +33,9 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
 
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex flex-wrap items-center gap-2">
-          {book.locations.campusNames.slice(0, 1).map((campusName) => (
-            <span key={campusName} className="app-chip text-[11px]">
-              {toReadableLocation(campusName)}
+          {book.locations.campusCodes.slice(0, 1).map((campusCode) => (
+            <span key={campusCode} className="app-chip text-[11px]">
+              {toReadableLocation(campusCode, locale)}
             </span>
           ))}
           <span className="app-chip-muted text-[11px]">
@@ -80,9 +83,9 @@ export function PublicBookCard({ book, labels }: PublicBookCardProps) {
               {labels.campus}
             </span>
             <span className="mt-1 block text-sm font-semibold text-[var(--ink-900)]">
-              {book.locations.campusNames
+              {book.locations.campusCodes
                 .slice(0, 2)
-                .map((name) => toReadableLocation(name))
+                .map((code) => toReadableLocation(code, locale))
                 .join(" • ") || "-"}
             </span>
           </div>

@@ -9,6 +9,38 @@ import { useI18n } from "@shared/i18n/use-i18n";
 import { useAuthState } from "@shared/auth/auth-store";
 import { PageIntro } from "@shared/ui/page-intro";
 import { toReadableLocation } from "@shared/catalog/location-labels";
+import {
+  getAppReviewEntityTypeLabel,
+  getAppReviewFlagStatusLabel,
+  getAppReviewIssueCodeLabel,
+  getAppReviewSeverityLabel,
+} from "@shared/i18n/domain-labels";
+
+const severityOptions = ["CRITICAL", "HIGH", "MEDIUM", "LOW"] as const;
+
+const entityTypeOptions = [
+  "document",
+  "book_copy",
+  "reader",
+  "service_point",
+  "storage_sigla",
+] as const;
+
+const issueCodeOptions = [
+  "missing_title",
+  "missing_isbn",
+  "invalid_isbn",
+  "invalid_language_code",
+  "missing_author_link",
+  "orphan_copy_document",
+  "missing_inventory_number",
+  "missing_branch_mapping",
+  "location_mapping_conflict",
+  "location_mapping_requires_confirmation",
+  "missing_reader_name",
+  "missing_reader_email",
+  "reader_location_mapping_requires_confirmation",
+] as const;
 
 function extractSuggestionId(
   details: Record<string, unknown>,
@@ -33,7 +65,7 @@ function getManualFieldByEntityType(entityType: string): string {
 }
 
 export function LibrarianQueuePage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const auth = useAuthState();
   const [page, setPage] = useState(1);
   const [severity, setSeverity] = useState<string>("");
@@ -166,29 +198,42 @@ export function LibrarianQueuePage() {
             className="app-form-control"
           >
             <option value="">Все уровни критичности</option>
-            <option value="CRITICAL">CRITICAL</option>
-            <option value="HIGH">HIGH</option>
-            <option value="MEDIUM">MEDIUM</option>
-            <option value="LOW">LOW</option>
+            {severityOptions.map((level) => (
+              <option key={level} value={level}>
+                {getAppReviewSeverityLabel(locale, level)}
+              </option>
+            ))}
           </select>
-          <input
+          <select
             className="app-form-control"
-            placeholder="Код замечания"
             value={issueCode}
             onChange={(event) => {
               setIssueCode(event.target.value);
               setPage(1);
             }}
-          />
-          <input
+          >
+            <option value="">Все коды замечаний</option>
+            {issueCodeOptions.map((code) => (
+              <option key={code} value={code}>
+                {getAppReviewIssueCodeLabel(locale, code)}
+              </option>
+            ))}
+          </select>
+          <select
             className="app-form-control"
-            placeholder="Тип сущности"
             value={entityType}
             onChange={(event) => {
               setEntityType(event.target.value);
               setPage(1);
             }}
-          />
+          >
+            <option value="">Все типы сущностей</option>
+            {entityTypeOptions.map((option) => (
+              <option key={option} value={option}>
+                {getAppReviewEntityTypeLabel(locale, option)}
+              </option>
+            ))}
+          </select>
           <select
             value={campusCode}
             onChange={(event) => {
@@ -255,13 +300,16 @@ export function LibrarianQueuePage() {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="text-left">
                       <div className="text-base font-semibold text-slate-950">
-                        {issue.issueCode}
+                        {getAppReviewIssueCodeLabel(locale, issue.issueCode)}
                       </div>
                       <div className="mt-1 text-xs text-[var(--ink-500)]">
-                        {issue.entityType} • {flaggedDate}
+                        {getAppReviewEntityTypeLabel(locale, issue.entityType)}{" "}
+                        • {flaggedDate}
                       </div>
                     </div>
-                    <span className="app-chip-muted">{issue.severity}</span>
+                    <span className="app-chip-muted">
+                      {getAppReviewSeverityLabel(locale, issue.severity)}
+                    </span>
                   </div>
 
                   <p className="mt-3 text-sm font-medium text-[var(--ink-900)]">
@@ -276,15 +324,16 @@ export function LibrarianQueuePage() {
                         Кампус:{" "}
                       </span>
                       {(issue.context.campusCodes || [])
-                        .map((code) => toReadableLocation(code))
+                        .map((code) => toReadableLocation(code, locale))
                         .join(", ") || "-"}
                     </div>
                     <div>
                       <span className="font-medium text-[var(--ink-700)]">
                         Пункт обслуживания:{" "}
                       </span>
-                      {(issue.context.servicePointCodes || []).join(", ") ||
-                        "-"}
+                      {(issue.context.servicePointCodes || [])
+                        .map((code) => toReadableLocation(code, locale))
+                        .join(", ") || "-"}
                     </div>
                   </div>
 
@@ -304,8 +353,9 @@ export function LibrarianQueuePage() {
               Детали замечания и действия
             </h3>
             <p className="mt-2 text-sm text-[var(--ink-500)]">
-              {detail.issue.issueCode} • {detail.issue.severity} •{" "}
-              {detail.issue.entityType}
+              {getAppReviewIssueCodeLabel(locale, detail.issue.issueCode)} •{" "}
+              {getAppReviewSeverityLabel(locale, detail.issue.severity)} •{" "}
+              {getAppReviewEntityTypeLabel(locale, detail.issue.entityType)}
             </p>
 
             <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -343,12 +393,12 @@ export function LibrarianQueuePage() {
               <p>
                 <span className="font-medium">Кампус: </span>
                 {(detail.issue.context.campusCodes || [])
-                  .map((code) => toReadableLocation(code))
+                  .map((code) => toReadableLocation(code, locale))
                   .join(", ") || "-"}
               </p>
               <p>
                 <span className="font-medium">Статус: </span>
-                {detail.issue.flagStatus}
+                {getAppReviewFlagStatusLabel(locale, detail.issue.flagStatus)}
               </p>
             </div>
 

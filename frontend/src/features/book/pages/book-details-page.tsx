@@ -11,7 +11,7 @@ import { toReadableLocation } from "@shared/catalog/location-labels";
 
 export function BookDetailsPage() {
   const { id = "" } = useParams();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const bookQuery = usePublicBookDetails(id);
   const availabilityQuery = usePublicBookAvailability(id);
@@ -183,12 +183,16 @@ export function BookDetailsPage() {
                   >
                     <p className="text-sm font-semibold text-[var(--ink-900)]">
                       {toReadableLocation(
-                        row.campus?.name || row.campus?.code || "Кампус",
+                        row.campus?.code || row.campus?.name || "Кампус",
+                        locale,
                       )}{" "}
                       •{" "}
-                      {row.servicePoint?.name ||
+                      {toReadableLocation(
                         row.servicePoint?.code ||
-                        "Пункт обслуживания"}
+                          row.servicePoint?.name ||
+                          "Пункт обслуживания",
+                        locale,
+                      )}
                     </p>
                     <p className="mt-2 text-xs text-[var(--ink-500)]">
                       Доступно {row.copies.available} / {row.copies.total} •
