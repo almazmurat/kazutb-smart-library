@@ -1,126 +1,58 @@
-# Digital Smart Library KazUTB
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-A modern university library system replacing the legacy MARC SQL platform.
-Includes a public web catalog, admin panel, REST API, data migration pipeline, analytics dashboard, and role-based access control.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Project Status
+## About Laravel
 
-> Foundation phase — architecture is defined, structure is scaffolded, iterative feature implementation in progress.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## Repository Structure
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-```
-kazutb-smart-library/
-├── backend/          # NestJS REST API (TypeScript, Prisma, PostgreSQL)
-├── frontend/         # React SPA (TypeScript, Vite, Tailwind, shadcn/ui)
-├── migration/        # Data migration pipeline from MARC SQL
-│   ├── raw/          # Unmodified export snapshots from MARC SQL
-│   ├── clean/        # Cleaned and deduplicated data
-│   ├── normalized/   # Normalized data ready for PostgreSQL import
-│   ├── scripts/      # Export, clean, transform, import scripts
-│   ├── logs/         # Migration run logs
-│   └── checksums/    # Integrity verification files
-├── docs/             # Architecture, domain model, roadmap, API docs
-├── scripts/          # Dev utility scripts (seed, reset, check-env)
-└── infrastructure/   # DevOps reference notes for future deployment
-```
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Tech Stack
+## Learning Laravel
 
-| Layer        | Technology                                                      |
-| ------------ | --------------------------------------------------------------- |
-| Frontend     | React 18, TypeScript, Vite, Tailwind, shadcn/ui, TanStack Query |
-| Backend      | Node.js, NestJS, TypeScript, Prisma ORM                         |
-| Database     | PostgreSQL                                                      |
-| Search       | PostgreSQL FTS + trigram similarity                             |
-| Auth         | LDAP / Active Directory (university accounts)                   |
-| API          | REST API (versioned, `/api/v1/`)                                |
-| Architecture | Modular monolith                                                |
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-## Product Requirements Baseline
+In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-- Interface language support must include `kk`, `ru`, and `en`.
-- UI tone and text style must remain formal, academic, and institution-appropriate.
-- Library ownership must be segmented by institution scope and branch responsibility:
-  - Institution scope: `UNIVERSITY`, `COLLEGE`
-  - Branch units: `ECONOMIC_LIBRARY`, `TECHNOLOGICAL_LIBRARY`, `COLLEGE_LIBRARY`
-- Librarians from one branch must not manage records owned by another branch.
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-## Development Workflow Policy
+## Agentic Development
 
-- Direct work on `main` is prohibited.
-- All changes are created through feature branches from `main`.
-- Each logical step must be committed atomically with a short changelog-friendly message.
-- Keep git history readable and rollback-friendly.
-
-## Quick Start
-
-### Prerequisites
-
-- Node.js 20+
-- PostgreSQL 15+
-- Access to university LDAP (or dev mock mode)
-
-### Backend
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
 
 ```bash
-cd backend
-cp .env.example .env          # fill in your values
-npm install
-npx prisma migrate dev
-npm run start:dev
+composer require laravel/boost --dev
+
+php artisan boost:install
 ```
 
-Minimal variables required for backend startup:
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-- `DATABASE_URL`
-- `JWT_SECRET`
+## Contributing
 
-See `backend/.env.example` for the complete development template.
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### Frontend
+## Code of Conduct
 
-```bash
-cd frontend
-cp .env.example .env
-npm install
-npm run dev
-```
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Documentation
+## Security Vulnerabilities
 
-- [Architecture Overview](docs/architecture/overview.md)
-- [Tech Stack Decisions](docs/architecture/tech-stack.md)
-- [Module Map](docs/architecture/module-map.md)
-- [Catalog Core Domain Decisions](docs/architecture/catalog-core-domain.md)
-- [Public Catalog UI Alignment](docs/architecture/public-catalog-ui.md)
-- [Premium Institutional Design System Polish](docs/architecture/design-system-polish.md)
-- [Data Flow & Migration Concept](docs/architecture/data-flow.md)
-- [Multilingual and Segmentation Baseline](docs/architecture/multilingual-and-segmentation.md)
-- [Frontend i18n Guidelines](docs/architecture/frontend-i18n-guidelines.md)
-- [Domain Model](docs/database/domain-model.md)
-- [Roles & Access Control](docs/roles-and-access.md)
-- [Implementation Roadmap](docs/roadmap.md)
-- [MVP Demo Preparation](docs/presentation/mvp-demo-preparation.md)
-- [UI Design System Demo Notes](docs/presentation/ui-design-system-demo-notes.md)
-- [Migration Pipeline](docs/migration/concept.md)
-- [Legacy DB Analysis (Artifact-Based)](docs/migration/legacy-db-analysis.md)
-- [Legacy-to-Target Mapping Draft](docs/migration/legacy-to-target-mapping-draft.md)
-- [Migration Readiness Plan](docs/migration/migration-readiness-plan.md)
-- [Data Quality Taxonomy](docs/migration/data-quality-taxonomy.md)
-- [Librarian Data Quality Workflow](docs/migration/librarian-data-quality-workbench-workflow.md)
-- [Data Quality Workbench Spec](docs/migration/data-quality-workbench-spec.md)
-- [Data Quality Live Read-Only Phase](docs/migration/data-quality-live-readonly-phase.md)
-- [Data Quality Review Persistence Phase](docs/migration/data-quality-review-persistence-phase.md)
-- [Git Workflow Policy](docs/development/git-workflow.md)
-
-## User Roles
-
-`Guest` → `Student / Teacher` → `Librarian` → `Analyst` → `Admin`
-
-Authentication is exclusively via university Active Directory / LDAP.
-Self-registration is not supported.
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
-See [LICENSE](LICENSE).
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
