@@ -37,6 +37,7 @@ return [
 
     'external_auth' => [
         'login_url' => env('EXTERNAL_AUTH_LOGIN_URL', 'http://10.0.1.47/api/login'),
+        'logout_url' => env('EXTERNAL_AUTH_LOGOUT_URL', ''),
     ],
 
 ];

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Авторизация — Library Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -321,8 +322,11 @@
   </main>
 
   <script>
-    const AUTH_TOKEN_KEY = 'library.auth.token';
     const AUTH_USER_KEY = 'library.auth.user';
+
+    function getCsrfToken() {
+      return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    }
 
     function showMessage(text, type) {
       const el = document.getElementById('form-message');
@@ -355,6 +359,7 @@
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
+          'X-CSRF-TOKEN': getCsrfToken(),
         },
         body: JSON.stringify(payload),
       });
@@ -366,14 +371,7 @@
         throw new Error(message);
       }
 
-      const token = data?.token || data?.access_token || '';
-      const user = data?.user || data?.data?.user || null;
-
-      if (!token) {
-        throw new Error('Сервер не вернул токен авторизации');
-      }
-
-      localStorage.setItem(AUTH_TOKEN_KEY, token);
+      const user = data?.user || null;
       if (user) {
         localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
       }

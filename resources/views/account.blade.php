@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Кабинет читателя — Library Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -432,8 +433,12 @@
 
   <script>
     const API_ENDPOINT = '/api/v1/catalog-external?limit=6';
-    const AUTH_TOKEN_KEY = 'library.auth.token';
+    const ME_ENDPOINT = '/api/v1/me';
     const AUTH_USER_KEY = 'library.auth.user';
+
+    function getCsrfToken() {
+      return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    }
 
     function normalizeText(value, fallback = '') {
       if (!value || typeof value !== 'string') return fallback;
@@ -447,18 +452,6 @@
       return div.innerHTML;
     }
 
-    function getAuthToken() {
-      return localStorage.getItem(AUTH_TOKEN_KEY) || '';
-    }
-
-    function ensureAuthorized() {
-      const token = getAuthToken();
-      if (token) return true;
-      const redirectTo = encodeURIComponent(window.location.pathname + window.location.search);
-      window.location.href = `/login?redirect=${redirectTo}`;
-      return false;
-    }
-
     function getAuthUser() {
       const raw = localStorage.getItem(AUTH_USER_KEY);
       if (!raw) return null;
@@ -470,8 +463,7 @@
       }
     }
 
-    function updateProfileFromAuth() {
-      const user = getAuthUser();
+    function updateProfileFromAuth(user) {
       if (!user) return;
 
       const name = normalizeText(user?.name, 'Гость библиотеки');
@@ -485,6 +477,30 @@
       if (avatar) avatar.textContent = name.charAt(0).toUpperCase();
       if (profileName) profileName.textContent = name;
       if (profileSub) profileSub.textContent = `Логин: ${login} · Роль: ${role}`;
+    }
+
+    function redirectToLogin() {
+      const redirectTo = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `/login?redirect=${redirectTo}`;
+    }
+
+    async function getSessionUser() {
+      const response = await fetch(ME_ENDPOINT, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        return null;
+      }
+
+      const payload = await response.json().catch(() => ({}));
+      if (payload?.authenticated !== true || !payload?.user) {
+        return null;
+      }
+
+      return payload.user;
     }
 
     function formatBookData(book) {
@@ -529,13 +545,10 @@
       const grid = document.getElementById('book-grid');
       const issuedCount = document.getElementById('issued-count');
       const historyCount = document.getElementById('history-count');
-      const token = getAuthToken();
-
       try {
         const response = await fetch(API_ENDPOINT, {
           headers: {
             Accept: 'application/json',
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
         });
         if (!response.ok) throw new Error('Ошибка API');
@@ -559,16 +572,40 @@
       }
     }
 
-    document.getElementById('logout-btn')?.addEventListener('click', () => {
-      localStorage.removeItem(AUTH_TOKEN_KEY);
+    document.getElementById('logout-btn')?.addEventListener('click', async () => {
+      try {
+        await fetch('/api/v1/logout', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'X-CSRF-TOKEN': getCsrfToken(),
+          },
+        });
+      } catch (_) {
+        // Best-effort logout: local cleanup still happens below.
+      }
+
       localStorage.removeItem(AUTH_USER_KEY);
       window.location.href = '/';
     });
 
-    if (ensureAuthorized()) {
-      updateProfileFromAuth();
-      loadBooks();
-    }
+    (async () => {
+      const sessionUser = await getSessionUser();
+
+      if (sessionUser) {
+        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(sessionUser));
+        updateProfileFromAuth(sessionUser);
+        loadBooks();
+        return;
+      }
+
+      // Temporary transition fallback: if stale local user exists, clear it and force real session login.
+      if (getAuthUser()) {
+        localStorage.removeItem(AUTH_USER_KEY);
+      }
+
+      redirectToLogin();
+    })();
   </script>
 </body>
 </html>
