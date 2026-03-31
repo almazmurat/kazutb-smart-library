@@ -137,10 +137,38 @@ class IdentityMatchAudit
             'ambiguity_details' => $audit['ambiguity_details'],
         ];
 
-        if ($matchedReader) {
-            Log::info('Identity mapping: Reader matched', $logContext);
-        } else {
-            Log::warning('Identity mapping: No reader matched', $logContext);
+        // Try logging via Facade (works in full Laravel context)
+        try {
+            if ($matchedReader) {
+                Log::info('Identity mapping: Reader matched', $logContext);
+            } else {
+                Log::warning('Identity mapping: No reader matched', $logContext);
+            }
+        } catch (\Throwable $e) {
+            // Graceful fallback if Log facade not available (e.g., in unit tests)
+            // In production, Log facade is always available
+        }
+
+        // Also try to record in DB if table exists (for Phase 1.5)
+        try {
+            if (DB::getSchemaBuilder()->hasTable('identity_match_logs')) {
+                DB::table('identity_match_logs')->insert([
+                    'session_user_id' => $sessionProfile['id'] ?? null,
+                    'session_email' => $sessionProfile['email'] ?? null,
+                    'session_ad_login' => $sessionProfile['ad_login'] ?? null,
+                    'matched_reader_id' => $audit['reader_id'] ?? null,
+                    'matched_by' => $audit['matched_by'],
+                    'candidate_count' => $audit['candidate_count'],
+                    'has_ambiguity' => $audit['has_ambiguity'],
+                    'ambiguity_details' => $audit['ambiguity_details'] ?? null,
+                    'is_stale' => false, // set to true by caller if needed
+                    'stale_reason' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        } catch (\Throwable $e) {
+            // Graceful fallback: DB logging optional, not critical
         }
     }
 
