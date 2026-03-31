@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CatalogController;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('web')->group(function (): void {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/v1/account/summary', [AccountController::class, 'summary']);
     Route::get('/v1/me', [AuthController::class, 'me']);
     Route::post('/v1/logout', [AuthController::class, 'logout']);
 });

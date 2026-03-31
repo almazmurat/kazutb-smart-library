@@ -390,22 +390,22 @@
           <div class="stats">
             <div class="stat">
               <strong id="issued-count">0</strong>
-              <span>Книг на руках</span>
+              <span>Профиль в библиотеке</span>
             </div>
             <div class="stat">
-              <strong id="reserved-count">2</strong>
-              <span>Активные брони</span>
+              <strong id="reserved-count">0</strong>
+              <span>Контактов reader</span>
             </div>
             <div class="stat">
               <strong id="history-count">0</strong>
-              <span>Прочитано за семестр</span>
+              <span>Открытые review задачи</span>
             </div>
           </div>
         </article>
 
         <article class="card alerts">
-          <div class="alert warning">
-            2 книги нужно продлить в течение 5 дней. Продление доступно до 2 раз для каждой позиции.
+          <div id="account-status-alert" class="alert warning">
+            Профиль читателя синхронизируется с реальными библиотечными данными.
           </div>
           <div class="alert success">
             Ваш электронный пропуск активен. Онлайн-доступ к ресурсам библиотеки открыт 24/7.
@@ -432,7 +432,8 @@
   </main>
 
   <script>
-    const API_ENDPOINT = '/api/v1/catalog-external?limit=6';
+    const API_ENDPOINT = '/api/v1/catalog-db?limit=6';
+    const ACCOUNT_SUMMARY_ENDPOINT = '/api/v1/account/summary';
     const ME_ENDPOINT = '/api/v1/me';
     const AUTH_USER_KEY = 'library.auth.user';
 
@@ -541,10 +542,61 @@
       `;
     }
 
+    function updateStats(stats) {
+      const issuedCount = document.getElementById('issued-count');
+      const reservedCount = document.getElementById('reserved-count');
+      const historyCount = document.getElementById('history-count');
+
+      if (issuedCount) issuedCount.textContent = String(Number(stats?.readerProfilesFound || 0));
+      if (reservedCount) reservedCount.textContent = String(Number(stats?.readerContacts || 0));
+      if (historyCount) historyCount.textContent = String(Number(stats?.openReaderReviewTasks || 0));
+    }
+
+    function updateStatusAlert(summary) {
+      const alertEl = document.getElementById('account-status-alert');
+      if (!alertEl) return;
+
+      const linked = summary?.reader?.linked === true;
+      const legacyCode = normalizeText(summary?.reader?.legacyCode, 'не указан');
+      const primaryEmail = normalizeText(summary?.reader?.primaryEmail, 'не указан');
+
+      if (!linked) {
+        alertEl.textContent = 'Профиль читателя пока не связан с библиотечной записью. Обратитесь к библиотекарю для проверки данных.';
+        return;
+      }
+
+      alertEl.textContent = `Профиль читателя связан. Код: ${legacyCode}. Основной email: ${primaryEmail}.`;
+    }
+
+    async function loadAccountSummary() {
+      const response = await fetch(ACCOUNT_SUMMARY_ENDPOINT, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Не удалось загрузить account summary');
+      }
+
+      const payload = await response.json().catch(() => ({}));
+      const data = payload?.data || {};
+
+      updateStats(data?.stats || {});
+      updateStatusAlert(data);
+
+      const sessionUser = data?.user || null;
+      const readerName = normalizeText(data?.reader?.fullName);
+      if (sessionUser && readerName) {
+        updateProfileFromAuth({
+          ...sessionUser,
+          name: readerName,
+        });
+      }
+    }
+
     async function loadBooks() {
       const grid = document.getElementById('book-grid');
-      const issuedCount = document.getElementById('issued-count');
-      const historyCount = document.getElementById('history-count');
       try {
         const response = await fetch(API_ENDPOINT, {
           headers: {
@@ -558,14 +610,10 @@
 
         if (!books.length) {
           grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Книги не найдены</div>';
-          issuedCount.textContent = '0';
-          historyCount.textContent = '0';
           return;
         }
 
         grid.innerHTML = books.map(renderBookCard).join('');
-        issuedCount.textContent = String(Math.min(books.length, 6));
-        historyCount.textContent = String(books.length + 14);
       } catch (error) {
         console.error(error);
         grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Не удалось загрузить данные кабинета</div>';
@@ -595,7 +643,12 @@
       if (sessionUser) {
         localStorage.setItem(AUTH_USER_KEY, JSON.stringify(sessionUser));
         updateProfileFromAuth(sessionUser);
-        loadBooks();
+        await Promise.all([
+          loadAccountSummary().catch((error) => {
+            console.error(error);
+          }),
+          loadBooks(),
+        ]);
         return;
       }
 
