@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
@@ -18,6 +19,10 @@ Route::middleware('web')->group(function (): void {
 });
 
 Route::prefix('v1')->group(function (): void {
+    Route::get('/bridge/summary', [BridgeController::class, 'summary']);
+    Route::get('/bridge/users', [BridgeController::class, 'users']);
+    Route::get('/bridge/copies', [BridgeController::class, 'copies']);
+    Route::get('/bridge/books', [BridgeController::class, 'books']);
     Route::get('/book-db/{isbn}', [BookController::class, 'dbShow']);
     Route::get('/catalog-db', [CatalogController::class, 'dbIndex']);
     Route::get('/library/health-summary', [LibraryController::class, 'healthSummary']);
