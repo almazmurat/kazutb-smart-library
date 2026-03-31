@@ -6,6 +6,13 @@ use Illuminate\Support\Facades\DB;
 
 class AccountSummaryReadService
 {
+    private IdentityMatchAudit $audit;
+
+    public function __construct(IdentityMatchAudit $audit)
+    {
+        $this->audit = $audit;
+    }
+
     /**
      * @param array<string, mixed> $sessionUser
      * @return array<string, mixed>
@@ -14,8 +21,21 @@ class AccountSummaryReadService
     {
         $sessionProfile = $this->normalizeSessionProfile($sessionUser);
         $reader = $this->findReaderBySessionProfile($sessionProfile);
+        $candidates = $this->candidateIdentifiers($sessionProfile);
+
+        // Audit the matching decision
+        $matchAudit = $this->audit->validate($sessionProfile, $reader, $candidates);
 
         $readerLinked = $reader !== null;
+
+        // Check if match is stale (email changed)
+        $staleCheck = ['stale' => false, 'reason' => 'no_reader'];
+        if ($readerLinked && $reader->primary_email !== null) {
+            $staleCheck = $this->audit->checkIfStale(
+                (string) ($sessionProfile['email'] ?? ''),
+                (string) $reader->primary_email
+            );
+        }
 
         return [
             'data' => [
@@ -35,6 +55,14 @@ class AccountSummaryReadService
                     'readerContacts' => $readerLinked ? (int) ($reader->contacts_total ?? 0) : 0,
                     'openReaderReviewTasks' => $readerLinked ? (int) ($reader->open_review_tasks ?? 0) : 0,
                 ],
+            ],
+            'matching' => [
+                'status' => $matchAudit['status'],
+                'matched_by' => $matchAudit['matched_by'],
+                'has_ambiguity' => $matchAudit['has_ambiguity'],
+                'ambiguity_details' => $matchAudit['ambiguity_details'],
+                'is_stale' => $staleCheck['stale'],
+                'stale_reason' => $staleCheck['reason'],
             ],
             'source' => 'session, app.readers, app.reader_contacts, app.review_tasks',
         ];
