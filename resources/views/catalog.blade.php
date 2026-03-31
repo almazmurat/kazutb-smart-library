@@ -662,7 +662,7 @@
     function renderBookCard(book) {
       const data = formatBookData(book);
       const isAvailable = data.available > 0;
-      
+
       return `
         <article class="book-card" onclick="goToBook('${escapeHtml(data.isbn)}')">
           <div class="book-preview">
@@ -784,17 +784,27 @@
       loadCatalog();
     }
 
-    const AUTH_TOKEN_KEY = 'library.auth.token';
-    const AUTH_USER_KEY = 'library.auth.user';
+    const ME_ENDPOINT = '/api/v1/me';
 
-    function getAuthToken() {
-      return localStorage.getItem(AUTH_TOKEN_KEY) || '';
-    }
-
-    function updateLoginButtonState() {
+    async function updateLoginButtonState() {
       const loginBtn = document.getElementById('header-login-btn');
       if (!loginBtn) return;
-      loginBtn.style.display = getAuthToken() ? 'none' : 'inline-flex';
+
+      let authenticated = false;
+      try {
+        const response = await fetch(ME_ENDPOINT, {
+          headers: { Accept: 'application/json' },
+        });
+
+        if (response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          authenticated = payload?.authenticated === true;
+        }
+      } catch (_) {
+        authenticated = false;
+      }
+
+      loginBtn.style.display = authenticated ? 'none' : 'inline-flex';
       loginBtn.textContent = 'Войти';
     }
 

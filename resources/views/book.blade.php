@@ -638,6 +638,8 @@
 
     <script>
         const isbn = window.location.pathname.split('/').pop();
+        const BOOK_DB_API_ENDPOINT = '/api/v1/book-db/';
+        const BOOK_LEGACY_API_ENDPOINT = '/api/v1/catalog/';
 
         async function loadBook() {
             const loading = document.getElementById('loading');
@@ -645,14 +647,7 @@
             const content = document.getElementById('content');
 
             try {
-                const response = await fetch(`/api/v1/catalog/${encodeURIComponent(isbn)}`);
-
-                if (!response.ok) {
-                    throw new Error('Книга не найдена');
-                }
-
-                const result = await response.json();
-                const book = result.data;
+                const book = await fetchBookWithFallback(isbn);
 
                 if (!book) {
                     throw new Error('Книга не найдена');
@@ -670,6 +665,40 @@
                     </div>
                 `;
             }
+        }
+
+        async function fetchBookWithFallback(identifier) {
+            const encodedIdentifier = encodeURIComponent(identifier);
+            const endpoints = [
+                `${BOOK_DB_API_ENDPOINT}${encodedIdentifier}`,
+                `${BOOK_LEGACY_API_ENDPOINT}${encodedIdentifier}`,
+            ];
+
+            let lastError = null;
+
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint);
+
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            lastError = new Error('Книга не найдена');
+                            continue;
+                        }
+
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result?.data) {
+                        return result.data;
+                    }
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+
+            throw lastError || new Error('Книга не найдена');
         }
 
         function normalizeText(value, fallback = '') {
@@ -696,6 +725,7 @@
             const available = book?.copies?.available || 0;
             const total = book?.copies?.total || 0;
             const subtitle = escapeHtml(normalizeText(book?.title?.subtitle || book?.description || 'Современное издание'));
+            const location = escapeHtml(getPrimaryLocation(book));
 
             const isAvailable = available > 0;
 
@@ -786,7 +816,7 @@
                                     <div class="info-row"><span>Язык издания</span><span>${escapeHtml(language)}</span></div>
                                     <div class="info-row"><span>Год издания</span><span>${escapeHtml(year)}</span></div>
                                     <div class="info-row"><span>Формат</span><span>Печатная + электронная</span></div>
-                                    <div class="info-row"><span>Место хранения</span><span>Основной фонд, зал №1</span></div>
+                                    <div class="info-row"><span>Место хранения</span><span>${location}</span></div>
                                 </div>
                             </div>
 
@@ -807,27 +837,54 @@
             `;
         }
 
-        const AUTH_TOKEN_KEY = 'library.auth.token';
-        const AUTH_USER_KEY = 'library.auth.user';
+        function getPrimaryLocation(book) {
+            const firstLocation = Array.isArray(book?.availability?.locations)
+                ? book.availability.locations[0]
+                : null;
 
-        function getAuthToken() {
-            return localStorage.getItem(AUTH_TOKEN_KEY) || '';
+            const servicePoint = normalizeText(firstLocation?.servicePoint?.name);
+            const campus = normalizeText(firstLocation?.campus?.name);
+            const institution = normalizeText(firstLocation?.institutionUnit?.name);
+
+            return servicePoint || campus || institution || 'Основной фонд, зал №1';
         }
 
-        function openReader(isbn) {
-            const token = getAuthToken();
-            if (!token) {
-                const redirectTo = encodeURIComponent(`/book/${isbn}/read`);
-                window.location.href = `/login?redirect=${redirectTo}`;
-            } else {
-                window.location.href = `/book/${isbn}/read`;
+        const ME_ENDPOINT = '/api/v1/me';
+
+        async function isAuthenticated() {
+            try {
+                const response = await fetch(ME_ENDPOINT, {
+                    headers: { Accept: 'application/json' },
+                });
+
+                if (!response.ok) {
+                    return false;
+                }
+
+                const payload = await response.json().catch(() => ({}));
+                return payload?.authenticated === true;
+            } catch (_) {
+                return false;
             }
         }
 
-        function updateLoginButtonState() {
+        async function openReader(isbn) {
+            const authenticated = await isAuthenticated();
+            if (!authenticated) {
+                const redirectTo = encodeURIComponent(`/book/${isbn}/read`);
+                window.location.href = `/login?redirect=${redirectTo}`;
+                return;
+            }
+
+            window.location.href = `/book/${isbn}/read`;
+        }
+
+        async function updateLoginButtonState() {
             const loginBtn = document.getElementById('header-login-btn');
             if (!loginBtn) return;
-            loginBtn.style.display = getAuthToken() ? 'none' : 'inline-flex';
+
+            const authenticated = await isAuthenticated();
+            loginBtn.style.display = authenticated ? 'none' : 'inline-flex';
             loginBtn.textContent = 'Войти';
         }
 

@@ -359,7 +359,7 @@
         <button class="close-btn" id="closeBtn" title="Закрыть">✕</button>
         <button class="cabinet-btn" id="cabinetBtn" title="Личный кабинет">Личный кабинет</button>
     </div>
-    
+
     <div class="wrapper">
         <div class="scene">
             <div class="book" id="book">
@@ -386,7 +386,7 @@
     </div>
 
     <script>
-        const AUTH_TOKEN_KEY = 'library.auth.token';
+        const ME_ENDPOINT = '/api/v1/me';
         const isbn = "{{ $isbn }}";
         const API_ENDPOINT = '/api/v1/catalog-external';
 
@@ -567,11 +567,30 @@
             nextBtn.disabled = current >= pageElements.length;
         }
 
-        function updateAuthButtons() {
-            const token = localStorage.getItem(AUTH_TOKEN_KEY);
+        async function updateAuthButtons() {
             const cabinetBtn = document.getElementById('cabinetBtn');
-            if (token && cabinetBtn) {
+            if (!cabinetBtn) {
+                return;
+            }
+
+            let authenticated = false;
+            try {
+                const response = await fetch(ME_ENDPOINT, {
+                    headers: { Accept: 'application/json' },
+                });
+
+                if (response.ok) {
+                    const payload = await response.json().catch(() => ({}));
+                    authenticated = payload?.authenticated === true;
+                }
+            } catch (_) {
+                authenticated = false;
+            }
+
+            if (authenticated) {
                 cabinetBtn.style.display = 'inline-block';
+            } else {
+                cabinetBtn.style.display = 'none';
             }
         }
 
@@ -611,13 +630,11 @@
 
         async function loadBook() {
             const wrapper = document.querySelector('.wrapper');
-            const token = localStorage.getItem(AUTH_TOKEN_KEY) || '';
 
             try {
                 const response = await fetch(`${API_ENDPOINT}?q=${encodeURIComponent(isbn)}&limit=1`, {
                     headers: {
                         Accept: 'application/json',
-                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
                     },
                 });
 
