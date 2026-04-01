@@ -55,6 +55,29 @@ Route::prefix('v1')->group(function (): void {
     Route::get('/landing', [LandingController::class, 'index']);
 });
 
+Route::prefix('integration/v1')
+    ->middleware(['integration.boundary'])
+    ->group(function (): void {
+        // Technical boundary endpoint for infrastructure verification only.
+        Route::get('/_boundary/ping', function (Request $request) {
+            return response()->json([
+                'ok' => true,
+                'context' => [
+                    'authenticated_client_ref' => $request->attributes->get('integration.authenticated_client_ref'),
+                    'source_system' => $request->attributes->get('integration.source_system'),
+                    'request_id' => $request->attributes->get('integration.request_id'),
+                    'correlation_id' => $request->attributes->get('integration.correlation_id'),
+                ],
+            ]);
+        });
+
+        // Future external integration endpoints (reservation shell v1):
+        // GET /api/integration/v1/reservations
+        // GET /api/integration/v1/reservations/{id}
+        // POST /api/integration/v1/reservations/{id}/approve
+        // POST /api/integration/v1/reservations/{id}/reject
+    });
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
