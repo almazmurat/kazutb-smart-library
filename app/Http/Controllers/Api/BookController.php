@@ -3,12 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Library\BookDetailReadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class BookController extends Controller
 {
+    public function dbShow(Request $request, BookDetailReadService $service): JsonResponse
+    {
+        $identifier = (string) $request->route('isbn');
+        $book = $service->findByIdentifier($identifier);
+
+        if (! $book) {
+            return response()->json([
+                'error' => 'Book not found',
+                'success' => false,
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $book,
+            'success' => true,
+        ]);
+    }
+
     /**
      * Get book details from external API by ISBN or ID
      */
@@ -29,7 +48,7 @@ class BookController extends Controller
 
                 // Find book by ISBN
                 $book = collect($books)->first(function ($item) use ($isbn) {
-                    return ($item['isbn']['raw'] ?? '') === $isbn 
+                    return ($item['isbn']['raw'] ?? '') === $isbn
                         || ($item['id'] ?? '') === $isbn;
                 });
 

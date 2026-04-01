@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Library\CatalogReadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -10,6 +11,27 @@ use Illuminate\Support\Facades\Http;
 
 class CatalogController extends Controller
 {
+    public function dbIndex(Request $request, CatalogReadService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'q' => ['nullable', 'string', 'max:255'],
+            'language' => ['nullable', 'string', 'max:10'],
+            'page' => ['nullable', 'integer', 'min:1'],
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'sort' => ['nullable', 'string', 'in:popular,newest,title,author'],
+        ]);
+
+        $result = $service->search(
+            query: (string) ($validated['q'] ?? ''),
+            language: isset($validated['language']) ? (string) $validated['language'] : null,
+            page: (int) ($validated['page'] ?? 1),
+            limit: (int) ($validated['limit'] ?? 10),
+            sort: (string) ($validated['sort'] ?? 'popular'),
+        );
+
+        return response()->json($result);
+    }
+
     public function index(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -79,7 +101,7 @@ class CatalogController extends Controller
 
         try {
             $externalApiUrl = 'http://10.0.1.8:5173/api/v1/catalog';
-            
+
             $response = Http::get($externalApiUrl, array_filter([
                 'q' => $validated['q'] ?? null,
                 'language' => $validated['language'] ?? null,

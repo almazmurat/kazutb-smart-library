@@ -22,6 +22,14 @@ Route::get('/login', function () {
     return view('auth');
 });
 
+Route::get('/internal/dashboard', function () {
+    return view('internal-dashboard');
+});
+
+Route::get('/internal/review', function () {
+    return view('internal-review');
+});
+
 Route::get('/book/{isbn}/read', function ($isbn) {
     return view('reader', ['isbn' => $isbn]);
 });

@@ -11,6 +11,7 @@ This document describes the staged approach to hardening the CRM user → Librar
 **Matching Logic**: Email-based (primary) + ad_login (fallback) using `app.reader_contacts` table
 
 **Risks**:
+
 - No explicit mapping table → implicit and invisible linkages
 - No audit trail → impossible to debug mismatches
 - Email duplication possible (1 existing; more possible with data entry errors)
@@ -18,6 +19,7 @@ This document describes the staged approach to hardening the CRM user → Librar
 - No ambiguity detection → multiple readers per email silently resolved by `ORDER BY registration_at DESC`
 
 **Data Facts**:
+
 - Total readers: 2319
 - Email contacts: 2319/2319 (100% coverage)
 - AD_LOGIN contacts: 0/2319 (zero in DB; not used for matching)
@@ -33,6 +35,7 @@ This document describes the staged approach to hardening the CRM user → Librar
 **What was added**:
 
 ### 1. `IdentityMatchAudit` Service
+
 - Location: `app/Services/Library/IdentityMatchAudit.php`
 - Validates every matching decision
 - Detects ambiguity (multiple readers per email)
@@ -41,21 +44,23 @@ This document describes the staged approach to hardening the CRM user → Librar
 - Optional: logs to `identity_match_logs` table if exists
 
 ### 2. `AccountSummaryReadService` Updated
+
 - Injects `IdentityMatchAudit` via DI
 - Calls audit service on every match
 - Exposes matching metadata in response:
-  ```json
-  "matching": {
-    "status": "matched|no_match",
-    "matched_by": "email|ad_login_fallback|no_match",
-    "has_ambiguity": false,
-    "ambiguity_details": "...",
-    "is_stale": false,
-    "stale_reason": "..."
-  }
-  ```
+    ```json
+    "matching": {
+      "status": "matched|no_match",
+      "matched_by": "email|ad_login_fallback|no_match",
+      "has_ambiguity": false,
+      "ambiguity_details": "...",
+      "is_stale": false,
+      "stale_reason": "..."
+    }
+    ```
 
 ### 3. Optional: `identity_match_logs` Table
+
 - Location: `database/migrations/2026_03_31_080810_create_identity_match_logs_table.php`
 - Schema: Captures every match decision with metadata
 - Indexes: `matched_by`, `created_at` for performance
@@ -63,6 +68,7 @@ This document describes the staged approach to hardening the CRM user → Librar
 - Automatic fallback if table doesn't exist
 
 ### 4. Tests
+
 - Location: `tests/Feature/Api/IdentityMatchAuditTest.php`
 - Unit tests for audit logic
 - No match detection
@@ -77,6 +83,7 @@ This document describes the staged approach to hardening the CRM user → Librar
 ✅ Server-ready: Works on 10.0.1.8 without modifications
 
 **How to verify**:
+
 ```bash
 # 1. Check logs for matching decisions
 tail -f storage/logs/laravel.log | grep "Identity mapping"
@@ -90,6 +97,7 @@ curl http://localhost:8000/api/v1/account/summary \
 ```
 
 **Git Commits**:
+
 - `fb6fa54`: Add identity matching audit & validation layer (main service)
 - `c27461c`: Add identity match logging table & model (Phase 1.5, optional)
 
@@ -104,50 +112,53 @@ curl http://localhost:8000/api/v1/account/summary \
 **What to do**:
 
 1. **Create `app.user_crm_identity` table**
-   ```sql
-   CREATE TABLE app.user_crm_identity (
-     id UUID PRIMARY KEY,
-     crm_user_id TEXT UNIQUE NOT NULL,
-     reader_id UUID NOT NULL REFERENCES app.readers(id),
-     email_at_link TEXT,
-     linked_at TIMESTAMP,
-     notes TEXT,
-     is_stale BOOLEAN DEFAULT false,
-     created_at TIMESTAMP,
-     updated_at TIMESTAMP
-   );
-   ```
+
+    ```sql
+    CREATE TABLE app.user_crm_identity (
+      id UUID PRIMARY KEY,
+      crm_user_id TEXT UNIQUE NOT NULL,
+      reader_id UUID NOT NULL REFERENCES app.readers(id),
+      email_at_link TEXT,
+      linked_at TIMESTAMP,
+      notes TEXT,
+      is_stale BOOLEAN DEFAULT false,
+      created_at TIMESTAMP,
+      updated_at TIMESTAMP
+    );
+    ```
 
 2. **Backfill existing matches**
-   - Use Phase 1 logs to audit current mappings
-   - Create seed command: `php artisan seed:identity-mappings`
-   - Validate no collisions detected before backfill
+    - Use Phase 1 logs to audit current mappings
+    - Create seed command: `php artisan seed:identity-mappings`
+    - Validate no collisions detected before backfill
 
 3. **Update `AccountSummaryReadService`**
-   - Check explicit table first
-   - Fall back to heuristic (email match) only for debugging/transition
-   - Detect and warn if heuristic match differs from explicit
+    - Check explicit table first
+    - Fall back to heuristic (email match) only for debugging/transition
+    - Detect and warn if heuristic match differs from explicit
 
 4. **Create `IdentitySyncService`**
-   - Maintains mapping consistency over time
-   - Detects email changes in CRM
-   - Flags stale mappings
-   - Provides admin interface to relink
+    - Maintains mapping consistency over time
+    - Detects email changes in CRM
+    - Flags stale mappings
+    - Provides admin interface to relink
 
 5. **Add audit commands**
-   ```bash
-   php artisan identity:audit          # Find mismatches
-   php artisan identity:resolve        # Prompt for resolution
-   php artisan identity:relink-reader  # Manual relink by admin
-   ```
+    ```bash
+    php artisan identity:audit          # Find mismatches
+    php artisan identity:resolve        # Prompt for resolution
+    php artisan identity:relink-reader  # Manual relink by admin
+    ```
 
 **Data required from Phase 1**:
+
 - Distribution of match types (email vs ad_login)
 - Frequency of ambiguity detections
 - Patterns in stale matches
 - Any unmapped users or unlinked readers
 
 **Risk mitigation**:
+
 - No breaking changes; heuristic stays as fallback
 - Gradual enablement: explicit lookup first, fallback on miss
 - Admin override: always possible to relink manually
@@ -164,60 +175,63 @@ curl http://localhost:8000/api/v1/account/summary \
 **What to do**:
 
 1. **Monitor & alert**
-   - Alert on ambiguity detections
-   - Alert on stale matches
-   - Daily summary: unmapped users vs unlinked readers
+    - Alert on ambiguity detections
+    - Alert on stale matches
+    - Daily summary: unmapped users vs unlinked readers
 
 2. **Hardening**
-   - Add RBAC to prevent role injection from CRM
-   - TLS/mTLS between 10.0.1.8 (library) and 10.0.1.47 (CRM)
-   - Implement token refresh/expiration renewal
-   - Add comprehensive audit logging table
+    - Add RBAC to prevent role injection from CRM
+    - TLS/mTLS between 10.0.1.8 (library) and 10.0.1.47 (CRM)
+    - Implement token refresh/expiration renewal
+    - Add comprehensive audit logging table
 
 3. **Write flow preparation**
-   - Design explicit mapping for loans, returns, reservations
-   - Implement optimistic locking (prevent race conditions)
-   - Add transaction consistency
-   - Plan rollback procedures
+    - Design explicit mapping for loans, returns, reservations
+    - Implement optimistic locking (prevent race conditions)
+    - Add transaction consistency
+    - Plan rollback procedures
 
 4. **Legacy cleanup**
-   - Deprecate heuristic matching after explicit table is stable
-   - Archive old identity_match_logs (after 90 days)
-   - Remove fallback code paths
+    - Deprecate heuristic matching after explicit table is stable
+    - Archive old identity_match_logs (after 90 days)
+    - Remove fallback code paths
 
 ---
 
 ## Implementation Status
 
-| Phase | Component | Status | Commit | Notes |
-|-------|-----------|--------|--------|-------|
-| 1 | IdentityMatchAudit service | ✅ Done | fb6fa54 | Validation + logging |
-| 1 | AccountSummaryReadService update | ✅ Done | fb6fa54 | Audit integration |
-| 1.5 | identity_match_logs table | ✅ Done | c27461c | Optional; auto-skips if missing |
-| 1.5 | IdentityMatchLog model | ✅ Done | c27461c | DB access layer |
-| 1.5 | IdentityMatchAuditTest | ✅ Done | fb6fa54 | Unit tests |
-| 2 | Explicit mapping table | ⏸️ Blocked | — | Awaiting Phase 1 data |
-| 2 | Backfill seeder | ⏸️ Blocked | — | Awaiting Phase 1 validation |
-| 2 | IdentitySyncService | ⏸️ Blocked | — | Design pending |
-| 3 | Monitoring & alerts | 🔮 Future | — | Post-Phase 2 |
-| 3 | TLS hardening | 🔮 Future | — | Post-production validation |
+| Phase | Component                        | Status     | Commit  | Notes                           |
+| ----- | -------------------------------- | ---------- | ------- | ------------------------------- |
+| 1     | IdentityMatchAudit service       | ✅ Done    | fb6fa54 | Validation + logging            |
+| 1     | AccountSummaryReadService update | ✅ Done    | fb6fa54 | Audit integration               |
+| 1.5   | identity_match_logs table        | ✅ Done    | c27461c | Optional; auto-skips if missing |
+| 1.5   | IdentityMatchLog model           | ✅ Done    | c27461c | DB access layer                 |
+| 1.5   | IdentityMatchAuditTest           | ✅ Done    | fb6fa54 | Unit tests                      |
+| 2     | Explicit mapping table           | ⏸️ Blocked | —       | Awaiting Phase 1 data           |
+| 2     | Backfill seeder                  | ⏸️ Blocked | —       | Awaiting Phase 1 validation     |
+| 2     | IdentitySyncService              | ⏸️ Blocked | —       | Design pending                  |
+| 3     | Monitoring & alerts              | 🔮 Future  | —       | Post-Phase 2                    |
+| 3     | TLS hardening                    | 🔮 Future  | —       | Post-production validation      |
 
 ---
 
 ## Deployment Notes
 
 ### Pre-Deployment (Now)
+
 - ✅ Phase 1 code is safe to deploy immediately
 - ✅ No schema changes required
 - ✅ Works alongside existing heuristic matching
 - ✅ Backward compatible with existing `/api/v1/account/summary` response
 
 ### Optional: Enable logging table
+
 ```bash
 php artisan migrate --step  # Run only latest migration
 ```
 
 ### Post-Deployment Monitoring
+
 ```bash
 # Check for ambiguity detections
 tail -f storage/logs/laravel.log | grep "has_ambiguity.*true"
@@ -232,7 +246,9 @@ php artisan tinker
 ```
 
 ### Rollback (if needed)
+
 Phase 1 is additive only:
+
 - ✅ Safe to revert commits fb6fa54, c27461c
 - ✅ No data loss
 - ✅ Heuristic matching still works as before
@@ -260,4 +276,3 @@ php artisan migrate:rollback --step=1  # Only if migration was run
 - **Security**: Phase 1 has no security impacts; Phase 2/3 require TLS hardening review
 - **Performance**: Phase 1 adds minimal overhead (~1-2ms per request for audit checks)
 - **Data retention**: identity_match_logs grows ~200-300 rows/day; recommend archival policy
-
