@@ -10,6 +10,10 @@ class CirculationAuditEvent extends Model
 
     protected $table = 'app.circulation_audit_events';
 
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     protected $guarded = [];
 
     protected $casts = [

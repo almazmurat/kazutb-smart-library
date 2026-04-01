@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\InternalCirculationController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
 use App\Http\Controllers\Api\ReviewController;
@@ -19,6 +20,11 @@ Route::middleware('web')->group(function (): void {
 });
 
 Route::prefix('v1')->group(function (): void {
+    Route::prefix('internal/circulation')->group(function (): void {
+        Route::post('/checkouts', [InternalCirculationController::class, 'checkout']);
+        Route::post('/returns', [InternalCirculationController::class, 'returnCopy']);
+    });
+
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);
     Route::get('/bridge/users', [BridgeController::class, 'users']);
     Route::get('/bridge/copies', [BridgeController::class, 'copies']);

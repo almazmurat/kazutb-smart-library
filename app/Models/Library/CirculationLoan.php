@@ -10,6 +10,10 @@ class CirculationLoan extends Model
 
     protected $table = 'app.circulation_loans';
 
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     protected $guarded = [];
 
     protected $casts = [
