@@ -108,6 +108,7 @@ class IntegrationReservationReadService
                 'r.processedAt',
                 'r.libraryBranchId',
                 'r.copyId',
+                'r.notes',
                 'r.userId',
                 'r.bookId',
                 DB::raw('"u"."fullName" AS "userFullName"'),
@@ -174,6 +175,7 @@ class IntegrationReservationReadService
         return [
             'id' => (string) $row->id,
             'status' => (string) $row->status,
+            'reason' => $this->extractReason($row->notes ?? null),
             'reserved_at' => $this->isoOrNull($row->reservedAt ?? null),
             'expires_at' => $this->isoOrNull($row->expiresAt ?? null),
             'processed_at' => $this->isoOrNull($row->processedAt ?? null),
@@ -199,5 +201,32 @@ class IntegrationReservationReadService
         }
 
         return \Carbon\Carbon::parse((string) $datetime)->toISOString();
+    }
+
+    /**
+     * @return array{cancel_origin:string|null, cancel_reason_code:string|null}|null
+     */
+    private function extractReason(mixed $notes): ?array
+    {
+        if ($notes === null || $notes === '') {
+            return null;
+        }
+
+        $decoded = json_decode((string) $notes, true);
+        if (! is_array($decoded)) {
+            return null;
+        }
+
+        $cancelOrigin = isset($decoded['cancel_origin']) ? (string) $decoded['cancel_origin'] : null;
+        $cancelReasonCode = isset($decoded['cancel_reason_code']) ? (string) $decoded['cancel_reason_code'] : null;
+
+        if ($cancelOrigin === null && $cancelReasonCode === null) {
+            return null;
+        }
+
+        return [
+            'cancel_origin' => $cancelOrigin,
+            'cancel_reason_code' => $cancelReasonCode,
+        ];
     }
 }

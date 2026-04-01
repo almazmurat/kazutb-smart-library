@@ -7,6 +7,7 @@ use App\Services\Library\IntegrationReservationMutationException;
 use App\Services\Library\IntegrationReservationWriteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ReservationMutateController extends Controller
@@ -17,6 +18,17 @@ class ReservationMutateController extends Controller
 
     public function approve(Request $request, string $id): JsonResponse
     {
+        $operatorBranchId = $this->validatedOperatorBranchId($request);
+        if ($operatorBranchId === null) {
+            return $this->errorResponse(
+                request: $request,
+                status: 400,
+                errorCode: 'invalid_request',
+                reasonCode: 'invalid_operator_org_context',
+                message: 'X-Operator-Org-Context must contain a valid UUID branch_id for mutate operations.',
+            );
+        }
+
         if (! Str::isUuid($id)) {
             return $this->errorResponse(
                 request: $request,
@@ -59,6 +71,17 @@ class ReservationMutateController extends Controller
 
     public function reject(Request $request, string $id): JsonResponse
     {
+        $operatorBranchId = $this->validatedOperatorBranchId($request);
+        if ($operatorBranchId === null) {
+            return $this->errorResponse(
+                request: $request,
+                status: 400,
+                errorCode: 'invalid_request',
+                reasonCode: 'invalid_operator_org_context',
+                message: 'X-Operator-Org-Context must contain a valid UUID branch_id for mutate operations.',
+            );
+        }
+
         if (! Str::isUuid($id)) {
             return $this->errorResponse(
                 request: $request,
@@ -132,9 +155,22 @@ class ReservationMutateController extends Controller
         return [
             'authenticatedClientRef' => (string) $request->attributes->get('integration.authenticated_client_ref'),
             'operatorId' => trim((string) $request->header('X-Operator-Id', '')),
+            'operatorBranchId' => (string) $this->validatedOperatorBranchId($request),
             'requestId' => (string) $request->attributes->get('integration.request_id'),
             'correlationId' => (string) $request->attributes->get('integration.correlation_id'),
         ];
+    }
+
+    private function validatedOperatorBranchId(Request $request): ?string
+    {
+        $decoded = json_decode((string) $request->header('X-Operator-Org-Context', ''), true);
+        if (! is_array($decoded)) {
+            return null;
+        }
+
+        $branchId = (string) Arr::get($decoded, 'branch_id', '');
+
+        return Str::isUuid($branchId) ? $branchId : null;
     }
 
     private function errorResponse(

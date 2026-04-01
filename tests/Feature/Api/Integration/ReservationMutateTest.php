@@ -24,7 +24,7 @@ class ReservationMutateTest extends TestCase
             'X-Source-System' => 'crm',
             'X-Operator-Id' => 'crm-op-99',
             'X-Operator-Roles' => 'reservations.approve,reservations.reject',
-            'X-Operator-Org-Context' => '{"branch_id":"main"}',
+            'X-Operator-Org-Context' => '{"branch_id":"f84341eb-1010-45be-b93e-6c94cd9cea8a"}',
             'Idempotency-Key' => 'idem-001',
         ];
     }
@@ -144,6 +144,19 @@ class ReservationMutateTest extends TestCase
 
         $response->assertStatus(400)
             ->assertJsonPath('error.reason_code', 'missing_idempotency_key');
+    }
+
+    public function test_invalid_operator_org_context_returns_400_before_mutation(): void
+    {
+        $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';
+        $headers = $this->headers;
+        $headers['X-Operator-Org-Context'] = '{"branch_id":"main"}';
+
+        $response = $this->withHeaders($headers)
+            ->postJson("/api/integration/v1/reservations/{$id}/approve");
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.reason_code', 'invalid_operator_org_context');
     }
 
     public function test_replay_same_payload_returns_success(): void

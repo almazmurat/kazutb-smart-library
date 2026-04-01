@@ -13,7 +13,7 @@ class IntegrationReservationWriteService
     /**
      * Approve command: PENDING -> READY.
      *
-     * @param array{authenticatedClientRef:string, operatorId:string, requestId:string, correlationId:string} $context
+    * @param array{authenticatedClientRef:string, operatorId:string, operatorBranchId:string, requestId:string, correlationId:string} $context
      * @return array{status:int, body:array<string,mixed>, replayed:bool}
      */
     public function approve(string $reservationId, string $idempotencyKey, array $context): array
@@ -80,7 +80,7 @@ class IntegrationReservationWriteService
     /**
      * Reject command: PENDING -> CANCELLED.
      *
-     * @param array{authenticatedClientRef:string, operatorId:string, requestId:string, correlationId:string} $context
+    * @param array{authenticatedClientRef:string, operatorId:string, operatorBranchId:string, requestId:string, correlationId:string} $context
      * @return array{status:int, body:array<string,mixed>, replayed:bool}
      */
     public function reject(
@@ -113,10 +113,11 @@ class IntegrationReservationWriteService
                     );
                 }
 
-                $legacyNotes = [
-                    'cancel_origin' => $cancelOrigin,
-                    'cancel_reason_code' => $cancelReasonCode,
-                ];
+                $legacyNotes = $this->mergedRejectNotes(
+                    existingNotes: isset($row['notes']) ? (string) $row['notes'] : null,
+                    cancelOrigin: $cancelOrigin,
+                    cancelReasonCode: $cancelReasonCode,
+                );
 
                 DB::connection('pgsql')
                     ->table(DB::raw('"Reservation"'))
@@ -132,7 +133,7 @@ class IntegrationReservationWriteService
                     'status' => 'CANCELLED',
                     'processedAt' => $now->toDateTimeString(),
                     'updatedAt' => $now->toDateTimeString(),
-                    'notes' => json_encode($legacyNotes, JSON_UNESCAPED_SLASHES),
+                        'notes' => json_encode($legacyNotes, JSON_UNESCAPED_SLASHES),
                 ]);
 
                 $this->recordAudit(
@@ -164,7 +165,7 @@ class IntegrationReservationWriteService
 
     /**
      * @param array<string,mixed> $semanticPayload
-     * @param array{authenticatedClientRef:string, operatorId:string, requestId:string, correlationId:string} $context
+    * @param array{authenticatedClientRef:string, operatorId:string, operatorBranchId:string, requestId:string, correlationId:string} $context
      * @param callable(array<string,mixed>, Carbon): array<string,mixed> $transition
      * @return array{status:int, body:array<string,mixed>, replayed:bool}
      */
@@ -213,6 +214,7 @@ class IntegrationReservationWriteService
             $reservation = DB::connection('pgsql')
                 ->table(DB::raw('"Reservation"'))
                 ->where('id', $reservationId)
+                ->where('libraryBranchId', $context['operatorBranchId'])
                 ->lockForUpdate()
                 ->first();
 
@@ -220,7 +222,7 @@ class IntegrationReservationWriteService
                 throw new IntegrationReservationMutationException(
                     errorCode: 'not_found',
                     reasonCode: 'reservation_not_found',
-                    message: 'Reservation not found.',
+                    message: 'Reservation not found or not accessible in your org context.',
                     httpStatus: 404,
                 );
             }
@@ -259,7 +261,7 @@ class IntegrationReservationWriteService
      * @param array<string,mixed> $previousState
      * @param array<string,mixed> $newState
      * @param array<string,mixed> $metadata
-     * @param array{authenticatedClientRef:string, operatorId:string, requestId:string, correlationId:string} $context
+    * @param array{authenticatedClientRef:string, operatorId:string, operatorBranchId:string, requestId:string, correlationId:string, idempotencyKey?:string} $context
      */
     private function recordAudit(
         string $action,
@@ -285,10 +287,37 @@ class IntegrationReservationWriteService
             'new_state' => $newState,
             'metadata' => [
                 'operator_id' => $context['operatorId'],
+                'operator_branch_id' => $context['operatorBranchId'],
                 'authenticated_client_ref' => $context['authenticatedClientRef'],
+                'idempotency_key' => $context['idempotencyKey'] ?? null,
                 'details' => $metadata,
             ],
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function mergedRejectNotes(?string $existingNotes, string $cancelOrigin, string $cancelReasonCode): array
+    {
+        $result = [
+            'cancel_origin' => $cancelOrigin,
+            'cancel_reason_code' => $cancelReasonCode,
+        ];
+
+        $normalized = trim((string) $existingNotes);
+        if ($normalized === '') {
+            return $result;
+        }
+
+        $decoded = json_decode($normalized, true);
+        if (is_array($decoded)) {
+            return array_merge($decoded, $result);
+        }
+
+        $result['legacy_note'] = $normalized;
+
+        return $result;
     }
 
     /**
