@@ -12,6 +12,23 @@ class InternalCirculationCheckoutReturnTest extends TestCase
 {
     private bool $transactionStarted = false;
 
+    /**
+     * @return array{library.user: array<string, string>}
+     */
+    private function staffSession(string $role = 'librarian'): array
+    {
+        return [
+            'library.user' => [
+                'id' => (string) DB::scalar('select gen_random_uuid()::text'),
+                'name' => 'Internal Staff',
+                'email' => 'staff@example.test',
+                'login' => 'staff',
+                'ad_login' => 'staff',
+                'role' => $role,
+            ],
+        ];
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -38,7 +55,7 @@ class InternalCirculationCheckoutReturnTest extends TestCase
     {
         [$readerId, $copyId] = $this->pickReaderAndCopy();
 
-        $response = $this->postJson('/api/v1/internal/circulation/checkouts', [
+        $response = $this->withSession($this->staffSession())->postJson('/api/v1/internal/circulation/checkouts', [
             'reader_id' => $readerId,
             'copy_id' => $copyId,
             'actor_user_id' => $readerId,
@@ -85,7 +102,7 @@ class InternalCirculationCheckoutReturnTest extends TestCase
             'renew_count' => 0,
         ]);
 
-        $response = $this->postJson('/api/v1/internal/circulation/checkouts', [
+        $response = $this->withSession($this->staffSession())->postJson('/api/v1/internal/circulation/checkouts', [
             'reader_id' => $readerId,
             'copy_id' => $copyId,
         ]);
@@ -111,7 +128,7 @@ class InternalCirculationCheckoutReturnTest extends TestCase
             'renew_count' => 0,
         ]);
 
-        $response = $this->postJson('/api/v1/internal/circulation/returns', [
+        $response = $this->withSession($this->staffSession())->postJson('/api/v1/internal/circulation/returns', [
             'copy_id' => $copyId,
             'actor_user_id' => $readerId,
         ]);
@@ -141,7 +158,7 @@ class InternalCirculationCheckoutReturnTest extends TestCase
     {
         [, $copyId] = $this->pickReaderAndCopy();
 
-        $response = $this->postJson('/api/v1/internal/circulation/returns', [
+        $response = $this->withSession($this->staffSession())->postJson('/api/v1/internal/circulation/returns', [
             'copy_id' => $copyId,
         ]);
 
@@ -149,6 +166,36 @@ class InternalCirculationCheckoutReturnTest extends TestCase
             ->assertNotFound()
             ->assertJsonPath('success', false)
             ->assertJsonPath('error', 'active_loan_not_found');
+    }
+
+    public function test_checkout_requires_staff_session(): void
+    {
+        [$readerId, $copyId] = $this->pickReaderAndCopy();
+
+        $response = $this->postJson('/api/v1/internal/circulation/checkouts', [
+            'reader_id' => $readerId,
+            'copy_id' => $copyId,
+        ]);
+
+        $response
+            ->assertForbidden()
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('error', 'staff_authorization_required');
+    }
+
+    public function test_checkout_rejects_reader_role_session(): void
+    {
+        [$readerId, $copyId] = $this->pickReaderAndCopy();
+
+        $response = $this->withSession($this->staffSession('reader'))->postJson('/api/v1/internal/circulation/checkouts', [
+            'reader_id' => $readerId,
+            'copy_id' => $copyId,
+        ]);
+
+        $response
+            ->assertForbidden()
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('error', 'staff_authorization_required');
     }
 
     /**

@@ -11,6 +11,23 @@ class InternalCirculationReadbackTest extends TestCase
 {
     private bool $transactionStarted = false;
 
+    /**
+     * @return array{library.user: array<string, string>}
+     */
+    private function staffSession(string $role = 'librarian'): array
+    {
+        return [
+            'library.user' => [
+                'id' => (string) DB::scalar('select gen_random_uuid()::text'),
+                'name' => 'Internal Staff',
+                'email' => 'staff@example.test',
+                'login' => 'staff',
+                'ad_login' => 'staff',
+                'role' => $role,
+            ],
+        ];
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -39,7 +56,7 @@ class InternalCirculationReadbackTest extends TestCase
 
         $loan = $this->createLoan($readerId, $copyId, 'active', null);
 
-        $response = $this->getJson('/api/v1/internal/circulation/loans/' . $loan->id);
+        $response = $this->withSession($this->staffSession())->getJson('/api/v1/internal/circulation/loans/' . $loan->id);
 
         $response
             ->assertOk()
@@ -56,7 +73,7 @@ class InternalCirculationReadbackTest extends TestCase
 
         $loan = $this->createLoan($readerId, $copyId, 'active', null);
 
-        $response = $this->getJson('/api/v1/internal/circulation/copies/' . $copyId . '/active-loan');
+        $response = $this->withSession($this->staffSession())->getJson('/api/v1/internal/circulation/copies/' . $copyId . '/active-loan');
 
         $response
             ->assertOk()
@@ -70,7 +87,7 @@ class InternalCirculationReadbackTest extends TestCase
     {
         [, $copyId] = $this->pickReaderAndCopy();
 
-        $response = $this->getJson('/api/v1/internal/circulation/copies/' . $copyId . '/active-loan');
+        $response = $this->withSession($this->staffSession())->getJson('/api/v1/internal/circulation/copies/' . $copyId . '/active-loan');
 
         $response
             ->assertNotFound()
@@ -86,7 +103,7 @@ class InternalCirculationReadbackTest extends TestCase
         $this->createLoan($readerId, $copyId, 'active', null);
         $this->createLoan($readerId, $secondCopyId, 'returned', now('UTC')->subDay());
 
-        $response = $this->getJson('/api/v1/internal/circulation/readers/' . $readerId . '/loans?status=active');
+        $response = $this->withSession($this->staffSession())->getJson('/api/v1/internal/circulation/readers/' . $readerId . '/loans?status=active');
 
         $response
             ->assertOk()
@@ -94,6 +111,19 @@ class InternalCirculationReadbackTest extends TestCase
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.copyId', $copyId)
             ->assertJsonPath('data.0.status', 'active');
+    }
+
+    public function test_readback_requires_staff_session(): void
+    {
+        [$readerId, $copyId] = $this->pickReaderAndCopy();
+        $loan = $this->createLoan($readerId, $copyId, 'active', null);
+
+        $response = $this->getJson('/api/v1/internal/circulation/loans/' . $loan->id);
+
+        $response
+            ->assertForbidden()
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('error', 'staff_authorization_required');
     }
 
     private function createLoan(string $readerId, string $copyId, string $status, ?\Illuminate\Support\Carbon $returnedAt): CirculationLoan

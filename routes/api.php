@@ -9,8 +9,12 @@ use App\Http\Controllers\Api\InternalCirculationController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
 use App\Http\Controllers\Api\ReviewController;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 Route::middleware('web')->group(function (): void {
     Route::post('/login', [AuthController::class, 'login']);
@@ -20,7 +24,15 @@ Route::middleware('web')->group(function (): void {
 });
 
 Route::prefix('v1')->group(function (): void {
-    Route::prefix('internal/circulation')->group(function (): void {
+    Route::prefix('internal/circulation')
+        ->middleware([
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            'internal.circulation.staff',
+        ])
+        ->group(function (): void {
         Route::get('/loans/{loanId}', [InternalCirculationController::class, 'showLoan']);
         Route::get('/copies/{copyId}/active-loan', [InternalCirculationController::class, 'showActiveLoanForCopy']);
         Route::get('/readers/{readerId}/loans', [InternalCirculationController::class, 'listReaderLoans']);
