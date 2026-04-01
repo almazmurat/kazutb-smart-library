@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\Integration\ReservationReadController;
+use App\Http\Controllers\Api\Integration\ReservationMutateController;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Http\Request;
@@ -77,7 +78,9 @@ Route::prefix('integration/v1')
         Route::get('/reservations', [ReservationReadController::class, 'index']);
         Route::get('/reservations/{id}', [ReservationReadController::class, 'show']);
 
-        // Mutate endpoints (approve / reject) — out of scope for this step.
+        // Mutate endpoints (shell v1, phase 2): approve / reject only.
+        Route::post('/reservations/{id}/approve', [ReservationMutateController::class, 'approve']);
+        Route::post('/reservations/{id}/reject', [ReservationMutateController::class, 'reject']);
     });
 
 Route::get('/user', function (Request $request) {
