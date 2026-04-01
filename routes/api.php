@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\InternalCirculationController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\Integration\ReservationReadController;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Http\Request;
@@ -72,10 +73,11 @@ Route::prefix('integration/v1')
         });
 
         // Future external integration endpoints (reservation shell v1):
-        // GET /api/integration/v1/reservations
-        // GET /api/integration/v1/reservations/{id}
-        // POST /api/integration/v1/reservations/{id}/approve
-        // POST /api/integration/v1/reservations/{id}/reject
+        // Read-only external reservation endpoints (shell v1, phase 1):
+        Route::get('/reservations', [ReservationReadController::class, 'index']);
+        Route::get('/reservations/{id}', [ReservationReadController::class, 'show']);
+
+        // Mutate endpoints (approve / reject) — out of scope for this step.
     });
 
 Route::get('/user', function (Request $request) {
