@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Library\BookCopy;
+use App\Models\Library\Reader;
+use App\Services\Library\CirculationLoanReadService;
 use App\Services\Library\CirculationLoanWriteService;
 use App\Services\Library\CirculationWriteException;
 use Illuminate\Http\JsonResponse;
@@ -10,6 +13,73 @@ use Illuminate\Http\Request;
 
 class InternalCirculationController extends Controller
 {
+    public function showLoan(string $loanId, CirculationLoanReadService $service): JsonResponse
+    {
+        $loan = $service->findLoan($loanId);
+
+        if ($loan === null) {
+            return response()->json([
+                'error' => 'loan_not_found',
+                'message' => 'Loan not found.',
+                'success' => false,
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $loan,
+            'success' => true,
+        ]);
+    }
+
+    public function showActiveLoanForCopy(string $copyId, CirculationLoanReadService $service): JsonResponse
+    {
+        if (! BookCopy::query()->whereKey($copyId)->exists()) {
+            return response()->json([
+                'error' => 'copy_not_found',
+                'message' => 'Copy not found.',
+                'success' => false,
+            ], 404);
+        }
+
+        $loan = $service->findActiveLoanByCopy($copyId);
+
+        if ($loan === null) {
+            return response()->json([
+                'error' => 'active_loan_not_found',
+                'message' => 'Active loan not found for copy.',
+                'success' => false,
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $loan,
+            'success' => true,
+        ]);
+    }
+
+    public function listReaderLoans(string $readerId, Request $request, CirculationLoanReadService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'status' => ['nullable', 'string', 'in:active,returned'],
+        ]);
+
+        if (! Reader::query()->whereKey($readerId)->exists()) {
+            return response()->json([
+                'error' => 'reader_not_found',
+                'message' => 'Reader not found.',
+                'success' => false,
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $service->findLoansByReader(
+                readerId: $readerId,
+                status: isset($validated['status']) ? (string) $validated['status'] : null,
+            ),
+            'success' => true,
+        ]);
+    }
+
     public function checkout(Request $request, CirculationLoanWriteService $service): JsonResponse
     {
         $validated = $request->validate([

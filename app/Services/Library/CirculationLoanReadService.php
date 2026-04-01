@@ -33,6 +33,26 @@ class CirculationLoanReadService
     }
 
     /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function findLoansByReader(string $readerId, ?string $status = null): array
+    {
+        $query = CirculationLoan::query()
+            ->where('reader_id', $readerId)
+            ->orderByDesc('issued_at')
+            ->orderByDesc('created_at');
+
+        if ($status !== null) {
+            $query->where('status', $status);
+        }
+
+        return $query
+            ->get()
+            ->map(fn (CirculationLoan $loan): array => $this->toArray($loan))
+            ->all();
+    }
+
+    /**
      * @return array<string, mixed>
      */
     private function toArray(CirculationLoan $loan): array

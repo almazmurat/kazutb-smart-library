@@ -21,6 +21,9 @@ Route::middleware('web')->group(function (): void {
 
 Route::prefix('v1')->group(function (): void {
     Route::prefix('internal/circulation')->group(function (): void {
+        Route::get('/loans/{loanId}', [InternalCirculationController::class, 'showLoan']);
+        Route::get('/copies/{copyId}/active-loan', [InternalCirculationController::class, 'showActiveLoanForCopy']);
+        Route::get('/readers/{readerId}/loans', [InternalCirculationController::class, 'listReaderLoans']);
         Route::post('/checkouts', [InternalCirculationController::class, 'checkout']);
         Route::post('/returns', [InternalCirculationController::class, 'returnCopy']);
     });
