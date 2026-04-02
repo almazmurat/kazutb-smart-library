@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
 use App\Http\Controllers\Api\InternalAiAssistantController;
 use App\Http\Controllers\Api\InternalCopyReadController;
+use App\Http\Controllers\Api\InternalCopyWriteController;
 use App\Http\Controllers\Api\InternalCirculationController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
@@ -56,6 +57,9 @@ Route::prefix('v1')->group(function (): void {
         ->group(function (): void {
             Route::get('/copies/{copyId}', [InternalCopyReadController::class, 'show']);
             Route::get('/documents/{documentId}/copies', [InternalCopyReadController::class, 'listByDocument']);
+            Route::post('/copies', [InternalCopyWriteController::class, 'store']);
+            Route::patch('/copies/{copyId}', [InternalCopyWriteController::class, 'patch']);
+            Route::post('/copies/{copyId}/retire', [InternalCopyWriteController::class, 'retire']);
         });
 
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);

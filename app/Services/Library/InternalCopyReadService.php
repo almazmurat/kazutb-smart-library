@@ -71,6 +71,9 @@ class InternalCopyReadService
             'campus_id',
             'location_mapping_status',
             'location_mapping_confidence',
+            'retired_at',
+            'retirement_reason_code',
+            'retirement_note',
             'created_at',
             'updated_at',
         ];
@@ -128,6 +131,19 @@ class InternalCopyReadService
             $activeLoanId = $copyId !== '' ? ($activeLoans[$copyId] ?? null) : null;
             $hasActiveLoan = $activeLoanId !== null;
 
+            $retiredAt = isset($row['retired_at']) && $row['retired_at'] !== null
+                ? $this->normalizeDateTime($row['retired_at'])
+                : null;
+            $isRetired = $retiredAt !== null;
+
+            if ($isRetired) {
+                $availabilityIndicator = 'RETIRED';
+            } elseif ($hasActiveLoan) {
+                $availabilityIndicator = 'ON_LOAN';
+            } else {
+                $availabilityIndicator = 'NO_ACTIVE_LOAN';
+            }
+
             return [
                 'copyIdentity' => [
                     'id' => $copyId,
@@ -159,11 +175,14 @@ class InternalCopyReadService
                     'needsReview' => isset($row['needs_review']) ? (bool) $row['needs_review'] : null,
                     'reviewReasonCodes' => $this->normalizePgArray($row['review_reason_codes'] ?? null),
                     'registeredAt' => $this->normalizeDateTime($row['registered_at'] ?? null),
+                    'retiredAt' => $retiredAt,
+                    'retirementReasonCode' => isset($row['retirement_reason_code']) ? (string) $row['retirement_reason_code'] : null,
+                    'retirementNote' => isset($row['retirement_note']) ? (string) $row['retirement_note'] : null,
                 ],
                 'circulation' => [
                     'hasActiveLoan' => $hasActiveLoan,
                     'activeLoanId' => $activeLoanId,
-                    'availabilityIndicator' => $hasActiveLoan ? 'ON_LOAN' : 'NO_ACTIVE_LOAN',
+                    'availabilityIndicator' => $availabilityIndicator,
                 ],
                 'timestamps' => [
                     'createdAt' => $this->normalizeDateTime($row['created_at'] ?? null),

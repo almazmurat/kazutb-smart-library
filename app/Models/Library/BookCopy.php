@@ -11,5 +11,6 @@ class BookCopy extends ReadOnlyPgsqlModel
         'needs_review' => 'boolean',
         'review_reason_codes' => 'array',
         'location_mapping_confidence' => 'float',
+        'retired_at' => 'datetime',
     ];
 }
