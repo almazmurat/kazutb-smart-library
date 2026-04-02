@@ -1,5 +1,7 @@
 # 02 - Active Roadmap
 
+Deep-dive reference: `project-context/99-master-project-context.md`.
+
 ## Strategic Priority (Current)
 Rebalance from integration-centric delivery to full library-platform convergence.
 

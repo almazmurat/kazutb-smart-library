@@ -1,5 +1,7 @@
 # 03 - API Contracts (Operational Snapshot)
 
+Deep-dive reference: `project-context/99-master-project-context.md`.
+
 ## Public/Library Surface
 - Public catalog/search and book detail exist in DB-backed form.
 - Account summary exists with session + reader identity matching metadata.

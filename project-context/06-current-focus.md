@@ -1,5 +1,7 @@
 # 06 - Current Focus (Execution Now)
 
+Deep-dive reference: `project-context/99-master-project-context.md`.
+
 ## Active Window
 Week 1 of the approved 2-week execution map.
 

@@ -1,5 +1,7 @@
 # 04 - Known Risks
 
+Deep-dive reference: `project-context/99-master-project-context.md`.
+
 ## Top Platform Risks
 1. Path divergence risk
 - Public/catalog area has had transitional/demo/proxy branches.

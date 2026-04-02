@@ -1,5 +1,7 @@
 # 05 - Agent Working Rules
 
+Deep-dive reference: `project-context/99-master-project-context.md`.
+
 ## Scope Rules
 - This repository is a living product codebase.
 - Do not run generic blank-project bootstrap workflows.

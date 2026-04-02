@@ -1,5 +1,7 @@
 # 00 - Project Truth
 
+Deep-dive reference: `project-context/99-master-project-context.md`.
+
 ## Product Identity
 - Project: "Цифровая умная библиотека KazUTB".
 - Type: evolving library platform with integration boundary for CRM.

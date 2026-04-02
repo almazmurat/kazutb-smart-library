@@ -2,6 +2,12 @@
 
 Purpose: keep every AI agent aligned with real project truth before any planning or coding.
 
+## Daily Execution Mode (primary)
+For normal task execution, use only the concise operational files below first.
+
+## Deep Context Mode (secondary)
+Use `project-context/99-master-project-context.md` only for deep planning, architecture alignment, product vision, and milestone-level decisions.
+
 ## Read Order (mandatory)
 1. `project-context/00-project-truth.md`
 2. `project-context/01-current-stage.md`
@@ -10,6 +16,9 @@ Purpose: keep every AI agent aligned with real project truth before any planning
 5. `project-context/04-known-risks.md`
 6. `project-context/05-agent-working-rules.md`
 7. `project-context/02-active-roadmap.md`
+
+## Optional Deep Read
+- `project-context/99-master-project-context.md`
 
 ## Non-Negotiable Direction
 - Library platform is the core domain product.

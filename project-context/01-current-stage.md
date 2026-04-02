@@ -1,5 +1,7 @@
 # 01 - Current Stage
 
+Deep-dive reference: `project-context/99-master-project-context.md`.
+
 ## Agreed Stage Assessment
 - Whole platform: **advanced prototype transitioning to operational platform**.
 - Library backend core: **early operational core**.
