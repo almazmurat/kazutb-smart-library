@@ -1,0 +1,133 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Services\Library\InternalCopyWriteException;
+use App\Services\Library\InternalReviewWorkflowService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+class InternalReviewController extends Controller
+{
+    public function copyQueue(Request $request, InternalReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'reason_code' => ['nullable', 'string', 'max:64'],
+            'page' => ['nullable', 'integer', 'min:1'],
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+        ]);
+
+        return response()->json($service->listCopyReviewQueue(
+            reasonCode: isset($validated['reason_code']) ? (string) $validated['reason_code'] : null,
+            page: (int) ($validated['page'] ?? 1),
+            limit: (int) ($validated['limit'] ?? 20),
+        ));
+    }
+
+    public function copySummary(Request $request, InternalReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'top_limit' => ['nullable', 'integer', 'min:1', 'max:20'],
+        ]);
+
+        return response()->json($service->copyReviewSummary(
+            topReasonCodesLimit: (int) ($validated['top_limit'] ?? 5),
+        ));
+    }
+
+    public function resolveCopy(string $copyId, Request $request, InternalReviewWorkflowService $service): JsonResponse
+    {
+        if (! Str::isUuid($copyId)) {
+            return response()->json([
+                'error' => 'invalid_copy_id',
+                'message' => 'Copy id must be a valid UUID.',
+                'success' => false,
+            ], 400);
+        }
+
+        $validated = $request->validate([
+            'resolution_note' => ['nullable', 'string', 'max:1000'],
+            'actor_user_id' => ['sometimes', 'nullable', 'uuid'],
+            'request_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+            'correlation_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        try {
+            $result = $service->resolveCopyReview(
+                copyId: $copyId,
+                resolutionNote: isset($validated['resolution_note']) ? trim((string) $validated['resolution_note']) : null,
+                context: $this->context($request, $validated),
+            );
+        } catch (InternalCopyWriteException $exception) {
+            return response()->json([
+                'error' => $exception->errorCode(),
+                'message' => $exception->getMessage(),
+                'success' => false,
+            ], $exception->httpStatus());
+        }
+
+        return response()->json(['success' => true] + $result);
+    }
+
+    /**
+     * @param array<string, mixed> $validated
+     */
+    private function forbiddenActorOverrideResponse(Request $request, array $validated): ?JsonResponse
+    {
+        if (! array_key_exists('actor_user_id', $validated) || $validated['actor_user_id'] === null) {
+            return null;
+        }
+
+        $staffUser = $request->attributes->get('internal_staff_user');
+        if (! is_array($staffUser)) {
+            return null;
+        }
+
+        $sessionUserId = (string) ($staffUser['id'] ?? '');
+        $sessionRole = mb_strtolower(trim((string) ($staffUser['role'] ?? '')));
+        $requestedActorUserId = (string) $validated['actor_user_id'];
+
+        if ($requestedActorUserId === '' || $requestedActorUserId === $sessionUserId) {
+            return null;
+        }
+
+        if ($sessionRole === 'admin') {
+            return null;
+        }
+
+        return response()->json([
+            'error' => 'insufficient_staff_role',
+            'message' => 'Only admin staff can override actor_user_id.',
+            'success' => false,
+        ], 403);
+    }
+
+    /**
+     * @param array<string, mixed> $validated
+     * @return array<string, mixed>
+     */
+    private function context(Request $request, array $validated): array
+    {
+        $staffUser = $request->attributes->get('internal_staff_user');
+        $sessionUserId = is_array($staffUser) ? (string) ($staffUser['id'] ?? '') : '';
+        $actorUserId = isset($validated['actor_user_id'])
+            ? (string) $validated['actor_user_id']
+            : (Str::isUuid($sessionUserId) ? $sessionUserId : null);
+
+        return [
+            'actorUserId' => $actorUserId,
+            'actorType' => 'staff_operator',
+            'actorRole' => is_array($staffUser) ? (string) ($staffUser['role'] ?? '') : null,
+            'actorLogin' => is_array($staffUser) ? (string) ($staffUser['login'] ?? '') : null,
+            'requestId' => isset($validated['request_id']) ? (string) $validated['request_id'] : null,
+            'correlationId' => isset($validated['correlation_id']) ? (string) $validated['correlation_id'] : null,
+        ];
+    }
+}

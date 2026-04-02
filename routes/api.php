@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\InternalAiAssistantController;
 use App\Http\Controllers\Api\InternalCopyReadController;
 use App\Http\Controllers\Api\InternalCopyWriteController;
 use App\Http\Controllers\Api\InternalCirculationController;
+use App\Http\Controllers\Api\InternalReviewController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
 use App\Http\Controllers\Api\ReviewController;
@@ -60,6 +61,9 @@ Route::prefix('v1')->group(function (): void {
             Route::post('/copies', [InternalCopyWriteController::class, 'store']);
             Route::patch('/copies/{copyId}', [InternalCopyWriteController::class, 'patch']);
             Route::post('/copies/{copyId}/retire', [InternalCopyWriteController::class, 'retire']);
+            Route::get('/review/copies', [InternalReviewController::class, 'copyQueue']);
+            Route::get('/review/copies-summary', [InternalReviewController::class, 'copySummary']);
+            Route::post('/review/copies/{copyId}/resolve', [InternalReviewController::class, 'resolveCopy']);
         });
 
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);
