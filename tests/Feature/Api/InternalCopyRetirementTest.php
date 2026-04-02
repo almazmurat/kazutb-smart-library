@@ -360,6 +360,46 @@ class InternalCopyRetirementTest extends TestCase
             ->assertJsonPath('error', 'staff_authorization_required');
     }
 
+    public function test_retire_rejects_non_admin_actor_override(): void
+    {
+        $this->requireLivePgsql('Live PostgreSQL is required for retire actor override authorization test.');
+
+        $copyId = $this->pickNonRetiredCopyId();
+
+        $response = $this->withSession($this->staffSession('librarian'))->postJson(
+            '/api/v1/internal/copies/' . $copyId . '/retire',
+            [
+                'reason_code' => 'WRITTEN_OFF',
+                'actor_user_id' => (string) Str::uuid(),
+            ]
+        );
+
+        $response
+            ->assertStatus(403)
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('error', 'insufficient_staff_role');
+    }
+
+    public function test_retire_allows_admin_actor_override(): void
+    {
+        $this->requireLivePgsql('Live PostgreSQL is required for retire admin actor override authorization test.');
+
+        $copyId = $this->pickNonRetiredCopyId();
+
+        $response = $this->withSession($this->staffSession('admin'))->postJson(
+            '/api/v1/internal/copies/' . $copyId . '/retire',
+            [
+                'reason_code' => 'WRITTEN_OFF',
+                'actor_user_id' => (string) Str::uuid(),
+            ]
+        );
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('data.lifecycle.retirementReasonCode', 'WRITTEN_OFF');
+    }
+
     // ─────────────────────────────────────────────────────────────
     // Copy-bound reservation conflict
     // ─────────────────────────────────────────────────────────────

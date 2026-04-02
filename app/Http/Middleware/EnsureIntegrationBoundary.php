@@ -66,6 +66,18 @@ class EnsureIntegrationBoundary
         $request->attributes->set('integration.request_id', $requestId);
         $request->attributes->set('integration.correlation_id', $correlationId);
 
+        $operatorRoles = $this->parseOperatorRoles((string) $request->header('X-Operator-Roles', ''));
+        if ($operatorRoles === []) {
+            return $this->errorResponse(
+                request: $request,
+                status: 400,
+                errorCode: 'invalid_request',
+                reasonCode: 'missing_operator_roles',
+                message: 'X-Operator-Roles must contain at least one role value.',
+            );
+        }
+        $request->attributes->set('integration.operator_roles', $operatorRoles);
+
         $response = $next($request);
 
         $response->headers->set('X-Request-Id', $requestId);
@@ -104,5 +116,20 @@ class EnsureIntegrationBoundary
             'X-Request-Id' => $requestId,
             'X-Correlation-Id' => $correlationId,
         ]);
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function parseOperatorRoles(string $rawRoles): array
+    {
+        $parts = array_map(
+            static fn (string $part): string => mb_strtolower(trim($part)),
+            explode(',', $rawRoles)
+        );
+
+        $roles = array_values(array_unique(array_filter($parts, static fn (string $role): bool => $role !== '')));
+
+        return $roles;
     }
 }

@@ -225,6 +225,39 @@ class ReservationMutateTest extends TestCase
             ->assertJsonPath('error.reason_code', 'missing_cancel_reason_or_origin');
     }
 
+    public function test_approve_requires_reservations_approve_operator_role(): void
+    {
+        $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';
+        $headers = $this->headers;
+        $headers['X-Operator-Roles'] = 'reservations.reject';
+
+        $response = $this->withHeaders($headers)
+            ->postJson("/api/integration/v1/reservations/{$id}/approve");
+
+        $response->assertStatus(403)
+            ->assertJsonPath('error.error_code', 'forbidden')
+            ->assertJsonPath('error.reason_code', 'insufficient_operator_role');
+    }
+
+    public function test_reject_requires_reservations_reject_operator_role(): void
+    {
+        $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';
+        $headers = $this->headers;
+        $headers['X-Operator-Roles'] = 'reservations.approve';
+
+        $response = $this->withHeaders($headers)->postJson(
+            "/api/integration/v1/reservations/{$id}/reject",
+            [
+                'cancel_origin' => 'OPERATOR_REJECT',
+                'cancel_reason_code' => 'ITEM_NOT_ELIGIBLE',
+            ]
+        );
+
+        $response->assertStatus(403)
+            ->assertJsonPath('error.error_code', 'forbidden')
+            ->assertJsonPath('error.reason_code', 'insufficient_operator_role');
+    }
+
     /**
      * @param array{status:int, body:array<string,mixed>, replayed:bool} $result
      */

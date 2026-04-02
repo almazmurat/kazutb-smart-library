@@ -54,6 +54,21 @@ class IntegrationBoundarySkeletonTest extends TestCase
             ->assertJsonPath('error.reason_code', 'invalid_source_system');
     }
 
+    public function test_semantic_empty_operator_roles_is_rejected(): void
+    {
+        $headers = $this->requiredHeaders();
+        $headers['X-Operator-Roles'] = ' ,  , ';
+
+        $response = $this
+            ->withHeaders($headers + ['Authorization' => 'Bearer integration-token'])
+            ->getJson('/api/integration/v1/_boundary/ping');
+
+        $response
+            ->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'missing_operator_roles');
+    }
+
     public function test_successful_boundary_check_propagates_context_and_ids(): void
     {
         $response = $this

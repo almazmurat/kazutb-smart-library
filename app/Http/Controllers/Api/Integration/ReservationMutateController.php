@@ -18,6 +18,16 @@ class ReservationMutateController extends Controller
 
     public function approve(Request $request, string $id): JsonResponse
     {
+        if (! $this->hasOperatorRole($request, 'reservations.approve')) {
+            return $this->errorResponse(
+                request: $request,
+                status: 403,
+                errorCode: 'forbidden',
+                reasonCode: 'insufficient_operator_role',
+                message: 'Operator role reservations.approve is required for approve command.',
+            );
+        }
+
         $operatorBranchId = $this->validatedOperatorBranchId($request);
         if ($operatorBranchId === null) {
             return $this->errorResponse(
@@ -71,6 +81,16 @@ class ReservationMutateController extends Controller
 
     public function reject(Request $request, string $id): JsonResponse
     {
+        if (! $this->hasOperatorRole($request, 'reservations.reject')) {
+            return $this->errorResponse(
+                request: $request,
+                status: 403,
+                errorCode: 'forbidden',
+                reasonCode: 'insufficient_operator_role',
+                message: 'Operator role reservations.reject is required for reject command.',
+            );
+        }
+
         $operatorBranchId = $this->validatedOperatorBranchId($request);
         if ($operatorBranchId === null) {
             return $this->errorResponse(
@@ -190,5 +210,19 @@ class ReservationMutateController extends Controller
             'correlation_id' => $request->attributes->get('integration.correlation_id'),
             'timestamp' => now()->toISOString(),
         ], $status);
+    }
+
+    private function hasOperatorRole(Request $request, string $requiredRole): bool
+    {
+        $roles = $request->attributes->get('integration.operator_roles');
+
+        if (! is_array($roles)) {
+            $roles = array_values(array_filter(array_map(
+                static fn (string $part): string => mb_strtolower(trim($part)),
+                explode(',', (string) $request->header('X-Operator-Roles', ''))
+            ), static fn (string $role): bool => $role !== ''));
+        }
+
+        return in_array(mb_strtolower(trim($requiredRole)), $roles, true);
     }
 }

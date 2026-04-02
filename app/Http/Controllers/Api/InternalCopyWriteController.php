@@ -34,6 +34,11 @@ class InternalCopyWriteController extends Controller
             return $validated;
         }
 
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
         try {
             $result = $service->createCopy(
                 payload: Arr::except($request->all(), ['actor_user_id', 'request_id', 'correlation_id']),
@@ -75,6 +80,11 @@ class InternalCopyWriteController extends Controller
             return $validated;
         }
 
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
         try {
             $result = $service->patchCopy(
                 copyId: $copyId,
@@ -114,6 +124,11 @@ class InternalCopyWriteController extends Controller
 
         if ($validated instanceof JsonResponse) {
             return $validated;
+        }
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
         }
 
         $reasonCode = (string) $validated['reason_code'];
@@ -189,5 +204,38 @@ class InternalCopyWriteController extends Controller
             'requestId' => isset($validated['request_id']) ? (string) $validated['request_id'] : null,
             'correlationId' => isset($validated['correlation_id']) ? (string) $validated['correlation_id'] : null,
         ];
+    }
+
+    /**
+     * @param array<string, mixed> $validated
+     */
+    private function forbiddenActorOverrideResponse(Request $request, array $validated): ?JsonResponse
+    {
+        if (! array_key_exists('actor_user_id', $validated) || $validated['actor_user_id'] === null) {
+            return null;
+        }
+
+        $staffUser = $request->attributes->get('internal_staff_user');
+        if (! is_array($staffUser)) {
+            return null;
+        }
+
+        $sessionUserId = (string) ($staffUser['id'] ?? '');
+        $sessionRole = mb_strtolower(trim((string) ($staffUser['role'] ?? '')));
+        $requestedActorUserId = (string) $validated['actor_user_id'];
+
+        if ($requestedActorUserId === '' || $requestedActorUserId === $sessionUserId) {
+            return null;
+        }
+
+        if ($sessionRole === 'admin') {
+            return null;
+        }
+
+        return response()->json([
+            'error' => 'insufficient_staff_role',
+            'message' => 'Only admin staff can override actor_user_id.',
+            'success' => false,
+        ], 403);
     }
 }

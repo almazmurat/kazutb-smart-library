@@ -59,7 +59,6 @@ class InternalCirculationCheckoutReturnTest extends TestCase
         $response = $this->withSession($this->staffSession())->postJson('/api/v1/internal/circulation/checkouts', [
             'reader_id' => $readerId,
             'copy_id' => $copyId,
-            'actor_user_id' => $readerId,
             'request_id' => 'test-checkout-request',
             'correlation_id' => 'test-checkout-correlation',
         ]);
@@ -160,7 +159,6 @@ class InternalCirculationCheckoutReturnTest extends TestCase
 
         $response = $this->withSession($this->staffSession())->postJson('/api/v1/internal/circulation/returns', [
             'copy_id' => $copyId,
-            'actor_user_id' => $readerId,
         ]);
 
         $response
@@ -226,6 +224,38 @@ class InternalCirculationCheckoutReturnTest extends TestCase
             ->assertForbidden()
             ->assertJsonPath('success', false)
             ->assertJsonPath('error', 'staff_authorization_required');
+    }
+
+    public function test_checkout_rejects_non_admin_actor_override(): void
+    {
+        [$readerId, $copyId] = $this->pickReaderAndCopy();
+
+        $response = $this->withSession($this->staffSession('librarian'))->postJson('/api/v1/internal/circulation/checkouts', [
+            'reader_id' => $readerId,
+            'copy_id' => $copyId,
+            'actor_user_id' => (string) DB::scalar('select gen_random_uuid()::text'),
+        ]);
+
+        $response
+            ->assertStatus(403)
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('error', 'insufficient_staff_role');
+    }
+
+    public function test_checkout_allows_admin_actor_override(): void
+    {
+        [$readerId, $copyId] = $this->pickReaderAndCopy();
+
+        $response = $this->withSession($this->staffSession('admin'))->postJson('/api/v1/internal/circulation/checkouts', [
+            'reader_id' => $readerId,
+            'copy_id' => $copyId,
+            'actor_user_id' => (string) DB::scalar('select gen_random_uuid()::text'),
+        ]);
+
+        $response
+            ->assertCreated()
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('data.status', 'active');
     }
 
     /**

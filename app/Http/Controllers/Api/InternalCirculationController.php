@@ -10,6 +10,7 @@ use App\Services\Library\CirculationLoanWriteService;
 use App\Services\Library\CirculationWriteException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class InternalCirculationController extends Controller
 {
@@ -91,13 +92,20 @@ class InternalCirculationController extends Controller
             'correlation_id' => ['nullable', 'string', 'max:128'],
         ]);
 
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        $sessionActorId = $this->sessionStaffActorId($request);
+
         try {
             $result = $service->checkout(
                 readerId: (string) $validated['reader_id'],
                 copyId: (string) $validated['copy_id'],
                 dueAt: isset($validated['due_at']) ? (string) $validated['due_at'] : null,
                 context: [
-                    'actorUserId' => isset($validated['actor_user_id']) ? (string) $validated['actor_user_id'] : null,
+                    'actorUserId' => isset($validated['actor_user_id']) ? (string) $validated['actor_user_id'] : $sessionActorId,
                     'requestId' => isset($validated['request_id']) ? (string) $validated['request_id'] : null,
                     'correlationId' => isset($validated['correlation_id']) ? (string) $validated['correlation_id'] : null,
                     'actorType' => 'staff_operator',
@@ -125,11 +133,18 @@ class InternalCirculationController extends Controller
             'correlation_id' => ['nullable', 'string', 'max:128'],
         ]);
 
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        $sessionActorId = $this->sessionStaffActorId($request);
+
         try {
             $result = $service->returnCopy(
                 copyId: (string) $validated['copy_id'],
                 context: [
-                    'actorUserId' => isset($validated['actor_user_id']) ? (string) $validated['actor_user_id'] : null,
+                    'actorUserId' => isset($validated['actor_user_id']) ? (string) $validated['actor_user_id'] : $sessionActorId,
                     'requestId' => isset($validated['request_id']) ? (string) $validated['request_id'] : null,
                     'correlationId' => isset($validated['correlation_id']) ? (string) $validated['correlation_id'] : null,
                     'actorType' => 'staff_operator',
@@ -146,5 +161,50 @@ class InternalCirculationController extends Controller
         return response()->json([
             'success' => true,
         ] + $result);
+    }
+
+    /**
+     * @param array<string, mixed> $validated
+     */
+    private function forbiddenActorOverrideResponse(Request $request, array $validated): ?JsonResponse
+    {
+        if (! array_key_exists('actor_user_id', $validated) || $validated['actor_user_id'] === null) {
+            return null;
+        }
+
+        $staffUser = $request->attributes->get('internal_staff_user');
+        if (! is_array($staffUser)) {
+            return null;
+        }
+
+        $sessionUserId = (string) ($staffUser['id'] ?? '');
+        $sessionRole = mb_strtolower(trim((string) ($staffUser['role'] ?? '')));
+        $requestedActorUserId = (string) $validated['actor_user_id'];
+
+        if ($requestedActorUserId === '' || $requestedActorUserId === $sessionUserId) {
+            return null;
+        }
+
+        if ($sessionRole === 'admin') {
+            return null;
+        }
+
+        return response()->json([
+            'error' => 'insufficient_staff_role',
+            'message' => 'Only admin staff can override actor_user_id.',
+            'success' => false,
+        ], 403);
+    }
+
+    private function sessionStaffActorId(Request $request): ?string
+    {
+        $staffUser = $request->attributes->get('internal_staff_user');
+        if (! is_array($staffUser)) {
+            return null;
+        }
+
+        $sessionUserId = (string) ($staffUser['id'] ?? '');
+
+        return Str::isUuid($sessionUserId) ? $sessionUserId : null;
     }
 }
