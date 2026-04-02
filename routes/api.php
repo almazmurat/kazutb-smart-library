@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\InternalAiAssistantController;
+use App\Http\Controllers\Api\InternalCopyReadController;
 use App\Http\Controllers\Api\InternalCirculationController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
@@ -43,6 +45,19 @@ Route::prefix('v1')->group(function (): void {
         Route::post('/returns', [InternalCirculationController::class, 'returnCopy']);
     });
 
+    Route::prefix('internal')
+        ->middleware([
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            'internal.circulation.staff',
+        ])
+        ->group(function (): void {
+            Route::get('/copies/{copyId}', [InternalCopyReadController::class, 'show']);
+            Route::get('/documents/{documentId}/copies', [InternalCopyReadController::class, 'listByDocument']);
+        });
+
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);
     Route::get('/bridge/users', [BridgeController::class, 'users']);
     Route::get('/bridge/copies', [BridgeController::class, 'copies']);
@@ -56,6 +71,20 @@ Route::prefix('v1')->group(function (): void {
     Route::get('/catalog-external', [CatalogController::class, 'proxy']);
     Route::get('/catalog/{isbn}', [BookController::class, 'show']);
     Route::get('/landing', [LandingController::class, 'index']);
+
+    Route::prefix('internal/ai-assistant')
+        ->middleware([
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            'internal.circulation.staff',
+        ])
+        ->group(function (): void {
+            Route::post('/token', [InternalAiAssistantController::class, 'token']);
+            Route::post('/session', [InternalAiAssistantController::class, 'session']);
+            Route::post('/thread', [InternalAiAssistantController::class, 'thread']);
+        });
 });
 
 Route::prefix('integration/v1')
