@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\Library\InternalCopyWriteException;
+use App\Services\Library\InternalDocumentReviewException;
+use App\Services\Library\InternalDocumentReviewWorkflowService;
 use App\Services\Library\InternalReviewWorkflowService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -66,6 +68,71 @@ class InternalReviewController extends Controller
                 context: $this->context($request, $validated),
             );
         } catch (InternalCopyWriteException $exception) {
+            return response()->json([
+                'error' => $exception->errorCode(),
+                'message' => $exception->getMessage(),
+                'success' => false,
+            ], $exception->httpStatus());
+        }
+
+        return response()->json(['success' => true] + $result);
+    }
+
+    public function documentQueue(Request $request, InternalDocumentReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'reason_code' => ['nullable', 'string', 'max:64'],
+            'page' => ['nullable', 'integer', 'min:1'],
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+        ]);
+
+        return response()->json($service->listDocumentReviewQueue(
+            reasonCode: isset($validated['reason_code']) ? (string) $validated['reason_code'] : null,
+            page: (int) ($validated['page'] ?? 1),
+            limit: (int) ($validated['limit'] ?? 20),
+        ));
+    }
+
+    public function documentSummary(Request $request, InternalDocumentReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'top_limit' => ['nullable', 'integer', 'min:1', 'max:20'],
+        ]);
+
+        return response()->json($service->documentReviewSummary(
+            topReasonCodesLimit: (int) ($validated['top_limit'] ?? 5),
+        ));
+    }
+
+    public function resolveDocument(string $documentId, Request $request, InternalDocumentReviewWorkflowService $service): JsonResponse
+    {
+        if (! Str::isUuid($documentId)) {
+            return response()->json([
+                'error' => 'invalid_document_id',
+                'message' => 'Document id must be a valid UUID.',
+                'success' => false,
+            ], 400);
+        }
+
+        $validated = $request->validate([
+            'resolution_note' => ['nullable', 'string', 'max:1000'],
+            'actor_user_id' => ['sometimes', 'nullable', 'uuid'],
+            'request_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+            'correlation_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        try {
+            $result = $service->resolveDocumentReview(
+                documentId: $documentId,
+                resolutionNote: isset($validated['resolution_note']) ? trim((string) $validated['resolution_note']) : null,
+                context: $this->context($request, $validated),
+            );
+        } catch (InternalDocumentReviewException $exception) {
             return response()->json([
                 'error' => $exception->errorCode(),
                 'message' => $exception->getMessage(),

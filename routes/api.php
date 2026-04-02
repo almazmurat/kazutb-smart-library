@@ -64,6 +64,9 @@ Route::prefix('v1')->group(function (): void {
             Route::get('/review/copies', [InternalReviewController::class, 'copyQueue']);
             Route::get('/review/copies-summary', [InternalReviewController::class, 'copySummary']);
             Route::post('/review/copies/{copyId}/resolve', [InternalReviewController::class, 'resolveCopy']);
+            Route::get('/review/documents', [InternalReviewController::class, 'documentQueue']);
+            Route::get('/review/documents-summary', [InternalReviewController::class, 'documentSummary']);
+            Route::post('/review/documents/{documentId}/resolve', [InternalReviewController::class, 'resolveDocument']);
         });
 
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);
