@@ -39,6 +39,15 @@ class IntegrationReservationWriteService
                     );
                 }
 
+                if ($this->isCopyRetired(isset($row['copyId']) ? (string) $row['copyId'] : null)) {
+                    throw new IntegrationReservationMutationException(
+                        errorCode: 'conflict',
+                        reasonCode: 'copy_retired',
+                        message: 'Reservation is bound to a retired copy and cannot be approved.',
+                        httpStatus: 409,
+                    );
+                }
+
                 DB::connection('pgsql')
                     ->table(DB::raw('"Reservation"'))
                     ->where('id', $row['id'])
@@ -346,5 +355,21 @@ class IntegrationReservationWriteService
         }
 
         return Carbon::parse((string) $value, 'UTC')->toISOString();
+    }
+
+    private function isCopyRetired(?string $copyId): bool
+    {
+        if ($copyId === null || trim($copyId) === '') {
+            return false;
+        }
+
+        return DB::connection('pgsql')
+            ->table('app.book_copies')
+            ->where(function ($query) use ($copyId): void {
+                $query->whereRaw('id::text = ?', [$copyId])
+                    ->orWhereRaw('core_copy_id::text = ?', [$copyId]);
+            })
+            ->whereNotNull('retired_at')
+            ->exists();
     }
 }

@@ -118,3 +118,11 @@ Internal circulation checkout explicitly rejects retired copies.
 - Eligibility rule: if `retired_at` is non-null, checkout is blocked.
 - Stable conflict response: HTTP `409`, error `copy_retired`.
 - Scope: internal operational behavior only; no CRM-published API changes.
+
+## Reservation consistency hardening (post-Phase 2C)
+
+Copy-bound reservation approval is retirement-aware.
+
+- Rule: approval (`PENDING -> READY`) is blocked when reservation `copyId` points to a copy with non-null `retired_at`.
+- Stable conflict response: HTTP `409`, `error.error_code=conflict`, `error.reason_code=copy_retired`.
+- This is a correctness guard on existing reservation mutate behavior (approve/reject scope unchanged).
