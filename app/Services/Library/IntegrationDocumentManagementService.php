@@ -105,6 +105,11 @@ class IntegrationDocumentManagementService
             $mapped['id'] = (string) Str::uuid();
         }
 
+        // Some production-like schemas require legacy_doc_id as a unique non-null integer.
+        if ($this->hasColumn('legacy_doc_id') && ! isset($mapped['legacy_doc_id'])) {
+            $mapped['legacy_doc_id'] = $this->nextLegacyDocId();
+        }
+
         if ($this->hasColumn('created_at')) {
             $mapped['created_at'] = $now->toDateTimeString();
         }
@@ -137,6 +142,15 @@ class IntegrationDocumentManagementService
         );
 
         return $after;
+    }
+
+    private function nextLegacyDocId(): int
+    {
+        $max = DB::connection('pgsql')
+            ->table(self::TABLE)
+            ->max('legacy_doc_id');
+
+        return ((int) $max) + 1;
     }
 
     /**
