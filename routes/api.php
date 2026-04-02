@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\InternalCirculationController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\Integration\DocumentManagementController;
 use App\Http\Controllers\Api\Integration\ReservationReadController;
 use App\Http\Controllers\Api\Integration\ReservationMutateController;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -81,6 +82,13 @@ Route::prefix('integration/v1')
         // Mutate endpoints (shell v1, phase 2): approve / reject only.
         Route::post('/reservations/{id}/approve', [ReservationMutateController::class, 'approve']);
         Route::post('/reservations/{id}/reject', [ReservationMutateController::class, 'reject']);
+
+        // Book management v1 phase 1 (document metadata only).
+        Route::get('/documents', [DocumentManagementController::class, 'index']);
+        Route::get('/documents/{id}', [DocumentManagementController::class, 'show']);
+        Route::post('/documents', [DocumentManagementController::class, 'store']);
+        Route::patch('/documents/{id}', [DocumentManagementController::class, 'patch']);
+        Route::post('/documents/{id}/archive', [DocumentManagementController::class, 'archive']);
     });
 
 Route::get('/user', function (Request $request) {
