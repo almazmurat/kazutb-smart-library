@@ -29,6 +29,10 @@ class CirculationLoanWriteService
                 throw new CirculationWriteException('copy_not_found', 404, 'Copy not found.');
             }
 
+            if ($copy->retired_at !== null) {
+                throw new CirculationWriteException('copy_retired', 409, 'Retired copy is not checkout-eligible.');
+            }
+
             $activeLoan = $this->findActiveLoanModelByCopy($copyId);
             if ($activeLoan) {
                 throw new CirculationWriteException('copy_already_on_loan', 409, 'Copy already has an active loan.');

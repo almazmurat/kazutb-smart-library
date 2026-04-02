@@ -110,3 +110,11 @@ This retirement is strictly internal. It does not:
 - Delete / physical removal
 - Copy-level archive (separate concept from physical retirement)
 - CRM-facing publication of copy lifecycle changes
+
+## Circulation consistency hardening (post-Phase 2C)
+
+Internal circulation checkout explicitly rejects retired copies.
+
+- Eligibility rule: if `retired_at` is non-null, checkout is blocked.
+- Stable conflict response: HTTP `409`, error `copy_retired`.
+- Scope: internal operational behavior only; no CRM-published API changes.

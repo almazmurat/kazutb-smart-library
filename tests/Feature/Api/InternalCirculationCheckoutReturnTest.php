@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\Library\CirculationAuditEvent;
 use App\Models\Library\CirculationLoan;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -113,6 +114,35 @@ class InternalCirculationCheckoutReturnTest extends TestCase
             ->assertJsonPath('error', 'copy_already_on_loan');
     }
 
+    public function test_checkout_for_retired_copy_returns_conflict(): void
+    {
+        [$readerId, $copyId] = $this->pickReaderAndCopy();
+
+        DB::connection('pgsql')->table('app.book_copies')
+            ->where('id', $copyId)
+            ->update([
+                'retired_at' => Carbon::now('UTC'),
+                'retirement_reason_code' => 'WRITTEN_OFF',
+                'retirement_note' => 'retired for circulation consistency test',
+            ]);
+
+        $response = $this->withSession($this->staffSession())->postJson('/api/v1/internal/circulation/checkouts', [
+            'reader_id' => $readerId,
+            'copy_id' => $copyId,
+        ]);
+
+        $response
+            ->assertStatus(409)
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('error', 'copy_retired');
+
+        $this->assertDatabaseMissing('app.circulation_loans', [
+            'reader_id' => $readerId,
+            'copy_id' => $copyId,
+            'status' => 'active',
+        ], 'pgsql');
+    }
+
     public function test_internal_return_closes_active_loan_and_writes_audit(): void
     {
         [$readerId, $copyId] = $this->pickReaderAndCopy();
@@ -214,6 +244,7 @@ class InternalCirculationCheckoutReturnTest extends TestCase
                     ->where('cl.status', '=', 'active')
                     ->whereNull('cl.returned_at');
             })
+            ->whereNull('bc.retired_at')
             ->whereNull('cl.id')
             ->value('bc.id');
 
