@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\InternalAiAssistantController;
 use App\Http\Controllers\Api\InternalCopyReadController;
 use App\Http\Controllers\Api\InternalCopyWriteController;
 use App\Http\Controllers\Api\InternalCirculationController;
+use App\Http\Controllers\Api\InternalEnrichmentController;
 use App\Http\Controllers\Api\InternalReviewController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
@@ -82,6 +83,12 @@ Route::prefix('v1')->group(function (): void {
             Route::get('/review/triage-summary', [InternalReviewController::class, 'triageSummary']);
             Route::get('/review/triage-reason-codes', [InternalReviewController::class, 'triageReasonCodes']);
             Route::get('/review/stewardship-metrics', [InternalReviewController::class, 'stewardshipMetrics']);
+            Route::get('/enrichment/stats', [InternalEnrichmentController::class, 'stats']);
+            Route::post('/enrichment/validate-isbn', [InternalEnrichmentController::class, 'validateIsbn']);
+            Route::post('/enrichment/bulk-validate', [InternalEnrichmentController::class, 'bulkValidate']);
+            Route::get('/enrichment/lookup/{documentId}', [InternalEnrichmentController::class, 'lookup']);
+            Route::post('/enrichment/apply/{documentId}', [InternalEnrichmentController::class, 'apply']);
+            Route::post('/enrichment/check-isbn', [InternalEnrichmentController::class, 'checkIsbn']);
         });
 
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);

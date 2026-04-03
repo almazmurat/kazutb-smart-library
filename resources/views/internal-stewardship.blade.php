@@ -616,6 +616,17 @@
                 </div>
             </div>
             <div class="panel">
+                <h2>Каталожное обогащение</h2>
+                <div class="cards" id="enrichment-stats-cards">
+                    <div class="metric soft"><div class="metric-label">Загрузка…</div></div>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="button small" onclick="bulkValidateAll()">Перевалидировать все ISBN</button>
+                    <button class="button small secondary" onclick="checkIsbnPrompt()">Проверить ISBN вручную</button>
+                </div>
+                <div id="enrichment-status" style="margin-top: 8px;"></div>
+            </div>
+            <div class="panel">
                 <div class="bulk-bar" id="doc-bulk-bar">
                     <span class="bulk-count" id="doc-bulk-count">0 выбрано</span>
                     <div class="bulk-note"><input id="doc-bulk-note" type="text" placeholder="Заметка для всех (опционально)"></div>
@@ -807,7 +818,7 @@
             if (!tabLoadedFlags[tab]) {
                 tabLoadedFlags[tab] = true;
                 if (tab === 'copies') { loadCopySummary(); loadCopyQueue(1); }
-                if (tab === 'documents') { loadDocSummary(); loadDocQueue(1); }
+                if (tab === 'documents') { loadDocSummary(); loadEnrichmentStats(); loadDocQueue(1); }
                 if (tab === 'readers') { loadReaderSummary(); loadReaderQueue(1); }
             }
         });
@@ -1051,6 +1062,14 @@
                         <td>
                             <button class="button small" onclick="toggleDocAction('${esc(id)}')">Решить</button>
                             <button class="button small warn-outline" onclick="toggleDocFlag('${esc(id)}')">Флаг</button>
+                            <button class="button small secondary" onclick="lookupDoc('${esc(id)}')">Обогатить</button>
+                        </td>
+                    </tr>
+                    <tr class="action-row" id="doc-enrich-${id}" style="display:none">
+                        <td colspan="7">
+                            <div class="action-form" id="doc-enrich-content-${id}">
+                                <span class="meta">Загрузка OpenLibrary…</span>
+                            </div>
                         </td>
                     </tr>
                     <tr class="action-row" id="doc-resolve-${id}" style="display:none">
@@ -1384,6 +1403,133 @@
                 loadOverview();
             } catch (err) {
                 showError('Bulk resolve ошибка: ' + (err.message || err.error || 'Unknown'));
+            }
+        }
+
+        // ═══════════════════════════════════════
+        // Enrichment functions
+        // ═══════════════════════════════════════
+        async function loadEnrichmentStats() {
+            try {
+                const data = await api('/api/v1/internal/enrichment/stats');
+                const d = data.data || {};
+                const g = d.gaps || {};
+                document.getElementById('enrichment-stats-cards').innerHTML = [
+                    metricHtml('Без ISBN', g.missingIsbn, `из ${fmt(d.totalDocuments)} документов`, 'alert'),
+                    metricHtml('Невалидный ISBN', g.invalidIsbn, '', 'warn-soft'),
+                    metricHtml('Валидный ISBN', g.validIsbn, '', 'accent-bg'),
+                    metricHtml('Обогащаемых', d.enrichableByIsbn, 'есть ISBN, нет метаданных', 'soft'),
+                    metricHtml('Нет года', g.missingYear, '', 'soft'),
+                    metricHtml('Нет издателя', g.missingPublisher, '', 'soft'),
+                ].join('');
+            } catch { /* enrichment stats optional */ }
+        }
+
+        async function bulkValidateAll() {
+            const st = document.getElementById('enrichment-status');
+            st.innerHTML = '<span class="meta">Валидация ISBN… (до 500 за раз)</span>';
+            try {
+                const data = await api('/api/v1/internal/enrichment/bulk-validate', 'POST', { limit: 500 });
+                const r = data.data || {};
+                st.innerHTML = `<span class="badge entity">Обработано: ${r.processed} | Валидных: ${r.valid} | Невалидных: ${r.invalid}</span>`;
+                loadEnrichmentStats();
+            } catch (err) {
+                st.innerHTML = `<span class="badge reason">Ошибка: ${esc(err.message || '')}</span>`;
+            }
+        }
+
+        async function checkIsbnPrompt() {
+            const isbn = prompt('Введите ISBN для проверки:');
+            if (!isbn) return;
+            const st = document.getElementById('enrichment-status');
+            try {
+                const data = await api('/api/v1/internal/enrichment/check-isbn', 'POST', { isbn });
+                const r = data.data || {};
+                const badge = r.valid ? 'entity' : 'reason';
+                st.innerHTML = `<span class="badge ${badge}">${esc(r.isbn)} — ${r.valid ? '✅ Валиден' : '❌ Невалиден'} (${esc(r.format || 'unknown')})</span>${r.error ? ` <span class="meta">${esc(r.error)}</span>` : ''}`;
+            } catch (err) {
+                st.innerHTML = `<span class="badge reason">Ошибка: ${esc(err.message || '')}</span>`;
+            }
+        }
+
+        async function lookupDoc(docId) {
+            const row = document.getElementById(`doc-enrich-${docId}`);
+            const content = document.getElementById(`doc-enrich-content-${docId}`);
+            if (!row || !content) return;
+
+            // Toggle visibility
+            if (row.style.display !== 'none') { row.style.display = 'none'; return; }
+            row.style.display = '';
+            content.innerHTML = '<span class="meta">Поиск в OpenLibrary…</span>';
+
+            try {
+                const data = await api(`/api/v1/internal/enrichment/lookup/${docId}`);
+                const r = data.data || {};
+                const suggs = r.suggestions || [];
+                const lookup = r.lookup || {};
+                const meta = lookup.metadata || {};
+
+                if (!lookup.found) {
+                    content.innerHTML = `<span class="meta">Данные не найдены в OpenLibrary.</span>
+                        <button class="button small secondary" onclick="document.getElementById('doc-enrich-${docId}').style.display='none'">Закрыть</button>`;
+                    return;
+                }
+
+                let html = '<div style="display:grid;gap:10px;width:100%">';
+                html += `<div><strong>OpenLibrary:</strong> ${esc(meta.title || '—')} ${meta.subtitle ? '— '+esc(meta.subtitle) : ''}</div>`;
+                if (meta.authors?.length) html += `<div><strong>Авторы:</strong> ${meta.authors.map(a => esc(a)).join(', ')}</div>`;
+                if (meta.publishYear) html += `<div><strong>Год:</strong> ${meta.publishYear}</div>`;
+                if (meta.publishers?.length) html += `<div><strong>Издатели:</strong> ${meta.publishers.map(p => esc(p)).join(', ')}</div>`;
+                if (meta.numberOfPages) html += `<div><strong>Страниц:</strong> ${meta.numberOfPages}</div>`;
+
+                if (suggs.length) {
+                    html += '<div style="margin-top:8px"><strong>Предложения обогащения:</strong></div>';
+                    suggs.forEach((s, i) => {
+                        const checked = s.confidence === 'high' ? 'checked' : '';
+                        html += `<label style="display:flex;gap:8px;align-items:center;padding:4px 0">
+                            <input type="checkbox" class="enrich-check" data-doc="${esc(docId)}" data-field="${esc(s.column)}" data-value="${esc(String(s.suggested))}" ${checked}>
+                            <span>${esc(s.field)}: <strong>${esc(String(s.suggested))}</strong></span>
+                            <span class="badge ${s.confidence === 'high' ? 'entity' : 'reason'}">${esc(s.confidence)}</span>
+                        </label>`;
+                    });
+                    html += `<button class="button small" onclick="applyEnrichment('${esc(docId)}')">Применить выбранное</button>`;
+                } else {
+                    html += '<div class="meta" style="margin-top:8px">Нет предложений — текущие данные уже полные.</div>';
+                }
+
+                html += `<button class="button small secondary" onclick="document.getElementById('doc-enrich-${esc(docId)}').style.display='none'" style="margin-top:4px">Закрыть</button>`;
+                html += '</div>';
+                content.innerHTML = html;
+            } catch (err) {
+                content.innerHTML = `<span class="badge reason">Ошибка: ${esc(err.message || '')}</span>
+                    <button class="button small secondary" onclick="document.getElementById('doc-enrich-${docId}').style.display='none'">Закрыть</button>`;
+            }
+        }
+
+        async function applyEnrichment(docId) {
+            const checks = document.querySelectorAll(`.enrich-check[data-doc="${docId}"]:checked`);
+            if (!checks.length) { alert('Выберите хотя бы одно поле.'); return; }
+
+            const fields = {};
+            checks.forEach(cb => {
+                let val = cb.dataset.value;
+                if (cb.dataset.field === 'publication_year') val = parseInt(val, 10);
+                if (cb.dataset.field === 'isbn_is_valid') val = val === 'true' || val === '1';
+                fields[cb.dataset.field] = val;
+            });
+
+            try {
+                const data = await api(`/api/v1/internal/enrichment/apply/${docId}`, 'POST', { fields, source: 'openlibrary' });
+                const r = data.data || {};
+                const content = document.getElementById(`doc-enrich-content-${docId}`);
+                if (content) {
+                    content.innerHTML = `<span class="badge entity">✅ Применено: ${(r.applied || []).join(', ')}</span>
+                        ${r.skipped?.length ? `<span class="badge reason">Пропущено: ${r.skipped.join(', ')}</span>` : ''}
+                        <button class="button small secondary" onclick="document.getElementById('doc-enrich-${docId}').style.display='none'" style="margin-left:8px">Закрыть</button>`;
+                }
+                loadEnrichmentStats();
+            } catch (err) {
+                alert('Ошибка применения: ' + (err.message || ''));
             }
         }
 
