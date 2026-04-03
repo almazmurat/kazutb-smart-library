@@ -428,11 +428,25 @@
           <div class="loading" style="grid-column: 1 / -1;">Загрузка выдач...</div>
         </div>
       </section>
+
+      <section class="showcase" style="margin-top: 36px;">
+        <div class="section-head">
+          <div>
+            <h2>Мои бронирования</h2>
+            <p>Статус ваших бронирований в библиотечной системе.</p>
+          </div>
+        </div>
+
+        <div id="reservations-grid" class="book-grid">
+          <div class="loading" style="grid-column: 1 / -1;">Загрузка бронирований...</div>
+        </div>
+      </section>
     </div>
   </main>
 
   <script>
     const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans?status=active';
+    const ACCOUNT_RESERVATIONS_ENDPOINT = '/api/v1/account/reservations';
     const ACCOUNT_SUMMARY_ENDPOINT = '/api/v1/account/summary';
     const ME_ENDPOINT = '/api/v1/me';
     const AUTH_USER_KEY = 'library.auth.user';
@@ -566,7 +580,7 @@
         if (resp.ok && data.success) {
           const newDue = data.data?.dueAt ? new Date(data.data.dueAt).toLocaleDateString('ru-RU') : '—';
           alert(`✓ Продлено! Новый срок: ${newDue}. Продлений: ${data.data?.renewCount || '?'}/3`);
-          loadLoans();
+          loadBooks();
         } else {
           alert(`Ошибка: ${data.message || data.error}`);
         }
@@ -659,6 +673,72 @@
       }
     }
 
+    function reservationStatusBadge(status) {
+      const map = {
+        'PENDING': { label: '⏳ Ожидание', color: '#92400e', bg: '#fef3c7' },
+        'READY': { label: '✓ Готово к выдаче', color: '#065f46', bg: '#d1fae5' },
+        'FULFILLED': { label: '📚 Выдано', color: '#1e40af', bg: '#dbeafe' },
+        'CANCELLED': { label: '✕ Отменено', color: '#991b1b', bg: '#fee2e2' },
+        'EXPIRED': { label: '⌛ Истекло', color: '#6b7280', bg: '#f3f4f6' },
+      };
+      const s = map[status] || { label: status, color: '#6b7280', bg: '#f3f4f6' };
+      return `<span style="display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:600; color:${s.color}; background:${s.bg};">${s.label}</span>`;
+    }
+
+    function renderReservationCard(res) {
+      const bookTitle = res.book?.title || 'Книга';
+      const isbn = res.book?.isbn || '';
+      const year = res.book?.publishYear || '';
+      const reservedAt = res.reservedAt ? new Date(res.reservedAt).toLocaleDateString('ru-RU') : '—';
+      const expiresAt = res.expiresAt ? new Date(res.expiresAt).toLocaleDateString('ru-RU') : '—';
+      const isActive = res.status === 'PENDING' || res.status === 'READY';
+
+      return `
+        <article class="book-card">
+          <div class="book-preview" style="${isActive ? 'background: linear-gradient(180deg, #0369a1 0%, #0284c7 100%);' : 'background: linear-gradient(180deg, #475569 0%, #64748b 100%); opacity: 0.85;'}">
+            <small>Бронь</small>
+            <h3 style="font-size: 14px;">${escapeHtml(bookTitle.substring(0, 40))}${bookTitle.length > 40 ? '…' : ''}</h3>
+          </div>
+          <h3 class="book-title" style="font-size: 15px;">${escapeHtml(bookTitle.substring(0, 60))}${bookTitle.length > 60 ? '…' : ''}</h3>
+          <div class="book-meta">${reservationStatusBadge(res.status)}</div>
+          ${isbn ? `<div class="book-meta">ISBN: ${escapeHtml(isbn)}</div>` : ''}
+          ${year ? `<div class="book-meta">Год: ${year}</div>` : ''}
+          <div class="book-meta">Забронировано: ${reservedAt}</div>
+          <div class="book-meta">Действует до: ${expiresAt}</div>
+          ${res.cancelReasonCode ? `<div class="book-meta" style="color:#991b1b;">Причина: ${escapeHtml(res.cancelReasonCode)}</div>` : ''}
+        </article>
+      `;
+    }
+
+    async function loadReservations() {
+      const grid = document.getElementById('reservations-grid');
+      try {
+        const response = await fetch(ACCOUNT_RESERVATIONS_ENDPOINT, {
+          headers: { Accept: 'application/json' },
+        });
+
+        if (response.status === 401) {
+          grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Войдите, чтобы увидеть бронирования.</div>';
+          return;
+        }
+
+        if (!response.ok) throw new Error('Ошибка API');
+
+        const payload = await response.json();
+        const reservations = Array.isArray(payload?.data) ? payload.data : [];
+
+        if (!reservations.length) {
+          grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">У вас нет бронирований.<br><a href="/catalog" style="color: #3b82f6; text-decoration: underline;">Перейти в каталог</a></div>';
+          return;
+        }
+
+        grid.innerHTML = reservations.map(renderReservationCard).join('');
+      } catch (error) {
+        console.error(error);
+        grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Не удалось загрузить бронирования.</div>';
+      }
+    }
+
     document.getElementById('logout-btn')?.addEventListener('click', async () => {
       try {
         await fetch('/api/v1/logout', {
@@ -687,6 +767,7 @@
             console.error(error);
           }),
           loadBooks(),
+          loadReservations(),
         ]);
         return;
       }

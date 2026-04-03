@@ -119,6 +119,116 @@ class AccountController extends Controller
         ] + $result);
     }
 
+    public function reservations(Request $request): JsonResponse
+    {
+        $user = $request->session()->get('library.user');
+
+        if (! is_array($user)) {
+            return response()->json([
+                'authenticated' => false,
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+
+        $crmUserId = $this->resolveCrmUserId($user);
+
+        if ($crmUserId === null) {
+            return response()->json([
+                'authenticated' => true,
+                'data' => [],
+                'message' => 'No linked CRM user found.',
+            ]);
+        }
+
+        $status = $request->query('status');
+        $allowedStatuses = ['PENDING', 'READY', 'FULFILLED', 'CANCELLED', 'EXPIRED'];
+        $status = in_array($status, $allowedStatuses, true) ? $status : null;
+
+        $query = DB::connection('pgsql')
+            ->table('public.Reservation as r')
+            ->leftJoin('public.Book as b', 'b.id', '=', 'r.bookId')
+            ->where('r.userId', $crmUserId)
+            ->select([
+                'r.id',
+                'r.status',
+                'r.reservedAt',
+                'r.expiresAt',
+                'r.processedAt',
+                'r.notes',
+                'r.copyId',
+                'r.createdAt',
+                'b.title as bookTitle',
+                'b.isbn as bookIsbn',
+                'b.publishYear as bookPublishYear',
+            ])
+            ->orderByDesc('r.reservedAt');
+
+        if ($status !== null) {
+            $query->where('r.status', $status);
+        }
+
+        $reservations = $query->limit(100)->get()->map(function (object $row): array {
+            $notes = null;
+            if (! empty($row->notes)) {
+                $decoded = json_decode($row->notes, true);
+                $notes = is_array($decoded) ? $decoded : null;
+            }
+
+            return [
+                'id' => $row->id,
+                'status' => $row->status,
+                'reservedAt' => $row->reservedAt,
+                'expiresAt' => $row->expiresAt,
+                'processedAt' => $row->processedAt,
+                'copyId' => $row->copyId,
+                'cancelOrigin' => $notes['cancel_origin'] ?? null,
+                'cancelReasonCode' => $notes['cancel_reason_code'] ?? null,
+                'book' => [
+                    'title' => $row->bookTitle,
+                    'isbn' => $row->bookIsbn,
+                    'publishYear' => $row->bookPublishYear,
+                ],
+            ];
+        })->all();
+
+        return response()->json([
+            'authenticated' => true,
+            'data' => $reservations,
+            'meta' => [
+                'crmUserId' => $crmUserId,
+                'total' => count($reservations),
+            ],
+        ]);
+    }
+
+    private function resolveCrmUserId(array $sessionUser): ?string
+    {
+        $sessionId = trim((string) ($sessionUser['id'] ?? ''));
+
+        if ($sessionId !== '' && \Illuminate\Support\Str::isUuid($sessionId)) {
+            $exists = DB::connection('pgsql')
+                ->table('public.User')
+                ->where('id', $sessionId)
+                ->exists();
+
+            if ($exists) {
+                return $sessionId;
+            }
+        }
+
+        $email = mb_strtolower(trim((string) ($sessionUser['email'] ?? '')));
+        if ($email === '') {
+            return null;
+        }
+
+        $userId = DB::connection('pgsql')
+            ->table('public.User')
+            ->whereRaw('LOWER(email) = ?', [$email])
+            ->value('id');
+
+        return is_string($userId) ? $userId : null;
+    }
+
     private function resolveReaderId(array $sessionUser): ?string
     {
         $email = mb_strtolower(trim((string) ($sessionUser['email'] ?? '')));
