@@ -9,6 +9,7 @@ use App\Services\Library\InternalDocumentReviewWorkflowService;
 use App\Services\Library\InternalReaderReviewException;
 use App\Services\Library\InternalReaderReviewWorkflowService;
 use App\Services\Library\InternalReviewWorkflowService;
+use App\Services\Library\InternalTriageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -208,6 +209,36 @@ class InternalReviewController extends Controller
         }
 
         return response()->json(['success' => true] + $result);
+    }
+
+    public function triageSummary(Request $request, InternalTriageService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'top_limit' => ['nullable', 'integer', 'min:1', 'max:20'],
+        ]);
+
+        return response()->json($service->triageSummary(
+            topReasonCodesLimit: (int) ($validated['top_limit'] ?? 5),
+        ));
+    }
+
+    public function triageReasonCodes(Request $request, InternalTriageService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'top_limit' => ['nullable', 'integer', 'min:1', 'max:50'],
+            'include_per_entity' => ['nullable', 'string'],
+        ]);
+
+        $includePerEntity = in_array(
+            mb_strtolower(trim((string) ($validated['include_per_entity'] ?? ''))),
+            ['1', 'true', 'yes'],
+            true
+        );
+
+        return response()->json($service->triageReasonCodes(
+            topLimit: (int) ($validated['top_limit'] ?? 10),
+            includePerEntity: $includePerEntity,
+        ));
     }
 
     /**

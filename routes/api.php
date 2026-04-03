@@ -70,6 +70,8 @@ Route::prefix('v1')->group(function (): void {
             Route::get('/review/readers', [InternalReviewController::class, 'readerQueue']);
             Route::get('/review/readers-summary', [InternalReviewController::class, 'readerSummary']);
             Route::post('/review/readers/{readerId}/resolve', [InternalReviewController::class, 'resolveReader']);
+            Route::get('/review/triage-summary', [InternalReviewController::class, 'triageSummary']);
+            Route::get('/review/triage-reason-codes', [InternalReviewController::class, 'triageReasonCodes']);
         });
 
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);
