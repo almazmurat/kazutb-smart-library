@@ -1,0 +1,55 @@
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class InternalStewardshipPageTest extends TestCase
+{
+    public function test_stewardship_page_renders_successfully(): void
+    {
+        $response = $this->get('/internal/stewardship');
+
+        $response
+            ->assertOk()
+            ->assertSee('Data Stewardship', false)
+            ->assertSee('Очереди проверки данных')
+            ->assertSee('/api/v1/internal/review/triage-summary', false)
+            ->assertSee('/api/v1/internal/review/copies', false)
+            ->assertSee('/api/v1/internal/review/documents', false)
+            ->assertSee('/api/v1/internal/review/readers', false);
+    }
+
+    public function test_stewardship_page_has_tab_navigation(): void
+    {
+        $response = $this->get('/internal/stewardship');
+
+        $response
+            ->assertOk()
+            ->assertSee('data-tab="overview"', false)
+            ->assertSee('data-tab="copies"', false)
+            ->assertSee('data-tab="documents"', false)
+            ->assertSee('data-tab="readers"', false);
+    }
+
+    public function test_stewardship_page_has_action_endpoints(): void
+    {
+        $response = $this->get('/internal/stewardship');
+
+        $response
+            ->assertOk()
+            ->assertSee('/resolve', false)
+            ->assertSee('/flag', false)
+            ->assertSee('resolution_note', false);
+    }
+
+    public function test_stewardship_page_links_to_other_internal_pages(): void
+    {
+        $response = $this->get('/internal/stewardship');
+
+        $response
+            ->assertOk()
+            ->assertSee('/internal/dashboard', false)
+            ->assertSee('/internal/review', false);
+    }
+}

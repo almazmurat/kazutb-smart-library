@@ -251,6 +251,7 @@
             </p>
             <div class="nav-row">
                 <a class="nav-link primary" href="/internal/review">Открыть список quality issues</a>
+                <a class="nav-link primary" href="/internal/stewardship">Data Stewardship</a>
                 <a class="nav-link" href="/catalog">Перейти в каталог</a>
             </div>
             <div class="status-row" id="status-row">

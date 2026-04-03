@@ -15,6 +15,8 @@ class InternalDashboardPageTest extends TestCase
             ->assertSee('Состояние библиотечной базы')
             ->assertSee('/internal/review', false)
             ->assertSee('Открыть список quality issues')
+            ->assertSee('Data Stewardship')
+            ->assertSee('/internal/stewardship', false)
             ->assertSee('/api/v1/library/health-summary', false)
             ->assertSee('/api/v1/review/issues-summary?top_limit=5', false);
     }
