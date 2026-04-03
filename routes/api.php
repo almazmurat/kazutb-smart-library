@@ -128,7 +128,7 @@ Route::prefix('v1')->group(function (): void {
 });
 
 Route::prefix('integration/v1')
-    ->middleware(['integration.boundary'])
+    ->middleware(['integration.boundary', 'integration.log', 'throttle:integration'])
     ->group(function (): void {
         // Technical boundary endpoint for infrastructure verification only.
         Route::get('/_boundary/ping', function (Request $request) {
@@ -149,15 +149,19 @@ Route::prefix('integration/v1')
         Route::get('/reservations/{id}', [ReservationReadController::class, 'show']);
 
         // Mutate endpoints (shell v1, phase 2): approve / reject only.
-        Route::post('/reservations/{id}/approve', [ReservationMutateController::class, 'approve']);
-        Route::post('/reservations/{id}/reject', [ReservationMutateController::class, 'reject']);
+        Route::middleware('throttle:integration-mutate')->group(function (): void {
+            Route::post('/reservations/{id}/approve', [ReservationMutateController::class, 'approve']);
+            Route::post('/reservations/{id}/reject', [ReservationMutateController::class, 'reject']);
+        });
 
         // Book management v1 phase 1 (document metadata only).
         Route::get('/documents', [DocumentManagementController::class, 'index']);
         Route::get('/documents/{id}', [DocumentManagementController::class, 'show']);
-        Route::post('/documents', [DocumentManagementController::class, 'store']);
-        Route::patch('/documents/{id}', [DocumentManagementController::class, 'patch']);
-        Route::post('/documents/{id}/archive', [DocumentManagementController::class, 'archive']);
+        Route::middleware('throttle:integration-mutate')->group(function (): void {
+            Route::post('/documents', [DocumentManagementController::class, 'store']);
+            Route::patch('/documents/{id}', [DocumentManagementController::class, 'patch']);
+            Route::post('/documents/{id}/archive', [DocumentManagementController::class, 'archive']);
+        });
     });
 
 Route::get('/user', function (Request $request) {

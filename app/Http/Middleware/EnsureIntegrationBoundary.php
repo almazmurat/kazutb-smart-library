@@ -82,6 +82,8 @@ class EnsureIntegrationBoundary
 
         $response->headers->set('X-Request-Id', $requestId);
         $response->headers->set('X-Correlation-Id', $correlationId);
+        $response->headers->set('X-API-Version', 'v1');
+        $response->headers->set('X-API-Scope', 'frozen');
 
         return $response;
     }
