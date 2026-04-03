@@ -67,3 +67,8 @@ Route::prefix('internal')->group(function () use ($internalStaffView) {
         return $internalStaffView($request, 'internal-ai-chat');
     });
 });
+
+// SPA shell — React Router handles client-side routing under /app
+Route::get('/app/{any?}', function () {
+    return view('spa');
+})->where('any', '.*');

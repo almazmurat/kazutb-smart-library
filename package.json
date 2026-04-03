@@ -9,8 +9,8 @@
         "21st:deploy": "npx @21st-sdk/cli deploy"
     },
     "devDependencies": {
-        "@vitejs/plugin-react": "^6.0.1",
         "@tailwindcss/vite": "^4.0.0",
+        "@vitejs/plugin-react": "^6.0.1",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
@@ -25,6 +25,7 @@
         "ai": "^5.0.0",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
+        "react-router-dom": "^7.14.0",
         "zod": "^4.3.6"
     }
 }
