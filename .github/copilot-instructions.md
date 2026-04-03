@@ -1,57 +1,100 @@
-# Copilot Instructions - KazUTB Smart Library
+# KazUTB Smart Library – Copilot Instructions
 
-## Identity And Source Of Truth
-- This repository is the core KazUTB Smart Library platform, not a demo scaffold.
-- Before any substantial task, read files in this order:
-  1. AGENT_START_HERE.md
-  2. project-context/00-project-truth.md
-  3. project-context/01-current-stage.md
-  4. project-context/06-current-focus.md
-  5. project-context/03-api-contracts.md
-  6. project-context/04-known-risks.md
-  7. project-context/05-agent-working-rules.md
-  8. project-context/02-active-roadmap.md
+## Project identity
+This repository is the future core library platform for KazUTB.
+It is not a demo, not just a frontend shell, and not just a replacement UI for an old system.
 
-## Current Execution Priorities
-- Active window focus:
-  - WS1 Public Catalog Convergence
-  - WS4 Runtime E2E Verification Path
-- Prioritize backend, database, integration correctness, and operational confidence.
-- Sequence preference: core logic and data integrity first, UI later.
+The goal is to build a real, modern, operational library platform that can eventually replace the old library environment.
 
-## Scope Boundaries (Do Not Drift)
-- Do not treat CRM as domain owner. CRM is an auth and integration client.
-- Do not move login UX ownership away from library platform.
-- Do not expand CRM reservation API scope beyond current v1 unless explicitly requested.
-- Do not propose generic re-platforming or blank-project bootstrap changes.
-- Do not add speculative tools or architecture layers without concrete reuse value.
+## Core domain truth
+- Library domain logic stays in the library system.
+- CRM is an integration/admin/auth client, not the owner of library domain truth.
+- The library system keeps its own backend, database, logic, APIs, and operational workflows.
+- The library system must remain capable of supporting its own admin and librarian workflows, even if CRM also builds its own panels using library APIs.
+- Do not reduce this system to “only a reader frontend” unless explicitly directed.
 
-## Internal Vs CRM-Facing Work
-- Internal-only work: circulation, copy lifecycle, diagnostics, review workflows, data stewardship.
-- CRM-facing work: only bounded integration contract under /api/integration/v1 and existing auth handshake behavior.
-- When making API changes, explicitly state whether they are internal-only or CRM-facing.
+## Authentication and CRM truth
+- Login UX remains inside the library system.
+- CRM provides LDAP / AD-backed authentication through API.
+- The library sends credentials to CRM API and receives token/user data back.
+- There is no redirect to CRM UI during login.
+- CRM must not connect directly to the library database.
+- Library APIs are the integration boundary for CRM-side functionality.
 
-## Delivery Guidance
-- Prefer minimal safe changes over broad refactors.
-- Keep docs aligned with implemented behavior, not aspirational behavior.
-- If duplicate paths exist, prefer canonical DB-backed routes and flag transitional paths.
-- Use Copilot CLI as the primary execution agent for repository analysis, code changes, commands, and repeatable tasks.
-- Use chat as architecture/controller layer for next-step selection, priority checks, anti-drift guardrails, roadmap, and handoff quality.
+## Current execution priorities
+Default priority order:
+1. backend and database
+2. operational library workflows
+3. data quality / stewardship workflows
+4. internal admin and librarian capabilities
+5. CRM-facing API hardening and publication
+6. frontend expansion
+7. AI/recommendation/advanced features
+8. non-functional polishing
 
-## Verification Expectations
-- Every substantial change should include at least one targeted verification path.
-- Prefer running focused tests first, then broader suites when risk warrants.
-- For integration changes, verify both request discipline and response envelope compatibility.
-- Risky backend or data mutation changes must include targeted tests.
+## Data and stewardship truth
+- Data has already been migrated to PostgreSQL.
+- Data quality work is not finished.
+- Manual cleanup plus AI-assisted correction is a real project strategy.
+- Preserve data integrity, auditability, reporting compatibility, and library meaning.
+- Do not silently broaden mutation scope on critical entities.
 
-## Commit Discipline
-- Keep commits atomic and purpose-specific.
-- Commit messages should include the impacted scope (internal, integration, docs, workflow).
-- Do not mix workflow/configuration changes with product behavior changes in one commit unless explicitly asked.
+## Scope discipline
+- Do not drift into unrelated frontend, AI/chat, or speculative product work unless explicitly asked.
+- Do not turn domain workflows into generic CRUD without justification.
+- Prefer narrow, safe, verifiable implementation slices.
+- Internal-only workflows can evolve before CRM-facing publication.
+- CRM-facing API expansion must be conservative and explicit.
 
-## Response Pattern For Agents
-For substantial tasks, include:
-1. Stage-aware framing
-2. Domain ownership alignment (Library core vs CRM integration)
-3. In-scope and out-of-scope boundaries
-4. Verification method and residual risk
+## Domain constraints to respect
+- Preserve catalog, document, copy, reservation, circulation, and reporting integrity.
+- Respect the real structure of the fund:
+  - university vs college
+  - economic vs technological
+  - physical library points / branches
+- Respect external licensed resources and digital material restrictions.
+- Do not treat all records as one flat undifferentiated pool.
+
+## Digital materials constraints
+- Controlled viewer and restricted access are required for protected digital materials.
+- Do not assume unrestricted download is allowed.
+- Access rules depend on role, authorization, and license constraints.
+
+## Coding expectations
+Before major work:
+- read AGENT_START_HERE.md
+- read relevant project-context files
+- read the product master context file
+
+Prefer:
+- existing project service/controller/middleware/test patterns
+- narrow operationally useful slices
+- explicit error handling
+- audit-aware mutation logic
+- route + test + runtime verification when practical
+
+## Verification expectations
+- Add targeted tests for meaningful backend changes.
+- Prefer real container/runtime verification where practical.
+- State environment limitations honestly.
+- Do not claim verification that did not actually happen.
+
+## Internal vs CRM-facing
+- Internal operational workflows may be built first.
+- CRM-facing APIs should be published only when contract and governance are mature enough.
+- Do not casually expose risky mutation surfaces to CRM.
+
+## Commit discipline
+- Keep commits atomic and scoped.
+- Do not mix unrelated refactors into an operational backend step.
+- Update docs when behavior meaningfully changes.
+
+## Required source-of-truth reads
+For any non-trivial backend or architectural task, read:
+- AGENT_START_HERE.md
+- project-context/00-project-truth.md
+- project-context/01-current-stage.md
+- project-context/06-current-focus.md
+- project-context/98-product-master-context.md
+
+If convenience conflicts with domain truth, follow the project-context files.
