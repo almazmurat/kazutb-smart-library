@@ -132,6 +132,101 @@ class InternalDocumentReviewWorkflowService
     }
 
     /**
+     * Flag a document for review with one or more reason codes.
+     *
+     * @param list<string> $reasonCodes
+     * @param array<string, mixed> $context
+     * @return array{data: array<string, mixed>, source: string}
+     */
+    public function flagDocumentForReview(string $documentId, array $reasonCodes, ?string $flagNote, array $context = []): array
+    {
+        return DB::connection('pgsql')->transaction(function () use ($documentId, $reasonCodes, $flagNote, $context): array {
+            $row = DB::connection('pgsql')
+                ->table(self::DOCUMENT_TABLE)
+                ->where('id', $documentId)
+                ->lockForUpdate()
+                ->first();
+
+            if ($row === null) {
+                throw new InternalDocumentReviewException('document_not_found', 404, 'Document not found.');
+            }
+
+            $before = $this->normalizeDocumentRecord($row);
+
+            $existingCodes = $this->normalizePgArray($row->review_reason_codes ?? null);
+            $normalizedNewCodes = array_values(array_filter(
+                array_map(static fn (string $code): string => strtoupper(trim($code)), $reasonCodes),
+                static fn (string $code): bool => $code !== '',
+            ));
+
+            $mergedCodes = array_values(array_unique(array_merge($existingCodes, $normalizedNewCodes)));
+            $addedCodes = array_values(array_diff($normalizedNewCodes, $existingCodes));
+
+            $update = ['needs_review' => true];
+            if ($this->hasDocumentColumn('review_reason_codes')) {
+                $pgLiteral = '{' . implode(',', $mergedCodes) . '}';
+                $update['review_reason_codes'] = $pgLiteral;
+            }
+            if ($this->hasDocumentColumn('updated_at')) {
+                $update['updated_at'] = Carbon::now('UTC')->toDateTimeString();
+            }
+
+            DB::connection('pgsql')
+                ->table(self::DOCUMENT_TABLE)
+                ->where('id', $documentId)
+                ->update($update);
+
+            $afterRow = DB::connection('pgsql')
+                ->table(self::DOCUMENT_TABLE)
+                ->where('id', $documentId)
+                ->first();
+
+            if ($afterRow === null) {
+                throw new InternalDocumentReviewException('document_not_found', 404, 'Document not found.');
+            }
+
+            $after = $this->normalizeDocumentRecord($afterRow);
+
+            $wasAlreadyFlagged = (bool) ($row->needs_review ?? false);
+
+            CirculationAuditEvent::query()->create([
+                'id' => (string) Str::uuid(),
+                'event_at' => Carbon::now('UTC'),
+                'action' => 'internal_document_review_flagged',
+                'entity_type' => 'document',
+                'entity_id' => $documentId,
+                'reader_id' => null,
+                'actor_user_id' => $context['actorUserId'] ?? null,
+                'actor_type' => (string) ($context['actorType'] ?? 'staff_operator'),
+                'request_id' => $context['requestId'] ?? null,
+                'correlation_id' => $context['correlationId'] ?? null,
+                'previous_state' => $before,
+                'new_state' => $after,
+                'metadata' => [
+                    'details' => [
+                        'flag_note' => $flagNote,
+                        'flag_note_provided' => $flagNote !== null,
+                        'requested_reason_codes' => $normalizedNewCodes,
+                        'added_reason_codes' => $addedCodes,
+                        'merged_reason_codes' => $mergedCodes,
+                        'was_already_flagged' => $wasAlreadyFlagged,
+                    ],
+                ],
+            ]);
+
+            return [
+                'data' => $after,
+                'flagging' => [
+                    'wasAlreadyFlagged' => $wasAlreadyFlagged,
+                    'addedReasonCodes' => $addedCodes,
+                    'mergedReasonCodes' => $mergedCodes,
+                ],
+                'source' => self::DOCUMENT_TABLE,
+            ];
+        });
+    }
+
+    /**
      * @param array<string, mixed> $context
      * @return array{data: array<string, mixed>, source: string}
      */

@@ -66,6 +66,7 @@ Route::prefix('v1')->group(function (): void {
             Route::post('/review/copies/{copyId}/resolve', [InternalReviewController::class, 'resolveCopy']);
             Route::get('/review/documents', [InternalReviewController::class, 'documentQueue']);
             Route::get('/review/documents-summary', [InternalReviewController::class, 'documentSummary']);
+            Route::post('/review/documents/{documentId}/flag', [InternalReviewController::class, 'flagDocument']);
             Route::post('/review/documents/{documentId}/resolve', [InternalReviewController::class, 'resolveDocument']);
             Route::get('/review/readers', [InternalReviewController::class, 'readerQueue']);
             Route::get('/review/readers-summary', [InternalReviewController::class, 'readerSummary']);

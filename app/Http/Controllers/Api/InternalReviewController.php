@@ -107,6 +107,48 @@ class InternalReviewController extends Controller
         ));
     }
 
+    public function flagDocument(string $documentId, Request $request, InternalDocumentReviewWorkflowService $service): JsonResponse
+    {
+        if (! Str::isUuid($documentId)) {
+            return response()->json([
+                'error' => 'invalid_document_id',
+                'message' => 'Document id must be a valid UUID.',
+                'success' => false,
+            ], 400);
+        }
+
+        $validated = $request->validate([
+            'reason_codes' => ['required', 'array', 'min:1', 'max:10'],
+            'reason_codes.*' => ['required', 'string', 'max:64'],
+            'flag_note' => ['nullable', 'string', 'max:1000'],
+            'actor_user_id' => ['sometimes', 'nullable', 'uuid'],
+            'request_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+            'correlation_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        try {
+            $result = $service->flagDocumentForReview(
+                documentId: $documentId,
+                reasonCodes: (array) $validated['reason_codes'],
+                flagNote: isset($validated['flag_note']) ? trim((string) $validated['flag_note']) : null,
+                context: $this->context($request, $validated),
+            );
+        } catch (InternalDocumentReviewException $exception) {
+            return response()->json([
+                'error' => $exception->errorCode(),
+                'message' => $exception->getMessage(),
+                'success' => false,
+            ], $exception->httpStatus());
+        }
+
+        return response()->json(['success' => true] + $result);
+    }
+
     public function resolveDocument(string $documentId, Request $request, InternalDocumentReviewWorkflowService $service): JsonResponse
     {
         if (! Str::isUuid($documentId)) {
