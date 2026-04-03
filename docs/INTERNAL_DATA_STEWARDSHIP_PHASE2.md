@@ -95,7 +95,7 @@ Like the copy stewardship slice, this implementation provides:
 - **Bulk operations:** No batch resolve, no automatic bulk processing
 - **Metadata editing:** Resolution clears review signals only; does not edit ISBN, title, authors
 - **Document merge/deduplication:** No document-level consolidation here (future phase if needed)
-- **Reader-level review:** No reader review workflow in this slice (copy + document stewardship only)
+- **Reader-level review (phase note):** Not included in this phase 2 slice; implemented later in `docs/INTERNAL_DATA_STEWARDSHIP_PHASE3_READERS.md`
 - **Frontend UI:** No staff interface; API-only for now
 - **AI-assisted correction:** No automatic corrections; human review only
 - **CRM scope expansion:** No integration API surface changes

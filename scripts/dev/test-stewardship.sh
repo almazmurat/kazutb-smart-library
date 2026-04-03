@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/../.."
 
-FILTER="IdentityMatchAudit|IdentityMappingE2E|ReviewIssues(Summary)?Db|Bridge(Users|Copies|BooksDocuments|Summary)Diagnostics?Db|LibraryHealthSummaryDb"
+FILTER="Internal(Reader|Document)?ReviewWorkflow|ReviewIssues(Summary)?Db|IdentityMatchAudit|IdentityMappingE2E|Bridge(Users|Copies|BooksDocuments|Summary)Diagnostics?Db|LibraryHealthSummaryDb"
 
 run_php_tests() {
 	if php artisan list --raw 2>/dev/null | grep -q '^test$'; then
