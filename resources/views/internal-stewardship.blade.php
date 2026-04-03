@@ -438,6 +438,12 @@
             font-size: 16px;
         }
 
+        .progress-row { margin-bottom: 18px; }
+        .progress-row .progress-label { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; }
+        .progress-row .progress-label strong { font-weight: 700; }
+        .progress-bar-track { height: 16px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: 999px; transition: width .5s ease; }
+
         /* Bulk action bar */
         .bulk-bar {
             display: none;
@@ -518,21 +524,33 @@
         <!-- ═══════ OVERVIEW TAB ═══════ -->
         <section class="tab-content active" id="tab-overview">
             <div class="panel">
-                <h2>Triage Summary</h2>
-                <div class="cards" id="triage-cards">
+                <h2>📊 Общее здоровье данных</h2>
+                <div class="cards" id="health-cards">
                     <div class="metric soft"><div class="metric-label">Загрузка…</div></div>
                 </div>
             </div>
             <div class="panel">
-                <h2>Quality Issues</h2>
-                <div class="cards" id="qi-cards">
+                <h2>📋 Задачи проверки (Review Tasks)</h2>
+                <div class="cards" id="task-cards">
                     <div class="metric soft"><div class="metric-label">Загрузка…</div></div>
                 </div>
             </div>
             <div class="panel">
-                <h2>Top Reason Codes (все сущности)</h2>
+                <h2>🏷 Флаги качества (Data Quality Flags)</h2>
+                <div class="cards" id="flag-cards">
+                    <div class="metric soft"><div class="metric-label">Загрузка…</div></div>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>🔍 Top Reason Codes (все сущности)</h2>
                 <div class="reason-list" id="top-reasons">
                     <div class="reason-item"><span class="meta">Загрузка…</span></div>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>📈 Прогресс по типу сущности</h2>
+                <div id="entity-progress">
+                    <div class="metric soft"><div class="metric-label">Загрузка…</div></div>
                 </div>
             </div>
         </section>
@@ -799,26 +817,46 @@
         // ═══════════════════════════════════════
         async function loadOverview() {
             try {
-                const data = await api('/api/v1/internal/review/triage-summary');
+                const data = await api('/api/v1/internal/review/stewardship-metrics');
                 const d = data.data || {};
+                const health = d.overallHealth || {};
                 const byEntity = d.byEntity || {};
-                const qi = d.qualityIssues || {};
-                const topRC = d.topReasonCodes || [];
+                const tasks = d.reviewTasks || {};
+                const flags = d.dataQualityFlags || {};
+                const topRC = d.topIssues || [];
 
-                document.getElementById('triage-cards').innerHTML = [
-                    metricHtml('Всего нерешённых', d.totalUnresolved, 'Копии + документы + читатели', 'alert'),
-                    metricHtml('Копии', byEntity.copies?.needsReviewCount, `из ${fmt(byEntity.copies?.total)} всего`, 'soft'),
-                    metricHtml('Документы', byEntity.documents?.needsReviewCount, `из ${fmt(byEntity.documents?.total)} всего`, 'soft'),
-                    metricHtml('Читатели', byEntity.readers?.needsReviewCount, `из ${fmt(byEntity.readers?.total)} всего`, 'soft'),
+                // Health cards
+                const healthColor = health.healthPercent >= 90 ? '#16a34a' : (health.healthPercent >= 70 ? '#d97706' : '#dc2626');
+                document.getElementById('health-cards').innerHTML = [
+                    `<div class="metric" style="background: ${healthColor}; color: white;">
+                        <div class="metric-value">${health.healthPercent || 0}%</div>
+                        <div class="metric-label">Здоровье данных</div>
+                    </div>`,
+                    metricHtml('Всего сущностей', health.totalEntities, 'копии + документы + читатели', 'soft'),
+                    metricHtml('Чистых', health.cleanEntities, 'без замечаний', 'accent-bg'),
+                    metricHtml('Требуют проверки', health.unresolvedEntities, 'нерешённых', 'alert'),
                 ].join('');
 
-                document.getElementById('qi-cards').innerHTML = [
-                    metricHtml('Quality Issues', qi.total, 'Всего записей', 'soft'),
-                    metricHtml('Открытых', qi.openCount, '', 'warn-soft'),
-                    metricHtml('Critical', qi.criticalCount, '', 'alert'),
-                    metricHtml('High', qi.highCount, '', 'alert'),
+                // Task cards
+                const taskCompletionPct = tasks.total > 0 ? ((tasks.completed / tasks.total) * 100).toFixed(1) : '0';
+                document.getElementById('task-cards').innerHTML = [
+                    metricHtml('Всего задач', tasks.total, '', 'soft'),
+                    metricHtml('Открытых', tasks.open, 'ожидают проверки', 'warn-soft'),
+                    metricHtml('Решено', tasks.completed, `${taskCompletionPct}% от всех`, 'accent-bg'),
+                    metricHtml('Отменено', tasks.cancelled, '', 'soft'),
                 ].join('');
 
+                // Flag cards
+                const bySeverity = flags.bySeverity || {};
+                const byStatus = flags.byStatus || {};
+                document.getElementById('flag-cards').innerHTML = [
+                    metricHtml('Всего флагов', flags.total, '', 'soft'),
+                    metricHtml('Открытых', byStatus.open, '', 'alert'),
+                    metricHtml('High', bySeverity.high, 'серьёзные', 'alert'),
+                    metricHtml('Medium', bySeverity.medium, 'средние', 'warn-soft'),
+                ].join('');
+
+                // Top reason codes
                 if (topRC.length) {
                     document.getElementById('top-reasons').innerHTML = topRC.map(r => `
                         <div class="reason-item">
@@ -833,10 +871,32 @@
                     document.getElementById('top-reasons').innerHTML = '<div class="reason-item"><span class="meta">Нет данных</span></div>';
                 }
 
+                // Entity progress bars
+                const entities = [
+                    { key: 'copies', label: 'Копии', data: byEntity.copies },
+                    { key: 'documents', label: 'Документы', data: byEntity.documents },
+                    { key: 'readers', label: 'Читатели', data: byEntity.readers },
+                ];
+                document.getElementById('entity-progress').innerHTML = entities.map(e => {
+                    const pct = e.data?.healthPercent ?? 0;
+                    const color = pct >= 90 ? '#16a34a' : (pct >= 70 ? '#d97706' : '#dc2626');
+                    return `
+                        <div class="progress-row">
+                            <div class="progress-label">
+                                <strong>${e.label}</strong>
+                                <span>${pct}% чистых (${fmt(e.data?.clean || 0)} из ${fmt(e.data?.total || 0)})</span>
+                            </div>
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill" style="width: ${pct}%; background: ${color};"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
                 document.getElementById('status-row').innerHTML = '<div class="status-chip ok">Stewardship API: OK</div>';
             } catch (err) {
                 document.getElementById('status-row').innerHTML = '<div class="status-chip warn">Stewardship API: ошибка загрузки</div>';
-                showError('Не удалось загрузить triage summary: ' + (err.message || JSON.stringify(err)));
+                showError('Не удалось загрузить stewardship metrics: ' + (err.message || JSON.stringify(err)));
             }
         }
 

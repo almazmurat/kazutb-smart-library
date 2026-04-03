@@ -13,6 +13,130 @@ class InternalTriageService
     private const QUALITY_ISSUES_TABLE = 'review.quality_issues';
 
     /**
+     * Comprehensive stewardship dashboard metrics.
+     *
+     * @return array{data: array<string, mixed>, source: string}
+     */
+    public function stewardshipMetrics(): array
+    {
+        $copyCounts = $this->entityCounts(self::COPY_TABLE);
+        $documentCounts = $this->entityCounts(self::DOCUMENT_TABLE);
+        $readerCounts = $this->entityCounts(self::READER_TABLE);
+
+        $totalEntities = $copyCounts['total'] + $documentCounts['total'] + $readerCounts['total'];
+        $totalUnresolved = $copyCounts['needsReview'] + $documentCounts['needsReview'] + $readerCounts['needsReview'];
+        $totalClean = $totalEntities - $totalUnresolved;
+        $overallHealthPercent = $totalEntities > 0 ? round(($totalClean / $totalEntities) * 100, 1) : 100;
+
+        $reviewTaskStats = $this->reviewTaskStats();
+        $dqFlagStats = $this->dqFlagStats();
+        $topReasonCodes = $this->aggregatedTopReasonCodes(10);
+
+        return [
+            'data' => [
+                'overallHealth' => [
+                    'totalEntities' => $totalEntities,
+                    'cleanEntities' => $totalClean,
+                    'unresolvedEntities' => $totalUnresolved,
+                    'healthPercent' => $overallHealthPercent,
+                ],
+                'byEntity' => [
+                    'copies' => $this->entityMetrics($copyCounts),
+                    'documents' => $this->entityMetrics($documentCounts),
+                    'readers' => $this->entityMetrics($readerCounts),
+                ],
+                'reviewTasks' => $reviewTaskStats,
+                'dataQualityFlags' => $dqFlagStats,
+                'topIssues' => $topReasonCodes,
+            ],
+            'source' => 'stewardship_dashboard_metrics',
+        ];
+    }
+
+    /**
+     * @param array{total: int, needsReview: int} $counts
+     * @return array<string, mixed>
+     */
+    private function entityMetrics(array $counts): array
+    {
+        $clean = max(0, $counts['total'] - $counts['needsReview']);
+        $healthPercent = $counts['total'] > 0 ? round(($clean / $counts['total']) * 100, 1) : 100;
+
+        return [
+            'total' => $counts['total'],
+            'needsReview' => $counts['needsReview'],
+            'clean' => $clean,
+            'healthPercent' => $healthPercent,
+        ];
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function reviewTaskStats(): array
+    {
+        $rows = DB::connection('pgsql')
+            ->table('app.review_tasks')
+            ->select('status', DB::raw('count(*)::int as cnt'))
+            ->groupBy('status')
+            ->get()
+            ->keyBy('status');
+
+        return [
+            'total' => (int) $rows->sum('cnt'),
+            'open' => (int) ($rows->get('OPEN')?->cnt ?? 0),
+            'completed' => (int) ($rows->get('COMPLETED')?->cnt ?? 0),
+            'cancelled' => (int) ($rows->get('CANCELLED')?->cnt ?? 0),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function dqFlagStats(): array
+    {
+        $statusRows = DB::connection('pgsql')
+            ->table('app.data_quality_flags')
+            ->select('status', DB::raw('count(*)::int as cnt'))
+            ->groupBy('status')
+            ->get()
+            ->keyBy('status');
+
+        $severityRows = DB::connection('pgsql')
+            ->table('app.data_quality_flags')
+            ->select('severity', DB::raw('count(*)::int as cnt'))
+            ->groupBy('severity')
+            ->get()
+            ->keyBy('severity');
+
+        $entityRows = DB::connection('pgsql')
+            ->table('app.data_quality_flags')
+            ->select('entity_type', DB::raw('count(*)::int as cnt'))
+            ->groupBy('entity_type')
+            ->get()
+            ->keyBy('entity_type');
+
+        return [
+            'total' => (int) $statusRows->sum('cnt'),
+            'byStatus' => [
+                'open' => (int) ($statusRows->get('OPEN')?->cnt ?? 0),
+                'resolved' => (int) ($statusRows->get('RESOLVED')?->cnt ?? 0),
+                'rejected' => (int) ($statusRows->get('REJECTED')?->cnt ?? 0),
+            ],
+            'bySeverity' => [
+                'high' => (int) ($severityRows->get('HIGH')?->cnt ?? 0),
+                'medium' => (int) ($severityRows->get('MEDIUM')?->cnt ?? 0),
+                'low' => (int) ($severityRows->get('LOW')?->cnt ?? 0),
+            ],
+            'byEntity' => [
+                'book_copy' => (int) ($entityRows->get('book_copy')?->cnt ?? 0),
+                'document' => (int) ($entityRows->get('document')?->cnt ?? 0),
+                'reader' => (int) ($entityRows->get('reader')?->cnt ?? 0),
+            ],
+        ];
+    }
+
+    /**
      * Aggregated triage summary across copies, documents, and readers.
      *
      * @return array{data: array<string, mixed>, source: string}

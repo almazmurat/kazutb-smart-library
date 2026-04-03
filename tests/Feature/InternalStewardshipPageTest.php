@@ -14,7 +14,7 @@ class InternalStewardshipPageTest extends TestCase
             ->assertOk()
             ->assertSee('Data Stewardship', false)
             ->assertSee('Очереди проверки данных')
-            ->assertSee('/api/v1/internal/review/triage-summary', false)
+            ->assertSee('/api/v1/internal/review/stewardship-metrics', false)
             ->assertSee('/api/v1/internal/review/copies', false)
             ->assertSee('/api/v1/internal/review/documents', false)
             ->assertSee('/api/v1/internal/review/readers', false);

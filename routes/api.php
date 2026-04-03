@@ -81,6 +81,7 @@ Route::prefix('v1')->group(function (): void {
             Route::post('/review/readers/bulk-resolve', [InternalReviewController::class, 'bulkResolveReaders']);
             Route::get('/review/triage-summary', [InternalReviewController::class, 'triageSummary']);
             Route::get('/review/triage-reason-codes', [InternalReviewController::class, 'triageReasonCodes']);
+            Route::get('/review/stewardship-metrics', [InternalReviewController::class, 'stewardshipMetrics']);
         });
 
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);

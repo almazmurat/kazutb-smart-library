@@ -395,6 +395,11 @@ class InternalReviewController extends Controller
 
     // ── Triage ──────────────────────────────────────────────────────────
 
+    public function stewardshipMetrics(InternalTriageService $service): JsonResponse
+    {
+        return response()->json($service->stewardshipMetrics());
+    }
+
     public function triageSummary(Request $request, InternalTriageService $service): JsonResponse
     {
         $validated = $request->validate([
