@@ -6,7 +6,8 @@ Purpose: keep every AI agent aligned with real project truth before any planning
 For normal task execution, use only the concise operational files below first.
 
 ## Deep Context Mode (secondary)
-Use `project-context/99-master-project-context.md` only for deep planning, architecture alignment, product vision, and milestone-level decisions.
+Use `project-context/98-product-master-context.md` for deep planning, architecture alignment, product vision, and milestone-level decisions.
+Use `project-context/99-master-project-context.md` only as legacy background context when needed.
 
 ## Read Order (mandatory)
 1. `project-context/00-project-truth.md`
@@ -18,7 +19,8 @@ Use `project-context/99-master-project-context.md` only for deep planning, archi
 7. `project-context/02-active-roadmap.md`
 
 ## Optional Deep Read
-- `project-context/99-master-project-context.md`
+- `project-context/98-product-master-context.md` (canonical)
+- `project-context/99-master-project-context.md` (legacy reference)
 
 ## Non-Negotiable Direction
 - Library platform is the core domain product.

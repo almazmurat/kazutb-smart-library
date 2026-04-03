@@ -1,5 +1,10 @@
 # 99 - Master Project Context (Long-Form)
 
+> Legacy reference note:
+> This file is maintained for historical continuity.
+> Canonical deep master context is `project-context/98-product-master-context.md`.
+> Prefer `98-product-master-context.md` for new major planning and architecture sessions.
+
 This document stores the full long-form context for deep planning and architecture alignment.
 
 Do not use this file alone for day-to-day execution.
