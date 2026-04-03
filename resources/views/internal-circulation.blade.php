@@ -350,14 +350,18 @@
 
         for (const loan of loans) {
           const canReturn = loan.status === 'active';
+          const canRenew = loan.status === 'active' && loan.renewCount < 3;
           html += `<tr>
             <td style="font-family: monospace; font-size: 12px;">${escapeHtml(loan.id?.substring(0, 8))}…</td>
             <td style="font-family: monospace; font-size: 12px;">${escapeHtml(loan.copyId?.substring(0, 8))}…</td>
-            <td>${loanStatusBadge(loan)}</td>
+            <td>${loanStatusBadge(loan)}${loan.renewCount > 0 ? ` <span style="font-size:11px;color:#6b7280;">(прод. ${loan.renewCount}/3)</span>` : ''}</td>
             <td>${formatDate(loan.issuedAt)}</td>
             <td>${formatDate(loan.dueAt)}</td>
             <td>${loan.returnedAt ? formatDate(loan.returnedAt) : '—'}</td>
-            <td>${canReturn ? `<button class="btn btn-danger" style="padding:6px 12px; font-size:12px;" onclick="quickReturn('${escapeHtml(loan.copyId)}')">Возврат</button>` : ''}</td>
+            <td>
+              ${canRenew ? `<button class="btn" style="padding:6px 12px; font-size:12px; background:#124559; color:#fff; border:1px solid #124559; border-radius:10px; cursor:pointer;" onclick="quickRenew('${escapeHtml(loan.id)}')">Продлить</button> ` : ''}
+              ${canReturn ? `<button class="btn btn-danger" style="padding:6px 12px; font-size:12px;" onclick="quickReturn('${escapeHtml(loan.copyId)}')">Возврат</button>` : ''}
+            </td>
           </tr>`;
         }
 
@@ -388,6 +392,27 @@
         if (resp.ok && data.success) {
           showStatus('reader-status', 'ok', `✓ Возврат оформлен. Copy: ${copyId.substring(0, 8)}…`);
           lookupReader(); // Refresh the table
+        } else {
+          showStatus('reader-status', 'error', `Ошибка: ${data.message || data.error}`);
+        }
+      } catch (err) {
+        showStatus('reader-status', 'error', 'Ошибка: ' + err.message);
+      }
+    }
+    async function quickRenew(loanId) {
+      if (!confirm(`Продлить выдачу ${loanId.substring(0, 8)}… на 14 дней?`)) return;
+
+      try {
+        const resp = await fetch(`${BASE}/loans/${loanId}/renew`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const data = await resp.json();
+
+        if (resp.ok && data.success) {
+          showStatus('reader-status', 'ok', `✓ Продлено. Новый срок: ${formatDate(data.data.dueAt)}. Продлений: ${data.data.renewCount}/3`);
+          lookupReader();
         } else {
           showStatus('reader-status', 'error', `Ошибка: ${data.message || data.error}`);
         }

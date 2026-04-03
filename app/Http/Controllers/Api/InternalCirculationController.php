@@ -163,6 +163,55 @@ class InternalCirculationController extends Controller
         ] + $result);
     }
 
+    public function renewLoan(string $loanId, Request $request, CirculationLoanWriteService $service): JsonResponse
+    {
+        if (! Str::isUuid($loanId)) {
+            return response()->json([
+                'error' => 'invalid_loan_id',
+                'message' => 'Loan id must be a valid UUID.',
+                'success' => false,
+            ], 400);
+        }
+
+        $validated = $request->validate([
+            'new_due_at' => ['nullable', 'date'],
+            'actor_user_id' => ['nullable', 'uuid'],
+            'request_id' => ['nullable', 'string', 'max:128'],
+            'correlation_id' => ['nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        $sessionActorId = $this->sessionStaffActorId($request);
+
+        try {
+            $result = $service->renew(
+                loanId: $loanId,
+                allowOverdue: true,
+                newDueAt: isset($validated['new_due_at']) ? (string) $validated['new_due_at'] : null,
+                context: [
+                    'actorUserId' => isset($validated['actor_user_id']) ? (string) $validated['actor_user_id'] : $sessionActorId,
+                    'requestId' => isset($validated['request_id']) ? (string) $validated['request_id'] : null,
+                    'correlationId' => isset($validated['correlation_id']) ? (string) $validated['correlation_id'] : null,
+                    'actorType' => 'staff_operator',
+                ],
+            );
+        } catch (CirculationWriteException $exception) {
+            return response()->json([
+                'error' => $exception->errorCode(),
+                'message' => $exception->getMessage(),
+                'success' => false,
+            ], $exception->httpStatus());
+        }
+
+        return response()->json([
+            'success' => true,
+        ] + $result);
+    }
+
     /**
      * @param array<string, mixed> $validated
      */

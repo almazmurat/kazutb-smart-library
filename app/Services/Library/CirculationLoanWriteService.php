@@ -68,6 +68,77 @@ class CirculationLoanWriteService
         });
     }
 
+    public const MAX_RENEWALS = 3;
+
+    public const RENEWAL_DAYS = 14;
+
+    /**
+     * @param array{actorUserId?: string|null, actorType?: string|null, requestId?: string|null, correlationId?: string|null, metadata?: array<string, mixed>} $context
+     * @return array<string, mixed>
+     */
+    public function renew(string $loanId, bool $allowOverdue = false, ?string $newDueAt = null, array $context = []): array
+    {
+        return DB::connection('pgsql')->transaction(function () use ($loanId, $allowOverdue, $newDueAt, $context): array {
+            $loan = CirculationLoan::query()->lockForUpdate()->find($loanId);
+            if (! $loan) {
+                throw new CirculationWriteException('loan_not_found', 404, 'Loan not found.');
+            }
+
+            if ($loan->status !== 'active' || $loan->returned_at !== null) {
+                throw new CirculationWriteException('loan_not_active', 409, 'Only active loans can be renewed.');
+            }
+
+            if ($loan->renew_count >= self::MAX_RENEWALS) {
+                throw new CirculationWriteException('max_renewals_reached', 409,
+                    'Maximum renewals (' . self::MAX_RENEWALS . ') reached.');
+            }
+
+            $isOverdue = $loan->due_at !== null && Carbon::parse($loan->due_at)->isPast();
+            if ($isOverdue && ! $allowOverdue) {
+                throw new CirculationWriteException('loan_overdue', 409,
+                    'Overdue loans cannot be self-renewed. Contact the library.');
+            }
+
+            $previousState = $this->loanSnapshot($loan);
+            $currentDueAt = $loan->due_at ? Carbon::parse($loan->due_at) : Carbon::now('UTC');
+
+            if ($newDueAt !== null && trim($newDueAt) !== '') {
+                try {
+                    $resolvedDueAt = Carbon::parse($newDueAt, 'UTC');
+                } catch (\Throwable) {
+                    throw new CirculationWriteException('invalid_due_at', 422, 'The new_due_at value is invalid.');
+                }
+                if ($resolvedDueAt->lte($currentDueAt)) {
+                    throw new CirculationWriteException('invalid_due_at', 422,
+                        'New due date must be after current due date.');
+                }
+            } else {
+                $resolvedDueAt = $currentDueAt->copy()->addDays(self::RENEWAL_DAYS);
+            }
+
+            $loan->forceFill([
+                'renew_count' => $loan->renew_count + 1,
+                'due_at' => $resolvedDueAt,
+            ])->save();
+
+            $loan->refresh();
+
+            $this->recordAuditEvent(
+                action: 'renewal_completed',
+                entityType: 'loan',
+                entityId: (string) $loan->id,
+                readerId: (string) $loan->reader_id,
+                previousState: $previousState,
+                newState: $this->loanSnapshot($loan),
+                context: $context + [
+                    'copyId' => (string) $loan->copy_id,
+                ],
+            );
+
+            return $this->toResult($loan);
+        });
+    }
+
     /**
      * @param array{actorUserId?: string|null, actorType?: string|null, requestId?: string|null, correlationId?: string|null, metadata?: array<string, mixed>} $context
      * @return array<string, mixed>

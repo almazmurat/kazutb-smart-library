@@ -516,6 +516,7 @@
         dueDate,
         issuedDate,
         isOverdue,
+        renewCount: loan.renewCount || 0,
         returnedAt: loan.returnedAt ? new Date(loan.returnedAt).toLocaleDateString('ru-RU') : null,
       };
     }
@@ -524,6 +525,7 @@
       const data = formatLoanData(loan);
       const statusLabel = data.isOverdue ? '⚠ Просрочено' : (data.status === 'returned' ? 'Возвращено' : 'Активна');
       const statusColor = data.isOverdue ? '#991b1b' : (data.status === 'returned' ? '#166534' : '#1e40af');
+      const canRenew = data.status === 'active' && !data.isOverdue && data.renewCount < 3;
 
       return `
         <article class="book-card">
@@ -534,8 +536,9 @@
           <h3 class="book-title">Выдача #${escapeHtml(data.id.substring(0, 8))}</h3>
           <div class="book-meta" style="color: ${statusColor}; font-weight: 700;">${statusLabel}</div>
           <div class="book-meta">Выдано: ${data.issuedDate}</div>
-          <div class="book-meta">Срок: ${data.dueDate}</div>
+          <div class="book-meta">Срок: ${data.dueDate}${data.renewCount > 0 ? ` (прод. ${data.renewCount}/3)` : ''}</div>
           ${data.returnedAt ? `<div class="book-meta">Возвращено: ${data.returnedAt}</div>` : ''}
+          ${canRenew ? `<button onclick="readerRenew('${escapeHtml(data.id)}')" style="margin-top: 8px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 14px; width: 100%;">Продлить</button>` : ''}
         </article>
       `;
     }
@@ -547,6 +550,29 @@
           <br><a href="/catalog" style="color: #3b82f6; text-decoration: underline;">Перейти в каталог</a>
         </div>
       `;
+    }
+
+    async function readerRenew(loanId) {
+      if (!confirm('Продлить выдачу на 14 дней?')) return;
+
+      try {
+        const resp = await fetch(`/api/v1/account/loans/${loanId}/renew`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const data = await resp.json();
+
+        if (resp.ok && data.success) {
+          const newDue = data.data?.dueAt ? new Date(data.data.dueAt).toLocaleDateString('ru-RU') : '—';
+          alert(`✓ Продлено! Новый срок: ${newDue}. Продлений: ${data.data?.renewCount || '?'}/3`);
+          loadLoans();
+        } else {
+          alert(`Ошибка: ${data.message || data.error}`);
+        }
+      } catch (err) {
+        alert('Ошибка: ' + err.message);
+      }
     }
 
     function updateStats(stats) {

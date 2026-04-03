@@ -27,6 +27,7 @@ Route::middleware('web')->group(function (): void {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/v1/account/summary', [AccountController::class, 'summary']);
     Route::get('/v1/account/loans', [AccountController::class, 'loans']);
+    Route::post('/v1/account/loans/{loanId}/renew', [AccountController::class, 'renewLoan']);
     Route::get('/v1/me', [AuthController::class, 'me']);
     Route::post('/v1/logout', [AuthController::class, 'logout']);
 });
@@ -46,6 +47,7 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/readers/{readerId}/loans', [InternalCirculationController::class, 'listReaderLoans']);
         Route::post('/checkouts', [InternalCirculationController::class, 'checkout']);
         Route::post('/returns', [InternalCirculationController::class, 'returnCopy']);
+        Route::post('/loans/{loanId}/renew', [InternalCirculationController::class, 'renewLoan']);
     });
 
     Route::prefix('internal')

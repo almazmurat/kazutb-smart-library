@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\Library\AccountSummaryReadService;
 use App\Services\Library\CirculationLoanReadService;
+use App\Services\Library\CirculationLoanWriteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -63,6 +64,59 @@ class AccountController extends Controller
                 'total' => count($loans),
             ],
         ]);
+    }
+
+    public function renewLoan(string $loanId, Request $request, CirculationLoanWriteService $writeService, CirculationLoanReadService $loanService): JsonResponse
+    {
+        $user = $request->session()->get('library.user');
+
+        if (! is_array($user)) {
+            return response()->json([
+                'authenticated' => false,
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+
+        $readerId = $this->resolveReaderId($user);
+
+        if ($readerId === null) {
+            return response()->json([
+                'error' => 'no_reader_profile',
+                'message' => 'No linked reader profile found.',
+                'success' => false,
+            ], 403);
+        }
+
+        $loan = $loanService->findLoan($loanId);
+
+        if ($loan === null || ($loan['readerId'] ?? '') !== $readerId) {
+            return response()->json([
+                'error' => 'loan_not_found',
+                'message' => 'Loan not found.',
+                'success' => false,
+            ], 404);
+        }
+
+        try {
+            $result = $writeService->renew(
+                loanId: $loanId,
+                allowOverdue: false,
+                context: [
+                    'actorUserId' => $readerId,
+                    'actorType' => 'reader_self_service',
+                ],
+            );
+        } catch (\App\Services\Library\CirculationWriteException $exception) {
+            return response()->json([
+                'error' => $exception->errorCode(),
+                'message' => $exception->getMessage(),
+                'success' => false,
+            ], $exception->httpStatus());
+        }
+
+        return response()->json([
+            'success' => true,
+        ] + $result);
     }
 
     private function resolveReaderId(array $sessionUser): ?string
