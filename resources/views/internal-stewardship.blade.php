@@ -438,6 +438,44 @@
             font-size: 16px;
         }
 
+        /* Bulk action bar */
+        .bulk-bar {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border-radius: 16px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(18, 69, 89, 0.2);
+        }
+
+        .bulk-bar.visible { display: flex; flex-wrap: wrap; }
+
+        .bulk-bar .bulk-count {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .bulk-bar .bulk-note {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .bulk-bar .bulk-note input {
+            width: 100%;
+            min-height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            padding: 0 12px;
+            font: inherit;
+            font-size: 13px;
+        }
+
+        th .cb-all, td .cb-row { width: 18px; height: 18px; cursor: pointer; }
+
         @media (max-width: 920px) {
             .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
@@ -508,6 +546,12 @@
                 </div>
             </div>
             <div class="panel">
+                <div class="bulk-bar" id="copy-bulk-bar">
+                    <span class="bulk-count" id="copy-bulk-count">0 выбрано</span>
+                    <div class="bulk-note"><input id="copy-bulk-note" type="text" placeholder="Заметка для всех (опционально)"></div>
+                    <button class="button small" onclick="bulkResolveCopies()">Решить выбранные</button>
+                    <button class="button small secondary" onclick="clearCopySelection()">Отменить</button>
+                </div>
                 <div class="toolbar">
                     <div class="field">
                         <label for="copy-reason-filter">Reason Code</label>
@@ -520,6 +564,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th><input type="checkbox" class="cb-all" id="copy-cb-all" onchange="toggleAllCopies(this.checked)"></th>
                                 <th>Copy ID</th>
                                 <th>Документ</th>
                                 <th>Филиал</th>
@@ -553,6 +598,22 @@
                 </div>
             </div>
             <div class="panel">
+                <div class="bulk-bar" id="doc-bulk-bar">
+                    <span class="bulk-count" id="doc-bulk-count">0 выбрано</span>
+                    <div class="bulk-note"><input id="doc-bulk-note" type="text" placeholder="Заметка для всех (опционально)"></div>
+                    <button class="button small" onclick="bulkResolveDocs()">Решить выбранные</button>
+                    <button class="button small danger" onclick="showDocBulkFlag()">Флаг выбранным</button>
+                    <button class="button small secondary" onclick="clearDocSelection()">Отменить</button>
+                </div>
+                <div id="doc-bulk-flag-bar" class="bulk-bar">
+                    <span class="bulk-count">Массовый флаг</span>
+                    <div class="field" style="min-width:200px">
+                        <input id="doc-bulk-flag-codes" class="input" type="text" placeholder="Reason codes (через запятую)" style="min-height:38px;font-size:13px">
+                    </div>
+                    <div class="bulk-note"><input id="doc-bulk-flag-note" type="text" placeholder="Заметка флага (опционально)"></div>
+                    <button class="button small danger" onclick="bulkFlagDocs()">Отправить флаг</button>
+                    <button class="button small secondary" onclick="hideDocBulkFlag()">Отмена</button>
+                </div>
                 <div class="toolbar">
                     <div class="field">
                         <label for="doc-reason-filter">Reason Code</label>
@@ -565,6 +626,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th><input type="checkbox" class="cb-all" id="doc-cb-all" onchange="toggleAllDocs(this.checked)"></th>
                                 <th>Document ID</th>
                                 <th>Заголовок</th>
                                 <th>ISBN</th>
@@ -597,6 +659,12 @@
                 </div>
             </div>
             <div class="panel">
+                <div class="bulk-bar" id="reader-bulk-bar">
+                    <span class="bulk-count" id="reader-bulk-count">0 выбрано</span>
+                    <div class="bulk-note"><input id="reader-bulk-note" type="text" placeholder="Заметка для всех (опционально)"></div>
+                    <button class="button small" onclick="bulkResolveReaders()">Решить выбранные</button>
+                    <button class="button small secondary" onclick="clearReaderSelection()">Отменить</button>
+                </div>
                 <div class="toolbar">
                     <div class="field">
                         <label for="reader-reason-filter">Reason Code</label>
@@ -609,6 +677,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th><input type="checkbox" class="cb-all" id="reader-cb-all" onchange="toggleAllReaders(this.checked)"></th>
                                 <th>Reader ID</th>
                                 <th>ФИО</th>
                                 <th>Код (legacy)</th>
@@ -809,7 +878,7 @@
                 document.getElementById('copy-next').disabled = copyPage >= copyTotalPages;
 
                 if (!items.length) {
-                    document.getElementById('copy-queue-body').innerHTML = '<tr><td colspan="7" class="empty">Нет копий в очереди проверки.</td></tr>';
+                    document.getElementById('copy-queue-body').innerHTML = '<tr><td colspan="8" class="empty">Нет копий в очереди проверки.</td></tr>';
                     return;
                 }
 
@@ -817,6 +886,7 @@
                     const id = item.copyIdentity?.id || '';
                     return `
                     <tr id="copy-row-${id}">
+                        <td><input type="checkbox" class="cb-row" data-entity="copy" data-id="${esc(id)}" onchange="updateCopyBulk()"></td>
                         <td><span class="truncate-id" title="${esc(id)}">${esc(shortId(id))}</span></td>
                         <td>${esc(item.parentDocument?.titleRaw || '—')}</td>
                         <td>${esc(item.branch?.branchId ? shortId(item.branch.branchId) : '—')}</td>
@@ -828,7 +898,7 @@
                         </td>
                     </tr>
                     <tr class="action-row" id="copy-action-${id}" style="display:none">
-                        <td colspan="7">
+                        <td colspan="8">
                             <div class="action-form">
                                 <div class="field" style="flex:1">
                                     <label>Заметка (опционально)</label>
@@ -841,7 +911,7 @@
                     </tr>`;
                 }).join('');
             } catch (err) {
-                document.getElementById('copy-queue-body').innerHTML = `<tr><td colspan="7" class="empty">Ошибка загрузки: ${esc(err.message || '')}</td></tr>`;
+                document.getElementById('copy-queue-body').innerHTML = `<tr><td colspan="8" class="empty">Ошибка загрузки: ${esc(err.message || '')}</td></tr>`;
             }
         }
 
@@ -904,7 +974,7 @@
                 document.getElementById('doc-next').disabled = docPage >= docTotalPages;
 
                 if (!items.length) {
-                    document.getElementById('doc-queue-body').innerHTML = '<tr><td colspan="6" class="empty">Нет документов в очереди проверки.</td></tr>';
+                    document.getElementById('doc-queue-body').innerHTML = '<tr><td colspan="7" class="empty">Нет документов в очереди проверки.</td></tr>';
                     return;
                 }
 
@@ -912,6 +982,7 @@
                     const id = item.documentIdentity?.id || '';
                     return `
                     <tr id="doc-row-${id}">
+                        <td><input type="checkbox" class="cb-row" data-entity="doc" data-id="${esc(id)}" onchange="updateDocBulk()"></td>
                         <td><span class="truncate-id" title="${esc(id)}">${esc(shortId(id))}</span></td>
                         <td>${esc(item.title?.titleRaw || item.title?.titleNormalized || '—')}</td>
                         <td>${esc(item.documentIdentity?.isbnRaw || item.documentIdentity?.isbnNormalized || '—')}</td>
@@ -923,7 +994,7 @@
                         </td>
                     </tr>
                     <tr class="action-row" id="doc-resolve-${id}" style="display:none">
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="action-form">
                                 <div class="field" style="flex:1">
                                     <label>Заметка решения (опционально)</label>
@@ -935,7 +1006,7 @@
                         </td>
                     </tr>
                     <tr class="action-row" id="doc-flag-${id}" style="display:none">
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="action-form">
                                 <div class="field">
                                     <label>Reason Codes (через запятую)</label>
@@ -952,7 +1023,7 @@
                     </tr>`;
                 }).join('');
             } catch (err) {
-                document.getElementById('doc-queue-body').innerHTML = `<tr><td colspan="6" class="empty">Ошибка загрузки: ${esc(err.message || '')}</td></tr>`;
+                document.getElementById('doc-queue-body').innerHTML = `<tr><td colspan="7" class="empty">Ошибка загрузки: ${esc(err.message || '')}</td></tr>`;
             }
         }
 
@@ -1041,7 +1112,7 @@
                 document.getElementById('reader-next').disabled = readerPage >= readerTotalPages;
 
                 if (!items.length) {
-                    document.getElementById('reader-queue-body').innerHTML = '<tr><td colspan="7" class="empty">Нет читателей в очереди проверки.</td></tr>';
+                    document.getElementById('reader-queue-body').innerHTML = '<tr><td colspan="8" class="empty">Нет читателей в очереди проверки.</td></tr>';
                     return;
                 }
 
@@ -1049,6 +1120,7 @@
                     const id = item.readerIdentity?.id || '';
                     return `
                     <tr id="reader-row-${id}">
+                        <td><input type="checkbox" class="cb-row" data-entity="reader" data-id="${esc(id)}" onchange="updateReaderBulk()"></td>
                         <td><span class="truncate-id" title="${esc(id)}">${esc(shortId(id))}</span></td>
                         <td>${esc(item.readerIdentity?.fullName || '—')}</td>
                         <td>${esc(item.readerIdentity?.legacyCode || '—')}</td>
@@ -1060,7 +1132,7 @@
                         </td>
                     </tr>
                     <tr class="action-row" id="reader-action-${id}" style="display:none">
-                        <td colspan="7">
+                        <td colspan="8">
                             <div class="action-form">
                                 <div class="field" style="flex:1">
                                     <label>Заметка (опционально)</label>
@@ -1073,7 +1145,7 @@
                     </tr>`;
                 }).join('');
             } catch (err) {
-                document.getElementById('reader-queue-body').innerHTML = `<tr><td colspan="7" class="empty">Ошибка загрузки: ${esc(err.message || '')}</td></tr>`;
+                document.getElementById('reader-queue-body').innerHTML = `<tr><td colspan="8" class="empty">Ошибка загрузки: ${esc(err.message || '')}</td></tr>`;
             }
         }
 
@@ -1095,6 +1167,163 @@
                 loadOverview();
             } catch (err) {
                 showError('Ошибка: ' + (err.message || err.error || 'Unknown'));
+            }
+        }
+
+        // ═══════════════════════════════════════
+        // BULK SELECTION & ACTIONS
+        // ═══════════════════════════════════════
+
+        function getSelectedIds(entity) {
+            return [...document.querySelectorAll(`.cb-row[data-entity="${entity}"]:checked`)].map(cb => cb.dataset.id);
+        }
+
+        // ── Copies bulk ──
+        function toggleAllCopies(checked) {
+            document.querySelectorAll('.cb-row[data-entity="copy"]').forEach(cb => { cb.checked = checked; });
+            updateCopyBulk();
+        }
+
+        function updateCopyBulk() {
+            const ids = getSelectedIds('copy');
+            const bar = document.getElementById('copy-bulk-bar');
+            document.getElementById('copy-bulk-count').textContent = `${ids.length} выбрано`;
+            bar.classList.toggle('visible', ids.length > 0);
+        }
+
+        function clearCopySelection() {
+            document.querySelectorAll('.cb-row[data-entity="copy"]').forEach(cb => { cb.checked = false; });
+            document.getElementById('copy-cb-all').checked = false;
+            updateCopyBulk();
+        }
+
+        async function bulkResolveCopies() {
+            const ids = getSelectedIds('copy');
+            if (!ids.length) return;
+            const note = document.getElementById('copy-bulk-note').value.trim() || null;
+            try {
+                const result = await api('/api/v1/internal/review/copies/bulk-resolve', {
+                    method: 'POST',
+                    body: JSON.stringify({ ids, resolution_note: note }),
+                });
+                const s = result.summary || {};
+                showToast(`Копии: ${s.succeeded} решено, ${s.failed} ошибок`);
+                clearCopySelection();
+                loadCopySummary();
+                loadCopyQueue(copyPage);
+                loadOverview();
+            } catch (err) {
+                showError('Bulk resolve ошибка: ' + (err.message || err.error || 'Unknown'));
+            }
+        }
+
+        // ── Documents bulk ──
+        function toggleAllDocs(checked) {
+            document.querySelectorAll('.cb-row[data-entity="doc"]').forEach(cb => { cb.checked = checked; });
+            updateDocBulk();
+        }
+
+        function updateDocBulk() {
+            const ids = getSelectedIds('doc');
+            const bar = document.getElementById('doc-bulk-bar');
+            document.getElementById('doc-bulk-count').textContent = `${ids.length} выбрано`;
+            bar.classList.toggle('visible', ids.length > 0);
+        }
+
+        function clearDocSelection() {
+            document.querySelectorAll('.cb-row[data-entity="doc"]').forEach(cb => { cb.checked = false; });
+            document.getElementById('doc-cb-all').checked = false;
+            updateDocBulk();
+            hideDocBulkFlag();
+        }
+
+        function showDocBulkFlag() {
+            document.getElementById('doc-bulk-flag-bar').classList.add('visible');
+        }
+
+        function hideDocBulkFlag() {
+            document.getElementById('doc-bulk-flag-bar').classList.remove('visible');
+        }
+
+        async function bulkResolveDocs() {
+            const ids = getSelectedIds('doc');
+            if (!ids.length) return;
+            const note = document.getElementById('doc-bulk-note').value.trim() || null;
+            try {
+                const result = await api('/api/v1/internal/review/documents/bulk-resolve', {
+                    method: 'POST',
+                    body: JSON.stringify({ ids, resolution_note: note }),
+                });
+                const s = result.summary || {};
+                showToast(`Документы: ${s.succeeded} решено, ${s.failed} ошибок`);
+                clearDocSelection();
+                loadDocSummary();
+                loadDocQueue(docPage);
+                loadOverview();
+            } catch (err) {
+                showError('Bulk resolve ошибка: ' + (err.message || err.error || 'Unknown'));
+            }
+        }
+
+        async function bulkFlagDocs() {
+            const ids = getSelectedIds('doc');
+            if (!ids.length) return;
+            const codesRaw = document.getElementById('doc-bulk-flag-codes').value || '';
+            const codes = codesRaw.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+            if (!codes.length) { showError('Укажите хотя бы один reason code'); return; }
+            const note = document.getElementById('doc-bulk-flag-note').value.trim() || null;
+            try {
+                const result = await api('/api/v1/internal/review/documents/bulk-flag', {
+                    method: 'POST',
+                    body: JSON.stringify({ ids, reason_codes: codes, flag_note: note }),
+                });
+                const s = result.summary || {};
+                showToast(`Документы: ${s.succeeded} отмечено, ${s.failed} ошибок`);
+                clearDocSelection();
+                loadDocSummary();
+                loadDocQueue(docPage);
+                loadOverview();
+            } catch (err) {
+                showError('Bulk flag ошибка: ' + (err.message || err.error || 'Unknown'));
+            }
+        }
+
+        // ── Readers bulk ──
+        function toggleAllReaders(checked) {
+            document.querySelectorAll('.cb-row[data-entity="reader"]').forEach(cb => { cb.checked = checked; });
+            updateReaderBulk();
+        }
+
+        function updateReaderBulk() {
+            const ids = getSelectedIds('reader');
+            const bar = document.getElementById('reader-bulk-bar');
+            document.getElementById('reader-bulk-count').textContent = `${ids.length} выбрано`;
+            bar.classList.toggle('visible', ids.length > 0);
+        }
+
+        function clearReaderSelection() {
+            document.querySelectorAll('.cb-row[data-entity="reader"]').forEach(cb => { cb.checked = false; });
+            document.getElementById('reader-cb-all').checked = false;
+            updateReaderBulk();
+        }
+
+        async function bulkResolveReaders() {
+            const ids = getSelectedIds('reader');
+            if (!ids.length) return;
+            const note = document.getElementById('reader-bulk-note').value.trim() || null;
+            try {
+                const result = await api('/api/v1/internal/review/readers/bulk-resolve', {
+                    method: 'POST',
+                    body: JSON.stringify({ ids, resolution_note: note }),
+                });
+                const s = result.summary || {};
+                showToast(`Читатели: ${s.succeeded} решено, ${s.failed} ошибок`);
+                clearReaderSelection();
+                loadReaderSummary();
+                loadReaderQueue(readerPage);
+                loadOverview();
+            } catch (err) {
+                showError('Bulk resolve ошибка: ' + (err.message || err.error || 'Unknown'));
             }
         }
 

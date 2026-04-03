@@ -253,6 +253,148 @@ class InternalReviewController extends Controller
         return response()->json(['success' => true] + $result);
     }
 
+    // ── Bulk operations ────────────────────────────────────────────────
+
+    public function bulkResolveCopies(Request $request, InternalReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1', 'max:200'],
+            'ids.*' => ['required', 'uuid'],
+            'resolution_note' => ['nullable', 'string', 'max:1000'],
+            'actor_user_id' => ['sometimes', 'nullable', 'uuid'],
+            'request_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+            'correlation_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        $context = $this->context($request, $validated);
+        $note = isset($validated['resolution_note']) ? trim((string) $validated['resolution_note']) : null;
+
+        $results = $this->executeBulk($validated['ids'], function (string $id) use ($service, $note, $context) {
+            $service->resolveCopyReview(copyId: $id, resolutionNote: $note, context: $context);
+        });
+
+        return response()->json(['success' => true, 'summary' => $results['summary'], 'results' => $results['results']]);
+    }
+
+    public function bulkResolveDocuments(Request $request, InternalDocumentReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1', 'max:200'],
+            'ids.*' => ['required', 'uuid'],
+            'resolution_note' => ['nullable', 'string', 'max:1000'],
+            'actor_user_id' => ['sometimes', 'nullable', 'uuid'],
+            'request_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+            'correlation_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        $context = $this->context($request, $validated);
+        $note = isset($validated['resolution_note']) ? trim((string) $validated['resolution_note']) : null;
+
+        $results = $this->executeBulk($validated['ids'], function (string $id) use ($service, $note, $context) {
+            $service->resolveDocumentReview(documentId: $id, resolutionNote: $note, context: $context);
+        });
+
+        return response()->json(['success' => true, 'summary' => $results['summary'], 'results' => $results['results']]);
+    }
+
+    public function bulkFlagDocuments(Request $request, InternalDocumentReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1', 'max:200'],
+            'ids.*' => ['required', 'uuid'],
+            'reason_codes' => ['required', 'array', 'min:1', 'max:10'],
+            'reason_codes.*' => ['required', 'string', 'max:64'],
+            'flag_note' => ['nullable', 'string', 'max:1000'],
+            'actor_user_id' => ['sometimes', 'nullable', 'uuid'],
+            'request_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+            'correlation_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        $context = $this->context($request, $validated);
+        $reasonCodes = (array) $validated['reason_codes'];
+        $flagNote = isset($validated['flag_note']) ? trim((string) $validated['flag_note']) : null;
+
+        $results = $this->executeBulk($validated['ids'], function (string $id) use ($service, $reasonCodes, $flagNote, $context) {
+            $service->flagDocumentForReview(documentId: $id, reasonCodes: $reasonCodes, flagNote: $flagNote, context: $context);
+        });
+
+        return response()->json(['success' => true, 'summary' => $results['summary'], 'results' => $results['results']]);
+    }
+
+    public function bulkResolveReaders(Request $request, InternalReaderReviewWorkflowService $service): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1', 'max:200'],
+            'ids.*' => ['required', 'uuid'],
+            'resolution_note' => ['nullable', 'string', 'max:1000'],
+            'actor_user_id' => ['sometimes', 'nullable', 'uuid'],
+            'request_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+            'correlation_id' => ['sometimes', 'nullable', 'string', 'max:128'],
+        ]);
+
+        $overrideViolation = $this->forbiddenActorOverrideResponse($request, $validated);
+        if ($overrideViolation !== null) {
+            return $overrideViolation;
+        }
+
+        $context = $this->context($request, $validated);
+        $note = isset($validated['resolution_note']) ? trim((string) $validated['resolution_note']) : null;
+
+        $results = $this->executeBulk($validated['ids'], function (string $id) use ($service, $note, $context) {
+            $service->resolveReaderReview(readerId: $id, resolutionNote: $note, context: $context);
+        });
+
+        return response()->json(['success' => true, 'summary' => $results['summary'], 'results' => $results['results']]);
+    }
+
+    /**
+     * Process a list of IDs through a callback, collecting per-item results.
+     *
+     * @param  list<string>  $ids
+     * @param  callable(string): void  $operation
+     * @return array{summary: array{total: int, succeeded: int, failed: int}, results: list<array{id: string, success: bool, error?: string, error_code?: string}>}
+     */
+    private function executeBulk(array $ids, callable $operation): array
+    {
+        $results = [];
+        $succeeded = 0;
+        $failed = 0;
+
+        foreach ($ids as $id) {
+            try {
+                $operation($id);
+                $results[] = ['id' => $id, 'success' => true];
+                $succeeded++;
+            } catch (\Throwable $e) {
+                $errorCode = method_exists($e, 'errorCode') ? $e->errorCode() : 'unexpected_error';
+                $results[] = ['id' => $id, 'success' => false, 'error' => $e->getMessage(), 'error_code' => $errorCode];
+                $failed++;
+            }
+        }
+
+        return [
+            'summary' => ['total' => count($ids), 'succeeded' => $succeeded, 'failed' => $failed],
+            'results' => $results,
+        ];
+    }
+
+    // ── Triage ──────────────────────────────────────────────────────────
+
     public function triageSummary(Request $request, InternalTriageService $service): JsonResponse
     {
         $validated = $request->validate([

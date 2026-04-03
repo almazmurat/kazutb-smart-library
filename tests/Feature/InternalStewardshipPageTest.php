@@ -43,6 +43,23 @@ class InternalStewardshipPageTest extends TestCase
             ->assertSee('resolution_note', false);
     }
 
+    public function test_stewardship_page_has_bulk_action_ui(): void
+    {
+        $response = $this->get('/internal/stewardship');
+
+        $response
+            ->assertOk()
+            ->assertSee('copy-bulk-bar', false)
+            ->assertSee('doc-bulk-bar', false)
+            ->assertSee('reader-bulk-bar', false)
+            ->assertSee('bulk-resolve', false)
+            ->assertSee('bulkResolveCopies', false)
+            ->assertSee('bulkResolveDocs', false)
+            ->assertSee('bulkResolveReaders', false)
+            ->assertSee('bulkFlagDocs', false)
+            ->assertSee('cb-all', false);
+    }
+
     public function test_stewardship_page_links_to_other_internal_pages(): void
     {
         $response = $this->get('/internal/stewardship');
