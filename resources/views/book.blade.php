@@ -534,6 +534,73 @@
             width: 100%;
         }
 
+        .locations-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .locations-table th,
+        .locations-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .locations-table th {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            font-weight: 600;
+        }
+
+        .locations-table .avail-count {
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .locations-table .zero-count {
+            color: var(--muted);
+        }
+
+        .authors-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .author-chip {
+            display: inline-flex;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .review-notice {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: #fef3c7;
+            border: 1px solid rgba(245, 158, 11, .2);
+            font-size: 13px;
+            color: #92400e;
+        }
+
+        .review-notice .reason-badge {
+            display: inline-flex;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #ffedd5;
+            border: 1px solid rgba(154, 52, 18, .15);
+            font-size: 11px;
+            color: #9a3412;
+            margin: 0 2px;
+        }
+
         .loading {
             text-align: center;
             padding: 3rem;
@@ -722,18 +789,54 @@
             const language = escapeHtml(normalizeText(book?.language?.raw || 'Язык неизвестен'));
             const available = book?.copies?.available || 0;
             const total = book?.copies?.total || 0;
-            const subtitle = escapeHtml(normalizeText(book?.title?.subtitle || book?.description || 'Современное издание'));
-            const location = escapeHtml(getPrimaryLocation(book));
+            const subtitle = normalizeText(book?.title?.subtitle);
+            const authors = Array.isArray(book?.authors) ? book.authors : [];
+            const locations = Array.isArray(book?.availability?.locations) ? book.availability.locations : [];
+            const needsReview = book?.quality?.needsReview === true;
+            const reviewCodes = Array.isArray(book?.quality?.reviewReasonCodes) ? book.quality.reviewReasonCodes : [];
 
             const isAvailable = available > 0;
 
             document.title = `${title} - KazTBU Library`;
 
+            const authorsHtml = authors.length > 1
+                ? `<div class="authors-list">${authors.map(a => `<span class="author-chip">${escapeHtml(a.name || a)}</span>`).join('')}</div>`
+                : escapeHtml(author);
+
+            const locationsTableHtml = locations.length
+                ? `<table class="locations-table">
+                    <thead><tr>
+                        <th>Подразделение</th>
+                        <th>Кампус</th>
+                        <th>Пункт выдачи</th>
+                        <th>Всего</th>
+                        <th>Доступно</th>
+                    </tr></thead>
+                    <tbody>${locations.map(loc => {
+                        const avail = loc.copies?.available || 0;
+                        const tot = loc.copies?.total || 0;
+                        return `<tr>
+                            <td>${escapeHtml(loc.institutionUnit?.name || '—')}</td>
+                            <td>${escapeHtml(loc.campus?.name || '—')}</td>
+                            <td>${escapeHtml(loc.servicePoint?.name || '—')}</td>
+                            <td>${tot}</td>
+                            <td class="${avail > 0 ? 'avail-count' : 'zero-count'}">${avail}</td>
+                        </tr>`;
+                    }).join('')}</tbody>
+                   </table>`
+                : '<p style="color:var(--muted);font-size:14px;">Информация о местах хранения недоступна</p>';
+
+            const reviewHtml = needsReview && reviewCodes.length
+                ? `<div class="review-notice">
+                    ⚠ Данные этого документа проходят проверку: ${reviewCodes.map(c => `<span class="reason-badge">${escapeHtml(c)}</span>`).join(' ')}
+                   </div>`
+                : '';
+
             content.innerHTML = `
                 <div class="breadcrumbs">
                     <span>Главная</span>
                     <span>•</span>
-                    <span>Каталог</span>
+                    <a href="/catalog">Каталог</a>
                     <span>•</span>
                     <span>${escapeHtml(title.substring(0, 50))}</span>
                 </div>
@@ -748,28 +851,22 @@
                                 <div class="cover-author">${escapeHtml(author.substring(0, 30))}</div>
                             </div>
                         </div>
-
-                        <div class="mini-actions">
-                            <div class="mini-action">PDF версия</div>
-                            <div class="mini-action">Цитировать</div>
-                            <div class="mini-action">Избранное</div>
-                        </div>
                     </aside>
 
                     <div>
                         <section class="card details-card">
                             <div class="badges">
-                                <span class="badge badge-blue">Учебное издание</span>
                                 <span class="badge badge-${isAvailable ? 'green' : 'blue'}">${isAvailable ? '✓ Доступно сейчас' : '✗ Недоступно'}</span>
+                                ${book?.isbn?.isValid === false && isbn !== 'ISBN не указан' ? '<span class="badge badge-blue">ISBN не валиден</span>' : ''}
                             </div>
 
                             <h2 class="title">${escapeHtml(title)}</h2>
-                            <p class="subtitle">${escapeHtml(subtitle)}</p>
+                            ${subtitle ? `<p class="subtitle">${escapeHtml(subtitle)}</p>` : ''}
 
                             <div class="meta-grid">
                                 <div class="meta-item">
-                                    <span class="meta-label">Автор</span>
-                                    <span class="meta-value">${escapeHtml(author)}</span>
+                                    <span class="meta-label">${authors.length > 1 ? 'Авторы' : 'Автор'}</span>
+                                    <span class="meta-value">${authorsHtml}</span>
                                 </div>
                                 <div class="meta-item">
                                     <span class="meta-label">Год издания</span>
@@ -781,27 +878,23 @@
                                 </div>
                                 <div class="meta-item">
                                     <span class="meta-label">Доступно</span>
-                                    <span class="meta-value">${available}/${total}</span>
+                                    <span class="meta-value">${available} из ${total}</span>
                                 </div>
                             </div>
 
-                            <h3 class="section-title">О книге</h3>
-                            <div class="text-block">
-                                Это издание представляет собой ценный ресурс для студентов, преподавателей и исследователей. Книга содержит актуальную информацию и практические материалы, которые помогут расширить знания в соответствующей области. Доступна как в печатном, так и в электронном формате.
-                            </div>
+                            ${reviewHtml}
 
                             <div class="status-box ${isAvailable ? '' : 'unavailable'}">
                                 <div>
                                     <strong>${isAvailable ? 'Экземпляр доступен для выдачи' : 'Все экземпляры выданы'}</strong>
-                                    <p>${isAvailable ? `Книга находится в основном фонде библиотеки (${available} экземпляров). Также доступна электронная версия для зарегистрированных пользователей.` : 'В данный момент все печатные экземпляры выданы. Электронная версия доступна для зарегистрированных пользователей.'}</p>
+                                    <p>${isAvailable ? `В фонде ${available} доступных экземпляров из ${total}.` : `Все ${total} экземпляров в данный момент выданы.`}</p>
                                 </div>
                                 <div class="status-pill ${isAvailable ? '' : 'unavailable'}">${isAvailable ? 'В наличии' : 'Недоступно'}</div>
                             </div>
 
                             <div class="action-row">
                                 <button class="btn btn-primary" onclick="alert('Функция резервирования в разработке')">Забронировать книгу</button>
-                                <button class="btn btn-secondary" onclick="openReader('${isbn}')">Открыть электронную версию</button>
-                                <button class="btn btn-ghost" onclick="alert('Скачивание описания в разработке')">Скачать описание</button>
+                                <a href="/catalog" class="btn btn-ghost">Вернуться в каталог</a>
                             </div>
                         </section>
 
@@ -813,38 +906,19 @@
                                     <div class="info-row"><span>Издательство</span><span>${escapeHtml(publisher)}</span></div>
                                     <div class="info-row"><span>Язык издания</span><span>${escapeHtml(language)}</span></div>
                                     <div class="info-row"><span>Год издания</span><span>${escapeHtml(year)}</span></div>
-                                    <div class="info-row"><span>Формат</span><span>Печатная + электронная</span></div>
-                                    <div class="info-row"><span>Место хранения</span><span>${location}</span></div>
+                                    <div class="info-row"><span>Всего экземпляров</span><span>${total}</span></div>
+                                    <div class="info-row"><span>Доступно сейчас</span><span style="color: ${isAvailable ? 'var(--success)' : '#dc2626'};">${available}</span></div>
                                 </div>
                             </div>
 
                             <div class="card info-card">
-                                <h3 class="section-title">Полезно знать</h3>
-                                <div class="info-list">
-                                    <div class="info-row"><span>Срок выдачи</span><span>14 дней</span></div>
-                                    <div class="info-row"><span>Продление</span><span>Доступно онлайн</span></div>
-                                    <div class="info-row"><span>Электронный доступ</span><span>По учетной записи</span></div>
-                                    <div class="info-row"><span>Количество в фонде</span><span>${escapeHtml(total)} экземпляров</span></div>
-                                    <div class="info-row"><span>Доступно сейчас</span><span>${escapeHtml(available)} экземпляров</span></div>
-                                    <div class="info-row"><span>Статус</span><span style="color: ${isAvailable ? 'var(--success)' : '#dc2626'};">${isAvailable ? 'Активно' : 'Недоступно'}</span></div>
-                                </div>
+                                <h3 class="section-title">Наличие по пунктам выдачи</h3>
+                                ${locationsTableHtml}
                             </div>
                         </section>
                     </div>
                 </section>
             `;
-        }
-
-        function getPrimaryLocation(book) {
-            const firstLocation = Array.isArray(book?.availability?.locations)
-                ? book.availability.locations[0]
-                : null;
-
-            const servicePoint = normalizeText(firstLocation?.servicePoint?.name);
-            const campus = normalizeText(firstLocation?.campus?.name);
-            const institution = normalizeText(firstLocation?.institutionUnit?.name);
-
-            return servicePoint || campus || institution || 'Основной фонд, зал №1';
         }
 
         const ME_ENDPOINT = '/api/v1/me';
@@ -864,17 +938,6 @@
             } catch (_) {
                 return false;
             }
-        }
-
-        async function openReader(isbn) {
-            const authenticated = await isAuthenticated();
-            if (!authenticated) {
-                const redirectTo = encodeURIComponent(`/book/${isbn}/read`);
-                window.location.href = `/login?redirect=${redirectTo}`;
-                return;
-            }
-
-            window.location.href = `/book/${isbn}/read`;
         }
 
         async function updateLoginButtonState() {
