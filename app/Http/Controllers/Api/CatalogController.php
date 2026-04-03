@@ -19,6 +19,9 @@ class CatalogController extends Controller
             'page' => ['nullable', 'integer', 'min:1'],
             'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
             'sort' => ['nullable', 'string', 'in:popular,newest,title,author'],
+            'year_from' => ['nullable', 'integer', 'min:1900', 'max:2100'],
+            'year_to' => ['nullable', 'integer', 'min:1900', 'max:2100'],
+            'available_only' => ['nullable', 'string', 'in:0,1,true,false'],
         ]);
 
         $result = $service->search(
@@ -27,6 +30,9 @@ class CatalogController extends Controller
             page: (int) ($validated['page'] ?? 1),
             limit: (int) ($validated['limit'] ?? 10),
             sort: (string) ($validated['sort'] ?? 'popular'),
+            yearFrom: isset($validated['year_from']) ? (int) $validated['year_from'] : null,
+            yearTo: isset($validated['year_to']) ? (int) $validated['year_to'] : null,
+            availableOnly: in_array($validated['available_only'] ?? '0', ['1', 'true'], true),
         );
 
         return response()->json($result);

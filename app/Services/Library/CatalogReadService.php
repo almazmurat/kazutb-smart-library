@@ -9,8 +9,16 @@ class CatalogReadService
     /**
      * @return array{data: array<int, array<string, mixed>>, meta: array<string, int>}
      */
-    public function search(string $query = '', ?string $language = null, int $page = 1, int $limit = 10, string $sort = 'popular'): array
-    {
+    public function search(
+        string $query = '',
+        ?string $language = null,
+        int $page = 1,
+        int $limit = 10,
+        string $sort = 'popular',
+        ?int $yearFrom = null,
+        ?int $yearTo = null,
+        bool $availableOnly = false,
+    ): array {
         $page = max($page, 1);
         $limit = min(max($limit, 1), 100);
 
@@ -44,6 +52,18 @@ class CatalogReadService
 
         if (!empty($language)) {
             $builder->whereRaw("LOWER(COALESCE(d.language_code, '')) = ?", [mb_strtolower($language)]);
+        }
+
+        if ($yearFrom !== null) {
+            $builder->where('d.publication_year', '>=', $yearFrom);
+        }
+
+        if ($yearTo !== null) {
+            $builder->where('d.publication_year', '<=', $yearTo);
+        }
+
+        if ($availableOnly) {
+            $builder->whereRaw("COALESCE((d.copy_summary_json->>'availableCopies')::int, 0) > 0");
         }
 
         $total = (clone $builder)->count();

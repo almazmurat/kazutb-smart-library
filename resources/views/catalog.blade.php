@@ -457,14 +457,14 @@
 
     @media (max-width: 1200px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
-      .search-wrap { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 920px) {
       .layout { grid-template-columns: 1fr; }
       .filters { position: static; top: auto; }
       .nav-links, .nav-actions { display: none; }
-      .grid, .search-wrap { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      .search-wrap { grid-template-columns: 1fr auto !important; }
     }
 
     @media (max-width: 560px) {
@@ -511,21 +511,8 @@
         <h1>Найдите нужную книгу, учебник или научное издание</h1>
         <p>Удобный поиск по фонду библиотеки с фильтрами по категориям, формату, году издания, языку и доступности.</p>
 
-        <div class="search-wrap">
-          <input class="input" id="search-input" type="text" placeholder="Поиск по названию, автору, ISBN или ключевому слову" />
-          <select class="select" id="category-select">
-            <option value="">Все категории</option>
-            <option value="учебники">Учебники</option>
-            <option value="научные">Научные статьи</option>
-            <option value="диссертации">Диссертации</option>
-            <option value="e-books">Электронные книги</option>
-          </select>
-          <select class="select" id="format-select">
-            <option value="">Все форматы</option>
-            <option value="печать">Печатные</option>
-            <option value="электронные">Электронные</option>
-            <option value="оба">Печатные + PDF</option>
-          </select>
+        <div class="search-wrap" style="grid-template-columns: 1fr auto;">
+          <input class="input" id="search-input" type="text" placeholder="Поиск по названию, автору, ISBN или ключевому слову" onkeydown="if(event.key==='Enter'){loadCatalog()}" />
           <button class="btn btn-primary" onclick="loadCatalog()">Найти</button>
         </div>
       </section>
@@ -535,53 +522,10 @@
           <h2 class="filter-title">Фильтры</h2>
 
           <div class="filter-group">
-            <span class="filter-label">Популярные категории</span>
-            <div class="chips" id="category-chips">
-              <span class="chip active" data-filter="all">Все</span>
-              <span class="chip" data-filter="it">IT</span>
-              <span class="chip" data-filter="economics">Экономика</span>
-              <span class="chip" data-filter="design">Дизайн</span>
-              <span class="chip" data-filter="security">Безопасность</span>
-              <span class="chip" data-filter="marketing">Маркетинг</span>
-            </div>
-          </div>
-
-          <div class="filter-group">
             <span class="filter-label">Доступность</span>
             <div class="check-list">
               <label class="check-item">
-                <span><input type="checkbox" name="availability" value="available" checked> В наличии</span>
-                <span id="availability-count-available">184</span>
-              </label>
-              <label class="check-item">
-                <span><input type="checkbox" name="availability" value="online"> Только онлайн</span>
-                <span id="availability-count-online">73</span>
-              </label>
-              <label class="check-item">
-                <span><input type="checkbox" name="availability" value="issued"> На руках</span>
-                <span id="availability-count-issued">29</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <span class="filter-label">Тип издания</span>
-            <div class="check-list">
-              <label class="check-item">
-                <span><input type="checkbox" name="publication-type" value="textbooks" checked> Учебники</span>
-                <span id="type-count-textbooks">126</span>
-              </label>
-              <label class="check-item">
-                <span><input type="checkbox" name="publication-type" value="manuals"> Методические пособия</span>
-                <span id="type-count-manuals">84</span>
-              </label>
-              <label class="check-item">
-                <span><input type="checkbox" name="publication-type" value="scientific"> Научные издания</span>
-                <span id="type-count-scientific">61</span>
-              </label>
-              <label class="check-item">
-                <span><input type="checkbox" name="publication-type" value="ebooks"> Электронные книги</span>
-                <span id="type-count-ebooks">102</span>
+                <span><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> Только в наличии</span>
               </label>
             </div>
           </div>
@@ -589,7 +533,8 @@
           <div class="filter-group">
             <span class="filter-label">Язык</span>
             <div class="chips" id="language-chips">
-              <span class="chip active" data-lang="ru">Русский</span>
+              <span class="chip active" data-lang="">Все</span>
+              <span class="chip" data-lang="ru">Русский</span>
               <span class="chip" data-lang="kk">Қазақша</span>
               <span class="chip" data-lang="en">English</span>
             </div>
@@ -598,10 +543,11 @@
           <div class="filter-group">
             <span class="filter-label">Год издания</span>
             <div class="chips" id="year-chips">
-              <span class="chip" data-year="2026">2026</span>
-              <span class="chip active" data-year="2025">2025</span>
+              <span class="chip active" data-year="">Все</span>
+              <span class="chip" data-year="2025">2025</span>
               <span class="chip" data-year="2024">2024</span>
               <span class="chip" data-year="2023">2023</span>
+              <span class="chip" data-year="2020-2022">2020–2022</span>
               <span class="chip" data-year="older">Ранее</span>
             </div>
           </div>
@@ -645,6 +591,27 @@
       return div.innerHTML;
     }
 
+    function getActiveLanguage() {
+      const active = document.querySelector('#language-chips .chip.active');
+      return active ? active.dataset.lang || '' : '';
+    }
+
+    function getActiveYear() {
+      const active = document.querySelector('#year-chips .chip.active');
+      return active ? active.dataset.year || '' : '';
+    }
+
+    function getYearParams() {
+      const year = getActiveYear();
+      if (!year) return {};
+      if (year === 'older') return { year_to: 2019 };
+      if (year.includes('-')) {
+        const [from, to] = year.split('-');
+        return { year_from: from, year_to: to };
+      }
+      return { year_from: year, year_to: year };
+    }
+
     function formatBookData(book) {
       return {
         title: book.title?.display || book.title?.raw || 'Без названия',
@@ -654,34 +621,36 @@
         language: book.language?.raw || book.language?.code || 'Не указан',
         format: book.copies?.available > 0 ? 'Печатная + PDF' : 'PDF',
         available: book.copies?.available || 0,
+        total: book.copies?.total || 0,
         isbn: book.isbn?.raw || '',
-        type: 'Учебник'
+        id: book.id || ''
       };
     }
 
     function renderBookCard(book) {
       const data = formatBookData(book);
       const isAvailable = data.available > 0;
+      const identifier = data.isbn || data.id;
 
       return `
-        <article class="book-card" onclick="goToBook('${escapeHtml(data.isbn)}')">
+        <article class="book-card" onclick="goToBook('${escapeHtml(identifier)}')">
           <div class="book-preview">
             <small>${escapeHtml(data.publisher.substring(0, 15))}</small>
             <h3>${escapeHtml(data.title.substring(0, 30))}</h3>
           </div>
           <div class="meta-row">
-            <span class="tag">${escapeHtml(data.type)}</span>
-            <span class="tag ${isAvailable ? 'green' : ''}">${isAvailable ? 'В наличии' : 'На заказ'}</span>
+            <span class="tag">${escapeHtml(String(data.year))}</span>
+            <span class="tag ${isAvailable ? 'green' : ''}">${isAvailable ? data.available + ' экз.' : 'Нет в наличии'}</span>
           </div>
           <h3 class="book-title">${escapeHtml(data.title)}</h3>
           <p class="book-desc">${escapeHtml(data.publisher)}</p>
           <div class="book-info">
             <div><span>Автор</span><span>${escapeHtml(data.author.substring(0, 40))}</span></div>
-            <div><span>Год</span><span>${escapeHtml(data.year)}</span></div>
-            <div><span>Формат</span><span>${escapeHtml(data.format)}</span></div>
+            <div><span>Год</span><span>${escapeHtml(String(data.year))}</span></div>
+            <div><span>Язык</span><span>${escapeHtml(data.language)}</span></div>
           </div>
           <div class="book-actions">
-            <button class="btn btn-primary" onclick="event.stopPropagation(); goToBook('${escapeHtml(data.isbn)}')">Смотреть книгу</button>
+            <button class="btn btn-primary" onclick="event.stopPropagation(); goToBook('${escapeHtml(identifier)}')">Смотреть книгу</button>
             <button class="icon-btn" onclick="event.stopPropagation(); toggleFavorite(this)">♡</button>
           </div>
         </article>
@@ -703,6 +672,16 @@
         params.set('limit', 6);
         params.set('sort', sortSelect.value);
 
+        const lang = getActiveLanguage();
+        if (lang) params.set('language', lang);
+
+        const yearParams = getYearParams();
+        if (yearParams.year_from) params.set('year_from', yearParams.year_from);
+        if (yearParams.year_to) params.set('year_to', yearParams.year_to);
+
+        const availableOnly = document.getElementById('filter-available-only');
+        if (availableOnly && availableOnly.checked) params.set('available_only', '1');
+
         const response = await fetch(`${API_ENDPOINT}?${params}`, {
           headers: { 'Accept': 'application/json' }
         });
@@ -714,8 +693,9 @@
         const meta = data.meta || {};
 
         if (books.length === 0) {
-          grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);">Книги не найдены</div>';
+          grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);">Книги не найдены. Попробуйте изменить параметры поиска.</div>';
           resultsCount.textContent = 'Найдено 0 книг';
+          document.getElementById('pagination').innerHTML = '';
         } else {
           grid.innerHTML = books.map(renderBookCard).join('');
           resultsCount.textContent = `Найдено ${meta.total || books.length} книг`;
@@ -723,7 +703,7 @@
           renderPagination();
         }
       } catch (err) {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:red;">Ошибка загрузки каталога</div>';
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:red;">Ошибка загрузки каталога. Попробуйте обновить страницу.</div>';
         console.error(err);
       }
     }
@@ -737,7 +717,7 @@
 
       let html = '';
       if (currentPage > 1) {
-        html += `<button class="page-btn" onclick="changePage(1)">←</button>`;
+        html += `<button class="page-btn" onclick="changePage(${currentPage - 1})">←</button>`;
       }
 
       const start = Math.max(1, currentPage - 2);
@@ -770,8 +750,9 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function goToBook(isbn) {
-      window.location.href = `/book/${encodeURIComponent(isbn)}`;
+    function goToBook(identifier) {
+      if (!identifier) return;
+      window.location.href = `/book/${encodeURIComponent(identifier)}`;
     }
 
     function toggleFavorite(btn) {
@@ -813,11 +794,12 @@
       window.location.href = `/login?redirect=${redirectTo}`;
     });
 
-    // Setup chip filters
-    document.querySelectorAll('.chip').forEach(chip => {
+    // Chip filter behavior — click activates chip and reloads catalog
+    document.querySelectorAll('#language-chips .chip, #year-chips .chip').forEach(chip => {
       chip.addEventListener('click', function() {
         this.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         this.classList.add('active');
+        applyFilters();
       });
     });
 
