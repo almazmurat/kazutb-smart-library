@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\InternalCopyReadController;
 use App\Http\Controllers\Api\InternalCopyWriteController;
 use App\Http\Controllers\Api\InternalCirculationController;
 use App\Http\Controllers\Api\InternalEnrichmentController;
+use App\Http\Controllers\Api\InternalReaderContactController;
 use App\Http\Controllers\Api\InternalReviewController;
 use App\Http\Controllers\Api\LibraryController;
 use App\Http\Controllers\Api\LandingController;
@@ -89,6 +90,12 @@ Route::prefix('v1')->group(function (): void {
             Route::get('/enrichment/lookup/{documentId}', [InternalEnrichmentController::class, 'lookup']);
             Route::post('/enrichment/apply/{documentId}', [InternalEnrichmentController::class, 'apply']);
             Route::post('/enrichment/check-isbn', [InternalEnrichmentController::class, 'checkIsbn']);
+            Route::get('/reader-contacts/stats', [InternalReaderContactController::class, 'stats']);
+            Route::get('/reader-contacts/{readerId}', [InternalReaderContactController::class, 'contacts']);
+            Route::put('/reader-contacts/{contactId}/update', [InternalReaderContactController::class, 'update']);
+            Route::post('/reader-contacts/{readerId}/add', [InternalReaderContactController::class, 'add']);
+            Route::post('/reader-contacts/bulk-normalize', [InternalReaderContactController::class, 'bulkNormalize']);
+            Route::post('/reader-contacts/validate', [InternalReaderContactController::class, 'validate']);
         });
 
     Route::get('/bridge/summary', [BridgeController::class, 'summary']);

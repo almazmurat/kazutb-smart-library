@@ -688,6 +688,17 @@
                 </div>
             </div>
             <div class="panel">
+                <h2>Нормализация контактов</h2>
+                <div class="cards" id="contact-stats-cards">
+                    <div class="metric soft"><div class="metric-label">Загрузка…</div></div>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="button small" onclick="bulkNormalizeContacts()">Перенормализовать контакты</button>
+                    <button class="button small secondary" onclick="validateContactPrompt()">Проверить контакт</button>
+                </div>
+                <div id="contact-norm-status" style="margin-top: 8px;"></div>
+            </div>
+            <div class="panel">
                 <div class="bulk-bar" id="reader-bulk-bar">
                     <span class="bulk-count" id="reader-bulk-count">0 выбрано</span>
                     <div class="bulk-note"><input id="reader-bulk-note" type="text" placeholder="Заметка для всех (опционально)"></div>
@@ -774,14 +785,21 @@
             </div>`;
         }
 
-        async function api(url, opts) {
+        async function api(url, methodOrOpts, body) {
+            let opts = {};
+            if (typeof methodOrOpts === 'string') {
+                opts = { method: methodOrOpts };
+                if (body !== undefined) opts.body = JSON.stringify(body);
+            } else if (methodOrOpts) {
+                opts = methodOrOpts;
+            }
             const resp = await fetch(url, {
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                 ...opts,
             });
             if (!resp.ok) {
-                const body = await resp.json().catch(() => ({}));
-                throw { status: resp.status, ...body };
+                const b = await resp.json().catch(() => ({}));
+                throw { status: resp.status, ...b };
             }
             return resp.json();
         }
@@ -819,7 +837,7 @@
                 tabLoadedFlags[tab] = true;
                 if (tab === 'copies') { loadCopySummary(); loadCopyQueue(1); }
                 if (tab === 'documents') { loadDocSummary(); loadEnrichmentStats(); loadDocQueue(1); }
-                if (tab === 'readers') { loadReaderSummary(); loadReaderQueue(1); }
+                if (tab === 'readers') { loadReaderSummary(); loadContactStats(); loadReaderQueue(1); }
             }
         });
 
@@ -1208,6 +1226,14 @@
                         <td>${esc(shortDate(item.updatedAt))}</td>
                         <td>
                             <button class="button small" onclick="toggleReaderResolve('${esc(id)}')">Решить</button>
+                            <button class="button small secondary" onclick="loadReaderContacts('${esc(id)}')">Контакты</button>
+                        </td>
+                    </tr>
+                    <tr class="action-row" id="reader-contacts-${id}" style="display:none">
+                        <td colspan="8">
+                            <div class="action-form" id="reader-contacts-content-${id}">
+                                <span class="meta">Загрузка контактов…</span>
+                            </div>
                         </td>
                     </tr>
                     <tr class="action-row" id="reader-action-${id}" style="display:none">
@@ -1403,6 +1429,132 @@
                 loadOverview();
             } catch (err) {
                 showError('Bulk resolve ошибка: ' + (err.message || err.error || 'Unknown'));
+            }
+        }
+
+        // ═══════════════════════════════════════
+        // Reader contact functions
+        // ═══════════════════════════════════════
+        async function loadContactStats() {
+            try {
+                const data = await api('/api/v1/internal/reader-contacts/stats');
+                const d = data.data || {};
+                document.getElementById('contact-stats-cards').innerHTML = [
+                    metricHtml('Всего контактов', d.totalContacts, '', 'soft'),
+                    metricHtml('Заглушки', d.placeholderCount, 'нет значения', 'alert'),
+                    metricHtml('Валидный формат', d.validFormatCount, '', 'accent-bg'),
+                    metricHtml('Невалидный', d.invalidFormatCount, '', 'warn-soft'),
+                    metricHtml('С email', d.readersWithValidEmail, `из ${fmt(d.totalReaders)} читателей`, 'accent-bg'),
+                    metricHtml('Без email', d.readersWithoutEmail, '', 'alert'),
+                ].join('');
+            } catch { /* optional */ }
+        }
+
+        async function bulkNormalizeContacts() {
+            const st = document.getElementById('contact-norm-status');
+            st.innerHTML = '<span class="meta">Нормализация контактов…</span>';
+            try {
+                const data = await api('/api/v1/internal/reader-contacts/bulk-normalize', 'POST', { limit: 500 });
+                const r = data.data || {};
+                st.innerHTML = `<span class="badge entity">Обработано: ${r.processed} | Обновлено: ${r.updated} | Валидных: ${r.valid} | Невалидных: ${r.invalid}</span>`;
+                loadContactStats();
+            } catch (err) {
+                st.innerHTML = `<span class="badge reason">Ошибка: ${esc(err.message || '')}</span>`;
+            }
+        }
+
+        async function validateContactPrompt() {
+            const type = prompt('Тип контакта (EMAIL или PHONE):');
+            if (!type) return;
+            const value = prompt('Значение для проверки:');
+            if (!value) return;
+            const st = document.getElementById('contact-norm-status');
+            try {
+                const data = await api('/api/v1/internal/reader-contacts/validate', 'POST', { contact_type: type, value });
+                const r = data.data || {};
+                const badge = r.valid ? 'entity' : 'reason';
+                st.innerHTML = `<span class="badge ${badge}">${esc(r.normalized)} — ${r.valid ? '✅ Валиден' : '❌ Невалиден'}</span>${r.error ? ` <span class="meta">${esc(r.error)}</span>` : ''}`;
+            } catch (err) {
+                st.innerHTML = `<span class="badge reason">Ошибка: ${esc(err.message || '')}</span>`;
+            }
+        }
+
+        async function loadReaderContacts(readerId) {
+            const row = document.getElementById(`reader-contacts-${readerId}`);
+            const content = document.getElementById(`reader-contacts-content-${readerId}`);
+            if (!row || !content) return;
+
+            if (row.style.display !== 'none') { row.style.display = 'none'; return; }
+            row.style.display = '';
+            content.innerHTML = '<span class="meta">Загрузка контактов…</span>';
+
+            try {
+                const data = await api(`/api/v1/internal/reader-contacts/${readerId}`);
+                const r = data.data || {};
+                const contacts = r.contacts || [];
+
+                let html = '<div style="display:grid;gap:10px;width:100%">';
+                html += `<div><strong>${esc(r.fullName || '—')}</strong> (код: ${esc(r.legacyCode || '—')})</div>`;
+
+                if (contacts.length) {
+                    html += '<table style="width:100%;font-size:13px"><thead><tr><th>Тип</th><th>Значение</th><th>Статус</th><th></th></tr></thead><tbody>';
+                    contacts.forEach(c => {
+                        const statusBadge = c.isPlaceholder ? '<span class="badge reason">заглушка</span>'
+                            : c.isValidFormat ? '<span class="badge entity">✅ валиден</span>'
+                            : '<span class="badge reason">❌ невалиден</span>';
+                        html += `<tr>
+                            <td>${esc(c.contactType)}</td>
+                            <td>${esc(c.valueRaw || '—')} ${c.valueNormalized && c.valueNormalized !== c.valueRaw ? '<span class="meta">→ '+esc(c.valueNormalized)+'</span>' : ''}</td>
+                            <td>${statusBadge}${c.isPrimary ? ' <span class="badge entity">основной</span>' : ''}</td>
+                            <td><button class="button small secondary" onclick="editContactPrompt('${esc(c.id)}','${esc(readerId)}')">Изменить</button></td>
+                        </tr>`;
+                    });
+                    html += '</tbody></table>';
+                } else {
+                    html += '<div class="meta">Нет контактов.</div>';
+                }
+
+                html += `<div style="display:flex;gap:8px;margin-top:8px">
+                    <button class="button small" onclick="addContactPrompt('${esc(readerId)}')">+ Добавить контакт</button>
+                    <button class="button small secondary" onclick="document.getElementById('reader-contacts-${esc(readerId)}').style.display='none'">Закрыть</button>
+                </div></div>`;
+                content.innerHTML = html;
+            } catch (err) {
+                content.innerHTML = `<span class="badge reason">Ошибка: ${esc(err.message || '')}</span>
+                    <button class="button small secondary" onclick="document.getElementById('reader-contacts-${readerId}').style.display='none'">Закрыть</button>`;
+            }
+        }
+
+        async function editContactPrompt(contactId, readerId) {
+            const value = prompt('Новое значение контакта:');
+            if (value === null) return;
+            try {
+                await api(`/api/v1/internal/reader-contacts/${contactId}/update`, 'PUT', { value });
+                showToast('Контакт обновлён');
+                loadReaderContacts(readerId); // close
+                loadReaderContacts(readerId); // reopen with fresh data
+                loadContactStats();
+                loadReaderSummary();
+            } catch (err) {
+                alert('Ошибка: ' + (err.message || ''));
+            }
+        }
+
+        async function addContactPrompt(readerId) {
+            const type = prompt('Тип (EMAIL или PHONE):', 'EMAIL');
+            if (!type) return;
+            const value = prompt('Значение:');
+            if (!value) return;
+            try {
+                await api(`/api/v1/internal/reader-contacts/${readerId}/add`, 'POST', { contact_type: type, value });
+                showToast('Контакт добавлен');
+                loadReaderContacts(readerId); // close
+                loadReaderContacts(readerId); // reopen
+                loadContactStats();
+                loadReaderSummary();
+                loadReaderQueue(readerPage);
+            } catch (err) {
+                alert('Ошибка: ' + (err.message || ''));
             }
         }
 
