@@ -60,6 +60,9 @@ Route::prefix('internal')->group(function () use ($internalStaffView) {
     Route::get('/stewardship', function () {
         return view('internal-stewardship');
     });
+    Route::get('/circulation', function () {
+        return view('internal-circulation');
+    });
     Route::get('/ai-chat', function (Request $request) use ($internalStaffView) {
         return $internalStaffView($request, 'internal-ai-chat');
     });

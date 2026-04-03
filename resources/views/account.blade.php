@@ -420,19 +420,19 @@
         <div class="section-head">
           <div>
             <h2>Мои книги</h2>
-            <p>Список текущих и рекомендуемых изданий в том же формате карточек, что и в каталоге.</p>
+            <p>Текущие выдачи из библиотечного фонда.</p>
           </div>
         </div>
 
         <div id="book-grid" class="book-grid">
-          <div class="loading" style="grid-column: 1 / -1;">Загрузка книг...</div>
+          <div class="loading" style="grid-column: 1 / -1;">Загрузка выдач...</div>
         </div>
       </section>
     </div>
   </main>
 
   <script>
-    const API_ENDPOINT = '/api/v1/catalog-db?limit=6';
+    const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans?status=active';
     const ACCOUNT_SUMMARY_ENDPOINT = '/api/v1/account/summary';
     const ME_ENDPOINT = '/api/v1/me';
     const AUTH_USER_KEY = 'library.auth.user';
@@ -504,41 +504,48 @@
       return payload.user;
     }
 
-    function formatBookData(book) {
-      const title = normalizeText(book?.title?.display || book?.title?.raw, 'Без названия');
-      const author = normalizeText(book?.primaryAuthor, 'Автор не указан');
-      const publisher = normalizeText(book?.publisher?.name, 'Издательство');
-      const available = Number(book?.copies?.available || 0);
-      const isbn = normalizeText(book?.isbn?.raw, '');
+    function formatLoanData(loan) {
+      const dueDate = loan.dueAt ? new Date(loan.dueAt).toLocaleDateString('ru-RU') : '—';
+      const issuedDate = loan.issuedAt ? new Date(loan.issuedAt).toLocaleDateString('ru-RU') : '—';
+      const isOverdue = loan.isOverdue === true;
 
       return {
-        title,
-        author,
-        publisher,
-        available,
-        isbn,
+        id: loan.id || '',
+        copyId: loan.copyId || '',
+        status: loan.status || 'active',
+        dueDate,
+        issuedDate,
+        isOverdue,
+        returnedAt: loan.returnedAt ? new Date(loan.returnedAt).toLocaleDateString('ru-RU') : null,
       };
     }
 
-    function buildDueDate(offsetDays) {
-      const date = new Date();
-      date.setDate(date.getDate() + offsetDays);
-      return date.toLocaleDateString('ru-RU');
-    }
-
-    function renderBookCard(book, index) {
-      const data = formatBookData(book);
-      const dueDate = buildDueDate(index + 7);
+    function renderLoanCard(loan) {
+      const data = formatLoanData(loan);
+      const statusLabel = data.isOverdue ? '⚠ Просрочено' : (data.status === 'returned' ? 'Возвращено' : 'Активна');
+      const statusColor = data.isOverdue ? '#991b1b' : (data.status === 'returned' ? '#166534' : '#1e40af');
 
       return `
-        <article class="book-card" onclick="location.href='/book/${encodeURIComponent(data.isbn)}'">
-          <div class="book-preview">
-            <small>${escapeHtml(data.publisher.substring(0, 15))}</small>
-            <h3>${escapeHtml(data.title.substring(0, 28))}</h3>
+        <article class="book-card">
+          <div class="book-preview" style="${data.isOverdue ? 'background: linear-gradient(180deg, #7f1d1d 0%, #991b1b 100%);' : ''}">
+            <small>Экземпляр</small>
+            <h3>${escapeHtml(data.copyId.substring(0, 12))}…</h3>
           </div>
-          <h3 class="book-title">${escapeHtml(data.title)}</h3>
-          <div class="book-meta">${escapeHtml(data.author)} · до ${dueDate}</div>
+          <h3 class="book-title">Выдача #${escapeHtml(data.id.substring(0, 8))}</h3>
+          <div class="book-meta" style="color: ${statusColor}; font-weight: 700;">${statusLabel}</div>
+          <div class="book-meta">Выдано: ${data.issuedDate}</div>
+          <div class="book-meta">Срок: ${data.dueDate}</div>
+          ${data.returnedAt ? `<div class="book-meta">Возвращено: ${data.returnedAt}</div>` : ''}
         </article>
+      `;
+    }
+
+    function renderNoLoansMessage() {
+      return `
+        <div class="loading" style="grid-column: 1 / -1; text-align: center;">
+          У вас нет активных выдач.
+          <br><a href="/catalog" style="color: #3b82f6; text-decoration: underline;">Перейти в каталог</a>
+        </div>
       `;
     }
 
@@ -598,25 +605,31 @@
     async function loadBooks() {
       const grid = document.getElementById('book-grid');
       try {
-        const response = await fetch(API_ENDPOINT, {
+        const response = await fetch(ACCOUNT_LOANS_ENDPOINT, {
           headers: {
             Accept: 'application/json',
           },
         });
-        if (!response.ok) throw new Error('Ошибка API');
 
-        const payload = await response.json();
-        const books = Array.isArray(payload?.data) ? payload.data : [];
-
-        if (!books.length) {
-          grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Книги не найдены</div>';
+        if (response.status === 401) {
+          grid.innerHTML = renderNoLoansMessage();
           return;
         }
 
-        grid.innerHTML = books.map(renderBookCard).join('');
+        if (!response.ok) throw new Error('Ошибка API');
+
+        const payload = await response.json();
+        const loans = Array.isArray(payload?.data) ? payload.data : [];
+
+        if (!loans.length) {
+          grid.innerHTML = renderNoLoansMessage();
+          return;
+        }
+
+        grid.innerHTML = loans.map(renderLoanCard).join('');
       } catch (error) {
         console.error(error);
-        grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Не удалось загрузить данные кабинета</div>';
+        grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Не удалось загрузить данные о выдачах</div>';
       }
     }
 
