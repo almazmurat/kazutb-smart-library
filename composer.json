@@ -48,6 +48,15 @@
             "@php artisan config:clear --ansi",
             "@php artisan test"
         ],
+        "test:internal": [
+            "./scripts/dev/test-internal-core.sh"
+        ],
+        "test:reservation-core": [
+            "./scripts/dev/test-reservation-circulation-copy.sh"
+        ],
+        "test:stewardship": [
+            "./scripts/dev/test-stewardship.sh"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

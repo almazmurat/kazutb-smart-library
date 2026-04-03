@@ -2,6 +2,24 @@
 
 - 21st SDK integration guide: [docs/INTEGRATION_21ST_SDK.md](docs/INTEGRATION_21ST_SDK.md)
 
+## Copilot Developer Workflow (Required + Optional)
+
+Required:
+- Read [AGENT_START_HERE.md](AGENT_START_HERE.md) and its referenced files before substantial tasks.
+- Follow repository instructions in [.github/copilot-instructions.md](.github/copilot-instructions.md).
+- Use focused verification scripts for backend/domain confidence:
+	- `composer test:internal`
+	- `composer test:reservation-core`
+	- `composer test:stewardship`
+
+Optional but recommended:
+- Use reusable prompt templates from [.github/prompts](.github/prompts).
+- Use Context7 MCP for up-to-date framework/package docs when implementing.
+
+Setup guides:
+- Workflow guide: [docs/DEVELOPER_COPILOT_WORKFLOW.md](docs/DEVELOPER_COPILOT_WORKFLOW.md)
+- MCP guidance: [docs/COPILOT_MCP_SETUP.md](docs/COPILOT_MCP_SETUP.md)
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
