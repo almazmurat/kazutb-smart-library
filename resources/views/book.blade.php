@@ -639,7 +639,6 @@
     <script>
         const isbn = window.location.pathname.split('/').pop();
         const BOOK_DB_API_ENDPOINT = '/api/v1/book-db/';
-        const BOOK_LEGACY_API_ENDPOINT = '/api/v1/catalog/';
 
         async function loadBook() {
             const loading = document.getElementById('loading');
@@ -671,7 +670,6 @@
             const encodedIdentifier = encodeURIComponent(identifier);
             const endpoints = [
                 `${BOOK_DB_API_ENDPOINT}${encodedIdentifier}`,
-                `${BOOK_LEGACY_API_ENDPOINT}${encodedIdentifier}`,
             ];
 
             let lastError = null;

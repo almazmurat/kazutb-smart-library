@@ -635,7 +635,7 @@
   </main>
 
   <script>
-    const API_ENDPOINT = '/api/v1/catalog-external';
+    const API_ENDPOINT = '/api/v1/catalog-db';
     let currentPage = 1;
     let totalPages = 1;
 

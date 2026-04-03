@@ -4,14 +4,27 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "21st:login": "npx @21st-sdk/cli login",
+        "21st:deploy": "npx @21st-sdk/cli deploy"
     },
     "devDependencies": {
+        "@vitejs/plugin-react": "^6.0.1",
         "@tailwindcss/vite": "^4.0.0",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
         "tailwindcss": "^4.0.0",
         "vite": "^8.0.0"
+    },
+    "dependencies": {
+        "@21st-sdk/agent": "^0.0.14",
+        "@21st-sdk/node": "^0.0.8",
+        "@21st-sdk/react": "^0.2.3",
+        "@ai-sdk/react": "^2.0.0",
+        "ai": "^5.0.0",
+        "react": "^19.2.4",
+        "react-dom": "^19.2.4",
+        "zod": "^4.3.6"
     }
 }

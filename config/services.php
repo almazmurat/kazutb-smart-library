@@ -40,4 +40,10 @@ return [
         'logout_url' => env('EXTERNAL_AUTH_LOGOUT_URL', ''),
     ],
 
+    'twentyfirst' => [
+        'api_key' => env('API_KEY_21ST'),
+        'agent' => env('AGENT_21ST_SLUG', 'frontend-dev-agent'),
+        'token_expires_in' => env('AGENT_21ST_TOKEN_EXPIRES_IN', '1h'),
+    ],
+
 ];

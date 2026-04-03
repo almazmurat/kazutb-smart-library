@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Throwable;
 
 class DocumentManagementController extends Controller
 {
@@ -28,11 +29,15 @@ class DocumentManagementController extends Controller
             return $validated;
         }
 
-        $result = $this->service->listDocuments(
-            query: trim((string) ($validated['q'] ?? '')),
-            page: (int) ($validated['page'] ?? 1),
-            perPage: (int) ($validated['per_page'] ?? 20),
-        );
+        try {
+            $result = $this->service->listDocuments(
+                query: trim((string) ($validated['q'] ?? '')),
+                page: (int) ($validated['page'] ?? 1),
+                perPage: (int) ($validated['per_page'] ?? 20),
+            );
+        } catch (Throwable) {
+            return $this->internalErrorResponse($request, 'Unexpected server error while listing documents.');
+        }
 
         return response()->json([
             'data' => $result['data'],
@@ -55,7 +60,11 @@ class DocumentManagementController extends Controller
             );
         }
 
-        $document = $this->service->findDocument($id);
+        try {
+            $document = $this->service->findDocument($id);
+        } catch (Throwable) {
+            return $this->internalErrorResponse($request, 'Unexpected server error while reading document.');
+        }
 
         if ($document === null) {
             return $this->errorResponse(
@@ -97,6 +106,8 @@ class DocumentManagementController extends Controller
             );
         } catch (IntegrationDocumentManagementException $e) {
             return $this->errorResponse($request, $e->httpStatus, $e->errorCode, $e->reasonCode, $e->getMessage());
+        } catch (Throwable) {
+            return $this->internalErrorResponse($request, 'Unexpected server error while creating document.');
         }
 
         return response()->json([
@@ -132,6 +143,16 @@ class DocumentManagementController extends Controller
             return $validated;
         }
 
+        if (array_key_exists('title', $validated) && trim((string) $validated['title']) === '') {
+            return $this->errorResponse(
+                request: $request,
+                status: 400,
+                errorCode: 'invalid_request',
+                reasonCode: 'invalid_request_body',
+                message: 'Field "title" cannot be empty when provided.',
+            );
+        }
+
         if ($validated === []) {
             return $this->errorResponse(
                 request: $request,
@@ -150,6 +171,8 @@ class DocumentManagementController extends Controller
             );
         } catch (IntegrationDocumentManagementException $e) {
             return $this->errorResponse($request, $e->httpStatus, $e->errorCode, $e->reasonCode, $e->getMessage());
+        } catch (Throwable) {
+            return $this->internalErrorResponse($request, 'Unexpected server error while updating document.');
         }
 
         return response()->json([
@@ -179,6 +202,8 @@ class DocumentManagementController extends Controller
             );
         } catch (IntegrationDocumentManagementException $e) {
             return $this->errorResponse($request, $e->httpStatus, $e->errorCode, $e->reasonCode, $e->getMessage());
+        } catch (Throwable) {
+            return $this->internalErrorResponse($request, 'Unexpected server error while archiving document.');
         }
 
         return response()->json([
@@ -240,5 +265,16 @@ class DocumentManagementController extends Controller
             'correlation_id' => $request->attributes->get('integration.correlation_id'),
             'timestamp' => now()->toISOString(),
         ], $status);
+    }
+
+    private function internalErrorResponse(Request $request, string $message): JsonResponse
+    {
+        return $this->errorResponse(
+            request: $request,
+            status: 500,
+            errorCode: 'server_error',
+            reasonCode: 'internal_failure',
+            message: $message,
+        );
     }
 }

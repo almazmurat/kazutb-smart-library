@@ -6,6 +6,7 @@ use App\Services\Library\IntegrationDocumentManagementException;
 use App\Services\Library\IntegrationDocumentManagementService;
 use Mockery;
 use Mockery\MockInterface;
+use RuntimeException;
 use Tests\TestCase;
 
 class DocumentManagementTest extends TestCase
@@ -159,6 +160,20 @@ class DocumentManagementTest extends TestCase
             ->assertJsonPath('error.reason_code', 'invalid_request_body');
     }
 
+    public function test_patch_rejects_empty_title(): void
+    {
+        $id = 'd4f798b5-357e-4969-b4d0-224583f609a9';
+
+        $response = $this->withHeaders($this->headers)
+            ->patchJson("/api/integration/v1/documents/{$id}", [
+                'title' => '   ',
+            ]);
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'invalid_request_body');
+    }
+
     public function test_not_found_returns_404(): void
     {
         $id = 'd4f798b5-357e-4969-b4d0-224583f609a9';
@@ -196,6 +211,26 @@ class DocumentManagementTest extends TestCase
         $response->assertStatus(401)
             ->assertJsonPath('error.error_code', 'auth_failed')
             ->assertJsonPath('error.reason_code', 'missing_bearer_token');
+    }
+
+    public function test_unexpected_service_error_returns_consistent_500_envelope(): void
+    {
+        /** @var MockInterface&IntegrationDocumentManagementService $mock */
+        $mock = Mockery::mock(IntegrationDocumentManagementService::class);
+        $mock->shouldReceive('listDocuments')
+            ->once()
+            ->andThrow(new RuntimeException('db is unavailable'));
+
+        $this->app->instance(IntegrationDocumentManagementService::class, $mock);
+
+        $response = $this->withHeaders($this->headers)
+            ->getJson('/api/integration/v1/documents');
+
+        $response->assertStatus(500)
+            ->assertJsonPath('error.error_code', 'server_error')
+            ->assertJsonPath('error.reason_code', 'internal_failure')
+            ->assertJsonPath('request_id', 'req-doc-001')
+            ->assertJsonPath('correlation_id', 'corr-doc-001');
     }
 
     /**

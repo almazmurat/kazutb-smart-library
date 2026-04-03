@@ -1159,7 +1159,7 @@
     const searchButton = document.querySelector('#catalog-search-button');
     const catalogStatus = document.querySelector('#catalog-status');
 
-    const CATALOG_API_ENDPOINT = '/api/v1/catalog-external';
+    const CATALOG_API_ENDPOINT = '/api/v1/catalog-db';
     const LANDING_API_ENDPOINT = '/api/v1/landing';
 
     toggle?.addEventListener('click', () => {
@@ -1243,25 +1243,9 @@
         `);
       }
 
-      if (Array.isArray(data?.hero?.showcase) && showcaseGrid) {
-        const coverStyles = [
-          '',
-          'background: linear-gradient(180deg, #8f1f1f 0%, #6d1111 100%); box-shadow: 0 18px 30px rgba(124, 24, 24, .20);',
-          'background: linear-gradient(180deg, #205f43 0%, #134935 100%); box-shadow: 0 18px 30px rgba(20, 80, 50, .20);',
-        ];
-        showcaseGrid.innerHTML = data.hero.showcase.slice(0, 6).map((item, index) => `
-          <a href="/book/${encodeURIComponent(item.isbn)}" style="text-decoration: none; color: inherit;">
-            <div class="book" style="cursor: pointer;">
-              <div class="book-cover" ${coverStyles[index % 3] ? `style="${coverStyles[index % 3]}"` : ''}>
-                <div class="book-label">${escapeHtml(item.label)}</div>
-                <h4 class="book-name">${escapeHtml(item.name).replaceAll(' ', '<br>')}</h4>
-              </div>
-              <div class="book-title">${escapeHtml(item.title)}</div>
-              <div class="book-meta">${escapeHtml(item.meta)}</div>
-            </div>
-          </a>
-        `).join('');
-      }
+      // Showcase cards are rendered by loadShowcase() from CATALOG_API_ENDPOINT.
+      // Keeping a single renderer avoids race conditions where one async response
+      // overwrites another with a different data source.
 
       setText('advantages-title', data?.advantages?.title);
       setText('advantages-description', data?.advantages?.description);
