@@ -3,6 +3,10 @@
 ## Purpose
 Use this flow to reduce context drift and keep development aligned with library-domain priorities.
 
+## Operating Model
+- Copilot CLI is the primary execution agent for repository analysis, edits, commands, and repeatable tasks.
+- Chat is the architecture/controller layer for priority checks, next-step selection, anti-drift control, roadmap alignment, and handoff/reporting.
+
 ## Start Every Task
 1. Read AGENT_START_HERE.md.
 2. Read required project-context files listed there.

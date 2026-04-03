@@ -24,8 +24,18 @@ Keep MCP usage small and practical: improve context quality, repo operations, an
 ## Practical Setup Steps
 1. Confirm Copilot CLI auth is active.
 2. Keep GitHub integration enabled in Copilot CLI.
-3. Add Context7 MCP only if developers frequently need fresh framework docs during implementation.
-4. Keep server list small; remove unused MCP servers quarterly.
+3. Check Node runtime for Context7 compatibility (`node -v`, target 20+ recommended).
+4. Check Context7 CLI entrypoint (`npx ctx7 --help`).
+5. In Copilot CLI interactive mode, use `/mcp add` to register optional Context7.
+6. Keep server list small; remove unused MCP servers quarterly.
+
+## Quick Verification Commands
+- `copilot --help`
+- `copilot` then `/mcp list`
+- `node -v`
+- `npx ctx7 --help`
+
+If `npx ctx7 --help` fails with ESM syntax/import attributes errors, upgrade Node to 20+ and retry.
 
 ## Safety Rules
 - Do not expose secrets in MCP configs.

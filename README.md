@@ -7,17 +7,22 @@
 Required:
 - Read [AGENT_START_HERE.md](AGENT_START_HERE.md) and its referenced files before substantial tasks.
 - Follow repository instructions in [.github/copilot-instructions.md](.github/copilot-instructions.md).
+- Follow path-specific rules in [.github/instructions](.github/instructions).
 - Use focused verification scripts for backend/domain confidence:
+	- `composer dev:check`
 	- `composer test:internal`
 	- `composer test:reservation-core`
+	- `composer test:integration-reservations`
 	- `composer test:stewardship`
 
 Optional but recommended:
 - Use reusable prompt templates from [.github/prompts](.github/prompts).
+- Use reusable task templates from [prompts](prompts).
 - Use Context7 MCP for up-to-date framework/package docs when implementing.
 
 Setup guides:
 - Workflow guide: [docs/DEVELOPER_COPILOT_WORKFLOW.md](docs/DEVELOPER_COPILOT_WORKFLOW.md)
+- Developer workflow (chat + CLI): [docs/developer/AI_WORKFLOW.md](docs/developer/AI_WORKFLOW.md)
 - MCP guidance: [docs/COPILOT_MCP_SETUP.md](docs/COPILOT_MCP_SETUP.md)
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>

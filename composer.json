@@ -54,8 +54,14 @@
         "test:reservation-core": [
             "./scripts/dev/test-reservation-circulation-copy.sh"
         ],
+        "test:integration-reservations": [
+            "./scripts/dev/test-integration-reservations.sh"
+        ],
         "test:stewardship": [
             "./scripts/dev/test-stewardship.sh"
+        ],
+        "dev:check": [
+            "./scripts/dev/check-dev-env.sh"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

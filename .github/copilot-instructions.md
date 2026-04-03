@@ -17,6 +17,7 @@
   - WS1 Public Catalog Convergence
   - WS4 Runtime E2E Verification Path
 - Prioritize backend, database, integration correctness, and operational confidence.
+- Sequence preference: core logic and data integrity first, UI later.
 
 ## Scope Boundaries (Do Not Drift)
 - Do not treat CRM as domain owner. CRM is an auth and integration client.
@@ -34,11 +35,14 @@
 - Prefer minimal safe changes over broad refactors.
 - Keep docs aligned with implemented behavior, not aspirational behavior.
 - If duplicate paths exist, prefer canonical DB-backed routes and flag transitional paths.
+- Use Copilot CLI as the primary execution agent for repository analysis, code changes, commands, and repeatable tasks.
+- Use chat as architecture/controller layer for next-step selection, priority checks, anti-drift guardrails, roadmap, and handoff quality.
 
 ## Verification Expectations
 - Every substantial change should include at least one targeted verification path.
 - Prefer running focused tests first, then broader suites when risk warrants.
 - For integration changes, verify both request discipline and response envelope compatibility.
+- Risky backend or data mutation changes must include targeted tests.
 
 ## Commit Discipline
 - Keep commits atomic and purpose-specific.
