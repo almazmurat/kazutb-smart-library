@@ -1,0 +1,45 @@
+{
+  "_jsx-runtime-CCtgrlEs.js": {
+    "file": "assets/jsx-runtime-CCtgrlEs.js",
+    "name": "jsx-runtime"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DGj_W4FU.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/spa.css": {
+    "file": "assets/spa-D88xVtJq.css",
+    "name": "spa",
+    "names": [
+      "spa.css"
+    ],
+    "src": "resources/css/spa.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C5org2CU.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-CCtgrlEs.js"
+    ],
+    "css": [
+      "assets/app-BSr1lyio.css"
+    ]
+  },
+  "resources/js/spa/main.jsx": {
+    "file": "assets/main-BtTozQ3_.js",
+    "name": "main",
+    "src": "resources/js/spa/main.jsx",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-CCtgrlEs.js"
+    ]
+  }
+}

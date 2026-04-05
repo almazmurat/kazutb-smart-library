@@ -63,6 +63,21 @@
         "dev:check": [
             "./scripts/dev/check-dev-env.sh"
         ],
+        "dev:session-start": [
+            "bash scripts/dev/session-start-checklist.sh"
+        ],
+        "dev:session-snapshot": [
+            "bash scripts/dev/session-snapshot.sh"
+        ],
+        "dev:vault-check": [
+            "bash scripts/dev/check-vault.sh"
+        ],
+        "dev:vault-sync": [
+            "bash scripts/dev/vault-sync.sh"
+        ],
+        "dev:session-closeout": [
+            "bash scripts/dev/session-closeout.sh"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
