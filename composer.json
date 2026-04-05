@@ -78,6 +78,9 @@
         "dev:session-closeout": [
             "bash scripts/dev/session-closeout.sh"
         ],
+        "dev:context": [
+            "bash scripts/dev/show-startup-context.sh"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
