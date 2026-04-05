@@ -86,7 +86,25 @@ An external Obsidian vault may be used for:
 **The vault is supplementary.**
 Repository files remain the operational source of truth for Copilot execution.
 
-## Prompt Layer Roles
-- `prompts/`: day-to-day execution prompts used directly in Copilot CLI runs.
-- `.github/prompts/`: reusable repository-level template prompts for shared team workflows.
-- Keep active task execution centered on `prompts/` to reduce ambiguity.
+## Prompt Layer Map
+
+Two prompt surfaces exist. They are **not duplicates** — they serve different invocation contexts.
+
+### Layer 1 — CLI / terminal prompts (canonical)
+Location: `prompts/*.md`
+Invoked by: Copilot CLI, terminal, `@prompts/file.md` references
+Files: `backend-step`, `hardening-step`, `crm-handoff`, `verification-step`, `next-step`, `session-closeout`
+**Rule**: Full prompt logic lives here. This is the canonical layer.
+
+### Layer 2 — VS Code Copilot Chat adapters (subordinate)
+Location: `.github/prompts/*.prompt.md`
+Invoked by: VS Code Copilot Chat slash commands
+Files: `backend-feature-step`, `hardening-step`, `crm-handoff-step`, `verification-step`
+**Rule**: Thin adapters that reference canonical `prompts/` content. Must not duplicate full logic.
+
+### Layer 3 — File-scoped Copilot rules (auto-injected)
+Location: `.github/instructions/*.instructions.md`
+Injected by: VS Code Copilot per matching file pattern
+Files: `backend` (app/routes PHP), `docs` (docs markdown), `tests` (tests PHP)
+
+See also: `docs/developer/REPO_NORMALIZATION_PLAN.md` Table 4 for full prompt boundary map.

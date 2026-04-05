@@ -1,49 +1,39 @@
-# Minimal MCP Setup For This Repository
+# MCP Adoption Plan (Phased, Safe, Reversible)
 
-## Goal
-Keep MCP usage small and practical: improve context quality, repo operations, and framework/doc accuracy without tool sprawl.
+## Scope
+This setup is **internal-only developer tooling**.
+It does not change runtime behavior, API contracts, or CRM-facing surfaces.
 
-## Required Baseline
-- GitHub Copilot Chat/CLI in this repository.
-- Repository-level instructions from .github/copilot-instructions.md.
+## Decision Summary
 
-## High-Value MCP Servers
-1. GitHub MCP (built-in for Copilot CLI where available)
-- Use for: issues, pull requests, review comments, labels, and status checks.
-- Why: keeps workflow and review context close to code changes.
+| MCP area | Status now | Decision | Why |
+|---|---|---|---|
+| GitHub MCP server | Added (baseline) | Use built-in GitHub MCP available in Copilot CLI | Highest day-to-day value with no repo secrets or runtime impact |
+| Repository/test/tooling MCP (Context7 docs) | Added as optional path | Keep optional and enable per-user only when needed | Improves Laravel/PHPUnit/Vite doc accuracy with low risk |
+| Browser MCP | Postponed | Do not enable by default in repo | Requires browser/runtime provisioning and can introduce flaky/non-deterministic checks |
+| Frontend UI generation MCP (21st Magic or equivalent) | Postponed | Do not enable by default in repo | Current execution focus is convergence/runtime confidence, not UI generation expansion |
+| Additional repo/test/tooling MCPs (DB/API-contract/internal-docs MCPs) | Postponed | Re-evaluate when repeated operational need appears | Keep MCP surface small, explicit, and reversible |
 
-2. Context7 MCP (optional, recommended)
-- Use for: up-to-date Laravel, PHPUnit, Vite, and package documentation.
-- Why: avoids stale memory and reduces framework API mistakes.
+## What Was Added In This Step
+1. `scripts/dev/check-mcp-readiness.sh` (readiness checks only; no configuration side effects).
+2. Composer command: `composer dev:mcp-check`.
+3. This document updated to explicitly track what is added now vs postponed.
 
-## Later (Only If Needed)
-- Database MCP: useful when repeatedly validating schema/query behavior across migrations and stewardship workflows.
-- API contract MCP: useful if integration contract test surface grows.
-- Internal docs MCP: useful if project-context and docs become much larger and hard to navigate manually.
+## Safe Baseline Usage
+1. Run `composer dev:mcp-check`.
+2. In interactive Copilot CLI, run `/mcp list`.
+3. Keep GitHub MCP enabled as baseline.
+4. Add optional Context7 only when documentation certainty is needed.
 
-## Practical Setup Steps
-1. Confirm Copilot CLI auth is active.
-2. Keep GitHub integration enabled in Copilot CLI.
-3. Check Node runtime for Context7 compatibility (`node -v`, target 20+ recommended).
-4. Check Context7 CLI entrypoint (`npx ctx7 --help`).
-5. In Copilot CLI interactive mode, use `/mcp add` to register optional Context7.
-6. Keep server list small; remove unused MCP servers quarterly.
+## Explicitly Postponed For Now
+- Browser MCP auto-configuration.
+- UI-generation MCP auto-configuration.
+- Repo-local MCP config files with credentials/secrets.
 
-## Quick Verification Commands
-- `copilot --help`
-- `copilot` then `/mcp list`
-- `node -v`
-- `npx ctx7 --help`
+These are intentionally deferred until a concrete task needs them and local user-level setup is justified.
 
-If `npx ctx7 --help` fails with ESM syntax/import attributes errors, upgrade Node to 20+ and retry.
-
-## Safety Rules
-- Do not expose secrets in MCP configs.
-- Prefer user-level MCP config for personal tools.
-- Add repo-local MCP config only when team-wide reproducibility is required and secrets are not embedded.
-
-## Suggested Working Pattern
-- Start with repository context files.
-- Use GitHub MCP for issue/PR state.
-- Use Context7 MCP only when documentation certainty is needed.
-- Finish with focused tests and clean commit boundaries.
+## Reversibility
+All changes are low-risk and easy to rollback:
+- remove `scripts/dev/check-mcp-readiness.sh`,
+- remove `dev:mcp-check` from `composer.json`,
+- revert this document update.

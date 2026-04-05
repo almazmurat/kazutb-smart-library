@@ -81,6 +81,24 @@
         "dev:context": [
             "bash scripts/dev/show-startup-context.sh"
         ],
+        "dev:context-drift": [
+            "bash scripts/dev/check-context-drift.sh"
+        ],
+        "dev:vault-context-export": [
+            "bash scripts/dev/export-context-to-vault.sh"
+        ],
+        "dev:vault-index-sync": [
+            "bash scripts/dev/sync-vault-index.sh"
+        ],
+        "dev:mcp-check": [
+            "bash scripts/dev/check-mcp-readiness.sh"
+        ],
+        "dev:catalog-paths": [
+            "bash scripts/dev/check-public-catalog-paths.sh"
+        ],
+        "test:catalog-paths": [
+            "@dev:catalog-paths"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

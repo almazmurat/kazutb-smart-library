@@ -46,4 +46,15 @@ class CatalogPageTest extends TestCase
             ->assertSee('year_to', false)
             ->assertSee('available_only', false);
     }
+
+    public function test_catalog_page_uses_canonical_catalog_db_endpoint_only(): void
+    {
+        $response = $this->get('/catalog');
+
+        $response
+            ->assertOk()
+            ->assertSee('/api/v1/catalog-db', false)
+            ->assertDontSee('/api/v1/catalog?', false)
+            ->assertDontSee('/api/v1/catalog-external', false);
+    }
 }

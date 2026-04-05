@@ -33,7 +33,9 @@ class BookController extends Controller
     }
 
     /**
-     * Get book details from external API by ISBN or ID
+     * WS1 convergence freeze:
+     * Legacy detail alias route /api/v1/catalog/{isbn} retained for compatibility only.
+     * Canonical public detail API is /api/v1/book-db/{isbn}.
      */
     public function show(Request $request, BookDetailReadService $service): JsonResponse
     {

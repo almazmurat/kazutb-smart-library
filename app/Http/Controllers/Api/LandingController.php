@@ -3,65 +3,50 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Library\CatalogReadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Http;
 
 class LandingController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(CatalogReadService $catalogReadService): JsonResponse
     {
         $stats = Config::get('library.stats');
-        
-        // Get real book count from external API
-        try {
-            $response = Http::get('http://10.0.1.8:5173/api/v1/catalog', ['limit' => 1]);
-            if ($response->successful()) {
-                $data = $response->json();
-                $totalBooks = $data['meta']['total'] ?? 8930;
-                
-                // Update first stat with real count
-                if (!empty($stats) && is_array($stats)) {
-                    $stats[0]['value'] = $totalBooks . '+';
-                }
-            }
-        } catch (\Exception $e) {
-            // If API fails, use default value from config
+
+        $catalogPayload = $catalogReadService->search(limit: 6, sort: 'popular');
+        $books = is_array($catalogPayload['data'] ?? null) ? $catalogPayload['data'] : [];
+        $totalBooks = (int) ($catalogPayload['meta']['total'] ?? 0);
+
+        // Keep configured fallback when DB-backed catalog returns no count.
+        if ($totalBooks <= 0) {
+            $totalBooks = 8930;
         }
 
-        // Get showcase books from external API
+        if (!empty($stats) && is_array($stats)) {
+            $stats[0]['value'] = $totalBooks . '+';
+        }
+
         $showcase = [
             ['label' => 'AI University', 'name' => 'Цифровой Разум', 'title' => 'Искусственный интеллект', 'meta' => 'Учебник · Электронная версия доступна', 'isbn' => '9780134610993'],
             ['label' => 'Data Lab', 'name' => 'Сигналы Данных', 'title' => 'Data Science', 'meta' => 'Практикум · В наличии', 'isbn' => '9781449373320'],
             ['label' => 'Cyber Lab', 'name' => 'Код Безопасности', 'title' => 'Академическое письмо', 'meta' => 'Методическое пособие · В наличии', 'isbn' => '9781506386706'],
         ];
 
-        try {
-            $response = Http::get('http://10.0.1.8:5173/api/v1/catalog', ['limit' => 6]);
-            if ($response->successful()) {
-                $data = $response->json();
-                $books = $data['data'] ?? [];
-                
-                if (count($books) >= 3) {
-                    $showcase = [];
-                    $labels = ['AI University', 'Data Lab', 'Cyber Lab'];
-                    
-                    for ($i = 0; $i < 3 && $i < count($books); $i++) {
-                        $book = $books[$i];
-                        $showcase[] = [
-                            'label' => $labels[$i],
-                            'name' => mb_strlen($book['title']['display'] ?? $book['title']['raw'] ?? '') > 20 
-                                ? mb_substr($book['title']['display'] ?? $book['title']['raw'] ?? '', 0, 20) 
-                                : ($book['title']['display'] ?? $book['title']['raw'] ?? 'Книга'),
-                            'title' => $book['title']['display'] ?? $book['title']['raw'] ?? 'Без названия',
-                            'meta' => ($book['primaryAuthor'] ?? 'Автор не указан') . ' · ' . ($book['copies']['available'] ?? 0) . ' в наличии',
-                            'isbn' => $book['isbn']['raw'] ?? '',
-                        ];
-                    }
-                }
+        if (count($books) >= 3) {
+            $showcase = [];
+            $labels = ['AI University', 'Data Lab', 'Cyber Lab'];
+
+            for ($i = 0; $i < 3 && $i < count($books); $i++) {
+                $book = $books[$i];
+                $titleDisplay = (string) ($book['title']['display'] ?? $book['title']['raw'] ?? 'Книга');
+                $showcase[] = [
+                    'label' => $labels[$i],
+                    'name' => mb_strlen($titleDisplay) > 20 ? mb_substr($titleDisplay, 0, 20) : $titleDisplay,
+                    'title' => (string) ($book['title']['display'] ?? $book['title']['raw'] ?? 'Без названия'),
+                    'meta' => ((string) ($book['primaryAuthor'] ?? 'Автор не указан')) . ' · ' . ((int) ($book['copies']['available'] ?? 0)) . ' в наличии',
+                    'isbn' => (string) ($book['isbn']['raw'] ?? ''),
+                ];
             }
-        } catch (\Exception $e) {
-            // If API fails, use default showcase
         }
 
         return response()->json([

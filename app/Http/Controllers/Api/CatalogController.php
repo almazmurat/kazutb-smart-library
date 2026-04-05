@@ -40,6 +40,9 @@ class CatalogController extends Controller
 
     public function index(Request $request): JsonResponse
     {
+        // WS1 convergence freeze:
+        // Legacy in-memory catalog endpoint retained only for controlled compatibility.
+        // Canonical public catalog API is /api/v1/catalog-db.
         $validated = $request->validate([
             'q' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:100'],
@@ -91,8 +94,9 @@ class CatalogController extends Controller
     }
 
     /**
-     * Proxy endpoint to the external catalog API.
-     * Forwards requests to http://10.0.1.8:5173/api/v1/catalog
+     * WS1 convergence freeze:
+     * Transitional external proxy retained only for reader migration window.
+     * Canonical public catalog usage must use /api/v1/catalog-db and /api/v1/book-db/{isbn}.
      *
      * @return JsonResponse
      */

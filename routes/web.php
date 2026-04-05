@@ -46,9 +46,12 @@ Route::get('/internal/ai-chat', function (Request $request) use ($internalStaffV
     return $internalStaffView($request, 'internal-ai-chat');
 });
 
+// WS1 convergence freeze:
+// Transitional reader route retained for controlled migration only.
+// Do not add new callers; canonical public detail path is /book/{isbn}.
 Route::get('/book/{isbn}/read', function ($isbn) {
     return view('reader', ['isbn' => $isbn]);
-});
+})->name('reader.transitional');
 
 Route::prefix('internal')->group(function () use ($internalStaffView) {
     Route::get('/dashboard', function () {

@@ -1,26 +1,10 @@
 ---
 mode: ask
 model: GPT-5
-description: Verification step for internal core and integration confidence
+description: Verification step (VS Code adapter → canonical prompts/verification-step.md)
 ---
 
-Run a verification-oriented task for this repository.
+<!-- VS Code Copilot Chat adapter. Canonical prompt: prompts/verification-step.md -->
 
-Verification target:
-- {{target}}
-
-Process:
-- Confirm scope alignment with project-context.
-- Choose focused suite first, then broaden only if needed.
-- Report pass/fail with concise diagnostic notes.
-
-Suggested script options:
-- composer test:internal
-- composer test:reservation-core
-- composer test:stewardship
-
-Output:
-1. What was verified
-2. Commands executed
-3. Results summary
-4. Confidence level and remaining gaps
+Read @prompts/verification-step.md and execute it.
+Verification target: {{target}}

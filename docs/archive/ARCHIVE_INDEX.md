@@ -38,3 +38,14 @@ Moved from project-context/:
 - Archive is for historical reference and audit trail only.
 - Canonical active context remains in `project-context/` and current operational docs.
 - Scripts moved to archive are not executable from current workflows.
+
+## Pass 3 — Aggressive cleanup wave (2026-04-05)
+
+Archived superseded prompts:
+- PROMPT_repo-cleanup-and-architecture-audit.md (superseded by full-cleanup-and-automation-wave-aggressive.md)
+- PROMPT_repo-normalization-audit.md (superseded by full-cleanup-and-automation-wave-aggressive.md)
+- PROMPT_full-system-normalization-and-automation.md (superseded by aggressive version)
+- PROMPT_full-cleanup-and-automation-wave.md (superseded by aggressive version)
+
+Archived root-level artifact:
+- PHASE1_READINESS_CHECK.ps1 (Windows-only historical deployment check; superseded by shell scripts)

@@ -12,17 +12,19 @@ export function CatalogPage() {
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (q.trim()) params.set('query', q.trim());
-      params.set('page', p);
-      params.set('per_page', 20);
+      if (q.trim()) params.set('q', q.trim());
+      params.set('page', String(p));
+      params.set('limit', '20');
 
-      const data = await api(`/catalog/search?${params}`);
-      setResults(data.data || []);
-      setTotal(data.meta?.total || 0);
+      const data = await api(`/catalog-db?${params}`);
+      const items = Array.isArray(data?.data) ? data.data : [];
+      setResults(items);
+      setTotal(Number(data?.meta?.total ?? 0));
       setPage(p);
     } catch (err) {
       console.error('Catalog search failed:', err);
       setResults([]);
+      setTotal(0);
     } finally {
       setLoading(false);
     }
@@ -64,30 +66,38 @@ export function CatalogPage() {
       )}
 
       <div className="results-grid">
-        {results.map((doc) => (
-          <a
-            key={doc.id}
-            href={`/book/${doc.isbn_normalized || doc.isbn_raw || doc.id}`}
-            className="result-card"
-          >
-            <div className="card-title">{doc.title_display || doc.title_raw || 'Без названия'}</div>
-            {doc.subtitle_raw && (
-              <div className="card-subtitle">{doc.subtitle_raw}</div>
-            )}
-            <div className="card-meta">
-              {doc.publication_year && <span className="meta-year">{doc.publication_year}</span>}
-              {doc.language_code && <span className="meta-lang">{doc.language_code.toUpperCase()}</span>}
-              {doc.isbn_normalized && <span className="meta-isbn">ISBN: {doc.isbn_normalized}</span>}
-            </div>
-            {doc.available_copies !== undefined && (
-              <div className={`card-availability ${doc.available_copies > 0 ? 'available' : 'unavailable'}`}>
-                {doc.available_copies > 0
-                  ? `${doc.available_copies} экз. доступно`
-                  : 'Нет в наличии'}
+        {results.map((doc) => {
+          const identifier = doc?.isbn?.raw || doc?.id;
+          const title = doc?.title?.display || doc?.title?.raw || 'Без названия';
+          const subtitle = doc?.title?.subtitle;
+          const publicationYear = doc?.publicationYear;
+          const languageCode = doc?.language?.code;
+          const rawIsbn = doc?.isbn?.raw;
+          const availableCopies = Number(doc?.copies?.available ?? NaN);
+
+          return (
+            <a
+              key={doc?.id || identifier}
+              href={identifier ? `/book/${encodeURIComponent(identifier)}` : '/catalog'}
+              className="result-card"
+            >
+              <div className="card-title">{title}</div>
+              {subtitle && <div className="card-subtitle">{subtitle}</div>}
+              <div className="card-meta">
+                {publicationYear && <span className="meta-year">{publicationYear}</span>}
+                {languageCode && <span className="meta-lang">{languageCode.toUpperCase()}</span>}
+                {rawIsbn && <span className="meta-isbn">ISBN: {rawIsbn}</span>}
               </div>
-            )}
-          </a>
-        ))}
+              {!Number.isNaN(availableCopies) && (
+                <div className={`card-availability ${availableCopies > 0 ? 'available' : 'unavailable'}`}>
+                  {availableCopies > 0
+                    ? `${availableCopies} экз. доступно`
+                    : 'Нет в наличии'}
+                </div>
+              )}
+            </a>
+          );
+        })}
       </div>
 
       {results.length === 0 && !loading && (

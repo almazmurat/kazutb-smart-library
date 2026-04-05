@@ -2,7 +2,7 @@
 
 **Purpose**: Single canonical reference for how this repository is structured, what is authoritative, and what agents/developers should read by default.
 
-**Last updated**: 2026-04-05 (repo normalization pass 2)
+**Last updated**: 2026-04-05 (repo normalization pass 3 + aggressive cleanup wave)
 
 ---
 
@@ -24,6 +24,9 @@
 | `prompts/*.md` | Layer 2 — Execution/tooling | Canonical repo task prompts (CLI) | ✅ Yes (canonical) | On demand |
 | `.github/prompts/*.prompt.md` | Layer 2 — Execution/tooling | VS Code Copilot Chat adapters | Subordinate to `prompts/` | On demand (IDE) |
 | `scripts/dev/*.sh` | Layer 2 — Execution/tooling | Dev/test/session scripts | ✅ Yes | Via `composer dev:*` |
+| `scripts/dev/check-context-drift.sh` | Layer 2 — Execution/tooling | Context consistency guard | ✅ Yes | On startup checks |
+| `scripts/dev/export-context-to-vault.sh` | Layer 2 — Execution/tooling | Repo → vault context mirror | ✅ Yes | On closeout/sync |
+| `scripts/dev/sync-vault-index.sh` | Layer 2 — Execution/tooling | Rebuild vault mirror index | ✅ Yes | On closeout/sync |
 | `.github/workflows/ci.yml` | Layer 2 — Execution/tooling | CI pipeline | ✅ Yes | Automatic on push |
 | `agents/` | Layer 2 — Execution/tooling | Custom agent definitions | Yes (task-specific) | On demand |
 | `app/`, `routes/`, `database/`, `tests/`, `resources/`, `config/`, `public/` | Product/runtime | Actual codebase | ✅ Yes | When code tasks active |
@@ -50,8 +53,11 @@
 | `docs/integration-api-contract.json` | ✅ | | | | |
 | `docs/INTEGRATION_21ST_SDK.md` | ✅ | | | | |
 | `docs/COPILOT_MCP_SETUP.md` | ✅ | | | | |
-| `docs/DEVELOPER_COPILOT_WORKFLOW.md` | | ✅ → into `AI_WORKFLOW.md` | | | |
-| `docs/developer/AI_WORKFLOW.md` | ✅ (merge target) | | | | |
+| `docs/developer/FULL_SYSTEM_NORMALIZATION_PLAN.md` | ✅ | | | | |
+| `docs/developer/OBSIDIAN_VAULT_ARCHITECTURE.md` | ✅ | | | | |
+| `docs/developer/AGENT_AUTOMATION_WORKFLOW.md` | ✅ | | | | |
+| `docs/DEVELOPER_COPILOT_WORKFLOW.md` | | | | ✅ (deprecated pointer to `AI_WORKFLOW.md`) | |
+| `docs/developer/AI_WORKFLOW.md` | ✅ (canonical, merged from DEVELOPER_COPILOT_WORKFLOW.md) | | | | |
 | `docs/developer/INTERNAL_REVIEW_TRIAGE_API.md` | ✅ | | | | |
 | `docs/archive/*` | ✅ | | | | ✅ |
 | `project-context/99-master-project-context.md` | | | ✅ done | | ✅ |
@@ -73,7 +79,10 @@
 | Agent behavior rules | `project-context/05-agent-working-rules.md` | — | Single source |
 | Agent startup routing | `AGENT_START_HERE.md` | — | Single source |
 | Copilot repo behavior | `.github/copilot-instructions.md` | — | Auto-injected by VS Code |
-| Developer workflow | `docs/developer/AI_WORKFLOW.md` | `docs/DEVELOPER_COPILOT_WORKFLOW.md` (pointer only now) | Merge pending |
+| Developer workflow | `docs/developer/AI_WORKFLOW.md` | `docs/DEVELOPER_COPILOT_WORKFLOW.md` (deprecated stub) | Merge complete |
+| Full-system normalization model | `docs/developer/FULL_SYSTEM_NORMALIZATION_PLAN.md` | older one-off audit prompts/docs | New canonical normalization plan |
+| Obsidian boundary architecture | `docs/developer/OBSIDIAN_VAULT_ARCHITECTURE.md` | ad-hoc vault notes/rules | New canonical vault boundary guidance |
+| Agent automation workflow | `docs/developer/AGENT_AUTOMATION_WORKFLOW.md` | scattered script usage notes | New canonical execution automation guide |
 | Canonical task prompts | `prompts/*.md` | `.github/prompts/*.prompt.md` (IDE adapters) | See Table 4 |
 | Dev scripts | `scripts/dev/` | — | Single location |
 | Historical phases | `docs/archive/` | Root-level phase docs (archived) | Archive complete |
@@ -96,14 +105,14 @@ Three prompt surfaces exist in this repo. They are **not duplicates** — they s
 
 | File in `prompts/` | `.github/prompts/` equivalent | Overlap? |
 |--------------------|-------------------------------|---------|
-| `backend-step.md` | `backend-feature-step.prompt.md` | Conceptually similar, different depth |
-| `hardening-step.md` | `hardening-step.prompt.md` | Conceptually similar, different depth |
-| `crm-handoff.md` | `crm-handoff-step.prompt.md` | Conceptually similar, different depth |
-| `verification-step.md` | `verification-step.prompt.md` | Conceptually similar, different depth |
+| `backend-step.md` | `backend-feature-step.prompt.md` | Adapter (thin ref) |
+| `hardening-step.md` | `hardening-step.prompt.md` | Adapter (thin ref) |
+| `crm-handoff.md` | `crm-handoff-step.prompt.md` | Adapter (thin ref) |
+| `verification-step.md` | `verification-step.prompt.md` | Adapter (thin ref) |
 | `next-step.md` | — | CLI-only |
 | `session-closeout.md` | — | CLI-only |
-| `repo-cleanup-and-architecture-audit.md` | — | CLI-only |
-| `repo-normalization-audit.md` | — | CLI-only |
+| `mcp-adoption-plan.md` | — | CLI-only task |
+| `full-cleanup-and-automation-wave-aggressive.md` | — | CLI-only (current canonical cleanup prompt) |
 
 ---
 
@@ -135,10 +144,15 @@ Three prompt surfaces exist in this repo. They are **not duplicates** — they s
 
 | Action | Status | Priority |
 |--------|--------|---------|
-| Merge `docs/DEVELOPER_COPILOT_WORKFLOW.md` into `docs/developer/AI_WORKFLOW.md` | Pending | Medium |
-| Rewrite README as project README (remove Laravel boilerplate) | Done | High |
-| Create `scripts/dev/show-startup-context.sh` | Done | Medium |
+| Merge `docs/DEVELOPER_COPILOT_WORKFLOW.md` into `docs/developer/AI_WORKFLOW.md` | ✅ Done | Medium |
+| Convert `.github/prompts/` to thin adapters referencing `prompts/` | ✅ Done | Medium |
+| Archive superseded audit/cleanup prompts | ✅ Done | Medium |
+| Archive root-level `PHASE1_READINESS_CHECK.ps1` | ✅ Done | Low |
+| Rewrite README as project README (remove Laravel boilerplate) | ✅ Done | High |
+| Create `scripts/dev/show-startup-context.sh` | ✅ Done | Medium |
 | Add `.github/workflows/ci.yml` | ✅ Done | High |
 | Archive root-level phase artifacts | ✅ Done | High |
 | Archive `docs/` phase step docs | ✅ Done | High |
 | Archive `project-context/99` | ✅ Done | High |
+| Add context drift + vault mirror/index scripts | ✅ Done | High |
+| Publish full-system normalization docs | ✅ Done | High |

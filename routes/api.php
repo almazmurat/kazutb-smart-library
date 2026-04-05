@@ -102,14 +102,24 @@ Route::prefix('v1')->group(function (): void {
     Route::get('/bridge/users', [BridgeController::class, 'users']);
     Route::get('/bridge/copies', [BridgeController::class, 'copies']);
     Route::get('/bridge/books', [BridgeController::class, 'books']);
+
+    // Canonical public catalog APIs (WS1 converged).
     Route::get('/book-db/{isbn}', [BookController::class, 'dbShow']);
     Route::get('/catalog-db', [CatalogController::class, 'dbIndex']);
+
     Route::get('/library/health-summary', [LibraryController::class, 'healthSummary']);
     Route::get('/review/issues', [ReviewController::class, 'issues']);
     Route::get('/review/issues-summary', [ReviewController::class, 'issuesSummary']);
-    Route::get('/catalog', [CatalogController::class, 'index']);
-    Route::get('/catalog-external', [CatalogController::class, 'proxy']);
-    Route::get('/catalog/{isbn}', [BookController::class, 'show']);
+
+    // WS1 convergence freeze:
+    // Keep these routes for controlled backward compatibility only.
+    // Do not add new callers; new public catalog/detail usage must stay on:
+    // - /v1/catalog-db
+    // - /v1/book-db/{isbn}
+    Route::get('/catalog', [CatalogController::class, 'index']); // [WS1-FROZEN][LEGACY-CATALOG]
+    Route::get('/catalog-external', [CatalogController::class, 'proxy']); // [WS1-FROZEN][TRANSITIONAL-EXTERNAL]
+    Route::get('/catalog/{isbn}', [BookController::class, 'show']); // [WS1-FROZEN][LEGACY-DETAIL-ALIAS]
+
     Route::get('/landing', [LandingController::class, 'index']);
 
     Route::prefix('internal/ai-assistant')
