@@ -495,7 +495,9 @@
       <nav class="nav-links">
         <a href="/">Главная</a>
         <a href="/catalog" class="active">Каталог</a>
+        <a href="/resources">Ресурсы</a>
         <a href="/services">Сервисы</a>
+        <a href="/news">Новости</a>
         <a href="/about">О библиотеке</a>
         <a href="/contacts">Контакты</a>
       </nav>

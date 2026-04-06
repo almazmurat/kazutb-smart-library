@@ -895,6 +895,79 @@
     @keyframes pulse { 0%,100% { opacity:.4; } 50% { opacity:.15; } }
     .skeleton-pulse .book-preview { animation: pulse 1.5s ease-in-out infinite; }
     .skeleton-pulse .book-title { background: #e5e7eb; border-radius: 6px; color: transparent; animation: pulse 1.5s ease-in-out infinite; }
+
+    .resources-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .resource-card {
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      background: #fff;
+      border: 1px solid rgba(15,23,42,.06);
+      box-shadow: var(--shadow-soft);
+      transition: transform .25s ease, box-shadow .25s ease;
+      position: relative;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .resource-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .resource-card h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .resource-card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .resource-tag {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .resource-card--primary { border-top: 3px solid var(--blue); }
+    .resource-card--primary .resource-tag { background: rgba(59,130,246,.1); color: var(--blue); }
+    .resource-card--science { border-top: 3px solid var(--violet); }
+    .resource-card--science .resource-tag { background: rgba(124,58,237,.1); color: var(--violet); }
+    .resource-card--licensed { border-top: 3px solid var(--pink); }
+    .resource-card--licensed .resource-tag { background: rgba(236,72,153,.1); color: var(--pink); }
+    .resource-card--open { border-top: 3px solid var(--green); }
+    .resource-card--open .resource-tag { background: rgba(34,197,94,.1); color: var(--green); }
+
+    .cta-actions {
+      display: flex;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1120px) {
+      .resources-preview-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .resources-preview-grid { grid-template-columns: 1fr; }
+      .cta-actions { flex-direction: column; }
+    }
   </style>
 <body>
   <header class="topbar">
@@ -913,7 +986,9 @@
 
       <nav class="nav-links">
         <a href="/catalog">Каталог</a>
+        <a href="/resources">Ресурсы</a>
         <a href="/services">Сервисы</a>
+        <a href="/news">Новости</a>
         <a href="/about">О библиотеке</a>
         <a href="/contacts">Контакты</a>
       </nav>
@@ -948,7 +1023,11 @@
             </div>
           </div>
 
-          <div id="hero-stats" class="hero-stats"></div>
+          <div id="hero-stats" class="hero-stats">
+            <div class="stat"><strong>50 000+</strong><span>единиц фонда</span></div>
+            <div class="stat"><strong>24/7</strong><span>онлайн-доступ</span></div>
+            <div class="stat"><strong>10+</strong><span>баз данных</span></div>
+          </div>
         </div>
 
         <div class="hero-side">
@@ -1046,6 +1125,84 @@
       </div>
     </section>
 
+    <section id="advantages">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 id="advantages-title">Почему именно наша библиотека</h2>
+            <p id="advantages-description">Современная инфраструктура, цифровые сервисы и человеческий подход к каждому пользователю.</p>
+          </div>
+          <div id="advantages-badges" class="badge-row">
+            <span class="badge">Удобство</span>
+            <span class="badge">Технологии</span>
+            <span class="badge">Доступность</span>
+          </div>
+        </div>
+
+        <div id="advantages-highlights" class="highlight-strip">
+          <div class="highlight">
+            <div class="icon">📚</div>
+            <h3>Обширный фонд</h3>
+            <p>Более 50 000 единиц: учебная литература, научные издания, монографии, электронные ресурсы.</p>
+          </div>
+          <div class="highlight">
+            <div class="icon">🔬</div>
+            <h3>Научные базы</h3>
+            <p>Доступ к международным базам данных, электронным библиотекам и научным журналам.</p>
+          </div>
+          <div class="highlight">
+            <div class="icon">💡</div>
+            <h3>Цифровой сервис</h3>
+            <p>Онлайн-каталог, бронирование, личный кабинет, уведомления — всё в одном месте.</p>
+          </div>
+          <div class="highlight">
+            <div class="icon">🤝</div>
+            <h3>Поддержка</h3>
+            <p>Консультации библиографов, помощь в поиске источников и сопровождение исследований.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="digital-resources">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Электронные ресурсы</h2>
+            <p>Цифровые коллекции, научные базы данных и лицензированные ресурсы для учебы и исследований.</p>
+          </div>
+          <a href="/resources" class="btn btn-ghost">Все ресурсы →</a>
+        </div>
+
+        <div class="resources-preview-grid">
+          <div class="resource-card resource-card--primary">
+            <div class="resource-icon">🏛️</div>
+            <h3>Электронная библиотека</h3>
+            <p>Полнотекстовые учебники, монографии и пособия в цифровом формате с удалённым доступом.</p>
+            <span class="resource-tag">Полный доступ</span>
+          </div>
+          <div class="resource-card resource-card--science">
+            <div class="resource-icon">🔬</div>
+            <h3>Научные базы данных</h3>
+            <p>Международные и национальные базы научных статей, диссертаций и исследований.</p>
+            <span class="resource-tag">Подписка</span>
+          </div>
+          <div class="resource-card resource-card--licensed">
+            <div class="resource-icon">🔑</div>
+            <h3>Лицензированные ресурсы</h3>
+            <p>Платные образовательные платформы и издательские коллекции по подписке университета.</p>
+            <span class="resource-tag">По подписке</span>
+          </div>
+          <div class="resource-card resource-card--open">
+            <div class="resource-icon">🌐</div>
+            <h3>Открытые ресурсы</h3>
+            <p>Свободный доступ к открытым репозиториям, журналам Open Access и образовательным материалам.</p>
+            <span class="resource-tag">Открытый доступ</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="events">
       <div class="container events">
         <div class="timeline">
@@ -1105,6 +1262,21 @@
 
           <div style="margin-top: 18px;">
             <button id="news-button" class="btn btn-secondary" style="width:100%;">Смотреть все объявления</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <h2>Начните использовать библиотеку сегодня</h2>
+            <p>Исследуйте каталог, получите доступ к электронным ресурсам и оцените возможности цифровой библиотеки КазУТБ.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="/catalog" class="btn btn-primary">Перейти в каталог</a>
+            <a href="/resources" class="btn btn-secondary">Электронные ресурсы</a>
           </div>
         </div>
       </div>

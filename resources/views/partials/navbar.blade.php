@@ -15,7 +15,9 @@
 
     <nav class="nav-links">
       <a href="/catalog" @if(($activePage ?? '') === 'catalog') class="active" @endif>Каталог</a>
+      <a href="/resources" @if(($activePage ?? '') === 'resources') class="active" @endif>Ресурсы</a>
       <a href="/services" @if(($activePage ?? '') === 'services') class="active" @endif>Сервисы</a>
+      <a href="/news" @if(($activePage ?? '') === 'news') class="active" @endif>Новости</a>
       <a href="/about" @if(($activePage ?? '') === 'about') class="active" @endif>О библиотеке</a>
       <a href="/contacts" @if(($activePage ?? '') === 'contacts') class="active" @endif>Контакты</a>
     </nav>

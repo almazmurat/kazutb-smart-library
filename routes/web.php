@@ -51,6 +51,14 @@ Route::get('/contacts', function () {
     return view('contacts', ['activePage' => 'contacts']);
 });
 
+Route::get('/resources', function () {
+    return view('resources', ['activePage' => 'resources']);
+});
+
+Route::get('/news', function () {
+    return view('news', ['activePage' => 'news']);
+});
+
 Route::get('/internal/dashboard', function () {
     return view('internal-dashboard');
 });

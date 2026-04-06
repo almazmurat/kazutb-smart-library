@@ -9,7 +9,9 @@
     <div class="footer-col">
       <div class="footer-title">Разделы</div>
       <a href="/catalog">Каталог</a>
+      <a href="/resources">Электронные ресурсы</a>
       <a href="/services">Сервисы</a>
+      <a href="/news">Новости</a>
       <a href="/about">О библиотеке</a>
       <a href="/contacts">Контакты</a>
       <a href="/account">Личный кабинет</a>

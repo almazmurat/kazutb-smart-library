@@ -427,6 +427,7 @@
       <nav class="nav-links">
         <a href="/">Главная</a>
         <a href="/catalog">Каталог</a>
+        <a href="/resources">Ресурсы</a>
         <a href="/services">Сервисы</a>
         <a href="/account" class="active">Кабинет</a>
       </nav>

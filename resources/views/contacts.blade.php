@@ -139,13 +139,21 @@
         </div>
       </div>
 
-      <div class="card" style="padding: 0; overflow: hidden; height: 380px; display: flex; align-items: center; justify-content: center; background: var(--bg-soft);">
-        <div style="text-align: center; color: var(--muted);">
-          <div style="font-size: 48px; margin-bottom: 12px;">🗺</div>
-          <p style="margin: 0; font-size: 16px; font-weight: 600;">г. Астана, ул. Кайым Мухамедханова, 37А</p>
-          <p style="margin: 8px 0 0; font-size: 14px;">Казахский университет технологии и бизнеса</p>
-        </div>
+      <div class="card" style="padding: 0; overflow: hidden; height: 400px; border-radius: var(--radius-xl);">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2503.8!2d71.4107!3d51.1283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4245850e07ff5601%3A0x4d6a04db6e51e3e8!2z0JrQsNC30LDRhdGB0LrQuNC5INGD0L3QuNCy0LXRgNGB0LjRgtC10YIg0YLQtdGF0L3QvtC70L7Qs9C40Lgg0Lgg0LHQuNC30L3QtdGB0LA!5e0!3m2!1sru!2skz!4v1700000000000!5m2!1sru!2skz"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Расположение библиотеки КазУТБ на карте">
+        </iframe>
       </div>
+      <p style="color: var(--muted); font-size: 14px; margin-top: 14px; text-align: center;">
+        📍 г. Астана, ул. Кайым Мухамедханова, 37А · Казахский университет технологии и бизнеса
+      </p>
     </div>
   </section>
 
