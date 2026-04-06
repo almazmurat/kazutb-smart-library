@@ -40,7 +40,24 @@ Route::get('/login', function (Request $request) {
         return redirect('/account');
     }
 
-    return view('auth');
+    $demoEnabled = (bool) config('demo_auth.enabled');
+    $demoIdentities = [];
+    if ($demoEnabled) {
+        foreach (config('demo_auth.identities', []) as $slug => $identity) {
+            $demoIdentities[] = [
+                'slug' => $slug,
+                'label' => $identity['label'] ?? $slug,
+                'description' => $identity['description'] ?? '',
+                'icon' => $identity['icon'] ?? '👤',
+                'role' => $identity['role'] ?? 'reader',
+            ];
+        }
+    }
+
+    return view('auth', [
+        'demoEnabled' => $demoEnabled,
+        'demoIdentities' => $demoIdentities,
+    ]);
 });
 
 Route::get('/services', function () {

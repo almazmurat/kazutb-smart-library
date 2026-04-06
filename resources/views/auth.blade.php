@@ -268,27 +268,108 @@
       .panel { padding: 16px; }
       .promo h1 { font-size: 22px; }
     }
+
+    /* Demo quick-login cards */
+    .demo-block {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .demo-block-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin: 0 0 4px;
+    }
+
+    .demo-block-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 14px;
+      line-height: 1.5;
+    }
+
+    .demo-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .demo-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+      cursor: pointer;
+      transition: .2s ease;
+      text-align: left;
+      font: inherit;
+      color: var(--text);
+    }
+
+    .demo-card:hover {
+      border-color: rgba(59,130,246,.35);
+      background: rgba(59,130,246,.03);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .demo-card:disabled {
+      opacity: .5;
+      cursor: wait;
+    }
+
+    .demo-card-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .demo-card-info {
+      min-width: 0;
+    }
+
+    .demo-card-label {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .demo-card-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .demo-env-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      background: rgba(245,158,11,.10);
+      color: #b45309;
+      border: 1px solid rgba(245,158,11,.18);
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .demo-cards { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a href="/" class="brand">
-        <div class="brand-badge">
-          <img src="/logo.png" alt="Logo" class="logo-img">
-        </div>
-        <div>
-          <div>КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА</div>
-          <small>Страница авторизации</small>
-        </div>
-      </a>
-
-      <div>
-        <a href="/" class="btn btn-ghost">На главную</a>
-        <a href="/catalog" class="btn btn-ghost">Каталог</a>
-      </div>
-    </div>
-  </header>
+  @include('partials.navbar', ['activePage' => ''])
 
   <main class="page">
     <div class="container layout">
@@ -327,6 +408,25 @@
           <button id="submit-btn" type="submit" class="btn btn-primary submit">Войти</button>
           <div id="form-message" class="message"></div>
         </form>
+
+        @if(!empty($demoEnabled) && !empty($demoIdentities))
+        <div class="demo-block" id="demo-login-block">
+          <span class="demo-env-badge">⚠ Dev / Demo</span>
+          <p class="demo-block-title">Быстрый вход</p>
+          <p class="demo-block-subtitle">Нажмите на карточку для мгновенного входа под выбранной ролью.</p>
+          <div class="demo-cards">
+            @foreach($demoIdentities as $identity)
+            <button class="demo-card" data-demo-slug="{{ $identity['slug'] }}" onclick="demoLogin('{{ $identity['slug'] }}', this)">
+              <span class="demo-card-icon">{{ $identity['icon'] }}</span>
+              <span class="demo-card-info">
+                <span class="demo-card-label">{{ $identity['label'] }}</span>
+                <span class="demo-card-desc">{{ $identity['description'] }}</span>
+              </span>
+            </button>
+            @endforeach
+          </div>
+        </div>
+        @endif
       </section>
     </div>
   </main>
@@ -429,6 +529,46 @@
         }
       }
     });
+
+    async function demoLogin(slug, btn) {
+      clearMessage();
+      const allCards = document.querySelectorAll('.demo-card');
+      allCards.forEach(c => c.disabled = true);
+
+      try {
+        const response = await fetch('/api/demo-auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-CSRF-TOKEN': getCsrfToken(),
+          },
+          body: JSON.stringify({ role: slug }),
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(data?.message || 'Demo login failed');
+        }
+
+        const user = data?.user || null;
+        if (user) {
+          localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+        }
+
+        showMessage('Быстрый вход выполнен. Перенаправление...', 'success');
+        window.setTimeout(() => {
+          const params = new URLSearchParams(window.location.search);
+          const redirectTo = params.get('redirect') || '/account';
+          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : '/account';
+          window.location.href = safeRedirect;
+        }, 300);
+      } catch (error) {
+        showMessage(error?.message || 'Ошибка быстрого входа', 'error');
+        allCards.forEach(c => c.disabled = false);
+      }
+    }
   </script>
 </body>
 </html>

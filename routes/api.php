@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\DemoAuthController;
 use App\Http\Controllers\Api\ExternalResourceController;
 use App\Http\Controllers\Api\ShortlistController;
 use App\Http\Controllers\Api\SubjectController;
@@ -30,6 +31,10 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 Route::middleware('web')->group(function (): void {
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
+
+    // Demo/dev quick-login — gated by config('demo_auth.enabled').
+    Route::get('/demo-auth/identities', [DemoAuthController::class, 'identities']);
+    Route::post('/demo-auth/login', [DemoAuthController::class, 'login']);
 
     // Reader-authenticated routes — middleware enforces library.user session check.
     Route::middleware('library.auth')->group(function (): void {
