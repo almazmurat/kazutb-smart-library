@@ -35,7 +35,11 @@ Route::get('/account', function (Request $request) {
     return view('account', ['sessionUser' => $user]);
 });
 
-Route::get('/login', function () {
+Route::get('/login', function (Request $request) {
+    if (is_array($request->session()->get('library.user'))) {
+        return redirect('/account');
+    }
+
     return view('auth');
 });
 

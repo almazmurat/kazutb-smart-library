@@ -394,7 +394,7 @@ img { max-width: 100%; display: block; }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr .8fr .8fr .9fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
   gap: 20px;
   padding: 32px 0;
 }
@@ -456,7 +456,7 @@ img { max-width: 100%; display: block; }
 
 /* --- Responsive ------------------------------------------- */
 @media (max-width: 1120px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
   .feature-grid { grid-template-columns: 1fr 1fr; }
 }
 

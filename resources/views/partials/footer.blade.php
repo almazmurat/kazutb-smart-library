@@ -7,14 +7,28 @@
     </div>
 
     <div class="footer-col">
-      <div class="footer-title">Разделы</div>
-      <a href="/catalog">Каталог</a>
+      <div class="footer-title">Студентам</div>
+      <a href="/catalog">Каталог литературы</a>
       <a href="/resources">Электронные ресурсы</a>
-      <a href="/services">Сервисы</a>
-      <a href="/news">Новости</a>
-      <a href="/about">О библиотеке</a>
-      <a href="/contacts">Контакты</a>
       <a href="/account">Личный кабинет</a>
+      <a href="/services">Сервисы библиотеки</a>
+      <!-- FUTURE: Add links per school/department when institutional structure is confirmed -->
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-title">Преподавателям</div>
+      <a href="/catalog">Научная литература</a>
+      <a href="/resources">Базы данных</a>
+      <a href="/services">Поддержка исследований</a>
+      <a href="/news">Новости и мероприятия</a>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-title">О библиотеке</div>
+      <a href="/about">О нас</a>
+      <a href="/contacts">Контакты</a>
+      <a href="/news">Новости</a>
+      <a href="/services">Все сервисы</a>
     </div>
 
     <div class="footer-col">
@@ -22,13 +36,7 @@
       <a href="#">г. Астана, ул. Кайым Мухамедханова, 37А</a>
       <a href="tel:+77172645858">+7 (7172) 64-58-58</a>
       <a href="mailto:library@kazutb.kz">library@kazutb.kz</a>
-    </div>
-
-    <div class="footer-col">
-      <div class="footer-title">Режим работы</div>
-      <p>Пн–Пт: 09:00 – 18:00</p>
-      <p>Сб: 10:00 – 14:00</p>
-      <p>Вс: выходной</p>
+      <p style="margin-top:6px">Пн–Пт: 09:00–18:00<br>Сб: 10:00–14:00</p>
     </div>
   </div>
 

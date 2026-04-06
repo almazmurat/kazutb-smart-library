@@ -21,6 +21,22 @@
 
   @include('partials.footer')
 
+  @if(session('library.user'))
+  <script>
+    document.getElementById('shared-logout-btn')?.addEventListener('click', async () => {
+      try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        await fetch('/api/v1/logout', {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
+        });
+      } catch (_) {}
+      localStorage.removeItem('library.auth.user');
+      window.location.href = '/login';
+    });
+  </script>
+  @endif
+
   @yield('scripts')
 </body>
 </html>

@@ -578,6 +578,65 @@
       line-height: 1.5;
     }
 
+    /* --- Academic discovery navigation --- */
+    .discovery-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .discovery-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 28px 24px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid rgba(15,23,42,.06);
+      box-shadow: var(--shadow);
+      transition: all .25s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .discovery-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 24px -6px rgba(0,0,0,.08);
+      border-color: var(--blue);
+    }
+
+    .discovery-icon {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .discovery-icon--students { background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(6,182,212,.10)); }
+    .discovery-icon--teachers { background: linear-gradient(135deg, rgba(124,58,237,.15), rgba(236,72,153,.08)); }
+    .discovery-icon--research { background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(34,197,94,.08)); }
+    .discovery-icon--digital  { background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(59,130,246,.08)); }
+    .discovery-icon--area     { background: linear-gradient(135deg, rgba(236,72,153,.15), rgba(245,158,11,.08)); }
+    .discovery-icon--new      { background: linear-gradient(135deg, rgba(6,182,212,.15), rgba(124,58,237,.08)); }
+
+    .discovery-text h4 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .discovery-text p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
     .services-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -795,7 +854,7 @@
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.2fr .8fr .8fr .9fr;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
       gap: 20px;
       padding: 28px 0;
     }
@@ -839,6 +898,7 @@
       .highlight-strip { grid-template-columns: repeat(2, 1fr); }
       .catalog { grid-template-columns: repeat(2, 1fr); }
       .resources-preview-grid { grid-template-columns: repeat(2, 1fr); }
+      .discovery-nav { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 860px) {
@@ -872,7 +932,8 @@
       .events,
       .footer-grid,
       .showcase-grid,
-      .mini-stats {
+      .mini-stats,
+      .discovery-nav {
         grid-template-columns: 1fr;
       }
 
@@ -1077,10 +1138,61 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <h2 id="catalog-title">Каталог знаний</h2>
-            <p id="catalog-description">Фонд библиотеки разделен на удобные направления, чтобы пользователь сразу понимал, где искать нужные материалы.</p>
+            <h2>Найдите нужное для учёбы и науки</h2>
+            <p>Библиотечные ресурсы — по аудитории, теме и формату. Выберите подходящее направление или ищите напрямую в каталоге.</p>
           </div>
         </div>
+
+        <!-- Academic discovery navigation -->
+        <div class="discovery-nav">
+          <a href="/catalog" class="discovery-card">
+            <div class="discovery-icon discovery-icon--students">🎓</div>
+            <div class="discovery-text">
+              <h4>Студентам</h4>
+              <p>Учебники, пособия, методические материалы и рекомендованная литература.</p>
+            </div>
+          </a>
+          <a href="/catalog" class="discovery-card">
+            <div class="discovery-icon discovery-icon--teachers">👩‍🏫</div>
+            <div class="discovery-text">
+              <h4>Преподавателям</h4>
+              <p>Научная литература, монографии, базы данных и методическое обеспечение дисциплин.</p>
+            </div>
+          </a>
+          <a href="/resources" class="discovery-card">
+            <div class="discovery-icon discovery-icon--digital">🌐</div>
+            <div class="discovery-text">
+              <h4>Электронные ресурсы</h4>
+              <p>Подписные базы, открытый доступ, электронная библиотека и лицензированные коллекции.</p>
+            </div>
+          </a>
+          <!-- FUTURE: Add per-school / per-department discovery cards when institutional structure is confirmed -->
+          <a href="/catalog" class="discovery-card">
+            <div class="discovery-icon discovery-icon--area">📐</div>
+            <div class="discovery-text">
+              <h4>По направлениям</h4>
+              <p>Экономика, технологии, право, языки и другие академические области.</p>
+            </div>
+          </a>
+          <a href="/catalog" class="discovery-card">
+            <div class="discovery-icon discovery-icon--research">🔬</div>
+            <div class="discovery-text">
+              <h4>Наука и исследования</h4>
+              <p>Диссертации, научные журналы, международные базы и аналитика.</p>
+            </div>
+          </a>
+          <a href="/catalog" class="discovery-card">
+            <div class="discovery-icon discovery-icon--new">✨</div>
+            <div class="discovery-text">
+              <h4>Новые поступления</h4>
+              <p>Недавно добавленные книги, свежие номера журналов и обновления коллекций.</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Catalog search/browse (existing API-driven grid) -->
+        <h3 id="catalog-title" style="font-size: 22px; margin-bottom: 6px;">Каталог фонда</h3>
+        <p id="catalog-description" style="color: var(--muted); margin-bottom: 18px; font-size: 15px;">Просмотр и поиск по всем материалам библиотеки.</p>
 
         <div class="catalog" id="catalog-grid">
         </div>
