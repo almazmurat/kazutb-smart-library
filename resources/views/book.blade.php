@@ -602,6 +602,62 @@
             margin: 0 2px;
         }
 
+        .classification-section {
+            margin-top: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(124,58,237,.04), rgba(59,130,246,.04));
+            border: 1px solid rgba(124,58,237,.12);
+            border-radius: 16px;
+        }
+
+        .classification-section h4 {
+            margin: 0 0 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6d28d9;
+            letter-spacing: .02em;
+        }
+
+        .classification-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .classification-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+        .classification-chip.specialization {
+            background: rgba(124,58,237,.08);
+            color: #6d28d9;
+            border: 1px solid rgba(124,58,237,.15);
+        }
+
+        .classification-chip.department {
+            background: rgba(59,130,246,.08);
+            color: #2563eb;
+            border: 1px solid rgba(59,130,246,.15);
+        }
+
+        .classification-chip.faculty {
+            background: rgba(6,182,212,.08);
+            color: #0891b2;
+            border: 1px solid rgba(6,182,212,.15);
+        }
+
+        .classification-chip:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.06);
+        }
+
         .loading {
             text-align: center;
             padding: 3rem;
@@ -823,6 +879,7 @@
             const locations = Array.isArray(book?.availability?.locations) ? book.availability.locations : [];
             const needsReview = book?.quality?.needsReview === true;
             const reviewCodes = Array.isArray(book?.quality?.reviewReasonCodes) ? book.quality.reviewReasonCodes : [];
+            const classification = Array.isArray(book?.classification) ? book.classification : [];
 
             const isAvailable = available > 0;
 
@@ -858,6 +915,19 @@
             const reviewHtml = needsReview && reviewCodes.length
                 ? `<div class="review-notice">
                     ⚠ Данные этого документа проходят проверку: ${reviewCodes.map(c => `<span class="reason-badge">${escapeHtml(c)}</span>`).join(' ')}
+                   </div>`
+                : '';
+
+            const classificationHtml = classification.length > 0
+                ? `<div class="classification-section">
+                    <h4>📚 Направления подготовки</h4>
+                    <div class="classification-chips">
+                        ${classification.map(c => {
+                            const kind = c.sourceKind || 'department';
+                            const url = '/catalog?subject_id=' + encodeURIComponent(c.id) + '&subject_label=' + encodeURIComponent(c.label);
+                            return `<a href="${url}" class="classification-chip ${kind}" title="Показать все книги: ${escapeHtml(c.label)}">${escapeHtml(c.label)}</a>`;
+                        }).join('')}
+                    </div>
                    </div>`
                 : '';
 
@@ -912,6 +982,7 @@
                             </div>
 
                             ${reviewHtml}
+                            ${classificationHtml}
 
                             <div class="status-box ${isAvailable ? '' : 'unavailable'}">
                                 <div>

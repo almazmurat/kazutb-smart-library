@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\InternalAiAssistantController;
 use App\Http\Controllers\Api\InternalCopyReadController;
 use App\Http\Controllers\Api\InternalCopyWriteController;
@@ -110,6 +111,7 @@ Route::prefix('v1')->group(function (): void {
     // Canonical public catalog APIs (WS1 converged).
     Route::get('/book-db/{isbn}', [BookController::class, 'dbShow']);
     Route::get('/catalog-db', [CatalogController::class, 'dbIndex']);
+    Route::get('/subjects', [SubjectController::class, 'index']);
 
     Route::get('/library/health-summary', [LibraryController::class, 'healthSummary']);
     Route::get('/review/issues', [ReviewController::class, 'issues']);

@@ -370,6 +370,60 @@
       color: var(--success);
     }
 
+    .tag.subject {
+      background: rgba(124,58,237,.08);
+      color: var(--violet);
+      font-size: 11px;
+      padding: 5px 10px;
+    }
+
+    .active-subject-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, rgba(124,58,237,.06), rgba(59,130,246,.06));
+      border: 1px solid rgba(124,58,237,.15);
+      border-radius: 14px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .active-subject-banner strong {
+      color: var(--violet);
+    }
+
+    .active-subject-banner .clear-btn {
+      margin-left: auto;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(124,58,237,.2);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--violet);
+      cursor: pointer;
+    }
+
+    .subject-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .subject-select:focus {
+      outline: none;
+      border-color: var(--violet);
+      box-shadow: 0 0 0 3px rgba(124,58,237,.1);
+    }
+
     .book-title {
       margin: 0 0 8px;
       font-size: 22px;
@@ -567,10 +621,18 @@
             </div>
           </div>
 
+          <div class="filter-group" id="subject-filter-group">
+            <span class="filter-label">Направление / Специальность</span>
+            <select class="subject-select" id="subject-select" onchange="applyFilters()">
+              <option value="">Все направления</option>
+            </select>
+          </div>
+
           <button class="btn btn-primary" style="width:100%; margin-top:6px;" onclick="applyFilters()">Применить фильтры</button>
         </aside>
 
         <div class="card results">
+          <div id="active-subject-banner"></div>
           <div class="results-top">
             <div>
               <strong id="results-count">Найдено 0 книг</strong>
@@ -601,6 +663,9 @@
     const API_ENDPOINT = '/api/v1/catalog-db';
     let currentPage = 1;
     let totalPages = 1;
+    let activeSubjectId = '';
+    let activeSubjectLabel = '';
+    let subjectsData = null;
 
     function escapeHtml(text) {
       const div = document.createElement('div');
@@ -630,6 +695,9 @@
     }
 
     function formatBookData(book) {
+      const classification = Array.isArray(book.classification) ? book.classification : [];
+      const specialization = classification.find(c => c.sourceKind === 'specialization');
+      const department = classification.find(c => c.sourceKind === 'department');
       return {
         title: book.title?.display || book.title?.raw || 'Без названия',
         author: book.primaryAuthor || 'Автор не указан',
@@ -640,7 +708,10 @@
         available: book.copies?.available || 0,
         total: book.copies?.total || 0,
         isbn: book.isbn?.raw || '',
-        id: book.id || ''
+        id: book.id || '',
+        specialization: specialization ? specialization.label : '',
+        department: department ? department.label : '',
+        subjectId: specialization ? specialization.id : (department ? department.id : ''),
       };
     }
 
@@ -648,6 +719,9 @@
       const data = formatBookData(book);
       const isAvailable = data.available > 0;
       const identifier = data.isbn || data.id;
+      const subjectBadge = data.specialization
+        ? `<span class="tag subject" title="${escapeHtml(data.specialization)}">${escapeHtml(data.specialization.length > 25 ? data.specialization.substring(0, 25) + '…' : data.specialization)}</span>`
+        : (data.department ? `<span class="tag subject" title="${escapeHtml(data.department)}">${escapeHtml(data.department.length > 25 ? data.department.substring(0, 25) + '…' : data.department)}</span>` : '');
 
       return `
         <article class="book-card" onclick="goToBook('${escapeHtml(identifier)}')">
@@ -658,6 +732,7 @@
           <div class="meta-row">
             <span class="tag">${escapeHtml(String(data.year))}</span>
             <span class="tag ${isAvailable ? 'green' : ''}">${isAvailable ? data.available + ' экз.' : 'Нет в наличии'}</span>
+            ${subjectBadge}
           </div>
           <h3 class="book-title">${escapeHtml(data.title)}</h3>
           <p class="book-desc">${escapeHtml(data.publisher)}</p>
@@ -698,6 +773,8 @@
 
         const availableOnly = document.getElementById('filter-available-only');
         if (availableOnly && availableOnly.checked) params.set('available_only', '1');
+
+        if (activeSubjectId) params.set('subject_id', activeSubjectId);
 
         const response = await fetch(`${API_ENDPOINT}?${params}`, {
           headers: { 'Accept': 'application/json' }
@@ -810,15 +887,96 @@
       const urlParams = new URLSearchParams(window.location.search);
       const urlQ = urlParams.get('q');
       const urlSort = urlParams.get('sort');
+      const urlSubjectId = urlParams.get('subject_id');
+      const urlSubjectLabel = urlParams.get('subject_label');
       if (urlQ && document.getElementById('search-input')) {
         document.getElementById('search-input').value = urlQ;
       }
       if (urlSort && document.getElementById('sort-select')) {
         document.getElementById('sort-select').value = urlSort;
       }
+      if (urlSubjectId) {
+        activeSubjectId = urlSubjectId;
+        activeSubjectLabel = urlSubjectLabel ? decodeURIComponent(urlSubjectLabel) : '';
+      }
     })();
 
+    function updateSubjectBanner() {
+      const banner = document.getElementById('active-subject-banner');
+      if (!banner) return;
+      if (activeSubjectId && activeSubjectLabel) {
+        banner.innerHTML = `<div class="active-subject-banner">
+          <span>📚</span>
+          <span>Фильтр по направлению: <strong>${escapeHtml(activeSubjectLabel)}</strong></span>
+          <button class="clear-btn" onclick="clearSubjectFilter()">✕ Сбросить</button>
+        </div>`;
+      } else {
+        banner.innerHTML = '';
+      }
+    }
+
+    function clearSubjectFilter() {
+      activeSubjectId = '';
+      activeSubjectLabel = '';
+      const sel = document.getElementById('subject-select');
+      if (sel) sel.value = '';
+      updateSubjectBanner();
+      const url = new URL(window.location);
+      url.searchParams.delete('subject_id');
+      url.searchParams.delete('subject_label');
+      history.replaceState(null, '', url.toString());
+      applyFilters();
+    }
+
+    async function loadSubjects() {
+      try {
+        const res = await fetch('/api/v1/subjects', { headers: { Accept: 'application/json' } });
+        if (!res.ok) return;
+        subjectsData = await res.json();
+        const sel = document.getElementById('subject-select');
+        if (!sel) return;
+
+        const addGroup = (label, items) => {
+          if (!items || items.length === 0) return;
+          const group = document.createElement('optgroup');
+          group.label = label;
+          items.forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.id;
+            opt.textContent = `${item.label} (${item.documentCount})`;
+            opt.dataset.label = item.label;
+            group.appendChild(opt);
+          });
+          sel.appendChild(group);
+        };
+
+        addGroup('Факультеты', subjectsData.faculties);
+        addGroup('Кафедры', subjectsData.departments);
+        addGroup('Специальности', subjectsData.specializations);
+
+        if (activeSubjectId) {
+          sel.value = activeSubjectId;
+          if (!activeSubjectLabel) {
+            const opt = sel.querySelector(`option[value="${activeSubjectId}"]`);
+            if (opt) activeSubjectLabel = opt.dataset.label;
+          }
+        }
+        updateSubjectBanner();
+      } catch (e) {
+        console.warn('Failed to load subjects:', e);
+      }
+    }
+
+    // Handle subject select change
+    document.getElementById('subject-select')?.addEventListener('change', function() {
+      activeSubjectId = this.value;
+      const opt = this.options[this.selectedIndex];
+      activeSubjectLabel = opt && opt.dataset ? (opt.dataset.label || '') : '';
+      updateSubjectBanner();
+    });
+
     // Initial load
+    loadSubjects();
     loadCatalog();
   </script>
 </body>

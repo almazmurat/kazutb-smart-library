@@ -18,6 +18,7 @@ class CatalogReadService
         ?int $yearFrom = null,
         ?int $yearTo = null,
         bool $availableOnly = false,
+        ?string $subjectId = null,
     ): array {
         $page = max($page, 1);
         $limit = min(max($limit, 1), 100);
@@ -37,6 +38,7 @@ class CatalogReadService
                 'd.publisher_name',
                 'd.authors_json',
                 'd.copy_summary_json',
+                'd.subjects_json',
             ]);
 
         if ($query !== '') {
@@ -66,6 +68,15 @@ class CatalogReadService
             $builder->whereRaw("COALESCE((d.copy_summary_json->>'availableCopies')::int, 0) > 0");
         }
 
+        if ($subjectId !== null && $subjectId !== '') {
+            $builder->whereExists(function ($sub) use ($subjectId): void {
+                $sub->select(DB::raw(1))
+                    ->from('app.document_subjects as ds')
+                    ->whereColumn('ds.document_id', 'd.document_id')
+                    ->where('ds.subject_id', $subjectId);
+            });
+        }
+
         $total = (clone $builder)->count();
 
         $sortLower = mb_strtolower($sort);
@@ -88,10 +99,20 @@ class CatalogReadService
         $data = $rows->map(function (object $row): array {
             $authors = $this->decodeJsonValue($row->authors_json);
             $copySummary = $this->decodeJsonValue($row->copy_summary_json);
+            $subjects = $this->decodeJsonValue($row->subjects_json);
             $primaryAuthor = is_array($authors) && isset($authors[0]['name']) ? (string) $authors[0]['name'] : null;
 
             $available = is_array($copySummary) ? (int) ($copySummary['availableCopies'] ?? 0) : 0;
             $totalCopies = is_array($copySummary) ? (int) ($copySummary['totalCopies'] ?? 0) : 0;
+
+            $classification = [];
+            if (is_array($subjects) && count($subjects) > 0) {
+                $classification = array_map(static fn (array $s): array => [
+                    'id' => (string) ($s['id'] ?? ''),
+                    'label' => (string) ($s['label'] ?? ''),
+                    'sourceKind' => (string) ($s['sourceKind'] ?? ''),
+                ], $subjects);
+            }
 
             return [
                 'id' => (string) ($row->document_id ?? $row->legacy_doc_id ?? ''),
@@ -116,6 +137,7 @@ class CatalogReadService
                     'available' => $available,
                     'total' => $totalCopies,
                 ],
+                'classification' => $classification,
                 'source' => 'app.document_detail_v',
             ];
         })->all();

@@ -15,8 +15,27 @@
     <div class="container">
       <div class="section-head">
         <div>
-          <h2>Направления и области знаний</h2>
-          <p>Основные тематические области фонда университетской библиотеки, ориентированные на образовательные программы КазУТБ.</p>
+          <div class="eyebrow eyebrow--violet">Из фонда библиотеки</div>
+          <h2>По факультетам и специальностям</h2>
+          <p>Реальные направления подготовки КазУТБ с количеством изданий в фонде. Нажмите для точного фильтра по каталогу.</p>
+        </div>
+      </div>
+
+      <div id="subjects-loading" style="text-align:center;padding:32px;color:var(--muted);">Загрузка направлений...</div>
+      <div id="subjects-container" style="display:none;">
+        <div id="faculties-section" class="subjects-group"></div>
+        <div id="departments-section" class="subjects-group"></div>
+        <div id="specializations-section" class="subjects-group"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>По областям знаний</h2>
+          <p>Тематические области для поиска по ключевым словам — полезно, когда нужная тема шире одной специальности.</p>
         </div>
       </div>
 
@@ -199,10 +218,10 @@
   <section class="page-section">
     <div class="container">
       <div class="info-banner">
-        <div class="info-banner-icon">📌</div>
+        <div class="info-banner-icon">✅</div>
         <div class="info-banner-text">
-          <h3>О тематической классификации</h3>
-          <p>Представленные направления ориентированы на образовательные программы КазУТБ и основные области фонда библиотеки. В будущем тематический поиск будет расширен с использованием УДК (Универсальной десятичной классификации) для более точной навигации по фонду.</p>
+          <h3>Классификация по направлениям подготовки</h3>
+          <p>Тематический поиск использует реальные привязки изданий к факультетам, кафедрам и специальностям КазУТБ. Сейчас классифицировано более 3 600 документов. Данные обновляются по мере каталогизации фонда.</p>
         </div>
       </div>
     </div>
@@ -399,6 +418,121 @@
     .workflow-step { gap: 14px; padding: 18px 0; }
     .step-marker { width: 32px; height: 32px; font-size: 14px; }
     .info-banner { flex-direction: column; gap: 12px; padding: 20px; }
+    .subjects-group { gap: 6px; }
+    .subject-chip { font-size: 12px; padding: 6px 12px; }
+  }
+
+  .subjects-group {
+    margin-bottom: 28px;
+  }
+
+  .subjects-group-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 12px;
+  }
+
+  .subjects-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .subject-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all .2s;
+  }
+
+  .subject-chip:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  }
+
+  .subject-chip.faculty {
+    background: rgba(6,182,212,.06);
+    color: #0891b2;
+    border-color: rgba(6,182,212,.18);
+  }
+
+  .subject-chip.faculty:hover {
+    background: #0891b2;
+    color: #fff;
+    border-color: #0891b2;
+  }
+
+  .subject-chip.department {
+    background: rgba(59,130,246,.06);
+    color: #2563eb;
+    border-color: rgba(59,130,246,.18);
+  }
+
+  .subject-chip.department:hover {
+    background: #2563eb;
+    color: #fff;
+    border-color: #2563eb;
+  }
+
+  .subject-chip.specialization {
+    background: rgba(124,58,237,.06);
+    color: #6d28d9;
+    border-color: rgba(124,58,237,.15);
+  }
+
+  .subject-chip.specialization:hover {
+    background: #6d28d9;
+    color: #fff;
+    border-color: #6d28d9;
+  }
+
+  .subject-count {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: .65;
   }
 </style>
+@endsection
+
+@section('scripts')
+<script>
+  (async function loadSubjectsForDiscover() {
+    const loading = document.getElementById('subjects-loading');
+    const container = document.getElementById('subjects-container');
+    try {
+      const res = await fetch('/api/v1/subjects', { headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+
+      function renderGroup(containerId, title, items, kind) {
+        if (!items || items.length === 0) return;
+        const el = document.getElementById(containerId);
+        const chips = items.map(item => {
+          const url = '/catalog?subject_id=' + encodeURIComponent(item.id) + '&subject_label=' + encodeURIComponent(item.label);
+          return `<a href="${url}" class="subject-chip ${kind}" title="${item.documentCount} изданий">${item.label} <span class="subject-count">${item.documentCount}</span></a>`;
+        }).join('');
+        el.innerHTML = `<div class="subjects-group-title">${title}</div><div class="subjects-chips">${chips}</div>`;
+      }
+
+      renderGroup('faculties-section', 'Факультеты', data.faculties, 'faculty');
+      renderGroup('departments-section', 'Кафедры', data.departments, 'department');
+      renderGroup('specializations-section', 'Специальности', data.specializations, 'specialization');
+
+      loading.style.display = 'none';
+      container.style.display = 'block';
+    } catch (e) {
+      loading.textContent = 'Не удалось загрузить направления. Используйте поиск по ключевым словам ниже.';
+      console.warn('Subjects load error:', e);
+    }
+  })();
+</script>
 @endsection

@@ -32,6 +32,10 @@ class BookDetailReadService
                 'd.copy_summary_json',
                 'd.document_needs_review',
                 'd.document_review_reason_codes',
+                'd.subjects_json',
+                'd.faculty_raw',
+                'd.department_raw',
+                'd.specialization_raw',
             ])
             ->whereRaw(
                 "d.isbn_normalized = ? or d.isbn_raw = ? or d.document_id::text = ? or d.legacy_doc_id::text = ?",
@@ -102,6 +106,16 @@ class BookDetailReadService
         $totalCopies = is_array($copySummary) ? (int) ($copySummary['totalCopies'] ?? 0) : 0;
         $reviewReasonCodes = $this->normalizePgArray($document->document_review_reason_codes ?? null);
 
+        $subjects = $this->decodeJsonValue($document->subjects_json);
+        $classification = [];
+        if (is_array($subjects) && count($subjects) > 0) {
+            $classification = array_map(static fn (array $s): array => [
+                'id' => (string) ($s['id'] ?? ''),
+                'label' => (string) ($s['label'] ?? ''),
+                'sourceKind' => (string) ($s['sourceKind'] ?? ''),
+            ], $subjects);
+        }
+
         return [
             'id' => (string) ($document->document_id ?? $document->legacy_doc_id ?? ''),
             'title' => [
@@ -137,6 +151,7 @@ class BookDetailReadService
                 'needsReview' => (bool) ($document->document_needs_review ?? false),
                 'reviewReasonCodes' => $reviewReasonCodes,
             ],
+            'classification' => $classification,
             'source' => 'app.document_detail_v',
         ];
     }
