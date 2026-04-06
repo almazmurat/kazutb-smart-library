@@ -53,4 +53,24 @@ class AccountPageTest extends TestCase
         $response = $this->get('/account');
         $response->assertRedirect('/login?redirect=%2Faccount');
     }
+
+    public function test_account_page_shows_workbench_section(): void
+    {
+        $response = $this->withSession($this->authenticatedSession())->get('/account');
+
+        $response
+            ->assertOk()
+            ->assertSee('workbench-section', false)
+            ->assertSee('Подборка литературы', false)
+            ->assertSee('loadWorkbench', false);
+    }
+
+    public function test_account_page_workbench_calls_summary_api(): void
+    {
+        $response = $this->withSession($this->authenticatedSession())->get('/account');
+
+        $response
+            ->assertOk()
+            ->assertSee('/api/v1/shortlist/summary', false);
+    }
 }

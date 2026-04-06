@@ -88,4 +88,43 @@ class ShortlistPageTest extends TestCase
             ->assertOk()
             ->assertSee('href="/resources"', false);
     }
+
+    public function test_shortlist_page_has_draft_metadata_fields(): void
+    {
+        $response = $this->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('draft-title', false)
+            ->assertSee('draft-notes', false)
+            ->assertSee('draft-meta-block', false)
+            ->assertSee('saveDraftMeta', false);
+    }
+
+    public function test_shortlist_page_loads_draft_from_summary_api(): void
+    {
+        $response = $this->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('loadDraftMeta()', false)
+            ->assertSee('/summary', false);
+    }
+
+    public function test_shortlist_page_shows_cabinet_link_when_authenticated(): void
+    {
+        $session = [
+            'library.user' => [
+                'id' => 'u1', 'name' => 'Test', 'email' => 'test@example.com',
+                'login' => 'test', 'ad_login' => 'test', 'role' => 'reader',
+            ],
+        ];
+
+        $response = $this->withSession($session)->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('href="/account"', false)
+            ->assertSee('Вернуться в кабинет', false);
+    }
 }

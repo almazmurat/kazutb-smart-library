@@ -136,6 +136,64 @@ class ShortlistController extends Controller
     }
 
     /**
+     * Lightweight summary for account/workbench display.
+     */
+    public function summary(Request $request): JsonResponse
+    {
+        $items = $this->getShortlist($request);
+        $draft = $this->getDraftMeta($request);
+
+        $books = 0;
+        $external = 0;
+        $lastAddedAt = null;
+
+        foreach ($items as $item) {
+            if (($item['type'] ?? 'book') === 'external_resource') {
+                $external++;
+            } else {
+                $books++;
+            }
+            $addedAt = $item['addedAt'] ?? null;
+            if ($addedAt !== null && ($lastAddedAt === null || $addedAt > $lastAddedAt)) {
+                $lastAddedAt = $addedAt;
+            }
+        }
+
+        return response()->json([
+            'data' => [
+                'total' => count($items),
+                'books' => $books,
+                'external' => $external,
+                'lastAddedAt' => $lastAddedAt,
+                'draft' => $draft,
+            ],
+        ]);
+    }
+
+    /**
+     * Update draft title/notes metadata.
+     */
+    public function updateDraft(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'title' => ['nullable', 'string', 'max:500'],
+            'notes' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        $draft = $this->getDraftMeta($request);
+        $draft['title'] = $validated['title'] ?? $draft['title'];
+        $draft['notes'] = $validated['notes'] ?? $draft['notes'];
+        $draft['updatedAt'] = now()->toIso8601String();
+
+        $request->session()->put('library.shortlist_draft', $draft);
+
+        return response()->json([
+            'message' => 'Данные черновика обновлены.',
+            'data' => $draft,
+        ]);
+    }
+
+    /**
      * Check shortlist status for given identifiers.
      */
     public function check(Request $request): JsonResponse
@@ -168,5 +226,16 @@ class ShortlistController extends Controller
     private function saveShortlist(Request $request, array $items): void
     {
         $request->session()->put('library.shortlist', $items);
+    }
+
+    private function getDraftMeta(Request $request): array
+    {
+        $draft = $request->session()->get('library.shortlist_draft', []);
+
+        return [
+            'title' => $draft['title'] ?? null,
+            'notes' => $draft['notes'] ?? null,
+            'updatedAt' => $draft['updatedAt'] ?? null,
+        ];
     }
 }

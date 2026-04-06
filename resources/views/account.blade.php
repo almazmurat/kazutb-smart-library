@@ -424,32 +424,7 @@
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a href="/" class="brand">
-        <div class="brand-badge">
-          <img src="/logo.png" alt="Logo" class="logo-img">
-        </div>
-        <div>
-          <div>КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА</div>
-          <small>Личный кабинет читателя</small>
-        </div>
-      </a>
-
-      <nav class="nav-links">
-        <a href="/">Главная</a>
-        <a href="/catalog">Каталог</a>
-        <a href="/resources">Ресурсы</a>
-        <a href="/services">Сервисы</a>
-        <a href="/account" class="active">Кабинет</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="/catalog" class="btn btn-ghost">Каталог</a>
-        <button id="logout-btn" class="btn btn-primary">Выйти</button>
-      </div>
-    </div>
-  </header>
+  @include('partials.navbar', ['activePage' => ''])
 
   <main class="page">
     <div class="container">
@@ -518,6 +493,60 @@
 
         <div id="reservations-grid" class="book-grid">
           <div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p style="margin:8px 0 0;">Загрузка бронирований...</p></div>
+        </div>
+      </section>
+
+      <section id="workbench-section" class="showcase" style="margin-top: 36px;">
+        <div class="section-head">
+          <div>
+            <h2>📋 Подборка литературы</h2>
+            <p>Ваш черновик списка литературы для силлабуса или учебной программы.</p>
+          </div>
+          <a href="/shortlist" class="btn btn-ghost" style="font-size:14px; padding:10px 18px;">Открыть подборку →</a>
+        </div>
+
+        <div id="workbench-loading" style="text-align:center; padding:24px;">
+          <div class="spinner"></div>
+          <p style="margin:8px 0 0; color:var(--muted); font-size:13px;">Загрузка подборки...</p>
+        </div>
+
+        <div id="workbench-empty" style="display:none;">
+          <div class="loading" style="text-align:center; border-style:dashed;">
+            <span style="font-size:32px;">📚</span>
+            <p style="margin:8px 0 0; font-weight:600;">Подборка пуста</p>
+            <p style="margin:6px 0 0; color:var(--muted); font-size:13px;">Добавляйте книги из каталога и электронные ресурсы в подборку для подготовки силлабуса.</p>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
+              <a href="/catalog" style="color:var(--blue); font-weight:600; font-size:14px;">Открыть каталог →</a>
+              <a href="/resources" style="color:var(--blue); font-weight:600; font-size:14px;">Электронные ресурсы →</a>
+              <a href="/discover" style="color:var(--blue); font-weight:600; font-size:14px;">Поиск по направлениям →</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="workbench-content" style="display:none;">
+          <div id="workbench-draft-info" style="margin-bottom:18px;"></div>
+
+          <div class="stats" style="grid-template-columns: repeat(3, 1fr); margin-bottom:18px;">
+            <div class="stat">
+              <strong id="wb-total">0</strong>
+              <span>Всего источников</span>
+            </div>
+            <div class="stat">
+              <strong id="wb-books">0</strong>
+              <span>Книги из каталога</span>
+            </div>
+            <div class="stat">
+              <strong id="wb-external">0</strong>
+              <span>Электронные ресурсы</span>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="/shortlist" class="btn btn-primary" style="font-size:14px; padding:12px 20px;">📄 Редактировать и экспортировать</a>
+            <a href="/catalog" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">Добавить из каталога</a>
+            <a href="/resources" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">Электронные ресурсы</a>
+            <a href="/for-teachers" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">Руководство для преподавателей</a>
+          </div>
         </div>
       </section>
     </div>
@@ -890,7 +919,59 @@
       }
     }
 
-    document.getElementById('logout-btn')?.addEventListener('click', async () => {
+    async function loadWorkbench() {
+      const loading = document.getElementById('workbench-loading');
+      const empty = document.getElementById('workbench-empty');
+      const content = document.getElementById('workbench-content');
+
+      try {
+        const response = await fetch('/api/v1/shortlist/summary', {
+          headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) throw new Error('Shortlist summary failed');
+
+        const payload = await response.json();
+        const data = payload?.data || {};
+
+        loading.style.display = 'none';
+
+        if ((data.total || 0) === 0) {
+          empty.style.display = 'block';
+          content.style.display = 'none';
+          return;
+        }
+
+        empty.style.display = 'none';
+        content.style.display = 'block';
+
+        document.getElementById('wb-total').textContent = data.total || 0;
+        document.getElementById('wb-books').textContent = data.books || 0;
+        document.getElementById('wb-external').textContent = data.external || 0;
+
+        const draftInfo = document.getElementById('workbench-draft-info');
+        const draft = data.draft || {};
+        if (draft.title || draft.notes) {
+          let html = '<div style="padding:14px 18px; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow-soft);">';
+          if (draft.title) {
+            html += `<div style="font-weight:700; font-size:16px; margin-bottom:4px;">${escapeHtml(draft.title)}</div>`;
+          }
+          if (draft.notes) {
+            html += `<div style="color:var(--muted); font-size:13px; line-height:1.5;">${escapeHtml(draft.notes)}</div>`;
+          }
+          html += '</div>';
+          draftInfo.innerHTML = html;
+        } else {
+          draftInfo.innerHTML = '';
+        }
+      } catch (err) {
+        loading.style.display = 'none';
+        empty.style.display = 'block';
+        console.error('Workbench load error:', err);
+      }
+    }
+
+    (document.getElementById('logout-btn') || document.getElementById('shared-logout-btn'))?.addEventListener('click', async () => {
       try {
         await fetch('/api/v1/logout', {
           method: 'POST',
@@ -919,6 +1000,7 @@
           }),
           loadBooks(),
           loadReservations(),
+          loadWorkbench(),
         ]);
         return;
       }

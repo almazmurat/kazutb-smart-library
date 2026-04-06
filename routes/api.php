@@ -45,6 +45,8 @@ Route::middleware('web')->group(function (): void {
     Route::prefix('v1/shortlist')->group(function (): void {
         Route::get('/', [ShortlistController::class, 'index']);
         Route::get('/export', [ShortlistController::class, 'export']);
+        Route::get('/summary', [ShortlistController::class, 'summary']);
+        Route::patch('/draft', [ShortlistController::class, 'updateDraft']);
         Route::post('/', [ShortlistController::class, 'store']);
         Route::delete('/{identifier}', [ShortlistController::class, 'destroy'])->where('identifier', '.+');
         Route::post('/clear', [ShortlistController::class, 'clear']);

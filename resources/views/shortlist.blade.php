@@ -32,6 +32,28 @@
       </div>
 
       <div id="shortlist-content" style="display:none;">
+        {{-- Cabinet navigation --}}
+        @if(session('library.user'))
+        <div style="margin-bottom:18px;">
+          <a href="/account" style="color:var(--blue, #3b82f6); font-size:14px; font-weight:600; text-decoration:none;">← Вернуться в кабинет</a>
+        </div>
+        @endif
+
+        {{-- Draft metadata block --}}
+        <div id="draft-meta-block" class="draft-meta-block">
+          <div class="draft-meta-fields">
+            <div class="draft-field-group">
+              <label for="draft-title" class="draft-label">Название черновика</label>
+              <input type="text" id="draft-title" class="draft-input" placeholder="Например: Литература для дисциплины «Информатика»" maxlength="500">
+            </div>
+            <div class="draft-field-group">
+              <label for="draft-notes" class="draft-label">Заметки</label>
+              <textarea id="draft-notes" class="draft-textarea" placeholder="Заметки для себя: семестр, группа, комментарии..." maxlength="2000" rows="2"></textarea>
+            </div>
+          </div>
+          <div id="draft-save-status" class="draft-save-status"></div>
+        </div>
+
         {{-- Header with stats and actions --}}
         <div class="shortlist-header">
           <div>
@@ -98,6 +120,57 @@
 @section('head')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
+  .draft-meta-block {
+    margin-bottom: 24px;
+    padding: 20px 22px;
+    background: var(--surface-glass, #fff);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg, 24px);
+  }
+
+  .draft-meta-fields {
+    display: grid;
+    gap: 12px;
+  }
+
+  .draft-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .draft-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .draft-input, .draft-textarea {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-soft, #f8fafc);
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text, #1a1a1a);
+    transition: border-color .2s;
+    resize: vertical;
+  }
+
+  .draft-input:focus, .draft-textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+
+  .draft-save-status {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    min-height: 18px;
+  }
+
   .shortlist-header {
     display: flex;
     justify-content: space-between;
@@ -320,7 +393,8 @@
     .shortlist-header, .shortlist-type-section,
     .bibliography-export-actions, .bibliography-format-controls,
     .bibliography-export-header > div:first-child > p,
-    .shortlist-remove-btn, button, .nav-actions, .btn {
+    .shortlist-remove-btn, button, .nav-actions, .btn,
+    .draft-meta-block {
       display: none !important;
     }
     body { background: #fff; }
@@ -353,6 +427,7 @@
   const API_BASE = '/api/v1/shortlist';
 
   let currentItems = [];
+  let draftSaveTimer = null;
 
   function escapeHtml(text) {
     if (!text) return '';
@@ -578,6 +653,60 @@
     });
   }
 
+  async function loadDraftMeta() {
+    try {
+      const res = await fetch(`${API_BASE}/summary`, {
+        headers: { Accept: 'application/json' },
+        credentials: 'same-origin',
+      });
+      if (!res.ok) return;
+      const json = await res.json();
+      const draft = json.data?.draft || {};
+
+      const titleInput = document.getElementById('draft-title');
+      const notesInput = document.getElementById('draft-notes');
+      if (titleInput && draft.title) titleInput.value = draft.title;
+      if (notesInput && draft.notes) notesInput.value = draft.notes;
+    } catch (err) {
+      console.error('Draft meta load error:', err);
+    }
+  }
+
+  function saveDraftMeta() {
+    clearTimeout(draftSaveTimer);
+    const statusEl = document.getElementById('draft-save-status');
+    if (statusEl) statusEl.textContent = 'Сохранение...';
+
+    draftSaveTimer = setTimeout(async () => {
+      const title = document.getElementById('draft-title')?.value || '';
+      const notes = document.getElementById('draft-notes')?.value || '';
+
+      try {
+        const res = await fetch(`${API_BASE}/draft`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-CSRF-TOKEN': CSRF_TOKEN,
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ title: title || null, notes: notes || null }),
+        });
+
+        if (statusEl) {
+          statusEl.textContent = res.ok ? '✓ Сохранено' : 'Ошибка сохранения';
+          setTimeout(() => { statusEl.textContent = ''; }, 3000);
+        }
+      } catch (err) {
+        if (statusEl) statusEl.textContent = 'Ошибка сети';
+      }
+    }, 800);
+  }
+
+  document.getElementById('draft-title')?.addEventListener('input', saveDraftMeta);
+  document.getElementById('draft-notes')?.addEventListener('input', saveDraftMeta);
+
   loadShortlist();
+  loadDraftMeta();
 </script>
 @endsection
