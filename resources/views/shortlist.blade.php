@@ -41,6 +41,7 @@
 
         {{-- Draft metadata block --}}
         <div id="draft-meta-block" class="draft-meta-block">
+          <div id="draft-persistence-badge" class="draft-persistence-badge" style="display:none;"></div>
           <div class="draft-meta-fields">
             <div class="draft-field-group">
               <label for="draft-title" class="draft-label">Название черновика</label>
@@ -169,6 +170,30 @@
     color: var(--muted);
     margin-top: 6px;
     min-height: 18px;
+  }
+
+  .draft-persistence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    margin-bottom: 10px;
+  }
+
+  .draft-persistence-badge.persistent {
+    background: rgba(22,163,74,.08);
+    color: #16a34a;
+    border: 1px solid rgba(22,163,74,.16);
+  }
+
+  .draft-persistence-badge.session-only {
+    background: rgba(245,158,11,.08);
+    color: #b45309;
+    border: 1px solid rgba(245,158,11,.16);
   }
 
   .shortlist-header {
@@ -667,6 +692,18 @@
       const notesInput = document.getElementById('draft-notes');
       if (titleInput && draft.title) titleInput.value = draft.title;
       if (notesInput && draft.notes) notesInput.value = draft.notes;
+
+      const badge = document.getElementById('draft-persistence-badge');
+      if (badge) {
+        if (draft.persistent) {
+          badge.textContent = '☁ Сохраняется в аккаунте';
+          badge.className = 'draft-persistence-badge persistent';
+        } else {
+          badge.textContent = '⏳ Только в текущей сессии';
+          badge.className = 'draft-persistence-badge session-only';
+        }
+        badge.style.display = '';
+      }
     } catch (err) {
       console.error('Draft meta load error:', err);
     }

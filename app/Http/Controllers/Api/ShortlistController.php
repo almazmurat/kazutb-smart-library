@@ -4,17 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\BibliographyFormatter;
+use App\Services\ShortlistStorageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ShortlistController extends Controller
 {
+    public function __construct(
+        private readonly ShortlistStorageService $storage,
+    ) {}
+
     /**
      * List all shortlisted items.
      */
     public function index(Request $request): JsonResponse
     {
-        $items = $this->getShortlist($request);
+        $items = $this->storage->getItems($request);
 
         return response()->json([
             'data' => array_values($items),
@@ -45,41 +50,20 @@ class ShortlistController extends Controller
             'access_type' => ['nullable', 'string', 'max:50'],
         ]);
 
-        $items = $this->getShortlist($request);
-        $identifier = $validated['identifier'];
+        [$item, $isNew] = $this->storage->addItem($request, $validated);
 
-        if (isset($items[$identifier])) {
+        if (! $isNew) {
             return response()->json([
                 'message' => 'Ресурс уже в подборке.',
                 'duplicate' => true,
-                'data' => $items[$identifier],
+                'data' => $item,
             ], 409);
         }
-
-        $item = [
-            'identifier' => $identifier,
-            'title' => $validated['title'],
-            'type' => $validated['type'] ?? 'book',
-            'author' => $validated['author'] ?? null,
-            'publisher' => $validated['publisher'] ?? null,
-            'year' => $validated['year'] ?? null,
-            'language' => $validated['language'] ?? null,
-            'isbn' => $validated['isbn'] ?? null,
-            'available' => $validated['available'] ?? null,
-            'total' => $validated['total'] ?? null,
-            'url' => $validated['url'] ?? null,
-            'provider' => $validated['provider'] ?? null,
-            'access_type' => $validated['access_type'] ?? null,
-            'addedAt' => now()->toIso8601String(),
-        ];
-
-        $items[$identifier] = $item;
-        $this->saveShortlist($request, $items);
 
         return response()->json([
             'message' => 'Ресурс добавлен в подборку.',
             'data' => $item,
-            'meta' => ['total' => count($items)],
+            'meta' => ['total' => $this->storage->countItems($request)],
         ], 201);
     }
 
@@ -88,20 +72,17 @@ class ShortlistController extends Controller
      */
     public function destroy(Request $request, string $identifier): JsonResponse
     {
-        $items = $this->getShortlist($request);
+        $removed = $this->storage->removeItem($request, $identifier);
 
-        if (! isset($items[$identifier])) {
+        if (! $removed) {
             return response()->json([
                 'message' => 'Книга не найдена в подборке.',
             ], 404);
         }
 
-        unset($items[$identifier]);
-        $this->saveShortlist($request, $items);
-
         return response()->json([
             'message' => 'Книга удалена из подборки.',
-            'meta' => ['total' => count($items)],
+            'meta' => ['total' => $this->storage->countItems($request)],
         ]);
     }
 
@@ -110,7 +91,7 @@ class ShortlistController extends Controller
      */
     public function clear(Request $request): JsonResponse
     {
-        $this->saveShortlist($request, []);
+        $this->storage->clearItems($request);
 
         return response()->json([
             'message' => 'Подборка очищена.',
@@ -124,7 +105,7 @@ class ShortlistController extends Controller
     public function export(Request $request): JsonResponse
     {
         $format = $request->query('format', BibliographyFormatter::FORMAT_NUMBERED);
-        $items = $this->getShortlist($request);
+        $items = $this->storage->getItems($request);
         $formatter = new BibliographyFormatter();
 
         $result = $formatter->format(array_values($items), $format);
@@ -140,8 +121,8 @@ class ShortlistController extends Controller
      */
     public function summary(Request $request): JsonResponse
     {
-        $items = $this->getShortlist($request);
-        $draft = $this->getDraftMeta($request);
+        $items = $this->storage->getItems($request);
+        $draft = $this->storage->getDraftMeta($request);
 
         $books = 0;
         $external = 0;
@@ -180,12 +161,11 @@ class ShortlistController extends Controller
             'notes' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        $draft = $this->getDraftMeta($request);
-        $draft['title'] = $validated['title'] ?? $draft['title'];
-        $draft['notes'] = $validated['notes'] ?? $draft['notes'];
-        $draft['updatedAt'] = now()->toIso8601String();
-
-        $request->session()->put('library.shortlist_draft', $draft);
+        $draft = $this->storage->updateDraftMeta(
+            $request,
+            $validated['title'] ?? null,
+            $validated['notes'] ?? null,
+        );
 
         return response()->json([
             'message' => 'Данные черновика обновлены.',
@@ -203,39 +183,11 @@ class ShortlistController extends Controller
             'identifiers.*' => ['required', 'string', 'max:255'],
         ]);
 
-        $items = $this->getShortlist($request);
-        $result = [];
-
-        foreach ($validated['identifiers'] as $id) {
-            $result[$id] = isset($items[$id]);
-        }
+        $result = $this->storage->checkIdentifiers($request, $validated['identifiers']);
 
         return response()->json([
             'data' => $result,
-            'meta' => ['total' => count($items)],
+            'meta' => ['total' => $this->storage->countItems($request)],
         ]);
-    }
-
-    private function getShortlist(Request $request): array
-    {
-        $list = $request->session()->get('library.shortlist', []);
-
-        return is_array($list) ? $list : [];
-    }
-
-    private function saveShortlist(Request $request, array $items): void
-    {
-        $request->session()->put('library.shortlist', $items);
-    }
-
-    private function getDraftMeta(Request $request): array
-    {
-        $draft = $request->session()->get('library.shortlist_draft', []);
-
-        return [
-            'title' => $draft['title'] ?? null,
-            'notes' => $draft['notes'] ?? null,
-            'updatedAt' => $draft['updatedAt'] ?? null,
-        ];
     }
 }

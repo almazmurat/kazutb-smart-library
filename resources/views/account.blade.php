@@ -951,8 +951,14 @@
 
         const draftInfo = document.getElementById('workbench-draft-info');
         const draft = data.draft || {};
+        let html = '';
+
+        if (draft.persistent) {
+          html += '<div style="margin-bottom:8px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(22,163,74,.08);color:#16a34a;border:1px solid rgba(22,163,74,.16);">☁ Сохранено в аккаунте</span></div>';
+        }
+
         if (draft.title || draft.notes) {
-          let html = '<div style="padding:14px 18px; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow-soft);">';
+          html += '<div style="padding:14px 18px; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow-soft);">';
           if (draft.title) {
             html += `<div style="font-weight:700; font-size:16px; margin-bottom:4px;">${escapeHtml(draft.title)}</div>`;
           }
@@ -960,10 +966,9 @@
             html += `<div style="color:var(--muted); font-size:13px; line-height:1.5;">${escapeHtml(draft.notes)}</div>`;
           }
           html += '</div>';
-          draftInfo.innerHTML = html;
-        } else {
-          draftInfo.innerHTML = '';
         }
+
+        draftInfo.innerHTML = html;
       } catch (err) {
         loading.style.display = 'none';
         empty.style.display = 'block';
