@@ -280,4 +280,150 @@ class AccountRenewalTest extends TestCase
 
         return (string) $copyId;
     }
+
+    // ═══════════════════════════════════════════════════════════
+    // 7. canRenew / renewBlockReason fields
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_active_loan_read_includes_can_renew_true(): void
+    {
+        $this->requireLivePgsql();
+
+        $context = $this->createLinkedReaderWithLoan([
+            'status' => 'active',
+            'renew_count' => 0,
+            'due_at' => Carbon::now('UTC')->addDays(5),
+        ]);
+
+        $service = new \App\Services\Library\CirculationLoanReadService();
+        $loan = $service->findLoan($context['loanId']);
+
+        $this->assertNotNull($loan);
+        $this->assertTrue($loan['canRenew']);
+        $this->assertNull($loan['renewBlockReason']);
+        $this->assertEquals(3, $loan['maxRenewals']);
+    }
+
+    public function test_overdue_loan_read_includes_block_reason(): void
+    {
+        $this->requireLivePgsql();
+
+        $context = $this->createLinkedReaderWithLoan([
+            'status' => 'active',
+            'renew_count' => 0,
+            'due_at' => Carbon::now('UTC')->subDays(5),
+        ]);
+
+        $service = new \App\Services\Library\CirculationLoanReadService();
+        $loan = $service->findLoan($context['loanId']);
+
+        $this->assertNotNull($loan);
+        $this->assertFalse($loan['canRenew']);
+        $this->assertNotNull($loan['renewBlockReason']);
+        $this->assertStringContainsString('Просроченную', $loan['renewBlockReason']);
+    }
+
+    public function test_max_renewals_loan_read_includes_block_reason(): void
+    {
+        $this->requireLivePgsql();
+
+        $context = $this->createLinkedReaderWithLoan([
+            'status' => 'active',
+            'renew_count' => 3,
+            'due_at' => Carbon::now('UTC')->addDays(5),
+        ]);
+
+        $service = new \App\Services\Library\CirculationLoanReadService();
+        $loan = $service->findLoan($context['loanId']);
+
+        $this->assertNotNull($loan);
+        $this->assertFalse($loan['canRenew']);
+        $this->assertNotNull($loan['renewBlockReason']);
+        $this->assertStringContainsString('лимит', $loan['renewBlockReason']);
+    }
+
+    public function test_returned_loan_read_includes_block_reason(): void
+    {
+        $this->requireLivePgsql();
+
+        $context = $this->createLinkedReaderWithLoan([
+            'status' => 'returned',
+            'renew_count' => 0,
+            'due_at' => Carbon::now('UTC')->addDays(5),
+            'returned_at' => Carbon::now('UTC'),
+        ]);
+
+        $service = new \App\Services\Library\CirculationLoanReadService();
+        $loan = $service->findLoan($context['loanId']);
+
+        $this->assertNotNull($loan);
+        $this->assertFalse($loan['canRenew']);
+        $this->assertNotNull($loan['renewBlockReason']);
+        $this->assertStringContainsString('Возвращённые', $loan['renewBlockReason']);
+    }
+
+    public function test_renewal_response_includes_max_renewals(): void
+    {
+        $this->requireLivePgsql();
+
+        $context = $this->createLinkedReaderWithLoan([
+            'status' => 'active',
+            'renew_count' => 1,
+            'due_at' => Carbon::now('UTC')->addDays(5),
+        ]);
+
+        $response = $this->withSession($context['session'])
+            ->postJson("/api/v1/account/loans/{$context['loanId']}/renew");
+
+        $response->assertOk();
+        $response->assertJson(['success' => true]);
+        $this->assertEquals(3, $response->json('data.maxRenewals'));
+        $this->assertEquals(2, $response->json('data.renewCount'));
+    }
+
+    public function test_max_renewals_reached_returns_409(): void
+    {
+        $this->requireLivePgsql();
+
+        $context = $this->createLinkedReaderWithLoan([
+            'status' => 'active',
+            'renew_count' => 3,
+            'due_at' => Carbon::now('UTC')->addDays(5),
+        ]);
+
+        $response = $this->withSession($context['session'])
+            ->postJson("/api/v1/account/loans/{$context['loanId']}/renew");
+
+        $response->assertStatus(409);
+        $response->assertJson(['success' => false, 'error' => 'max_renewals_reached']);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // 8. Account page UX assertions
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_account_page_has_renewal_confirmation_modal(): void
+    {
+        $response = $this->withSession([
+            'library.user' => [
+                'id' => 'test-1', 'name' => 'Test', 'email' => 't@t.kz', 'role' => 'reader',
+            ],
+        ])->get('/account');
+
+        $response->assertOk();
+        $response->assertSee('confirm-modal');
+        $response->assertSee('readerRenew');
+    }
+
+    public function test_account_page_has_loading_state(): void
+    {
+        $response = $this->withSession([
+            'library.user' => [
+                'id' => 'test-1', 'name' => 'Test', 'email' => 't@t.kz', 'role' => 'reader',
+            ],
+        ])->get('/account');
+
+        $response->assertOk();
+        $response->assertSee('renew-btn-');
+    }
 }

@@ -113,6 +113,11 @@ class CirculationLoanReadService
 
         $book = $this->resolveBookForCopy((string) $loan->copy_id);
 
+        $renewCount = (int) $loan->renew_count;
+        [$canRenew, $renewBlockReason] = $this->assessRenewEligibility(
+            (string) $loan->status, $returnedAt, $isOverdue, $renewCount
+        );
+
         return [
             'id' => (string) $loan->id,
             'readerId' => (string) $loan->reader_id,
@@ -121,12 +126,37 @@ class CirculationLoanReadService
             'issuedAt' => $loan->issued_at?->toAtomString(),
             'dueAt' => $dueAt?->toAtomString(),
             'returnedAt' => $returnedAt?->toAtomString(),
-            'renewCount' => (int) $loan->renew_count,
+            'renewCount' => $renewCount,
+            'maxRenewals' => CirculationLoanWriteService::MAX_RENEWALS,
             'isOverdue' => $isOverdue,
             'isDueSoon' => $isDueSoon,
+            'canRenew' => $canRenew,
+            'renewBlockReason' => $renewBlockReason,
             'book' => $book,
             'source' => 'app.circulation_loans',
         ];
+    }
+
+    /**
+     * Determine renewal eligibility and a human-readable block reason if not.
+     *
+     * @return array{0: bool, 1: string|null}
+     */
+    private function assessRenewEligibility(string $status, ?Carbon $returnedAt, bool $isOverdue, int $renewCount): array
+    {
+        if ($status !== 'active' || $returnedAt !== null) {
+            return [false, 'Возвращённые книги нельзя продлить.'];
+        }
+
+        if ($isOverdue) {
+            return [false, 'Просроченную выдачу нельзя продлить онлайн. Обратитесь в библиотеку.'];
+        }
+
+        if ($renewCount >= CirculationLoanWriteService::MAX_RENEWALS) {
+            return [false, 'Достигнут лимит продлений (' . CirculationLoanWriteService::MAX_RENEWALS . '/' . CirculationLoanWriteService::MAX_RENEWALS . ').'];
+        }
+
+        return [true, null];
     }
 
     /**
@@ -163,11 +193,11 @@ class CirculationLoanReadService
                 ->table('app.document_authors as da')
                 ->join('app.authors as a', 'a.id', '=', 'da.author_id')
                 ->where('da.document_id', $row->document_id)
-                ->orderBy('da.ordinal')
-                ->first(['a.name_display', 'a.name_raw']);
+                ->orderBy('da.sort_order')
+                ->first(['a.display_name', 'a.normalized_name']);
 
             if ($authorRow) {
-                $author = $authorRow->name_display ?: $authorRow->name_raw ?: null;
+                $author = $authorRow->display_name ?: $authorRow->normalized_name ?: null;
             }
         }
 

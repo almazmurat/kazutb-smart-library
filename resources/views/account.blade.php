@@ -666,6 +666,9 @@
         isOverdue,
         isDueSoon,
         renewCount: loan.renewCount || 0,
+        maxRenewals: loan.maxRenewals || 3,
+        canRenew: loan.canRenew === true,
+        renewBlockReason: loan.renewBlockReason || null,
         returnedAt: loan.returnedAt ? new Date(loan.returnedAt).toLocaleDateString('ru-RU') : null,
         book: loan.book || {},
       };
@@ -684,7 +687,9 @@
       const bookAuthor = data.book?.author || null;
       const bookIsbn = data.book?.isbn || null;
       const invNumber = data.book?.inventoryNumber || null;
-      const canRenew = data.status === 'active' && !data.isOverdue && data.renewCount < 3;
+      const canRenew = data.canRenew === true;
+      const maxRenewals = data.maxRenewals || 3;
+      const renewBlockReason = data.renewBlockReason || null;
 
       const gradientColor = data.isOverdue
         ? 'background: linear-gradient(180deg, #7f1d1d 0%, #991b1b 100%);'
@@ -702,6 +707,17 @@
         ? escapeHtml(bookTitle.substring(0, 40)) + (bookTitle.length > 40 ? '…' : '')
         : `#${escapeHtml(data.id.substring(0, 8))}`;
 
+      const renewProgress = data.status === 'active'
+        ? `<div class="book-meta" style="font-size:12px; color:var(--muted);">Продлений: ${data.renewCount}/${maxRenewals}</div>`
+        : '';
+
+      let renewSection = '';
+      if (canRenew) {
+        renewSection = `<button id="renew-btn-${escapeHtml(data.id)}" onclick="readerRenew('${escapeHtml(data.id)}')" style="margin-top: 8px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 14px; width: 100%; transition: opacity .2s;">🔄 Продлить на 14 дней</button>`;
+      } else if (data.status === 'active' && renewBlockReason) {
+        renewSection = `<div style="margin-top: 8px; padding: 8px 12px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; font-size: 12px; color: #991b1b; text-align: center;">🚫 ${escapeHtml(renewBlockReason)}</div>`;
+      }
+
       return `
         <article class="book-card">
           <div class="book-preview" style="${gradientColor}">
@@ -714,9 +730,10 @@
           ${bookIsbn ? `<div class="book-meta">ISBN: ${escapeHtml(bookIsbn)}</div>` : ''}
           ${invNumber ? `<div class="book-meta">Инв. №: ${escapeHtml(invNumber)}</div>` : ''}
           <div class="book-meta">Выдано: ${data.issuedDate}</div>
-          <div class="book-meta" style="${data.isOverdue ? 'color:#991b1b; font-weight:600;' : (data.isDueSoon ? 'color:#92400e; font-weight:600;' : '')}">Срок: ${data.dueDate}${data.renewCount > 0 ? ` (прод. ${data.renewCount}/3)` : ''}</div>
+          <div class="book-meta" style="${data.isOverdue ? 'color:#991b1b; font-weight:600;' : (data.isDueSoon ? 'color:#92400e; font-weight:600;' : '')}">Срок: ${data.dueDate}</div>
+          ${renewProgress}
           ${data.returnedAt ? `<div class="book-meta" style="color:#065f46;">Возвращено: ${data.returnedAt}</div>` : ''}
-          ${canRenew ? `<button onclick="readerRenew('${escapeHtml(data.id)}')" style="margin-top: 8px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 14px; width: 100%;">Продлить</button>` : ''}
+          ${renewSection}
         </article>
       `;
     }
@@ -786,8 +803,15 @@
     }
 
     async function readerRenew(loanId) {
-      const confirmed = await showConfirmModal('Продление выдачи', 'Продлить выдачу на 14 дней?');
+      const confirmed = await showConfirmModal('Продление выдачи', 'Продлить выдачу на 14 дней? Оставшиеся продления уменьшатся на 1.');
       if (!confirmed) return;
+
+      const btn = document.getElementById(`renew-btn-${loanId}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        btn.textContent = '⏳ Продление…';
+      }
 
       try {
         const resp = await fetch(`/api/v1/account/loans/${loanId}/renew`, {
@@ -806,14 +830,26 @@
 
         if (resp.ok && data.success) {
           const newDue = data.data?.dueAt ? new Date(data.data.dueAt).toLocaleDateString('ru-RU') : '—';
-          showToast('success', 'Продлено!', `Новый срок: ${newDue}. Продлений: ${data.data?.renewCount || '?'}/3`);
+          const renewsLeft = (data.data?.maxRenewals || 3) - (data.data?.renewCount || 0);
+          showToast('success', '✓ Продлено!', `Новый срок: ${newDue}. Осталось продлений: ${renewsLeft}`);
           loadBooks();
           loadLoanSummary();
         } else {
-          showToast('error', 'Ошибка', data.message || data.error || 'Не удалось продлить выдачу');
+          const errorMsg = data.message || data.error || 'Не удалось продлить выдачу';
+          showToast('error', 'Продление невозможно', errorMsg);
+          if (btn) {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.textContent = '🔄 Продлить на 14 дней';
+          }
         }
       } catch (err) {
         showToast('error', 'Ошибка сети', err.message);
+        if (btn) {
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.textContent = '🔄 Продлить на 14 дней';
+        }
       }
     }
 

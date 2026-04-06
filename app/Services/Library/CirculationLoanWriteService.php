@@ -270,6 +270,7 @@ class CirculationLoanWriteService
             'dueAt' => $loan->due_at?->toAtomString(),
             'returnedAt' => $loan->returned_at?->toAtomString(),
             'renewCount' => (int) $loan->renew_count,
+            'maxRenewals' => self::MAX_RENEWALS,
         ];
     }
 }
