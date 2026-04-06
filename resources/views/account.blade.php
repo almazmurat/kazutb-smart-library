@@ -326,6 +326,70 @@
       color: var(--muted);
     }
 
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 32px; height: 32px;
+      border: 3px solid #e5e7eb;
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    .toast {
+      position: fixed;
+      top: 100px;
+      right: 24px;
+      z-index: 1000;
+      min-width: 320px;
+      max-width: 440px;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 20px 50px rgba(15,23,42,.18);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transform: translateX(120%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .toast.visible { transform: translateX(0); }
+    .toast.success { border-color: rgba(22,163,74,.3); background: #f0fdf4; }
+    .toast.error { border-color: rgba(239,68,68,.3); background: #fef2f2; }
+    .toast-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .toast-body { flex: 1; }
+    .toast-title { font-weight: 700; margin-bottom: 2px; }
+    .toast-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 18px; color: var(--muted); padding: 0; line-height: 1;
+    }
+
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 900;
+      background: rgba(15,23,42,.35);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .modal-overlay.visible { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 24px 60px rgba(15,23,42,.2);
+      text-align: center;
+    }
+    .modal-box h3 { margin: 0 0 8px; font-size: 20px; }
+    .modal-box p { margin: 0 0 24px; color: var(--muted); font-size: 15px; }
+    .modal-actions { display: flex; gap: 12px; justify-content: center; }
+    .modal-actions .btn { min-width: 120px; padding: 12px 20px; font-size: 14px; }
+
     @media (max-width: 1200px) {
       .profile-grid { grid-template-columns: 1fr; }
       .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -425,7 +489,7 @@
         </div>
 
         <div id="book-grid" class="book-grid">
-          <div class="loading" style="grid-column: 1 / -1;">Загрузка выдач...</div>
+          <div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p style="margin:8px 0 0;">Загрузка выдач...</p></div>
         </div>
       </section>
 
@@ -438,11 +502,23 @@
         </div>
 
         <div id="reservations-grid" class="book-grid">
-          <div class="loading" style="grid-column: 1 / -1;">Загрузка бронирований...</div>
+          <div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p style="margin:8px 0 0;">Загрузка бронирований...</p></div>
         </div>
       </section>
     </div>
   </main>
+
+  <div id="toast-container"></div>
+  <div id="confirm-modal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 id="modal-title">Подтверждение</h3>
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-confirm" class="btn btn-primary">Да, продлить</button>
+        <button id="modal-cancel" class="btn btn-ghost">Отмена</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans?status=active';
@@ -558,19 +634,65 @@
     }
 
     function renderNoLoansMessage(hasReaderProfile = true) {
-      const msg = hasReaderProfile
-        ? 'У вас нет активных выдач.'
-        : 'Профиль читателя не найден в библиотечной системе. Обратитесь к библиотекарю.';
+      if (!hasReaderProfile) {
+        return `
+          <div class="loading" style="grid-column: 1 / -1; text-align: center; border-color: rgba(234,179,8,.4); background: #fffbeb;">
+            <span style="font-size: 28px;">📋</span>
+            <p style="margin: 8px 0 0; font-weight: 600; color: #92400e;">Профиль читателя не найден</p>
+            <p style="margin: 4px 0 0; color: #a16207;">Обратитесь к библиотекарю для проверки данных.</p>
+          </div>
+        `;
+      }
       return `
         <div class="loading" style="grid-column: 1 / -1; text-align: center;">
-          ${msg}
-          ${hasReaderProfile ? '<br><a href="/catalog" style="color: #3b82f6; text-decoration: underline;">Перейти в каталог</a>' : ''}
+          <span style="font-size: 28px;">📚</span>
+          <p style="margin: 8px 0 0; font-weight: 600;">Нет активных выдач</p>
+          <p style="margin: 4px 0 0;"><a href="/catalog" style="color: var(--blue); text-decoration: underline;">Перейти в каталог →</a></p>
         </div>
       `;
     }
 
+    function showToast(type, title, message, duration = 4500) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = type === 'success' ? '✓' : '✕';
+      toast.innerHTML = `
+        <span class="toast-icon">${icon}</span>
+        <div class="toast-body">
+          <div class="toast-title">${title}</div>
+          <div>${message}</div>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+      `;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('visible'));
+      setTimeout(() => { toast.classList.remove('visible'); setTimeout(() => toast.remove(), 400); }, duration);
+    }
+
+    function showConfirmModal(title, message) {
+      return new Promise(resolve => {
+        const overlay = document.getElementById('confirm-modal');
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-message').textContent = message;
+        overlay.classList.add('visible');
+        const confirm = document.getElementById('modal-confirm');
+        const cancel = document.getElementById('modal-cancel');
+        function cleanup(result) {
+          overlay.classList.remove('visible');
+          confirm.replaceWith(confirm.cloneNode(true));
+          cancel.replaceWith(cancel.cloneNode(true));
+          resolve(result);
+        }
+        confirm.addEventListener('click', () => cleanup(true), { once: true });
+        cancel.addEventListener('click', () => cleanup(false), { once: true });
+        overlay.addEventListener('click', e => { if (e.target === overlay) cleanup(false); }, { once: true });
+      });
+    }
+
     async function readerRenew(loanId) {
-      if (!confirm('Продлить выдачу на 14 дней?')) return;
+      const confirmed = await showConfirmModal('Продление выдачи', 'Продлить выдачу на 14 дней?');
+      if (!confirmed) return;
 
       try {
         const resp = await fetch(`/api/v1/account/loans/${loanId}/renew`, {
@@ -589,13 +711,13 @@
 
         if (resp.ok && data.success) {
           const newDue = data.data?.dueAt ? new Date(data.data.dueAt).toLocaleDateString('ru-RU') : '—';
-          alert(`✓ Продлено! Новый срок: ${newDue}. Продлений: ${data.data?.renewCount || '?'}/3`);
+          showToast('success', 'Продлено!', `Новый срок: ${newDue}. Продлений: ${data.data?.renewCount || '?'}/3`);
           loadBooks();
         } else {
-          alert(`Ошибка: ${data.message || data.error}`);
+          showToast('error', 'Ошибка', data.message || data.error || 'Не удалось продлить выдачу');
         }
       } catch (err) {
-        alert('Ошибка: ' + err.message);
+        showToast('error', 'Ошибка сети', err.message);
       }
     }
 

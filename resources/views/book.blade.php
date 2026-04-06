@@ -608,6 +608,16 @@
             color: var(--muted);
         }
 
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner {
+            display: inline-block;
+            width: 32px; height: 32px;
+            border: 3px solid #e5e7eb;
+            border-top-color: var(--blue);
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+
         .error {
             background: #fee2e2;
             border: 1px solid #fca5a5;
@@ -697,7 +707,7 @@
 
     <main class="page">
         <div class="container">
-            <div id="loading" class="loading">Загрузка информации о книге...</div>
+            <div id="loading" class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">Загрузка информации о книге...</p></div>
             <div id="error" class="error" style="display: none;"></div>
             <div id="content"></div>
         </div>
@@ -893,7 +903,7 @@
                             </div>
 
                             <div class="action-row">
-                                <button class="btn btn-primary" onclick="alert('Функция резервирования в разработке')">Забронировать книгу</button>
+                                <button class="btn btn-primary" disabled style="opacity:.5; cursor:not-allowed;" title="Функция резервирования в разработке">Забронировать книгу</button>
                                 <a href="/catalog" class="btn btn-ghost">Вернуться в каталог</a>
                             </div>
                         </section>

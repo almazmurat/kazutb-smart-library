@@ -889,8 +889,12 @@
       .section-head { flex-direction: column; align-items: start; }
       .btn { width: 100%; }
     }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100% { opacity:.4; } 50% { opacity:.15; } }
+    .skeleton-pulse .book-preview { animation: pulse 1.5s ease-in-out infinite; }
+    .skeleton-pulse .book-title { background: #e5e7eb; border-radius: 6px; color: transparent; animation: pulse 1.5s ease-in-out infinite; }
   </style>
-</head>
 <body>
   <header class="topbar">
     <div class="container nav">
@@ -950,12 +954,12 @@
           <div class="showcase-card glass">
             <div id="showcase-title" class="eyebrow">Популярные книги</div>
             <div id="showcase-grid" class="showcase-grid">
-              <article class="book-card"><div class="book-preview"><small>...</small><h3>...</h3></div><div class="book-title">Загрузка...</div><div class="book-meta"></div></article>
-              <article class="book-card"><div class="book-preview"><small>...</small><h3>...</h3></div><div class="book-title">Загрузка...</div><div class="book-meta"></div></article>
-              <article class="book-card"><div class="book-preview"><small>...</small><h3>...</h3></div><div class="book-title">Загрузка...</div><div class="book-meta"></div></article>
-              <article class="book-card"><div class="book-preview"><small>...</small><h3>...</h3></div><div class="book-title">Загрузка...</div><div class="book-meta"></div></article>
-              <article class="book-card"><div class="book-preview"><small>...</small><h3>...</h3></div><div class="book-title">Загрузка...</div><div class="book-meta"></div></article>
-              <article class="book-card"><div class="book-preview"><small>...</small><h3>...</h3></div><div class="book-title">Загрузка...</div><div class="book-meta"></div></article>
+              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
+              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
+              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
+              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
+              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
+              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
             </div>
           </div>
         </div>
@@ -1409,7 +1413,7 @@
 
     async function loadCatalog(filters = {}) {
       if (catalogStatus) {
-        catalogStatus.textContent = 'Загрузка каталога...';
+        catalogStatus.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border:2px solid #e5e7eb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span> Загрузка каталога...';
       }
 
       try {

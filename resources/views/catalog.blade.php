@@ -475,8 +475,9 @@
       .icon-btn { width: 100%; height: 50px; }
       .search-wrap { grid-template-columns: 1fr; }
     }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-</head>
 <body>
   <header class="topbar">
     <div class="container nav">
@@ -664,7 +665,7 @@
       const resultsCount = document.getElementById('results-count');
 
       try {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);">Загрузка...</div>';
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);"><div style="display:inline-block;width:32px;height:32px;border:3px solid #e5e7eb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div><p style="margin:8px 0 0;">Загрузка...</p></div>';
 
         const params = new URLSearchParams();
         if (searchInput.value) params.set('q', searchInput.value);
@@ -693,7 +694,7 @@
         const meta = data.meta || {};
 
         if (books.length === 0) {
-          grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);">Книги не найдены. Попробуйте изменить параметры поиска.</div>';
+          grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:48px; color:var(--muted); border:1px dashed #e2e8f0; border-radius:16px; background:#f8fafc;"><span style="font-size:32px;">🔍</span><p style="margin:12px 0 0; font-weight:600; color:#334155;">Книги не найдены</p><p style="margin:4px 0 0;">Попробуйте изменить параметры поиска.</p></div>';
           resultsCount.textContent = 'Найдено 0 книг';
           document.getElementById('pagination').innerHTML = '';
         } else {
@@ -703,7 +704,7 @@
           renderPagination();
         }
       } catch (err) {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:red;">Ошибка загрузки каталога. Попробуйте обновить страницу.</div>';
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:48px; border:1px solid #fca5a5; border-radius:16px; background:#fef2f2;"><span style="font-size:32px;">⚠️</span><p style="margin:12px 0 0; font-weight:600; color:#991b1b;">Ошибка загрузки каталога</p><p style="margin:4px 0 0; color:#b91c1c;">Попробуйте обновить страницу.</p></div>';
         console.error(err);
       }
     }
