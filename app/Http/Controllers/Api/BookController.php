@@ -31,15 +31,4 @@ class BookController extends Controller
         $identifier = (string) $request->route('isbn');
         return $this->respondWithBook($identifier, $service);
     }
-
-    /**
-     * WS1 convergence freeze:
-     * Legacy detail alias route /api/v1/catalog/{isbn} retained for compatibility only.
-     * Canonical public detail API is /api/v1/book-db/{isbn}.
-     */
-    public function show(Request $request, BookDetailReadService $service): JsonResponse
-    {
-        $identifier = (string) $request->route('isbn');
-        return $this->respondWithBook($identifier, $service);
-    }
 }

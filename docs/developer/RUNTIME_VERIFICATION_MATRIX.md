@@ -119,14 +119,14 @@
 | `composer test:stewardship` | Data quality stewardship tests | Needs live PG |
 | `bash scripts/dev/check-runtime-critical-paths.sh` | Summary of test files, existence, and coverage status | Any |
 
-## 5. CI improvement opportunities (not implemented yet)
+## 5. CI improvement opportunities
 
-| Opportunity | Effort | Value |
-|---|---|---|
-| Add PostgreSQL service to CI | Medium | High — would enable ~30 skipped tests |
-| Add SQLite-compatible stubs for PG-only tests | Medium | Medium — partial coverage without PG |
-| Add runtime smoke endpoint | Low | Medium — gives container-level confidence |
+| Opportunity | Status | Effort | Value |
+|---|---|---|---|
+| Add PostgreSQL service to CI | **Done** | Medium | High — enables ~30 previously-skipped tests |
+| Add SQLite-compatible stubs for PG-only tests | Not started | Medium | Medium — partial coverage without PG |
+| Add runtime smoke endpoint | Not started | Low | Medium — gives container-level confidence |
 
 ## 6. Next verification step
 
-Add PostgreSQL service container to CI workflow to enable the ~30 skipped critical-path tests. This is the single highest-value verification improvement remaining.
+PostgreSQL service has been added to CI as a second job (`test-postgres`). The SQLite lint+test job runs first for fast feedback, then PG-dependent tests run with a real PostgreSQL 16 service container. Next: monitor CI run results and fix any PG-environment-specific failures.

@@ -43,6 +43,18 @@ warn_if_present() {
   fi
 }
 
+must_not_have() {
+  local pattern="$1"
+  local path="$2"
+  local label="$3"
+  if search_contains "$pattern" "$path"; then
+    echo "[error] Should be removed: $label ($pattern in $path)"
+    PASS=false
+  else
+    echo "[ok] $label"
+  fi
+}
+
 must_have "Route::get('/catalog'," "routes/web.php" "canonical public catalog route"
 must_have "Route::get('/book/{isbn}'," "routes/web.php" "canonical public book route"
 must_have "Route::get('/catalog-db'," "routes/api.php" "canonical catalog DB API route"
@@ -51,16 +63,20 @@ must_have "const API_ENDPOINT = '/api/v1/catalog-db';" "resources/views/catalog.
 must_have "const BOOK_DB_API_ENDPOINT = '/api/v1/book-db/';" "resources/views/book.blade.php" "book view canonical API wiring"
 must_have "CATALOG_API_ENDPOINT = '/api/v1/catalog-db';" "resources/views/welcome.blade.php" "landing catalog block canonical API wiring"
 
-warn_if_present "Route::get('/catalog'," "routes/api.php" "legacy demo catalog API route"
-warn_if_present "Route::get('/catalog/{isbn}'," "routes/api.php" "legacy duplicate book API route"
-warn_if_present "Route::get('/catalog-external'," "routes/api.php" "external proxy catalog API route"
+# Legacy routes removed in delete-after-confirmation wave:
+must_not_have "Route::get('/catalog'," "routes/api.php" "legacy demo catalog API route removed"
+must_not_have "Route::get('/catalog/{isbn}'," "routes/api.php" "legacy duplicate book API route removed"
+
+# Transitional surfaces still expected (reader fallback):
+warn_if_present "Route::get('/catalog-external'," "routes/api.php" "external proxy catalog API route (reader fallback)"
 warn_if_present "Route::get('/book/{isbn}/read'," "routes/web.php" "reader route on external proxy flow"
-must_have "[WS1-FROZEN][LEGACY-CATALOG]" "routes/api.php" "legacy catalog route freeze marker"
-must_have "[WS1-FROZEN][LEGACY-DETAIL-ALIAS]" "routes/api.php" "legacy detail alias freeze marker"
 must_have "[WS1-FROZEN][TRANSITIONAL-EXTERNAL]" "routes/api.php" "transitional external route freeze marker"
 must_have "reader.transitional" "routes/web.php" "transitional reader route named marker"
 must_have "curl -fs http://localhost/api/v1/catalog-db?limit=1 || exit 1" "docker-compose.yml" "healthcheck on canonical catalog DB API"
 warn_if_present "/catalog/search?" "resources/js/spa/pages/CatalogPage.jsx" "SPA catalog wired to non-existent API path"
+
+# Reader convergence check:
+must_have "/api/v1/book-db/" "resources/views/reader.blade.php" "reader uses canonical API as primary"
 
 if [ "$PASS" = true ]; then
   echo "Result: PASS (canonical paths present)."

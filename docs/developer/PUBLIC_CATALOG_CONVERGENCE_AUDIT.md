@@ -29,21 +29,21 @@ The public catalog has a clear DB-backed canonical path, but parallel transition
 | SPA shell route | `routes/web.php` (`/app/{any?}`) | active but transitional | Exists and is routable, but not canonical |
 | Catalog DB API route | `routes/api.php` (`/v1/catalog-db`) | canonical | Canonical search/list API |
 | Book DB API route | `routes/api.php` (`/v1/book-db/{isbn}`) | canonical | Canonical detail API |
-| Legacy catalog API route | `routes/api.php` (`/v1/catalog`) | legacy | Explicitly marked `[WS1-FROZEN][LEGACY-CATALOG]` |
-| Legacy detail alias route | `routes/api.php` (`/v1/catalog/{isbn}`) | duplicate | Explicitly marked `[WS1-FROZEN][LEGACY-DETAIL-ALIAS]` |
+| Legacy catalog API route | `routes/api.php` (`/v1/catalog`) | **removed** | Deleted in delete-after-confirmation wave |
+| Legacy detail alias route | `routes/api.php` (`/v1/catalog/{isbn}`) | **removed** | Deleted in delete-after-confirmation wave |
 | External catalog proxy route | `routes/api.php` (`/v1/catalog-external`) | active but transitional | Explicitly marked `[WS1-FROZEN][TRANSITIONAL-EXTERNAL]` |
 | Catalog DB handler | `CatalogController::dbIndex` | canonical | DB-backed search |
-| Catalog demo handler | `CatalogController::index` | legacy | Controller-level freeze note points callers to canonical DB API |
+| Catalog demo handler | `CatalogController::index` | **removed** | Deleted with legacy route |
 | Catalog external proxy handler | `CatalogController::proxy` | active but transitional | Controller-level freeze note for transitional migration window |
 | Book DB handler | `BookController::dbShow` | canonical | DB-backed detail |
-| Book alias handler | `BookController::show` | duplicate | Controller-level freeze note marks alias as compatibility-only |
+| Book alias handler | `BookController::show` | **removed** | Deleted with legacy route |
 | Catalog read service | `CatalogReadService` | canonical | DB view `app.document_detail_v` |
 | Book detail read service | `BookDetailReadService` | canonical | DB-backed detail + location availability |
 | Landing API handler | `LandingController::index` | canonical | Uses `CatalogReadService` DB-backed catalog data |
 | Public catalog Blade | `resources/views/catalog.blade.php` | canonical | Uses `/api/v1/catalog-db` |
 | Public book Blade | `resources/views/book.blade.php` | canonical | Uses `/api/v1/book-db/` |
 | Public landing Blade catalog block | `resources/views/welcome.blade.php` | active but transitional | Uses `/api/v1/catalog-db`, but landing API pulls external data |
-| Reader Blade | `resources/views/reader.blade.php` | remove-later | Uses `/api/v1/catalog-external` |
+| Reader Blade | `resources/views/reader.blade.php` | active — canonical primary, external fallback | Uses `/api/v1/book-db/{isbn}` as primary, `/api/v1/catalog-external` as fallback |
 | SPA shell view | `resources/views/spa.blade.php` | active but transitional | Entry shell only |
 | SPA catalog route map | `resources/js/spa/App.jsx` | active but transitional | `/app/catalog` route exists |
 | SPA catalog page data call | `resources/js/spa/pages/CatalogPage.jsx` | canonical | Calls `/api/v1/catalog-db` with canonical params (`q`, `page`, `limit`) |
@@ -57,23 +57,24 @@ The public catalog has a clear DB-backed canonical path, but parallel transition
 
 ## 4. Convergence debt analysis
 
-1. **Duplicate routes/controllers**  
-   - `/api/v1/catalog-db` vs `/api/v1/catalog` for list/search.  
-   - `/api/v1/book-db/{isbn}` vs `/api/v1/catalog/{isbn}` for detail.
+1. **Duplicate routes/controllers** — **Resolved**  
+   - Legacy `/api/v1/catalog` and `/api/v1/catalog/{isbn}` deleted.  
+   - Canonical: `/api/v1/catalog-db`, `/api/v1/book-db/{isbn}`.
 
 2. **Blade vs SPA overlap**  
    - Blade catalog/detail are operational and canonical.  
    - SPA CatalogPage now calls canonical `/api/v1/catalog-db` (fixed in convergence step).
 
-3. **External proxy dependency inside public surfaces**  
-   - `/api/v1/catalog-external` and `reader.blade.php` depend on external host.
+3. **External proxy dependency** — **Mostly resolved**  
+   - Reader uses canonical `/api/v1/book-db/{isbn}` as primary.  
+   - `/api/v1/catalog-external` kept as reader fallback only.
 
-4. **Misleading naming debt**  
-   - Canonical endpoints carry `-db` suffix, while non-canonical paths look more “clean” (`/api/v1/catalog`), increasing accidental misuse risk.
+4. **Misleading naming debt** — **Reduced**  
+   - Legacy "clean" names removed; only `-db` canonical and `-external` transitional remain.
 
-5. **Runtime confidence debt**  
-   - No focused tests for reader external-proxy route behavior.  
-   - SPA path remains transitional as a surface even after API wiring alignment.
+5. **Runtime confidence debt** — **Improved**  
+   - `ReaderConvergenceTest` verifies canonical API wiring.  
+   - SPA path remains transitional.
 
 ## 4.1 Reader/external transitional flow audit
 
@@ -124,9 +125,9 @@ The public catalog has a clear DB-backed canonical path, but parallel transition
 - Archive legacy alias route docs once canonical naming plan is adopted.
 
 ### delete after confirmation
-- Delete `/api/v1/catalog` demo handler/route after no runtime dependency remains.
-- Delete `/api/v1/catalog/{isbn}` alias after all callers are moved to `/api/v1/book-db/{isbn}`.
-- Delete `/api/v1/catalog-external` and `/book/{isbn}/read` after reader flow is moved off external proxy.
+- ~~Delete `/api/v1/catalog` demo handler/route~~ — **Done** (removed).
+- ~~Delete `/api/v1/catalog/{isbn}` alias~~ — **Done** (removed).
+- Delete `/api/v1/catalog-external` and `/book/{isbn}/read` after reader fallback is confirmed unnecessary in production.
 
 ### ignore for default startup
 - Ignore `/app/*` SPA catalog path for default public startup path in current convergence window.
@@ -148,6 +149,7 @@ The public catalog has a clear DB-backed canonical path, but parallel transition
 - **Updated**: `app/Http/Controllers/Api/LandingController.php` (DB-backed catalog source)
 - **Updated**: `docker-compose.yml` (canonical catalog healthcheck probe)
 - **Created**: `tests/Feature/SpaCatalogWiringTest.php` (focused SPA wiring regression checks)
+- **Created**: `tests/Feature/ReaderConvergenceTest.php` (reader canonical API wiring + fallback verification)
 - **Updated**: `routes/api.php` (legacy/transitional route freeze markers)
 - **Updated**: `routes/web.php` (transitional reader route freeze marker + named route)
 - **Updated**: `app/Http/Controllers/Api/CatalogController.php` (freeze/deprecation annotations)
@@ -155,4 +157,4 @@ The public catalog has a clear DB-backed canonical path, but parallel transition
 
 ## 8. Next best step
 
-Implement the reader data-source migration to canonical `/api/v1/book-db/{isbn}` with compatibility fallback, then verify no operational dependency remains on `/api/v1/catalog-external`.
+Legacy routes `/api/v1/catalog` and `/api/v1/catalog/{isbn}` have been removed. Reader data source migrated to canonical `/api/v1/book-db/{isbn}` with fallback to external proxy. Next: remove external proxy route and `CatalogController::proxy()` once reader fallback is confirmed unnecessary in production.

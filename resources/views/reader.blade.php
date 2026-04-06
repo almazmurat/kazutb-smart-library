@@ -388,7 +388,8 @@
     <script>
         const ME_ENDPOINT = '/api/v1/me';
         const isbn = "{{ $isbn }}";
-        const API_ENDPOINT = '/api/v1/catalog-external';
+        const CANONICAL_API = `/api/v1/book-db/${encodeURIComponent(isbn)}`;
+        const FALLBACK_API = `/api/v1/catalog-external?q=${encodeURIComponent(isbn)}&limit=1`;
 
         let pages = [];
         let current = 0;
@@ -632,16 +633,30 @@
             const wrapper = document.querySelector('.wrapper');
 
             try {
-                const response = await fetch(`${API_ENDPOINT}?q=${encodeURIComponent(isbn)}&limit=1`, {
-                    headers: {
-                        Accept: 'application/json',
-                    },
+                // Try canonical DB-backed API first
+                let response = await fetch(CANONICAL_API, {
+                    headers: { Accept: 'application/json' },
                 });
 
-                if (!response.ok) throw new Error('Ошибка загрузки книги');
-
-                const data = await response.json();
-                bookData = data?.data?.[0] || null;
+                if (response.ok) {
+                    const data = await response.json();
+                    // Canonical endpoint returns { data: object, success: true }
+                    bookData = data?.data || null;
+                    // Normalize field differences: canonical uses publicationYear, legacy uses year
+                    if (bookData && bookData.publicationYear && !bookData.year) {
+                        bookData.year = String(bookData.publicationYear);
+                    }
+                } else {
+                    // Fallback to external proxy (transitional compatibility)
+                    console.warn('Canonical API failed, falling back to external proxy');
+                    response = await fetch(FALLBACK_API, {
+                        headers: { Accept: 'application/json' },
+                    });
+                    if (!response.ok) throw new Error('Ошибка загрузки книги');
+                    const data = await response.json();
+                    // Legacy endpoint returns { data: array }
+                    bookData = data?.data?.[0] || null;
+                }
 
                 if (!bookData) throw new Error('Книга не найдена');
 

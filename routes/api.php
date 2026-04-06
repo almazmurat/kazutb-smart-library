@@ -112,13 +112,10 @@ Route::prefix('v1')->group(function (): void {
     Route::get('/review/issues-summary', [ReviewController::class, 'issuesSummary']);
 
     // WS1 convergence freeze:
-    // Keep these routes for controlled backward compatibility only.
-    // Do not add new callers; new public catalog/detail usage must stay on:
-    // - /v1/catalog-db
-    // - /v1/book-db/{isbn}
-    Route::get('/catalog', [CatalogController::class, 'index']); // [WS1-FROZEN][LEGACY-CATALOG]
-    Route::get('/catalog-external', [CatalogController::class, 'proxy']); // [WS1-FROZEN][TRANSITIONAL-EXTERNAL]
-    Route::get('/catalog/{isbn}', [BookController::class, 'show']); // [WS1-FROZEN][LEGACY-DETAIL-ALIAS]
+    // Legacy /v1/catalog and /v1/catalog/{isbn} routes removed (delete-after-confirmation wave).
+    // Canonical public catalog/detail APIs: /v1/catalog-db, /v1/book-db/{isbn}.
+    // Transitional external proxy kept only for reader fallback compatibility.
+    Route::get('/catalog-external', [CatalogController::class, 'proxy']); // [WS1-FROZEN][TRANSITIONAL-EXTERNAL] reader fallback only
 
     Route::get('/landing', [LandingController::class, 'index']);
 
