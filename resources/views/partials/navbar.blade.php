@@ -14,6 +14,7 @@
     <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Меню">☰</button>
 
     <nav class="nav-links" onclick="if(window.innerWidth<=900)this.classList.remove('open')">
+      <a href="/" @if(($activePage ?? '') === 'home') class="active" @endif>Главная</a>
       <a href="/catalog" @if(($activePage ?? '') === 'catalog') class="active" @endif>Каталог</a>
       <a href="/resources" @if(($activePage ?? '') === 'resources') class="active" @endif>Ресурсы</a>
       <a href="/services" @if(($activePage ?? '') === 'services') class="active" @endif>Сервисы</a>

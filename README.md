@@ -2,14 +2,16 @@
 
 Цифровая умная библиотека KazUTB — новая операционная платформа библиотеки университета, построенная на Laravel 13 + PostgreSQL + React.
 
-**Stage**: Advanced prototype transitioning to operational platform.
+**Stage**: Advanced prototype, frontend demo-ready, transitioning to operational platform.
 
 ---
 
 ## What this is
 
 A real library platform, not a demo or interface refresh. It is intended to replace the legacy library environment and support:
-- public catalog, search, and book detail UX
+- public catalog, search, and book detail UX (12 public routes, shared design system)
+- teacher-facing academic resource discovery and syllabus support
+- thematic discovery by knowledge areas with catalog deep-linking
 - reader account and reservation flows
 - internal librarian and staff workflows (circulation, review, stewardship)
 - CRM integration boundary (reservation read/approve/reject)
@@ -17,6 +19,25 @@ A real library platform, not a demo or interface refresh. It is intended to repl
 - future reporting, digital materials, and analytics layers
 
 See [`project-context/00-project-truth.md`](project-context/00-project-truth.md) for full product truth.
+
+---
+
+## Public routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Homepage with discovery cards, catalog preview, hero |
+| `/catalog` | DB-backed catalog search with filters (supports `?q=` and `?sort=` deep-links) |
+| `/book/{isbn}` | Book detail page |
+| `/login` | Library login (CRM-proxied auth) |
+| `/account` | Reader personal cabinet (loans, reservations, profile) |
+| `/for-teachers` | Teacher-facing landing: feature cards, syllabus workflow, FAQ |
+| `/discover` | Thematic discovery: 9 knowledge areas with keyword chips → catalog |
+| `/services` | Library services overview |
+| `/resources` | Electronic resources and databases |
+| `/about` | About the library |
+| `/contacts` | Contact information |
+| `/news` | News and events |
 
 ---
 
