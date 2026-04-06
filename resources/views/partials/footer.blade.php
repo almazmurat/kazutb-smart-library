@@ -2,8 +2,14 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-col">
-      <div class="footer-title">Библиотека КазУТБ</div>
-      <p>Цифровая библиотека Казахского университета технологии и бизнеса — современная платформа для доступа к фонду, электронным ресурсам и библиотечным сервисам.</p>
+      <div class="footer-brand">
+        <img src="/logo.png" alt="КазУТБ" class="logo-img">
+        <div class="footer-brand-name">
+          КазУТБ
+          <small>Цифровая библиотека университета</small>
+        </div>
+      </div>
+      <p>Современная платформа для доступа к университетскому фонду, электронным ресурсам и библиотечным сервисам Казахского университета технологии и бизнеса.</p>
     </div>
 
     <div class="footer-col">
@@ -33,14 +39,18 @@
 
     <div class="footer-col">
       <div class="footer-title">Контакты</div>
-      <a href="#">г. Астана, ул. Кайым Мухамедханова, 37А</a>
+      <p>г. Астана, ул. Кайым Мухамедханова, 37А</p>
       <a href="tel:+77172645858">+7 (7172) 64-58-58</a>
       <a href="mailto:library@kazutb.kz">library@kazutb.kz</a>
-      <p style="margin-top:6px">Пн–Пт: 09:00–18:00<br>Сб: 10:00–14:00</p>
+      <p style="margin-top:8px; font-size:13px; opacity:.8;">Пн–Пт: 09:00–18:00 · Сб: 10:00–14:00</p>
     </div>
   </div>
 
   <div class="container footer-bottom">
     <p>© {{ date('Y') }} Библиотека КазУТБ. Все права защищены.</p>
+    <div class="footer-bottom-links">
+      <a href="/about">О библиотеке</a>
+      <a href="/contacts">Контакты</a>
+    </div>
   </div>
 </footer>

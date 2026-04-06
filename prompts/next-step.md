@@ -9,142 +9,191 @@ Start by reading:
 - `project-context/05-agent-working-rules.md`
 - `project-context/06-current-focus.md`
 - `project-context/98-product-master-context.md`
-- `docs/developer/REPO_NORMALIZATION_PLAN.md`
-- `docs/developer/FULL_SYSTEM_NORMALIZATION_PLAN.md`
-- `docs/developer/AGENT_AUTOMATION_WORKFLOW.md`
-- `docs/developer/PUBLIC_CATALOG_CONVERGENCE_AUDIT.md`
 - `README.md`
-- `composer.json`
-- all relevant files in `scripts/dev/`
-- all relevant workflow files in `.github/workflows/`
-- all relevant tests under `tests/`
-- all relevant runtime entrypoints in:
-  - `routes/`
-  - `app/Http/Controllers/`
-  - `resources/views/`
-  - `resources/js/` if relevant
+- all relevant shared public layout files
+- all relevant navbar/footer/shared partials
+- all relevant public Blade views
+- any shared CSS/public styling files
+- any SPA/public UI files that affect the public experience
+- recent docs or prompts related to public UI, frontend polish, public catalog, and academic discovery
 
 Context:
-Truth-layer normalization, prompt/tooling cleanup, bounded Obsidian mirror workflow, and WS1 Public Catalog Convergence work have already been completed.
-Do not restart normalization.
-Do not redesign the knowledge system.
-The next task is **WS4 Runtime E2E Verification Path**.
+The current public frontend has improved incrementally, but it still does not feel like a coherent modern product.
+Some sections are visually left-heavy, spacing is inconsistent, footer quality is weak, typography is uneven, and the overall public design still feels patchy rather than system-driven.
 
-Task:
-Perform a strict, repository-grounded audit and implementation pass for the runtime verification path of the KazUTB Smart Library project.
+The goal now is not another micro-polish pass.
+The goal is to execute a large, design-system-driven public frontend consolidation and refinement wave.
 
-Primary goal:
-Make the critical runtime path more explicit, more testable, and more operationally verifiable without speculative refactoring.
+Important:
+- Do not treat this as “just tweak some CSS”.
+- Do not do random visual patching.
+- Do not invent speculative backend features.
+- Do not break working routes, auth state, or canonical catalog behavior.
+- Where possible, use the strongest available tool-assisted workflow and modern frontend implementation approach available in this repository/tooling environment.
+- Prefer coherent system-level improvement over scattered local fixes.
 
-Critical path to audit and verify:
-- catalog search
-- book detail
-- account identity
-- reservation list/detail
-- reservation approve/reject
-- internal circulation checkout/return
+Primary goals:
+
+1. Bring all public-facing pages to a coherent modern, minimal, premium visual system.
+2. Fix alignment/composition issues where cards and sections feel left-stuck or visually unbalanced.
+3. Redesign the footer into a polished, modern, information-rich but clean footer.
+4. Normalize typography, spacing, card layout, section rhythm, and CTA hierarchy across public pages.
+5. Preserve working functionality and key flows:
+   - public catalog
+   - book detail
+   - auth/login/account access logic
+   - navigation
+   - responsive behavior
+6. Make the academic discovery direction feel intentional and product-quality, not placeholder-like.
 
 What to do:
 
-## 1. Map the real runtime verification surface
-Identify how each critical path is currently verified, if at all.
+## 1. Audit the full public UI as a system
+Inspect the shared public experience across:
+- home page
+- catalog
+- book detail
+- login/auth
+- account entry/access-related surfaces
+- services
+- about
+- contacts
+- resources
+- news
+- shared navbar
+- shared footer
+- shared layout/shell styles
 
-For each path, inspect:
-- routes
-- controllers/services
-- relevant views or SPA entrypoints
-- feature/integration tests
-- helper scripts
-- CI workflow coverage
-- docker/runtime probes if relevant
+Identify the main system-level design issues such as:
+- misaligned or left-heavy cards/sections
+- weak section centering/composition
+- inconsistent container widths
+- inconsistent vertical rhythm
+- weak typography hierarchy
+- uneven card sizing and spacing
+- poor footer design
+- inconsistent button and CTA treatment
+- pages that feel visually disconnected from the rest of the site
 
-Classify each critical path as:
-- verified well
-- partially verified
-- weakly verified
-- only unit-tested
-- only documented
-- not meaningfully verified
-- blocked by environment/runtime limits
+## 2. Build or normalize a public design system layer
+Create or strengthen a shared public UI system so pages use common rules for:
+- max-width containers
+- section spacing
+- hero layout
+- heading scale
+- body text scale
+- card padding/radius/shadow
+- grid behavior
+- footer structure
+- button hierarchy
+- empty states / notice blocks
+- responsive breakpoints
 
-## 2. Build a runtime verification matrix
-Create or update a single clear matrix that shows for each critical path:
-- canonical route(s)
-- canonical API route(s)
-- main controller/service entry
-- current test coverage
-- runtime/manual verification method
-- CI coverage status
-- current confidence level
-- main gap/blocker
+Prefer shared reusable styling over repeated local hacks.
+If existing shared CSS is insufficient, improve the shared layer instead of endlessly patching each page separately.
 
-This matrix should be practical, not abstract.
+## 3. Refactor page layouts to feel centered, balanced, and premium
+Fix the visible layout/composition issues across the public pages.
 
-## 3. Strengthen verification in the highest-value areas
-Implement a narrow, high-value verification improvement pass.
+Examples of the desired improvements:
+- cards that visually belong to centered grid systems
+- sections that align to the same container logic
+- more balanced whitespace
+- better relationship between hero blocks and content blocks
+- less “content glued to the left edge”
+- more polished section transitions
+- stronger visual coherence between pages
 
-Prioritize:
-- missing or weak checks for canonical public paths
-- weak coverage on account identity/runtime auth flow
-- gaps in reservation list/detail or approve/reject path verification
-- circulation checkout/return critical-path confidence
-- missing helper scripts or grouped test commands if they improve real operational confidence
+## 4. Redesign the footer properly
+The footer should no longer feel generic or weak.
 
-Do not try to solve every possible test problem.
-Focus on the minimum improvements that materially increase confidence.
+Make it:
+- visually stronger,
+- cleaner,
+- better spaced,
+- more typographically polished,
+- aligned with the rest of the product,
+- helpful for key audiences,
+- consistent with the academic-library direction.
 
-## 4. Normalize verification entrypoints
-Make the runtime verification flow easier to run for future sessions.
+It should support:
+- students,
+- teachers,
+- academic resources,
+- services,
+- about/contact/help,
+without becoming noisy.
 
-If clearly justified, create or update:
-- a runtime verification doc
-- a helper script for critical-path verification
-- composer commands for grouped verification runs
-- CI references or scripts that align with current canonical paths
+## 5. Improve typography and detail quality
+Normalize:
+- heading weights/sizes
+- paragraph readability
+- muted/supporting text styles
+- card titles and metadata
+- button labels
+- footer/link readability
+- spacing around icons and labels
+- overall polish of fine details
 
-Prefer a small number of useful entrypoints over many overlapping helpers.
+The result should feel modern and intentional, not like default CSS plus gradients.
 
-## 5. Be honest about environment limits
-If verification cannot be completed in the current environment, explicitly document:
-- what was verified,
-- what could not be verified,
-- why,
-- what exact environment is needed,
-- what fallback confidence method was used.
+## 6. Keep logic and flows correct
+Preserve and verify:
+- authenticated vs guest navbar behavior
+- login redirect behavior
+- catalog route behavior
+- book detail route behavior
+- responsive behavior on desktop/tablet/mobile
+- footer/navigation links
+- no contradictory CTAs
 
-Do not claim verification that did not happen.
+## 7. Use the strongest implementation approach available
+If this repository/tool environment supports better tooling, more structured shared styling, or MCP-assisted frontend work, use that intelligently.
+The objective is a better end result, not loyalty to manual CSS patching.
+However:
+- do not introduce uncontrolled framework churn,
+- do not rewrite the app into a new frontend architecture unless clearly justified,
+- do not create speculative dependencies without operational value.
 
-## 6. Update docs/scripts/tests where justified
-If useful and grounded, create or update:
-- `docs/developer/RUNTIME_VERIFICATION_MATRIX.md`
-- `scripts/dev/check-runtime-critical-paths.sh`
-- composer scripts for runtime verification
-- small focused tests that improve confidence on the critical path
-- CI references if a minimal improvement is clearly safe
+## 8. Perform a substantial implementation wave now
+Do not stop at analysis.
+Make the actual frontend/system changes now.
 
-Do not introduce broad speculative test architecture changes.
+Prefer:
+- shared layout improvements,
+- shared style consolidation,
+- footer redesign,
+- page composition refactors,
+- typography cleanup,
+- consistent card/grid behavior,
+- responsive refinement.
 
-Important:
-- Be strict and repository-grounded.
-- Do not restart repository normalization work.
-- Do not jump into another full cleanup wave.
-- Do not redesign runtime architecture.
-- Do not expand product scope.
-- Prefer narrow, useful, verifiable improvements.
-- Preserve stage-aware honesty.
+## 9. Verify the result
+Perform practical verification such as:
+- key public routes render correctly,
+- auth-sensitive navigation is correct,
+- no major layout regressions,
+- responsive structure is coherent,
+- no broken links or obvious UI contradictions.
+
+Be honest about environment limits if full runtime/device verification is not possible.
 
 Output format:
 1. Executive summary
-2. Runtime verification matrix
-3. What was strengthened
-4. Remaining weak points / blockers
-5. Verification actually performed
-6. Files created/updated
-7. Next best step
+2. System-level design issues found
+3. Shared design-system improvements implemented
+4. Pages/components substantially improved
+5. Footer redesign summary
+6. Logic/UX correctness checks
+7. Verification performed
+8. Files updated
+9. Remaining known limitations
+10. Next best step
 
 Definition of done:
-- The critical runtime path is explicitly mapped.
-- Verification confidence is clearer than before.
-- At least one meaningful verification improvement has been implemented.
-- The project has a more usable runtime verification entrypoint for future sessions.
-- Any environment limitations are documented honestly.
+- The public site feels substantially more coherent, modern, minimal, and premium.
+- Layouts are better balanced and not awkwardly left-heavy.
+- Footer quality is significantly improved.
+- Typography and spacing feel intentional across pages.
+- Existing public functionality and key logic remain intact.
+- The result is a real frontend consolidation wave, not another patch-only pass.

@@ -122,11 +122,11 @@
     </div>
   </section>
 
-  <section class="page-section" style="text-align:center;">
+  <section class="cta-section">
     <div class="container">
-      <h2 style="margin: 0 0 12px; font-size: clamp(28px, 4vw, 38px); font-weight: 900; letter-spacing: -1px;">Начните работу с библиотекой</h2>
-      <p style="color: var(--muted); font-size: 17px; margin: 0 0 28px;">Найдите нужную литературу или войдите в личный кабинет.</p>
-      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <h2>Начните работу с библиотекой</h2>
+      <p>Найдите нужную литературу или войдите в личный кабинет.</p>
+      <div class="cta-buttons">
         <a href="/catalog" class="btn btn-primary">Открыть каталог</a>
         <a href="/account" class="btn btn-ghost">Личный кабинет</a>
       </div>

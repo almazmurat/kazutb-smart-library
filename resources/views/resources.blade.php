@@ -312,11 +312,11 @@
   </div>
 </section>
 
-<section class="page-section" style="border-top:none;">
-  <div class="container" style="text-align:center;">
-    <h2 style="margin:0 0 12px; font-size:clamp(28px,4vw,42px); font-weight:900; letter-spacing:-1px;">Нужна помощь с ресурсами?</h2>
-    <p style="color:var(--muted); font-size:17px; line-height:1.7; max-width:600px; margin:0 auto 28px;">Обратитесь к библиографам за консультацией по поиску источников и работе с базами данных.</p>
-    <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+<section class="cta-section">
+  <div class="container">
+    <h2>Нужна помощь с ресурсами?</h2>
+    <p>Обратитесь к библиографам за консультацией по поиску источников и работе с базами данных.</p>
+    <div class="cta-buttons">
       <a href="/contacts" class="btn btn-primary">Связаться с нами</a>
       <a href="/catalog" class="btn btn-ghost">Перейти в каталог</a>
     </div>

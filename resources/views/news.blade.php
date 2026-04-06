@@ -429,11 +429,11 @@
   </div>
 </section>
 
-<section class="page-section" style="border-top:none;">
-  <div class="container" style="text-align:center;">
-    <h2 style="margin:0 0 12px; font-size:clamp(28px,4vw,42px); font-weight:900; letter-spacing:-1px;">Следите за обновлениями</h2>
-    <p style="color:var(--muted); font-size:17px; line-height:1.7; max-width:600px; margin:0 auto 28px;">Подписывайтесь на новости библиотеки и не пропускайте важные события и обновления сервисов.</p>
-    <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+<section class="cta-section">
+  <div class="container">
+    <h2>Следите за обновлениями</h2>
+    <p>Подписывайтесь на новости библиотеки и не пропускайте важные события и обновления сервисов.</p>
+    <div class="cta-buttons">
       <a href="/resources" class="btn btn-primary">Электронные ресурсы</a>
       <a href="/contacts" class="btn btn-ghost">Связаться с нами</a>
     </div>

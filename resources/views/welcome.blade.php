@@ -582,59 +582,59 @@
     .discovery-nav {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 40px;
+      gap: 18px;
+      margin-bottom: 48px;
     }
 
     .discovery-card {
       display: flex;
       align-items: flex-start;
-      gap: 18px;
-      padding: 28px 24px;
-      border-radius: 20px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow);
+      gap: 16px;
+      padding: 24px 22px;
+      border-radius: var(--radius-lg);
+      background: var(--surface-glass);
+      border: 1px solid var(--border);
       transition: all .25s ease;
       text-decoration: none;
       color: inherit;
     }
 
     .discovery-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 24px -6px rgba(0,0,0,.08);
-      border-color: var(--blue);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(59,130,246,.2);
     }
 
     .discovery-icon {
       flex-shrink: 0;
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 22px;
     }
 
-    .discovery-icon--students { background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(6,182,212,.10)); }
-    .discovery-icon--teachers { background: linear-gradient(135deg, rgba(124,58,237,.15), rgba(236,72,153,.08)); }
-    .discovery-icon--research { background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(34,197,94,.08)); }
-    .discovery-icon--digital  { background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(59,130,246,.08)); }
-    .discovery-icon--area     { background: linear-gradient(135deg, rgba(236,72,153,.15), rgba(245,158,11,.08)); }
-    .discovery-icon--new      { background: linear-gradient(135deg, rgba(6,182,212,.15), rgba(124,58,237,.08)); }
+    .discovery-icon--students { background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(6,182,212,.08)); }
+    .discovery-icon--teachers { background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(236,72,153,.06)); }
+    .discovery-icon--research { background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(34,197,94,.06)); }
+    .discovery-icon--digital  { background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(59,130,246,.06)); }
+    .discovery-icon--area     { background: linear-gradient(135deg, rgba(236,72,153,.12), rgba(245,158,11,.06)); }
+    .discovery-icon--new      { background: linear-gradient(135deg, rgba(6,182,212,.12), rgba(124,58,237,.06)); }
 
     .discovery-text h4 {
-      margin: 0 0 6px;
-      font-size: 17px;
-      font-weight: 600;
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -.2px;
     }
 
     .discovery-text p {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.55;
+      line-height: 1.5;
     }
 
     .services-grid {
@@ -847,40 +847,64 @@
       max-width: 760px;
     }
 
-    footer {
-      border-top: 1px solid rgba(15,23,42,.06);
-      background: rgba(255,255,255,.72);
+    footer, .site-footer {
+      background: var(--footer-bg);
+      color: var(--footer-text);
+      margin-top: 80px;
+      position: relative;
+    }
+
+    footer::before, .site-footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
+      opacity: .5;
     }
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
-      gap: 20px;
-      padding: 28px 0;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr 1.1fr;
+      gap: 32px;
+      padding: 56px 0 40px;
     }
 
     .footer-title {
-      margin-bottom: 12px;
-      font-size: 18px;
-      font-weight: 800;
+      margin-bottom: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--footer-heading);
     }
 
     .footer-col p,
     .footer-col a {
       display: block;
-      color: var(--muted);
-      line-height: 1.9;
+      color: var(--footer-text);
+      line-height: 1.75;
+      font-size: 14px;
     }
 
+    .footer-col a { padding: 5px 0; transition: color .2s, padding-left .2s; }
+    .footer-col a:hover { color: var(--footer-accent); padding-left: 4px; }
+
     .footer-bottom {
-      padding: 18px 0 28px;
-      border-top: 1px solid rgba(15,23,42,.06);
+      padding: 20px 0 28px;
+      border-top: 1px solid var(--footer-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .footer-bottom p {
       margin: 0;
-      color: var(--muted);
-      line-height: 1.8;
+      color: var(--muted-light, #94a3b8);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     @media (max-width: 1120px) {
@@ -894,7 +918,7 @@
       }
 
       .hero-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
       .highlight-strip { grid-template-columns: repeat(2, 1fr); }
       .catalog { grid-template-columns: repeat(2, 1fr); }
       .resources-preview-grid { grid-template-columns: repeat(2, 1fr); }
@@ -936,6 +960,9 @@
       .discovery-nav {
         grid-template-columns: 1fr;
       }
+
+      .footer-grid { gap: 28px; padding: 32px 0 24px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
 
       .cta-box,
       .search-row {
@@ -1191,8 +1218,9 @@
         </div>
 
         <!-- Catalog search/browse (existing API-driven grid) -->
-        <h3 id="catalog-title" style="font-size: 22px; margin-bottom: 6px;">Каталог фонда</h3>
-        <p id="catalog-description" style="color: var(--muted); margin-bottom: 18px; font-size: 15px;">Просмотр и поиск по всем материалам библиотеки.</p>
+        <div class="eyebrow" style="margin-top:8px;">Из каталога</div>
+        <h3 id="catalog-title" style="font-size:22px; font-weight:800; margin:0 0 6px; letter-spacing:-.3px;">Каталог фонда</h3>
+        <p id="catalog-description" style="color:var(--muted); margin:0 0 20px; font-size:15px; line-height:1.6;">Просмотр и поиск по всем материалам библиотеки.</p>
 
         <div class="catalog" id="catalog-grid">
         </div>

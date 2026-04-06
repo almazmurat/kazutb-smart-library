@@ -125,11 +125,11 @@
     </div>
   </section>
 
-  <section class="page-section" style="text-align: center;">
+  <section class="cta-section">
     <div class="container">
-      <h2 style="margin: 0 0 12px; font-size: clamp(28px, 4vw, 38px); font-weight: 900; letter-spacing: -1px;">Есть вопросы?</h2>
-      <p style="color: var(--muted); font-size: 17px; margin: 0 0 28px;">Свяжитесь с нами или посетите библиотеку лично.</p>
-      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <h2>Есть вопросы?</h2>
+      <p>Свяжитесь с нами или посетите библиотеку лично.</p>
+      <div class="cta-buttons">
         <a href="/contacts" class="btn btn-primary">Контакты</a>
         <a href="/catalog" class="btn btn-ghost">Перейти в каталог</a>
       </div>
