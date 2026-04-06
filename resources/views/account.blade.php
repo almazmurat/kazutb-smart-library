@@ -872,9 +872,10 @@
       const reservedAt = res.reservedAt ? new Date(res.reservedAt).toLocaleDateString('ru-RU') : '—';
       const expiresAt = res.expiresAt ? new Date(res.expiresAt).toLocaleDateString('ru-RU') : '—';
       const isActive = res.status === 'PENDING' || res.status === 'READY';
+      const canCancel = isActive;
 
       return `
-        <article class="book-card">
+        <article class="book-card" data-reservation-id="${escapeHtml(res.id)}">
           <div class="book-preview" style="${isActive ? 'background: linear-gradient(180deg, #0369a1 0%, #0284c7 100%);' : 'background: linear-gradient(180deg, #475569 0%, #64748b 100%); opacity: 0.85;'}">
             <small>Бронь</small>
             <h3 style="font-size: 14px;">${escapeHtml(bookTitle.substring(0, 40))}${bookTitle.length > 40 ? '…' : ''}</h3>
@@ -886,8 +887,31 @@
           <div class="book-meta">Забронировано: ${reservedAt}</div>
           <div class="book-meta">Действует до: ${expiresAt}</div>
           ${res.cancelReasonCode ? `<div class="book-meta" style="color:#991b1b;">Причина: ${escapeHtml(res.cancelReasonCode)}</div>` : ''}
+          ${canCancel ? `<button class="btn btn-ghost" onclick="cancelReservation('${escapeHtml(res.id)}')" style="margin-top:10px; font-size:13px; padding:8px 16px; color:#991b1b; border-color:#fecaca; width:100%;">✕ Отменить бронь</button>` : ''}
         </article>
       `;
+    }
+
+    async function cancelReservation(reservationId) {
+      if (!confirm('Вы уверены, что хотите отменить это бронирование?')) return;
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+      try {
+        const res = await fetch(`/api/v1/account/reservations/${encodeURIComponent(reservationId)}/cancel`, {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
+          credentials: 'same-origin',
+        });
+
+        const json = await res.json();
+        if (res.ok && json.success) {
+          loadReservations();
+        } else {
+          alert(json.message || 'Не удалось отменить бронирование.');
+        }
+      } catch (e) {
+        alert('Ошибка сети. Попробуйте ещё раз.');
+      }
     }
 
     async function loadReservations() {
@@ -908,7 +932,7 @@
         const reservations = Array.isArray(payload?.data) ? payload.data : [];
 
         if (!reservations.length) {
-          grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">У вас нет бронирований.<br><a href="/catalog" style="color: #3b82f6; text-decoration: underline;">Перейти в каталог</a></div>';
+          grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1; text-align:center;">У вас нет активных бронирований.<br><p style="margin:8px 0 0; font-size:13px; color:#64748b;">Вы можете забронировать книгу на странице каталога.</p><a href="/catalog" style="color: #3b82f6; text-decoration: underline; font-size:14px;">Перейти в каталог →</a></div>';
           return;
         }
 

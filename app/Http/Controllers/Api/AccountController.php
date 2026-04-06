@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Services\Library\AccountSummaryReadService;
 use App\Services\Library\CirculationLoanReadService;
 use App\Services\Library\CirculationLoanWriteService;
+use App\Services\Library\ReaderReservationException;
+use App\Services\Library\ReaderReservationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -167,6 +169,121 @@ class AccountController extends Controller
                 'crmUserId' => $crmUserId,
                 'total' => count($reservations),
             ],
+        ]);
+    }
+
+    public function createReservation(Request $request, ReaderReservationService $service): JsonResponse
+    {
+        $user = $request->attributes->get('authenticated_reader');
+        $crmUserId = $this->resolveCrmUserId($user);
+
+        if ($crmUserId === null) {
+            return response()->json([
+                'error' => 'no_crm_user',
+                'message' => 'Не удалось определить ваш профиль в системе.',
+                'success' => false,
+            ], 403);
+        }
+
+        $request->validate([
+            'bookId' => 'nullable|string|uuid',
+            'isbn' => 'nullable|string|max:20',
+        ]);
+
+        $bookId = $request->input('bookId');
+
+        if (! $bookId && $request->filled('isbn')) {
+            $bookId = $service->resolveBookIdByIsbn($request->input('isbn'));
+        }
+
+        if (! $bookId) {
+            return response()->json([
+                'error' => 'book_not_found',
+                'message' => 'Книга не найдена. Укажите bookId или isbn.',
+                'success' => false,
+            ], 422);
+        }
+
+        try {
+            $result = $service->create($crmUserId, $bookId);
+        } catch (ReaderReservationException $e) {
+            return response()->json([
+                'error' => $e->errorCode(),
+                'message' => $e->getMessage(),
+                'success' => false,
+            ], $e->httpStatus());
+        }
+
+        return response()->json([
+            'success' => true,
+            ...$result,
+        ], 201);
+    }
+
+    public function cancelReservation(string $reservationId, Request $request, ReaderReservationService $service): JsonResponse
+    {
+        $user = $request->attributes->get('authenticated_reader');
+        $crmUserId = $this->resolveCrmUserId($user);
+
+        if ($crmUserId === null) {
+            return response()->json([
+                'error' => 'no_crm_user',
+                'message' => 'Не удалось определить ваш профиль в системе.',
+                'success' => false,
+            ], 403);
+        }
+
+        try {
+            $result = $service->cancel($reservationId, $crmUserId);
+        } catch (ReaderReservationException $e) {
+            return response()->json([
+                'error' => $e->errorCode(),
+                'message' => $e->getMessage(),
+                'success' => false,
+            ], $e->httpStatus());
+        }
+
+        return response()->json([
+            'success' => true,
+            ...$result,
+        ]);
+    }
+
+    public function checkReservation(Request $request, ReaderReservationService $service): JsonResponse
+    {
+        $user = $request->attributes->get('authenticated_reader');
+        $crmUserId = $this->resolveCrmUserId($user);
+
+        if ($crmUserId === null) {
+            return response()->json([
+                'hasActive' => false,
+                'reservation' => null,
+            ]);
+        }
+
+        $request->validate([
+            'bookId' => 'nullable|string|uuid',
+            'isbn' => 'nullable|string|max:20',
+        ]);
+
+        $bookId = $request->query('bookId');
+
+        if (! $bookId && $request->filled('isbn')) {
+            $bookId = $service->resolveBookIdByIsbn($request->query('isbn'));
+        }
+
+        if (! $bookId) {
+            return response()->json([
+                'hasActive' => false,
+                'reservation' => null,
+            ]);
+        }
+
+        $active = $service->checkForBook($crmUserId, $bookId);
+
+        return response()->json([
+            'hasActive' => $active !== null,
+            'reservation' => $active,
         ]);
     }
 

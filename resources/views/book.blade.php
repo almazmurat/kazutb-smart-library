@@ -745,39 +745,7 @@
     </style>
 </head>
 <body>
-    <header class="topbar">
-        <div class="container nav">
-            <a href="/" class="brand">
-                <div class="brand-badge">
-                    <img src="/logo.png" alt="Logo" class="logo-img">
-                </div>
-                <div>
-                    <div id="brand-title">КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА</div>
-                    <small id="brand-subtitle">Страница просмотра книги</small>
-                </div>
-            </a>
-
-            <nav class="nav-links">
-                <a href="/">Главная</a>
-                <a href="/catalog">Каталог</a>
-                <a href="/resources">Ресурсы</a>
-                <a href="/services">Сервисы</a>
-                <a href="/news">Новости</a>
-                <a href="/about">О библиотеке</a>
-                <a href="/contacts">Контакты</a>
-            </nav>
-
-            <div class="nav-actions">
-                @if(session('library.user'))
-                    <a href="/account" class="btn btn-ghost">Кабинет</a>
-                    <button type="button" class="btn btn-primary" id="shared-logout-btn">Выйти</button>
-                @else
-                    <a href="/login" class="btn btn-ghost">Войти</a>
-                    <a href="/account" class="btn btn-primary">Личный кабинет</a>
-                @endif
-            </div>
-        </div>
-    </header>
+    @include('partials.navbar', ['activePage' => 'catalog'])
 
     <main class="page">
         <div class="container">
@@ -994,10 +962,15 @@
                             </div>
 
                             <div class="action-row">
-                                <button class="btn btn-primary" disabled style="opacity:.5; cursor:not-allowed;" title="Функция резервирования в разработке">Забронировать книгу</button>
+                                @if(session('library.user'))
+                                <button class="btn btn-primary" id="reserve-btn" onclick="handleReserve()" disabled>Забронировать книгу</button>
+                                @else
+                                <a href="/login" class="btn btn-primary" style="text-align:center;">Войдите для бронирования</a>
+                                @endif
                                 <button class="btn btn-ghost" id="book-shortlist-btn" onclick="toggleBookShortlist()" style="border-color:var(--violet); color:var(--violet);">☆ В подборку</button>
                                 <a href="/catalog" class="btn btn-ghost">Вернуться в каталог</a>
                             </div>
+                            <div id="reserve-feedback" style="display:none; margin-top:12px; padding:14px 18px; border-radius:14px; font-size:14px;"></div>
                         </section>
 
                         <section class="info-grid">
@@ -1133,9 +1106,132 @@
                 total: book?.copies?.total || 0,
             };
             checkBookShortlist(identifier);
+            @if(session('library.user'))
+            checkExistingReservation(book);
+            @endif
         };
 
         loadBook();
+
+        // --- Reservation integration ---
+        @if(session('library.user'))
+        let reservationBookId = null;
+        let reservationIsbn = null;
+        let reservationActive = null;
+
+        function setReserveButtonState(state, label) {
+            const btn = document.getElementById('reserve-btn');
+            if (!btn) return;
+            const states = {
+                loading: { disabled: true, opacity: '.6', cursor: 'wait', text: label || '⏳ Проверка...' },
+                ready: { disabled: false, opacity: '1', cursor: 'pointer', text: label || 'Забронировать книгу' },
+                reserved: { disabled: true, opacity: '.85', cursor: 'default', text: label || '✓ Уже забронировано' },
+                submitting: { disabled: true, opacity: '.6', cursor: 'wait', text: label || '⏳ Бронирование...' },
+                unavailable: { disabled: true, opacity: '.5', cursor: 'not-allowed', text: label || 'Нет экземпляров' },
+                no_reservation: { disabled: true, opacity: '.5', cursor: 'not-allowed', text: label || 'Бронирование недоступно' },
+            };
+            const s = states[state] || states.loading;
+            btn.disabled = s.disabled;
+            btn.style.opacity = s.opacity;
+            btn.style.cursor = s.cursor;
+            btn.textContent = s.text;
+            if (state === 'reserved') {
+                btn.style.background = '#065f46';
+            } else {
+                btn.style.background = '';
+            }
+        }
+
+        function showReserveFeedback(type, message) {
+            const el = document.getElementById('reserve-feedback');
+            if (!el) return;
+            const colors = {
+                success: { bg: '#d1fae5', color: '#065f46', border: '#a7f3d0' },
+                error: { bg: '#fee2e2', color: '#991b1b', border: '#fecaca' },
+                info: { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe' },
+            };
+            const c = colors[type] || colors.info;
+            el.style.display = 'block';
+            el.style.background = c.bg;
+            el.style.color = c.color;
+            el.style.border = `1px solid ${c.border}`;
+            el.textContent = message;
+        }
+
+        async function checkExistingReservation(book) {
+            reservationBookId = book?.dbId || null;
+            reservationIsbn = book?.isbn?.raw || isbn;
+            const btn = document.getElementById('reserve-btn');
+            if (!btn) return;
+
+            const checkParam = reservationBookId
+                ? `bookId=${encodeURIComponent(reservationBookId)}`
+                : (reservationIsbn ? `isbn=${encodeURIComponent(reservationIsbn)}` : null);
+
+            if (!checkParam) {
+                setReserveButtonState('no_reservation');
+                return;
+            }
+
+            setReserveButtonState('loading');
+            try {
+                const res = await fetch(`/api/v1/account/reservations/check?${checkParam}`, {
+                    headers: { Accept: 'application/json' },
+                    credentials: 'same-origin',
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.hasActive) {
+                        reservationActive = json.reservation;
+                        setReserveButtonState('reserved', `✓ Забронировано (${json.reservation?.status === 'READY' ? 'готово к выдаче' : 'ожидание'})`);
+                        return;
+                    }
+                }
+            } catch (e) { /* proceed to ready state */ }
+            setReserveButtonState('ready');
+        }
+
+        async function handleReserve() {
+            if (reservationActive) return;
+            setReserveButtonState('submitting');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+            const body = reservationBookId
+                ? { bookId: reservationBookId }
+                : { isbn: reservationIsbn };
+
+            try {
+                const res = await fetch('/api/v1/account/reservations', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(body),
+                });
+
+                const json = await res.json();
+
+                if (res.ok && json.success) {
+                    reservationActive = json.reservation;
+                    setReserveButtonState('reserved');
+                    const expires = json.reservation?.expiresAt
+                        ? new Date(json.reservation.expiresAt).toLocaleDateString('ru-RU')
+                        : '';
+                    showReserveFeedback('success',
+                        `Книга успешно забронирована!${expires ? ` Действует до ${expires}.` : ''} Следите за статусом в кабинете.`);
+                } else {
+                    setReserveButtonState('ready');
+                    showReserveFeedback('error', json.message || 'Не удалось создать бронирование.');
+                }
+            } catch (e) {
+                setReserveButtonState('ready');
+                showReserveFeedback('error', 'Ошибка сети. Попробуйте ещё раз.');
+            }
+        }
+        @endif
     </script>
 </body>
 </html>

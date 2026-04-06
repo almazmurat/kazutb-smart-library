@@ -42,6 +42,9 @@ Route::middleware('web')->group(function (): void {
         Route::get('/v1/account/loans', [AccountController::class, 'loans']);
         Route::post('/v1/account/loans/{loanId}/renew', [AccountController::class, 'renewLoan']);
         Route::get('/v1/account/reservations', [AccountController::class, 'reservations']);
+        Route::post('/v1/account/reservations', [AccountController::class, 'createReservation']);
+        Route::post('/v1/account/reservations/{id}/cancel', [AccountController::class, 'cancelReservation']);
+        Route::get('/v1/account/reservations/check', [AccountController::class, 'checkReservation']);
         Route::get('/v1/me', [AuthController::class, 'me']);
         Route::post('/v1/logout', [AuthController::class, 'logout']);
     });
