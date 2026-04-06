@@ -32,7 +32,7 @@ Route::get('/account', function (Request $request) {
         return redirect('/login?redirect=' . urlencode('/account'));
     }
 
-    return view('account');
+    return view('account', ['sessionUser' => $user]);
 });
 
 Route::get('/login', function () {

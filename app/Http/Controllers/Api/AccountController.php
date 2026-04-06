@@ -14,14 +14,7 @@ class AccountController extends Controller
 {
     public function summary(Request $request, AccountSummaryReadService $service): JsonResponse
     {
-        $user = $request->session()->get('library.user');
-
-        if (! is_array($user)) {
-            return response()->json([
-                'authenticated' => false,
-                'message' => 'Unauthenticated',
-            ], 401);
-        }
+        $user = $request->attributes->get('authenticated_reader');
 
         return response()->json([
             'authenticated' => true,
@@ -31,15 +24,7 @@ class AccountController extends Controller
 
     public function loans(Request $request, CirculationLoanReadService $loanService): JsonResponse
     {
-        $user = $request->session()->get('library.user');
-
-        if (! is_array($user)) {
-            return response()->json([
-                'authenticated' => false,
-                'message' => 'Unauthenticated',
-            ], 401);
-        }
-
+        $user = $request->attributes->get('authenticated_reader');
         $readerId = $this->resolveReaderId($user);
 
         if ($readerId === null) {
@@ -68,15 +53,7 @@ class AccountController extends Controller
 
     public function renewLoan(string $loanId, Request $request, CirculationLoanWriteService $writeService, CirculationLoanReadService $loanService): JsonResponse
     {
-        $user = $request->session()->get('library.user');
-
-        if (! is_array($user)) {
-            return response()->json([
-                'authenticated' => false,
-                'message' => 'Unauthenticated',
-            ], 401);
-        }
-
+        $user = $request->attributes->get('authenticated_reader');
         $readerId = $this->resolveReaderId($user);
 
         if ($readerId === null) {
@@ -121,15 +98,7 @@ class AccountController extends Controller
 
     public function reservations(Request $request): JsonResponse
     {
-        $user = $request->session()->get('library.user');
-
-        if (! is_array($user)) {
-            return response()->json([
-                'authenticated' => false,
-                'message' => 'Unauthenticated',
-            ], 401);
-        }
-
+        $user = $request->attributes->get('authenticated_reader');
         $crmUserId = $this->resolveCrmUserId($user);
 
         if ($crmUserId === null) {

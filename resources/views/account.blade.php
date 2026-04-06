@@ -377,12 +377,12 @@
       <section class="profile-grid">
         <article class="card">
           <div class="profile-head">
-            <div id="profile-avatar" class="avatar">{{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}</div>
+            <div id="profile-avatar" class="avatar">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
             <div>
-              <h1 id="profile-name" class="profile-name">{{ auth()->user()->name ?? 'Гость библиотеки' }}</h1>
+              <h1 id="profile-name" class="profile-name">{{ $sessionUser['name'] ?? 'Гость библиотеки' }}</h1>
               <p id="profile-sub" class="profile-sub">
-                Логин: {{ auth()->user()->ad_login ?? 'не указан' }}
-                · Роль: {{ auth()->user()->role ?? 'reader' }}
+                Логин: {{ $sessionUser['ad_login'] ?? 'не указан' }}
+                · Роль: {{ $sessionUser['role'] ?? 'reader' }}
               </p>
             </div>
           </div>
@@ -557,11 +557,14 @@
       `;
     }
 
-    function renderNoLoansMessage() {
+    function renderNoLoansMessage(hasReaderProfile = true) {
+      const msg = hasReaderProfile
+        ? 'У вас нет активных выдач.'
+        : 'Профиль читателя не найден в библиотечной системе. Обратитесь к библиотекарю.';
       return `
         <div class="loading" style="grid-column: 1 / -1; text-align: center;">
-          У вас нет активных выдач.
-          <br><a href="/catalog" style="color: #3b82f6; text-decoration: underline;">Перейти в каталог</a>
+          ${msg}
+          ${hasReaderProfile ? '<br><a href="/catalog" style="color: #3b82f6; text-decoration: underline;">Перейти в каталог</a>' : ''}
         </div>
       `;
     }
@@ -572,9 +575,16 @@
       try {
         const resp = await fetch(`/api/v1/account/loans/${loanId}/renew`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': getCsrfToken(),
+          },
           body: JSON.stringify({})
         });
+
+        if (resp.status === 401) { redirectToLogin(); return; }
+
         const data = await resp.json();
 
         if (resp.ok && data.success) {
@@ -622,6 +632,7 @@
         },
       });
 
+      if (response.status === 401) { redirectToLogin(); return; }
       if (!response.ok) {
         throw new Error('Не удалось загрузить account summary');
       }
@@ -652,7 +663,7 @@
         });
 
         if (response.status === 401) {
-          grid.innerHTML = renderNoLoansMessage();
+          redirectToLogin();
           return;
         }
 
@@ -660,9 +671,10 @@
 
         const payload = await response.json();
         const loans = Array.isArray(payload?.data) ? payload.data : [];
+        const hasReaderProfile = !payload?.message?.includes('No linked reader');
 
         if (!loans.length) {
-          grid.innerHTML = renderNoLoansMessage();
+          grid.innerHTML = renderNoLoansMessage(hasReaderProfile);
           return;
         }
 
@@ -718,7 +730,7 @@
         });
 
         if (response.status === 401) {
-          grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Войдите, чтобы увидеть бронирования.</div>';
+          redirectToLogin();
           return;
         }
 
@@ -753,7 +765,7 @@
       }
 
       localStorage.removeItem(AUTH_USER_KEY);
-      window.location.href = '/';
+      window.location.href = '/login';
     });
 
     (async () => {

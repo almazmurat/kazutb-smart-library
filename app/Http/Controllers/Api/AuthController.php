@@ -89,18 +89,12 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
-        $user = $request->session()->get('library.user');
-
-        if (! is_array($user)) {
-            return response()->json([
-                'authenticated' => false,
-                'message' => 'Unauthenticated',
-            ], 401);
-        }
+        $user = $request->attributes->get('authenticated_reader');
 
         return response()->json([
             'authenticated' => true,
             'user' => $user,
+            'authenticated_at' => $request->session()->get('library.authenticated_at'),
         ]);
     }
 
