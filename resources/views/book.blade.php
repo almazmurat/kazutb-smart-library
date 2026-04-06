@@ -686,6 +686,48 @@
             text-align: center;
         }
 
+        .digital-materials-section {
+            margin-top: 16px;
+        }
+        .dm-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            background: rgba(59,130,246,.03);
+            border: 1px solid rgba(59,130,246,.12);
+            border-radius: var(--radius-md, 14px);
+            margin-bottom: 10px;
+        }
+        .dm-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+        .dm-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--blue, #3b82f6), var(--cyan, #06b6d4));
+            color: #fff;
+        }
+        .dm-label { font-weight: 700; font-size: 15px; margin: 0 0 2px; }
+        .dm-meta { font-size: 13px; color: var(--muted, #64748b); }
+        .dm-actions { flex-shrink: 0; }
+        .dm-locked {
+            font-size: 13px;
+            color: var(--muted, #64748b);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         @media (max-width: 1120px) {
             .layout,
             .info-grid,
@@ -953,6 +995,8 @@
                             ${reviewHtml}
                             ${classificationHtml}
 
+                            <div id="digital-materials-slot"></div>
+
                             <div class="status-box ${isAvailable ? '' : 'unavailable'}">
                                 <div>
                                     <strong>${isAvailable ? 'Экземпляр доступен для выдачи' : 'Все экземпляры выданы'}</strong>
@@ -994,6 +1038,59 @@
                     </div>
                 </section>
             `;
+
+            loadDigitalMaterials(book.id);
+        }
+
+        async function loadDigitalMaterials(documentId) {
+            const slot = document.getElementById('digital-materials-slot');
+            if (!slot || !documentId) return;
+
+            try {
+                const resp = await fetch(`/api/v1/documents/${encodeURIComponent(documentId)}/digital-materials`);
+                if (!resp.ok) return;
+
+                const result = await resp.json();
+                const materials = result?.data || [];
+                if (materials.length === 0) return;
+
+                const fileIcons = { pdf: '📄', epub: '📖', djvu: '📘' };
+
+                slot.innerHTML = `
+                    <div class="digital-materials-section">
+                        <h4 style="margin:0 0 12px; font-size:16px; font-weight:700;">💻 Электронные материалы</h4>
+                        ${materials.map(m => {
+                            const icon = fileIcons[m.fileType] || '📁';
+                            if (m.canAccess) {
+                                return `<div class="dm-card">
+                                    <div class="dm-info">
+                                        <div class="dm-icon">${icon}</div>
+                                        <div>
+                                            <div class="dm-label">${escapeHtml(m.title)}</div>
+                                            <div class="dm-meta">${m.fileType.toUpperCase()} · ${m.fileSize}</div>
+                                        </div>
+                                    </div>
+                                    <div class="dm-actions">
+                                        <a href="${escapeHtml(m.viewerUrl)}" class="btn btn-primary" style="padding:8px 18px;font-size:14px;">Открыть</a>
+                                    </div>
+                                </div>`;
+                            } else {
+                                return `<div class="dm-card" style="opacity:.7;">
+                                    <div class="dm-info">
+                                        <div class="dm-icon" style="background:#94a3b8;">🔒</div>
+                                        <div>
+                                            <div class="dm-label">${escapeHtml(m.title)}</div>
+                                            <div class="dm-meta">${m.fileType.toUpperCase()} · ${m.fileSize}</div>
+                                        </div>
+                                    </div>
+                                    <div class="dm-locked">${escapeHtml(m.accessDeniedReason)}</div>
+                                </div>`;
+                            }
+                        }).join('')}
+                    </div>`;
+            } catch (_) {
+                // silent — digital materials are supplementary
+            }
         }
 
         @if(session('library.user'))

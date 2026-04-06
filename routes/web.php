@@ -26,6 +26,10 @@ Route::get('/book/{isbn}', function () {
     return view('book');
 });
 
+Route::get('/digital-viewer/{materialId}', function (Request $request, string $materialId) {
+    return view('digital-viewer', ['materialId' => $materialId]);
+});
+
 Route::get('/account', function (Request $request) {
     $user = $request->session()->get('library.user');
     if (! is_array($user)) {

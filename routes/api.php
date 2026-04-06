@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
 use App\Http\Controllers\Api\DemoAuthController;
+use App\Http\Controllers\Api\DigitalMaterialController;
 use App\Http\Controllers\Api\ExternalResourceController;
 use App\Http\Controllers\Api\ShortlistController;
 use App\Http\Controllers\Api\SubjectController;
@@ -139,6 +140,10 @@ Route::prefix('v1')->group(function (): void {
     // External licensed resources (public, config-backed).
     Route::get('/external-resources', [ExternalResourceController::class, 'index']);
     Route::get('/external-resources/{slug}', [ExternalResourceController::class, 'show']);
+
+    // Digital materials: controlled viewer access.
+    Route::get('/documents/{documentId}/digital-materials', [DigitalMaterialController::class, 'forDocument']);
+    Route::get('/digital-materials/{id}/stream', [DigitalMaterialController::class, 'stream']);
 
     Route::get('/library/health-summary', [LibraryController::class, 'healthSummary']);
     Route::get('/review/issues', [ReviewController::class, 'issues']);
