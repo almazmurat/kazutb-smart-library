@@ -466,15 +466,20 @@
       .nav-links, .nav-actions { display: none; }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
+      .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
     }
 
     @media (max-width: 560px) {
       .container { width: min(100% - 20px, var(--container)); }
-      .hero, .filters, .results { padding: 20px; }
+      .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
       .book-actions { grid-template-columns: 1fr; }
-      .icon-btn { width: 100%; height: 50px; }
+      .icon-btn { width: 100%; height: 50px; min-height: 44px; }
       .search-wrap { grid-template-columns: 1fr; }
+      .nav { min-height: 64px; }
+      .brand-text { font-size: 13px; }
+      .brand-text small { font-size: 10.5px; }
+      .hero h1 { font-size: 24px; }
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }

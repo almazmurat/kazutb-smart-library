@@ -658,24 +658,32 @@
             .action-row .btn,
             .nav-actions .btn {
                 width: 100%;
+                min-height: 44px;
             }
 
             .nav-actions { display: none; }
-            .book-cover-wrap { min-height: 420px; }
+            .book-cover-wrap { min-height: 360px; }
             .book-mockup {
-                width: 260px;
-                height: 380px;
+                width: 220px;
+                height: 320px;
             }
-            .cover-title { font-size: 32px; }
+            .cover-title { font-size: 28px; }
+            .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
         }
 
         @media (max-width: 560px) {
             .container { width: min(100% - 20px, var(--container)); }
-            .title { letter-spacing: -1px; }
+            .nav { min-height: 64px; }
+            .brand-text { font-size: 13px; }
+            .brand-text small { font-size: 10.5px; }
+            .title { letter-spacing: -1px; font-size: 24px; }
             .details-card,
             .book-panel,
-            .info-card { padding: 20px; }
-            .book-cover-wrap { padding: 20px; }
+            .info-card { padding: 18px; }
+            .book-cover-wrap { padding: 16px; min-height: 280px; }
+            .book-mockup { width: 180px; height: 260px; }
+            .cover-title { font-size: 22px; }
+            .meta-item { padding: 14px; }
         }
     </style>
 </head>

@@ -154,7 +154,9 @@ img { max-width: 100%; display: block; }
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
   font-size: 22px;
   color: var(--text);
 }
@@ -284,7 +286,7 @@ img { max-width: 100%; display: block; }
 /* --- Feature / Service cards ------------------------------ */
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
 }
 
@@ -347,7 +349,7 @@ img { max-width: 100%; display: block; }
 /* --- Contact cards ---------------------------------------- */
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 24px;
 }
 
@@ -474,18 +476,64 @@ img { max-width: 100%; display: block; }
     box-shadow: var(--shadow);
     z-index: 39;
   }
+  .nav-links.open a {
+    padding: 8px 0;
+    font-size: 16px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
   .mobile-toggle { display: block; }
   .page-hero { padding: 72px 0 48px; }
   .page-section { padding: 48px 0; }
+  .cta-section { padding: 48px 0 56px; }
+  .section-head { margin-bottom: 24px; }
+  .card { padding: 24px; }
+  .feature-card { padding: 24px; }
+  .contact-card { padding: 24px; }
 }
 
 @media (max-width: 680px) {
   .container { width: min(100% - 20px, var(--container)); }
-  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
   .feature-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
-  .nav-actions .btn { padding: 12px 14px; font-size: 14px; }
-  .section-head { flex-direction: column; align-items: start; }
+  .nav-actions .btn { padding: 12px 16px; font-size: 14px; min-height: 44px; }
+  .section-head { flex-direction: column; align-items: start; margin-bottom: 20px; }
+  .section-head h2 { font-size: clamp(24px, 5vw, 32px); }
+  .page-hero { padding: 56px 0 36px; }
+  .page-hero h1 { font-size: clamp(28px, 6vw, 40px); letter-spacing: -1px; }
+  .page-hero p { font-size: 16px; }
+  .page-section { padding: 36px 0; }
+  .cta-section { padding: 36px 0 44px; }
+  .card { padding: 20px; }
+  .feature-card { padding: 20px; }
+  .contact-card { padding: 20px; }
+  .footer-grid { padding: 24px 0; }
+  .footer-bottom { padding: 14px 0 20px; }
+  .btn { min-height: 44px; }
+  .eyebrow { font-size: 12px; margin-bottom: 8px; }
+}
+
+@media (max-width: 480px) {
+  .container { width: min(100% - 16px, var(--container)); }
+  .nav { min-height: 64px; gap: 8px; }
+  .brand-text { font-size: 13px; }
+  .brand-text small { font-size: 10.5px; }
+  .logo-img { width: 42px; height: 42px; }
+  .section-head h2 { font-size: 22px; }
+  .page-hero h1 { font-size: 26px; }
+  .card { padding: 16px; border-radius: var(--radius-lg); }
+  .feature-card { padding: 16px; border-radius: var(--radius-lg); }
+}
+
+/* --- Reduced motion -------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* --- CTA Section ------------------------------------------ */
@@ -496,14 +544,14 @@ img { max-width: 100%; display: block; }
 
 .cta-section h2 {
   margin: 0 0 12px;
-  font-size: clamp(28px, 4vw, 44px);
+  font-size: clamp(24px, 4vw, 44px);
   font-weight: 900;
   letter-spacing: -1px;
 }
 
 .cta-section p {
   color: var(--muted);
-  font-size: 17px;
+  font-size: clamp(15px, 2vw, 17px);
   line-height: 1.7;
   max-width: 600px;
   margin: 0 auto 28px;

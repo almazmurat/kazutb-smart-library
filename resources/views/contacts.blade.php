@@ -45,7 +45,7 @@
   </section>
 
   <section class="page-section">
-    <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
+    <div class="container contacts-grid">
       <div>
         <div class="section-head" style="margin-bottom: 24px;">
           <div>
@@ -139,12 +139,9 @@
         </div>
       </div>
 
-      <div class="card" style="padding: 0; overflow: hidden; height: 400px; border-radius: var(--radius-xl);">
+      <div class="card map-container">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2503.8!2d71.4107!3d51.1283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4245850e07ff5601%3A0x4d6a04db6e51e3e8!2z0JrQsNC30LDRhdGB0LrQuNC5INGD0L3QuNCy0LXRgNGB0LjRgtC10YIg0YLQtdGF0L3QvtC70L7Qs9C40Lgg0Lgg0LHQuNC30L3QtdGB0LA!5e0!3m2!1sru!2skz!4v1700000000000!5m2!1sru!2skz"
-          width="100%"
-          height="100%"
-          style="border:0;"
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
@@ -171,10 +168,41 @@
 
 @section('head')
 <style>
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .map-container {
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    height: 400px;
+  }
+
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   @media (max-width: 900px) {
-    .container[style*="grid-template-columns: 1fr 1fr"] {
-      grid-template-columns: 1fr !important;
+    .contacts-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
     }
+    .map-container { height: 320px; }
+  }
+
+  @media (max-width: 680px) {
+    .contacts-grid { gap: 24px; }
+    .map-container { height: 260px; border-radius: var(--radius-lg); }
+  }
+
+  @media (max-width: 480px) {
+    .map-container { height: 220px; border-radius: var(--radius-md); }
   }
 </style>
 @endsection

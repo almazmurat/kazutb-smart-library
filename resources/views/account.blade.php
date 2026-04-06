@@ -394,11 +394,13 @@
     @media (max-width: 1200px) {
       .profile-grid { grid-template-columns: 1fr; }
       .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 900px) {
       .nav-links { display: none; }
       .stats { grid-template-columns: 1fr; }
+      .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
     }
 
     @media (max-width: 680px) {
@@ -407,7 +409,17 @@
       .showcase { padding: 20px; }
       .book-grid { grid-template-columns: 1fr; }
       .profile-name { font-size: 24px; }
-      .nav-actions .btn { padding: 12px 14px; }
+      .nav-actions .btn { padding: 12px 16px; min-height: 44px; }
+      .nav { min-height: 64px; }
+    }
+
+    @media (max-width: 480px) {
+      .container { width: min(100% - 16px, var(--container)); }
+      .card,
+      .showcase { padding: 16px; }
+      .profile-name { font-size: 20px; }
+      .brand-text { font-size: 13px; }
+      .brand-text small { font-size: 10.5px; }
     }
   </style>
 </head>

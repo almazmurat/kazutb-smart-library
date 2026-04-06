@@ -146,6 +146,33 @@
     .resource-section-grid { grid-template-columns: 1fr; }
     .access-cards { grid-template-columns: 1fr; }
     .resource-hero-stats { gap: 24px; flex-wrap: wrap; }
+    .access-card { padding: 24px 20px; }
+  }
+
+  @media (max-width: 680px) {
+    .resource-hero-stats { gap: 16px; justify-content: space-around; }
+    .resource-hero-stats .rh-stat strong { font-size: 28px; }
+    .resource-hero-stats .rh-stat span { font-size: 12px; }
+    .resource-list-item { padding: 16px; gap: 12px; }
+    .resource-list-item .rli-icon { width: 40px; height: 40px; font-size: 18px; border-radius: 12px; }
+    .resource-list-item h4 { font-size: 15px; }
+    .resource-list-item p { font-size: 13px; }
+    .access-card { padding: 20px 16px; }
+    .access-card .ac-icon { width: 52px; height: 52px; font-size: 24px; }
+    .access-card h3 { font-size: 18px; }
+    .access-card p { font-size: 14px; }
+    .faq-item { padding: 18px; }
+    .faq-item h4 { font-size: 15px; }
+    .faq-item p { font-size: 14px; }
+    .faq-list { margin-top: 20px; gap: 12px; }
+  }
+
+  @media (max-width: 480px) {
+    .resource-hero-stats { flex-direction: column; gap: 8px; align-items: center; }
+    .resource-hero-stats .rh-stat { display: flex; gap: 8px; align-items: baseline; }
+    .resource-hero-stats .rh-stat strong { font-size: 24px; }
+    .resource-list-item .rli-icon { width: 36px; height: 36px; font-size: 16px; }
+    .access-card { padding: 16px; }
   }
 </style>
 @endsection

@@ -257,7 +257,16 @@
     @media (max-width: 640px) {
       .container { width: min(100% - 20px, var(--container)); }
       .panel { padding: 20px; }
-      .promo h1 { font-size: 28px; }
+      .promo h1 { font-size: 26px; }
+      .promo p { font-size: 15px; }
+      .input { padding: 14px 16px; min-height: 44px; }
+      .btn { min-height: 44px; }
+    }
+
+    @media (max-width: 480px) {
+      .container { width: min(100% - 16px, var(--container)); }
+      .panel { padding: 16px; }
+      .promo h1 { font-size: 22px; }
     }
   </style>
 </head>

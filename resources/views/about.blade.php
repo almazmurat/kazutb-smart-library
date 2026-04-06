@@ -12,7 +12,7 @@
   </section>
 
   <section class="page-section">
-    <div class="container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start;">
+    <div class="container about-grid">
       <div>
         <div class="eyebrow">Миссия</div>
         <h2 style="margin: 0 0 16px; font-size: clamp(28px, 4vw, 38px); font-weight: 900; letter-spacing: -1px; line-height: 1.1;">
@@ -139,9 +139,23 @@
 
 @section('head')
 <style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
   @media (max-width: 900px) {
-    .container[style*="grid-template-columns: 1.2fr"] {
-      grid-template-columns: 1fr !important;
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .about-grid {
+      gap: 24px;
     }
   }
 </style>

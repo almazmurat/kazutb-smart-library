@@ -838,6 +838,7 @@
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .highlight-strip { grid-template-columns: repeat(2, 1fr); }
       .catalog { grid-template-columns: repeat(2, 1fr); }
+      .resources-preview-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 860px) {
@@ -849,6 +850,8 @@
       .mobile-toggle {
         display: inline-grid;
         place-items: center;
+        min-width: 44px;
+        min-height: 44px;
       }
 
       .hero-main,
@@ -878,17 +881,45 @@
         flex-direction: column;
         align-items: stretch;
       }
+
+      .hero-main { min-height: auto; }
+      .hero h1 { font-size: clamp(32px, 5.5vw, 48px); }
+      .hero p { font-size: 16px; }
+      .hero-actions { gap: 10px; }
+      .stat strong { font-size: 24px; }
+      .stat { padding: 16px; }
+      .resource-card { padding: 22px; }
+      .highlight { padding: 20px; }
     }
 
     @media (max-width: 560px) {
       .container { width: min(100% - 20px, var(--container)); }
-      .nav { min-height: 76px; }
-      .brand-badge { width: 44px; height: 44px; border-radius: 15px; }
-      .hero { padding-top: 28px; }
-      .hero-main { min-height: auto; }
-      .hero h1 { letter-spacing: -1.4px; }
+      .nav { min-height: 64px; }
+      .brand-badge { width: 42px; height: 42px; border-radius: 14px; }
+      .brand-text { font-size: 13px; }
+      .brand-text small { font-size: 10.5px; }
+      .hero { padding-top: 20px; }
+      .hero h1 { letter-spacing: -1.4px; font-size: 28px; }
+      .hero p { font-size: 15px; }
       .section-head { flex-direction: column; align-items: start; }
-      .btn { width: 100%; }
+      .section-head h2 { font-size: 22px; }
+      .btn { width: 100%; min-height: 44px; }
+      .hero-main { padding: 18px; }
+      .showcase-card,
+      .search-card,
+      .service-big,
+      .service-list { padding: 16px; }
+      .stat { padding: 14px; border-radius: 16px; }
+      .stat strong { font-size: 20px; }
+      .stat span { font-size: 12px; }
+      .highlight { padding: 16px; }
+      .highlight .icon { width: 44px; height: 44px; font-size: 20px; }
+      .resource-card { padding: 18px; }
+      .resource-card h3 { font-size: 17px; }
+      .resource-card p { font-size: 14px; }
+      .resource-icon { font-size: 28px; margin-bottom: 10px; }
+      .service-item { padding: 14px; }
+      .footer-grid { grid-template-columns: 1fr; }
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -958,15 +989,11 @@
       display: flex;
       gap: 14px;
       flex-shrink: 0;
-    }
-
-    @media (max-width: 1120px) {
-      .resources-preview-grid { grid-template-columns: 1fr 1fr; }
+      flex-wrap: wrap;
     }
 
     @media (max-width: 860px) {
-      .resources-preview-grid { grid-template-columns: 1fr; }
-      .cta-actions { flex-direction: column; }
+      .cta-actions { flex-direction: column; align-items: stretch; }
     }
   </style>
 <body>
