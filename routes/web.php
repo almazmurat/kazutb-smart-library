@@ -67,6 +67,10 @@ Route::get('/for-teachers', function () {
     return view('for-teachers', ['activePage' => 'for-teachers']);
 });
 
+Route::get('/discover', function () {
+    return view('discover', ['activePage' => 'discover']);
+});
+
 Route::get('/internal/dashboard', function () {
     return view('internal-dashboard');
 });

@@ -805,6 +805,19 @@
       });
     });
 
+    // Read URL params for deep-linking from discovery pages
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlQ = urlParams.get('q');
+      const urlSort = urlParams.get('sort');
+      if (urlQ && document.getElementById('search-input')) {
+        document.getElementById('search-input').value = urlQ;
+      }
+      if (urlSort && document.getElementById('sort-select')) {
+        document.getElementById('sort-select').value = urlSort;
+      }
+    })();
+
     // Initial load
     loadCatalog();
   </script>

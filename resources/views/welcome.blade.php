@@ -1199,21 +1199,21 @@
             </div>
           </a>
           <!-- FUTURE: Add per-school / per-department discovery cards when institutional structure is confirmed -->
-          <a href="/catalog" class="discovery-card">
+          <a href="/discover" class="discovery-card">
             <div class="discovery-icon discovery-icon--area">📐</div>
             <div class="discovery-text">
               <h4>По направлениям</h4>
               <p>Экономика, технологии, право, языки и другие академические области.</p>
             </div>
           </a>
-          <a href="/catalog" class="discovery-card">
+          <a href="/discover" class="discovery-card">
             <div class="discovery-icon discovery-icon--research">🔬</div>
             <div class="discovery-text">
               <h4>Наука и исследования</h4>
               <p>Диссертации, научные журналы, международные базы и аналитика.</p>
             </div>
           </a>
-          <a href="/catalog" class="discovery-card">
+          <a href="/catalog?q=&sort=newest" class="discovery-card">
             <div class="discovery-icon discovery-icon--new">✨</div>
             <div class="discovery-text">
               <h4>Новые поступления</h4>
