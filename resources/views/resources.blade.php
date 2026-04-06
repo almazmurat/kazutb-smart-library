@@ -251,10 +251,10 @@
 
 <section class="page-section">
   <div class="container">
-    <div class="section-head" style="justify-content:center; text-align:center; flex-direction:column; align-items:center;">
+    <div class="section-head section-head-centered">
       <div>
         <div class="eyebrow">Режимы доступа</div>
-        <h2 style="margin-top:8px;">Как получить доступ к ресурсам</h2>
+        <h2>Как получить доступ к ресурсам</h2>
         <p>Выберите подходящий способ доступа в зависимости от типа ресурса и вашего местоположения.</p>
       </div>
     </div>
@@ -284,7 +284,7 @@
 
 <section class="page-section">
   <div class="container">
-    <div class="section-head" style="justify-content:center; text-align:center; flex-direction:column; align-items:center;">
+    <div class="section-head section-head-centered">
       <div>
         <h2>Частые вопросы</h2>
         <p>Ответы на основные вопросы о работе с электронными ресурсами библиотеки.</p>

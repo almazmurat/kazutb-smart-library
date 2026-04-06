@@ -62,14 +62,14 @@
 
   <section class="page-section">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head section-head-centered">
         <div>
           <h2>Цифровые ресурсы</h2>
           <p>Электронные базы данных и цифровые коллекции, доступные пользователям библиотеки.</p>
         </div>
       </div>
 
-      <div class="feature-grid">
+      <div class="feature-grid services-centered-grid">
         <div class="feature-card">
           <div class="icon">💻</div>
           <h3>Электронная библиотека</h3>
@@ -93,14 +93,14 @@
 
   <section class="page-section">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head section-head-centered">
         <div>
           <h2>Поддержка и консультации</h2>
           <p>Помощь библиотекарей и специалистов для эффективной работы с информацией.</p>
         </div>
       </div>
 
-      <div class="feature-grid">
+      <div class="feature-grid services-centered-grid">
         <div class="feature-card">
           <div class="icon">🧠</div>
           <h3>Библиографические консультации</h3>
@@ -132,4 +132,13 @@
       </div>
     </div>
   </section>
+@endsection
+
+@section('head')
+<style>
+  .services-centered-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+    justify-content: center;
+  }
+</style>
 @endsection

@@ -11,189 +11,121 @@ Start by reading:
 - `project-context/98-product-master-context.md`
 - `README.md`
 - all relevant shared public layout files
+- all relevant shared CSS/public shell files
 - all relevant navbar/footer/shared partials
-- all relevant public Blade views
-- any shared CSS/public styling files
-- any SPA/public UI files that affect the public experience
-- recent docs or prompts related to public UI, frontend polish, public catalog, and academic discovery
+- all public Blade views
+- recent prompts/docs related to frontend polish, academic discovery, public UI, and design-system consolidation
 
 Context:
-The current public frontend has improved incrementally, but it still does not feel like a coherent modern product.
-Some sections are visually left-heavy, spacing is inconsistent, footer quality is weak, typography is uneven, and the overall public design still feels patchy rather than system-driven.
+A substantial design-system consolidation wave has already been completed.
+The public frontend is stronger now, but the next step is to harden overall quality, consistency, composition, and academic product clarity.
 
-The goal now is not another micro-polish pass.
-The goal is to execute a large, design-system-driven public frontend consolidation and refinement wave.
-
-Important:
-- Do not treat this as “just tweak some CSS”.
-- Do not do random visual patching.
-- Do not invent speculative backend features.
-- Do not break working routes, auth state, or canonical catalog behavior.
-- Where possible, use the strongest available tool-assisted workflow and modern frontend implementation approach available in this repository/tooling environment.
-- Prefer coherent system-level improvement over scattered local fixes.
+This is not a broad redesign from scratch.
+This is a strict quality-hardening and consistency pass across the public reader-facing experience.
 
 Primary goals:
-
-1. Bring all public-facing pages to a coherent modern, minimal, premium visual system.
-2. Fix alignment/composition issues where cards and sections feel left-stuck or visually unbalanced.
-3. Redesign the footer into a polished, modern, information-rich but clean footer.
-4. Normalize typography, spacing, card layout, section rhythm, and CTA hierarchy across public pages.
-5. Preserve working functionality and key flows:
-   - public catalog
-   - book detail
-   - auth/login/account access logic
-   - navigation
-   - responsive behavior
-6. Make the academic discovery direction feel intentional and product-quality, not placeholder-like.
+1. Remove remaining visual inconsistencies across public pages.
+2. Improve composition, centering, spacing rhythm, and section balance where pages still feel awkward or uneven.
+3. Strengthen typography hierarchy and fine-detail polish.
+4. Improve content clarity so pages feel less placeholder-like and more product-ready.
+5. Make the academic discovery direction clearer and more useful without inventing unconfirmed institutional structure.
+6. Preserve working auth/catalog/account/navigation behavior.
 
 What to do:
 
-## 1. Audit the full public UI as a system
-Inspect the shared public experience across:
-- home page
+## 1. Perform a strict public UI quality audit
+Audit all public reader-facing pages as one product surface:
+- home
 - catalog
 - book detail
-- login/auth
-- account entry/access-related surfaces
+- login
 - services
 - about
 - contacts
 - resources
 - news
-- shared navbar
-- shared footer
-- shared layout/shell styles
+- shared navbar/footer/layout
 
-Identify the main system-level design issues such as:
-- misaligned or left-heavy cards/sections
-- weak section centering/composition
-- inconsistent container widths
-- inconsistent vertical rhythm
-- weak typography hierarchy
-- uneven card sizing and spacing
-- poor footer design
-- inconsistent button and CTA treatment
-- pages that feel visually disconnected from the rest of the site
+Look for:
+- weak composition
+- awkward centering or left-heavy layouts
+- inconsistent spacing rhythm
+- typography mismatch
+- weak empty states or weak supporting text
+- sections that still feel temporary
+- places where cards/blocks do not visually belong to the same system
+- footer/detail inconsistencies
+- poor content hierarchy or weak CTA framing
 
-## 2. Build or normalize a public design system layer
-Create or strengthen a shared public UI system so pages use common rules for:
-- max-width containers
-- section spacing
-- hero layout
-- heading scale
-- body text scale
-- card padding/radius/shadow
-- grid behavior
-- footer structure
-- button hierarchy
-- empty states / notice blocks
-- responsive breakpoints
+## 2. Improve layout and composition where still needed
+Make targeted but meaningful improvements to:
+- section width logic
+- centering and balance
+- content grouping
+- card alignment
+- vertical rhythm
+- section transitions
+- CTA placement
+- readability and visual flow
 
-Prefer shared reusable styling over repeated local hacks.
-If existing shared CSS is insufficient, improve the shared layer instead of endlessly patching each page separately.
+## 3. Polish typography and micro-details
+Refine:
+- heading scale consistency
+- paragraph width/readability
+- muted/support text
+- metadata text
+- link styles
+- button label consistency
+- section eyebrow/label use
+- icon/text spacing
+- small visual details that still feel rough
 
-## 3. Refactor page layouts to feel centered, balanced, and premium
-Fix the visible layout/composition issues across the public pages.
+## 4. Strengthen academic product clarity
+Improve page content/copy/navigation so the site feels more clearly oriented toward:
+- students
+- teachers
+- academic resource discovery
+- syllabus/resource preparation
+- library services and electronic resources
 
-Examples of the desired improvements:
-- cards that visually belong to centered grid systems
-- sections that align to the same container logic
-- more balanced whitespace
-- better relationship between hero blocks and content blocks
-- less “content glued to the left edge”
-- more polished section transitions
-- stronger visual coherence between pages
+Important:
+Do not hardcode unverified real university structure as final truth.
+Keep this future-compatible and product-coherent.
 
-## 4. Redesign the footer properly
-The footer should no longer feel generic or weak.
+## 5. Remove temporary-feeling UI/content where justified
+If some public text blocks or UI structures still feel like placeholders, weak stubs, or transitional content, improve them now in a truthful way.
 
-Make it:
-- visually stronger,
-- cleaner,
-- better spaced,
-- more typographically polished,
-- aligned with the rest of the product,
-- helpful for key audiences,
-- consistent with the academic-library direction.
+Do not overclaim.
+Do not fabricate institutional facts.
+But do improve weak wording, weak hierarchy, and weak presentation.
 
-It should support:
-- students,
-- teachers,
-- academic resources,
-- services,
-- about/contact/help,
-without becoming noisy.
+## 6. Keep shared-system discipline
+Prefer shared improvements over scattered page hacks.
+If the same refinement is needed in multiple places, strengthen the shared design layer.
 
-## 5. Improve typography and detail quality
-Normalize:
-- heading weights/sizes
-- paragraph readability
-- muted/supporting text styles
-- card titles and metadata
-- button labels
-- footer/link readability
-- spacing around icons and labels
-- overall polish of fine details
-
-The result should feel modern and intentional, not like default CSS plus gradients.
-
-## 6. Keep logic and flows correct
-Preserve and verify:
-- authenticated vs guest navbar behavior
-- login redirect behavior
-- catalog route behavior
-- book detail route behavior
-- responsive behavior on desktop/tablet/mobile
-- footer/navigation links
-- no contradictory CTAs
-
-## 7. Use the strongest implementation approach available
-If this repository/tool environment supports better tooling, more structured shared styling, or MCP-assisted frontend work, use that intelligently.
-The objective is a better end result, not loyalty to manual CSS patching.
-However:
-- do not introduce uncontrolled framework churn,
-- do not rewrite the app into a new frontend architecture unless clearly justified,
-- do not create speculative dependencies without operational value.
-
-## 8. Perform a substantial implementation wave now
-Do not stop at analysis.
-Make the actual frontend/system changes now.
-
-Prefer:
-- shared layout improvements,
-- shared style consolidation,
-- footer redesign,
-- page composition refactors,
-- typography cleanup,
-- consistent card/grid behavior,
-- responsive refinement.
-
-## 9. Verify the result
-Perform practical verification such as:
-- key public routes render correctly,
-- auth-sensitive navigation is correct,
-- no major layout regressions,
-- responsive structure is coherent,
-- no broken links or obvious UI contradictions.
-
-Be honest about environment limits if full runtime/device verification is not possible.
+## 7. Verify key flows
+Verify:
+- auth-sensitive nav behavior
+- public routes
+- footer/nav consistency
+- no broken CTA paths
+- responsive integrity
+- no obvious regressions in catalog/book/account entry flows
 
 Output format:
 1. Executive summary
-2. System-level design issues found
-3. Shared design-system improvements implemented
-4. Pages/components substantially improved
-5. Footer redesign summary
-6. Logic/UX correctness checks
-7. Verification performed
-8. Files updated
-9. Remaining known limitations
-10. Next best step
+2. Quality issues found
+3. Layout/composition improvements
+4. Typography/detail improvements
+5. Academic clarity/content improvements
+6. Verification performed
+7. Files updated
+8. Remaining known limitations
+9. Next best step
 
 Definition of done:
-- The public site feels substantially more coherent, modern, minimal, and premium.
-- Layouts are better balanced and not awkwardly left-heavy.
-- Footer quality is significantly improved.
-- Typography and spacing feel intentional across pages.
-- Existing public functionality and key logic remain intact.
-- The result is a real frontend consolidation wave, not another patch-only pass.
+- Public pages feel more polished, coherent, and product-ready.
+- Remaining rough edges are reduced meaningfully.
+- Academic discovery direction feels clearer.
+- Shared system quality improves rather than isolated hacks multiplying.
+- Existing working flows remain intact.
