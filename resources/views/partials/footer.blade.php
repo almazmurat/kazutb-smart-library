@@ -23,10 +23,10 @@
 
     <div class="footer-col">
       <div class="footer-title">Преподавателям</div>
+      <a href="/for-teachers">Ресурсы для преподавателей</a>
       <a href="/catalog">Научная литература</a>
       <a href="/resources">Базы данных</a>
       <a href="/services">Поддержка исследований</a>
-      <a href="/news">Новости и мероприятия</a>
     </div>
 
     <div class="footer-col">

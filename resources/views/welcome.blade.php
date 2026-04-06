@@ -1179,7 +1179,7 @@
               <p>Учебники, пособия, методические материалы и рекомендованная литература.</p>
             </div>
           </a>
-          <a href="/catalog" class="discovery-card">
+          <a href="/for-teachers" class="discovery-card">
             <div class="discovery-icon discovery-icon--teachers">👩‍🏫</div>
             <div class="discovery-text">
               <h4>Преподавателям</h4>
