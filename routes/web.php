@@ -71,6 +71,10 @@ Route::get('/discover', function () {
     return view('discover', ['activePage' => 'discover']);
 });
 
+Route::get('/shortlist', function () {
+    return view('shortlist', ['activePage' => '']);
+});
+
 Route::get('/internal/dashboard', function () {
     return view('internal-dashboard');
 });

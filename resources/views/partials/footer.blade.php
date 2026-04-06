@@ -24,6 +24,7 @@
     <div class="footer-col">
       <div class="footer-title">Преподавателям</div>
       <a href="/for-teachers">Ресурсы для преподавателей</a>
+      <a href="/shortlist">Подборка литературы</a>
       <a href="/discover">По направлениям</a>
       <a href="/catalog">Научная литература</a>
       <a href="/resources">Базы данных</a>

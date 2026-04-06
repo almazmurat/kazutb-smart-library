@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Каталог книг — Library Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -475,8 +476,14 @@
     }
 
     .icon-btn:hover {
-      background: rgba(59,130,246,.08);
-      border-color: var(--blue);
+      background: rgba(124,58,237,.08);
+      border-color: var(--violet);
+    }
+
+    .icon-btn.shortlisted {
+      background: rgba(124,58,237,.1);
+      border-color: var(--violet);
+      color: var(--violet);
     }
 
     .pagination {
@@ -661,11 +668,13 @@
 
   <script>
     const API_ENDPOINT = '/api/v1/catalog-db';
+    const SHORTLIST_API = '/api/v1/shortlist';
     let currentPage = 1;
     let totalPages = 1;
     let activeSubjectId = '';
     let activeSubjectLabel = '';
     let subjectsData = null;
+    let shortlistState = {};
 
     function escapeHtml(text) {
       const div = document.createElement('div');
@@ -723,6 +732,8 @@
         ? `<span class="tag subject" title="${escapeHtml(data.specialization)}">${escapeHtml(data.specialization.length > 25 ? data.specialization.substring(0, 25) + '…' : data.specialization)}</span>`
         : (data.department ? `<span class="tag subject" title="${escapeHtml(data.department)}">${escapeHtml(data.department.length > 25 ? data.department.substring(0, 25) + '…' : data.department)}</span>` : '');
 
+      const isShortlisted = shortlistState[identifier] || false;
+
       return `
         <article class="book-card" onclick="goToBook('${escapeHtml(identifier)}')">
           <div class="book-preview">
@@ -743,7 +754,7 @@
           </div>
           <div class="book-actions">
             <button class="btn btn-primary" onclick="event.stopPropagation(); goToBook('${escapeHtml(identifier)}')">Смотреть книгу</button>
-            <button class="icon-btn" onclick="event.stopPropagation(); toggleFavorite(this)">♡</button>
+            <button class="icon-btn ${isShortlisted ? 'shortlisted' : ''}" onclick="event.stopPropagation(); toggleShortlist(this, ${JSON.stringify(JSON.stringify(data))})" title="${isShortlisted ? 'Убрать из подборки' : 'В подборку'}">${isShortlisted ? '★' : '☆'}</button>
           </div>
         </article>
       `;
@@ -791,6 +802,12 @@
           resultsCount.textContent = 'Найдено 0 книг';
           document.getElementById('pagination').innerHTML = '';
         } else {
+          // Check shortlist state for rendered books, then re-render
+          const identifiers = books.map(b => {
+            const d = formatBookData(b);
+            return d.isbn || d.id;
+          }).filter(Boolean);
+          await loadShortlistState(identifiers);
           grid.innerHTML = books.map(renderBookCard).join('');
           resultsCount.textContent = `Найдено ${meta.total || books.length} книг`;
           totalPages = meta.totalPages || 1;
@@ -849,9 +866,78 @@
       window.location.href = `/book/${encodeURIComponent(identifier)}`;
     }
 
-    function toggleFavorite(btn) {
-      btn.textContent = btn.textContent === '♡' ? '♥' : '♡';
-      btn.style.color = btn.textContent === '♥' ? 'var(--pink)' : 'inherit';
+    async function toggleShortlist(btn, dataJson) {
+      const data = JSON.parse(dataJson);
+      const identifier = data.isbn || data.id;
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+      if (shortlistState[identifier]) {
+        // Remove
+        try {
+          const res = await fetch(`${SHORTLIST_API}/${encodeURIComponent(identifier)}`, {
+            method: 'DELETE',
+            headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
+            credentials: 'same-origin',
+          });
+          if (res.ok) {
+            shortlistState[identifier] = false;
+            btn.textContent = '☆';
+            btn.classList.remove('shortlisted');
+            btn.title = 'В подборку';
+          }
+        } catch (e) { console.error(e); }
+      } else {
+        // Add
+        try {
+          const res = await fetch(SHORTLIST_API, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfToken,
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify({
+              identifier: identifier,
+              title: data.title,
+              author: data.author,
+              publisher: data.publisher,
+              year: String(data.year || ''),
+              language: data.language,
+              isbn: data.isbn,
+              available: data.available,
+              total: data.total,
+            }),
+          });
+          if (res.ok || res.status === 201 || res.status === 409) {
+            shortlistState[identifier] = true;
+            btn.textContent = '★';
+            btn.classList.add('shortlisted');
+            btn.title = 'Убрать из подборки';
+          }
+        } catch (e) { console.error(e); }
+      }
+    }
+
+    async function loadShortlistState(identifiers) {
+      if (!identifiers.length) return;
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+      try {
+        const res = await fetch(`${SHORTLIST_API}/check`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ identifiers }),
+        });
+        if (res.ok) {
+          const json = await res.json();
+          shortlistState = { ...shortlistState, ...(json.data || {}) };
+        }
+      } catch (e) { console.warn('Shortlist check failed:', e); }
     }
 
     function applyFilters() {

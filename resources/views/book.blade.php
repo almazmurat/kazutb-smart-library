@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>Просмотр книги — Library Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -994,6 +995,7 @@
 
                             <div class="action-row">
                                 <button class="btn btn-primary" disabled style="opacity:.5; cursor:not-allowed;" title="Функция резервирования в разработке">Забронировать книгу</button>
+                                <button class="btn btn-ghost" id="book-shortlist-btn" onclick="toggleBookShortlist()" style="border-color:var(--violet); color:var(--violet);">☆ В подборку</button>
                                 <a href="/catalog" class="btn btn-ghost">Вернуться в каталог</a>
                             </div>
                         </section>
@@ -1034,6 +1036,104 @@
             window.location.href = '/login';
         });
         @endif
+
+        // --- Shortlist integration ---
+        const SHORTLIST_API = '/api/v1/shortlist';
+        let bookShortlisted = false;
+        let currentBookData = null;
+
+        async function checkBookShortlist(identifier) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+            try {
+                const res = await fetch(`${SHORTLIST_API}/check`, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({ identifiers: [identifier] }),
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    bookShortlisted = !!(json.data && json.data[identifier]);
+                    updateShortlistButton();
+                }
+            } catch (e) { /* silent */ }
+        }
+
+        function updateShortlistButton() {
+            const btn = document.getElementById('book-shortlist-btn');
+            if (!btn) return;
+            if (bookShortlisted) {
+                btn.innerHTML = '★ В подборке';
+                btn.style.background = 'rgba(124,58,237,.1)';
+                btn.style.borderColor = 'var(--violet)';
+                btn.style.color = 'var(--violet)';
+            } else {
+                btn.innerHTML = '☆ В подборку';
+                btn.style.background = '';
+                btn.style.borderColor = 'var(--violet)';
+                btn.style.color = 'var(--violet)';
+            }
+        }
+
+        async function toggleBookShortlist() {
+            if (!currentBookData) return;
+            const identifier = currentBookData.identifier;
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+            if (bookShortlisted) {
+                try {
+                    const res = await fetch(`${SHORTLIST_API}/${encodeURIComponent(identifier)}`, {
+                        method: 'DELETE',
+                        headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                        credentials: 'same-origin',
+                    });
+                    if (res.ok) {
+                        bookShortlisted = false;
+                        updateShortlistButton();
+                    }
+                } catch (e) { console.error(e); }
+            } else {
+                try {
+                    const res = await fetch(SHORTLIST_API, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify(currentBookData),
+                    });
+                    if (res.ok || res.status === 201 || res.status === 409) {
+                        bookShortlisted = true;
+                        updateShortlistButton();
+                    }
+                } catch (e) { console.error(e); }
+            }
+        }
+
+        // Patch renderBook to capture data and check shortlist
+        const _origRenderBook = renderBook;
+        renderBook = function(book) {
+            _origRenderBook(book);
+            const identifier = (book?.isbn?.raw || book?.id || isbn);
+            currentBookData = {
+                identifier: identifier,
+                title: normalizeText(book?.title?.display || book?.title?.raw, 'Без названия'),
+                author: normalizeText(book?.primaryAuthor),
+                publisher: normalizeText(book?.publisher?.name),
+                year: normalizeText(book?.publicationYear),
+                language: normalizeText(book?.language?.raw),
+                isbn: normalizeText(book?.isbn?.raw),
+                available: book?.copies?.available || 0,
+                total: book?.copies?.total || 0,
+            };
+            checkBookShortlist(identifier);
+        };
 
         loadBook();
     </script>

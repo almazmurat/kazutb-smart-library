@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\ShortlistController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\InternalAiAssistantController;
 use App\Http\Controllers\Api\InternalCopyReadController;
@@ -37,6 +38,15 @@ Route::middleware('web')->group(function (): void {
         Route::get('/v1/account/reservations', [AccountController::class, 'reservations']);
         Route::get('/v1/me', [AuthController::class, 'me']);
         Route::post('/v1/logout', [AuthController::class, 'logout']);
+    });
+
+    // Shortlist routes — session-based, available to all session holders.
+    Route::prefix('v1/shortlist')->group(function (): void {
+        Route::get('/', [ShortlistController::class, 'index']);
+        Route::post('/', [ShortlistController::class, 'store']);
+        Route::delete('/{identifier}', [ShortlistController::class, 'destroy'])->where('identifier', '.+');
+        Route::post('/clear', [ShortlistController::class, 'clear']);
+        Route::post('/check', [ShortlistController::class, 'check']);
     });
 });
 
