@@ -39,6 +39,18 @@ Route::get('/login', function () {
     return view('auth');
 });
 
+Route::get('/services', function () {
+    return view('services', ['activePage' => 'services']);
+});
+
+Route::get('/about', function () {
+    return view('about', ['activePage' => 'about']);
+});
+
+Route::get('/contacts', function () {
+    return view('contacts', ['activePage' => 'contacts']);
+});
+
 Route::get('/internal/dashboard', function () {
     return view('internal-dashboard');
 });

@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/shell.css">
     <style>
         :root {
             --bg: #f5f7fb;
@@ -683,7 +684,7 @@
         <div class="container nav">
             <a href="/" class="brand">
                 <div class="brand-badge">
-                    <img src="/logo.png" alt="Logo" style="width:50px; height:50px; object-fit:contain;">
+                    <img src="/logo.png" alt="Logo" class="logo-img">
                 </div>
                 <div>
                     <div id="brand-title">КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА</div>
@@ -694,13 +695,14 @@
             <nav class="nav-links">
                 <a href="/">Главная</a>
                 <a href="/catalog">Каталог</a>
-                <a href="/">Преимущества</a>
-                <a href="/">Сервисы</a>
+                <a href="/services">Сервисы</a>
+                <a href="/about">О библиотеке</a>
+                <a href="/contacts">Контакты</a>
             </nav>
 
             <div class="nav-actions">
-                <button id="header-login-btn" class="btn btn-ghost">Войти</button>
-                <a href="/account" id="header-catalog-btn" class="btn btn-primary">Личный кабинет</a>
+                <a href="/login" class="btn btn-ghost" id="header-login-btn">Войти</a>
+                <a href="/account" class="btn btn-primary">Личный кабинет</a>
             </div>
         </div>
     </header>
@@ -712,6 +714,8 @@
             <div id="content"></div>
         </div>
     </main>
+
+    @include('partials.footer')
 
     <script>
         const isbn = window.location.pathname.split('/').pop();

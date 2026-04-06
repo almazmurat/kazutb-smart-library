@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/shell.css">
   <style>
     :root {
       --bg: #f6f8fc;
@@ -900,7 +901,7 @@
     <div class="container nav">
       <a href="#" class="brand">
         <div class="brand-badge">
-          <img src="/logo.png" alt="Logo" style="width:50px; height:50px; object-fit:contain;">
+          <img src="/logo.png" alt="Logo" class="logo-img">
         </div>
         <div>
           <div id="brand-title">
@@ -912,9 +913,9 @@
 
       <nav class="nav-links">
         <a href="/catalog">Каталог</a>
-        <a href="#services">Сервисы</a>
-        <a href="#events">События</a>
-        <a href="#contacts">Контакты</a>
+        <a href="/services">Сервисы</a>
+        <a href="/about">О библиотеке</a>
+        <a href="/contacts">Контакты</a>
       </nav>
 
       <div class="nav-actions">
@@ -1111,47 +1112,7 @@
 
   </main>
 
-  <footer id="contacts">
-    <div class="container footer-grid">
-      <div class="footer-col">
-        <div id="footer-brand-title" class="footer-title">Library Hub</div>
-        <p id="footer-brand-description">Светлый современный лендинг университетской библиотеки с чистым визуалом, цифровыми сервисами и удобной навигацией.</p>
-      </div>
-
-      <div class="footer-col">
-        <div id="footer-sections-title" class="footer-title">Разделы</div>
-        <div id="footer-sections-links">
-          <a href="/catalog">Каталог</a>
-          <a href="#advantages">Преимущества</a>
-          <a href="#services">Сервисы</a>
-          <a href="#events">События</a>
-        </div>
-      </div>
-
-      <div class="footer-col">
-        <div id="footer-contacts-title" class="footer-title">Контакты</div>
-        <div id="footer-contacts-links">
-          <a href="#">г. Астана, ул. Примерная, 15</a>
-          <a href="tel:+77000000000">+7 (700) 000 00 00</a>
-          <a href="mailto:library@university.kz">library@university.kz</a>
-        </div>
-      </div>
-
-      <div class="footer-col">
-        <div id="footer-hours-title" class="footer-title">Режим работы</div>
-        <p id="footer-address">г. Астана, ул. Примерная, 15</p>
-        <div id="footer-hours-list">
-          <p>Пн-Пт: 09:00 - 18:00</p>
-          <p>Сб: 10:00 - 14:00</p>
-          <p>Вс: выходной</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="container footer-bottom" id="footer-bottom">
-      <p>© 2026 Library Hub. Все права защищены.</p>
-    </div>
-  </footer>
+  @include('partials.footer')
 
   <script>
     const toggle = document.querySelector('.mobile-toggle');

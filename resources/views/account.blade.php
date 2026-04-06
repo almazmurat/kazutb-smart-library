@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/shell.css">
   <style>
     :root {
       --bg: #f5f7fb;
@@ -415,7 +416,7 @@
     <div class="container nav">
       <a href="/" class="brand">
         <div class="brand-badge">
-          <img src="/logo.png" alt="Logo" style="width:50px; height:50px; object-fit:contain;">
+          <img src="/logo.png" alt="Logo" class="logo-img">
         </div>
         <div>
           <div>КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА</div>
@@ -426,6 +427,7 @@
       <nav class="nav-links">
         <a href="/">Главная</a>
         <a href="/catalog">Каталог</a>
+        <a href="/services">Сервисы</a>
         <a href="/account" class="active">Кабинет</a>
       </nav>
 
@@ -519,6 +521,8 @@
       </div>
     </div>
   </div>
+
+  @include('partials.footer')
 
   <script>
     const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans?status=active';

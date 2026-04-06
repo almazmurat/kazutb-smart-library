@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/shell.css">
   <style>
     :root {
       --border: rgba(15, 23, 42, .08);
@@ -265,7 +266,7 @@
     <div class="container nav">
       <a href="/" class="brand">
         <div class="brand-badge">
-          <img src="/logo.png" alt="Logo" style="width:50px; height:50px; object-fit:contain;">
+          <img src="/logo.png" alt="Logo" class="logo-img">
         </div>
         <div>
           <div>КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА</div>
@@ -275,6 +276,7 @@
 
       <div>
         <a href="/" class="btn btn-ghost">На главную</a>
+        <a href="/catalog" class="btn btn-ghost">Каталог</a>
       </div>
     </div>
   </header>
@@ -319,6 +321,8 @@
       </section>
     </div>
   </main>
+
+  @include('partials.footer')
 
   <script>
     const AUTH_USER_KEY = 'library.auth.user';
