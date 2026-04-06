@@ -44,6 +44,7 @@ Route::middleware('web')->group(function (): void {
     // Shortlist routes — session-based, available to all session holders.
     Route::prefix('v1/shortlist')->group(function (): void {
         Route::get('/', [ShortlistController::class, 'index']);
+        Route::get('/export', [ShortlistController::class, 'export']);
         Route::post('/', [ShortlistController::class, 'store']);
         Route::delete('/{identifier}', [ShortlistController::class, 'destroy'])->where('identifier', '.+');
         Route::post('/clear', [ShortlistController::class, 'clear']);

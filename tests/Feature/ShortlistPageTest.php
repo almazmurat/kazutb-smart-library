@@ -38,4 +38,54 @@ class ShortlistPageTest extends TestCase
             ->assertSee('copyBibliography()', false)
             ->assertSee('clearShortlist()', false);
     }
+
+    public function test_shortlist_page_has_format_selector(): void
+    {
+        $response = $this->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('bib-format', false)
+            ->assertSee('numbered', false)
+            ->assertSee('grouped', false)
+            ->assertSee('syllabus', false);
+    }
+
+    public function test_shortlist_page_has_print_button(): void
+    {
+        $response = $this->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('window.print()', false);
+    }
+
+    public function test_shortlist_page_has_export_api_call(): void
+    {
+        $response = $this->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('loadExport()', false)
+            ->assertSee('/export?format=', false);
+    }
+
+    public function test_shortlist_page_has_grouped_sections(): void
+    {
+        $response = $this->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('shortlist-books-section', false)
+            ->assertSee('shortlist-external-section', false);
+    }
+
+    public function test_shortlist_page_has_resources_link(): void
+    {
+        $response = $this->get('/shortlist');
+
+        $response
+            ->assertOk()
+            ->assertSee('href="/resources"', false);
+    }
 }

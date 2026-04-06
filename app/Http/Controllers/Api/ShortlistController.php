@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\BibliographyFormatter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -114,6 +115,23 @@ class ShortlistController extends Controller
         return response()->json([
             'message' => 'Подборка очищена.',
             'meta' => ['total' => 0],
+        ]);
+    }
+
+    /**
+     * Export shortlist as formatted bibliography text.
+     */
+    public function export(Request $request): JsonResponse
+    {
+        $format = $request->query('format', BibliographyFormatter::FORMAT_NUMBERED);
+        $items = $this->getShortlist($request);
+        $formatter = new BibliographyFormatter();
+
+        $result = $formatter->format(array_values($items), $format);
+
+        return response()->json([
+            'data' => $result,
+            'meta' => ['total' => count($items)],
         ]);
     }
 
