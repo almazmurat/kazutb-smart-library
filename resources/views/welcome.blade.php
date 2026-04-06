@@ -256,6 +256,61 @@
       margin-top: 30px;
     }
 
+    .hero-search-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .hero-search-bar input {
+      flex: 1;
+      padding: 16px 22px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      font-size: 16px;
+      font-family: inherit;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .hero-search-bar input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+    }
+
+    .hero-search-bar .btn {
+      white-space: nowrap;
+      padding: 16px 28px;
+    }
+
+    .hero-quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hero-quick-links a {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid rgba(15,23,42,.06);
+      color: #334155;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: var(--shadow-soft);
+      transition: all .2s;
+    }
+
+    .hero-quick-links a:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      transform: translateY(-1px);
+    }
+
     .hero-tags {
       display: flex;
       flex-wrap: wrap;
@@ -970,6 +1025,10 @@
         align-items: stretch;
       }
 
+      .hero-search-bar {
+        flex-direction: column;
+      }
+
       .hero-main { min-height: auto; }
       .hero h1 { font-size: clamp(32px, 5.5vw, 48px); }
       .hero p { font-size: 16px; }
@@ -1085,40 +1144,7 @@
     }
   </style>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a href="#" class="brand">
-        <div class="brand-badge">
-          <img src="/logo.png" alt="Logo" class="logo-img">
-        </div>
-        <div>
-          <div id="brand-title">
-          КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА
-          </div>
-          <small id="brand-subtitle">Современная библиотека университета</small>
-        </div>
-      </a>
-
-      <nav class="nav-links">
-        <a href="/catalog">Каталог</a>
-        <a href="/resources">Ресурсы</a>
-        <a href="/services">Сервисы</a>
-        <a href="/news">Новости</a>
-        <a href="/about">О библиотеке</a>
-        <a href="/contacts">Контакты</a>
-      </nav>
-
-      <div class="nav-actions">
-        @if(session('library.user'))
-          <a href="/account" class="btn btn-ghost">Кабинет</a>
-          <button type="button" class="btn btn-primary" id="shared-logout-btn">Выйти</button>
-        @else
-          <a href="/login" class="btn btn-ghost">Войти</a>
-          <a href="/account" class="btn btn-primary">Личный кабинет</a>
-        @endif
-      </div>
-    </div>
-  </header>
+  @include('partials.navbar', ['activePage' => 'home'])
 
   <main>
     <section class="hero">
@@ -1130,16 +1156,16 @@
               Пространство, где классический библиотечный фонд объединяется с электронным каталогом, научными базами, онлайн-бронированием и быстрым поиском знаний в одном чистом и ярком интерфейсе.
             </p>
 
-            <div class="hero-actions">
-              <button id="hero-primary-btn" class="btn btn-primary">Найти книгу</button>
-              <button id="hero-secondary-btn" class="btn btn-secondary">Посмотреть новинки</button>
+            <div class="hero-search-bar">
+              <input type="text" id="hero-search-input" placeholder="Название, автор, ISBN или ключевое слово…" onkeydown="if(event.key==='Enter'){heroSearch()}" />
+              <button id="hero-primary-btn" class="btn btn-primary" onclick="heroSearch()">Найти</button>
             </div>
 
-            <div id="hero-tags" class="hero-tags">
-              <span>Учебная литература</span>
-              <span>Научные публикации</span>
-              <span>E-books</span>
-              <span>Онлайн-доступ 24/7</span>
+            <div class="hero-quick-links">
+              <a href="/catalog">📚 Каталог</a>
+              <a href="/resources">🌐 Ресурсы</a>
+              <a href="/for-teachers">👩‍🏫 Преподавателям</a>
+              <a href="/discover">📐 По направлениям</a>
             </div>
           </div>
 
@@ -1235,10 +1261,10 @@
     <section id="services">
       <div class="container services-grid">
         <div class="service-big">
-          <div id="services-eyebrow" class="eyebrow">Сервисы библиотеки</div>
-          <h3 id="services-title">Удобный цифровой опыт для каждого пользователя</h3>
+          <div id="services-eyebrow" class="eyebrow">Сервисы</div>
+          <h3 id="services-title">Что доступно онлайн</h3>
           <p id="services-description">
-            Библиотека становится полноценным онлайн-сервисом: поиск, бронирование, доступ к научным базам, сопровождение исследований и помощь в работе с академическими материалами.
+            Поиск, бронирование, доступ к научным базам и сопровождение исследований — в одном интерфейсе.
           </p>
 
           <div id="services-mini-stats" class="mini-stats">
@@ -1292,84 +1318,6 @@
               <h4>Удаленный доступ</h4>
               <p>Электронная библиотека и цифровые подписки доступны не только в кампусе, но и онлайн.</p>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="advantages">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 id="advantages-title">Почему именно наша библиотека</h2>
-            <p id="advantages-description">Современная инфраструктура, цифровые сервисы и человеческий подход к каждому пользователю.</p>
-          </div>
-          <div id="advantages-badges" class="badge-row">
-            <span class="badge">Удобство</span>
-            <span class="badge">Технологии</span>
-            <span class="badge">Доступность</span>
-          </div>
-        </div>
-
-        <div id="advantages-highlights" class="highlight-strip">
-          <div class="highlight">
-            <div class="icon">📚</div>
-            <h3>Обширный фонд</h3>
-            <p>Более 50 000 единиц: учебная литература, научные издания, монографии, электронные ресурсы.</p>
-          </div>
-          <div class="highlight">
-            <div class="icon">🔬</div>
-            <h3>Научные базы</h3>
-            <p>Доступ к международным базам данных, электронным библиотекам и научным журналам.</p>
-          </div>
-          <div class="highlight">
-            <div class="icon">💡</div>
-            <h3>Цифровой сервис</h3>
-            <p>Онлайн-каталог, бронирование, личный кабинет, уведомления — всё в одном месте.</p>
-          </div>
-          <div class="highlight">
-            <div class="icon">🤝</div>
-            <h3>Поддержка</h3>
-            <p>Консультации библиографов, помощь в поиске источников и сопровождение исследований.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="digital-resources">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Электронные ресурсы</h2>
-            <p>Цифровые коллекции, научные базы данных и лицензированные ресурсы для учебы и исследований.</p>
-          </div>
-          <a href="/resources" class="btn btn-ghost">Все ресурсы →</a>
-        </div>
-
-        <div class="resources-preview-grid">
-          <div class="resource-card resource-card--primary">
-            <div class="resource-icon">🏛️</div>
-            <h3>Электронная библиотека</h3>
-            <p>Полнотекстовые учебники, монографии и пособия в цифровом формате с удалённым доступом.</p>
-            <span class="resource-tag">Полный доступ</span>
-          </div>
-          <div class="resource-card resource-card--science">
-            <div class="resource-icon">🔬</div>
-            <h3>Научные базы данных</h3>
-            <p>Международные и национальные базы научных статей, диссертаций и исследований.</p>
-            <span class="resource-tag">Подписка</span>
-          </div>
-          <div class="resource-card resource-card--licensed">
-            <div class="resource-icon">🔑</div>
-            <h3>Лицензированные ресурсы</h3>
-            <p>Платные образовательные платформы и издательские коллекции по подписке университета.</p>
-            <span class="resource-tag">По подписке</span>
-          </div>
-          <div class="resource-card resource-card--open">
-            <div class="resource-icon">🌐</div>
-            <h3>Открытые ресурсы</h3>
-            <p>Свободный доступ к открытым репозиториям, журналам Open Access и образовательным материалам.</p>
-            <span class="resource-tag">Открытый доступ</span>
           </div>
         </div>
       </div>
@@ -1459,8 +1407,6 @@
   @include('partials.footer')
 
   <script>
-    const toggle = document.querySelector('.mobile-toggle');
-    const nav = document.querySelector('.nav-links');
     const catalogGrid = document.querySelector('#catalog-grid');
     const showcaseGrid = document.querySelector('#showcase-grid');
     const searchInput = document.querySelector('#catalog-search-input');
@@ -1470,24 +1416,6 @@
 
     const CATALOG_API_ENDPOINT = '/api/v1/catalog-db';
     const LANDING_API_ENDPOINT = '/api/v1/landing';
-
-    toggle?.addEventListener('click', () => {
-      if (!nav) return;
-      const isOpen = getComputedStyle(nav).display !== 'none';
-      nav.style.display = isOpen ? 'none' : 'flex';
-      nav.style.position = 'absolute';
-      nav.style.top = '76px';
-      nav.style.left = '10px';
-      nav.style.right = '10px';
-      nav.style.padding = '16px';
-      nav.style.borderRadius = '18px';
-      nav.style.flexDirection = 'column';
-      nav.style.background = 'rgba(255,255,255,.98)';
-      nav.style.border = '1px solid rgba(15,23,42,.08)';
-      nav.style.backdropFilter = 'blur(18px)';
-      nav.style.boxShadow = '0 20px 40px rgba(15,23,42,.08)';
-      nav.style.zIndex = '60';
-    });
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -1556,22 +1484,7 @@
       // Keeping a single renderer avoids race conditions where one async response
       // overwrites another with a different data source.
 
-      setText('advantages-title', data?.advantages?.title);
-      setText('advantages-description', data?.advantages?.description);
-
-      if (Array.isArray(data?.advantages?.badges)) {
-        renderList('advantages-badges', data.advantages.badges, (badge) => `<span class="badge">${escapeHtml(badge)}</span>`);
-      }
-
-      if (Array.isArray(data?.advantages?.items)) {
-        renderList('advantages-highlights', data.advantages.items, (item) => `
-          <div class="highlight">
-            <div class="icon">${escapeHtml(item.icon)}</div>
-            <h3>${escapeHtml(item.title)}</h3>
-            <p>${escapeHtml(item.description)}</p>
-          </div>
-        `);
-      }
+      // Advantages section removed — skip data.advantages
 
       setText('catalog-title', data?.catalog?.title);
       setText('catalog-description', data?.catalog?.description);
@@ -1868,8 +1781,17 @@
     });
     @endif
 
+    function heroSearch() {
+      const q = document.getElementById('hero-search-input')?.value?.trim();
+      if (q) {
+        window.location.href = '/catalog?q=' + encodeURIComponent(q);
+      } else {
+        window.location.href = '/catalog';
+      }
+    }
+
     document.getElementById('hero-primary-btn')?.addEventListener('click', () => {
-      window.location.href = '/catalog';
+      heroSearch();
     });
 
     initLanding();

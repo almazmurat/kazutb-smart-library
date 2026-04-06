@@ -29,6 +29,39 @@
     font-weight: 600;
   }
 
+  /* Compact local catalog banner */
+  .local-catalog-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px 32px;
+    background: var(--surface-glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .local-catalog-banner h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; }
+  .local-catalog-banner p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+  .local-catalog-banner .btn { white-space: nowrap; flex-shrink: 0; }
+
+  /* Compact access guide */
+  .access-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .access-chip {
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    border: 1px solid var(--border);
+    background: var(--surface-glass);
+  }
+  .access-chip--campus { border-color: rgba(59,130,246,.2); background: rgba(59,130,246,.04); }
+  .access-chip--remote { border-color: rgba(124,58,237,.2); background: rgba(124,58,237,.04); }
+  .access-chip--open { border-color: rgba(34,197,94,.2); background: rgba(34,197,94,.04); }
+
   .resource-section-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -144,9 +177,9 @@
 
   @media (max-width: 900px) {
     .resource-section-grid { grid-template-columns: 1fr; }
-    .access-cards { grid-template-columns: 1fr; }
+    .access-inline { flex-direction: column; }
+    .local-catalog-banner { flex-direction: column; align-items: flex-start; }
     .resource-hero-stats { gap: 24px; flex-wrap: wrap; }
-    .access-card { padding: 24px 20px; }
   }
 
   @media (max-width: 680px) {
@@ -345,32 +378,15 @@
   </div>
 </div>
 
-{{-- Local library catalog section (static, always shown) --}}
+{{-- Local library — compact banner --}}
 <section class="page-section">
-  <div class="container resource-section-grid">
-    <div class="resource-section-info">
-      <h2>Электронная библиотека КазУТБ</h2>
-      <p>Собственная полнотекстовая коллекция учебной и научной литературы в цифровом формате. Доступ из кампуса и удалённо через личный кабинет.</p>
-      <p>Это — <strong>фонд библиотеки университета</strong>, включающий учебники, пособия, монографии и методические материалы по всем направлениям подготовки.</p>
-      <a href="/catalog" class="btn btn-primary" style="margin-top:8px;">Перейти в каталог</a>
-    </div>
-    <div class="resource-list">
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--blue">📖</div>
-        <div><h4>Учебная литература</h4><p>Электронные версии учебников и пособий по направлениям: IT, бизнес, экономика, технологии, право.</p></div>
+  <div class="container">
+    <div class="local-catalog-banner">
+      <div>
+        <h2>Фонд библиотеки КазУТБ</h2>
+        <p>Более 50 000 единиц: учебники, монографии, методические материалы и периодика в электронном и печатном формате.</p>
       </div>
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--violet">📑</div>
-        <div><h4>Научные издания</h4><p>Монографии, диссертации, авторефераты и сборники конференций университета.</p></div>
-      </div>
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--green">📋</div>
-        <div><h4>Методические материалы</h4><p>Рабочие программы, методические указания и рекомендации кафедр.</p></div>
-      </div>
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--pink">📰</div>
-        <div><h4>Периодика</h4><p>Подписка на научные журналы, вестники и периодические издания.</p></div>
-      </div>
+      <a href="/catalog" class="btn btn-primary">Перейти в каталог</a>
     </div>
   </div>
 </section>
@@ -401,33 +417,11 @@
 
 <section class="page-section">
   <div class="container">
-    <div class="section-head section-head-centered">
-      <div>
-        <div class="eyebrow">Режимы доступа</div>
-        <h2>Как получить доступ к ресурсам</h2>
-        <p>Выберите подходящий способ доступа в зависимости от типа ресурса и вашего местоположения.</p>
-      </div>
-    </div>
-
-    <div class="access-cards">
-      <div class="access-card">
-        <div class="ac-icon" style="background:linear-gradient(135deg, var(--blue), var(--cyan));">🏫</div>
-        <h3>Из кампуса</h3>
-        <p>Свободный доступ ко всем подписным ресурсам с компьютеров читальных залов и Wi-Fi сети университета.</p>
-        <span class="access-badge access-badge--campus">Автоматически</span>
-      </div>
-      <div class="access-card">
-        <div class="ac-icon" style="background:linear-gradient(135deg, var(--violet), var(--pink));">🌐</div>
-        <h3>Удалённо</h3>
-        <p>Авторизуйтесь через личный кабинет библиотеки для доступа к электронным ресурсам из любой точки.</p>
-        <span class="access-badge access-badge--remote">По авторизации</span>
-      </div>
-      <div class="access-card">
-        <div class="ac-icon" style="background:linear-gradient(135deg, var(--green), var(--cyan));">🔓</div>
-        <h3>Открытый доступ</h3>
-        <p>Ресурсы Open Access доступны без ограничений: репозитории, открытые журналы, образовательные материалы.</p>
-        <span class="access-badge access-badge--open">Свободно</span>
-      </div>
+    <h2 style="margin-bottom: 16px;">Режимы доступа</h2>
+    <div class="access-inline">
+      <div class="access-chip access-chip--campus">🏫 <strong>Из кампуса</strong> — автоматически через Wi-Fi и компьютеры залов</div>
+      <div class="access-chip access-chip--remote">🌐 <strong>Удалённо</strong> — через личный кабинет библиотеки</div>
+      <div class="access-chip access-chip--open">🔓 <strong>Открытый доступ</strong> — без ограничений</div>
     </div>
   </div>
 </section>
@@ -443,39 +437,21 @@
 
     <div class="faq-list">
       <div class="faq-item">
-        <h4>Как получить удалённый доступ к электронным ресурсам?</h4>
-        <p>Зарегистрируйтесь в библиотеке и войдите в личный кабинет. После авторизации подписные ресурсы будут доступны из любой точки.</p>
+        <h4>Как получить удалённый доступ?</h4>
+        <p>Войдите в <a href="/account" style="color:var(--blue);font-weight:600;text-decoration:none;">личный кабинет</a> — после авторизации подписные ресурсы будут доступны из любой точки.</p>
       </div>
       <div class="faq-item">
-        <h4>Можно ли скачивать статьи и книги?</h4>
-        <p>Возможность скачивания зависит от условий лицензии конкретного ресурса. Некоторые материалы доступны только для просмотра.</p>
+        <h4>Можно ли скачивать материалы?</h4>
+        <p>Зависит от лицензии ресурса. Некоторые материалы доступны только для просмотра.</p>
       </div>
       <div class="faq-item">
-        <h4>Какие ресурсы доступны бесплатно?</h4>
-        <p>Ресурсы Open Access, электронная библиотека университета и некоторые национальные базы данных доступны без дополнительной оплаты.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Кто может пользоваться электронными ресурсами?</h4>
-        <p>Студенты, преподаватели и сотрудники университета. Для доступа необходима регистрация в библиотечной системе.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Как преподавателю подобрать литературу для силлабуса?</h4>
-        <p>Используйте <a href="/catalog" style="color:var(--blue);font-weight:600;text-decoration:none;">каталог</a> для поиска имеющейся литературы. Для помощи в подборе и справки об обеспеченности обратитесь в информационно-библиографический отдел. Подробнее — на странице <a href="/for-teachers" style="color:var(--blue);font-weight:600;text-decoration:none;">Преподавателям</a>.</p>
+        <h4>Нужна помощь с подбором литературы?</h4>
+        <p>Обратитесь в библиографический отдел через <a href="/contacts" style="color:var(--blue);font-weight:600;text-decoration:none;">контакты</a> или используйте <a href="/for-teachers" style="color:var(--blue);font-weight:600;text-decoration:none;">раздел для преподавателей</a>.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cta-section">
-  <div class="container">
-    <h2>Нужна помощь с ресурсами?</h2>
-    <p>Обратитесь к библиографам за консультацией по поиску источников и работе с базами данных.</p>
-    <div class="cta-buttons">
-      <a href="/contacts" class="btn btn-primary">Связаться с нами</a>
-      <a href="/catalog" class="btn btn-ghost">Перейти в каталог</a>
-    </div>
-  </div>
-</section>
 @endsection
 
 @section('scripts')

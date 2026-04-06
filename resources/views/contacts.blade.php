@@ -156,48 +156,6 @@
       </div>
     </div>
   </section>
-
-  <section class="page-section">
-    <div class="container">
-      <div class="section-head section-head-centered">
-        <div>
-          <h2>Чем можем помочь</h2>
-          <p>Основные направления, по которым библиотека консультирует и сопровождает читателей.</p>
-        </div>
-      </div>
-
-      <div class="support-grid">
-        <div class="card support-card">
-          <div class="eyebrow eyebrow--blue">Работа с читателем</div>
-          <h3>Помощь по обслуживанию</h3>
-          <p>Консультации по поиску литературы, оформлению читательского профиля, продлению сроков пользования и правилам обслуживания.</p>
-        </div>
-
-        <div class="card support-card">
-          <div class="eyebrow eyebrow--cyan">Электронные ресурсы</div>
-          <h3>Доступ к цифровым материалам</h3>
-          <p>Поддержка по работе с электронным каталогом, библиотечными сервисами, подписными базами данных и доступом к материалам университета.</p>
-        </div>
-
-        <div class="card support-card">
-          <div class="eyebrow eyebrow--pink">Быстрые действия</div>
-          <h3>Куда обратиться быстрее всего</h3>
-          <p>По срочным вопросам лучше звонить в справочную, по доступу и электронным обращениям — писать на почту, а для поиска книг использовать каталог и личный кабинет.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta-section">
-    <div class="container">
-      <h2>Нужна помощь?</h2>
-      <p>Позвоните, напишите или посетите библиотеку лично.</p>
-      <div class="cta-buttons">
-        <a href="mailto:library@kazutb.kz" class="btn btn-primary">Написать нам</a>
-        <a href="/catalog" class="btn btn-ghost">Перейти в каталог</a>
-      </div>
-    </div>
-  </section>
 @endsection
 
 @section('head')

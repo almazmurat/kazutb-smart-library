@@ -283,6 +283,8 @@
       box-shadow: var(--shadow-soft);
       cursor: pointer;
       transition: all 0.2s;
+      font-family: inherit;
+      line-height: 1.4;
     }
 
     .chip:hover {
@@ -295,6 +297,40 @@
       color: var(--blue);
       border-color: rgba(59,130,246,.14);
     }
+
+    .active-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .active-filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      background: rgba(59,130,246,.08);
+      color: var(--blue);
+      border: 1px solid rgba(59,130,246,.14);
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .active-filter-chip:hover { background: rgba(59,130,246,.15); }
+    .active-filter-reset {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .active-filter-reset:hover { color: #334155; }
 
     .check-list { display: grid; gap: 12px; }
 
@@ -643,22 +679,22 @@
           <div class="filter-group">
             <span class="filter-label">Язык</span>
             <div class="chips" id="language-chips">
-              <span class="chip active" data-lang="">Все</span>
-              <span class="chip" data-lang="ru">Русский</span>
-              <span class="chip" data-lang="kk">Қазақша</span>
-              <span class="chip" data-lang="en">English</span>
+              <button type="button" class="chip active" data-lang="">Все</button>
+              <button type="button" class="chip" data-lang="ru">Русский</button>
+              <button type="button" class="chip" data-lang="kk">Қазақша</button>
+              <button type="button" class="chip" data-lang="en">English</button>
             </div>
           </div>
 
           <div class="filter-group">
             <span class="filter-label">Год издания</span>
             <div class="chips" id="year-chips">
-              <span class="chip active" data-year="">Все</span>
-              <span class="chip" data-year="2025">2025</span>
-              <span class="chip" data-year="2024">2024</span>
-              <span class="chip" data-year="2023">2023</span>
-              <span class="chip" data-year="2020-2022">2020–2022</span>
-              <span class="chip" data-year="older">Ранее</span>
+              <button type="button" class="chip active" data-year="">Все</button>
+              <button type="button" class="chip" data-year="2025">2025</button>
+              <button type="button" class="chip" data-year="2024">2024</button>
+              <button type="button" class="chip" data-year="2023">2023</button>
+              <button type="button" class="chip" data-year="2020-2022">2020–2022</button>
+              <button type="button" class="chip" data-year="older">Ранее</button>
             </div>
           </div>
 
@@ -692,6 +728,7 @@
             </div>
           </div>
 
+          <div id="active-filters" class="active-filters" style="display:none"></div>
           <div class="grid" id="catalog-grid"></div>
 
           <div class="pagination" id="pagination"></div>
@@ -790,7 +827,7 @@
           </div>
           <div class="book-actions">
             <button class="btn btn-primary" onclick="event.stopPropagation(); goToBook('${escapeHtml(identifier)}')">Смотреть книгу</button>
-            <button class="icon-btn ${isShortlisted ? 'shortlisted' : ''}" onclick="event.stopPropagation(); toggleShortlist(this, ${JSON.stringify(JSON.stringify(data))})" title="${isShortlisted ? 'Убрать из подборки' : 'В подборку'}">${isShortlisted ? '★' : '☆'}</button>
+            <button class="icon-btn ${isShortlisted ? 'shortlisted' : ''}" onclick="event.stopPropagation(); toggleShortlist(this, ${JSON.stringify(JSON.stringify(data))})" title="${isShortlisted ? 'Убрать из подборки' : 'В подборку'}" aria-label="${isShortlisted ? 'Убрать из подборки' : 'Добавить в подборку'}">${isShortlisted ? '★' : '☆'}</button>
           </div>
         </article>
       `;
@@ -808,7 +845,7 @@
         const params = new URLSearchParams();
         if (searchInput.value) params.set('q', searchInput.value);
         params.set('page', currentPage);
-        params.set('limit', 6);
+        params.set('limit', 12);
         params.set('sort', sortSelect.value);
 
         const lang = getActiveLanguage();
@@ -849,10 +886,41 @@
           totalPages = meta.totalPages || 1;
           renderPagination();
         }
+        renderActiveFilters();
       } catch (err) {
         grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:48px; border:1px solid #fca5a5; border-radius:16px; background:#fef2f2;"><span style="font-size:32px;">⚠️</span><p style="margin:12px 0 0; font-weight:600; color:#991b1b;">Ошибка загрузки каталога</p><p style="margin:4px 0 0; color:#b91c1c;">Попробуйте обновить страницу.</p></div>';
         console.error(err);
       }
+    }
+
+    function renderActiveFilters() {
+      const container = document.getElementById('active-filters');
+      if (!container) return;
+      const chips = [];
+      const searchVal = document.getElementById('search-input')?.value?.trim();
+      if (searchVal) chips.push({label: `«${searchVal}»`, clear: () => { document.getElementById('search-input').value = ''; }});
+      const lang = getActiveLanguage();
+      if (lang) { const labels = {ru:'Русский',kk:'Қазақша',en:'English'}; chips.push({label: labels[lang]||lang, clear: () => { document.querySelectorAll('#language-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.lang === '')); }}); }
+      const yp = getYearParams();
+      if (yp.year_from || yp.year_to) { const activeY = document.querySelector('#year-chips .chip.active'); chips.push({label: activeY?.textContent || 'Год', clear: () => { document.querySelectorAll('#year-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.year === '')); }}); }
+      const avail = document.getElementById('filter-available-only');
+      if (avail?.checked) chips.push({label: 'В наличии', clear: () => { avail.checked = false; }});
+      if (activeSubjectLabel) chips.push({label: activeSubjectLabel, clear: () => { activeSubjectId = ''; activeSubjectLabel = ''; }});
+      if (chips.length === 0) { container.style.display = 'none'; return; }
+      container.style.display = 'flex';
+      container.innerHTML = chips.map(c => `<button type="button" class="active-filter-chip" onclick="this._clear()">${escapeHtml(c.label)} ✕</button>`).join('') +
+        `<button type="button" class="active-filter-reset" onclick="clearAllFilters()">Сбросить все</button>`;
+      container.querySelectorAll('.active-filter-chip').forEach((el, i) => { el._clear = () => { chips[i].clear(); loadCatalog(); }; });
+    }
+
+    function clearAllFilters() {
+      document.getElementById('search-input').value = '';
+      document.querySelectorAll('#language-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.lang === ''));
+      document.querySelectorAll('#year-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.year === ''));
+      const avail = document.getElementById('filter-available-only');
+      if (avail) avail.checked = false;
+      activeSubjectId = ''; activeSubjectLabel = '';
+      loadCatalog();
     }
 
     function renderPagination() {

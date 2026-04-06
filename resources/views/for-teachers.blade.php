@@ -6,8 +6,8 @@
   <section class="page-hero">
     <div class="container">
       <div class="eyebrow eyebrow--violet">Преподавателям</div>
-      <h1>Ресурсы и поддержка для преподавателей</h1>
-      <p>Библиотека КазУТБ помогает преподавателям в подборе учебной литературы, подготовке силлабусов, доступе к научным базам данных и методическом обеспечении дисциплин.</p>
+      <h1>Инструменты для подготовки силлабуса и работы с литературой</h1>
+      <p>Подберите литературу, соберите подборку для дисциплины, получите доступ к научным базам — всё в одном месте.</p>
     </div>
   </section>
 
@@ -15,66 +15,64 @@
     <div class="container">
       <div class="section-head">
         <div>
-          <h2>Что предлагает библиотека</h2>
-          <p>Основные направления поддержки преподавательской и научной работы.</p>
+          <h2>Начните работу</h2>
+          <p>Четыре основных направления для преподавателей.</p>
         </div>
       </div>
 
-      <div class="feature-grid teacher-grid">
-        <div class="feature-card" style="border: 2px solid var(--violet, #7c3aed); background: linear-gradient(135deg, rgba(124,58,237,.03), rgba(124,58,237,.08));">
-          <div class="icon">📋</div>
-          <h3>Подборка литературы для силлабуса</h3>
-          <p>Собирайте книги и электронные ресурсы в подборку — черновик списка литературы. Выберите формат, скопируйте текст или распечатайте готовый список для вставки в силлабус. Ваши черновики и статистика доступны в <a href="/account">личном кабинете</a>.</p>
-          <a href="/shortlist" class="feature-link" style="font-weight:700;">Моя подборка →</a>
+      <div class="action-groups">
+        <div class="action-group action-group--primary">
+          <div class="action-group-header">
+            <div class="action-icon">📋</div>
+            <div>
+              <h3>Подборка литературы для силлабуса</h3>
+              <p>Собирайте книги и электронные ресурсы в черновик списка литературы. Экспортируйте в нужном формате для вставки в силлабус.</p>
+            </div>
+          </div>
+          <div class="action-links">
+            <a href="/shortlist" class="btn btn-primary">Открыть подборку</a>
+            <a href="/account" class="action-link">Мой кабинет →</a>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="icon">📚</div>
-          <h3>Подбор литературы для дисциплин</h3>
-          <p>Помощь в поиске и подборе учебной, научной и методической литературы для включения в силлабусы и рабочие программы дисциплин. Поиск по каталогу охватывает более 50 000 единиц фонда.</p>
-          <a href="/catalog" class="feature-link">Открыть каталог →</a>
+        <div class="action-group">
+          <div class="action-group-header">
+            <div class="action-icon">🔎</div>
+            <div>
+              <h3>Поиск и подбор литературы</h3>
+              <p>Ищите по каталогу (50 000+ единиц), по направлениям подготовки или по ключевым словам.</p>
+            </div>
+          </div>
+          <div class="action-links">
+            <a href="/catalog" class="btn btn-ghost">Каталог</a>
+            <a href="/discover" class="btn btn-ghost">По направлениям</a>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="icon">📐</div>
-          <h3>Поиск по направлениям</h3>
-          <p>Тематический поиск литературы по областям знаний: экономика, IT, право, инженерия, химия, строительство, языки и другие направления подготовки.</p>
-          <a href="/discover" class="feature-link">Выбрать направление →</a>
+        <div class="action-group">
+          <div class="action-group-header">
+            <div class="action-icon">🌐</div>
+            <div>
+              <h3>Электронные ресурсы и научные базы</h3>
+              <p>Лицензированные библиотеки, Scopus, Web of Science, РИНЦ, открытые коллекции — доступ из кампуса и удалённо.</p>
+            </div>
+          </div>
+          <div class="action-links">
+            <a href="/resources" class="btn btn-ghost">Все ресурсы</a>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="icon">🌐</div>
-          <h3>Электронные ресурсы и базы данных</h3>
-          <p>Доступ к лицензированным электронным библиотекам, международным научным базам данных и открытым образовательным ресурсам. Подписки действуют для студентов и преподавателей.</p>
-          <a href="/resources" class="feature-link">Обзор ресурсов →</a>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon">🔬</div>
-          <h3>Поддержка научных исследований</h3>
-          <p>Консультации по поиску научных публикаций, работе с базами Scopus, Web of Science, РИНЦ. Помощь в формировании списков литературы для статей и диссертаций.</p>
-          <a href="/resources" class="feature-link">Научные базы →</a>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon">📋</div>
-          <h3>Методическое обеспечение</h3>
-          <p>Информация о наличии рекомендованной литературы в фонде, подготовка справок по обеспеченности дисциплин учебной литературой, рекомендации по дополнению фонда.</p>
-          <a href="/contacts" class="feature-link">Связаться с библиотекой →</a>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon">💡</div>
-          <h3>Консультации библиографов</h3>
-          <p>Индивидуальные консультации специалистов по поиску источников, работе с электронными ресурсами, оформлению библиографических списков и информационной грамотности.</p>
-          <a href="/contacts" class="feature-link">Связаться →</a>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon">📦</div>
-          <h3>Заявки на пополнение фонда</h3>
-          <p>Преподаватели могут рекомендовать литературу для закупки и пополнения библиотечного фонда. Заявки рассматриваются отделом комплектования совместно с кафедрами.</p>
-          <a href="/contacts" class="feature-link">Подать заявку →</a>
+        <div class="action-group">
+          <div class="action-group-header">
+            <div class="action-icon">💡</div>
+            <div>
+              <h3>Помощь и консультации</h3>
+              <p>Справка об обеспеченности дисциплины, заявка на пополнение фонда, консультации библиографов.</p>
+            </div>
+          </div>
+          <div class="action-links">
+            <a href="/contacts" class="btn btn-ghost">Связаться</a>
+          </div>
         </div>
       </div>
     </div>
@@ -162,71 +160,103 @@
         <details class="faq-item">
           <summary class="faq-question">Как подобрать литературу для нового курса?</summary>
           <div class="faq-answer">
-            <p>Начните с поиска в <a href="/catalog">электронном каталоге</a> по ключевым словам и темам дисциплины. Для углублённого подбора обратитесь в информационно-библиографический отдел — специалисты помогут найти подходящую литературу, проверить наличие в фонде и предложить альтернативы из электронных ресурсов.</p>
+            <p>Начните с поиска в <a href="/catalog">электронном каталоге</a> по ключевым словам и темам дисциплины. Добавляйте найденное в <a href="/shortlist">подборку</a> и экспортируйте в нужном формате. Для углублённого подбора обратитесь в информационно-библиографический отдел.</p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary class="faq-question">Какие электронные ресурсы доступны для преподавателей?</summary>
+          <summary class="faq-question">Какие электронные ресурсы доступны?</summary>
           <div class="faq-answer">
-            <p>Преподавателям доступны все подписные электронные ресурсы университета, включая IPR SMART, открытые научные коллекции и международные базы данных. Полный перечень и условия доступа — на странице <a href="/resources">Электронные ресурсы</a>.</p>
+            <p>Преподавателям доступны все подписные электронные ресурсы университета, включая IPR SMART, открытые научные коллекции и международные базы данных. Полный перечень — на странице <a href="/resources">Электронные ресурсы</a>.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary class="faq-question">Можно ли заказать литературу, которой нет в фонде?</summary>
           <div class="faq-answer">
-            <p>Да. Преподаватели могут подать заявку на приобретение литературы через отдел комплектования. Заявки рассматриваются в рамках плана пополнения фонда. Обратитесь по <a href="/contacts">контактам библиотеки</a> для оформления заявки.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">Как получить справку об обеспеченности дисциплины литературой?</summary>
-          <div class="faq-answer">
-            <p>Справки об обеспеченности готовит информационно-библиографический отдел. Подайте запрос с указанием названия дисциплины, направления подготовки и перечня рекомендуемой литературы. Свяжитесь с нами через <a href="/contacts">страницу контактов</a>.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">Есть ли удалённый доступ к электронным ресурсам?</summary>
-          <div class="faq-answer">
-            <p>Да. Авторизуйтесь через <a href="/account">личный кабинет</a> библиотеки для доступа к подписным электронным ресурсам из любой точки. Из кампуса доступ к ресурсам автоматический через сеть университета.</p>
+            <p>Да. Подайте заявку через отдел комплектования. Обратитесь по <a href="/contacts">контактам библиотеки</a> для оформления.</p>
           </div>
         </details>
       </div>
     </div>
   </section>
 
-  <section class="cta-section">
-    <div class="container">
-      <h2>Нужна помощь с подбором литературы?</h2>
-      <p>Обратитесь к специалистам информационно-библиографического отдела для индивидуальной консультации.</p>
-      <div class="cta-buttons">
-        <a href="/contacts" class="btn btn-primary">Связаться с библиотекой</a>
-        <a href="/catalog" class="btn btn-ghost">Открыть каталог</a>
-      </div>
-    </div>
-  </section>
+  {{-- CTA removed — action groups above are sufficient --}}
 @endsection
 
 @section('head')
 <style>
-  .teacher-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
-    justify-content: center;
+  /* Action groups — task-oriented layout */
+  .action-groups {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 
-  .feature-link {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 14px;
+  .action-group {
+    background: var(--surface-glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .action-group--primary {
+    border: 2px solid var(--violet, #7c3aed);
+    background: linear-gradient(135deg, rgba(124,58,237,.03), rgba(124,58,237,.07));
+  }
+
+  .action-group-header {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .action-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: rgba(59,130,246,.08);
+  }
+
+  .action-group--primary .action-icon {
+    background: rgba(124,58,237,.12);
+  }
+
+  .action-group h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
     font-weight: 700;
+  }
+
+  .action-group p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .action-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .action-link {
+    font-size: 14px;
+    font-weight: 600;
     color: var(--blue);
     text-decoration: none;
-    transition: color .2s;
   }
-
-  .feature-link:hover { color: var(--violet); }
+  .action-link:hover { color: var(--violet); }
 
   .syllabus-steps {
     display: grid;
@@ -359,9 +389,11 @@
   .faq-answer a:hover { text-decoration: underline; }
 
   @media (max-width: 680px) {
+    .action-groups { grid-template-columns: 1fr; }
+    .action-group { padding: 20px; }
+    .action-group-header { flex-direction: column; gap: 10px; }
     .syllabus-steps { grid-template-columns: 1fr; }
     .resource-highlights { grid-template-columns: 1fr; }
-    .teacher-grid { grid-template-columns: 1fr; }
     .step-card { padding: 20px; }
     .resource-highlight-card { padding: 20px; }
     .faq-question { padding: 16px 20px; font-size: 15px; }

@@ -249,4 +249,123 @@ class ConsolidationTest extends TestCase
         $this->assertEquals('student', $identities['student']['profile_type'] ?? null);
         $this->assertEquals('teacher', $identities['teacher']['profile_type'] ?? null);
     }
+
+    // ═══════════════════════════════════════════════════════════
+    // 9. Wave 2 — Homepage hero search
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_homepage_has_hero_search_bar(): void
+    {
+        $response = $this->get('/');
+        $response->assertOk();
+        $response->assertSee('hero-search-bar', false);
+        $response->assertSee('heroSearch', false);
+    }
+
+    public function test_homepage_has_hero_quick_links(): void
+    {
+        $response = $this->get('/');
+        $response->assertOk();
+        $response->assertSee('hero-quick-links', false);
+        $response->assertSee('href="/catalog"', false);
+        $response->assertSee('href="/resources"', false);
+    }
+
+    public function test_homepage_no_advantages_section(): void
+    {
+        $response = $this->get('/');
+        $response->assertOk();
+        $response->assertDontSee('Наши преимущества');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // 10. Wave 2 — For-teachers action groups
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_for_teachers_has_action_groups(): void
+    {
+        $response = $this->get('/for-teachers');
+        $response->assertOk();
+        $response->assertSee('action-groups', false);
+        $response->assertSee('Подборка литературы для силлабуса');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // 11. Wave 2 — Resources compact layout
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_resources_has_compact_catalog_banner(): void
+    {
+        $response = $this->get('/resources');
+        $response->assertOk();
+        $response->assertSee('local-catalog-banner', false);
+    }
+
+    public function test_resources_has_inline_access_chips(): void
+    {
+        $response = $this->get('/resources');
+        $response->assertOk();
+        $response->assertSee('access-chip', false);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // 12. Wave 2 — Catalog improvements
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_catalog_chips_are_buttons(): void
+    {
+        $response = $this->get('/catalog');
+        $response->assertOk();
+        $response->assertSee('<button type="button" class="chip', false);
+    }
+
+    public function test_catalog_has_active_filters_container(): void
+    {
+        $response = $this->get('/catalog');
+        $response->assertOk();
+        $response->assertSee('active-filters', false);
+        $response->assertSee('renderActiveFilters', false);
+    }
+
+    public function test_catalog_uses_12_per_page(): void
+    {
+        $response = $this->get('/catalog');
+        $response->assertOk();
+        $response->assertSee("'limit', 12", false);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // 13. Wave 2 — Contacts trimmed
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_contacts_no_filler_support_section(): void
+    {
+        $response = $this->get('/contacts');
+        $response->assertOk();
+        $response->assertDontSee('Чем можем помочь');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // 14. Wave 2 — Account cross-links
+    // ═══════════════════════════════════════════════════════════
+
+    public function test_teacher_account_has_for_teachers_link(): void
+    {
+        $response = $this->withAuthSession(['profile_type' => 'teacher'])
+            ->get('/account');
+
+        $response->assertOk();
+        $response->assertSee('href="/for-teachers"', false);
+        $response->assertSee('Преподавателям');
+    }
+
+    public function test_student_account_no_for_teachers_link_in_quick_actions(): void
+    {
+        $response = $this->withAuthSession(['profile_type' => 'student'])
+            ->get('/account');
+
+        $response->assertOk();
+        // Student quick-actions should not have the teacher link
+        $response->assertDontSee('Инструменты для силлабуса');
+    }
 }

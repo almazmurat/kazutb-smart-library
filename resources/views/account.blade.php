@@ -595,6 +595,13 @@
             <strong style="display:block; margin-bottom:4px;">Подборка</strong>
             <span style="color:var(--muted); font-size:13px;">Избранные книги</span>
           </a>
+          @if(($sessionUser['profile_type'] ?? null) === 'teacher')
+          <a href="/for-teachers" class="card" style="text-decoration:none; padding:20px; text-align:center;">
+            <span style="font-size:28px; display:block; margin-bottom:8px;">🎓</span>
+            <strong style="display:block; margin-bottom:4px;">Преподавателям</strong>
+            <span style="color:var(--muted); font-size:13px;">Инструменты для силлабуса</span>
+          </a>
+          @endif
           <a href="/contacts" class="card" style="text-decoration:none; padding:20px; text-align:center;">
             <span style="font-size:28px; display:block; margin-bottom:8px;">📞</span>
             <strong style="display:block; margin-bottom:4px;">Контакты</strong>
