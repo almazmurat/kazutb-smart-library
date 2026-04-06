@@ -53,6 +53,34 @@ class AccountController extends Controller
         ]);
     }
 
+    public function loanSummary(Request $request, CirculationLoanReadService $loanService): JsonResponse
+    {
+        $user = $request->attributes->get('authenticated_reader');
+        $readerId = $this->resolveReaderId($user);
+
+        if ($readerId === null) {
+            return response()->json([
+                'authenticated' => true,
+                'data' => [
+                    'activeLoans' => 0,
+                    'overdueLoans' => 0,
+                    'dueSoonLoans' => 0,
+                    'returnedLoans' => 0,
+                    'totalLoans' => 0,
+                ],
+                'message' => 'No linked reader profile found.',
+            ]);
+        }
+
+        $summary = $loanService->summaryForReader($readerId);
+
+        return response()->json([
+            'authenticated' => true,
+            'data' => $summary,
+            'meta' => ['readerId' => $readerId],
+        ]);
+    }
+
     public function renewLoan(string $loanId, Request $request, CirculationLoanWriteService $writeService, CirculationLoanReadService $loanService): JsonResponse
     {
         $user = $request->attributes->get('authenticated_reader');

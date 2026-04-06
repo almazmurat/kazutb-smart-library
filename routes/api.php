@@ -40,6 +40,7 @@ Route::middleware('web')->group(function (): void {
     Route::middleware('library.auth')->group(function (): void {
         Route::get('/v1/account/summary', [AccountController::class, 'summary']);
         Route::get('/v1/account/loans', [AccountController::class, 'loans']);
+        Route::get('/v1/account/loans/summary', [AccountController::class, 'loanSummary']);
         Route::post('/v1/account/loans/{loanId}/renew', [AccountController::class, 'renewLoan']);
         Route::get('/v1/account/reservations', [AccountController::class, 'reservations']);
         Route::post('/v1/account/reservations', [AccountController::class, 'createReservation']);

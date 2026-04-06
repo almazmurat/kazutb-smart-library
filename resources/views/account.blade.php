@@ -443,16 +443,20 @@
 
           <div class="stats">
             <div class="stat">
-              <strong id="issued-count">0</strong>
-              <span>Профиль в библиотеке</span>
+              <strong id="active-loans-count">—</strong>
+              <span>Активных выдач</span>
             </div>
             <div class="stat">
-              <strong id="reserved-count">0</strong>
-              <span>Контактов reader</span>
+              <strong id="overdue-loans-count" style="color:inherit;">—</strong>
+              <span>Просрочено</span>
             </div>
             <div class="stat">
-              <strong id="history-count">0</strong>
-              <span>Открытые review задачи</span>
+              <strong id="due-soon-loans-count" style="color:inherit;">—</strong>
+              <span>Скоро сдавать</span>
+            </div>
+            <div class="stat">
+              <strong id="returned-loans-count">—</strong>
+              <span>Возвращено</span>
             </div>
           </div>
         </article>
@@ -473,8 +477,13 @@
       <section class="showcase">
         <div class="section-head">
           <div>
-            <h2>Мои книги</h2>
+            <h2>📚 Мои книги</h2>
             <p>Текущие выдачи из библиотечного фонда.</p>
+          </div>
+          <div id="loan-tabs" style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-ghost loan-tab active" data-status="active" onclick="switchLoanTab('active')" style="font-size:13px; padding:8px 16px;">Активные</button>
+            <button class="btn btn-ghost loan-tab" data-status="returned" onclick="switchLoanTab('returned')" style="font-size:13px; padding:8px 16px;">Возвращённые</button>
+            <button class="btn btn-ghost loan-tab" data-status="all" onclick="switchLoanTab('all')" style="font-size:13px; padding:8px 16px;">Все</button>
           </div>
         </div>
 
@@ -567,11 +576,13 @@
   @include('partials.footer')
 
   <script>
-    const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans?status=active';
+    const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans';
+    const ACCOUNT_LOANS_SUMMARY_ENDPOINT = '/api/v1/account/loans/summary';
     const ACCOUNT_RESERVATIONS_ENDPOINT = '/api/v1/account/reservations';
     const ACCOUNT_SUMMARY_ENDPOINT = '/api/v1/account/summary';
     const ME_ENDPOINT = '/api/v1/me';
     const AUTH_USER_KEY = 'library.auth.user';
+    let currentLoanTab = 'active';
 
     function getCsrfToken() {
       return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
@@ -644,6 +655,7 @@
       const dueDate = loan.dueAt ? new Date(loan.dueAt).toLocaleDateString('ru-RU') : '—';
       const issuedDate = loan.issuedAt ? new Date(loan.issuedAt).toLocaleDateString('ru-RU') : '—';
       const isOverdue = loan.isOverdue === true;
+      const isDueSoon = loan.isDueSoon === true;
 
       return {
         id: loan.id || '',
@@ -652,48 +664,85 @@
         dueDate,
         issuedDate,
         isOverdue,
+        isDueSoon,
         renewCount: loan.renewCount || 0,
         returnedAt: loan.returnedAt ? new Date(loan.returnedAt).toLocaleDateString('ru-RU') : null,
+        book: loan.book || {},
       };
+    }
+
+    function loanStatusBadge(data) {
+      if (data.isOverdue) return '<span style="display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:600; color:#991b1b; background:#fee2e2;">⚠ Просрочено</span>';
+      if (data.isDueSoon) return '<span style="display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:600; color:#92400e; background:#fef3c7;">⏳ Скоро сдавать</span>';
+      if (data.status === 'returned') return '<span style="display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:600; color:#065f46; background:#d1fae5;">✓ Возвращено</span>';
+      return '<span style="display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:600; color:#1e40af; background:#dbeafe;">📖 Активна</span>';
     }
 
     function renderLoanCard(loan) {
       const data = formatLoanData(loan);
-      const statusLabel = data.isOverdue ? '⚠ Просрочено' : (data.status === 'returned' ? 'Возвращено' : 'Активна');
-      const statusColor = data.isOverdue ? '#991b1b' : (data.status === 'returned' ? '#166534' : '#1e40af');
+      const bookTitle = data.book?.title || null;
+      const bookAuthor = data.book?.author || null;
+      const bookIsbn = data.book?.isbn || null;
+      const invNumber = data.book?.inventoryNumber || null;
       const canRenew = data.status === 'active' && !data.isOverdue && data.renewCount < 3;
+
+      const gradientColor = data.isOverdue
+        ? 'background: linear-gradient(180deg, #7f1d1d 0%, #991b1b 100%);'
+        : (data.isDueSoon
+          ? 'background: linear-gradient(180deg, #78350f 0%, #92400e 100%);'
+          : (data.status === 'returned'
+            ? 'background: linear-gradient(180deg, #475569 0%, #64748b 100%); opacity: 0.85;'
+            : ''));
+
+      const displayTitle = bookTitle
+        ? escapeHtml(bookTitle.substring(0, 60)) + (bookTitle.length > 60 ? '…' : '')
+        : `Экземпляр ${escapeHtml(data.copyId.substring(0, 12))}…`;
+
+      const previewTitle = bookTitle
+        ? escapeHtml(bookTitle.substring(0, 40)) + (bookTitle.length > 40 ? '…' : '')
+        : `#${escapeHtml(data.id.substring(0, 8))}`;
 
       return `
         <article class="book-card">
-          <div class="book-preview" style="${data.isOverdue ? 'background: linear-gradient(180deg, #7f1d1d 0%, #991b1b 100%);' : ''}">
-            <small>Экземпляр</small>
-            <h3>${escapeHtml(data.copyId.substring(0, 12))}…</h3>
+          <div class="book-preview" style="${gradientColor}">
+            <small>${bookAuthor ? escapeHtml(bookAuthor.substring(0, 25)) : 'Книга'}</small>
+            <h3 style="font-size: 14px;">${previewTitle}</h3>
           </div>
-          <h3 class="book-title">Выдача #${escapeHtml(data.id.substring(0, 8))}</h3>
-          <div class="book-meta" style="color: ${statusColor}; font-weight: 700;">${statusLabel}</div>
+          <h3 class="book-title" style="font-size: 15px;">${displayTitle}</h3>
+          <div class="book-meta">${loanStatusBadge(data)}</div>
+          ${bookAuthor ? `<div class="book-meta" style="font-style:italic;">${escapeHtml(bookAuthor)}</div>` : ''}
+          ${bookIsbn ? `<div class="book-meta">ISBN: ${escapeHtml(bookIsbn)}</div>` : ''}
+          ${invNumber ? `<div class="book-meta">Инв. №: ${escapeHtml(invNumber)}</div>` : ''}
           <div class="book-meta">Выдано: ${data.issuedDate}</div>
-          <div class="book-meta">Срок: ${data.dueDate}${data.renewCount > 0 ? ` (прод. ${data.renewCount}/3)` : ''}</div>
-          ${data.returnedAt ? `<div class="book-meta">Возвращено: ${data.returnedAt}</div>` : ''}
+          <div class="book-meta" style="${data.isOverdue ? 'color:#991b1b; font-weight:600;' : (data.isDueSoon ? 'color:#92400e; font-weight:600;' : '')}">Срок: ${data.dueDate}${data.renewCount > 0 ? ` (прод. ${data.renewCount}/3)` : ''}</div>
+          ${data.returnedAt ? `<div class="book-meta" style="color:#065f46;">Возвращено: ${data.returnedAt}</div>` : ''}
           ${canRenew ? `<button onclick="readerRenew('${escapeHtml(data.id)}')" style="margin-top: 8px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 14px; width: 100%;">Продлить</button>` : ''}
         </article>
       `;
     }
 
-    function renderNoLoansMessage(hasReaderProfile = true) {
+    function renderNoLoansMessage(hasReaderProfile = true, tab = 'active') {
       if (!hasReaderProfile) {
         return `
           <div class="loading" style="grid-column: 1 / -1; text-align: center; border-color: rgba(234,179,8,.4); background: #fffbeb;">
             <span style="font-size: 28px;">📋</span>
             <p style="margin: 8px 0 0; font-weight: 600; color: #92400e;">Профиль читателя не найден</p>
-            <p style="margin: 4px 0 0; color: #a16207;">Обратитесь к библиотекарю для проверки данных.</p>
+            <p style="margin: 4px 0 0; color: #a16207; font-size:13px;">Обратитесь к библиотекарю для привязки вашего аккаунта к читательскому профилю.</p>
           </div>
         `;
       }
+      const messages = {
+        active: { icon: '📚', title: 'Нет активных выдач', sub: 'У вас сейчас нет книг на руках.' },
+        returned: { icon: '✓', title: 'Нет истории возвратов', sub: 'Возвращённые книги будут отображаться здесь.' },
+        all: { icon: '📖', title: 'Нет записей о выдачах', sub: 'Когда вы возьмёте книгу, она появится здесь.' },
+      };
+      const m = messages[tab] || messages.active;
       return `
         <div class="loading" style="grid-column: 1 / -1; text-align: center;">
-          <span style="font-size: 28px;">📚</span>
-          <p style="margin: 8px 0 0; font-weight: 600;">Нет активных выдач</p>
-          <p style="margin: 4px 0 0;"><a href="/catalog" style="color: var(--blue); text-decoration: underline;">Перейти в каталог →</a></p>
+          <span style="font-size: 28px;">${m.icon}</span>
+          <p style="margin: 8px 0 0; font-weight: 600;">${m.title}</p>
+          <p style="margin: 4px 0 0; font-size:13px; color:var(--muted);">${m.sub}</p>
+          <p style="margin: 8px 0 0;"><a href="/catalog" style="color: var(--blue); text-decoration: underline; font-size:14px;">Перейти в каталог →</a></p>
         </div>
       `;
     }
@@ -759,6 +808,7 @@
           const newDue = data.data?.dueAt ? new Date(data.data.dueAt).toLocaleDateString('ru-RU') : '—';
           showToast('success', 'Продлено!', `Новый срок: ${newDue}. Продлений: ${data.data?.renewCount || '?'}/3`);
           loadBooks();
+          loadLoanSummary();
         } else {
           showToast('error', 'Ошибка', data.message || data.error || 'Не удалось продлить выдачу');
         }
@@ -767,14 +817,24 @@
       }
     }
 
-    function updateStats(stats) {
-      const issuedCount = document.getElementById('issued-count');
-      const reservedCount = document.getElementById('reserved-count');
-      const historyCount = document.getElementById('history-count');
+    function updateStats(loanSummary) {
+      const activeEl = document.getElementById('active-loans-count');
+      const overdueEl = document.getElementById('overdue-loans-count');
+      const dueSoonEl = document.getElementById('due-soon-loans-count');
+      const returnedEl = document.getElementById('returned-loans-count');
 
-      if (issuedCount) issuedCount.textContent = String(Number(stats?.readerProfilesFound || 0));
-      if (reservedCount) reservedCount.textContent = String(Number(stats?.readerContacts || 0));
-      if (historyCount) historyCount.textContent = String(Number(stats?.openReaderReviewTasks || 0));
+      if (activeEl) activeEl.textContent = String(loanSummary?.activeLoans ?? 0);
+      if (overdueEl) {
+        const overdue = loanSummary?.overdueLoans ?? 0;
+        overdueEl.textContent = String(overdue);
+        overdueEl.style.color = overdue > 0 ? '#991b1b' : 'inherit';
+      }
+      if (dueSoonEl) {
+        const dueSoon = loanSummary?.dueSoonLoans ?? 0;
+        dueSoonEl.textContent = String(dueSoon);
+        dueSoonEl.style.color = dueSoon > 0 ? '#92400e' : 'inherit';
+      }
+      if (returnedEl) returnedEl.textContent = String(loanSummary?.returnedLoans ?? 0);
     }
 
     function updateStatusAlert(summary) {
@@ -808,7 +868,6 @@
       const payload = await response.json().catch(() => ({}));
       const data = payload?.data || {};
 
-      updateStats(data?.stats || {});
       updateStatusAlert(data);
 
       const sessionUser = data?.user || null;
@@ -821,20 +880,34 @@
       }
     }
 
-    async function loadBooks() {
+    function switchLoanTab(status) {
+      currentLoanTab = status;
+      document.querySelectorAll('.loan-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.status === status);
+        if (btn.dataset.status === status) {
+          btn.style.background = 'var(--blue)';
+          btn.style.color = '#fff';
+          btn.style.borderColor = 'var(--blue)';
+        } else {
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.style.borderColor = '';
+        }
+      });
+      loadBooks(status);
+    }
+
+    async function loadBooks(tab) {
+      tab = tab || currentLoanTab;
       const grid = document.getElementById('book-grid');
+      grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p style="margin:8px 0 0;">Загрузка выдач...</p></div>';
       try {
-        const response = await fetch(ACCOUNT_LOANS_ENDPOINT, {
-          headers: {
-            Accept: 'application/json',
-          },
+        const statusParam = tab === 'all' ? '' : `?status=${tab}`;
+        const response = await fetch(`${ACCOUNT_LOANS_ENDPOINT}${statusParam}`, {
+          headers: { Accept: 'application/json' },
         });
 
-        if (response.status === 401) {
-          redirectToLogin();
-          return;
-        }
-
+        if (response.status === 401) { redirectToLogin(); return; }
         if (!response.ok) throw new Error('Ошибка API');
 
         const payload = await response.json();
@@ -842,7 +915,7 @@
         const hasReaderProfile = !payload?.message?.includes('No linked reader');
 
         if (!loans.length) {
-          grid.innerHTML = renderNoLoansMessage(hasReaderProfile);
+          grid.innerHTML = renderNoLoansMessage(hasReaderProfile, tab);
           return;
         }
 
@@ -851,6 +924,18 @@
         console.error(error);
         grid.innerHTML = '<div class="loading" style="grid-column: 1 / -1;">Не удалось загрузить данные о выдачах</div>';
       }
+    }
+
+    async function loadLoanSummary() {
+      try {
+        const response = await fetch(ACCOUNT_LOANS_SUMMARY_ENDPOINT, {
+          headers: { Accept: 'application/json' },
+        });
+        if (response.ok) {
+          const payload = await response.json();
+          updateStats(payload?.data || {});
+        }
+      } catch (e) { /* silent */ }
     }
 
     function reservationStatusBadge(status) {
@@ -1027,7 +1112,8 @@
           loadAccountSummary().catch((error) => {
             console.error(error);
           }),
-          loadBooks(),
+          loadBooks('active'),
+          loadLoanSummary(),
           loadReservations(),
           loadWorkbench(),
         ]);
