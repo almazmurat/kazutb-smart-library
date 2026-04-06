@@ -31,6 +31,7 @@ class ShortlistController extends Controller
         $validated = $request->validate([
             'identifier' => ['required', 'string', 'max:255'],
             'title' => ['required', 'string', 'max:1000'],
+            'type' => ['nullable', 'string', 'in:book,external_resource'],
             'author' => ['nullable', 'string', 'max:500'],
             'publisher' => ['nullable', 'string', 'max:500'],
             'year' => ['nullable', 'string', 'max:10'],
@@ -38,6 +39,9 @@ class ShortlistController extends Controller
             'isbn' => ['nullable', 'string', 'max:30'],
             'available' => ['nullable', 'integer', 'min:0'],
             'total' => ['nullable', 'integer', 'min:0'],
+            'url' => ['nullable', 'string', 'url', 'max:2048'],
+            'provider' => ['nullable', 'string', 'max:500'],
+            'access_type' => ['nullable', 'string', 'max:50'],
         ]);
 
         $items = $this->getShortlist($request);
@@ -45,7 +49,7 @@ class ShortlistController extends Controller
 
         if (isset($items[$identifier])) {
             return response()->json([
-                'message' => 'Книга уже в подборке.',
+                'message' => 'Ресурс уже в подборке.',
                 'duplicate' => true,
                 'data' => $items[$identifier],
             ], 409);
@@ -54,6 +58,7 @@ class ShortlistController extends Controller
         $item = [
             'identifier' => $identifier,
             'title' => $validated['title'],
+            'type' => $validated['type'] ?? 'book',
             'author' => $validated['author'] ?? null,
             'publisher' => $validated['publisher'] ?? null,
             'year' => $validated['year'] ?? null,
@@ -61,6 +66,9 @@ class ShortlistController extends Controller
             'isbn' => $validated['isbn'] ?? null,
             'available' => $validated['available'] ?? null,
             'total' => $validated['total'] ?? null,
+            'url' => $validated['url'] ?? null,
+            'provider' => $validated['provider'] ?? null,
+            'access_type' => $validated['access_type'] ?? null,
             'addedAt' => now()->toIso8601String(),
         ];
 
@@ -68,7 +76,7 @@ class ShortlistController extends Controller
         $this->saveShortlist($request, $items);
 
         return response()->json([
-            'message' => 'Книга добавлена в подборку.',
+            'message' => 'Ресурс добавлен в подборку.',
             'data' => $item,
             'meta' => ['total' => count($items)],
         ], 201);

@@ -133,26 +133,11 @@
         </div>
       </div>
 
-      <div class="resource-highlights">
+      <div class="resource-highlights" id="teacher-ext-resources">
         <div class="card resource-highlight-card">
-          <div class="eyebrow eyebrow--blue">Электронная библиотека</div>
-          <h3>IPR SMART</h3>
-          <p class="text-body" style="margin: 0 0 12px;">Учебная и научная литература по экономике, технологиям, праву и другим направлениям. Доступ для студентов и преподавателей КазУТБ.</p>
-          <span class="badge">Действует до сентября 2026</span>
-        </div>
-
-        <div class="card resource-highlight-card">
-          <div class="eyebrow eyebrow--green">Открытый доступ</div>
-          <h3>Открытые научные ресурсы</h3>
-          <p class="text-body" style="margin: 0 0 12px;">Репозитории, открытые журналы, образовательные платформы и бесплатные академические коллекции без ограничений доступа.</p>
-          <span class="badge">Свободный доступ</span>
-        </div>
-
-        <div class="card resource-highlight-card">
-          <div class="eyebrow eyebrow--violet">Научные базы</div>
-          <h3>Международные базы данных</h3>
-          <p class="text-body" style="margin: 0 0 12px;">Информация о подписках и доступе к Scopus, Web of Science, РИНЦ и другим базам для научных публикаций и цитирования.</p>
-          <a href="/resources" class="feature-link">Подробнее →</a>
+          <div class="eyebrow eyebrow--blue">Загрузка...</div>
+          <h3>Электронные ресурсы</h3>
+          <p class="text-body" style="margin: 0;">Загрузка данных о доступных ресурсах...</p>
         </div>
       </div>
     </div>
@@ -377,4 +362,93 @@
     .faq-answer { padding: 0 20px 16px; }
   }
 </style>
+@endsection
+
+@section('scripts')
+<script>
+(function() {
+  const API_URL = '/api/v1/external-resources';
+
+  const eyebrowColorMap = {
+    electronic_library: 'blue',
+    research_database: 'violet',
+    open_access: 'green',
+    analytics: 'pink'
+  };
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    const d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+  }
+
+  function formatExpiry(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+    return `Действует до ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  async function loadTeacherResources() {
+    const container = document.getElementById('teacher-ext-resources');
+    try {
+      const res = await fetch(API_URL, { headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error('API error');
+
+      const json = await res.json();
+      const resources = (json.data || []).filter(r => r.status === 'active');
+      const categories = json.meta?.categories || {};
+      const accessTypes = json.meta?.access_types || {};
+
+      // Show up to 4 highlighted resources, prioritizing licensed over open
+      const licensed = resources.filter(r => r.access_type !== 'open');
+      const open = resources.filter(r => r.access_type === 'open');
+      const highlighted = [...licensed.slice(0, 3), ...open.slice(0, 1)].slice(0, 4);
+
+      if (highlighted.length === 0) {
+        container.innerHTML = '<p style="color:var(--muted);">Информация о внешних ресурсах временно недоступна.</p>';
+        return;
+      }
+
+      container.innerHTML = highlighted.map(r => {
+        const catInfo = categories[r.category] || {};
+        const accInfo = accessTypes[r.access_type] || {};
+        const color = eyebrowColorMap[r.category] || 'blue';
+
+        return `
+          <div class="card resource-highlight-card">
+            <div class="eyebrow eyebrow--${color}">${escapeHtml(catInfo.label || r.category)}</div>
+            <h3>${escapeHtml(r.title)}</h3>
+            <p class="text-body" style="margin: 0 0 12px;">${escapeHtml(r.description)}</p>
+            ${r.expiry_date
+              ? `<span class="badge">${formatExpiry(r.expiry_date)}</span>`
+              : `<span class="badge">${escapeHtml(accInfo.label || 'Доступно')}</span>`
+            }
+            ${r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="feature-link" style="display:block; margin-top:8px;">Перейти к ресурсу ↗</a>` : ''}
+          </div>
+        `;
+      }).join('') + `
+        <div class="card resource-highlight-card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:36px; margin-bottom:12px;">📚</div>
+          <h3>Все внешние ресурсы</h3>
+          <p class="text-body" style="margin: 0 0 12px;">Полный перечень подписных баз, открытых коллекций и аналитических ресурсов.</p>
+          <a href="/resources" class="feature-link">Открыть все ресурсы →</a>
+        </div>
+      `;
+    } catch (e) {
+      container.innerHTML = `
+        <div class="card resource-highlight-card">
+          <div class="eyebrow eyebrow--blue">Электронные ресурсы</div>
+          <h3>Внешние платформы</h3>
+          <p class="text-body" style="margin: 0 0 12px;">Подписные электронные библиотеки, научные базы данных и открытые образовательные ресурсы.</p>
+          <a href="/resources" class="feature-link">Перейти к ресурсам →</a>
+        </div>
+      `;
+    }
+  }
+
+  loadTeacherResources();
+})();
+</script>
 @endsection

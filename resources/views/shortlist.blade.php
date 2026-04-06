@@ -202,22 +202,40 @@
       const title = escapeHtml(item.title || 'Без названия');
       const author = escapeHtml(item.author || '');
       const publisher = escapeHtml(item.publisher || '');
+      const provider = escapeHtml(item.provider || '');
       const year = escapeHtml(item.year || '');
       const language = escapeHtml(item.language || '');
       const isbn = escapeHtml(item.isbn || '');
+      const isExternal = item.type === 'external_resource';
+      const accessType = item.access_type || '';
+
+      const accessLabels = {
+        campus: 'Из кампуса',
+        remote_auth: 'По авторизации',
+        open: 'Свободный доступ'
+      };
 
       const tags = [
+        isExternal ? '<span class="tag" style="background:rgba(124,58,237,.1);color:var(--violet);">Внешний ресурс</span>' : '',
         year ? `<span class="tag">${year}</span>` : '',
         language ? `<span class="tag">${language}</span>` : '',
         isbn ? `<span class="tag">ISBN: ${isbn}</span>` : '',
+        isExternal && accessType ? `<span class="tag">${escapeHtml(accessLabels[accessType] || accessType)}</span>` : '',
       ].filter(Boolean).join('');
+
+      const linkHref = isExternal && item.url
+        ? item.url
+        : `/book/${encodeURIComponent(identifier)}`;
+      const linkTarget = isExternal ? ' target="_blank" rel="noopener"' : '';
+      const linkSuffix = isExternal ? ' ↗' : '';
 
       return `
         <div class="shortlist-item" data-identifier="${escapeHtml(identifier)}">
           <div class="shortlist-item-info">
-            <h3><a href="/book/${encodeURIComponent(identifier)}">${idx + 1}. ${title}</a></h3>
+            <h3><a href="${linkHref}"${linkTarget}>${idx + 1}. ${title}${linkSuffix}</a></h3>
             ${author ? `<div style="color:var(--muted); font-size:14px;">${author}</div>` : ''}
             ${publisher ? `<div style="color:var(--muted); font-size:13px;">${publisher}</div>` : ''}
+            ${isExternal && provider ? `<div style="color:var(--muted); font-size:13px;">Платформа: ${provider}</div>` : ''}
             <div class="shortlist-item-meta">${tags}</div>
           </div>
           <button class="shortlist-remove-btn" onclick="removeItem('${escapeHtml(identifier)}')">✕ Убрать</button>
@@ -230,11 +248,18 @@
     const block = document.getElementById('bibliography-text');
     const lines = items.map((item, idx) => {
       const parts = [];
-      if (item.author) parts.push(item.author);
-      parts.push(item.title || 'Без названия');
-      if (item.publisher) parts.push(item.publisher);
-      if (item.year) parts.push(item.year);
-      if (item.isbn) parts.push(`ISBN ${item.isbn}`);
+      if (item.type === 'external_resource') {
+        parts.push('[Внешний ресурс]');
+        parts.push(item.title || 'Без названия');
+        if (item.provider) parts.push('Платформа: ' + item.provider);
+        if (item.url) parts.push(item.url);
+      } else {
+        if (item.author) parts.push(item.author);
+        parts.push(item.title || 'Без названия');
+        if (item.publisher) parts.push(item.publisher);
+        if (item.year) parts.push(item.year);
+        if (item.isbn) parts.push(`ISBN ${item.isbn}`);
+      }
       return `${idx + 1}. ${parts.join('. ')}.`;
     });
     block.textContent = lines.join('\n');

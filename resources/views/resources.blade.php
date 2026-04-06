@@ -173,6 +173,159 @@
     .resource-hero-stats .rh-stat strong { font-size: 24px; }
     .resource-list-item .rli-icon { width: 36px; height: 36px; font-size: 16px; }
     .access-card { padding: 16px; }
+    .ext-filter-bar { gap: 6px; }
+    .ext-filter-btn { padding: 6px 12px; font-size: 12px; }
+  }
+
+  /* External resources filter bar */
+  .ext-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .ext-filter-btn {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-glass);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .ext-filter-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .ext-filter-btn--active {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+  }
+  .ext-filter-btn--active:hover {
+    color: #fff;
+  }
+
+  /* External resources grid */
+  .ext-resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+  .ext-resource-card {
+    background: var(--surface-glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    transition: transform .25s, box-shadow .25s;
+    display: flex;
+    flex-direction: column;
+  }
+  .ext-resource-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+  .ext-resource-card__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .ext-resource-card__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .ext-resource-card__icon--blue { background: linear-gradient(135deg, var(--blue), var(--cyan)); }
+  .ext-resource-card__icon--violet { background: linear-gradient(135deg, var(--violet), var(--pink)); }
+  .ext-resource-card__icon--green { background: linear-gradient(135deg, var(--green), var(--cyan)); }
+  .ext-resource-card__icon--pink { background: linear-gradient(135deg, var(--pink), #f97316); }
+  .ext-resource-card__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .ext-resource-card__provider {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .ext-resource-card__desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0 0 16px;
+    flex: 1;
+  }
+  .ext-resource-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+  }
+  .ext-resource-card__badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .ext-resource-card__actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .ext-resource-card__actions a,
+  .ext-resource-card__actions button {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .ext-resource-card__actions .ext-link-btn {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+  }
+  .ext-resource-card__actions .ext-link-btn:hover {
+    opacity: .85;
+  }
+  .ext-resource-card__actions .ext-shortlist-btn {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .ext-resource-card__actions .ext-shortlist-btn:hover {
+    border-color: var(--violet);
+    color: var(--violet);
+  }
+  .ext-resource-card__actions .ext-shortlist-btn--added {
+    border-color: var(--green);
+    color: var(--green);
+    pointer-events: none;
+  }
+  .ext-resource-card__expiry {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  @media (max-width: 680px) {
+    .ext-resources-grid { grid-template-columns: 1fr; }
+    .ext-resource-card { padding: 20px; }
+    .ext-resource-card__icon { width: 40px; height: 40px; font-size: 18px; }
+    .ext-resource-card__title { font-size: 16px; }
   }
 </style>
 @endsection
@@ -184,7 +337,7 @@
     <h1>Цифровые коллекции и научные базы данных</h1>
     <p>Доступ к электронным учебникам, международным научным базам, лицензированным платформам и открытым образовательным ресурсам.</p>
     <div class="resource-hero-stats">
-      <div class="rh-stat"><strong>10+</strong><span>научных баз</span></div>
+      <div class="rh-stat"><strong id="stat-total">—</strong><span>внешних ресурсов</span></div>
       <div class="rh-stat"><strong>50 000+</strong><span>электронных документов</span></div>
       <div class="rh-stat"><strong>24/7</strong><span>удалённый доступ</span></div>
       <div class="rh-stat"><strong>3</strong><span>режима доступа</span></div>
@@ -192,12 +345,13 @@
   </div>
 </div>
 
+{{-- Local library catalog section (static, always shown) --}}
 <section class="page-section">
   <div class="container resource-section-grid">
     <div class="resource-section-info">
-      <h2>Электронная библиотека</h2>
-      <p>Полнотекстовая коллекция учебной и научной литературы в цифровом формате. Доступ из кампуса и удалённо через личный кабинет.</p>
-      <p>Включает учебники, учебные пособия, монографии, методические материалы и периодические издания по всем направлениям подготовки университета.</p>
+      <h2>Электронная библиотека КазУТБ</h2>
+      <p>Собственная полнотекстовая коллекция учебной и научной литературы в цифровом формате. Доступ из кампуса и удалённо через личный кабинет.</p>
+      <p>Это — <strong>фонд библиотеки университета</strong>, включающий учебники, пособия, монографии и методические материалы по всем направлениям подготовки.</p>
       <a href="/catalog" class="btn btn-primary" style="margin-top:8px;">Перейти в каталог</a>
     </div>
     <div class="resource-list">
@@ -221,31 +375,27 @@
   </div>
 </section>
 
+{{-- External licensed resources section — loaded from API --}}
 <section class="page-section">
-  <div class="container resource-section-grid">
-    <div class="resource-section-info">
-      <h2>Научные базы данных</h2>
-      <p>Международные и национальные базы данных для научных исследований, подготовки публикаций и работы с первоисточниками.</p>
-      <p>Доступ к большинству ресурсов предоставляется из сети кампуса. Некоторые базы доступны удалённо через авторизацию.</p>
-    </div>
-    <div class="resource-list">
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--blue">🔬</div>
-        <div><h4>Республиканская межвузовская электронная библиотека (РМЭБ)</h4><p>Электронные версии диссертаций, монографий и научных трудов казахстанских учёных.</p></div>
-      </div>
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--violet">📊</div>
-        <div><h4>Электронная научная библиотека eLIBRARY.RU</h4><p>Крупнейшая научная электронная библиотека с индексами цитирования и полнотекстовыми статьями.</p></div>
-      </div>
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--green">🌍</div>
-        <div><h4>Polpred.com</h4><p>Обзоры прессы и аналитика по экономике, бизнесу, праву и другим направлениям.</p></div>
-      </div>
-      <div class="resource-list-item">
-        <div class="rli-icon rli-icon--pink">📚</div>
-        <div><h4>IPR SMART</h4><p>Цифровая образовательная платформа с учебниками, монографиями и научными журналами.</p></div>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow eyebrow--violet">Внешние лицензированные ресурсы</div>
+        <h2>Подписные платформы и научные базы данных</h2>
+        <p>Внешние электронные ресурсы, доступные студентам и преподавателям КазУТБ по подписке или в открытом доступе. Это не материалы библиотечного фонда — каждый ресурс размещён на внешней платформе со своими условиями доступа.</p>
       </div>
     </div>
+
+    <div class="ext-filter-bar" id="ext-filter-bar">
+      <button class="ext-filter-btn ext-filter-btn--active" data-filter="all">Все</button>
+    </div>
+
+    <div id="ext-resources-loading" style="text-align:center; padding:32px;">
+      <div style="display:inline-block;width:28px;height:28px;border:3px solid #e5e7eb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div>
+      <p style="margin:8px 0 0; color:var(--muted); font-size:14px;">Загрузка ресурсов...</p>
+    </div>
+
+    <div id="ext-resources-grid" class="ext-resources-grid" style="display:none;"></div>
   </div>
 </section>
 
@@ -326,4 +476,184 @@
     </div>
   </div>
 </section>
+@endsection
+
+@section('scripts')
+<script>
+(function() {
+  const API_URL = '/api/v1/external-resources';
+  const SHORTLIST_API = '/api/v1/shortlist';
+  const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
+
+  const accessBadgeClass = {
+    campus: 'access-badge--campus',
+    remote_auth: 'access-badge--remote',
+    open: 'access-badge--open'
+  };
+
+  const iconColorMap = {
+    electronic_library: 'blue',
+    research_database: 'violet',
+    open_access: 'green',
+    analytics: 'pink'
+  };
+
+  let allResources = [];
+  let categories = {};
+  let accessTypes = {};
+  let shortlistedIds = new Set();
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    const d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+  }
+
+  function formatExpiry(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+    return `до ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  function renderFilterBar() {
+    const bar = document.getElementById('ext-filter-bar');
+    const usedCats = [...new Set(allResources.map(r => r.category))];
+    let html = '<button class="ext-filter-btn ext-filter-btn--active" data-filter="all">Все (' + allResources.length + ')</button>';
+    usedCats.forEach(cat => {
+      const info = categories[cat] || {};
+      const count = allResources.filter(r => r.category === cat).length;
+      html += `<button class="ext-filter-btn" data-filter="${escapeHtml(cat)}">${escapeHtml(info.icon || '')} ${escapeHtml(info.label || cat)} (${count})</button>`;
+    });
+    bar.innerHTML = html;
+    bar.querySelectorAll('.ext-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        bar.querySelectorAll('.ext-filter-btn').forEach(b => b.classList.remove('ext-filter-btn--active'));
+        btn.classList.add('ext-filter-btn--active');
+        renderResources(btn.dataset.filter);
+      });
+    });
+  }
+
+  function renderResources(filter) {
+    const grid = document.getElementById('ext-resources-grid');
+    const filtered = filter === 'all' ? allResources : allResources.filter(r => r.category === filter);
+
+    grid.innerHTML = filtered.map(r => {
+      const catInfo = categories[r.category] || {};
+      const accInfo = accessTypes[r.access_type] || {};
+      const color = iconColorMap[r.category] || 'blue';
+      const badgeClass = accessBadgeClass[r.access_type] || 'access-badge--campus';
+      const inShortlist = shortlistedIds.has('ext:' + r.slug);
+
+      return `
+        <div class="ext-resource-card" data-slug="${escapeHtml(r.slug)}">
+          <div class="ext-resource-card__header">
+            <div class="ext-resource-card__icon ext-resource-card__icon--${color}">${escapeHtml(catInfo.icon || '📄')}</div>
+            <div>
+              <h3 class="ext-resource-card__title">${escapeHtml(r.title)}</h3>
+              <div class="ext-resource-card__provider">${escapeHtml(r.provider)}</div>
+            </div>
+          </div>
+          <p class="ext-resource-card__desc">${escapeHtml(r.description)}</p>
+          <div class="ext-resource-card__footer">
+            <span class="ext-resource-card__badge ${badgeClass}">${escapeHtml(accInfo.label || r.access_type)}</span>
+            ${r.expiry_date ? `<span class="ext-resource-card__expiry">Действует ${formatExpiry(r.expiry_date)}</span>` : ''}
+          </div>
+          <div class="ext-resource-card__actions">
+            ${r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="ext-link-btn">Перейти ↗</a>` : ''}
+            <button class="ext-shortlist-btn ${inShortlist ? 'ext-shortlist-btn--added' : ''}"
+              onclick="addExtToShortlist(this, '${escapeHtml(r.slug)}')"
+              ${inShortlist ? 'disabled' : ''}>
+              ${inShortlist ? '✓ В подборке' : '+ В подборку'}
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    grid.style.display = 'grid';
+  }
+
+  window.addExtToShortlist = async function(btn, slug) {
+    const resource = allResources.find(r => r.slug === slug);
+    if (!resource) return;
+
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+      const res = await fetch(SHORTLIST_API, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': CSRF
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          identifier: 'ext:' + slug,
+          title: resource.title,
+          type: 'external_resource',
+          provider: resource.provider,
+          url: resource.url || null,
+          access_type: resource.access_type
+        })
+      });
+
+      if (res.ok || res.status === 409) {
+        btn.textContent = '✓ В подборке';
+        btn.classList.add('ext-shortlist-btn--added');
+        shortlistedIds.add('ext:' + slug);
+      } else {
+        btn.textContent = '+ В подборку';
+        btn.disabled = false;
+      }
+    } catch (e) {
+      btn.textContent = '+ В подборку';
+      btn.disabled = false;
+    }
+  };
+
+  async function loadShortlistState() {
+    try {
+      const res = await fetch(SHORTLIST_API, { headers: { Accept: 'application/json' }, credentials: 'same-origin' });
+      if (res.ok) {
+        const json = await res.json();
+        (json.data || []).forEach(item => {
+          if (item.identifier) shortlistedIds.add(item.identifier);
+        });
+      }
+    } catch (_) {}
+  }
+
+  async function init() {
+    const loading = document.getElementById('ext-resources-loading');
+    try {
+      const [resResponse] = await Promise.all([
+        fetch(API_URL, { headers: { Accept: 'application/json' } }),
+        loadShortlistState()
+      ]);
+
+      if (!resResponse.ok) throw new Error('API error');
+
+      const json = await resResponse.json();
+      allResources = json.data || [];
+      categories = json.meta?.categories || {};
+      accessTypes = json.meta?.access_types || {};
+
+      document.getElementById('stat-total').textContent = allResources.length + '+';
+      loading.style.display = 'none';
+      renderFilterBar();
+      renderResources('all');
+    } catch (e) {
+      loading.innerHTML = '<p style="color:var(--muted);">Не удалось загрузить внешние ресурсы.</p>';
+      console.error('External resources load error:', e);
+    }
+  }
+
+  init();
+})();
+</script>
 @endsection

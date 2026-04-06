@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\BridgeController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\ExternalResourceController;
 use App\Http\Controllers\Api\ShortlistController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\InternalAiAssistantController;
@@ -122,6 +123,10 @@ Route::prefix('v1')->group(function (): void {
     Route::get('/book-db/{isbn}', [BookController::class, 'dbShow']);
     Route::get('/catalog-db', [CatalogController::class, 'dbIndex']);
     Route::get('/subjects', [SubjectController::class, 'index']);
+
+    // External licensed resources (public, config-backed).
+    Route::get('/external-resources', [ExternalResourceController::class, 'index']);
+    Route::get('/external-resources/{slug}', [ExternalResourceController::class, 'show']);
 
     Route::get('/library/health-summary', [LibraryController::class, 'healthSummary']);
     Route::get('/review/issues', [ReviewController::class, 'issues']);
