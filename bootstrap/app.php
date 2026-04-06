@@ -5,6 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\EnsureInternalCirculationStaff;
 use App\Http\Middleware\EnsureIntegrationBoundary;
+use App\Http\Middleware\EnsureAuthenticatedReader;
 use App\Http\Middleware\LogIntegrationRequest;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'internal.circulation.staff' => EnsureInternalCirculationStaff::class,
             'integration.boundary' => EnsureIntegrationBoundary::class,
             'integration.log' => LogIntegrationRequest::class,
+            'library.auth' => EnsureAuthenticatedReader::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

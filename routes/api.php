@@ -27,12 +27,16 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 Route::middleware('web')->group(function (): void {
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
-    Route::get('/v1/account/summary', [AccountController::class, 'summary']);
-    Route::get('/v1/account/loans', [AccountController::class, 'loans']);
-    Route::post('/v1/account/loans/{loanId}/renew', [AccountController::class, 'renewLoan']);
-    Route::get('/v1/account/reservations', [AccountController::class, 'reservations']);
-    Route::get('/v1/me', [AuthController::class, 'me']);
-    Route::post('/v1/logout', [AuthController::class, 'logout']);
+
+    // Reader-authenticated routes — middleware enforces library.user session check.
+    Route::middleware('library.auth')->group(function (): void {
+        Route::get('/v1/account/summary', [AccountController::class, 'summary']);
+        Route::get('/v1/account/loans', [AccountController::class, 'loans']);
+        Route::post('/v1/account/loans/{loanId}/renew', [AccountController::class, 'renewLoan']);
+        Route::get('/v1/account/reservations', [AccountController::class, 'reservations']);
+        Route::get('/v1/me', [AuthController::class, 'me']);
+        Route::post('/v1/logout', [AuthController::class, 'logout']);
+    });
 });
 
 Route::prefix('v1')->group(function (): void {

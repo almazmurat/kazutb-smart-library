@@ -401,7 +401,11 @@
         await submitLogin(loginValue, passwordValue);
         showMessage('Вход выполнен успешно. Перенаправление...', 'success');
         window.setTimeout(() => {
-          window.location.href = '/account';
+          const params = new URLSearchParams(window.location.search);
+          const redirectTo = params.get('redirect') || '/account';
+          // Only allow relative redirects (prevent open redirect)
+          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : '/account';
+          window.location.href = safeRedirect;
         }, 350);
       } catch (error) {
         showMessage(error?.message || 'Не удалось выполнить вход', 'error');

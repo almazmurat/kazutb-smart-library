@@ -26,7 +26,12 @@ Route::get('/book/{isbn}', function () {
     return view('book');
 });
 
-Route::get('/account', function () {
+Route::get('/account', function (Request $request) {
+    $user = $request->session()->get('library.user');
+    if (! is_array($user)) {
+        return redirect('/login?redirect=' . urlencode('/account'));
+    }
+
     return view('account');
 });
 

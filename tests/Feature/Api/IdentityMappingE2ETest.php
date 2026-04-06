@@ -70,8 +70,14 @@ class IdentityMappingE2ETest extends TestCase
      */
     public function test_account_page_loads_with_new_matching_field(): void
     {
-        // Verify the page still renders (backward compatibility)
-        $response = $this->get('/account');
+        $response = $this->withSession([
+            'library.user' => [
+                'id' => 'u-test-1', 'name' => 'Test', 'email' => 'test@example.com',
+                'login' => 'test01', 'ad_login' => 'test01', 'role' => 'reader',
+            ],
+            'library.crm_token' => 'test-token',
+            'library.authenticated_at' => now()->toIso8601String(),
+        ])->get('/account');
 
         $response->assertStatus(200);
         $response->assertSee('/api/v1/account/summary'); // Page should call the endpoint

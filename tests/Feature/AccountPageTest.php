@@ -6,9 +6,21 @@ use Tests\TestCase;
 
 class AccountPageTest extends TestCase
 {
+    private function authenticatedSession(): array
+    {
+        return [
+            'library.user' => [
+                'id' => 'u-test-1', 'name' => 'Test', 'email' => 'test@example.com',
+                'login' => 'test01', 'ad_login' => 'test01', 'role' => 'reader',
+            ],
+            'library.crm_token' => 'test-token',
+            'library.authenticated_at' => now()->toIso8601String(),
+        ];
+    }
+
     public function test_account_page_renders_successfully(): void
     {
-        $response = $this->get('/account');
+        $response = $this->withSession($this->authenticatedSession())->get('/account');
 
         $response
             ->assertOk()
@@ -18,7 +30,7 @@ class AccountPageTest extends TestCase
 
     public function test_account_page_loads_real_loans_not_catalog(): void
     {
-        $response = $this->get('/account');
+        $response = $this->withSession($this->authenticatedSession())->get('/account');
 
         $response
             ->assertOk()
@@ -28,11 +40,17 @@ class AccountPageTest extends TestCase
 
     public function test_account_page_shows_loan_section(): void
     {
-        $response = $this->get('/account');
+        $response = $this->withSession($this->authenticatedSession())->get('/account');
 
         $response
             ->assertOk()
             ->assertSee('Мои книги')
             ->assertSee('Текущие выдачи из библиотечного фонда');
+    }
+
+    public function test_account_page_redirects_unauthenticated(): void
+    {
+        $response = $this->get('/account');
+        $response->assertRedirect('/login?redirect=%2Faccount');
     }
 }

@@ -32,15 +32,13 @@ class AuthSessionLifecycleTest extends TestCase
             ->assertJsonPath('success', true);
     }
 
-    public function test_logout_without_session_still_succeeds(): void
+    public function test_logout_without_session_returns_unauthenticated(): void
     {
         $response = $this
             ->withoutMiddleware(PreventRequestForgery::class)
             ->postJson('/api/v1/logout');
 
-        $response
-            ->assertOk()
-            ->assertJsonPath('success', true);
+        $response->assertStatus(401)->assertJsonPath('authenticated', false);
     }
 
     public function test_me_after_logout_returns_unauthenticated(): void
