@@ -60,13 +60,10 @@ Route::get('/login', function (Request $request) {
     ]);
 });
 
-Route::get('/services', function () {
-    return view('services', ['activePage' => 'services']);
-});
-
-Route::get('/about', function () {
-    return view('about', ['activePage' => 'about']);
-});
+// Consolidated pages: /services, /about, /news removed — redirects to prevent 404s.
+Route::get('/services', fn () => redirect('/', 301));
+Route::get('/news', fn () => redirect('/', 301));
+Route::get('/about', fn () => redirect('/contacts', 301));
 
 Route::get('/contacts', function () {
     return view('contacts', ['activePage' => 'contacts']);
@@ -74,10 +71,6 @@ Route::get('/contacts', function () {
 
 Route::get('/resources', function () {
     return view('resources', ['activePage' => 'resources']);
-});
-
-Route::get('/news', function () {
-    return view('news', ['activePage' => 'news']);
 });
 
 Route::get('/for-teachers', function () {

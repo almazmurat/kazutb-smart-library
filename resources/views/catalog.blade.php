@@ -199,9 +199,64 @@
       top: 104px;
     }
 
+    .filter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
     .filter-title {
-      margin: 0 0 16px;
+      margin: 0;
       font-size: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-badge {
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 999px;
+      min-width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+    }
+
+    .btn-clear-filters {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-clear-filters:hover {
+      color: #dc2626;
+      border-color: #dc2626;
+      background: rgba(220, 38, 38, .04);
+    }
+
+    .mobile-filter-toggle {
+      display: none;
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: center;
+      margin-bottom: 12px;
     }
 
     .filter-group { margin-bottom: 22px; }
@@ -524,6 +579,10 @@
     @media (max-width: 920px) {
       .layout { grid-template-columns: 1fr; }
       .filters { position: static; top: auto; }
+      .filter-header { display: none; }
+      .mobile-filter-toggle { display: block; }
+      #filters-body { display: none; }
+      #filters-body.open { display: block; }
       .nav-links, .nav-actions { display: none; }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
@@ -546,39 +605,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a href="/" class="brand">
-        <div class="brand-badge">
-          <img src="/logo.png" alt="Logo" class="logo-img">
-        </div>
-        <div>
-          <div id="brand-title">КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА</div>
-          <small id="brand-subtitle">Каталог книг</small>
-        </div>
-      </a>
-
-      <nav class="nav-links">
-        <a href="/">Главная</a>
-        <a href="/catalog" class="active">Каталог</a>
-        <a href="/resources">Ресурсы</a>
-        <a href="/services">Сервисы</a>
-        <a href="/news">Новости</a>
-        <a href="/about">О библиотеке</a>
-        <a href="/contacts">Контакты</a>
-      </nav>
-
-      <div class="nav-actions">
-        @if(session('library.user'))
-          <a href="/account" class="btn btn-ghost">Кабинет</a>
-          <button type="button" class="btn btn-primary" id="shared-logout-btn">Выйти</button>
-        @else
-          <a href="/login" class="btn btn-ghost">Войти</a>
-          <a href="/account" class="btn btn-primary">Личный кабинет</a>
-        @endif
-      </div>
-    </div>
-  </header>
+  @include('partials.navbar', ['activePage' => 'catalog'])
 
   <main class="page">
     <div class="container">
@@ -594,8 +621,15 @@
       </section>
 
       <section class="layout">
-        <aside class="card filters">
-          <h2 class="filter-title">Фильтры</h2>
+        <aside class="card filters" id="filters-panel">
+          <div class="filter-header">
+            <h2 class="filter-title">Фильтры <span id="filter-count-badge" class="filter-badge" style="display:none;"></span></h2>
+            <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ Сбросить</button>
+          </div>
+          <button type="button" class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleFilters()">
+            🔎 Фильтры <span id="mobile-filter-count"></span>
+          </button>
+          <div id="filters-body">
 
           <div class="filter-group">
             <span class="filter-label">Доступность</span>
@@ -634,6 +668,8 @@
               <option value="">Все направления</option>
             </select>
           </div>
+
+          </div>{{-- /filters-body --}}
 
           <button class="btn btn-primary" style="width:100%; margin-top:6px;" onclick="applyFilters()">Применить фильтры</button>
         </aside>
@@ -943,6 +979,52 @@
     function applyFilters() {
       currentPage = 1;
       loadCatalog();
+      updateFilterBadge();
+    }
+
+    function clearAllFilters() {
+      document.getElementById('filter-available-only').checked = false;
+      document.querySelectorAll('#language-chips .chip').forEach((c, i) => {
+        c.classList.toggle('active', i === 0);
+      });
+      document.querySelectorAll('#year-chips .chip').forEach((c, i) => {
+        c.classList.toggle('active', i === 0);
+      });
+      document.getElementById('subject-select').value = '';
+      activeSubjectId = '';
+      activeSubjectLabel = '';
+      applyFilters();
+    }
+
+    function countActiveFilters() {
+      let count = 0;
+      if (document.getElementById('filter-available-only')?.checked) count++;
+      if (getActiveLanguage()) count++;
+      if (getActiveYear()) count++;
+      if (document.getElementById('subject-select')?.value) count++;
+      return count;
+    }
+
+    function updateFilterBadge() {
+      const count = countActiveFilters();
+      const badge = document.getElementById('filter-count-badge');
+      const clearBtn = document.getElementById('clear-filters-btn');
+      const mobileCount = document.getElementById('mobile-filter-count');
+      if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-flex' : 'none';
+      }
+      if (clearBtn) {
+        clearBtn.style.display = count > 0 ? 'block' : 'none';
+      }
+      if (mobileCount) {
+        mobileCount.textContent = count > 0 ? `(${count})` : '';
+      }
+    }
+
+    function toggleFilters() {
+      const body = document.getElementById('filters-body');
+      body?.classList.toggle('open');
     }
 
     @if(session('library.user'))
@@ -1064,6 +1146,7 @@
     // Initial load
     loadSubjects();
     loadCatalog();
+    updateFilterBadge();
   </script>
 </body>
 </html>

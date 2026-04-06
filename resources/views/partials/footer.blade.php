@@ -17,25 +17,23 @@
       <a href="/catalog">Каталог литературы</a>
       <a href="/resources">Электронные ресурсы</a>
       <a href="/account">Личный кабинет</a>
-      <a href="/services">Сервисы библиотеки</a>
-      <!-- FUTURE: Add links per school/department when institutional structure is confirmed -->
+      <a href="/discover">По направлениям</a>
     </div>
 
     <div class="footer-col">
       <div class="footer-title">Преподавателям</div>
       <a href="/for-teachers">Ресурсы для преподавателей</a>
       <a href="/shortlist">Подборка литературы</a>
-      <a href="/discover">По направлениям</a>
       <a href="/catalog">Научная литература</a>
       <a href="/resources">Базы данных</a>
     </div>
 
     <div class="footer-col">
       <div class="footer-title">О библиотеке</div>
-      <a href="/about">О нас</a>
-      <a href="/contacts">Контакты</a>
-      <a href="/news">Новости</a>
-      <a href="/services">Все сервисы</a>
+      <a href="/contacts">О нас и контакты</a>
+      <a href="/catalog">Каталог</a>
+      <a href="/resources">Электронные ресурсы</a>
+      <a href="/login">Вход в систему</a>
     </div>
 
     <div class="footer-col">
@@ -50,8 +48,9 @@
   <div class="container footer-bottom">
     <p>© {{ date('Y') }} Библиотека КазУТБ. Все права защищены.</p>
     <div class="footer-bottom-links">
-      <a href="/about">О библиотеке</a>
-      <a href="/contacts">Контакты</a>
+      <a href="/">Главная</a>
+      <a href="/catalog">Каталог</a>
+      <a href="/contacts">О библиотеке</a>
     </div>
   </div>
 </footer>

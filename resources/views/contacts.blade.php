@@ -1,18 +1,44 @@
 @extends('layouts.public')
 
-@section('title', 'Контакты — Библиотека КазУТБ')
+@section('title', 'О библиотеке и контакты — КазУТБ')
 
 @section('content')
   <section class="page-hero">
     <div class="container contact-hero-center">
-      <div class="eyebrow">Контакты</div>
-      <h1>Свяжитесь с нами</h1>
-      <p>Контактная информация библиотеки Казахского университета технологии и бизнеса. Мы поможем с поиском литературы, электронными ресурсами, доступом к личному кабинету, продлением и бронированием.</p>
+      <div class="eyebrow">Библиотека КазУТБ</div>
+      <h1>О библиотеке и контакты</h1>
+      <p>Библиотека Казахского университета технологии и бизнеса — центр знаний и информационной поддержки для студентов, преподавателей и исследователей.</p>
     </div>
   </section>
 
+  {{-- About: mission + stats (merged from /about) --}}
+  <section class="page-section">
+    <div class="container about-grid">
+      <div>
+        <div class="eyebrow">Миссия</div>
+        <h2 class="heading-xl">Доступ к знаниям и информационным ресурсам</h2>
+        <p class="text-body" style="margin: 0 0 20px;">
+          Библиотека КазУТБ обеспечивает информационную поддержку учебного процесса и научных исследований университета. Мы развиваем фонд, расширяем цифровые подписки и создаём комфортные условия для работы с информацией.
+        </p>
+      </div>
+      <div class="card">
+        <h3 class="heading-lg">Библиотека в цифрах</h3>
+        <ul class="info-list">
+          <li><span class="icon">📚</span><div><strong>Более 50 000</strong> единиц фонда — учебная, научная и справочная литература</div></li>
+          <li><span class="icon">💻</span><div><strong>Электронные ресурсы</strong> — подписки на научные базы и электронные библиотеки</div></li>
+          <li><span class="icon">🏛</span><div><strong>Читальные залы</strong> — оборудованные пространства для работы с литературой</div></li>
+          <li><span class="icon">🌐</span><div><strong>Онлайн-каталог</strong> с поиском, бронированием и личным кабинетом</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {{-- Contact cards --}}
   <section class="page-section">
     <div class="container">
+      <div class="section-head section-head-centered">
+        <div><h2>Контакты</h2><p>Как связаться с библиотекой.</p></div>
+      </div>
       <div class="contact-grid">
         <div class="contact-card">
           <div class="icon">📍</div>
@@ -176,6 +202,13 @@
 
 @section('head')
 <style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
   .contact-hero-center {
     max-width: 820px;
     margin: 0 auto;
@@ -223,6 +256,10 @@
   }
 
   @media (max-width: 900px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
     .contacts-grid {
       grid-template-columns: 1fr;
       gap: 32px;

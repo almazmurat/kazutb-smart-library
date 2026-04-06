@@ -435,8 +435,19 @@
             <div>
               <h1 id="profile-name" class="profile-name">{{ $sessionUser['name'] ?? 'Гость библиотеки' }}</h1>
               <p id="profile-sub" class="profile-sub">
-                Логин: {{ $sessionUser['ad_login'] ?? 'не указан' }}
-                · Роль: {{ $sessionUser['role'] ?? 'reader' }}
+                @php
+                  $profileType = $sessionUser['profile_type'] ?? null;
+                  $role = $sessionUser['role'] ?? 'reader';
+                  $roleLabel = match(true) {
+                    $profileType === 'teacher' => '📚 Преподаватель',
+                    $profileType === 'student' => '🎓 Студент',
+                    $role === 'librarian' => '📖 Библиотекарь',
+                    $role === 'admin' => '🛡️ Администратор',
+                    default => '👤 Читатель',
+                  };
+                @endphp
+                {{ $sessionUser['ad_login'] ?? 'не указан' }}
+                · {{ $roleLabel }}
               </p>
             </div>
           </div>
@@ -505,6 +516,7 @@
         </div>
       </section>
 
+      @if(($sessionUser['profile_type'] ?? null) === 'teacher')
       <section id="workbench-section" class="showcase" style="margin-top: 36px;">
         <div class="section-head">
           <div>
@@ -558,6 +570,39 @@
           </div>
         </div>
       </section>
+      @else
+      {{-- Student/reader quick actions --}}
+      <section class="showcase" style="margin-top: 36px;">
+        <div class="section-head">
+          <div>
+            <h2>📚 Быстрые действия</h2>
+            <p>Основные возможности для читателя.</p>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+          <a href="/catalog" class="card" style="text-decoration:none; padding:20px; text-align:center;">
+            <span style="font-size:28px; display:block; margin-bottom:8px;">🔎</span>
+            <strong style="display:block; margin-bottom:4px;">Каталог</strong>
+            <span style="color:var(--muted); font-size:13px;">Поиск литературы</span>
+          </a>
+          <a href="/resources" class="card" style="text-decoration:none; padding:20px; text-align:center;">
+            <span style="font-size:28px; display:block; margin-bottom:8px;">🌐</span>
+            <strong style="display:block; margin-bottom:4px;">Электронные ресурсы</strong>
+            <span style="color:var(--muted); font-size:13px;">Базы данных и e-библиотеки</span>
+          </a>
+          <a href="/shortlist" class="card" style="text-decoration:none; padding:20px; text-align:center;">
+            <span style="font-size:28px; display:block; margin-bottom:8px;">📋</span>
+            <strong style="display:block; margin-bottom:4px;">Подборка</strong>
+            <span style="color:var(--muted); font-size:13px;">Избранные книги</span>
+          </a>
+          <a href="/contacts" class="card" style="text-decoration:none; padding:20px; text-align:center;">
+            <span style="font-size:28px; display:block; margin-bottom:8px;">📞</span>
+            <strong style="display:block; margin-bottom:4px;">Контакты</strong>
+            <span style="color:var(--muted); font-size:13px;">Связь с библиотекой</span>
+          </a>
+        </div>
+      </section>
+      @endif
     </div>
   </main>
 
@@ -1151,7 +1196,7 @@
           loadBooks('active'),
           loadLoanSummary(),
           loadReservations(),
-          loadWorkbench(),
+          document.getElementById('workbench-section') ? loadWorkbench() : Promise.resolve(),
         ]);
         return;
       }

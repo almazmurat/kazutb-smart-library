@@ -107,10 +107,10 @@ class ExternalResourcePageTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_about_page_still_renders(): void
+    public function test_about_page_redirects_to_contacts(): void
     {
         $response = $this->get('/about');
 
-        $response->assertOk();
+        $response->assertRedirect('/contacts');
     }
 }
