@@ -19,6 +19,7 @@ class AuthController extends Controller
             'device_name' => ['nullable', 'string', 'max:255'],
         ]);
 
+        $loginIdentifier = $validated['login'] ?? $validated['email'] ?? 'unknown';
         $authApiUrl = (string) config('services.external_auth.login_url', 'http://10.0.1.47/api/login');
 
         try {
@@ -34,8 +35,13 @@ class AuthController extends Controller
                 $token = (string) ($payload['token'] ?? $payload['access_token'] ?? '');
 
                 if ($token === '') {
+                    Log::warning('CRM auth returned success but no token', [
+                        'ip' => $request->ip(),
+                        'login' => $loginIdentifier,
+                    ]);
+
                     return response()->json([
-                        'message' => 'Authentication service returned invalid payload',
+                        'message' => 'Authentication service returned an unexpected response.',
                     ], 502);
                 }
 
@@ -49,8 +55,7 @@ class AuthController extends Controller
 
                 Log::info('Library CRM login successful', [
                     'ip' => $request->ip(),
-                    'login' => $validated['login'] ?? null,
-                    'email' => $validated['email'] ?? null,
+                    'login' => $loginIdentifier,
                     'role' => $user['role'],
                 ]);
 
@@ -60,15 +65,24 @@ class AuthController extends Controller
                 ]);
             }
 
+            Log::warning('Library CRM login failed', [
+                'ip' => $request->ip(),
+                'login' => $loginIdentifier,
+                'crm_status' => $response->status(),
+            ]);
+
             return response()->json([
-                'message' => 'Authentication failed',
-                'status' => $response->status(),
-                'details' => $response->json(),
-            ], $response->status());
+                'message' => 'Неверный логин или пароль.',
+            ], 401);
         } catch (\Throwable $exception) {
-            return response()->json([
-                'message' => 'Authentication service is unavailable',
+            Log::error('CRM auth service unavailable', [
+                'ip' => $request->ip(),
+                'login' => $loginIdentifier,
                 'error' => $exception->getMessage(),
+            ]);
+
+            return response()->json([
+                'message' => 'Сервис авторизации временно недоступен. Попробуйте позже.',
             ], 503);
         }
     }

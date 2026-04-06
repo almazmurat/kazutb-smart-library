@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 Route::middleware('web')->group(function (): void {
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
     Route::get('/v1/account/summary', [AccountController::class, 'summary']);
     Route::get('/v1/account/loans', [AccountController::class, 'loans']);
     Route::post('/v1/account/loans/{loanId}/renew', [AccountController::class, 'renewLoan']);

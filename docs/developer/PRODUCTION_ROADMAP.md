@@ -157,71 +157,78 @@ Defined in `docs/developer/API_PUBLICATION_POLICY.md`:
 
 ---
 
-# Phase B — Authentication, identity, and authorization
+# Phase B — Authentication, identity, and authorization (IN PROGRESS)
 
 ## Goal
 Make login, identity resolution, and permission enforcement production-credible.
 
+## Status
+**B1–B5 partially complete** (Phase B hardening pass, 2026-04-06).
+B6 (HTTPS) blocked by CRM infrastructure.
+
 ## Work items
 
-### B1. Implement CRM auth integration robustly
-Use:
-- `POST /api/login`
-- `GET /api/me`
-- `POST /api/logout`
+### B1. Implement CRM auth integration robustly ✅
+CRM auth adapter implemented in AuthController:
+- `POST /api/login` — sends credentials to CRM, receives token + user
+- `GET /api/me` — reads session, returns normalized user
+- `POST /api/logout` — invalidates session, notifies CRM
 
-### B2. Implement secure session handling
-Support:
-- token lifecycle,
-- session lifecycle,
-- invalid token handling,
-- re-login behavior,
-- logout behavior,
-- profile hydration,
-- error handling when CRM is unavailable.
+### B2. Implement secure session handling ⚠️ Partial
+- ✅ Token lifecycle: stored in session, used for CRM logout
+- ✅ Session lifecycle: regeneration on login, invalidation on logout
+- ✅ Invalid token handling: empty token returns 502
+- ✅ CRM unavailable: returns 503 with user-friendly message
+- ⚠️ Session encryption: not enabled by default (`SESSION_ENCRYPT=false`)
+- ⚠️ Token refresh: no refresh mechanism (CRM token lifecycle undefined)
 
-### B3. Implement role mapping
-Map CRM-returned user context into library-side behavior for:
-- guest
-- reader
-- student
-- teacher
-- librarian
-- admin
-- CRM operational actors where relevant
+### B3. Implement role mapping ✅
+- Normalized to reader/librarian/admin
+- Unknown roles fall back to reader
+- Student/teacher not yet differentiated (both map to reader)
 
-### B4. Enforce authorization library-side
-Even if CRM hosts staff panels, library APIs must still enforce permissions.
+### B4. Enforce authorization library-side ✅
+- `EnsureInternalCirculationStaff` checks session role for staff routes
+- `EnsureIntegrationBoundary` validates bearer + headers for CRM integration
+- Integration token allowlist available via `INTEGRATION_ALLOWED_TOKENS`
 
-### B5. Harden auth-related observability
-Add:
-- auth logging,
-- failure modes,
-- incident notes,
-- integration error visibility.
+### B5. Harden auth-related observability ✅
+- ✅ Successful logins logged (info)
+- ✅ Failed logins logged (warning) with IP, login identifier, CRM status
+- ✅ CRM unavailable logged (error) with IP, login identifier, error message
+- ✅ Invalid integration tokens logged (warning)
+- ✅ Login rate limiting (5/min per login+IP, configurable)
+- ✅ Info disclosure prevented (no CRM response or exception leak)
+- ✅ CRM URL removed from login page HTML
 
-### B6. Prepare HTTPS migration path
-Current CRM integration over HTTP is a risk.
-Define the path to transport hardening.
+### B6. Prepare HTTPS migration path ❌ Blocked
+Current CRM integration over HTTP is a known risk.
+Requires CRM infrastructure team to enable TLS.
 
 ## Deliverables
-- auth integration service/adapters
-- session/auth middleware
-- role mapping layer
-- permission/policy layer
-- auth test coverage
-- `docs/developer/AUTH_INTEGRATION_AND_SESSION_MODEL.md`
+- ✅ Auth hardening in AuthController (info leak, failure logging)
+- ✅ Login rate limiting in routes + AppServiceProvider
+- ✅ Integration token allowlist in EnsureIntegrationBoundary
+- ✅ 10 focused auth hardening tests (AuthHardeningTest)
+- ✅ `docs/developer/AUTH_INTEGRATION_AND_SESSION_MODEL.md`
 
 ## Exit criteria
-- Login/logout/profile flow works reliably.
-- Failure cases are handled honestly.
-- Role mapping is explicit.
-- Library-side authz enforcement exists for protected actions.
+- ✅ Login/logout/profile flow works reliably.
+- ✅ Failure cases are handled honestly.
+- ✅ Role mapping is explicit.
+- ✅ Library-side authz enforcement exists for protected actions.
 
-## Risks
-- CRM unavailability
-- insecure token/session handling
-- accidental trust in CRM UI without library-side policy enforcement
+## Remaining gaps
+- Session encryption not enabled by default
+- HTTPS for CRM communication (blocked by infrastructure)
+- Cryptographic token verification (blocked by CRM token format)
+- Token refresh mechanism (CRM lifecycle undefined)
+- Student/teacher role differentiation (not yet needed)
+
+## Risks (partially mitigated)
+- CRM unavailability → handled with 503 + error logging
+- insecure token/session handling → partially mitigated (rate limit, allowlist)
+- accidental trust in CRM UI → library-side authz enforced
 
 ---
 

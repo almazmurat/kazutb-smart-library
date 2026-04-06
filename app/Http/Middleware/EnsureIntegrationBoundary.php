@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureIntegrationBoundary
@@ -31,6 +32,21 @@ class EnsureIntegrationBoundary
                 errorCode: 'auth_failed',
                 reasonCode: 'missing_bearer_token',
                 message: 'Missing bearer token in Authorization header.'
+            );
+        }
+
+        if (! $this->isTokenAllowed($token)) {
+            Log::warning('Integration boundary: rejected invalid bearer token', [
+                'ip' => $request->ip(),
+                'token_prefix' => substr(hash('sha256', $token), 0, 16),
+            ]);
+
+            return $this->errorResponse(
+                request: $request,
+                status: 401,
+                errorCode: 'auth_failed',
+                reasonCode: 'invalid_bearer_token',
+                message: 'Bearer token is not recognized.'
             );
         }
 
@@ -133,5 +149,23 @@ class EnsureIntegrationBoundary
         $roles = array_values(array_unique(array_filter($parts, static fn (string $role): bool => $role !== '')));
 
         return $roles;
+    }
+
+    /**
+     * Validate bearer token against configured allowlist.
+     * If INTEGRATION_ALLOWED_TOKENS is empty, any non-empty token is accepted (legacy/development mode).
+     * In production, set the env var to a comma-separated list of valid tokens.
+     */
+    private function isTokenAllowed(string $token): bool
+    {
+        $raw = (string) config('services.integration.allowed_tokens', '');
+
+        if (trim($raw) === '') {
+            return true; // allowlist not configured — accept any token (legacy mode)
+        }
+
+        $allowed = array_filter(array_map('trim', explode(',', $raw)));
+
+        return in_array($token, $allowed, true);
     }
 }

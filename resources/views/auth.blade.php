@@ -315,7 +315,6 @@
 
           <button id="submit-btn" type="submit" class="btn btn-primary submit">Войти</button>
           <div id="form-message" class="message"></div>
-          <div class="note">API авторизации: http://10.0.1.47/api/login</div>
         </form>
       </section>
     </div>

@@ -16,6 +16,20 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Login rate limiter — prevents brute force on /api/login
+        $loginLimit = (int) env('LOGIN_RATE_LIMIT', 5);
+        RateLimiter::for('login', function (Request $request) use ($loginLimit) {
+            $key = 'login:' . ($request->input('login') ?? $request->input('email') ?? '') . '|' . $request->ip();
+
+            return Limit::perMinute($loginLimit)
+                ->by($key)
+                ->response(function () {
+                    return response()->json([
+                        'message' => 'Слишком много попыток входа. Попробуйте через минуту.',
+                    ], 429);
+                });
+        });
+
         // CRM integration rate limits — per client reference (bearer token hash)
         // Configurable via env: INTEGRATION_RATE_LIMIT (default 120),
         // INTEGRATION_MUTATE_RATE_LIMIT (default 30)

@@ -40,6 +40,13 @@ return [
         'logout_url' => env('EXTERNAL_AUTH_LOGOUT_URL', ''),
     ],
 
+    'integration' => [
+        // Comma-separated list of valid CRM integration bearer tokens.
+        // When empty, token presence is still required but any non-empty token is accepted (legacy behavior).
+        // In production, set INTEGRATION_ALLOWED_TOKENS to restrict access.
+        'allowed_tokens' => env('INTEGRATION_ALLOWED_TOKENS', ''),
+    ],
+
     'twentyfirst' => [
         'api_key' => env('API_KEY_21ST'),
         'agent' => env('AGENT_21ST_SLUG', 'frontend-dev-agent'),
