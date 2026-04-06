@@ -711,8 +711,13 @@
             </nav>
 
             <div class="nav-actions">
-                <a href="/login" class="btn btn-ghost" id="header-login-btn">Войти</a>
-                <a href="/account" class="btn btn-primary">Личный кабинет</a>
+                @if(session('library.user'))
+                    <a href="/account" class="btn btn-ghost">Кабинет</a>
+                    <button type="button" class="btn btn-primary" id="shared-logout-btn">Выйти</button>
+                @else
+                    <a href="/login" class="btn btn-ghost">Войти</a>
+                    <a href="/account" class="btn btn-primary">Личный кабинет</a>
+                @endif
             </div>
         </div>
     </header>
@@ -945,40 +950,20 @@
             `;
         }
 
-        const ME_ENDPOINT = '/api/v1/me';
-
-        async function isAuthenticated() {
+        @if(session('library.user'))
+        document.getElementById('shared-logout-btn')?.addEventListener('click', async () => {
             try {
-                const response = await fetch(ME_ENDPOINT, {
-                    headers: { Accept: 'application/json' },
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+                await fetch('/api/v1/logout', {
+                    method: 'POST',
+                    headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
                 });
-
-                if (!response.ok) {
-                    return false;
-                }
-
-                const payload = await response.json().catch(() => ({}));
-                return payload?.authenticated === true;
-            } catch (_) {
-                return false;
-            }
-        }
-
-        async function updateLoginButtonState() {
-            const loginBtn = document.getElementById('header-login-btn');
-            if (!loginBtn) return;
-
-            const authenticated = await isAuthenticated();
-            loginBtn.style.display = authenticated ? 'none' : 'inline-flex';
-            loginBtn.textContent = 'Войти';
-        }
-
-        document.getElementById('header-login-btn')?.addEventListener('click', async () => {
-            const redirectTo = encodeURIComponent(window.location.pathname + window.location.search);
-            window.location.href = `/login?redirect=${redirectTo}`;
+            } catch (_) {}
+            localStorage.removeItem('library.auth.user');
+            window.location.href = '/login';
         });
+        @endif
 
-        updateLoginButtonState();
         loadBook();
     </script>
 </body>

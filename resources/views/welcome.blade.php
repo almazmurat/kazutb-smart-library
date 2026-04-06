@@ -1109,8 +1109,13 @@
       </nav>
 
       <div class="nav-actions">
-        <button id="header-login-btn" class="btn btn-ghost">Войти</button>
-        <a href="/account" id="header-catalog-btn" class="btn btn-primary">Личный кабинет</a>
+        @if(session('library.user'))
+          <a href="/account" class="btn btn-ghost">Кабинет</a>
+          <button type="button" class="btn btn-primary" id="shared-logout-btn">Выйти</button>
+        @else
+          <a href="/login" class="btn btn-ghost">Войти</a>
+          <a href="/account" class="btn btn-primary">Личный кабинет</a>
+        @endif
       </div>
     </div>
   </header>
@@ -1849,34 +1854,24 @@
       });
     });
 
-    const AUTH_TOKEN_KEY = 'library.auth.token';
-    const AUTH_USER_KEY = 'library.auth.user';
-
-    function getAuthToken() {
-      return localStorage.getItem(AUTH_TOKEN_KEY) || '';
-    }
-
-    function updateLoginButtonState() {
-      const loginBtn = document.getElementById('header-login-btn');
-      if (!loginBtn) return;
-      loginBtn.style.display = getAuthToken() ? 'none' : 'inline-flex';
-      loginBtn.textContent = 'Войти';
-    }
-
-    document.getElementById('header-login-btn')?.addEventListener('click', async () => {
-      const redirectTo = encodeURIComponent(window.location.pathname + window.location.search);
-      window.location.href = `/login?redirect=${redirectTo}`;
+    @if(session('library.user'))
+    document.getElementById('shared-logout-btn')?.addEventListener('click', async () => {
+      try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        await fetch('/api/v1/logout', {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
+        });
+      } catch (_) {}
+      localStorage.removeItem('library.auth.user');
+      window.location.href = '/login';
     });
-
-    document.getElementById('header-catalog-btn')?.addEventListener('click', () => {
-      window.location.href = '/catalog';
-    });
+    @endif
 
     document.getElementById('hero-primary-btn')?.addEventListener('click', () => {
       window.location.href = '/catalog';
     });
 
-    updateLoginButtonState();
     initLanding();
     initCatalog();
     loadShowcase();
