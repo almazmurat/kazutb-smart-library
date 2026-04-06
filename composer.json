@@ -99,6 +99,13 @@
         "test:catalog-paths": [
             "@dev:catalog-paths"
         ],
+        "test:critical-paths": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test --filter='CatalogDbSearchTest|BookDetailDbTest|AuthSessionMeTest|AuthSessionLifecycleTest|LoginTest|ReservationReadTest|ReservationMutateTest|AccountReservationsTest|InternalCirculationCheckoutReturnTest|InternalCirculationRenewalTest|InternalCirculationReadbackTest'"
+        ],
+        "dev:critical-paths": [
+            "bash scripts/dev/check-runtime-critical-paths.sh"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
