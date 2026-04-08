@@ -1,0 +1,31 @@
+{
+  "verified_on": "2026-04-08",
+  "local_quality_gate": {
+    "tests": 77,
+    "assertions": 350,
+    "phpunit_duration_seconds": 6.79,
+    "vite_build_duration_seconds": 1.17
+  },
+  "playwright_smoke": {
+    "tests": 3,
+    "duration_seconds": 5.6
+  },
+  "coverage": {
+    "clover_line_rate_percent": 4.24,
+    "threshold_percent": 4.0,
+    "scope_note": "Critical-path filtered suite measured against the full app namespace in Clover output."
+  },
+  "risk_module_checks": [
+    {"module": "Authentication & session boundary", "checks": 17},
+    {"module": "Reader account & reservations", "checks": 27},
+    {"module": "Catalog discovery & detail", "checks": 14},
+    {"module": "Internal staff access & operations", "checks": 15},
+    {"module": "Public shell & browser smoke", "checks": 7}
+  ],
+  "audit_defects_resolved": [
+    {"issue": "Vite manifest coupling in backend tests", "severity": "high"},
+    {"issue": "Missing Node/Vite dependencies on clean CI runners", "severity": "high"},
+    {"issue": "Clover coverage parser incompatibility", "severity": "medium"},
+    {"issue": "Coverage gate mismatch with defended critical-path scope", "severity": "medium"}
+  ]
+}

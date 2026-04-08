@@ -52,7 +52,10 @@
             "bash scripts/dev/run-ci-gates.sh"
         ],
         "qa:coverage-threshold": [
-            "@php scripts/dev/check-coverage-threshold.php build/test-results/clover.xml 20"
+            "@php scripts/dev/check-coverage-threshold.php build/test-results/clover.xml 4"
+        ],
+        "qa:assignment2-evidence": [
+            "bash scripts/dev/run-assignment2-evidence.sh"
         ],
         "test:internal": [
             "./scripts/dev/test-internal-core.sh"

@@ -8,8 +8,8 @@ Command:
 Result:
   PASS
   - Laravel Pint critical-path check passed
-  - PHPUnit critical-path suite passed: 77 tests, 350 assertions
-  - Vite production build completed successfully
+  - PHPUnit critical-path suite passed: 77 tests, 350 assertions in 6.79s
+  - Vite production build completed successfully in 1.17s
   - Final line: "CI quality gates passed: Pint, critical-path tests, and frontend production build."
 
 2) Browser smoke verification
@@ -18,9 +18,18 @@ Command:
 
 Result:
   PASS
-  - 3 passed (5.4s)
+  - 3 passed (5.6s)
   - verified homepage shell, catalog controls, and guest account redirect flow
 
-3) Notes
+3) Reproducibility evidence
+Command:
+  composer qa:assignment2-evidence
+
+Result:
+  PASS
+  - wrote timestamped logs into `evidence/a2/assignment2-*.txt`
+  - regenerated chart assets from `evidence/a2/assignment2-metrics.json`
+
+4) Notes
 - Local Playwright execution now uses a Docker fallback when host PHP is below the Composer platform requirement.
 - Local browser installation uses `npm run test:e2e:install` to avoid sudo-only system package prompts during normal development.
