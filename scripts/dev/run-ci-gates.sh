@@ -39,6 +39,10 @@ run_php_check './vendor/bin/pint --test app/Http/Controllers/Api/AuthController.
 run_php_check "php artisan test --filter='PublicShellTest|CatalogPageTest|AccountPageTest|InternalAccessBoundaryTest|InternalDashboardPageTest|InternalReviewPageTest|InternalStewardshipPageTest|InternalCirculationPageTest|AuthHardeningTest|ReaderAccessProtectionTest|CatalogDbSearchTest|AuthSessionLifecycleTest|AuthSessionMeTest|BookDetailDbTest|AccountReservationsTest' --log-junit=build/test-results/critical-paths.xml"
 
 if command -v node >/dev/null 2>&1 && node -e "process.exit(Number(process.versions.node.split('.')[0]) >= 20 ? 0 : 1)"; then
+  if [[ ! -x node_modules/.bin/vite ]]; then
+    npm ci
+  fi
+
   npm run build
 elif command -v docker >/dev/null 2>&1; then
   docker run --rm -v "$ROOT_DIR":/workspace -w /workspace node:22 sh -lc 'npm ci && npm run build'
