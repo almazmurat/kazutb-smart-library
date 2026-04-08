@@ -22,10 +22,41 @@ if ($xml === false) {
 }
 
 $project = $xml->project;
-$lineRate = isset($project['line-rate']) ? (float) $project['line-rate'] : null;
+$lineRate = isset($project['line-rate']) && $project['line-rate'] !== '' ? (float) $project['line-rate'] : null;
 
 if ($lineRate === null) {
-    fwrite(STDERR, "No line-rate found in coverage file: {$cloverPath}\n");
+    $bestRate = null;
+    $bestTotal = 0;
+
+    foreach ($xml->xpath('//metrics') ?: [] as $metrics) {
+        $pairs = [
+            ['coveredstatements', 'statements'],
+            ['coveredelements', 'elements'],
+            ['coveredmethods', 'methods'],
+        ];
+
+        foreach ($pairs as [$coveredKey, $totalKey]) {
+            if (! isset($metrics[$coveredKey], $metrics[$totalKey])) {
+                continue;
+            }
+
+            $total = (int) $metrics[$totalKey];
+            if ($total <= 0 || $total < $bestTotal) {
+                continue;
+            }
+
+            $covered = (int) $metrics[$coveredKey];
+            $bestTotal = $total;
+            $bestRate = $covered / $total;
+            break;
+        }
+    }
+
+    $lineRate = $bestRate;
+}
+
+if ($lineRate === null) {
+    fwrite(STDERR, "No usable coverage metrics found in coverage file: {$cloverPath}\n");
     exit(1);
 }
 
