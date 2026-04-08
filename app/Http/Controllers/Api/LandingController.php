@@ -51,8 +51,8 @@ class LandingController extends Controller
 
         return response()->json([
             'header' => [
-                'brand' => 'КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ И БИЗНЕСА',
-                'subtitle' => 'Современная библиотека университета',
+                'brand' => 'DIGITAL LIBRARY',
+                'subtitle' => 'Современная академическая библиотека',
                 'login_label' => 'Войти',
                 'catalog_label' => 'Электронный каталог',
             ],
@@ -128,8 +128,8 @@ class LandingController extends Controller
                 'news_button' => 'Смотреть все объявления',
             ],
             'footer' => [
-                'brand_title' => 'KazTBU Library',
-                'brand_description' => 'Цифровая библиотечная платформа КазУТБ для студентов, преподавателей, библиотекарей и аналитиков.',
+                'brand_title' => 'Digital Library',
+                'brand_description' => 'Цифровая библиотечная платформа для студентов, преподавателей, библиотекарей и аналитиков.',
                 'contacts_title' => 'Контакты',
                 'contact_items' => [
                     [
@@ -144,8 +144,8 @@ class LandingController extends Controller
                     ],
                     [
                         'label' => 'Email',
-                        'value' => 'library@kazutb.edu.kz',
-                        'href' => 'mailto:library@kazutb.edu.kz',
+                        'value' => 'library@digital-library.demo',
+                        'href' => 'mailto:library@digital-library.demo',
                     ],
                 ],
                 'address_title' => 'Адрес и режим работы',
@@ -162,8 +162,8 @@ class LandingController extends Controller
                     ['label' => 'Вход в систему', 'href' => '#contacts'],
                 ],
                 'bottom_lines' => [
-                    '© 2026 Казахский университет технологий и бизнеса им. К. Кулажанова. Все права защищены.',
-                    'Команда разработки Департамента цифрового развития и информационных технологий - 2026',
+                    '© 2026 Digital Library. Все права защищены.',
+                    'Product engineering team · 2026',
                 ],
             ],
         ]);

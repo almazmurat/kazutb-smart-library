@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────
-#  KazUTB Smart Library — Docker Compose (live-sync dev runtime)
+#  Digital Library — Docker Compose (live-sync dev runtime)
 # ──────────────────────────────────────────────────────────────
 #
 #  Services
@@ -22,15 +22,15 @@ services:
     image: postgres:18
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-kazutb_user}
+      POSTGRES_USER: ${POSTGRES_USER:-library_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
-      POSTGRES_DB: ${POSTGRES_DB:-kazutb_library}
+      POSTGRES_DB: ${POSTGRES_DB:-digital_library}
     volumes:
       - postgres_data:/var/lib/postgresql
     ports:
       - "0.0.0.0:${POSTGRES_PORT:-5432}:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kazutb_user} -d ${POSTGRES_DB:-kazutb_library}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-library_user} -d ${POSTGRES_DB:-digital_library}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,7 +45,7 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      APP_NAME: "${APP_NAME:-KazUTB Smart Library}"
+      APP_NAME: "${APP_NAME:-Digital Library}"
       APP_ENV: "${APP_ENV:-production}"
       APP_KEY: "${APP_KEY}"
       APP_DEBUG: "${APP_DEBUG:-false}"
@@ -56,8 +56,8 @@ services:
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: "5432"
-      DB_DATABASE: "${POSTGRES_DB:-kazutb_library}"
-      DB_USERNAME: "${POSTGRES_USER:-kazutb_user}"
+      DB_DATABASE: "${POSTGRES_DB:-digital_library}"
+      DB_USERNAME: "${POSTGRES_USER:-library_user}"
       DB_PASSWORD: "${POSTGRES_PASSWORD}"
       SESSION_DRIVER: "${SESSION_DRIVER:-database}"
       SESSION_LIFETIME: "${SESSION_LIFETIME:-120}"

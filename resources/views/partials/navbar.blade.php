@@ -6,13 +6,13 @@
 @endphp
 <header class="topbar topbar--glass">
   <div class="container nav">
-    <a href="/" class="brand" aria-label="Перейти на главную страницу библиотеки КазУТБ">
+    <a href="/" class="brand" aria-label="Перейти на главную страницу Digital Library">
       <div class="brand-badge">
-        <img src="/logo.png" alt="Логотип КазУТБ" class="logo-img">
+        <img src="/logo.png" alt="Логотип Digital Library" class="logo-img">
       </div>
       <div class="brand-text">
-        КАЗАХСКИЙ УНИВЕРСИТЕТ ТЕХНОЛОГИИ и БИЗНЕСА
-        <small>Цифровая библиотека · единое пространство знаний</small>
+        DIGITAL LIBRARY
+        <small>единое пространство знаний</small>
       </div>
     </a>
 

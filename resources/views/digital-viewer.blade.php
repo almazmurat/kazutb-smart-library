@@ -1,6 +1,6 @@
 @extends('layouts.public', ['activePage' => ''])
 
-@section('title', 'Электронный просмотр — KazUTB Library')
+@section('title', 'Электронный просмотр — Digital Library')
 
 @section('head')
 <style>

@@ -1,7 +1,7 @@
-# Canonical platform truth for KazUTB Smart Library
+# Canonical platform truth for Digital Library
 
 ## Core identity
-KazUTB Smart Library is the new primary university digital library platform. It is replacing legacy library software in stages, not acting as a temporary demo site, a frontend-only shell, or a CRM-owned wrapper.
+Digital Library is the new primary university digital library platform. It is replacing legacy library software in stages, not acting as a temporary demo site, a frontend-only shell, or a CRM-owned wrapper.
 
 ## What the platform is growing into
 The platform is expected to serve all major university-library roles directly over time:

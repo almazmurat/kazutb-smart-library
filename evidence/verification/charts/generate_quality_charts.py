@@ -5,7 +5,7 @@ from html import escape
 from pathlib import Path
 
 OUTPUT_DIR = Path(__file__).resolve().parent
-METRICS_FILE = OUTPUT_DIR.parent / "assignment2-metrics.json"
+METRICS_FILE = OUTPUT_DIR.parent / "quality-metrics.json"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 with METRICS_FILE.open("r", encoding="utf-8") as fh:
@@ -43,7 +43,7 @@ risk_labels = [entry["module"] for entry in metrics["risk_module_checks"]]
 risk_values = [entry["checks"] for entry in metrics["risk_module_checks"]]
 write_bar_chart(
     "coverage-by-module.svg",
-    "Assignment 2 Automated Checks by Risk Module",
+    "Automated Checks by Risk Module",
     risk_labels,
     risk_values,
 )
@@ -56,7 +56,7 @@ execution_values = [
 ]
 write_bar_chart(
     "execution-time-by-run.svg",
-    "Assignment 2 Verified Execution Time by Step",
+    "Verified Execution Time by Step",
     execution_labels,
     execution_values,
     value_suffix="s",

@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "KazUTB Smart Library — CRM Integration API",
-    "description": "Integration API for CRM system to interact with the library platform. All endpoints require integration boundary authentication via bearer token and standard headers.",
+    "title": "Digital Library — CRM Integration API",
+    "description": "Integration API for a CRM system to interact with the library platform. All endpoints require integration boundary authentication via bearer token and standard headers.",
     "version": "1.0.0",
     "contact": {
-      "name": "KazUTB Library Platform Team"
+      "name": "Digital Library Platform Team"
     }
   },
   "servers": [

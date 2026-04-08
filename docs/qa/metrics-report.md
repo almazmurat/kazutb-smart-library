@@ -1,6 +1,6 @@
 # Metrics Report
 
-This document records **real, reproducible Assignment 2 metrics** gathered from the verified automation commands and GitHub Actions evidence.
+This document records **real, reproducible QA metrics** gathered from the verified automation commands and GitHub Actions evidence.
 
 ## 1) Automation coverage by risk area
 
@@ -25,8 +25,8 @@ The repository does **not** claim full-monolith automation coverage. The defende
 | GitHub Actions frontend smoke job (`run 24156029659`) | completed successfully in about `60s` |
 
 Source logs:
-- `evidence/a2/verification-2026-04-08.txt`
-- `evidence/a2/timing-output.txt`
+- `evidence/verification/verification-2026-04-08.txt`
+- `evidence/verification/timing-output.txt`
 - GitHub Actions run logs referenced in `evidence-index.md`
 
 ## 3) Coverage metric
@@ -52,7 +52,7 @@ Source logs:
 The raw structured metrics used for chart generation are stored in:
 
 ```text
-evidence/a2/assignment2-metrics.json
+evidence/verification/quality-metrics.json
 ```
 
-The charts under `evidence/a2/charts/` are intended to be regenerated from that JSON, not from invented values.
+The charts under `evidence/verification/charts/` are intended to be regenerated from that JSON, not from invented values.

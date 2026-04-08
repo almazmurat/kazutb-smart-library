@@ -19,7 +19,7 @@ export function AppLayout() {
           <a href="/" className="sidebar-brand" aria-label="Вернуться на сайт библиотеки">
             <span className="brand-icon">📖</span>
             <span className="brand-text">
-              Библиотека КазУТБ
+              Digital Library
               <small>Reader workspace</small>
             </span>
           </a>

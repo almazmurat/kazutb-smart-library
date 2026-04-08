@@ -1,4 +1,4 @@
-# AI SDLC Workflow for KazUTB Smart Library
+# AI SDLC Workflow for Digital Library
 
 This repository now has a project-specific **AI delivery loop** built around reusable slash commands.
 
@@ -21,7 +21,7 @@ These commands are workspace-scoped and live in `.github/prompts/` so they can b
 
 ## Why this workflow fits this repo
 
-The workflow is adapted to the actual architecture of **Digital Library KazTBU**, not to a generic sample stack.
+The workflow is adapted to the actual architecture of **Digital Library**, not to a generic sample stack.
 
 ### Project facts it assumes
 - **Backend:** Laravel 13

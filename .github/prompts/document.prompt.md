@@ -1,6 +1,6 @@
 ---
 name: "document"
-description: "Update repo documentation and Obsidian memory after a KazUTB Smart Library change so the next session starts from accurate context."
+description: "Update repo documentation and Obsidian memory after a Digital Library change so the next session starts from accurate context."
 argument-hint: "Path to `docs/sdlc/current/verify.md` or a short summary of the completed change"
 agent: "agent"
 ---

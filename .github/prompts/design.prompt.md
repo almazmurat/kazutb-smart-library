@@ -1,6 +1,6 @@
 ---
 name: "design"
-description: "Turn a KazUTB Smart Library feature spec into a concrete implementation plan with file-level steps, contracts, and tests."
+description: "Turn a Digital Library feature spec into a concrete implementation plan with file-level steps, contracts, and tests."
 argument-hint: "Path to `docs/sdlc/current/spec.md`"
 agent: "agent"
 ---

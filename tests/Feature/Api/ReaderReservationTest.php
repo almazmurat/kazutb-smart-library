@@ -52,7 +52,7 @@ class ReaderReservationTest extends TestCase
             $this->sessionUser = [
                 'id' => $this->userId ?? '',
                 'name' => 'Test Reader',
-                'email' => 'test-reader@kazutb.kz',
+                'email' => 'test-reader@digital-library.test',
                 'role' => 'student',
             ];
         }

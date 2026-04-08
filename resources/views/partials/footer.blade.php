@@ -8,13 +8,13 @@
   <div class="container footer-grid">
     <div class="footer-col">
       <div class="footer-brand">
-        <img src="/logo.png" alt="КазУТБ" class="logo-img">
+        <img src="/logo.png" alt="Digital Library" class="logo-img">
         <div class="footer-brand-name">
-          КазУТБ
-          <small>Цифровая библиотека университета</small>
+          Digital Library
+          <small>Academic knowledge platform</small>
         </div>
       </div>
-      <p>Современная библиотечная платформа для доступа к университетскому фонду, электронным ресурсам, подборкам литературы и внутренним библиотечным сервисам.</p>
+      <p>Современная библиотечная платформа для доступа к академическому фонду, электронным ресурсам, подборкам литературы и внутренним сервисам.</p>
       <div class="footer-badge-row" aria-label="Ключевые преимущества платформы">
         <span class="footer-badge">Каталог 24/7</span>
         <span class="footer-badge">Reader-first UX</span>
@@ -50,13 +50,13 @@
       <div class="footer-title">Контакты</div>
       <p>г. Астана, ул. Кайым Мухамедханова, 37А</p>
       <a href="tel:+77172645858">+7 (7172) 64-58-58</a>
-      <a href="mailto:library@kazutb.kz">library@kazutb.kz</a>
+      <a href="mailto:library@digital-library.demo">library@digital-library.demo</a>
       <p class="footer-note">Пн–Пт: 09:00–18:00 · Сб: 10:00–14:00</p>
     </div>
   </div>
 
   <div class="container footer-bottom">
-    <p>© {{ date('Y') }} Библиотека КазУТБ. Все права защищены.</p>
+    <p>© {{ date('Y') }} Digital Library. Все права защищены.</p>
     <div class="footer-bottom-links">
       <a href="/{{ $langSuffix }}">Главная</a>
       <a href="/catalog{{ $langSuffix }}">Каталог</a>

@@ -1,10 +1,17 @@
-Assignment 2 reproducibility run
-Timestamp: 2026-04-08T20:03:59+00:00
+Verification evidence capture
+Timestamp: 2026-04-08T21:35:51+00:00
 Repository: kazutb-smart-library-main
 
 > composer qa:ci
 
-  [37;44m INFO [39;49m Configuration cache cleared successfully.  
+  [37;44m INFO [39;49m Clearing cached bootstrap files.  
+
+  config [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 37.28ms[39m [32;1mDONE[39;22m
+  cache [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 1.43ms[39m [32;1mDONE[39;22m
+  compiled [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 0.88ms[39m [32;1mDONE[39;22m
+  events [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 0.72ms[39m [32;1mDONE[39;22m
+  routes [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 0.55ms[39m [32;1mDONE[39;22m
+  views [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 38.63ms[39m [32;1mDONE[39;22m
 
 
   .............
@@ -14,7 +21,7 @@ Repository: kazutb-smart-library-main
 
 
    PASS  Tests\Feature\AccountPageTest
-  ✓ account page renders successfully                                    0.11s  
+  ✓ account page renders successfully                                    0.15s  
   ✓ account page loads real loans not catalog                            0.01s  
   ✓ account page shows loan section                                      0.01s  
   ✓ account page redirects unauthenticated                               0.01s  
@@ -22,16 +29,16 @@ Repository: kazutb-smart-library-main
   ✓ account page workbench calls summary api                             0.01s  
 
    PASS  Tests\Feature\Api\AccountReservationsTest
-  ✓ reservations route exists                                            0.05s  
+  ✓ reservations route exists                                            0.07s  
   ✓ reservations requires auth                                           0.03s  
   ✓ reservations returns empty for unknown user                          0.03s  
-  ✓ reservations returns data for known user                             0.03s  
-  ✓ reservations filters by status                                       0.03s  
+  ✓ reservations returns data for known user                             0.07s  
+  ✓ reservations filters by status                                       0.04s  
   ✓ reservations includes book snapshot                                  0.03s  
   ✓ account page renders reservations section                            0.03s  
 
    PASS  Tests\Feature\Api\AuthHardeningTest
-  ✓ login failure does not leak crm response details                     0.06s  
+  ✓ login failure does not leak crm response details                     0.07s  
   ✓ login crm unavailable does not leak exception message                0.01s  
   ✓ login success returns user without token                             0.01s  
   ✓ failed login is logged                                               0.01s  
@@ -39,7 +46,7 @@ Repository: kazutb-smart-library-main
   ✓ login has rate limiting                                              0.01s  
   ✓ login validation rejects blank credentials                           0.01s  
   ✓ integration rejects invalid token when allowlist configured          0.01s  
-  ✓ integration accepts valid token when allowlist configured            0.03s  
+  ✓ integration accepts valid token when allowlist configured            0.06s  
   ✓ integration accepts any token when allowlist not configured          0.02s  
   ✓ login page does not expose crm api url                               0.01s  
 
@@ -54,27 +61,27 @@ Repository: kazutb-smart-library-main
   ✓ me returns user context from session                                 0.01s  
 
    PASS  Tests\Feature\Api\BookDetailDbTest
-  ✓ book db endpoint returns existing book                               0.04s  
+  ✓ book db endpoint returns existing book                               0.05s  
   ✓ book db endpoint returns 404 for missing book                        0.04s  
 
    PASS  Tests\Feature\Api\CatalogDbSearchTest
-  ✓ catalog db returns paginated results                                 1.19s  
+  ✓ catalog db returns paginated results                                 1.20s  
   ✓ catalog db language filter                                           0.05s  
   ✓ catalog db year filter                                               0.18s  
-  ✓ catalog db available only filter                                     1.99s  
-  ✓ catalog db sort options                                              1.37s  
-  ✓ catalog db search query                                              0.29s  
-  ✓ catalog db no result query returns empty payload                     0.27s  
+  ✓ catalog db available only filter                                     2.01s  
+  ✓ catalog db sort options                                              1.38s  
+  ✓ catalog db search query                                              0.35s  
+  ✓ catalog db no result query returns empty payload                     0.29s  
   ✓ catalog db validates bad params                                      0.01s  
 
    PASS  Tests\Feature\Api\ReaderAccessProtectionTest
-  ✓ account summary rejects unauthenticated                              0.02s  
+  ✓ account summary rejects unauthenticated                              0.03s  
   ✓ account loans rejects unauthenticated                                0.01s  
   ✓ account reservations rejects unauthenticated                         0.01s  
-  ✓ me rejects unauthenticated                                           0.01s  
+  ✓ me rejects unauthenticated                                           0.02s  
   ✓ logout rejects unauthenticated                                       0.01s  
   ✓ me returns user when authenticated                                   0.01s  
-  ✓ account summary accessible when authenticated                        0.03s  
+  ✓ account summary accessible when authenticated                        0.02s  
   ✓ account page redirects to login when unauthenticated                 0.01s  
   ✓ account page renders when authenticated                              0.01s  
   ✓ login page loads with redirect param                                 0.01s  
@@ -90,7 +97,7 @@ Repository: kazutb-smart-library-main
   ✓ catalog page uses canonical catalog db endpoint only                 0.01s  
 
    PASS  Tests\Feature\InternalAccessBoundaryTest
-  ✓ internal pages reject guests                                         0.04s  
+  ✓ internal pages reject guests                                         0.03s  
   ✓ internal pages allow librarian sessions                              0.02s  
   ✓ internal pages reject reader sessions                                0.01s  
 
@@ -121,23 +128,10 @@ Repository: kazutb-smart-library-main
   ✓ contacts page can render in english                                  0.01s  
 
   Tests:    77 passed (350 assertions)
-  Duration: 6.79s
+  Duration: 7.14s
 
 
-added 253 packages, and audited 254 packages in 8s
-
-127 packages are looking for funding
-  run `npm fund` for details
-
-5 vulnerabilities (4 moderate, 1 high)
-
-To address issues that do not require attention, run:
-  npm audit fix
-
-Some issues need review, and may require choosing
-a different dependency.
-
-Run `npm audit` for details.
+added 253 packages in 7s
 
 > build
 > vite build
@@ -150,9 +144,9 @@ public/build/manifest.json                       0.81 kB │ gzip:   0.27 kB
 public/build/assets/app-CZ-pMfK0.css            23.04 kB │ gzip:   5.19 kB
 public/build/assets/app-BSr1lyio.css            26.43 kB │ gzip:   5.30 kB
 public/build/assets/main-Cfa2IOWg.css           28.28 kB │ gzip:   6.65 kB
-public/build/assets/main-KLl4HzlC.js            55.52 kB │ gzip:  19.25 kB
+public/build/assets/main-D067hSSX.js            55.50 kB │ gzip:  19.24 kB
 public/build/assets/jsx-runtime-COWfAziP.js    190.78 kB │ gzip:  60.18 kB
 public/build/assets/app-DMWpajfD.js          1,305.67 kB │ gzip: 419.32 kB
 
-✓ built in 1.17s
-CI quality gates passed: Pint, critical-path tests, and frontend production build.
+✓ built in 1.35s
+QA verification passed: Pint, critical-path tests, and the frontend production build.

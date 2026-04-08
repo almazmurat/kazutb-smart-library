@@ -44,7 +44,7 @@ class StewardshipMetricsTest extends TestCase
             'library.user' => [
                 'id' => 'aaaaaaaa-0000-0000-0000-111111111111',
                 'role' => 'librarian',
-                'email' => 'staff@kazutb.kz',
+                'email' => 'staff@digital-library.test',
                 'name' => 'Test Staff',
             ],
         ];

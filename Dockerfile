@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────
-#  KazUTB Smart Library — Dockerfile (Laravel 13 / PHP 8.3)
+#  Digital Library — Dockerfile (Laravel 13 / PHP 8.3)
 # ──────────────────────────────────────────────────────────────
 
 FROM php:8.4-fpm

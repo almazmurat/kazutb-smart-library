@@ -1,6 +1,6 @@
 ---
 name: "autopilot"
-description: "Run the shortest grounded KazUTB delivery loop from a one-line draft: route to context-memory update or go through clarify/design/implement/verify/document with real verification evidence."
+description: "Run the shortest grounded Digital Library delivery loop from a one-line draft: route to context-memory update or go through clarify/design/implement/verify/document with real verification evidence."
 argument-hint: "Optional path to docs/sdlc/current/draft.md or a short task request"
 agent: "agent"
 ---

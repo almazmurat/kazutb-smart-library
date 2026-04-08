@@ -1,8 +1,8 @@
-# Digital Library KazUTB
+# Digital Library
 
-A production-oriented university digital library platform built with **Laravel**, **PostgreSQL**, **Blade/React/Vite**, and **Docker Compose**.
+A production-oriented digital library platform built with **Laravel**, **PostgreSQL**, **Blade/React/Vite**, and **Docker Compose**.
 
-Digital Library KazUTB is not just a landing site or a catalog skin. It is the new library application layer for public discovery, reader accounts, staff operations, digital materials, and future reporting/analytics workflows.
+Digital Library is not just a landing site or a catalog skin. It is the library application layer for public discovery, reader accounts, staff operations, digital materials, and future reporting/analytics workflows.
 
 ---
 
@@ -15,7 +15,7 @@ The platform combines:
 - teacher shortlist / syllabus-support workflows
 - internal review, stewardship, and circulation surfaces
 - licensed external resource access and controlled digital material handling
-- an auth/integration boundary to the university CRM
+- an auth/integration boundary to an external CRM/identity provider
 
 ## Major capabilities
 
@@ -46,7 +46,7 @@ The platform combines:
 - **Library platform owns** catalog, discovery, holdings/copies logic, accounts, reservations, stewardship, internal operations, and reporting-compatible library behavior.
 - **CRM owns** authentication/integration APIs and must **not** connect directly to the library database.
 - **PostgreSQL** is the canonical application data store.
-- **Blade + React/Vite** are used together: Blade for public/institutional pages and React for richer SPA surfaces under `/app/*`.
+- **Blade + React/Vite** are used together: Blade for public-facing pages and React for richer SPA surfaces under `/app/*`.
 
 For more detail, see:
 - `project-context/00-canonical-platform-truth.md`
@@ -146,7 +146,7 @@ GitHub Actions is configured to:
 See:
 - `.github/workflows/ci.yml`
 - `.github/workflows/release-package.yml`
-- `docs/assignment-2/`
+- `docs/qa/`
 
 ---
 
@@ -161,7 +161,7 @@ routes/              web and API routes
 tests/               PHPUnit feature/API tests + Playwright smoke tests
 scripts/dev/         local QA, workflow, and maintenance automation
 public/              public assets and entrypoint
-docs/assignment-2/   QA automation, CI/CD, and assignment evidence
+docs/qa/             QA automation, CI/CD, verification reports, and evidence indexes
 project-context/     canonical startup context for contributors and agents
 ```
 
@@ -191,14 +191,15 @@ The CRM remains an **authentication/integration boundary**. It is used for login
 
 ---
 
-## Assignment 2 / QA evidence
+## QA and verification
 
-Assignment-ready QA and automation materials live in:
-- `docs/assignment-2/README.md`
-- `docs/assignment-2/test-scope.md`
-- `docs/assignment-2/quality-gates.md`
-- `docs/assignment-2/ci-cd.md`
-- `docs/assignment-2/evidence-index.md`
+Repository-facing QA and automation materials live in:
+- `docs/qa/README.md`
+- `docs/qa/test-scope.md`
+- `docs/qa/quality-gates.md`
+- `docs/qa/ci-cd.md`
+- `docs/qa/evidence-index.md`
+- `evidence/verification/`
 
 ---
 

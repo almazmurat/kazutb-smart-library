@@ -10,7 +10,7 @@ Result:
   - Laravel Pint critical-path check passed
   - PHPUnit critical-path suite passed: 77 tests, 350 assertions in 6.79s
   - Vite production build completed successfully in 1.17s
-  - Final line: "CI quality gates passed: Pint, critical-path tests, and frontend production build."
+  - Final line: "QA verification passed: Pint, critical-path tests, and the frontend production build."
 
 2) Browser smoke verification
 Command:
@@ -23,12 +23,12 @@ Result:
 
 3) Reproducibility evidence
 Command:
-  composer qa:assignment2-evidence
+  composer qa:evidence
 
 Result:
   PASS
-  - wrote timestamped logs into `evidence/a2/assignment2-*.txt`
-  - regenerated chart assets from `evidence/a2/assignment2-metrics.json`
+  - writes timestamped logs into `evidence/verification/qa-gates-*.txt`, `playwright-smoke-*.txt`, and `ci-traceability-*.txt`
+  - regenerates chart assets from `evidence/verification/quality-metrics.json`
 
 4) Remote CI verification
 Evidence:
@@ -37,8 +37,8 @@ Evidence:
 Result:
   PASS
   - Secret Scan: success
-  - Backend QA & Coverage: success
-  - Frontend Build & Playwright Smoke: success
+  - Backend Verification & Coverage: success
+  - Frontend Build & Browser Smoke: success
 
 5) Notes
 - Local Playwright execution now uses a Docker fallback when host PHP is below the Composer platform requirement.

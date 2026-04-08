@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Подборка литературы — Библиотека КазУТБ')
+@section('title', 'Подборка литературы — Digital Library')
 
 @section('content')
   <section class="page-hero">

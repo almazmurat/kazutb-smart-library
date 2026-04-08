@@ -1,7 +1,7 @@
-# This project is the new primary KazUTB library platform
+# This project is the new primary Digital Library platform
 
 ## Core identity
-KazUTB Smart Library is the future main university library system, not just a demo website, not just a catalog UI, and not just a CRM shell.
+Digital Library is the future main university library system, not just a demo website, not just a catalog UI, and not just a CRM shell.
 It owns the reader-facing experience, teacher resource discovery, circulation logic, stewardship workflows, staff/admin operations, and library-side API semantics.
 
 ## What the system already includes

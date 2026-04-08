@@ -1,6 +1,6 @@
 ---
 name: "implement"
-description: "Implement a KazUTB Smart Library feature from its approved plan using grounded, incremental, test-first changes."
+description: "Implement a Digital Library feature from its approved plan using grounded, incremental, test-first changes."
 argument-hint: "Path to `docs/sdlc/current/plan.md`"
 agent: "agent"
 ---

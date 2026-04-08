@@ -145,7 +145,7 @@ class IsbnService
             $ctx = stream_context_create([
                 'http' => [
                     'timeout' => self::HTTP_TIMEOUT,
-                    'header' => "Accept: application/json\r\nUser-Agent: KazUTB-SmartLibrary/1.0\r\n",
+                    'header' => "Accept: application/json\r\nUser-Agent: DigitalLibrary/1.0\r\n",
                 ],
             ]);
 
@@ -190,7 +190,7 @@ class IsbnService
             $ctx = stream_context_create([
                 'http' => [
                     'timeout' => self::HTTP_TIMEOUT,
-                    'header' => "Accept: application/json\r\nUser-Agent: KazUTB-SmartLibrary/1.0\r\n",
+                    'header' => "Accept: application/json\r\nUser-Agent: DigitalLibrary/1.0\r\n",
                 ],
             ]);
 

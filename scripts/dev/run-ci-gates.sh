@@ -34,21 +34,21 @@ run_php_check() {
   fi
 }
 
-run_php_check 'php artisan config:clear --ansi'
+run_php_check 'php artisan optimize:clear --ansi'
 run_php_check './vendor/bin/pint --test app/Http/Controllers/Api/AuthController.php app/Http/Controllers/Api/CatalogController.php routes/web.php tests/Feature/PublicShellTest.php tests/Feature/CatalogPageTest.php tests/Feature/AccountPageTest.php tests/Feature/InternalAccessBoundaryTest.php tests/Feature/InternalDashboardPageTest.php tests/Feature/InternalReviewPageTest.php tests/Feature/InternalStewardshipPageTest.php tests/Feature/InternalCirculationPageTest.php tests/Feature/Api/AuthHardeningTest.php tests/Feature/Api/ReaderAccessProtectionTest.php'
 run_php_check "php artisan test --filter='PublicShellTest|CatalogPageTest|AccountPageTest|InternalAccessBoundaryTest|InternalDashboardPageTest|InternalReviewPageTest|InternalStewardshipPageTest|InternalCirculationPageTest|AuthHardeningTest|ReaderAccessProtectionTest|CatalogDbSearchTest|AuthSessionLifecycleTest|AuthSessionMeTest|BookDetailDbTest|AccountReservationsTest' --log-junit=build/test-results/critical-paths.xml"
 
 if command -v node >/dev/null 2>&1 && node -e "process.exit(Number(process.versions.node.split('.')[0]) >= 20 ? 0 : 1)"; then
   if [[ ! -x node_modules/.bin/vite ]]; then
-    npm ci
+    npm ci --no-audit --fund=false --no-update-notifier --loglevel=error
   fi
 
   npm run build
 elif command -v docker >/dev/null 2>&1; then
-  docker run --rm -v "$ROOT_DIR":/workspace -w /workspace node:22 sh -lc 'npm ci && npm run build'
+  docker run --rm -v "$ROOT_DIR":/workspace -w /workspace node:22 sh -lc 'npm ci --no-audit --fund=false --no-update-notifier --loglevel=error && npm run build'
 else
   echo "Frontend build requires Node 20+ or Docker with node:22 available." >&2
   exit 1
 fi
 
-echo "CI quality gates passed: Pint, critical-path tests, and frontend production build."
+echo "QA verification passed: Pint, critical-path tests, and the frontend production build."

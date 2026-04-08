@@ -1,4 +1,4 @@
-# Start here first — deterministic KazUTB context load
+# Start here first — deterministic Digital Library context load
 
 This file defines the **only active startup path** for new sessions.
 Use it to avoid stale notes, duplicate context, and competing project truths.
@@ -20,7 +20,7 @@ Use it to avoid stale notes, duplicate context, and competing project truths.
    - `11-handoffs/latest-agent-handoff.md`
 
 ## Always remember
-- KazUTB Smart Library is the **new primary university library platform**, not a demo, not a thin website, and not a CRM shell.
+- Digital Library is the **new primary university library platform**, not a demo, not a thin website, and not a CRM shell.
 - The library product owns catalog, search, holdings/copies, accounts, reservations, teacher workflows, stewardship, librarian/admin operations, digital materials, reporting, and future AI support.
 - CRM is an **auth/integration boundary only** and must not dominate product framing or connect directly to the library DB.
 - UDC, metadata quality, controlled digital access, holdings reality, and reporting compatibility are first-class truths.

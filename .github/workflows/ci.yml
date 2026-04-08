@@ -1,4 +1,6 @@
-name: CI
+name: Continuous Verification
+
+run-name: Verification • ${{ github.event_name }} • ${{ github.ref_name }}
 
 on:
   push:
@@ -7,23 +9,32 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  NPM_CONFIG_AUDIT: "false"
+  NPM_CONFIG_FUND: "false"
+  NPM_CONFIG_UPDATE_NOTIFIER: "false"
 
 jobs:
   secret-scan:
     name: Secret Scan
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    timeout-minutes: 5
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -33,13 +44,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   backend-quality:
-    name: Backend QA & Coverage
+    name: Backend Verification & Coverage
     runs-on: ubuntu-latest
     needs: secret-scan
+    timeout-minutes: 12
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -49,14 +61,15 @@ jobs:
           coverage: pcov
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
-          restore-keys: composer-
+          key: ${{ runner.os }}-php84-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php84-composer-
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
+        run: composer install --no-interaction --prefer-dist --no-progress --ansi
 
       - name: Run local CI gates
         run: composer qa:ci
@@ -95,14 +108,26 @@ jobs:
           name: backend-qa-artifacts
           path: build/test-results
 
+      - name: Write backend summary
+        if: always()
+        run: |
+          {
+            echo "## Backend verification"
+            echo "- PHP 8.4 environment prepared successfully"
+            echo "- Local gate: \`composer qa:ci\`"
+            echo "- Coverage floor: \`composer qa:coverage-threshold\`"
+            echo "- Artifacts uploaded from \`build/test-results\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
   browser-smoke:
-    name: Frontend Build & Playwright Smoke
+    name: Frontend Build & Browser Smoke
     runs-on: ubuntu-latest
     needs: secret-scan
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -112,16 +137,17 @@ jobs:
           coverage: none
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
+        run: composer install --no-interaction --prefer-dist --no-progress --ansi
 
       - name: Install Node dependencies
-        run: npm ci
+        run: npm ci --no-audit --fund=false --no-update-notifier --loglevel=error
 
       - name: Build frontend assets
         run: npm run build
@@ -150,3 +176,13 @@ jobs:
           path: |
             playwright-report
             test-results/playwright-artifacts
+
+      - name: Write browser summary
+        if: always()
+        run: |
+          {
+            echo "## Frontend verification"
+            echo "- Node 22 toolchain configured"
+            echo "- Commands: \`npm run build\` and \`npm run test:e2e\`"
+            echo "- Playwright traces uploaded when available"
+          } >> "$GITHUB_STEP_SUMMARY"

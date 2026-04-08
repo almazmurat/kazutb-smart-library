@@ -18,7 +18,7 @@ class ConsolidationTest extends TestCase
         $defaults = [
             'id' => 'test-user-1',
             'name' => 'Тест Тестов',
-            'email' => 'test@kazutb.kz',
+            'email' => 'test@digital-library.test',
             'role' => 'reader',
         ];
 
@@ -74,7 +74,7 @@ class ConsolidationTest extends TestCase
         $response->assertSee('О библиотеке и контакты');
         $response->assertSee('Миссия');
         $response->assertSee('Более 50 000');
-        $response->assertSee('library@kazutb.kz');
+        $response->assertSee('library@digital-library.demo');
     }
 
     public function test_resources_renders(): void

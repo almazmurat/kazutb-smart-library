@@ -1,4 +1,4 @@
-# Obsidian Vault Architecture for KazUTB Smart Library
+# Obsidian Vault Architecture for Digital Library
 
 ## Purpose
 Create a durable project memory system that survives across agent sessions without turning the repository into a markdown dump.

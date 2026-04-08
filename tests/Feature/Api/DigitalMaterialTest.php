@@ -21,7 +21,7 @@ class DigitalMaterialTest extends TestCase
         $defaults = [
             'id' => 'test-user-1',
             'name' => 'Тест Тестов',
-            'email' => 'test@kazutb.kz',
+            'email' => 'test@digital-library.test',
             'role' => 'reader',
         ];
 

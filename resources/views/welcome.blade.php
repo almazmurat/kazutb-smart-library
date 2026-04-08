@@ -14,10 +14,10 @@
 
     $copy = [
         'ru' => [
-            'title' => 'Цифровая библиотека КазУТБ — The Academic Curator',
+            'title' => 'Digital Library — The Academic Curator',
             'skip' => 'Перейти к основному содержанию',
             'brand' => 'The Academic Curator',
-            'brandSub' => 'Цифровая библиотека КазУТБ',
+            'brandSub' => 'Digital Library',
             'nav' => [
                 'catalog' => 'Каталог',
                 'resources' => 'Ресурсы',
@@ -32,14 +32,14 @@
                 'titleBefore' => 'Знание,',
                 'titleAccent' => 'собранное',
                 'titleAfter' => 'для исследователя.',
-                'lead' => 'Цифровая библиотека КазУТБ объединяет университетский фонд, архивы, внешние академические платформы и рабочие инструменты преподавателя в одном спокойном институциональном интерфейсе.',
+                'lead' => 'Digital Library объединяет академический фонд, архивы, внешние платформы и рабочие инструменты преподавателя в одном спокойном цифровом интерфейсе.',
                 'placeholder' => 'Искать книги, авторов, ISBN, УДК или ключевые слова…',
                 'submit' => 'Explore',
             ],
             'metrics' => [
                 ['icon' => 'check_circle', 'label' => '2.5M+ цифровых материалов'],
                 ['icon' => 'check_circle', 'label' => '800K печатных изданий'],
-                ['icon' => 'check_circle', 'label' => 'Университетский доступ'],
+                ['icon' => 'check_circle', 'label' => 'Академический доступ'],
             ],
             'cards' => [
                 [
@@ -82,12 +82,12 @@
             ],
             'quote' => '«Библиотека — это сердце университета; наша задача — направлять знание к каждому студенту, преподавателю и исследователю.»',
             'institution' => [
-                'eyebrow' => 'Университетская среда',
-                'title' => 'Казахский университет технологии и бизнеса имени К. Кулажанова',
-                'body' => 'Цифровая трансформация библиотеки соединяет классическую библиографическую дисциплину, современный поиск и быстрый доступ к ресурсам для учебы, преподавания и исследований.',
+                'eyebrow' => 'Академическая среда',
+                'title' => 'Digital Library для учебы и исследований',
+                'body' => 'Платформа соединяет классическую библиографическую дисциплину, современный поиск и быстрый доступ к ресурсам для учебы, преподавания и исследований.',
                 'facts' => [
-                    ['value' => '1996', 'label' => 'Год основания'],
-                    ['value' => 'Elite', 'label' => 'Институциональная аккредитация'],
+                    ['value' => '24/7', 'label' => 'Цифровой доступ'],
+                    ['value' => 'Hybrid', 'label' => 'Печатный + digital фонд'],
                 ],
             ],
             'footer' => [
@@ -96,10 +96,10 @@
             ],
         ],
         'kk' => [
-            'title' => 'ҚазУТБ цифрлық кітапханасы — The Academic Curator',
+            'title' => 'Digital Library — The Academic Curator',
             'skip' => 'Негізгі мазмұнға өту',
             'brand' => 'The Academic Curator',
-            'brandSub' => 'ҚазУТБ цифрлық кітапханасы',
+            'brandSub' => 'Digital Library',
             'nav' => [
                 'catalog' => 'Каталог',
                 'resources' => 'Ресурстар',
@@ -114,7 +114,7 @@
                 'titleBefore' => 'Білім,',
                 'titleAccent' => 'ұқыппен',
                 'titleAfter' => 'зерттеуші үшін жинақталған.',
-                'lead' => 'ҚазУТБ цифрлық кітапханасы университет қорын, архивтерді, сыртқы академиялық платформаларды және оқытушыға арналған жұмыс құралдарын бір тыныш институционалдық интерфейске біріктіреді.',
+                'lead' => 'Digital Library академиялық қорды, архивтерді, сыртқы платформаларды және оқытушыға арналған жұмыс құралдарын бір тыныш цифрлық интерфейске біріктіреді.',
                 'placeholder' => 'Кітаптар, авторлар, ISBN, ӘОЖ немесе кілт сөздер бойынша іздеу…',
                 'submit' => 'Explore',
             ],
@@ -164,12 +164,12 @@
             ],
             'quote' => '«Кітапхана — университеттің жүрегі; біздің міндетіміз — білімді әр студентке, оқытушыға және зерттеушіге жеткізу.»',
             'institution' => [
-                'eyebrow' => 'Университеттік орта',
-                'title' => 'Қ. Құлажанов атындағы Қазақ технология және бизнес университеті',
-                'body' => 'Кітапхананың цифрлық трансформациясы классикалық библиографиялық тәртіпті, заманауи іздеуді және оқу мен зерттеуге қажетті ресурстарға жедел қолжетімділікті біріктіреді.',
+                'eyebrow' => 'Академиялық орта',
+                'title' => 'Digital Library оқу мен зерттеуге арналған',
+                'body' => 'Платформа классикалық библиографиялық тәртіпті, заманауи іздеуді және оқу мен зерттеуге қажетті ресурстарға жедел қолжетімділікті біріктіреді.',
                 'facts' => [
-                    ['value' => '1996', 'label' => 'Құрылған жылы'],
-                    ['value' => 'Elite', 'label' => 'Институционалдық аккредиттеу'],
+                    ['value' => '24/7', 'label' => 'Цифрлық қолжетім'],
+                    ['value' => 'Hybrid', 'label' => 'Баспа + digital қор'],
                 ],
             ],
             'footer' => [
@@ -178,10 +178,10 @@
             ],
         ],
         'en' => [
-            'title' => 'KazUTB Digital Library — The Academic Curator',
+            'title' => 'Digital Library — The Academic Curator',
             'skip' => 'Skip to main content',
             'brand' => 'The Academic Curator',
-            'brandSub' => 'KazUTB Digital Library',
+            'brandSub' => 'Digital Library',
             'nav' => [
                 'catalog' => 'Catalog',
                 'resources' => 'Resources',
@@ -196,7 +196,7 @@
                 'titleBefore' => 'Knowledge,',
                 'titleAccent' => 'Curated',
                 'titleAfter' => 'for the Scholar.',
-                'lead' => 'KazUTB Digital Library brings together the university collection, archives, licensed research platforms, and teacher workflows in one calm institutional interface.',
+                'lead' => 'Digital Library brings together the academic collection, archives, licensed research platforms, and teacher workflows in one calm digital interface.',
                 'placeholder' => 'Search titles, authors, ISBN, UDC, or keywords…',
                 'submit' => 'Explore',
             ],
@@ -210,7 +210,7 @@
                     'icon' => 'location_on',
                     'kicker' => 'Internal Network',
                     'title' => 'University Archives',
-                    'body' => 'Exclusive access to KazUTB theses, local publications, rare technical materials, and internal academic collections.',
+                    'body' => 'Access to theses, local publications, rare technical materials, and internal academic collections.',
                     'href' => '/resources',
                     'variant' => 'wide',
                 ],
@@ -246,12 +246,12 @@
             ],
             'quote' => '“The library is the heart of the university; our mission is to direct knowledge toward every student, teacher, and researcher.”',
             'institution' => [
-                'eyebrow' => 'University context',
-                'title' => 'Kazakh University of Technology and Business named after K. Kulazhanov',
-                'body' => 'The library’s digital transformation connects classical cataloging discipline, modern search, and reliable access to resources for teaching, study, and research.',
+                'eyebrow' => 'Academic context',
+                'title' => 'Digital Library for the academic community',
+                'body' => 'The platform connects classical cataloging discipline, modern search, and reliable access to resources for teaching, study, and research.',
                 'facts' => [
-                    ['value' => '1996', 'label' => 'Foundation year'],
-                    ['value' => 'Elite', 'label' => 'Institutional accreditation'],
+                    ['value' => '24/7', 'label' => 'Digital access'],
+                    ['value' => 'Hybrid', 'label' => 'Print + digital collection'],
                 ],
             ],
             'footer' => [

@@ -1,8 +1,8 @@
 ---
-description: "Shared rules for the KazUTB Smart Library five-stage SDLC prompts. Use when running /clarify, /design, /implement, /verify, or /document."
+description: "Shared rules for the Digital Library five-stage SDLC prompts. Use when running /clarify, /design, /implement, /verify, or /document."
 ---
 
-# KazUTB Smart Library — SDLC shared rules
+# Digital Library — SDLC shared rules
 
 ## Grounding order
 1. `AGENT_START_HERE.md`

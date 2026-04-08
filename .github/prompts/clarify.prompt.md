@@ -1,6 +1,6 @@
 ---
 name: "clarify"
-description: "Turn a rough feature draft into a structured spec for KazUTB Smart Library. Use when you have `draft.md`, free text requirements, or a fuzzy feature request."
+description: "Turn a rough feature draft into a structured spec for Digital Library. Use when you have `draft.md`, free text requirements, or a fuzzy feature request."
 argument-hint: "Path to draft.md or a short feature request"
 agent: "agent"
 ---

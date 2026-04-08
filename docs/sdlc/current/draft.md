@@ -1,4 +1,4 @@
-# Full visual reset — KazUTB Digital Library
+# Full visual reset — Digital Library
 
 ## Problem statement
 The current redesign is still too close to the old interface DNA:
@@ -11,7 +11,7 @@ The current redesign is still too close to the old interface DNA:
 That is **not** the target.
 
 ## Target outcome
-Create a **true system-level visual reset** for the KazUTB Digital Library so the platform feels like a premium, calm, highly usable, operational university product — not a brochure site and not a generic SaaS template.
+Create a **true system-level visual reset** for Digital Library so the platform feels like a premium, calm, highly usable, operational university product — not a brochure site and not a generic SaaS template.
 
 The visual language must feel:
 - modern
@@ -25,7 +25,7 @@ The visual language must feel:
 
 ## Grounded design source
 Use the verified Stitch project as the design source of truth:
-- project: `KazUTB Digital Library Platform`
+- project: `Digital Library Platform`
 - project id: `4601252383613536784`
 - direction: `The Academic Curator` / `The Living Archive`
 

@@ -1,13 +1,13 @@
-# Stitch → KazUTB full reset mapping
+# Stitch → Digital Library full reset mapping
 
 ## Stitch access confirmed via MCP
-- project: `KazUTB Digital Library Platform`
+- project: `Digital Library Platform`
 - project id: `4601252383613536784`
 - verified on: `2026-04-08`
 - active design direction: `The Academic Curator` → strengthened with a project-wide reset prompt toward **The Living Archive**
 
 ## Verified Stitch screens
-| Stitch screen | Screen id | KazUTB route | Primary repo file |
+| Stitch screen | Screen id | platform route | Primary repo file |
 |---|---|---|---|
 | `Homepage - Digital Library` | `d3368194512b4112a5dac3ad4c7b4081` | `/` | `resources/views/welcome.blade.php` |
 | `Catalog Search - Digital Library` | `3c1e3537278d4de7a7da0ee88980975d` | `/app/catalog`, `/catalog` | `resources/js/spa/pages/CatalogPage.jsx`, `resources/views/catalog.blade.php` |
@@ -177,7 +177,7 @@ Must emphasize:
 
 ## What was done in Stitch this session
 - Accessed the live Stitch project through MCP.
-- Verified the full multi-page screen set and mapped each screen to the real KazUTB routes/files.
+- Verified the full multi-page screen set and mapped each screen to the real platform routes/files.
 - Submitted a project-wide screen edit prompt to push the direction further away from dark/marketing-heavy UI and toward a lighter editorial institutional system.
 
 ## Next build focus

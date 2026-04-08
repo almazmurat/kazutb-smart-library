@@ -1,6 +1,6 @@
 ---
 name: "verify"
-description: "Run a structured verification pass for a KazUTB Smart Library change: tests, build, traceability, security, dead code, and docs drift."
+description: "Run a structured verification pass for a Digital Library change: tests, build, traceability, security, dead code, and docs drift."
 argument-hint: "Path to `docs/sdlc/current/spec.md` or `docs/sdlc/current/plan.md`"
 agent: "agent"
 ---

@@ -91,7 +91,7 @@ class DigitalMaterialSeeder extends Seeder
             "2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n" .
             "3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj\n" .
             "4 0 obj<</Length 83>>\nstream\n" .
-            "BT\n/F1 24 Tf\n100 700 Td\n(KazUTB Smart Library) Tj\n0 -40 Td\n/F1 14 Tf\n(Sample digital material) Tj\nET\n" .
+            "BT\n/F1 24 Tf\n100 700 Td\n(Digital Library) Tj\n0 -40 Td\n/F1 14 Tf\n(Sample digital material) Tj\nET\n" .
             "endstream\nendobj\n" .
             "5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\n" .
             "xref\n0 6\n" .

@@ -5,12 +5,12 @@
   $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
   $copy = [
     'ru' => [
-      'meta' => 'О библиотеке и контакты — КазУТБ',
+      'meta' => 'О библиотеке и контакты — Digital Library',
       'hero' => 'О библиотеке и контакты',
-      'lead' => 'Библиотека Казахского университета технологии и бизнеса — центр знаний и информационной поддержки для студентов, преподавателей и исследователей.',
+      'lead' => 'Digital Library — центр знаний и информационной поддержки для студентов, преподавателей и исследователей.',
       'mission_label' => 'Миссия',
       'mission_title' => 'Доступ к знаниям и информационным ресурсам',
-      'mission_body' => 'Библиотека КазУТБ обеспечивает информационную поддержку учебного процесса и научных исследований университета. Мы развиваем фонд, расширяем цифровые подписки и создаём комфортные условия для работы с информацией.',
+      'mission_body' => 'Digital Library поддерживает учебу и исследования, развивает фонд, расширяет цифровые подписки и создаёт комфортные условия для работы с информацией.',
       'contacts' => 'Контакты',
       'contacts_help' => 'Как связаться с библиотекой.',
       'hours' => 'Режим работы',
@@ -19,12 +19,12 @@
       'units_help' => 'Контакты подразделений библиотеки.',
     ],
     'kk' => [
-      'meta' => 'Кітапхана туралы және байланыс — ҚазУТБ',
+      'meta' => 'Кітапхана туралы және байланыс — Digital Library',
       'hero' => 'Кітапхана туралы және байланыс',
-      'lead' => 'ҚазУТБ кітапханасы студенттер, оқытушылар және зерттеушілер үшін білім мен ақпараттық қолдаудың заманауи орталығы болып табылады.',
+      'lead' => 'Digital Library студенттер, оқытушылар және зерттеушілер үшін білім мен ақпараттық қолдаудың заманауи орталығы болып табылады.',
       'mission_label' => 'Миссия',
       'mission_title' => 'Білім мен ақпараттық ресурстарға қолжетімділік',
-      'mission_body' => 'ҚазУТБ кітапханасы оқу үдерісі мен ғылыми зерттеулерді ақпараттық тұрғыда қолдайды. Біз қорды дамытып, цифрлық жазылымдарды кеңейтіп, пайдаланушыларға ыңғайлы орта қалыптастырамыз.',
+      'mission_body' => 'Digital Library оқу үдерісі мен зерттеулерді ақпараттық тұрғыда қолдайды. Қорды дамытып, цифрлық жазылымдарды кеңейтіп, пайдаланушыларға ыңғайлы орта қалыптастырамыз.',
       'contacts' => 'Байланыс',
       'contacts_help' => 'Кітапханамен қалай байланысуға болады.',
       'hours' => 'Жұмыс уақыты',
@@ -33,12 +33,12 @@
       'units_help' => 'Кітапхана бөлімдерінің байланыстары.',
     ],
     'en' => [
-      'meta' => 'About the library and contacts — KazUTB',
+      'meta' => 'About the library and contacts — Digital Library',
       'hero' => 'About the library and contacts',
-      'lead' => 'The Kazakh University of Technology and Business library is a modern knowledge and information-support center for students, faculty, and researchers.',
+      'lead' => 'Digital Library is a modern knowledge and information-support center for students, faculty, and researchers.',
       'mission_label' => 'Mission',
       'mission_title' => 'Access to knowledge and information resources',
-      'mission_body' => 'The KazUTB library supports the university’s learning and research environment. We continue to expand the collection, digital subscriptions, and comfortable study conditions for our readers.',
+      'mission_body' => 'Digital Library supports study and research through a growing collection, digital subscriptions, and comfortable access for readers.',
       'contacts' => 'Contacts',
       'contacts_help' => 'How to reach the library.',
       'hours' => 'Opening hours',
@@ -54,7 +54,7 @@
 @section('content')
   <section class="page-hero">
     <div class="container contact-hero-center">
-      <div class="eyebrow">Библиотека КазУТБ</div>
+      <div class="eyebrow">Digital Library</div>
       <h1>{{ $copy['hero'] }}</h1>
       <p>{{ $copy['lead'] }}</p>
     </div>
@@ -92,7 +92,7 @@
         <div class="contact-card">
           <div class="icon">📍</div>
           <h3>Адрес</h3>
-          <p>г. Астана, ул. Кайым Мухамедханова, 37А<br>главный корпус КазУТБ</p>
+          <p>г. Астана, ул. Кайым Мухамедханова, 37А<br>информационно-библиотечный центр</p>
           <p class="text-body-sm" style="margin-top: 8px;">Для очных консультаций, выдачи и возврата литературы</p>
         </div>
 
@@ -106,7 +106,7 @@
         <div class="contact-card">
           <div class="icon">✉️</div>
           <h3>Электронная почта</h3>
-          <p><a href="mailto:library@kazutb.kz">library@kazutb.kz</a></p>
+          <p><a href="mailto:library@digital-library.demo">library@digital-library.demo</a></p>
           <p class="text-body-sm" style="margin-top: 8px;">Для запросов по электронным ресурсам, доступу и обращениям</p>
         </div>
 

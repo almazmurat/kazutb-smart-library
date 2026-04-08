@@ -1,6 +1,6 @@
 ---
 name: "remember"
-description: "Normalize a rough project fact, correction, risk, or platform note into structured KazUTB Smart Library memory in the repo and Obsidian vault."
+description: "Normalize a rough project fact, correction, risk, or platform note into structured Digital Library memory in the repo and Obsidian vault."
 argument-hint: "Path to `docs/sdlc/current/draft.md` or a raw note about project truth, roles, requirements, risks, or operations"
 agent: "agent"
 ---

@@ -34,8 +34,8 @@ class ExternalResourcePageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('Электронная библиотека КазУТБ', false)
-            ->assertSee('фонд библиотеки университета', false)
+            ->assertSee('Digital Library', false)
+            ->assertSee('основной библиотечный фонд', false)
             ->assertSee('href="/catalog"', false);
     }
 

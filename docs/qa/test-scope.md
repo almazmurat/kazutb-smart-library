@@ -30,10 +30,10 @@ The submission scope was selected by **risk**, not by convenience. Modules were 
 | Script / command | Purpose | Reusability |
 |---|---|---|
 | `composer qa:ci` | one-command local quality gate for style, critical-path PHPUnit, and Vite build | high |
-| `scripts/dev/run-ci-gates.sh` | shell wrapper that handles PHP-version fallback and Node install behavior | high |
+| `scripts/dev/run-ci-gates.sh` | shell wrapper that handles PHP-version fallback and clean-runner frontend install behavior | high |
 | `npm run test:e2e` | browser smoke suite for public flows | high |
 | `playwright.config.ts` | local Docker fallback for browser execution on older PHP hosts | high |
-| `composer qa:assignment2-evidence` | reproducible log collection for the assignment evidence set | high |
+| `composer qa:evidence` | reproducible log collection for the verification evidence set | high |
 
 ## 4) Version-control traceability
 
@@ -51,15 +51,15 @@ The automation work is traceable in Git history and was not added as a one-off d
 
 | Evidence type | Location | What it proves |
 |---|---|---|
-| local QA pass log | `evidence/a2/verification-2026-04-08.txt` | `composer qa:ci` and `npm run test:e2e` really passed |
-| commit trace | `evidence/a2/git-history.txt` | automation work evolved over multiple commits |
-| GitHub screenshots | `evidence/a2/github-actions-*.png` | CI exists and runs on GitHub Actions |
-| structured metrics | `evidence/a2/assignment2-metrics.json` | numeric metrics used in the report are reproducible |
-| fresh log collector | `scripts/dev/run-assignment2-evidence.sh` | evidence can be regenerated on demand |
+| local QA pass log | `evidence/verification/verification-2026-04-08.txt` | `composer qa:ci` and `npm run test:e2e` really passed |
+| commit trace | `evidence/verification/git-history.txt` | automation work evolved through multiple hardening commits |
+| GitHub screenshots | `evidence/verification/github-actions-*.png` | CI exists and runs on GitHub Actions |
+| structured metrics | `evidence/verification/quality-metrics.json` | numeric metrics used in the report are reproducible |
+| fresh log collector | `scripts/dev/run-verification-evidence.sh` | evidence can be regenerated on demand |
 
 ## 6) Current verified execution
 - `composer qa:ci` → **77 passed (350 assertions)**
 - `npm run test:e2e` → **3 passed (5.4s)**
 
 ## 7) Scope limitation
-This assignment set is intentionally **critical-path oriented** rather than exhaustive. That limitation is disclosed because the repository still contains broader legacy areas that are not fully automated at the same depth.
+This verification set is intentionally **critical-path oriented** rather than exhaustive. That limitation is disclosed because the repository still contains broader legacy areas that are not fully automated at the same depth.

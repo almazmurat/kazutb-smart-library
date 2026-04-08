@@ -1,0 +1,12 @@
+Verification trace
+Timestamp: 2026-04-08T21:36:23+00:00
+
+3e8ff3d docs: complete assignment 2 audit package
+afa1598 fix: support phpunit clover coverage metrics
+cea7d76 fix: stabilize backend CI workflow
+734f2d9 fix: install frontend deps in qa gate
+81344dc fix: stabilize CI without vite manifest
+d8daed3 chore: harden repo for public release
+b6d4dff feat: WS4+WS1 convergence wave — CI PostgreSQL, reader migration, legacy cleanup, vault discipline
+9e72253 docs: add normalization plan, rewrite README, add context script, fix CI PHP version
+435e64a repo: normalize layer structure and add CI pipeline

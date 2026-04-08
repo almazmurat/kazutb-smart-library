@@ -2,7 +2,7 @@
 
 ## Scope summary
 - Deliver the next **global frontend modernization wave** across the existing Blade pages, the React/Vite SPA under `/app`, and the internal operational screens so the platform feels like one coherent university library product.
-- Ground the content and information architecture in the official KazUTB library page (`https://www.kaztbu.edu.kz/ru/biblioteka`) while using the Lovable reference (`https://lovable.dev/projects/22d25805-2d7b-424f-b3d2-ee61cbc34d43`) only as art-direction inspiration.
+- Ground the content and information architecture in the established institutional library patterns while using the Lovable reference (`https://lovable.dev/projects/22d25805-2d7b-424f-b3d2-ee61cbc34d43`) only as art-direction inspiration.
 - Keep Laravel routes, API payloads, CRM/session auth, and PostgreSQL schema stable; this plan is intentionally **frontend-first** with only minimal supporting controller/view wiring where the current UI needs content or locale state.
 
 ## Delivery decisions fixed in /design

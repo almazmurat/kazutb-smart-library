@@ -5,12 +5,12 @@
   $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
   $copy = [
     'ru' => [
-      'meta' => 'Электронные ресурсы — Библиотека КазУТБ',
+      'meta' => 'Электронные ресурсы — Digital Library',
       'eyebrow' => 'Электронные ресурсы',
       'hero' => 'Цифровые коллекции и научные базы данных',
       'lead' => 'Доступ к электронным учебникам, международным научным базам, лицензированным платформам и открытым образовательным ресурсам.',
-      'banner' => 'Электронная библиотека КазУТБ',
-      'banner_body' => 'Откройте фонд библиотеки университета: более 50 000 единиц — учебники, монографии, методические материалы и периодика в электронном и печатном формате.',
+      'banner' => 'Digital Library',
+      'banner_body' => 'Откройте основной библиотечный фонд: более 50 000 единиц — учебники, монографии, методические материалы и периодика в электронном и печатном формате.',
       'support_label' => 'Поддержка преподавателей',
       'support_title' => 'Подборка литературы для дисциплин и исследований',
       'support_body' => 'Инструменты для силлабуса теперь встроены в основной библиотечный маршрут: ищите книги в каталоге, добавляйте источники в подборку и дополняйте её электронными ресурсами без отдельной страницы.',
@@ -18,12 +18,12 @@
       'faq_help' => 'Ответы на основные вопросы о работе с электронными ресурсами библиотеки.',
     ],
     'kk' => [
-      'meta' => 'Электрондық ресурстар — ҚазУТБ кітапханасы',
+      'meta' => 'Электрондық ресурстар — Digital Library',
       'eyebrow' => 'Электрондық ресурстар',
       'hero' => 'Цифрлық коллекциялар мен ғылыми дерекқорлар',
       'lead' => 'Электрондық оқулықтарға, халықаралық ғылыми базаларға, лицензиялық платформаларға және ашық білім беру ресурстарына қолжетімділік.',
-      'banner' => 'ҚазУТБ электрондық кітапханасы',
-      'banner_body' => 'Университет кітапханасы қорын ашыңыз: 50 000-нан астам оқу, ғылыми және әдістемелік материалдар цифрлық және баспа форматында қолжетімді.',
+      'banner' => 'Digital Library',
+      'banner_body' => 'Негізгі кітапхана қорын ашыңыз: 50 000-нан астам оқу, ғылыми және әдістемелік материалдар цифрлық және баспа форматында қолжетімді.',
       'support_label' => 'Оқытушыларға қолдау',
       'support_title' => 'Пәндер мен зерттеулерге арналған әдебиеттер топтамасы',
       'support_body' => 'Силлабусқа арналған құралдар енді негізгі кітапхана бағытына біріктірілді: каталогтан іздеңіз, материалдарды топтамаға қосыңыз және электрондық ресурстармен толықтырыңыз.',
@@ -31,12 +31,12 @@
       'faq_help' => 'Кітапхананың электрондық ресурстары бойынша негізгі жауаптар.',
     ],
     'en' => [
-      'meta' => 'Electronic resources — KazUTB Library',
+      'meta' => 'Electronic resources — Digital Library',
       'eyebrow' => 'Electronic resources',
       'hero' => 'Digital collections and research databases',
       'lead' => 'Access electronic textbooks, international scholarly databases, licensed platforms, and open educational resources from one modern library entry point.',
-      'banner' => 'KazUTB Digital Library',
-      'banner_body' => 'Open the university library collection: 50,000+ textbooks, monographs, teaching materials, and periodicals across digital and print formats.',
+      'banner' => 'Digital Library',
+      'banner_body' => 'Open the main library collection: 50,000+ textbooks, monographs, teaching materials, and periodicals across digital and print formats.',
       'support_label' => 'Faculty support',
       'support_title' => 'Reading lists for courses and research',
       'support_body' => 'The syllabus workflow now lives inside the main library experience: search the catalog, collect sources into a shortlist, and enrich them with electronic resources without a separate landing page.',
@@ -583,7 +583,7 @@
       <div>
         <div class="eyebrow eyebrow--violet">Внешние лицензированные ресурсы</div>
         <h2>Подписные платформы и научные базы данных</h2>
-        <p>Внешние электронные ресурсы, доступные студентам и преподавателям КазУТБ по подписке или в открытом доступе. Это не материалы библиотечного фонда — каждый ресурс размещён на внешней платформе со своими условиями доступа.</p>
+        <p>Внешние электронные ресурсы, доступные пользователям платформы по подписке или в открытом доступе. Это не материалы библиотечного фонда — каждый ресурс размещён на внешней платформе со своими условиями доступа.</p>
       </div>
     </div>
 
