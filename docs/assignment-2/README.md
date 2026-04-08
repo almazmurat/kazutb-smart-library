@@ -15,10 +15,11 @@ npm run test:e2e
 composer qa:assignment2-evidence
 ```
 
-## Latest verified local results
+## Latest verified results
 - `composer qa:ci` → **77 passed** (`350 assertions`), Vite build succeeded
-- `npm run test:e2e` → **3 passed** (`5.4s`)
+- `npm run test:e2e` → **3 passed** (`5.6s`)
 - Clover line coverage for the defended critical-path suite → **4.24%** against the full `app/` namespace
+- GitHub Actions CI run `24156029659` on commit `3e8ff3d` → **success** for `Secret Scan`, `Backend QA & Coverage`, and `Frontend Build & Playwright Smoke`
 
 ## Document map
 - `audit-report.md` — strict requirement-by-requirement audit and compliance matrix

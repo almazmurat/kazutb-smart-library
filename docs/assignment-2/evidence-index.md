@@ -9,6 +9,7 @@ The following artifacts support the Assignment 2 submission and the adversarial 
 | `evidence/a2/assignment2-playwright-*.txt` | timestamped Playwright smoke logs produced by the evidence runner |
 | `evidence/a2/assignment2-traceability-*.txt` | timestamped git-history trace focused on Assignment 2 files |
 | `evidence/a2/assignment2-remote-ci-*.txt` | timestamped snapshot of recent GitHub Actions runs |
+| `evidence/a2/remote-ci-success-2026-04-08.json` | final successful GitHub Actions run summary for commit `3e8ff3d` |
 | `evidence/a2/assignment2-metrics.json` | structured source of the numeric metrics used in the docs and charts |
 | `evidence/a2/commit-diff-a2-tests-ci.png` | screenshot of the tests/CI-focused repository diff |
 | `evidence/a2/commit-diff-a2-tests-ci.txt` | text version of the same diff summary |

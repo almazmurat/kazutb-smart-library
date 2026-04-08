@@ -21,7 +21,8 @@ The repository does **not** claim full-monolith automation coverage. The defende
 | `composer qa:ci` critical-path PHPUnit stage | `77 passed (350 assertions)` in `6.79s` |
 | Vite production build inside `composer qa:ci` | completed in `1.17s` |
 | `npm run test:e2e` | `3 passed` in `5.6s` |
-| GitHub Actions frontend smoke job | completed successfully in about `1m 22s` on hosted runners |
+| GitHub Actions backend job (`run 24156029659`) | completed successfully in about `40s` |
+| GitHub Actions frontend smoke job (`run 24156029659`) | completed successfully in about `60s` |
 
 Source logs:
 - `evidence/a2/verification-2026-04-08.txt`

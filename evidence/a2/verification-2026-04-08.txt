@@ -30,6 +30,16 @@ Result:
   - wrote timestamped logs into `evidence/a2/assignment2-*.txt`
   - regenerated chart assets from `evidence/a2/assignment2-metrics.json`
 
-4) Notes
+4) Remote CI verification
+Evidence:
+  GitHub Actions run 24156029659 for commit 3e8ff3d
+
+Result:
+  PASS
+  - Secret Scan: success
+  - Backend QA & Coverage: success
+  - Frontend Build & Playwright Smoke: success
+
+5) Notes
 - Local Playwright execution now uses a Docker fallback when host PHP is below the Composer platform requirement.
 - Local browser installation uses `npm run test:e2e:install` to avoid sudo-only system package prompts during normal development.

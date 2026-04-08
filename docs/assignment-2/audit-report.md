@@ -3,7 +3,7 @@
 ## 1. Executive summary
 A strict adversarial audit was performed against the real repository state, runnable commands, workflow files, evidence logs, and version history. The audit did **not** accept the presence of tests or docs as proof by itself; every major claim was checked against the implementation and recent verification output.
 
-**Bottom line:** the repository now presents a defensible **critical-path test automation submission** for Assignment 2, with documented limitations. The strongest evidence is the real command output from `composer qa:ci`, `npm run test:e2e`, and the GitHub Actions workflow files and run artifacts.
+**Bottom line:** the repository now presents a defensible **critical-path test automation submission** for Assignment 2, with documented limitations. The strongest evidence is the real command output from `composer qa:ci`, `npm run test:e2e`, and the successful GitHub Actions CI run `24156029659` for commit `3e8ff3d`.
 
 ## 2. Assignment 2 compliance verdict
 **Verdict: PASS with documented limitations**
