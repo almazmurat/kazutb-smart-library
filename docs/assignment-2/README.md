@@ -24,6 +24,7 @@ composer qa:assignment2-evidence
 ## Document map
 - `audit-report.md` — strict requirement-by-requirement audit and compliance matrix
 - `test-scope.md` — high-risk module selection, case design, traceability, and evidence mapping
+- `tool-selection.md` — justification for PHPUnit, Playwright, Pint, GitHub Actions, and Docker
 - `metrics-report.md` — reproducible metrics, timings, coverage, and defects-vs-risk tables
 - `quality-gates.md` — gate definitions, thresholds, failure behavior, and alerting model
 - `ci-cd.md` — GitHub Actions workflow explanation and artifact flow
