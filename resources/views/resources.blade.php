@@ -1,6 +1,52 @@
 @extends('layouts.public')
 
-@section('title', 'Электронные ресурсы — Библиотека КазУТБ')
+@php
+  $lang = request()->query('lang', 'ru');
+  $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+  $copy = [
+    'ru' => [
+      'meta' => 'Электронные ресурсы — Библиотека КазУТБ',
+      'eyebrow' => 'Электронные ресурсы',
+      'hero' => 'Цифровые коллекции и научные базы данных',
+      'lead' => 'Доступ к электронным учебникам, международным научным базам, лицензированным платформам и открытым образовательным ресурсам.',
+      'banner' => 'Электронная библиотека КазУТБ',
+      'banner_body' => 'Откройте фонд библиотеки университета: более 50 000 единиц — учебники, монографии, методические материалы и периодика в электронном и печатном формате.',
+      'support_label' => 'Поддержка преподавателей',
+      'support_title' => 'Подборка литературы для дисциплин и исследований',
+      'support_body' => 'Инструменты для силлабуса теперь встроены в основной библиотечный маршрут: ищите книги в каталоге, добавляйте источники в подборку и дополняйте её электронными ресурсами без отдельной страницы.',
+      'faq' => 'Частые вопросы',
+      'faq_help' => 'Ответы на основные вопросы о работе с электронными ресурсами библиотеки.',
+    ],
+    'kk' => [
+      'meta' => 'Электрондық ресурстар — ҚазУТБ кітапханасы',
+      'eyebrow' => 'Электрондық ресурстар',
+      'hero' => 'Цифрлық коллекциялар мен ғылыми дерекқорлар',
+      'lead' => 'Электрондық оқулықтарға, халықаралық ғылыми базаларға, лицензиялық платформаларға және ашық білім беру ресурстарына қолжетімділік.',
+      'banner' => 'ҚазУТБ электрондық кітапханасы',
+      'banner_body' => 'Университет кітапханасы қорын ашыңыз: 50 000-нан астам оқу, ғылыми және әдістемелік материалдар цифрлық және баспа форматында қолжетімді.',
+      'support_label' => 'Оқытушыларға қолдау',
+      'support_title' => 'Пәндер мен зерттеулерге арналған әдебиеттер топтамасы',
+      'support_body' => 'Силлабусқа арналған құралдар енді негізгі кітапхана бағытына біріктірілді: каталогтан іздеңіз, материалдарды топтамаға қосыңыз және электрондық ресурстармен толықтырыңыз.',
+      'faq' => 'Жиі қойылатын сұрақтар',
+      'faq_help' => 'Кітапхананың электрондық ресурстары бойынша негізгі жауаптар.',
+    ],
+    'en' => [
+      'meta' => 'Electronic resources — KazUTB Library',
+      'eyebrow' => 'Electronic resources',
+      'hero' => 'Digital collections and research databases',
+      'lead' => 'Access electronic textbooks, international scholarly databases, licensed platforms, and open educational resources from one modern library entry point.',
+      'banner' => 'KazUTB Digital Library',
+      'banner_body' => 'Open the university library collection: 50,000+ textbooks, monographs, teaching materials, and periodicals across digital and print formats.',
+      'support_label' => 'Faculty support',
+      'support_title' => 'Reading lists for courses and research',
+      'support_body' => 'The syllabus workflow now lives inside the main library experience: search the catalog, collect sources into a shortlist, and enrich them with electronic resources without a separate landing page.',
+      'faq' => 'Frequently asked questions',
+      'faq_help' => 'Answers to the main questions about the library’s electronic resources.',
+    ],
+  ][$lang];
+@endphp
+
+@section('title', $copy['meta'])
 
 @section('head')
 <style>
@@ -25,8 +71,46 @@
   }
   .resource-hero-stats .rh-stat span {
     font-size: 14px;
-    color: var(--muted);
+    color: rgba(241, 245, 249, .76);
     font-weight: 600;
+  }
+
+  .resource-hero-panels {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .resource-hero-panel {
+    text-align: left;
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+  }
+  .resource-hero-panel span {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #d9b35e;
+    margin-bottom: 8px;
+  }
+  .resource-hero-panel strong {
+    display: block;
+    font-size: 18px;
+    line-height: 1.25;
+    margin-bottom: 6px;
+    color: #f8fafc;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+  }
+  .resource-hero-panel p {
+    margin: 0;
+    color: rgba(241,245,249,.78);
+    font-size: 14px;
+    line-height: 1.6;
   }
 
   /* Compact local catalog banner */
@@ -36,11 +120,12 @@
     justify-content: space-between;
     gap: 24px;
     padding: 28px 32px;
-    background: var(--surface-glass);
+    background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(247,244,238,.92));
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
   }
-  .local-catalog-banner h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; }
+  .local-catalog-banner h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; font-family: 'Newsreader', Georgia, serif; }
   .local-catalog-banner p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
   .local-catalog-banner .btn { white-space: nowrap; flex-shrink: 0; }
 
@@ -74,8 +159,9 @@
   .resource-section-info h2 {
     margin: 0 0 12px;
     font-size: clamp(26px, 3.5vw, 38px);
-    font-weight: 900;
-    letter-spacing: -1px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: -.5px;
   }
   .resource-section-info p {
     color: var(--muted);
@@ -160,6 +246,43 @@
   .access-badge--remote { background: rgba(124,58,237,.1); color: var(--violet); }
   .access-badge--open { background: rgba(34,197,94,.1); color: var(--green); }
 
+  .resource-policy-note {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(23,60,107,.04);
+    border: 1px solid rgba(23,60,107,.10);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .resource-access-matrix {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .resource-access-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,244,238,.92));
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+  }
+  .resource-access-card strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .resource-access-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
   .faq-list {
     display: grid;
     gap: 16px;
@@ -180,6 +303,8 @@
     .access-inline { flex-direction: column; }
     .local-catalog-banner { flex-direction: column; align-items: flex-start; }
     .resource-hero-stats { gap: 24px; flex-wrap: wrap; }
+    .resource-hero-panels,
+    .resource-access-matrix { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 680px) {
@@ -248,8 +373,9 @@
     gap: 20px;
   }
   .ext-resource-card {
-    background: var(--surface-glass);
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,244,238,.92));
     border: 1px solid var(--border);
+    border-top: 3px solid rgba(23,60,107,.16);
     border-radius: var(--radius-lg);
     padding: 28px;
     transition: transform .25s, box-shadow .25s;
@@ -366,14 +492,32 @@
 @section('content')
 <div class="page-hero">
   <div class="container">
-    <div class="eyebrow">Электронные ресурсы</div>
-    <h1>Цифровые коллекции и научные базы данных</h1>
-    <p>Доступ к электронным учебникам, международным научным базам, лицензированным платформам и открытым образовательным ресурсам.</p>
+    <div class="eyebrow">{{ $copy['eyebrow'] }}</div>
+    <h1>{{ $copy['hero'] }}</h1>
+    <p>{{ $copy['lead'] }}</p>
     <div class="resource-hero-stats">
       <div class="rh-stat"><strong id="stat-total">—</strong><span>внешних ресурсов</span></div>
       <div class="rh-stat"><strong>50 000+</strong><span>электронных документов</span></div>
       <div class="rh-stat"><strong>24/7</strong><span>удалённый доступ</span></div>
       <div class="rh-stat"><strong>3</strong><span>режима доступа</span></div>
+    </div>
+
+    <div class="resource-hero-panels" id="resource-hero-panels">
+      <article class="resource-hero-panel">
+        <span>Licensed access</span>
+        <strong>Подписные базы и цифровая библиотека</strong>
+        <p>Соберите маршрут от каталога к внешней платформе без отдельного преподавательского лендинга.</p>
+      </article>
+      <article class="resource-hero-panel">
+        <span>Remote work</span>
+        <strong>Удалённый сценарий для учебы и исследований</strong>
+        <p>Переходите к ресурсам из кабинета, подборки литературы и страницы доступа в едином стиле.</p>
+      </article>
+      <article class="resource-hero-panel">
+        <span>Open knowledge</span>
+        <strong>Открытые коллекции и академические сервисы</strong>
+        <p>Разделяйте campus-only, remote и open access источники по понятным статусам и подсказкам.</p>
+      </article>
     </div>
   </div>
 </div>
@@ -383,10 +527,51 @@
   <div class="container">
     <div class="local-catalog-banner">
       <div>
-        <h2>Фонд библиотеки КазУТБ</h2>
-        <p>Более 50 000 единиц: учебники, монографии, методические материалы и периодика в электронном и печатном формате.</p>
+        <h2>{{ $copy['banner'] }}</h2>
+        <p>{{ $copy['banner_body'] }}</p>
+        <div class="resource-policy-note" id="resource-policy-note">Эта страница теперь выстроена как единый академический маршрут: сначала понимаем режим доступа, затем открываем внешний ресурс или продолжаем работу через каталог и подборку литературы.</div>
       </div>
       <a href="/catalog" class="btn btn-primary">Перейти в каталог</a>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="resource-section-grid">
+      <div class="resource-section-info">
+        <div class="eyebrow eyebrow--violet">{{ $copy['support_label'] }}</div>
+        <h2>{{ $copy['support_title'] }}</h2>
+        <p>{{ $copy['support_body'] }}</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="/shortlist" class="btn btn-primary">Открыть подборку литературы</a>
+          <a href="/catalog" class="btn btn-ghost">Искать в каталоге</a>
+        </div>
+      </div>
+
+      <ul class="resource-list">
+        <li class="resource-list-item">
+          <div class="rli-icon rli-icon--violet">📋</div>
+          <div>
+            <h4>Подборка литературы</h4>
+            <p>Собирайте учебники, монографии и внешние базы в единый черновик для силлабуса или рабочей программы.</p>
+          </div>
+        </li>
+        <li class="resource-list-item">
+          <div class="rli-icon rli-icon--blue">🔎</div>
+          <div>
+            <h4>Поиск по направлениям</h4>
+            <p>Используйте каталог и раздел направлений, чтобы быстро отобрать литературу по теме курса или исследовательскому треку.</p>
+          </div>
+        </li>
+        <li class="resource-list-item">
+          <div class="rli-icon rli-icon--green">🌐</div>
+          <div>
+            <h4>Электронные ресурсы</h4>
+            <p>Дополняйте список лицензированными платформами и открытыми научными коллекциями с учётом режима доступа.</p>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
@@ -419,9 +604,24 @@
   <div class="container">
     <h2 style="margin-bottom: 16px;">Режимы доступа</h2>
     <div class="access-inline">
-      <div class="access-chip access-chip--campus">🏫 <strong>Из кампуса</strong> — автоматически через Wi-Fi и компьютеры залов</div>
+      <div class="access-chip access-chip--campus">🏫 <strong>Из кампуса</strong> — автоматически через Wi‑Fi и компьютеры залов</div>
       <div class="access-chip access-chip--remote">🌐 <strong>Удалённо</strong> — через личный кабинет библиотеки</div>
       <div class="access-chip access-chip--open">🔓 <strong>Открытый доступ</strong> — без ограничений</div>
+    </div>
+
+    <div class="resource-access-matrix" id="resource-access-matrix">
+      <article class="resource-access-card">
+        <strong>1. Найдите источник</strong>
+        <p>Начните с каталога или из блока подписных платформ, чтобы понять, где находится нужный материал.</p>
+      </article>
+      <article class="resource-access-card">
+        <strong>2. Проверьте режим доступа</strong>
+        <p>Ориентируйтесь на кампусные, удалённые и открытые статусы — они показывают реальный сценарий входа.</p>
+      </article>
+      <article class="resource-access-card">
+        <strong>3. Добавьте в рабочую подборку</strong>
+        <p>Если ресурс нужен для курса или исследования, сразу отправляйте его в <a href="/shortlist" style="color:var(--blue);font-weight:700;">подборку литературы</a>.</p>
+      </article>
     </div>
   </div>
 </section>
@@ -430,8 +630,8 @@
   <div class="container">
     <div class="section-head section-head-centered">
       <div>
-        <h2>Частые вопросы</h2>
-        <p>Ответы на основные вопросы о работе с электронными ресурсами библиотеки.</p>
+        <h2>{{ $copy['faq'] }}</h2>
+        <p>{{ $copy['faq_help'] }}</p>
       </div>
     </div>
 
@@ -446,7 +646,7 @@
       </div>
       <div class="faq-item">
         <h4>Нужна помощь с подбором литературы?</h4>
-        <p>Обратитесь в библиографический отдел через <a href="/contacts" style="color:var(--blue);font-weight:600;text-decoration:none;">контакты</a> или используйте <a href="/for-teachers" style="color:var(--blue);font-weight:600;text-decoration:none;">раздел для преподавателей</a>.</p>
+        <p>Обратитесь в библиографический отдел через <a href="/contacts" style="color:var(--blue);font-weight:600;text-decoration:none;">контакты</a>, откройте <a href="/shortlist" style="color:var(--blue);font-weight:600;text-decoration:none;">подборку литературы</a> или начните поиск в <a href="/catalog" style="color:var(--blue);font-weight:600;text-decoration:none;">каталоге</a>.</p>
       </div>
     </div>
   </div>

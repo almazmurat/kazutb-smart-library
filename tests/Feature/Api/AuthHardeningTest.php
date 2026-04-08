@@ -3,9 +3,12 @@
 namespace Tests\Feature\Api;
 
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class AuthHardeningTest extends TestCase
@@ -39,7 +42,7 @@ class AuthHardeningTest extends TestCase
     {
         Http::fake([
             '*' => function () {
-                throw new \Illuminate\Http\Client\ConnectionException('Connection refused for http://10.0.1.47/api/login');
+                throw new ConnectionException('Connection refused for http://10.0.1.47/api/login');
             },
         ]);
 
@@ -123,7 +126,7 @@ class AuthHardeningTest extends TestCase
     {
         Http::fake([
             '*' => function () {
-                throw new \Illuminate\Http\Client\ConnectionException('Connection refused');
+                throw new ConnectionException('Connection refused');
             },
         ]);
 
@@ -156,9 +159,9 @@ class AuthHardeningTest extends TestCase
         ]);
 
         // Verify the login route has the throttle middleware applied
-        $routes = \Illuminate\Support\Facades\Route::getRoutes();
+        $routes = Route::getRoutes();
         $loginRoute = $routes->match(
-            \Illuminate\Http\Request::create('/api/login', 'POST')
+            Request::create('/api/login', 'POST')
         );
 
         $middleware = $loginRoute->gatherMiddleware();
@@ -167,6 +170,21 @@ class AuthHardeningTest extends TestCase
         });
 
         $this->assertTrue($hasThrottle, 'Login route must have throttle:login middleware');
+    }
+
+    public function test_login_validation_rejects_blank_credentials(): void
+    {
+        $response = $this
+            ->withoutMiddleware(PreventRequestForgery::class)
+            ->postJson('/api/login', [
+                'email' => '',
+                'login' => '',
+                'password' => '',
+            ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email', 'login', 'password']);
     }
 
     // ──────────────────────────────────────────────────

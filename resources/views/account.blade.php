@@ -566,7 +566,7 @@
             <a href="/shortlist" class="btn btn-primary" style="font-size:14px; padding:12px 20px;">📄 Редактировать и экспортировать</a>
             <a href="/catalog" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">Добавить из каталога</a>
             <a href="/resources" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">Электронные ресурсы</a>
-            <a href="/for-teachers" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">Руководство для преподавателей</a>
+            <a href="/discover" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">Поиск по направлениям</a>
           </div>
         </div>
       </section>
@@ -596,10 +596,10 @@
             <span style="color:var(--muted); font-size:13px;">Избранные книги</span>
           </a>
           @if(($sessionUser['profile_type'] ?? null) === 'teacher')
-          <a href="/for-teachers" class="card" style="text-decoration:none; padding:20px; text-align:center;">
+          <a href="/discover" class="card" style="text-decoration:none; padding:20px; text-align:center;">
             <span style="font-size:28px; display:block; margin-bottom:8px;">🎓</span>
-            <strong style="display:block; margin-bottom:4px;">Преподавателям</strong>
-            <span style="color:var(--muted); font-size:13px;">Инструменты для силлабуса</span>
+            <strong style="display:block; margin-bottom:4px;">По направлениям</strong>
+            <span style="color:var(--muted); font-size:13px;">Навигация по темам и дисциплинам</span>
           </a>
           @endif
           <a href="/contacts" class="card" style="text-decoration:none; padding:20px; text-align:center;">

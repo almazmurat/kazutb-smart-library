@@ -27,7 +27,7 @@
         <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
           <a href="/catalog" class="btn btn-primary">Открыть каталог</a>
           <a href="/resources" class="btn btn-ghost">Электронные ресурсы</a>
-          <a href="/for-teachers" class="btn btn-ghost">Для преподавателей</a>
+          <a href="/discover" class="btn btn-ghost">По направлениям</a>
         </div>
       </div>
 

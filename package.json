@@ -5,10 +5,18 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
+        "test:e2e": "playwright test",
+        "test:e2e:install": "playwright install chromium",
+        "test:e2e:install:system": "playwright install --with-deps chromium",
+        "qa:frontend": "npm run build && npm run test:e2e",
         "21st:login": "npx @21st-sdk/cli login",
         "21st:deploy": "npx @21st-sdk/cli deploy"
     },
+    "engines": {
+        "node": ">=20.19.0"
+    },
     "devDependencies": {
+        "@playwright/test": "^1.59.1",
         "@tailwindcss/vite": "^4.0.0",
         "@vitejs/plugin-react": "^6.0.1",
         "axios": "^1.11.0",

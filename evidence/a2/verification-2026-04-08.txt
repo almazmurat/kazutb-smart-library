@@ -1,0 +1,26 @@
+Verification date: 2026-04-08
+Repository: kazutb-smart-library-main
+
+1) Local QA gate
+Command:
+  composer qa:ci
+
+Result:
+  PASS
+  - Laravel Pint critical-path check passed
+  - PHPUnit critical-path suite passed: 77 tests, 350 assertions
+  - Vite production build completed successfully
+  - Final line: "CI quality gates passed: Pint, critical-path tests, and frontend production build."
+
+2) Browser smoke verification
+Command:
+  npm run test:e2e
+
+Result:
+  PASS
+  - 3 passed (5.4s)
+  - verified homepage shell, catalog controls, and guest account redirect flow
+
+3) Notes
+- Local Playwright execution now uses a Docker fallback when host PHP is below the Composer platform requirement.
+- Local browser installation uses `npm run test:e2e:install` to avoid sudo-only system package prompts during normal development.

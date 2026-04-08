@@ -1,13 +1,62 @@
 @extends('layouts.public')
 
-@section('title', 'О библиотеке и контакты — КазУТБ')
+@php
+  $lang = request()->query('lang', 'ru');
+  $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+  $copy = [
+    'ru' => [
+      'meta' => 'О библиотеке и контакты — КазУТБ',
+      'hero' => 'О библиотеке и контакты',
+      'lead' => 'Библиотека Казахского университета технологии и бизнеса — центр знаний и информационной поддержки для студентов, преподавателей и исследователей.',
+      'mission_label' => 'Миссия',
+      'mission_title' => 'Доступ к знаниям и информационным ресурсам',
+      'mission_body' => 'Библиотека КазУТБ обеспечивает информационную поддержку учебного процесса и научных исследований университета. Мы развиваем фонд, расширяем цифровые подписки и создаём комфортные условия для работы с информацией.',
+      'contacts' => 'Контакты',
+      'contacts_help' => 'Как связаться с библиотекой.',
+      'hours' => 'Режим работы',
+      'hours_help' => 'График работы библиотеки.',
+      'units' => 'Подразделения',
+      'units_help' => 'Контакты подразделений библиотеки.',
+    ],
+    'kk' => [
+      'meta' => 'Кітапхана туралы және байланыс — ҚазУТБ',
+      'hero' => 'Кітапхана туралы және байланыс',
+      'lead' => 'ҚазУТБ кітапханасы студенттер, оқытушылар және зерттеушілер үшін білім мен ақпараттық қолдаудың заманауи орталығы болып табылады.',
+      'mission_label' => 'Миссия',
+      'mission_title' => 'Білім мен ақпараттық ресурстарға қолжетімділік',
+      'mission_body' => 'ҚазУТБ кітапханасы оқу үдерісі мен ғылыми зерттеулерді ақпараттық тұрғыда қолдайды. Біз қорды дамытып, цифрлық жазылымдарды кеңейтіп, пайдаланушыларға ыңғайлы орта қалыптастырамыз.',
+      'contacts' => 'Байланыс',
+      'contacts_help' => 'Кітапханамен қалай байланысуға болады.',
+      'hours' => 'Жұмыс уақыты',
+      'hours_help' => 'Кітапхананың жұмыс кестесі.',
+      'units' => 'Бөлімдер',
+      'units_help' => 'Кітапхана бөлімдерінің байланыстары.',
+    ],
+    'en' => [
+      'meta' => 'About the library and contacts — KazUTB',
+      'hero' => 'About the library and contacts',
+      'lead' => 'The Kazakh University of Technology and Business library is a modern knowledge and information-support center for students, faculty, and researchers.',
+      'mission_label' => 'Mission',
+      'mission_title' => 'Access to knowledge and information resources',
+      'mission_body' => 'The KazUTB library supports the university’s learning and research environment. We continue to expand the collection, digital subscriptions, and comfortable study conditions for our readers.',
+      'contacts' => 'Contacts',
+      'contacts_help' => 'How to reach the library.',
+      'hours' => 'Opening hours',
+      'hours_help' => 'The current library schedule.',
+      'units' => 'Library units',
+      'units_help' => 'Contact points across the library services.',
+    ],
+  ][$lang];
+@endphp
+
+@section('title', $copy['meta'])
 
 @section('content')
   <section class="page-hero">
     <div class="container contact-hero-center">
       <div class="eyebrow">Библиотека КазУТБ</div>
-      <h1>О библиотеке и контакты</h1>
-      <p>Библиотека Казахского университета технологии и бизнеса — центр знаний и информационной поддержки для студентов, преподавателей и исследователей.</p>
+      <h1>{{ $copy['hero'] }}</h1>
+      <p>{{ $copy['lead'] }}</p>
     </div>
   </section>
 
@@ -15,10 +64,10 @@
   <section class="page-section">
     <div class="container about-grid">
       <div>
-        <div class="eyebrow">Миссия</div>
-        <h2 class="heading-xl">Доступ к знаниям и информационным ресурсам</h2>
+        <div class="eyebrow">{{ $copy['mission_label'] }}</div>
+        <h2 class="heading-xl">{{ $copy['mission_title'] }}</h2>
         <p class="text-body" style="margin: 0 0 20px;">
-          Библиотека КазУТБ обеспечивает информационную поддержку учебного процесса и научных исследований университета. Мы развиваем фонд, расширяем цифровые подписки и создаём комфортные условия для работы с информацией.
+          {{ $copy['mission_body'] }}
         </p>
       </div>
       <div class="card">
@@ -37,7 +86,7 @@
   <section class="page-section">
     <div class="container">
       <div class="section-head section-head-centered">
-        <div><h2>Контакты</h2><p>Как связаться с библиотекой.</p></div>
+        <div><h2>{{ $copy['contacts'] }}</h2><p>{{ $copy['contacts_help'] }}</p></div>
       </div>
       <div class="contact-grid">
         <div class="contact-card">
@@ -76,8 +125,8 @@
       <div>
         <div class="section-head" style="margin-bottom: 24px;">
           <div>
-            <h2>Режим работы</h2>
-            <p>График работы библиотеки.</p>
+            <h2>{{ $copy['hours'] }}</h2>
+            <p>{{ $copy['hours_help'] }}</p>
           </div>
         </div>
 
@@ -116,8 +165,8 @@
       <div>
         <div class="section-head" style="margin-bottom: 24px;">
           <div>
-            <h2>Подразделения</h2>
-            <p>Контакты подразделений библиотеки.</p>
+            <h2>{{ $copy['units'] }}</h2>
+            <p>{{ $copy['units_help'] }}</p>
           </div>
         </div>
 

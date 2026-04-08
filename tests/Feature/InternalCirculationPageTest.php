@@ -6,9 +6,25 @@ use Tests\TestCase;
 
 class InternalCirculationPageTest extends TestCase
 {
+    private function staffSession(): array
+    {
+        return [
+            'library.user' => [
+                'id' => 'staff-1',
+                'name' => 'Library Staff',
+                'email' => 'staff@example.com',
+                'login' => 'staff01',
+                'ad_login' => 'staff01',
+                'role' => 'librarian',
+            ],
+            'library.crm_token' => 'test-staff-token',
+            'library.authenticated_at' => now()->toIso8601String(),
+        ];
+    }
+
     public function test_circulation_page_renders_successfully(): void
     {
-        $response = $this->get('/internal/circulation');
+        $response = $this->withSession($this->staffSession())->get('/internal/circulation');
 
         $response
             ->assertOk()
@@ -20,7 +36,7 @@ class InternalCirculationPageTest extends TestCase
 
     public function test_circulation_page_has_checkout_form(): void
     {
-        $response = $this->get('/internal/circulation');
+        $response = $this->withSession($this->staffSession())->get('/internal/circulation');
 
         $response
             ->assertOk()
@@ -32,7 +48,7 @@ class InternalCirculationPageTest extends TestCase
 
     public function test_circulation_page_has_return_form(): void
     {
-        $response = $this->get('/internal/circulation');
+        $response = $this->withSession($this->staffSession())->get('/internal/circulation');
 
         $response
             ->assertOk()
@@ -42,7 +58,7 @@ class InternalCirculationPageTest extends TestCase
 
     public function test_circulation_page_has_reader_lookup(): void
     {
-        $response = $this->get('/internal/circulation');
+        $response = $this->withSession($this->staffSession())->get('/internal/circulation');
 
         $response
             ->assertOk()
@@ -53,7 +69,7 @@ class InternalCirculationPageTest extends TestCase
 
     public function test_circulation_page_links_to_other_internal_pages(): void
     {
-        $response = $this->get('/internal/circulation');
+        $response = $this->withSession($this->staffSession())->get('/internal/circulation');
 
         $response
             ->assertOk()

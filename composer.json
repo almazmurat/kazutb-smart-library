@@ -48,6 +48,12 @@
             "@php artisan config:clear --ansi",
             "@php artisan test"
         ],
+        "qa:ci": [
+            "bash scripts/dev/run-ci-gates.sh"
+        ],
+        "qa:coverage-threshold": [
+            "@php scripts/dev/check-coverage-threshold.php build/test-results/clover.xml 20"
+        ],
         "test:internal": [
             "./scripts/dev/test-internal-core.sh"
         ],
@@ -63,8 +69,20 @@
         "dev:check": [
             "./scripts/dev/check-dev-env.sh"
         ],
-        "dev:session-start": [
-            "bash scripts/dev/session-start-checklist.sh"
+        "dev:memory-start": [
+            "bash scripts/dev/obsidian-session-start.sh"
+        ],
+        "dev:memory-close": [
+            "bash scripts/dev/obsidian-session-close.sh"
+        ],
+        "dev:memory-install-hook": [
+            "bash scripts/dev/install-obsidian-hooks.sh"
+        ],
+        "dev:memory-refresh-maps": [
+            "bash scripts/dev/generate-obsidian-code-maps.sh"
+        ],
+        "dev:sdlc-check": [
+            "bash scripts/dev/check-ai-workflow-readiness.sh"
         ],
         "dev:session-snapshot": [
             "bash scripts/dev/session-snapshot.sh"
@@ -77,21 +95,6 @@
         ],
         "dev:session-closeout": [
             "bash scripts/dev/session-closeout.sh"
-        ],
-        "dev:context": [
-            "bash scripts/dev/show-startup-context.sh"
-        ],
-        "dev:context-drift": [
-            "bash scripts/dev/check-context-drift.sh"
-        ],
-        "dev:vault-context-export": [
-            "bash scripts/dev/export-context-to-vault.sh"
-        ],
-        "dev:vault-index-sync": [
-            "bash scripts/dev/sync-vault-index.sh"
-        ],
-        "dev:mcp-check": [
-            "bash scripts/dev/check-mcp-readiness.sh"
         ],
         "dev:catalog-paths": [
             "bash scripts/dev/check-public-catalog-paths.sh"

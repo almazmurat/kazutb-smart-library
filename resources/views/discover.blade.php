@@ -233,7 +233,7 @@
       <p>Воспользуйтесь полнотекстовым поиском по каталогу или обратитесь к библиографам за помощью в подборе литературы.</p>
       <div class="cta-buttons">
         <a href="/catalog" class="btn btn-primary">Открыть каталог</a>
-        <a href="/for-teachers" class="btn btn-ghost">Ресурсы для преподавателей</a>
+        <a href="/shortlist" class="btn btn-ghost">Подборка литературы</a>
       </div>
     </div>
   </section>

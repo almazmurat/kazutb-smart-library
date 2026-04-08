@@ -6,15 +6,18 @@
   <title>Circulation Desk — Internal</title>
   <style>
     :root {
-      --bg: #f4f1ea; --paper: #fffdf9; --ink: #1f2937; --muted: #6b7280;
-      --accent: #124559; --accent-soft: #d9e9ee;
-      --ok: #166534; --ok-bg: #dcfce7;
-      --warn: #92400e; --warn-bg: #fef3c7;
-      --danger: #991b1b; --danger-bg: #fee2e2;
-      --border: #d6d0c4;
+      --bg: #eef4ff; --paper: rgba(255, 255, 255, 0.94); --ink: #14213d; --muted: #64748b;
+      --accent: #2563eb; --accent-soft: rgba(59, 130, 246, 0.10);
+      --ok: #15803d; --ok-bg: #dcfce7;
+      --warn: #b45309; --warn-bg: #fef3c7;
+      --danger: #b91c1c; --danger-bg: #fee2e2;
+      --border: rgba(20, 33, 61, 0.10);
     }
     * { box-sizing: border-box; margin: 0; }
-    body { font-family: Georgia, 'Times New Roman', serif; color: var(--ink); background: var(--bg); padding: 24px; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background:
+      radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 20%),
+      radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.08), transparent 22%),
+      linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%); padding: 24px; }
     a { color: var(--accent); }
 
     .page-header { margin-bottom: 24px; }

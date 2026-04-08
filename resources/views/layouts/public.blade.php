@@ -1,5 +1,9 @@
+@php
+  $pageLang = request()->query('lang', 'ru');
+  $pageLang = in_array($pageLang, ['kk', 'ru', 'en'], true) ? $pageLang : 'ru';
+@endphp
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ $pageLang }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,15 +11,16 @@
   <title>@yield('title', 'Библиотека КазУТБ')</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,700;6..72,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/shell.css">
   @yield('head')
 </head>
-<body>
+<body class="{{ trim('site-shell ' . $__env->yieldContent('body_class')) }}">
+  <a href="#main-content" class="skip-link">Перейти к основному содержимому</a>
 
   @include('partials.navbar', ['activePage' => $activePage ?? ''])
 
-  <main>
+  <main id="main-content" class="page-main" tabindex="-1">
     @yield('content')
   </main>
 

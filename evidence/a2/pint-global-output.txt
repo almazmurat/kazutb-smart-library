@@ -1,0 +1,26 @@
+
+  .⨯⨯................⨯.............⨯.⨯⨯⨯⨯⨯....⨯.⨯...⨯...⨯.⨯.⨯⨯.............
+
+  ──────────────────────────────────────────────────────────────────── Laravel  
+    FAIL   ......................................... 73 files, 16 style issues  
+  ⨯ app/Http/Controllers/Api/AuthController.php unary_operator_spaces, not_op…  
+  ⨯ app/Http/Controllers/Api/BookController.php unary_operator_spaces, not_op…  
+  ⨯ app/Http/Controllers/Api/BridgeController.php              ordered_imports  
+  ⨯ app/Http/Controllers/Api/CatalogController.php no_superfluous_phpdoc_tags…  
+  ⨯ app/Http/Controllers/Api/LandingController.php concat_space, no_trailing_…  
+  ⨯ app/Http/Middleware/EnsureIntegrationBoundary.php             concat_space  
+  ⨯ app/Services/Library/AccountSummaryReadService.php            phpdoc_align  
+  ⨯ app/Services/Library/BookDetailReadService.php single_quote, nullable_typ…  
+  ⨯ app/Services/Library/CatalogReadService.php nullable_type_declaration, co…  
+  ⨯ app/Services/Library/CirculationLoanWriteService.php unary_operator_space…  
+  ⨯ app/Services/Library/IdentityMatchAudit.php no_superfluous_phpdoc_tags, u…  
+  ⨯ app/Services/Library/IntegrationReservationReadService.php fully_qualifie…  
+  ⨯ app/Services/Library/IntegrationReservationWriteService.php array_indenta…  
+  ⨯ bootstrap/app.php                                          ordered_imports  
+  ⨯ config/sanctum.php           fully_qualified_strict_types, ordered_imports  
+  ⨯ routes/api.php                      statement_indentation, ordered_imports  
+
+
+real 1.17
+user 0.05
+sys 0.04

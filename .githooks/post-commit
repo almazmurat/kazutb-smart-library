@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+SUMMARY="Automatic post-commit snapshot for $(git -C "$ROOT_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+VERIFICATION="git commit recorded"
+NEXT_STEP="Review the latest handoff note and continue from the current workstream."
+
+bash "$ROOT_DIR/scripts/dev/obsidian-session-close.sh" \
+  --mode hook \
+  --summary "$SUMMARY" \
+  --verification "$VERIFICATION" \
+  --next "$NEXT_STEP" >/dev/null 2>&1 || true

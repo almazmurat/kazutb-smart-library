@@ -20,7 +20,7 @@ class AuthController extends Controller
         ]);
 
         $loginIdentifier = $validated['login'] ?? $validated['email'] ?? 'unknown';
-        $authApiUrl = (string) config('services.external_auth.login_url', 'http://10.0.1.47/api/login');
+        $authApiUrl = (string) config('services.external_auth.login_url', 'http://crm.local/api/login');
 
         try {
             $response = Http::timeout(12)->acceptJson()->post($authApiUrl, [
@@ -126,7 +126,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @param array<string, mixed> $user
+     * @param  array<string, mixed>  $user
      * @return array<string, string>
      */
     private function normalizeSessionUser(array $user): array

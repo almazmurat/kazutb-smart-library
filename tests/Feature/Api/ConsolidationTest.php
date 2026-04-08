@@ -83,11 +83,11 @@ class ConsolidationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_for_teachers_renders(): void
+    public function test_for_teachers_redirects_to_resources(): void
     {
         $response = $this->get('/for-teachers');
-        $response->assertOk();
-        $response->assertSee('Преподавателям');
+        $response->assertRedirect('/resources');
+        $response->assertStatus(301);
     }
 
     public function test_login_renders(): void
@@ -109,12 +109,11 @@ class ConsolidationTest extends TestCase
         $response->assertDontSee('href="/about"', false);
     }
 
-    public function test_navbar_has_for_teachers_link(): void
+    public function test_navbar_no_longer_has_for_teachers_link(): void
     {
         $response = $this->get('/contacts');
         $response->assertOk();
-        $response->assertSee('href="/for-teachers"', false);
-        $response->assertSee('Преподавателям');
+        $response->assertDontSee('href="/for-teachers"', false);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -230,11 +229,11 @@ class ConsolidationTest extends TestCase
     // 7. For-teachers page no longer links to /services
     // ═══════════════════════════════════════════════════════════
 
-    public function test_for_teachers_has_no_services_link(): void
+    public function test_for_teachers_redirect_is_legacy_safe(): void
     {
         $response = $this->get('/for-teachers');
-        $response->assertOk();
-        $response->assertDontSee('href="/services"', false);
+        $response->assertRedirect('/resources');
+        $response->assertStatus(301);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -282,12 +281,12 @@ class ConsolidationTest extends TestCase
     // 10. Wave 2 — For-teachers action groups
     // ═══════════════════════════════════════════════════════════
 
-    public function test_for_teachers_has_action_groups(): void
+    public function test_resources_has_faculty_support_tools(): void
     {
-        $response = $this->get('/for-teachers');
+        $response = $this->get('/resources');
         $response->assertOk();
-        $response->assertSee('action-groups', false);
-        $response->assertSee('Подборка литературы для силлабуса');
+        $response->assertSee('Подборка литературы', false);
+        $response->assertSee('href="/shortlist"', false);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -349,14 +348,15 @@ class ConsolidationTest extends TestCase
     // 14. Wave 2 — Account cross-links
     // ═══════════════════════════════════════════════════════════
 
-    public function test_teacher_account_has_for_teachers_link(): void
+    public function test_teacher_account_has_shortlist_link(): void
     {
         $response = $this->withAuthSession(['profile_type' => 'teacher'])
             ->get('/account');
 
         $response->assertOk();
-        $response->assertSee('href="/for-teachers"', false);
-        $response->assertSee('Преподавателям');
+        $response->assertSee('href="/shortlist"', false);
+        $response->assertSee('Подборка литературы');
+        $response->assertDontSee('href="/for-teachers"', false);
     }
 
     public function test_student_account_no_for_teachers_link_in_quick_actions(): void

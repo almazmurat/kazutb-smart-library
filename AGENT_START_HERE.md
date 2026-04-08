@@ -1,46 +1,37 @@
-# AGENT START HERE (KazUTB Smart Library)
+# Start here first — deterministic KazUTB context load
 
-Purpose: keep every AI agent aligned with real project truth before any planning or coding.
+This file defines the **only active startup path** for new sessions.
+Use it to avoid stale notes, duplicate context, and competing project truths.
 
-## Daily Execution Mode (primary)
-For normal task execution, use only the concise operational files below first.
+## Read only this exact order
+1. `project-context/00-canonical-platform-truth.md`
+2. `project-context/01-runtime-stack-and-entrypoints.md`
+3. `project-context/02-domain-boundaries-and-integrations.md`
+4. `project-context/03-operational-realities-and-data-truth.md`
+5. `project-context/04-active-delivery-focus-and-risks.md`
+6. `docs/developer/OBSIDIAN_VAULT_ARCHITECTURE.md`
+7. `docs/developer/AI_SDLC_WORKFLOW.md`
+8. Obsidian entrypoints under `/home/admlibrary/knowledge/kazutb-library-vault/`:
+   - `00-index/read this first before any new agent session.md`
+   - `00-index/root context graph - kazutb smart library.md`
+   - `00-index/current-next-step.md`
+   - `08-workstreams/current-workstreams.md`
+   - `07-bugs-and-incidents/active problem register - runtime, data, and integration.md`
+   - `11-handoffs/latest-agent-handoff.md`
 
-## Deep Context Mode (secondary)
-Use `project-context/98-product-master-context.md` for deep planning, architecture alignment, product vision, and milestone-level decisions.
+## Always remember
+- KazUTB Smart Library is the **new primary university library platform**, not a demo, not a thin website, and not a CRM shell.
+- The library product owns catalog, search, holdings/copies, accounts, reservations, teacher workflows, stewardship, librarian/admin operations, digital materials, reporting, and future AI support.
+- CRM is an **auth/integration boundary only** and must not dominate product framing or connect directly to the library DB.
+- UDC, metadata quality, controlled digital access, holdings reality, and reporting compatibility are first-class truths.
+- **Repo files are execution truth. Obsidian is the long-term memory graph.** If they disagree, repo truth wins and the vault must be updated.
 
-## Read Order (mandatory)
-1. `project-context/00-project-truth.md`
-2. `project-context/01-current-stage.md`
-3. `project-context/06-current-focus.md`
-4. `project-context/03-api-contracts.md`
-5. `project-context/04-known-risks.md`
-6. `project-context/05-agent-working-rules.md`
-7. `project-context/02-active-roadmap.md`
+## Default working mode
+- Put a one-line task in `docs/sdlc/current/draft.md`.
+- Run `/autopilot` for the shortest full loop.
+- Use `/remember` only for context-memory updates.
 
-## Optional Deep Read
-- `project-context/98-product-master-context.md` (canonical product context)
+## Mandatory closeout
+After every meaningful task, run:
+`bash scripts/dev/obsidian-session-close.sh --summary "..." --verification "..." --next "..."`
 
-## Non-Negotiable Direction
-- Library platform is the core domain product.
-- CRM is an auth provider and external/admin integration client.
-- Reader UX remains in the library platform.
-- Library-side admin/librarian direction must be preserved.
-- CRM reservation API scope is frozen beyond current v1 (read + approve/reject).
-
-## Current Stage (short)
-- Whole platform: **advanced prototype, frontend demo-ready, transitioning to operational platform**.
-- Library backend core: early operational core (catalog, circulation, review, stewardship APIs exist).
-- Public frontend: leadership-demo-quality with 12 public routes, shared design system, teacher/discovery UX.
-- CRM reservation integration slice: pilot-ready.
-
-## Current Execution Window
-See `project-context/06-current-focus.md` for active priorities.
-Primary focus: backend operational depth and data quality.
-Frontend demo layer is mature enough for leadership review.
-
-## Guardrails
-- Do not start generic "new project" bootstrap.
-- Do not rewrite runtime architecture for tooling.
-- Do not add frontend features unless explicitly requested — frontend demo is sufficient.
-- Prefer backend substance, operational workflows, and data quality work.
-- Always read this file first in new sessions.

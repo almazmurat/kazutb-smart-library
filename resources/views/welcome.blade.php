@@ -1,1802 +1,1243 @@
-﻿<!DOCTYPE html>
-<html lang="ru">
+@php
+    $pageLang = request()->query('lang', 'ru');
+    $pageLang = in_array($pageLang, ['kk', 'ru', 'en'], true) ? $pageLang : 'ru';
+
+    $withLang = function (string $path, array $query = []) use ($pageLang): string {
+        if ($pageLang !== 'ru' && ! array_key_exists('lang', $query)) {
+            $query = array_merge($query, ['lang' => $pageLang]);
+        }
+
+        $queryString = http_build_query($query);
+
+        return $path . ($queryString !== '' ? ('?' . $queryString) : '');
+    };
+
+    $copy = [
+        'ru' => [
+            'title' => 'Цифровая библиотека КазУТБ — The Academic Curator',
+            'skip' => 'Перейти к основному содержанию',
+            'brand' => 'The Academic Curator',
+            'brandSub' => 'Цифровая библиотека КазУТБ',
+            'nav' => [
+                'catalog' => 'Каталог',
+                'resources' => 'Ресурсы',
+                'account' => 'Кабинет',
+            ],
+            'actions' => [
+                'shortlist' => 'Подборка',
+                'login' => 'Войти',
+            ],
+            'hero' => [
+                'eyebrow' => 'АКАДЕМИЧЕСКИЙ ДОСТУП',
+                'titleBefore' => 'Знание,',
+                'titleAccent' => 'собранное',
+                'titleAfter' => 'для исследователя.',
+                'lead' => 'Цифровая библиотека КазУТБ объединяет университетский фонд, архивы, внешние академические платформы и рабочие инструменты преподавателя в одном спокойном институциональном интерфейсе.',
+                'placeholder' => 'Искать книги, авторов, ISBN, УДК или ключевые слова…',
+                'submit' => 'Explore',
+            ],
+            'metrics' => [
+                ['icon' => 'check_circle', 'label' => '2.5M+ цифровых материалов'],
+                ['icon' => 'check_circle', 'label' => '800K печатных изданий'],
+                ['icon' => 'check_circle', 'label' => 'Университетский доступ'],
+            ],
+            'cards' => [
+                [
+                    'icon' => 'location_on',
+                    'kicker' => 'Внутренняя сеть',
+                    'title' => 'Университетские архивы',
+                    'body' => 'Диссертации, труды преподавателей, редкие технические материалы и локальные коллекции университета.',
+                    'href' => '/resources',
+                    'variant' => 'wide',
+                ],
+                [
+                    'icon' => 'cloud_done',
+                    'kicker' => 'Удалённый доступ',
+                    'title' => 'Цифровой портал',
+                    'body' => 'Круглосуточный доступ к оцифрованным книгам, статьям и электронным подборкам из любой точки.',
+                    'href' => '/catalog',
+                    'variant' => 'primary',
+                ],
+                [
+                    'icon' => 'language',
+                    'kicker' => 'Лицензионные базы',
+                    'title' => 'Глобальная сеть',
+                    'body' => 'Интегрированный доступ к Scopus, Springer, Web of Science и другим научным платформам.',
+                    'href' => '/resources',
+                    'variant' => 'muted',
+                ],
+            ],
+            'browse' => [
+                'eyebrow' => 'Классификационная система',
+                'title' => 'Просмотр по направлениям',
+                'cta' => 'Открыть навигацию по УДК',
+            ],
+            'subjects' => [
+                ['icon' => 'architecture', 'label' => 'Технические науки', 'code' => 'UDC 62'],
+                ['icon' => 'account_balance', 'label' => 'Право и политика', 'code' => 'UDC 34'],
+                ['icon' => 'biotech', 'label' => 'Естественные науки', 'code' => 'UDC 5'],
+                ['icon' => 'history_edu', 'label' => 'Гуманитарный блок', 'code' => 'UDC 008'],
+                ['icon' => 'monitoring', 'label' => 'Экономика', 'code' => 'UDC 33'],
+                ['icon' => 'menu_book', 'label' => 'Справочные издания', 'code' => 'UDC 030'],
+            ],
+            'quote' => '«Библиотека — это сердце университета; наша задача — направлять знание к каждому студенту, преподавателю и исследователю.»',
+            'institution' => [
+                'eyebrow' => 'Университетская среда',
+                'title' => 'Казахский университет технологии и бизнеса имени К. Кулажанова',
+                'body' => 'Цифровая трансформация библиотеки соединяет классическую библиографическую дисциплину, современный поиск и быстрый доступ к ресурсам для учебы, преподавания и исследований.',
+                'facts' => [
+                    ['value' => '1996', 'label' => 'Год основания'],
+                    ['value' => 'Elite', 'label' => 'Институциональная аккредитация'],
+                ],
+            ],
+            'footer' => [
+                'caption' => 'Институциональная библиотечная система',
+                'links' => ['Политика доступа', 'Условия использования', 'Контакт библиотекаря'],
+            ],
+        ],
+        'kk' => [
+            'title' => 'ҚазУТБ цифрлық кітапханасы — The Academic Curator',
+            'skip' => 'Негізгі мазмұнға өту',
+            'brand' => 'The Academic Curator',
+            'brandSub' => 'ҚазУТБ цифрлық кітапханасы',
+            'nav' => [
+                'catalog' => 'Каталог',
+                'resources' => 'Ресурстар',
+                'account' => 'Кабинет',
+            ],
+            'actions' => [
+                'shortlist' => 'Тізім',
+                'login' => 'Кіру',
+            ],
+            'hero' => [
+                'eyebrow' => 'АКАДЕМИЯЛЫҚ ҚОЛЖЕТІМ',
+                'titleBefore' => 'Білім,',
+                'titleAccent' => 'ұқыппен',
+                'titleAfter' => 'зерттеуші үшін жинақталған.',
+                'lead' => 'ҚазУТБ цифрлық кітапханасы университет қорын, архивтерді, сыртқы академиялық платформаларды және оқытушыға арналған жұмыс құралдарын бір тыныш институционалдық интерфейске біріктіреді.',
+                'placeholder' => 'Кітаптар, авторлар, ISBN, ӘОЖ немесе кілт сөздер бойынша іздеу…',
+                'submit' => 'Explore',
+            ],
+            'metrics' => [
+                ['icon' => 'check_circle', 'label' => '2.5M+ цифрлық материал'],
+                ['icon' => 'check_circle', 'label' => '800K баспа қоры'],
+                ['icon' => 'check_circle', 'label' => 'Университеттік кіру'],
+            ],
+            'cards' => [
+                [
+                    'icon' => 'location_on',
+                    'kicker' => 'Ішкі желі',
+                    'title' => 'Университет архивтері',
+                    'body' => 'Диссертациялар, оқытушылар еңбектері, сирек техникалық материалдар және университеттің жергілікті топтамалары.',
+                    'href' => '/resources',
+                    'variant' => 'wide',
+                ],
+                [
+                    'icon' => 'cloud_done',
+                    'kicker' => 'Қашықтан қолжетім',
+                    'title' => 'Цифрлық портал',
+                    'body' => 'Кітаптарға, мақалаларға және электрондық топтамаларға тәулік бойы кез келген жерден қолжетім.',
+                    'href' => '/catalog',
+                    'variant' => 'primary',
+                ],
+                [
+                    'icon' => 'language',
+                    'kicker' => 'Лицензиялық базалар',
+                    'title' => 'Ғаламдық желі',
+                    'body' => 'Scopus, Springer, Web of Science және басқа ғылыми платформаларға біріктірілген қолжетім.',
+                    'href' => '/resources',
+                    'variant' => 'muted',
+                ],
+            ],
+            'browse' => [
+                'eyebrow' => 'Жіктеу жүйесі',
+                'title' => 'Бағыттар бойынша қарау',
+                'cta' => 'ӘОЖ навигациясын ашу',
+            ],
+            'subjects' => [
+                ['icon' => 'architecture', 'label' => 'Техникалық ғылымдар', 'code' => 'UDC 62'],
+                ['icon' => 'account_balance', 'label' => 'Құқық және саясат', 'code' => 'UDC 34'],
+                ['icon' => 'biotech', 'label' => 'Жаратылыстану ғылымдары', 'code' => 'UDC 5'],
+                ['icon' => 'history_edu', 'label' => 'Гуманитарлық блок', 'code' => 'UDC 008'],
+                ['icon' => 'monitoring', 'label' => 'Экономика', 'code' => 'UDC 33'],
+                ['icon' => 'menu_book', 'label' => 'Анықтамалық басылымдар', 'code' => 'UDC 030'],
+            ],
+            'quote' => '«Кітапхана — университеттің жүрегі; біздің міндетіміз — білімді әр студентке, оқытушыға және зерттеушіге жеткізу.»',
+            'institution' => [
+                'eyebrow' => 'Университеттік орта',
+                'title' => 'Қ. Құлажанов атындағы Қазақ технология және бизнес университеті',
+                'body' => 'Кітапхананың цифрлық трансформациясы классикалық библиографиялық тәртіпті, заманауи іздеуді және оқу мен зерттеуге қажетті ресурстарға жедел қолжетімділікті біріктіреді.',
+                'facts' => [
+                    ['value' => '1996', 'label' => 'Құрылған жылы'],
+                    ['value' => 'Elite', 'label' => 'Институционалдық аккредиттеу'],
+                ],
+            ],
+            'footer' => [
+                'caption' => 'Институционалдық кітапхана жүйесі',
+                'links' => ['Қолжетім саясаты', 'Пайдалану шарттары', 'Кітапханашымен байланыс'],
+            ],
+        ],
+        'en' => [
+            'title' => 'KazUTB Digital Library — The Academic Curator',
+            'skip' => 'Skip to main content',
+            'brand' => 'The Academic Curator',
+            'brandSub' => 'KazUTB Digital Library',
+            'nav' => [
+                'catalog' => 'Catalog',
+                'resources' => 'Resources',
+                'account' => 'Account',
+            ],
+            'actions' => [
+                'shortlist' => 'Shortlist',
+                'login' => 'Sign in',
+            ],
+            'hero' => [
+                'eyebrow' => 'ACADEMIC ACCESS',
+                'titleBefore' => 'Knowledge,',
+                'titleAccent' => 'Curated',
+                'titleAfter' => 'for the Scholar.',
+                'lead' => 'KazUTB Digital Library brings together the university collection, archives, licensed research platforms, and teacher workflows in one calm institutional interface.',
+                'placeholder' => 'Search titles, authors, ISBN, UDC, or keywords…',
+                'submit' => 'Explore',
+            ],
+            'metrics' => [
+                ['icon' => 'check_circle', 'label' => '2.5M+ Digital Assets'],
+                ['icon' => 'check_circle', 'label' => '800K Physical Volumes'],
+                ['icon' => 'check_circle', 'label' => 'Institutional Login'],
+            ],
+            'cards' => [
+                [
+                    'icon' => 'location_on',
+                    'kicker' => 'Internal Network',
+                    'title' => 'University Archives',
+                    'body' => 'Exclusive access to KazUTB theses, local publications, rare technical materials, and internal academic collections.',
+                    'href' => '/resources',
+                    'variant' => 'wide',
+                ],
+                [
+                    'icon' => 'cloud_done',
+                    'kicker' => 'Remote Access',
+                    'title' => 'Digital Portal',
+                    'body' => 'Round-the-clock access to digitized books, journals, and curated academic materials from anywhere.',
+                    'href' => '/catalog',
+                    'variant' => 'primary',
+                ],
+                [
+                    'icon' => 'language',
+                    'kicker' => 'Licensed Platforms',
+                    'title' => 'Global Network',
+                    'body' => 'Integrated access to Scopus, Springer, Web of Science, and other scholarly resources.',
+                    'href' => '/resources',
+                    'variant' => 'muted',
+                ],
+            ],
+            'browse' => [
+                'eyebrow' => 'Classification System',
+                'title' => 'Browse by subject',
+                'cta' => 'View the UDC navigation',
+            ],
+            'subjects' => [
+                ['icon' => 'architecture', 'label' => 'Technical Sciences', 'code' => 'UDC 62'],
+                ['icon' => 'account_balance', 'label' => 'Law & Politics', 'code' => 'UDC 34'],
+                ['icon' => 'biotech', 'label' => 'Natural Sciences', 'code' => 'UDC 5'],
+                ['icon' => 'history_edu', 'label' => 'Humanities', 'code' => 'UDC 008'],
+                ['icon' => 'monitoring', 'label' => 'Economics', 'code' => 'UDC 33'],
+                ['icon' => 'menu_book', 'label' => 'Reference', 'code' => 'UDC 030'],
+            ],
+            'quote' => '“The library is the heart of the university; our mission is to direct knowledge toward every student, teacher, and researcher.”',
+            'institution' => [
+                'eyebrow' => 'University context',
+                'title' => 'Kazakh University of Technology and Business named after K. Kulazhanov',
+                'body' => 'The library’s digital transformation connects classical cataloging discipline, modern search, and reliable access to resources for teaching, study, and research.',
+                'facts' => [
+                    ['value' => '1996', 'label' => 'Foundation year'],
+                    ['value' => 'Elite', 'label' => 'Institutional accreditation'],
+                ],
+            ],
+            'footer' => [
+                'caption' => 'Institutional library system',
+                'links' => ['Access policy', 'Terms of use', 'Contact librarian'],
+            ],
+        ],
+    ][$pageLang];
+@endphp
+<!DOCTYPE html>
+<html lang="{{ $pageLang }}">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Библиотека университета - светлый лендинг</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/shell.css">
-  <style>
-    :root {
-      --bg: #f6f8fc;
-      --bg-soft: #eef4ff;
-      --surface: rgba(255,255,255,.88);
-      --surface-2: #ffffff;
-      --border: rgba(20, 40, 90, .08);
-      --text: #14213d;
-      --muted: #64748b;
-      --blue: #3b82f6;
-      --cyan: #06b6d4;
-      --violet: #7c3aed;
-      --pink: #ec4899;
-      --yellow: #f59e0b;
-      --green: #22c55e;
-      --shadow: 0 18px 50px rgba(21, 34, 66, .08);
-      --shadow-soft: 0 12px 30px rgba(21, 34, 66, .05);
-      --radius-xl: 32px;
-      --radius-lg: 24px;
-      --radius-md: 18px;
-      --container: 1650px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: 'Inter', system-ui, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 10% 10%, rgba(59,130,246,.09), transparent 20%),
-        radial-gradient(circle at 90% 10%, rgba(236,72,153,.07), transparent 18%),
-        radial-gradient(circle at 80% 80%, rgba(6,182,212,.06), transparent 20%),
-        linear-gradient(180deg, #ffffff 0%, #f7f9fd 42%, #f3f7fc 100%);
-      overflow-x: hidden;
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      filter: blur(80px);
-      z-index: -1;
-      opacity: .7;
-      pointer-events: none;
-    }
-
-    body::before {
-      left: -80px;
-      top: 120px;
-      background: rgba(59,130,246,.12);
-    }
-
-    body::after {
-      right: -80px;
-      bottom: 60px;
-      background: rgba(6,182,212,.10);
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-
-    .container {
-      width: min(100% - 32px, var(--container));
-      margin: 0 auto;
-    }
-
-    .glass {
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.88));
-      border: 1px solid var(--border);
-      backdrop-filter: blur(16px);
-      box-shadow: var(--shadow);
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(255,255,255,.78);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(15, 23, 42, .06);
-    }
-
-    .nav {
-      min-height: 86px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-weight: 900;
-      letter-spacing: -.3px;
-    }
-
-    .brand small {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      color: #334155;
-      font-weight: 600;
-    }
-
-    .nav-links a:hover { color: var(--blue); }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn {
-      border: 0;
-      cursor: pointer;
-      font: inherit;
-      border-radius: 16px;
-      padding: 14px 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: .25s ease;
-      font-weight: 700;
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-
-    .btn-primary {
-      color: white;
-      background: linear-gradient(135deg, var(--blue), var(--cyan));
-      box-shadow: 0 16px 30px rgba(59,130,246,.22);
-    }
-
-    .btn-secondary {
-      color: white;
-      background: linear-gradient(135deg, var(--pink), var(--violet));
-      box-shadow: 0 16px 30px rgba(124,58,237,.18);
-    }
-
-    .btn-ghost {
-      background: #fff;
-      border: 1px solid rgba(15, 23, 42, .08);
-      color: var(--text);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .mobile-toggle {
-      display: none;
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      border: 1px solid rgba(15,23,42,.08);
-      background: #fff;
-      color: var(--text);
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .hero {
-      padding: 56px 0 30px;
-      position: relative;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .hero-main {
-      border-radius: var(--radius-xl);
-      padding: 38px;
-      min-height: 610px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background:
-        radial-gradient(circle at 85% 18%, rgba(236,72,153,.10), transparent 18%),
-        radial-gradient(circle at 20% 30%, rgba(6,182,212,.08), transparent 20%),
-        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.92));
-    }
-
-    .hero-main::before {
-      content: "";
-      position: absolute;
-      right: -80px;
-      top: -80px;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,.18), transparent 70%);
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      width: fit-content;
-      background: rgba(59,130,246,.08);
-      border: 1px solid rgba(59,130,246,.10);
-      color: var(--blue);
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .hero h1 {
-      margin: 18px 0 14px;
-      font-size: clamp(38px, 6vw, 72px);
-      line-height: .98;
-      letter-spacing: -2.6px;
-      max-width: 760px;
-    }
-
-    .hero p {
-      margin: 0;
-      max-width: 720px;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.8;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 30px;
-    }
-
-    .hero-search-bar {
-      display: flex;
-      gap: 10px;
-      margin-top: 28px;
-    }
-
-    .hero-search-bar input {
-      flex: 1;
-      padding: 16px 22px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      font-size: 16px;
-      font-family: inherit;
-      background: #fff;
-      box-shadow: var(--shadow-soft);
-      outline: none;
-      transition: border-color .2s;
-    }
-
-    .hero-search-bar input:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(59,130,246,.12);
-    }
-
-    .hero-search-bar .btn {
-      white-space: nowrap;
-      padding: 16px 28px;
-    }
-
-    .hero-quick-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .hero-quick-links a {
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      color: #334155;
-      font-weight: 600;
-      font-size: 14px;
-      text-decoration: none;
-      box-shadow: var(--shadow-soft);
-      transition: all .2s;
-    }
-
-    .hero-quick-links a:hover {
-      border-color: var(--blue);
-      color: var(--blue);
-      transform: translateY(-1px);
-    }
-
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .hero-tags span {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      color: #334155;
-      font-weight: 600;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 30px;
-    }
-
-    .stat {
-      border-radius: 22px;
-      padding: 20px;
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 30px;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .hero-side {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .showcase-card {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      position: relative;
-      background:
-        radial-gradient(circle at 90% 20%, rgba(245,158,11,.12), transparent 18%),
-        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.92));
-    }
-
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 18px;
-      flex: 1;
-      overflow-y: auto;
-      min-height: 0;
-    }
-
-    .book-card {
-      padding: 16px;
-      border-radius: 22px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow-soft);
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .book-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow);
-    }
-
-    .book-preview {
-      height: 275px;
-      border-radius: 16px;
-      padding: 14px;
-      display: flex;
-      align-items: flex-end;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 12px;
-      background: linear-gradient(180deg, #2d4268 0%, #223758 100%);
-    }
-
-    .book-preview::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 10px;
-      background: rgba(0,0,0,.18);
-    }
-
-    .book-preview small {
-      position: absolute;
-      left: 14px;
-      top: 14px;
-      color: rgba(255,255,255,.58);
-      font-size: 10px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .book-preview h3 {
-      position: relative;
-      z-index: 1;
-      margin: 0;
-      color: #f1d08e;
-      font-size: 16px;
-      line-height: 1.05;
-      letter-spacing: -.4px;
-      font-weight: 700;
-    }
-
-    .showcase-grid .book-card:nth-child(2) .book-preview,
-    .showcase-grid .book-card:nth-child(5) .book-preview {
-      background: linear-gradient(180deg, #8f1f1f 0%, #6d1111 100%);
-    }
-
-    .showcase-grid .book-card:nth-child(3) .book-preview,
-    .showcase-grid .book-card:nth-child(6) .book-preview {
-      background: linear-gradient(180deg, #205f43 0%, #134935 100%);
-    }
-
-    .book-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin: 0 0 5px;
-      line-height: 1.3;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .book-meta {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    section { padding: 34px 0; }
-
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 24px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 48px);
-      letter-spacing: -1.2px;
-    }
-
-    .section-head p {
-      margin: 10px 0 0;
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 760px;
-    }
-
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .badge {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      color: #334155;
-      font-weight: 700;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .highlight-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .highlight {
-      border-radius: 26px;
-      padding: 24px;
-      position: relative;
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow);
-    }
-
-    .highlight:nth-child(1) { box-shadow: 0 18px 40px rgba(59,130,246,.10); }
-    .highlight:nth-child(2) { box-shadow: 0 18px 40px rgba(236,72,153,.09); }
-    .highlight:nth-child(3) { box-shadow: 0 18px 40px rgba(245,158,11,.09); }
-    .highlight:nth-child(4) { box-shadow: 0 18px 40px rgba(34,197,94,.08); }
-
-    .highlight .icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      font-size: 24px;
-      margin-bottom: 16px;
-      color: #fff;
-      background: linear-gradient(135deg, var(--blue), var(--cyan));
-    }
-
-    .highlight:nth-child(2) .icon { background: linear-gradient(135deg, var(--pink), var(--violet)); }
-    .highlight:nth-child(3) .icon { background: linear-gradient(135deg, var(--yellow), #fb7185); }
-    .highlight:nth-child(4) .icon { background: linear-gradient(135deg, var(--green), var(--cyan)); }
-
-    .highlight h3 {
-      margin: 0 0 10px;
-      font-size: 20px;
-    }
-
-    .highlight p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 15px;
-    }
-
-    .catalog {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .catalog-card {
-      border-radius: 28px;
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-    }
-
-    .catalog-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-
-    .catalog-media {
-      height: 240px;
-      position: relative;
-      background: linear-gradient(135deg, rgba(59,130,246,.22), rgba(6,182,212,.10)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80') center/cover;
-    }
-
-    .catalog-card:nth-child(2) .catalog-media {
-      background: linear-gradient(135deg, rgba(236,72,153,.22), rgba(124,58,237,.10)), url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80') center/cover;
-    }
-
-    .catalog-card:nth-child(3) .catalog-media {
-      background: linear-gradient(135deg, rgba(245,158,11,.20), rgba(34,197,94,.10)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80') center/cover;
-    }
-
-    .catalog-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(20,33,61,.16) 100%);
-    }
-
-    .catalog-body {
-      padding: 24px;
-    }
-
-    .catalog-body h3 {
-      margin: 0 0 10px;
-      font-size: 24px;
-    }
-
-    .catalog-body p {
-      margin: 0 0 16px;
-      color: var(--muted);
-      line-height: 1.75;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .tags span {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: #f8fbff;
-      color: #334155;
-      font-size: 13px;
-      border: 1px solid rgba(15,23,42,.06);
-    }
-
-    .catalog-status {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    /* --- Academic discovery navigation --- */
-    .discovery-nav {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 48px;
-    }
-
-    .discovery-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 24px 22px;
-      border-radius: var(--radius-lg);
-      background: var(--surface-glass);
-      border: 1px solid var(--border);
-      transition: all .25s ease;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .discovery-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-      border-color: rgba(59,130,246,.2);
-    }
-
-    .discovery-icon {
-      flex-shrink: 0;
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
-
-    .discovery-icon--students { background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(6,182,212,.08)); }
-    .discovery-icon--teachers { background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(236,72,153,.06)); }
-    .discovery-icon--research { background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(34,197,94,.06)); }
-    .discovery-icon--digital  { background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(59,130,246,.06)); }
-    .discovery-icon--area     { background: linear-gradient(135deg, rgba(236,72,153,.12), rgba(245,158,11,.06)); }
-    .discovery-icon--new      { background: linear-gradient(135deg, rgba(6,182,212,.12), rgba(124,58,237,.06)); }
-
-    .discovery-text h4 {
-      margin: 0 0 4px;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -.2px;
-    }
-
-    .discovery-text p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .service-big,
-    .service-list {
-      border-radius: 30px;
-      padding: 26px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow);
-    }
-
-    .service-big {
-      background:
-        radial-gradient(circle at 85% 20%, rgba(6,182,212,.08), transparent 18%),
-        linear-gradient(135deg, rgba(59,130,246,.04), rgba(124,58,237,.04)),
-        #fff;
-    }
-
-    .service-big h3 {
-      margin: 14px 0 10px;
-      font-size: 30px;
-      letter-spacing: -1px;
-    }
-
-    .service-big p {
-      color: var(--muted);
-      line-height: 1.8;
-      margin: 0 0 20px;
-    }
-
-    .mini-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .mini-stats div {
-      border-radius: 18px;
-      padding: 16px;
-      background: #f8fbff;
-      border: 1px solid rgba(15,23,42,.06);
-    }
-
-    .mini-stats strong {
-      display: block;
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-
-    .mini-stats span {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .service-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .service-item {
-      display: flex;
-      gap: 16px;
-      padding: 18px;
-      border-radius: 22px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .service-item .icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--blue), var(--cyan));
-      font-size: 22px;
-      flex: 0 0 auto;
-      color: #fff;
-    }
-
-    .service-item h4 {
-      margin: 0 0 6px;
-      font-size: 18px;
-    }
-
-    .service-item p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 14px;
-    }
-
-    .events {
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 18px;
-    }
-
-    .timeline,
-    .news-box {
-      border-radius: 30px;
-      padding: 26px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow);
-    }
-
-    .event-item {
-      display: grid;
-      grid-template-columns: 86px 1fr;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(15,23,42,.06);
-    }
-
-    .event-item:last-child { border-bottom: 0; }
-
-    .date-box {
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      padding: 10px;
-      background: linear-gradient(135deg, rgba(59,130,246,.14), rgba(236,72,153,.10));
-      border: 1px solid rgba(59,130,246,.10);
-      text-align: center;
-    }
-
-    .date-box strong {
-      display: block;
-      font-size: 30px;
-      line-height: 1;
-      margin-bottom: 4px;
-      color: var(--text);
-    }
-
-    .date-box span {
-      color: #475569;
-      font-size: 13px;
-      text-transform: uppercase;
-    }
-
-    .event-item h4 {
-      margin: 0 0 8px;
-      font-size: 19px;
-    }
-
-    .event-item p,
-    .news-box p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.75;
-    }
-
-    .news-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .news-item {
-      padding: 18px;
-      border-radius: 20px;
-      background: #f8fbff;
-      border: 1px solid rgba(15,23,42,.06);
-    }
-
-    .news-item strong {
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    .cta {
-      padding-bottom: 70px;
-    }
-
-    .cta-box {
-      border-radius: 34px;
-      padding: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(236,72,153,.07), transparent 22%),
-        radial-gradient(circle at 80% 30%, rgba(6,182,212,.08), transparent 20%),
-        linear-gradient(135deg, rgba(59,130,246,.06), rgba(124,58,237,.05)),
-        #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow);
-    }
-
-    .cta-box h2 {
-      margin: 0 0 10px;
-      font-size: clamp(30px, 4vw, 50px);
-      letter-spacing: -1.5px;
-    }
-
-    .cta-box p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 760px;
-    }
-
-    footer, .site-footer {
-      background: var(--footer-bg);
-      color: var(--footer-text);
-      margin-top: 80px;
-      position: relative;
-    }
-
-    footer::before, .site-footer::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
-      opacity: .5;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr 1.1fr;
-      gap: 32px;
-      padding: 56px 0 40px;
-    }
-
-    .footer-title {
-      margin-bottom: 16px;
-      font-size: 14px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--footer-heading);
-    }
-
-    .footer-col p,
-    .footer-col a {
-      display: block;
-      color: var(--footer-text);
-      line-height: 1.75;
-      font-size: 14px;
-    }
-
-    .footer-col a { padding: 5px 0; transition: color .2s, padding-left .2s; }
-    .footer-col a:hover { color: var(--footer-accent); padding-left: 4px; }
-
-    .footer-bottom {
-      padding: 20px 0 28px;
-      border-top: 1px solid var(--footer-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .footer-bottom p {
-      margin: 0;
-      color: var(--muted-light, #94a3b8);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 1120px) {
-      .hero-grid,
-      .services-grid,
-      .events,
-      .footer-grid,
-      .highlight-strip,
-      .catalog {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .hero-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
-      .highlight-strip { grid-template-columns: repeat(2, 1fr); }
-      .catalog { grid-template-columns: repeat(2, 1fr); }
-      .resources-preview-grid { grid-template-columns: repeat(2, 1fr); }
-      .discovery-nav { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 860px) {
-      .nav-links,
-      .nav-actions .btn-ghost {
-        display: none;
-      }
-
-      .mobile-toggle {
-        display: inline-grid;
-        place-items: center;
-        min-width: 44px;
-        min-height: 44px;
-      }
-
-      .hero-main,
-      .showcase-card,
-      .search-card,
-      .service-big,
-      .service-list,
-      .timeline,
-      .news-box,
-      .cta-box {
-        padding: 22px;
-      }
-
-      .hero-stats,
-      .highlight-strip,
-      .catalog,
-      .services-grid,
-      .events,
-      .footer-grid,
-      .showcase-grid,
-      .mini-stats,
-      .discovery-nav {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-grid { gap: 28px; padding: 32px 0 24px; }
-      .footer-bottom { flex-direction: column; align-items: flex-start; }
-
-      .cta-box,
-      .search-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .hero-search-bar {
-        flex-direction: column;
-      }
-
-      .hero-main { min-height: auto; }
-      .hero h1 { font-size: clamp(32px, 5.5vw, 48px); }
-      .hero p { font-size: 16px; }
-      .hero-actions { gap: 10px; }
-      .stat strong { font-size: 24px; }
-      .stat { padding: 16px; }
-      .resource-card { padding: 22px; }
-      .highlight { padding: 20px; }
-    }
-
-    @media (max-width: 560px) {
-      .container { width: min(100% - 20px, var(--container)); }
-      .nav { min-height: 64px; }
-      .brand-badge { width: 42px; height: 42px; border-radius: 14px; }
-      .brand-text { font-size: 13px; }
-      .brand-text small { font-size: 10.5px; }
-      .hero { padding-top: 20px; }
-      .hero h1 { letter-spacing: -1.4px; font-size: 28px; }
-      .hero p { font-size: 15px; }
-      .section-head { flex-direction: column; align-items: start; }
-      .section-head h2 { font-size: 22px; }
-      .btn { width: 100%; min-height: 44px; }
-      .hero-main { padding: 18px; }
-      .showcase-card,
-      .search-card,
-      .service-big,
-      .service-list { padding: 16px; }
-      .stat { padding: 14px; border-radius: 16px; }
-      .stat strong { font-size: 20px; }
-      .stat span { font-size: 12px; }
-      .highlight { padding: 16px; }
-      .highlight .icon { width: 44px; height: 44px; font-size: 20px; }
-      .resource-card { padding: 18px; }
-      .resource-card h3 { font-size: 17px; }
-      .resource-card p { font-size: 14px; }
-      .resource-icon { font-size: 28px; margin-bottom: 10px; }
-      .service-item { padding: 14px; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulse { 0%,100% { opacity:.4; } 50% { opacity:.15; } }
-    .skeleton-pulse .book-preview { animation: pulse 1.5s ease-in-out infinite; }
-    .skeleton-pulse .book-title { background: #e5e7eb; border-radius: 6px; color: transparent; animation: pulse 1.5s ease-in-out infinite; }
-
-    .resources-preview-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-
-    .resource-card {
-      border-radius: var(--radius-lg);
-      padding: 28px;
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.06);
-      box-shadow: var(--shadow-soft);
-      transition: transform .25s ease, box-shadow .25s ease;
-      position: relative;
-    }
-
-    .resource-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-    }
-
-    .resource-icon {
-      font-size: 36px;
-      margin-bottom: 16px;
-    }
-
-    .resource-card h3 {
-      margin: 0 0 10px;
-      font-size: 19px;
-      font-weight: 800;
-    }
-
-    .resource-card p {
-      margin: 0 0 16px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.65;
-    }
-
-    .resource-tag {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-    }
-
-    .resource-card--primary { border-top: 3px solid var(--blue); }
-    .resource-card--primary .resource-tag { background: rgba(59,130,246,.1); color: var(--blue); }
-    .resource-card--science { border-top: 3px solid var(--violet); }
-    .resource-card--science .resource-tag { background: rgba(124,58,237,.1); color: var(--violet); }
-    .resource-card--licensed { border-top: 3px solid var(--pink); }
-    .resource-card--licensed .resource-tag { background: rgba(236,72,153,.1); color: var(--pink); }
-    .resource-card--open { border-top: 3px solid var(--green); }
-    .resource-card--open .resource-tag { background: rgba(34,197,94,.1); color: var(--green); }
-
-    .cta-actions {
-      display: flex;
-      gap: 14px;
-      flex-shrink: 0;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 860px) {
-      .cta-actions { flex-direction: column; align-items: stretch; }
-    }
-  </style>
-<body>
-  @include('partials.navbar', ['activePage' => 'home'])
-
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-main glass">
-          <div>
-            <h1 id="hero-title">Библиотека нового поколения для студентов, преподавателей и исследователей</h1>
-            <p id="hero-description">
-              Пространство, где классический библиотечный фонд объединяется с электронным каталогом, научными базами, онлайн-бронированием и быстрым поиском знаний в одном чистом и ярком интерфейсе.
-            </p>
-
-            <div class="hero-search-bar">
-              <input type="text" id="hero-search-input" placeholder="Название, автор, ISBN или ключевое слово…" onkeydown="if(event.key==='Enter'){heroSearch()}" />
-              <button id="hero-primary-btn" class="btn btn-primary" onclick="heroSearch()">Найти</button>
-            </div>
-
-            <div class="hero-quick-links">
-              <a href="/catalog">📚 Каталог</a>
-              <a href="/resources">🌐 Ресурсы</a>
-              <a href="/for-teachers">👩‍🏫 Преподавателям</a>
-              <a href="/discover">📐 По направлениям</a>
-            </div>
-          </div>
-
-          <div id="hero-stats" class="hero-stats">
-            <div class="stat"><strong>50 000+</strong><span>единиц фонда</span></div>
-            <div class="stat"><strong>24/7</strong><span>онлайн-доступ</span></div>
-            <div class="stat"><strong>10+</strong><span>баз данных</span></div>
-          </div>
-        </div>
-
-        <div class="hero-side">
-          <div class="showcase-card glass">
-            <div id="showcase-title" class="eyebrow">Популярные книги</div>
-            <div id="showcase-grid" class="showcase-grid">
-              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
-              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
-              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
-              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
-              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
-              <article class="book-card skeleton-pulse"><div class="book-preview"><small>&nbsp;</small><h3>&nbsp;</h3></div><div class="book-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="book-meta"></div></article>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="catalog">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Найдите нужное для учёбы и науки</h2>
-            <p>Библиотечные ресурсы — по аудитории, теме и формату. Выберите подходящее направление или ищите напрямую в каталоге.</p>
-          </div>
-        </div>
-
-        <!-- Academic discovery navigation -->
-        <div class="discovery-nav">
-          <a href="/catalog" class="discovery-card">
-            <div class="discovery-icon discovery-icon--students">🎓</div>
-            <div class="discovery-text">
-              <h4>Студентам</h4>
-              <p>Учебники, пособия, методические материалы и рекомендованная литература.</p>
-            </div>
-          </a>
-          <a href="/for-teachers" class="discovery-card">
-            <div class="discovery-icon discovery-icon--teachers">👩‍🏫</div>
-            <div class="discovery-text">
-              <h4>Преподавателям</h4>
-              <p>Научная литература, монографии, базы данных и методическое обеспечение дисциплин.</p>
-            </div>
-          </a>
-          <a href="/resources" class="discovery-card">
-            <div class="discovery-icon discovery-icon--digital">🌐</div>
-            <div class="discovery-text">
-              <h4>Электронные ресурсы</h4>
-              <p>Подписные базы, открытый доступ, электронная библиотека и лицензированные коллекции.</p>
-            </div>
-          </a>
-          <!-- FUTURE: Add per-school / per-department discovery cards when institutional structure is confirmed -->
-          <a href="/discover" class="discovery-card">
-            <div class="discovery-icon discovery-icon--area">📐</div>
-            <div class="discovery-text">
-              <h4>По направлениям</h4>
-              <p>Экономика, технологии, право, языки и другие академические области.</p>
-            </div>
-          </a>
-          <a href="/discover" class="discovery-card">
-            <div class="discovery-icon discovery-icon--research">🔬</div>
-            <div class="discovery-text">
-              <h4>Наука и исследования</h4>
-              <p>Диссертации, научные журналы, международные базы и аналитика.</p>
-            </div>
-          </a>
-          <a href="/catalog?q=&sort=newest" class="discovery-card">
-            <div class="discovery-icon discovery-icon--new">✨</div>
-            <div class="discovery-text">
-              <h4>Новые поступления</h4>
-              <p>Недавно добавленные книги, свежие номера журналов и обновления коллекций.</p>
-            </div>
-          </a>
-        </div>
-
-        <!-- Catalog search/browse (existing API-driven grid) -->
-        <div class="eyebrow" style="margin-top:8px;">Из каталога</div>
-        <h3 id="catalog-title" style="font-size:22px; font-weight:800; margin:0 0 6px; letter-spacing:-.3px;">Каталог фонда</h3>
-        <p id="catalog-description" style="color:var(--muted); margin:0 0 20px; font-size:15px; line-height:1.6;">Просмотр и поиск по всем материалам библиотеки.</p>
-
-        <div class="catalog" id="catalog-grid">
-        </div>
-      </div>
-    </section>
-
-    <section id="services">
-      <div class="container services-grid">
-        <div class="service-big">
-          <div id="services-eyebrow" class="eyebrow">Сервисы</div>
-          <h3 id="services-title">Что доступно онлайн</h3>
-          <p id="services-description">
-            Поиск, бронирование, доступ к научным базам и сопровождение исследований — в одном интерфейсе.
-          </p>
-
-          <div id="services-mini-stats" class="mini-stats">
-            <div>
-              <strong>5 мин</strong>
-              <span>в среднем до нахождения нужного материала</span>
-            </div>
-            <div>
-              <strong>1 клик</strong>
-              <span>до перехода к электронному ресурсу</span>
-            </div>
-            <div>
-              <strong>100%</strong>
-              <span>адаптация под мобильные устройства</span>
-            </div>
-            <div>
-              <strong>24/7</strong>
-              <span>доступ к каталогу и цифровым разделам</span>
-            </div>
-          </div>
-        </div>
-
-        <div id="services-list" class="service-list">
-          <div class="service-item">
-            <div class="icon">🔎</div>
-            <div>
-              <h4>Умный поиск по фонду</h4>
-              <p>Поиск по названию, автору, теме, дисциплине и ключевым словам с понятной фильтрацией.</p>
-            </div>
-          </div>
-
-          <div class="service-item">
-            <div class="icon">📦</div>
-            <div>
-              <h4>Онлайн-бронирование книг</h4>
-              <p>Пользователь может заранее забронировать нужную литературу и получить уведомление.</p>
-            </div>
-          </div>
-
-          <div class="service-item">
-            <div class="icon">🧠</div>
-            <div>
-              <h4>Поддержка исследований</h4>
-              <p>Консультации по поиску источников, оформлению списка литературы и научным базам.</p>
-            </div>
-          </div>
-
-          <div class="service-item">
-            <div class="icon">💻</div>
-            <div>
-              <h4>Удаленный доступ</h4>
-              <p>Электронная библиотека и цифровые подписки доступны не только в кампусе, но и онлайн.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="events">
-      <div class="container events">
-        <div class="timeline">
-          <div class="section-head" style="margin-bottom: 8px;">
-            <div>
-              <h2 id="events-title" style="font-size: 34px;">События библиотеки</h2>
-              <p id="events-description">Лекции, презентации новых книг, выставки и семинары для развития академической среды.</p>
-            </div>
-          </div>
-
-          <div id="timeline-list">
-          <div class="event-item">
-            <div class="date-box"><strong>12</strong><span>апр</span></div>
-            <div>
-              <h4>Презентация новых поступлений</h4>
-              <p>Обзор новых учебных и научных изданий по актуальным направлениям подготовки.</p>
-            </div>
-          </div>
-
-          <div class="event-item">
-            <div class="date-box"><strong>18</strong><span>апр</span></div>
-            <div>
-              <h4>Тренинг по поиску научных статей</h4>
-              <p>Практика по работе с международными базами данных и цифровыми платформами.</p>
-            </div>
-          </div>
-
-          <div class="event-item">
-            <div class="date-box"><strong>24</strong><span>апр</span></div>
-            <div>
-              <h4>Лекция по цифровой грамотности</h4>
-              <p>Как быстро находить, хранить и использовать академические источники в учебе и исследованиях.</p>
-            </div>
-          </div>
-          </div>
-        </div>
-
-        <div class="news-box">
-          <div id="news-eyebrow" class="eyebrow">Объявления</div>
-          <h3 id="news-title" style="margin:16px 0 10px; font-size:32px;">Актуальная информация</h3>
-          <p id="news-description">Все важные обновления: график работы, новые ресурсы, подписки и изменения в доступе к сервисам.</p>
-
-          <div id="news-list" class="news-list">
-            <div class="news-item">
-              <strong>Открыт доступ к новым электронным базам</strong>
-              <span style="color:var(--muted);">Пользователи могут работать с дополнительными цифровыми ресурсами удаленно.</span>
-            </div>
-            <div class="news-item">
-              <strong>Поступили новые книги по IT, бизнесу и дизайну</strong>
-              <span style="color:var(--muted);">Обновлен фонд по востребованным направлениям обучения.</span>
-            </div>
-            <div class="news-item">
-              <strong>Изменен порядок выдачи литературы</strong>
-              <span style="color:var(--muted);">Актуальный график и правила опубликованы в личном кабинете.</span>
-            </div>
-          </div>
-
-          <div style="margin-top: 18px;">
-            <button id="news-button" class="btn btn-secondary" style="width:100%;">Смотреть все объявления</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta">
-      <div class="container">
-        <div class="cta-box">
-          <div>
-            <h2>Начните использовать библиотеку сегодня</h2>
-            <p>Исследуйте каталог, получите доступ к электронным ресурсам и оцените возможности цифровой библиотеки КазУТБ.</p>
-          </div>
-          <div class="cta-actions">
-            <a href="/catalog" class="btn btn-primary">Перейти в каталог</a>
-            <a href="/resources" class="btn btn-secondary">Электронные ресурсы</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  @include('partials.footer')
-
-  <script>
-    const catalogGrid = document.querySelector('#catalog-grid');
-    const showcaseGrid = document.querySelector('#showcase-grid');
-    const searchInput = document.querySelector('#catalog-search-input');
-    const categorySelect = document.querySelector('#catalog-category-select');
-    const searchButton = document.querySelector('#catalog-search-button');
-    const catalogStatus = document.querySelector('#catalog-status');
-
-    const CATALOG_API_ENDPOINT = '/api/v1/catalog-db';
-    const LANDING_API_ENDPOINT = '/api/v1/landing';
-
-    function escapeHtml(value) {
-      return String(value ?? '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
-    function normalizeText(value, fallback = '—') {
-      if (value === null || value === undefined) return fallback;
-
-      const normalized = String(value).replace(/\s+/g, ' ').trim();
-      return normalized || fallback;
-    }
-
-    function setText(id, value) {
-      if (!value) return;
-
-      const element = document.getElementById(id);
-      if (!element) return;
-      element.textContent = value;
-    }
-
-    function renderList(containerId, items, itemRenderer) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      container.innerHTML = items.map(itemRenderer).join('');
-    }
-
-    function applyLandingData(data) {
-      if (!data) return;
-
-      setText('brand-title', data?.header?.brand);
-      setText('brand-subtitle', data?.header?.subtitle);
-      setText('header-login-btn', data?.header?.login_label);
-
-      setText('hero-title', data?.hero?.title);
-      setText('hero-description', data?.hero?.description);
-      setText('hero-primary-btn', data?.hero?.actions?.primary);
-      setText('hero-secondary-btn', data?.hero?.actions?.secondary);
-      setText('showcase-title', data?.hero?.showcase_title);
-      setText('search-title', data?.hero?.search_title);
-      setText('search-description', data?.hero?.search_description);
-
-      if (searchInput && data?.hero?.search_placeholder) {
-        searchInput.placeholder = data.hero.search_placeholder;
-      }
-      setText('catalog-search-button', data?.hero?.search_button);
-
-      if (Array.isArray(data?.hero?.tags)) {
-        renderList('hero-tags', data.hero.tags, (tag) => `<span>${escapeHtml(tag)}</span>`);
-      }
-
-      if (Array.isArray(data?.hero?.stats)) {
-        renderList('hero-stats', data.hero.stats, (item) => `
-          <div class="stat">
-            <strong>${escapeHtml(item.value)}</strong>
-            <span>${escapeHtml(item.label)}</span>
-          </div>
-        `);
-      }
-
-      // Showcase cards are rendered by loadShowcase() from CATALOG_API_ENDPOINT.
-      // Keeping a single renderer avoids race conditions where one async response
-      // overwrites another with a different data source.
-
-      // Advantages section removed — skip data.advantages
-
-      setText('catalog-title', data?.catalog?.title);
-      setText('catalog-description', data?.catalog?.description);
-
-      setText('services-eyebrow', data?.services?.eyebrow);
-      setText('services-title', data?.services?.title);
-      setText('services-description', data?.services?.description);
-
-      if (Array.isArray(data?.services?.stats)) {
-        renderList('services-mini-stats', data.services.stats, (item) => `
-          <div>
-            <strong>${escapeHtml(item.value)}</strong>
-            <span>${escapeHtml(item.label)}</span>
-          </div>
-        `);
-      }
-
-      if (Array.isArray(data?.services?.items)) {
-        renderList('services-list', data.services.items, (item) => `
-          <div class="service-item">
-            <div class="icon">${escapeHtml(item.icon)}</div>
-            <div>
-              <h4>${escapeHtml(item.title)}</h4>
-              <p>${escapeHtml(item.description)}</p>
-            </div>
-          </div>
-        `);
-      }
-
-      setText('events-title', data?.events?.title);
-      setText('events-description', data?.events?.description);
-      setText('news-eyebrow', data?.events?.news_eyebrow);
-      setText('news-title', data?.events?.news_title);
-      setText('news-description', data?.events?.news_description);
-      setText('news-button', data?.events?.news_button);
-
-      if (Array.isArray(data?.events?.timeline)) {
-        renderList('timeline-list', data.events.timeline, (item) => `
-          <div class="event-item">
-            <div class="date-box"><strong>${escapeHtml(item.day)}</strong><span>${escapeHtml(item.month)}</span></div>
-            <div>
-              <h4>${escapeHtml(item.title)}</h4>
-              <p>${escapeHtml(item.description)}</p>
-            </div>
-          </div>
-        `);
-      }
-
-      if (Array.isArray(data?.events?.news)) {
-        renderList('news-list', data.events.news, (item) => `
-          <div class="news-item">
-            <strong>${escapeHtml(item.title)}</strong>
-            <span style="color:var(--muted);">${escapeHtml(item.description)}</span>
-          </div>
-        `);
-      }
-
-      setText('footer-brand-title', data?.footer?.brand_title);
-      setText('footer-brand-description', data?.footer?.brand_description);
-      setText('footer-contacts-title', data?.footer?.contacts_title);
-      setText('footer-sections-title', data?.footer?.quick_links_title);
-      setText('footer-hours-title', data?.footer?.address_title);
-      setText('footer-address', data?.footer?.address);
-
-      if (Array.isArray(data?.footer?.hours)) {
-        renderList('footer-hours-list', data.footer.hours, (item) => `<p>${escapeHtml(item)}</p>`);
-      }
-
-      const contactsContainer = document.getElementById('footer-contacts-links');
-      if (contactsContainer && Array.isArray(data?.footer?.contact_items)) {
-        contactsContainer.innerHTML = data.footer.contact_items.map((item) => `
-          <a href="${escapeHtml(item.href ?? '#')}">${escapeHtml(item.label)}: ${escapeHtml(item.value)}</a>
-        `).join('');
-      }
-
-      const quickLinksContainer = document.getElementById('footer-sections-links');
-      if (quickLinksContainer && Array.isArray(data?.footer?.quick_links)) {
-        quickLinksContainer.innerHTML = data.footer.quick_links.map((item) => `
-          <a href="${escapeHtml(item.href ?? '#')}">${escapeHtml(item.label)}</a>
-        `).join('');
-      }
-
-      const footerBottom = document.getElementById('footer-bottom');
-      if (footerBottom && Array.isArray(data?.footer?.bottom_lines)) {
-        footerBottom.innerHTML = data.footer.bottom_lines
-          .map((line) => `<p>${escapeHtml(line)}</p>`)
-          .join('');
-      }
-    }
-
-    function renderCatalog(items) {
-      if (!catalogGrid) return;
-
-      if (!items.length) {
-        catalogGrid.innerHTML = '<article class="catalog-card"><div class="catalog-body"><h3>Ничего не найдено</h3><p>Попробуйте изменить запрос или категорию, чтобы увидеть результаты поиска по каталогу.</p></div></article>';
-        return;
-      }
-
-      catalogGrid.innerHTML = items.map((item) => {
-        const title = escapeHtml(normalizeText(item?.title?.display || item?.title?.raw, 'Без названия'));
-        const author = escapeHtml(normalizeText(item?.primaryAuthor || item?.authors?.[0]?.name, 'Автор не указан'));
-        const publisher = escapeHtml(normalizeText(item?.publisher?.name, 'Издатель не указан'));
-        const subtitle = escapeHtml(normalizeText(item?.title?.subtitle, 'Без подзаголовка'));
-        const isbn = escapeHtml(normalizeText(item?.isbn?.raw));
-        const year = escapeHtml(normalizeText(item?.publicationYear));
-        const language = escapeHtml(normalizeText(item?.language?.raw || item?.language?.code));
-        const available = escapeHtml(normalizeText(item?.copies?.available, '0'));
-
-        return `
-          <a href="/book/${encodeURIComponent(isbn)}" style="text-decoration: none; color: inherit; cursor: pointer;">
-            <article class="catalog-card">
-              <div class="catalog-media"><div class="catalog-overlay"></div></div>
-              <div class="catalog-body">
-                <h3>${title}</h3>
-                <p>${author} · ${publisher}<br>${subtitle}<br>ISBN: ${isbn}</p>
-                <div class="tags">
-                  <span>${language}</span>
-                  <span>${year}</span>
-                  <span>Доступно: ${available}</span>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ $copy['title'] }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f8f9fa;
+            --surface: #ffffff;
+            --surface-low: #f3f4f5;
+            --surface-high: #e7e8e9;
+            --surface-variant: #edeeef;
+            --text: #191c1d;
+            --muted: #43474f;
+            --outline: #c3c6d1;
+            --primary: #001e40;
+            --primary-strong: #003366;
+            --secondary: #14696d;
+            --secondary-soft: #a3ecf0;
+            --tertiary: #c5a059;
+            --shadow-soft: 0 12px 32px rgba(25, 28, 29, 0.04);
+            --shadow-card: 0 8px 24px rgba(25, 28, 29, 0.03);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-full: 999px;
+            --wrap: 1280px;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 1.15rem;
+            line-height: 1;
+        }
+
+        .wrap {
+            width: min(calc(100% - 32px), var(--wrap));
+            margin: 0 auto;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 16px;
+            top: -48px;
+            padding: 10px 14px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            z-index: 100;
+        }
+
+        .skip-link:focus { top: 16px; }
+
+        .homepage-shell {
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .homepage-shell::before,
+        .homepage-shell::after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .homepage-shell::before {
+            top: 0;
+            right: 0;
+            width: 32%;
+            height: 540px;
+            background: linear-gradient(270deg, rgba(0, 30, 64, 0.05), rgba(0, 30, 64, 0));
+        }
+
+        .homepage-shell::after {
+            left: -8%;
+            bottom: 320px;
+            width: 420px;
+            height: 220px;
+            filter: blur(48px);
+            background: rgba(20, 105, 109, 0.10);
+        }
+
+        .home-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.82);
+            border-bottom: 1px solid rgba(195, 198, 209, 0.45);
+        }
+
+        .home-topbar .wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            min-height: 76px;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0, 30, 64, 0.08), rgba(20, 105, 109, 0.16));
+            color: var(--primary);
+        }
+
+        .brand-copy {
+            display: grid;
+            gap: 2px;
+        }
+
+        .brand-copy strong {
+            font-family: 'Newsreader', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--primary);
+        }
+
+        .brand-copy span {
+            font-size: 0.76rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .home-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .home-nav a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #5b616c;
+            padding-bottom: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .home-nav a.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .home-nav a:hover { color: var(--secondary); }
+
+        .home-tools {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .locale-switcher {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px;
+            border: 1px solid rgba(195, 198, 209, 0.6);
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.96);
+        }
+
+        .locale-switcher a {
+            min-width: 36px;
+            padding: 8px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #66707c;
+        }
+
+        .locale-switcher a.active {
+            color: var(--primary);
+            background: rgba(20, 105, 109, 0.10);
+        }
+
+        .icon-button,
+        .account-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 42px;
+            border: 1px solid rgba(195, 198, 209, 0.45);
+            background: rgba(255, 255, 255, 0.95);
+            color: #5b616c;
+            border-radius: var(--radius-full);
+            transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .icon-button {
+            width: 42px;
+        }
+
+        .account-link {
+            padding: 0 14px;
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .icon-button:hover,
+        .account-link:hover {
+            transform: translateY(-1px);
+            color: var(--primary);
+            border-color: rgba(20, 105, 109, 0.36);
+        }
+
+        .mobile-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(195, 198, 209, 0.45);
+            border-radius: 50%;
+            background: #fff;
+            color: var(--primary);
+        }
+
+        .home-main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            padding: 82px 0 54px;
+        }
+
+        .hero-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--secondary);
+        }
+
+        .hero-title {
+            margin: 0;
+            font-family: 'Newsreader', serif;
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            line-height: 0.98;
+            font-size: clamp(2.9rem, 7vw, 5.1rem);
+            color: var(--primary);
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--primary-strong);
+        }
+
+        .hero-lead {
+            margin: 22px auto 0;
+            max-width: 760px;
+            font-size: 1.08rem;
+            line-height: 1.78;
+            color: var(--muted);
+        }
+
+        .hero-search-shell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 34px auto 0;
+            padding: 8px;
+            max-width: 760px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(195, 198, 209, 0.45);
+        }
+
+        .hero-search-icon {
+            padding-left: 16px;
+            color: #8a919d;
+        }
+
+        .hero-search-shell input {
+            flex: 1;
+            min-width: 0;
+            border: 0;
+            background: transparent;
+            font: inherit;
+            color: var(--text);
+            font-size: 1rem;
+            padding: 14px 6px;
+            outline: none;
+        }
+
+        .hero-search-shell input::placeholder {
+            color: #8a919d;
+        }
+
+        .hero-search-shell button {
+            border: 0;
+            border-radius: var(--radius-full);
+            padding: 14px 24px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .hero-search-shell button:hover {
+            background: var(--primary-strong);
+        }
+
+        .metrics-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 18px 28px;
+            margin-top: 28px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #767d88;
+        }
+
+        .metrics-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metrics-row .material-symbols-outlined {
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+
+        .entry-section {
+            padding: 18px 0 56px;
+        }
+
+        .entry-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .entry-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 26px;
+            min-height: 250px;
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            box-shadow: var(--shadow-card);
+            transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+        }
+
+        .entry-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .entry-card--wide {
+            grid-column: span 2;
+            border-bottom: 2px solid rgba(20, 105, 109, 0);
+        }
+
+        .entry-card--wide:hover {
+            border-bottom-color: var(--secondary);
+        }
+
+        .entry-card--primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .entry-card--muted {
+            background: var(--surface-low);
+        }
+
+        .entry-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .entry-top .material-symbols-outlined {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .entry-card--primary .entry-top .material-symbols-outlined {
+            color: #a7d9dc;
+        }
+
+        .entry-kicker {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #8a919d;
+        }
+
+        .entry-card--primary .entry-kicker {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .entry-card h3 {
+            margin: 0 0 10px;
+            font-family: 'Newsreader', serif;
+            font-weight: 500;
+            font-size: clamp(1.55rem, 2.6vw, 2rem);
+            letter-spacing: -0.03em;
+            color: var(--primary);
+        }
+
+        .entry-card--primary h3 {
+            color: #fff;
+        }
+
+        .entry-card p {
+            margin: 0;
+            line-height: 1.7;
+            font-size: 0.96rem;
+            color: var(--muted);
+        }
+
+        .entry-card--primary p {
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .subject-section {
+            background: var(--surface-low);
+            padding: 88px 0;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 36px;
+        }
+
+        .section-head span {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--secondary);
+        }
+
+        .section-head h2 {
+            margin: 0;
+            font-family: 'Newsreader', serif;
+            font-size: clamp(2.1rem, 4vw, 3.3rem);
+            font-weight: 500;
+            line-height: 1.02;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+        }
+
+        .section-head a {
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--secondary);
+            border-bottom: 1px solid rgba(20, 105, 109, 0.26);
+            padding-bottom: 4px;
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .subject-card {
+            display: grid;
+            justify-items: center;
+            gap: 12px;
+            padding: 22px 14px;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-2px);
+            background: #fbfdfd;
+        }
+
+        .subject-icon {
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--background);
+            color: var(--primary);
+        }
+
+        .subject-card strong {
+            font-size: 0.92rem;
+            line-height: 1.45;
+            color: var(--primary);
+        }
+
+        .subject-card small {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #7b828c;
+        }
+
+        .trust-section {
+            padding: 88px 0 92px;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 36px;
+            align-items: stretch;
+        }
+
+        .quote-panel {
+            position: relative;
+            min-height: 380px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background:
+                linear-gradient(160deg, rgba(0, 30, 64, 0.88), rgba(0, 30, 64, 0.66)),
+                radial-gradient(circle at top left, rgba(197, 160, 89, 0.32), transparent 40%),
+                radial-gradient(circle at bottom right, rgba(20, 105, 109, 0.24), transparent 36%),
+                #0f223f;
+        }
+
+        .quote-panel::before {
+            content: '';
+            position: absolute;
+            inset: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.22);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+        }
+
+        .quote-copy {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .quote-copy p {
+            max-width: 520px;
+            margin: 0;
+            font-family: 'Newsreader', serif;
+            font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+            font-style: italic;
+            line-height: 1.45;
+            letter-spacing: -0.02em;
+        }
+
+        .institution-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 22px;
+        }
+
+        .institution-panel .material-symbols-outlined {
+            font-size: 3.2rem;
+            color: var(--secondary);
+        }
+
+        .institution-panel span.kicker {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--secondary);
+        }
+
+        .institution-panel h2 {
+            margin: 0;
+            font-family: 'Newsreader', serif;
+            font-size: clamp(1.95rem, 3.6vw, 3rem);
+            line-height: 1.08;
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+        }
+
+        .institution-panel p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--muted);
+        }
+
+        .fact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .fact-card {
+            padding: 16px 0;
+        }
+
+        .fact-card strong {
+            display: block;
+            font-family: 'Newsreader', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .fact-card span {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #7b828c;
+        }
+
+        .home-footer {
+            border-top: 1px solid rgba(195, 198, 209, 0.45);
+            padding: 26px 0 38px;
+        }
+
+        .home-footer .wrap {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .footer-brand {
+            display: grid;
+            gap: 6px;
+        }
+
+        .footer-brand strong {
+            font-family: 'Newsreader', serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--primary);
+        }
+
+        .footer-brand span {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #7b828c;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+            justify-content: end;
+        }
+
+        .footer-links a {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #7b828c;
+        }
+
+        .footer-links a:first-child {
+            text-decoration: underline;
+            text-decoration-color: rgba(20, 105, 109, 0.46);
+            text-underline-offset: 3px;
+        }
+
+        @media (max-width: 1100px) {
+            .entry-grid,
+            .subject-grid,
+            .trust-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .subject-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 860px) {
+            .home-nav {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .hero-section {
+                padding-top: 54px;
+            }
+
+            .hero-search-shell {
+                flex-wrap: wrap;
+                padding: 12px;
+                border-radius: 18px;
+            }
+
+            .hero-search-shell input {
+                width: 100%;
+                padding: 8px 4px 12px;
+            }
+
+            .hero-search-shell button {
+                width: 100%;
+            }
+
+            .section-head {
+                flex-direction: column;
+                align-items: start;
+            }
+
+            .entry-grid,
+            .trust-grid,
+            .subject-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .entry-card--wide {
+                grid-column: auto;
+            }
+
+            .home-footer .wrap {
+                flex-direction: column;
+                align-items: start;
+            }
+
+            .footer-links {
+                justify-content: start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .home-topbar .wrap {
+                min-height: 72px;
+            }
+
+            .brand-copy strong {
+                font-size: 1.2rem;
+            }
+
+            .brand-copy span,
+            .account-link {
+                display: none;
+            }
+
+            .home-tools {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body data-homepage-stitch-reset>
+    <a class="skip-link" href="#home-main">{{ $copy['skip'] }}</a>
+
+    <div class="homepage-shell">
+        <header class="home-topbar" aria-label="Homepage navigation">
+            <div class="wrap">
+                <div class="brand-lockup">
+                    <a class="brand-mark" href="{{ $withLang('/') }}" aria-label="{{ $copy['title'] }}">
+                        <span class="material-symbols-outlined">local_library</span>
+                    </a>
+                    <div class="brand-copy">
+                        <strong>{{ $copy['brand'] }}</strong>
+                        <span>{{ $copy['brandSub'] }}</span>
+                    </div>
                 </div>
-              </div>
-            </article>
-          </a>
-        `;
-      }).join('');
-    }
 
-    function updateCategoryOptions(items) {
-      if (!categorySelect) return;
+                <nav class="home-nav" aria-label="Primary">
+                    <a class="active" href="{{ $withLang('/catalog') }}">{{ $copy['nav']['catalog'] }}</a>
+                    <a href="{{ $withLang('/resources') }}">{{ $copy['nav']['resources'] }}</a>
+                    <a href="{{ $withLang('/account') }}">{{ $copy['nav']['account'] }}</a>
+                </nav>
 
-      const categories = [...new Set(items
-        .map((item) => normalizeText(item?.language?.raw || item?.language?.code, ''))
-        .filter((category) => typeof category === 'string' && category.trim() !== ''))]
-        .sort((a, b) => a.localeCompare(b));
+                <div class="home-tools">
+                    <div class="locale-switcher" data-locale-switcher>
+                        @foreach (['kk' => 'KK', 'ru' => 'RU', 'en' => 'EN'] as $code => $label)
+                            <a href="{{ $withLang('/', ['lang' => $code]) }}" class="{{ $pageLang === $code ? 'active' : '' }}">{{ $label }}</a>
+                        @endforeach
+                    </div>
+                    <a class="icon-button" href="{{ $withLang('/shortlist') }}" aria-label="{{ $copy['actions']['shortlist'] }}">
+                        <span class="material-symbols-outlined">bookmarks</span>
+                    </a>
+                    <a class="account-link" href="{{ $withLang('/login') }}">
+                        <span class="material-symbols-outlined">person</span>
+                        {{ $copy['actions']['login'] }}
+                    </a>
+                    <button class="mobile-toggle" type="button" aria-label="Open menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-      categorySelect.innerHTML = '<option value="all">Все языки</option>';
-      categories.forEach((category) => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categorySelect.appendChild(option);
-      });
-    }
+        <main class="home-main" id="home-main">
+            <section class="hero-section">
+                <div class="wrap hero-inner">
+                    <span class="hero-eyebrow">{{ $copy['hero']['eyebrow'] }}</span>
+                    <h1 class="hero-title">
+                        {{ $copy['hero']['titleBefore'] }} <em>{{ $copy['hero']['titleAccent'] }}</em> {{ $copy['hero']['titleAfter'] }}
+                    </h1>
+                    <p class="hero-lead">{{ $copy['hero']['lead'] }}</p>
 
-    async function loadCatalog(filters = {}) {
-      if (catalogStatus) {
-        catalogStatus.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border:2px solid #e5e7eb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span> Загрузка каталога...';
-      }
+                    <form class="hero-search-shell" action="/catalog" method="GET" data-hero-search>
+                        @if ($pageLang !== 'ru')
+                            <input type="hidden" name="lang" value="{{ $pageLang }}">
+                        @endif
+                        <span class="material-symbols-outlined hero-search-icon">search</span>
+                        <input
+                            type="text"
+                            name="q"
+                            value="{{ request('q', '') }}"
+                            placeholder="{{ $copy['hero']['placeholder'] }}"
+                            aria-label="{{ $copy['hero']['placeholder'] }}"
+                        >
+                        <button type="submit">{{ $copy['hero']['submit'] }}</button>
+                    </form>
 
-      try {
-        const params = new URLSearchParams();
-        if (filters.q) params.set('q', filters.q);
-        if (filters.category && filters.category !== 'all') params.set('language', filters.category);
-        params.set('page', '1');
-        params.set('limit', '6');
+                    <div class="metrics-row" aria-label="Institutional library highlights">
+                        @foreach ($copy['metrics'] as $metric)
+                            <span>
+                                <span class="material-symbols-outlined">{{ $metric['icon'] }}</span>
+                                {{ $metric['label'] }}
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
 
-        const response = await fetch(`${CATALOG_API_ENDPOINT}?${params.toString()}`, {
-          headers: {
-            Accept: 'application/json',
-          },
-        });
+            <section class="entry-section">
+                <div class="wrap">
+                    <div class="entry-grid">
+                        @foreach ($copy['cards'] as $card)
+                            <a href="{{ $withLang($card['href']) }}" class="entry-card entry-card--{{ $card['variant'] }} {{ $card['variant'] === 'wide' ? 'entry-card--wide' : '' }}">
+                                <div class="entry-top">
+                                    <span class="material-symbols-outlined">{{ $card['icon'] }}</span>
+                                    <span class="entry-kicker">{{ $card['kicker'] }}</span>
+                                </div>
+                                <div>
+                                    <h3>{{ $card['title'] }}</h3>
+                                    <p>{{ $card['body'] }}</p>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
 
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
+            <section class="subject-section" data-homepage-subjects>
+                <div class="wrap">
+                    <div class="section-head">
+                        <div>
+                            <span>{{ $copy['browse']['eyebrow'] }}</span>
+                            <h2>{{ $copy['browse']['title'] }}</h2>
+                        </div>
+                        <a href="{{ $withLang('/discover') }}">{{ $copy['browse']['cta'] }}</a>
+                    </div>
 
-        const payload = await response.json();
-        const items = Array.isArray(payload.data) ? payload.data : [];
-        renderCatalog(items);
+                    <div class="subject-grid">
+                        @foreach ($copy['subjects'] as $subject)
+                            <a class="subject-card" href="{{ $withLang('/discover') }}">
+                                <span class="subject-icon material-symbols-outlined">{{ $subject['icon'] }}</span>
+                                <strong>{{ $subject['label'] }}</strong>
+                                <small>{{ $subject['code'] }}</small>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
 
-        const total = Number(payload?.meta?.total ?? items.length);
-        const currentLimit = Number(payload?.meta?.limit ?? items.length);
-        if (catalogStatus) {
-          catalogStatus.textContent = `Показано ${items.length || currentLimit} из ${total} книг`;
-        }
-      } catch (error) {
-        renderCatalog([]);
-        if (catalogStatus) {
-          catalogStatus.textContent = 'Не удалось загрузить каталог. Проверьте доступность API.';
-        }
-      }
-    }
+            <section class="trust-section">
+                <div class="wrap trust-grid">
+                    <div class="quote-panel">
+                        <div class="quote-copy">
+                            <p>{{ $copy['quote'] }}</p>
+                        </div>
+                    </div>
 
-    async function initCatalog() {
-      try {
-        const response = await fetch(`${CATALOG_API_ENDPOINT}?limit=100`, {
-          headers: {
-            Accept: 'application/json',
-          },
-        });
+                    <div class="institution-panel">
+                        <span class="material-symbols-outlined">school</span>
+                        <span class="kicker">{{ $copy['institution']['eyebrow'] }}</span>
+                        <h2>{{ $copy['institution']['title'] }}</h2>
+                        <p>{{ $copy['institution']['body'] }}</p>
 
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
+                        <div class="fact-grid">
+                            @foreach ($copy['institution']['facts'] as $fact)
+                                <div class="fact-card">
+                                    <strong>{{ $fact['value'] }}</strong>
+                                    <span>{{ $fact['label'] }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
 
-        const payload = await response.json();
-        const items = Array.isArray(payload.data) ? payload.data : [];
-        updateCategoryOptions(items);
-      } catch (error) {
-        if (catalogStatus) {
-          catalogStatus.textContent = 'Не удалось загрузить список категорий.';
-        }
-      }
-
-      await loadCatalog();
-    }
-
-    async function loadShowcase() {
-      if (!showcaseGrid) return;
-      try {
-        const response = await fetch(`${CATALOG_API_ENDPOINT}?limit=6`, {
-          headers: { Accept: 'application/json' },
-        });
-        if (!response.ok) return;
-        const payload = await response.json();
-        const items = Array.isArray(payload.data) ? payload.data : [];
-        if (!items.length) return;
-        showcaseGrid.innerHTML = items.map((item) => {
-          const title = normalizeText(item?.title?.display || item?.title?.raw, '...');
-          const author = normalizeText(item?.primaryAuthor, '');
-          const publisher = normalizeText(item?.publisher?.name, '...');
-          const available = item?.copies?.available || 0;
-          const isbn = item?.isbn?.raw || '';
-          return `
-            <article class="book-card" onclick="location.href='/book/${encodeURIComponent(isbn)}'">
-              <div class="book-preview">
-                <small>${escapeHtml(publisher.substring(0, 15))}</small>
-                <h3>${escapeHtml(title.substring(0, 28))}</h3>
-              </div>
-              <div class="book-title">${escapeHtml(title)}</div>
-              <div class="book-meta">${escapeHtml(author)}${author && available ? ' · ' : ''}${available ? available + ' в наличии' : ''}</div>
-            </article>
-          `;
-        }).join('');
-      } catch (e) {
-        console.error('Showcase load error', e);
-      }
-    }
-
-    async function initLanding() {
-      try {
-        const response = await fetch(LANDING_API_ENDPOINT, {
-          headers: {
-            Accept: 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
-
-        const payload = await response.json();
-        applyLandingData(payload);
-      } catch (error) {
-        console.error('Landing API error', error);
-      }
-    }
-
-    searchButton?.addEventListener('click', () => {
-      loadCatalog({
-        q: searchInput?.value?.trim(),
-        category: categorySelect?.value,
-      });
-    });
-
-    searchInput?.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter') return;
-
-      event.preventDefault();
-      loadCatalog({
-        q: searchInput.value.trim(),
-        category: categorySelect?.value,
-      });
-    });
-
-    categorySelect?.addEventListener('change', () => {
-      loadCatalog({
-        q: searchInput?.value?.trim(),
-        category: categorySelect.value,
-      });
-    });
-
-    @if(session('library.user'))
-    document.getElementById('shared-logout-btn')?.addEventListener('click', async () => {
-      try {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-        await fetch('/api/v1/logout', {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
-        });
-      } catch (_) {}
-      localStorage.removeItem('library.auth.user');
-      window.location.href = '/login';
-    });
-    @endif
-
-    function heroSearch() {
-      const q = document.getElementById('hero-search-input')?.value?.trim();
-      if (q) {
-        window.location.href = '/catalog?q=' + encodeURIComponent(q);
-      } else {
-        window.location.href = '/catalog';
-      }
-    }
-
-    document.getElementById('hero-primary-btn')?.addEventListener('click', () => {
-      heroSearch();
-    });
-
-    initLanding();
-    initCatalog();
-    loadShowcase();
-  </script>
+        <footer class="home-footer">
+            <div class="wrap">
+                <div class="footer-brand">
+                    <strong>{{ $copy['brand'] }}</strong>
+                    <span>© {{ now()->year }} {{ $copy['footer']['caption'] }}</span>
+                </div>
+                <nav class="footer-links" aria-label="Footer">
+                    @foreach ($copy['footer']['links'] as $footerLink)
+                        <a href="{{ $withLang('/resources') }}">{{ $footerLink }}</a>
+                    @endforeach
+                </nav>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>

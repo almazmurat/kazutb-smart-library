@@ -26,7 +26,7 @@ class ShortlistPageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('href="/catalog"', false)
-            ->assertSee('href="/for-teachers"', false);
+            ->assertDontSee('href="/for-teachers"', false);
     }
 
     public function test_shortlist_page_has_copy_and_clear_actions(): void

@@ -7,6 +7,7 @@ use App\Services\Library\CirculationLoanWriteService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class InternalCirculationRenewalTest extends TestCase
@@ -38,6 +39,7 @@ class InternalCirculationRenewalTest extends TestCase
     {
         try {
             DB::connection('pgsql')->getPdo();
+
             return true;
         } catch (\Throwable) {
             return false;
@@ -51,12 +53,12 @@ class InternalCirculationRenewalTest extends TestCase
         }
     }
 
-    private function staffSession(): array
+    private function staffSession(string $role = 'librarian'): array
     {
         return [
             'library.user' => [
                 'id' => 'aaaaaaaa-0000-0000-0000-111111111111',
-                'role' => 'librarian',
+                'role' => $role,
                 'email' => 'staff@kazutb.kz',
                 'name' => 'Test Staff',
             ],
@@ -93,6 +95,29 @@ class InternalCirculationRenewalTest extends TestCase
 
         $response->assertStatus(400);
         $response->assertJson(['success' => false, 'error' => 'invalid_loan_id']);
+    }
+
+    public function test_renew_requires_staff_session(): void
+    {
+        $response = $this->postJson('/api/v1/internal/circulation/loans/00000000-0000-0000-0000-000000000000/renew');
+
+        $response->assertStatus(403);
+        $response->assertJson([
+            'success' => false,
+            'error' => 'staff_authorization_required',
+        ]);
+    }
+
+    public function test_renew_rejects_reader_role_session(): void
+    {
+        $response = $this->withSession($this->staffSession('reader'))
+            ->postJson('/api/v1/internal/circulation/loans/00000000-0000-0000-0000-000000000000/renew');
+
+        $response->assertStatus(403);
+        $response->assertJson([
+            'success' => false,
+            'error' => 'staff_authorization_required',
+        ]);
     }
 
     public function test_renew_succeeds_for_active_loan(): void
@@ -229,7 +254,7 @@ class InternalCirculationRenewalTest extends TestCase
         $readerId = $this->findOrFailTestReader();
         $copyId = $this->findOrFailTestCopy();
 
-        $id = (string) \Illuminate\Support\Str::uuid();
+        $id = (string) Str::uuid();
         $now = Carbon::now('UTC');
 
         DB::connection('pgsql')->table('app.circulation_loans')->insert(array_merge([

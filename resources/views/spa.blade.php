@@ -7,7 +7,7 @@
     <title>Библиотека — Приложение</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    @vite(['resources/css/spa.css', 'resources/js/spa/main.jsx'])
+    @vite(['resources/js/spa/main.jsx'])
 </head>
 <body>
     <div id="spa-root"></div>

@@ -1,26 +1,106 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../lib/api';
 
+const PAGE_SIZE = 20;
+const DEFAULT_SORT = 'popular';
+const LANGUAGE_OPTIONS = [
+  { value: '', label: 'Все языки' },
+  { value: 'ru', label: 'Русский' },
+  { value: 'kk', label: 'Қазақша' },
+  { value: 'en', label: 'English' },
+];
+const YEAR_PRESET_OPTIONS = [
+  { value: '', label: 'Все годы' },
+  { value: 'recent', label: '2024–2026' },
+  { value: 'modern', label: '2020–2023' },
+  { value: 'classic', label: 'До 2019' },
+];
+
+function readPositiveInt(value, fallback = 1) {
+  const parsed = Number.parseInt(value ?? '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
 export function CatalogPage() {
-  const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('q') ?? '';
+  const sort = searchParams.get('sort') ?? DEFAULT_SORT;
+  const page = readPositiveInt(searchParams.get('page'), 1);
+  const availableOnly = searchParams.get('available_only') === '1';
+  const language = searchParams.get('language') ?? '';
+  const yearFrom = searchParams.get('year_from') ?? '';
+  const yearTo = searchParams.get('year_to') ?? '';
+
+  const [draftQuery, setDraftQuery] = useState(query);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
 
-  const search = useCallback(async (q, p = 1) => {
+  useEffect(() => {
+    setDraftQuery(query);
+  }, [query]);
+
+  const totalPages = useMemo(() => Math.max(1, Math.ceil(total / PAGE_SIZE)), [total]);
+  const yearPreset = useMemo(() => {
+    if (yearFrom === '2024' && yearTo === '2026') return 'recent';
+    if (yearFrom === '2020' && yearTo === '2023') return 'modern';
+    if (yearTo === '2019' && !yearFrom) return 'classic';
+
+    return '';
+  }, [yearFrom, yearTo]);
+  const yearSummary = useMemo(() => {
+    if (yearFrom && yearTo) return `${yearFrom}–${yearTo}`;
+    if (yearFrom) return `с ${yearFrom}`;
+    if (yearTo) return `до ${yearTo}`;
+
+    return '';
+  }, [yearFrom, yearTo]);
+  const hasActiveFilters = query || sort !== DEFAULT_SORT || availableOnly || language || yearFrom || yearTo || page > 1;
+  const activeFilterCount = useMemo(
+    () => [query, sort !== DEFAULT_SORT, availableOnly, language, yearFrom || yearTo].filter(Boolean).length,
+    [availableOnly, language, query, sort, yearFrom, yearTo],
+  );
+  const loadingSkeletons = useMemo(() => Array.from({ length: 6 }, (_, index) => index), []);
+
+  const updateParams = useCallback((updates) => {
+    const next = new URLSearchParams(searchParams);
+
+    Object.entries(updates).forEach(([key, value]) => {
+      const shouldClear = value === undefined
+        || value === null
+        || value === ''
+        || value === false
+        || (key === 'page' && Number(value) <= 1)
+        || (key === 'sort' && value === DEFAULT_SORT);
+
+      if (shouldClear) {
+        next.delete(key);
+      } else {
+        next.set(key, String(value));
+      }
+    });
+
+    setSearchParams(next);
+  }, [searchParams, setSearchParams]);
+
+  const search = useCallback(async ({ q, currentPage, currentSort, onlyAvailable, currentLanguage, currentYearFrom, currentYearTo }) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
       if (q.trim()) params.set('q', q.trim());
-      params.set('page', String(p));
-      params.set('limit', '20');
+      params.set('page', String(currentPage));
+      params.set('limit', String(PAGE_SIZE));
+      if (currentSort) params.set('sort', currentSort);
+      if (onlyAvailable) params.set('available_only', '1');
+      if (currentLanguage) params.set('language', currentLanguage);
+      if (currentYearFrom) params.set('year_from', currentYearFrom);
+      if (currentYearTo) params.set('year_to', currentYearTo);
 
       const data = await api(`/catalog-db?${params}`);
       const items = Array.isArray(data?.data) ? data.data : [];
       setResults(items);
       setTotal(Number(data?.meta?.total ?? 0));
-      setPage(p);
     } catch (err) {
       console.error('Catalog search failed:', err);
       setResults([]);
@@ -31,97 +111,256 @@ export function CatalogPage() {
   }, []);
 
   useEffect(() => {
-    search('', 1);
-  }, [search]);
+    search({
+      q: query,
+      currentPage: page,
+      currentSort: sort,
+      onlyAvailable: availableOnly,
+      currentLanguage: language,
+      currentYearFrom: yearFrom,
+      currentYearTo: yearTo,
+    });
+  }, [availableOnly, language, page, query, search, sort, yearFrom, yearTo]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    search(query, 1);
+    updateParams({ q: draftQuery.trim(), page: 1 });
+  };
+
+  const handleSortChange = (e) => {
+    updateParams({ sort: e.target.value, page: 1 });
+  };
+
+  const handleLanguageChange = (e) => {
+    updateParams({ language: e.target.value, page: 1 });
+  };
+
+  const handleYearPresetChange = (e) => {
+    const nextPreset = e.target.value;
+
+    if (nextPreset === 'recent') {
+      updateParams({ year_from: '2024', year_to: '2026', page: 1 });
+      return;
+    }
+
+    if (nextPreset === 'modern') {
+      updateParams({ year_from: '2020', year_to: '2023', page: 1 });
+      return;
+    }
+
+    if (nextPreset === 'classic') {
+      updateParams({ year_from: '', year_to: '2019', page: 1 });
+      return;
+    }
+
+    updateParams({ year_from: '', year_to: '', page: 1 });
+  };
+
+  const handleAvailabilityChange = (e) => {
+    updateParams({ available_only: e.target.checked ? '1' : '', page: 1 });
+  };
+
+  const handlePageChange = (nextPage) => {
+    updateParams({ page: nextPage });
+  };
+
+  const clearFilters = () => {
+    setDraftQuery('');
+    setSearchParams({});
   };
 
   return (
     <div className="page-catalog">
-      <div className="page-header">
-        <h1 className="page-title">Каталог</h1>
-        <p className="page-subtitle">
-          {total > 0 ? `${total.toLocaleString('ru-RU')} документов` : 'Поиск по каталогу'}
-        </p>
-      </div>
+      <section className="catalog-overview">
+        <div className="catalog-hero-card">
+          <span className="catalog-kicker">Smart discovery</span>
+          <h1 className="page-title">Каталог</h1>
+          <p className="page-subtitle">
+            {total > 0
+              ? `${total.toLocaleString('ru-RU')} документов в актуальной выборке`
+              : 'Поиск по каталогу, авторам, ISBN и доступности фонда'}
+          </p>
+          <div className="catalog-tag-row">
+            <span className="catalog-tag">Reader-first UX</span>
+            <span className="catalog-tag">Живой статус экземпляров</span>
+            <span className="catalog-tag">Быстрый переход к карточке книги</span>
+          </div>
+        </div>
+
+        <aside className="catalog-insight-card">
+          <div className="insight-block">
+            <span className="insight-label">Найдено</span>
+            <strong className="insight-value">{total > 0 ? total.toLocaleString('ru-RU') : '—'}</strong>
+          </div>
+          <div className="insight-grid">
+            <div className="insight-mini">
+              <span>Фильтров</span>
+              <strong>{activeFilterCount}</strong>
+            </div>
+            <div className="insight-mini">
+              <span>Страница</span>
+              <strong>{Math.min(page, totalPages)}/{totalPages}</strong>
+            </div>
+          </div>
+          <p className="insight-copy">
+            {query
+              ? `Фокус по запросу «${query}» с учётом активных ограничений.`
+              : 'Показываем полный академический фонд с быстрым маршрутом к нужной книге.'}
+          </p>
+        </aside>
+      </section>
 
       <form className="search-bar" onSubmit={handleSearch}>
         <input
           type="text"
           className="search-input"
           placeholder="Поиск по названию, автору, ISBN…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={draftQuery}
+          onChange={(e) => setDraftQuery(e.target.value)}
         />
         <button type="submit" className="search-btn" disabled={loading}>
           {loading ? '⏳' : '🔍'} Найти
         </button>
       </form>
 
-      {loading && results.length === 0 && (
-        <div className="loading-state">Загрузка каталога…</div>
-      )}
+      <div className="catalog-toolbar">
+        <div className="catalog-filters">
+          <label className="filter-select-wrap">
+            <span>Сортировка</span>
+            <select className="filter-select" value={sort} onChange={handleSortChange}>
+              <option value="popular">Сначала доступные</option>
+              <option value="newest">Сначала новые</option>
+              <option value="title">По названию</option>
+              <option value="author">По автору</option>
+            </select>
+          </label>
 
-      <div className="results-grid">
-        {results.map((doc) => {
-          const identifier = doc?.isbn?.raw || doc?.id;
-          const title = doc?.title?.display || doc?.title?.raw || 'Без названия';
-          const subtitle = doc?.title?.subtitle;
-          const publicationYear = doc?.publicationYear;
-          const languageCode = doc?.language?.code;
-          const rawIsbn = doc?.isbn?.raw;
-          const availableCopies = Number(doc?.copies?.available ?? NaN);
+          <label className="filter-select-wrap">
+            <span>Язык</span>
+            <select className="filter-select" value={language} onChange={handleLanguageChange}>
+              {LANGUAGE_OPTIONS.map((option) => (
+                <option key={option.value || 'all'} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
 
-          return (
-            <a
-              key={doc?.id || identifier}
-              href={identifier ? `/book/${encodeURIComponent(identifier)}` : '/catalog'}
-              className="result-card"
-            >
-              <div className="card-title">{title}</div>
-              {subtitle && <div className="card-subtitle">{subtitle}</div>}
-              <div className="card-meta">
-                {publicationYear && <span className="meta-year">{publicationYear}</span>}
-                {languageCode && <span className="meta-lang">{languageCode.toUpperCase()}</span>}
-                {rawIsbn && <span className="meta-isbn">ISBN: {rawIsbn}</span>}
-              </div>
-              {!Number.isNaN(availableCopies) && (
-                <div className={`card-availability ${availableCopies > 0 ? 'available' : 'unavailable'}`}>
-                  {availableCopies > 0
-                    ? `${availableCopies} экз. доступно`
-                    : 'Нет в наличии'}
-                </div>
-              )}
-            </a>
-          );
-        })}
+          <label className="filter-select-wrap">
+            <span>Год издания</span>
+            <select className="filter-select" value={yearPreset} onChange={handleYearPresetChange}>
+              {YEAR_PRESET_OPTIONS.map((option) => (
+                <option key={option.value || 'all-years'} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label className="filter-checkbox">
+            <input type="checkbox" checked={availableOnly} onChange={handleAvailabilityChange} />
+            <span>Только доступные экземпляры</span>
+          </label>
+        </div>
+
+        <div className="toolbar-actions">
+          <div className="search-summary">
+            {query ? `Запрос: «${query}»` : 'Показаны все документы'}
+            {language ? ` · язык: ${language.toUpperCase()}` : ''}
+            {yearSummary ? ` · годы: ${yearSummary}` : ''}
+            {availableOnly ? ' · только в наличии' : ''}
+          </div>
+
+          {hasActiveFilters && (
+            <button type="button" className="clear-btn" onClick={clearFilters}>
+              Сбросить
+            </button>
+          )}
+        </div>
       </div>
 
-      {results.length === 0 && !loading && (
-        <div className="empty-state">
-          {query ? 'Ничего не найдено. Попробуйте другой запрос.' : 'Начните поиск, чтобы увидеть результаты.'}
+      {loading && results.length > 0 && (
+        <div className="loading-inline">Обновляем подборку…</div>
+      )}
+
+      {loading && results.length === 0 ? (
+        <div className="results-grid results-grid--skeleton" aria-hidden="true">
+          {loadingSkeletons.map((index) => (
+            <div key={index} className="result-card result-card--skeleton">
+              <div className="skeleton-pill" />
+              <div className="skeleton-line skeleton-line--title" />
+              <div className="skeleton-line" />
+              <div className="skeleton-line skeleton-line--short" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="results-grid">
+          {results.map((doc) => {
+            const identifier = doc?.isbn?.raw || doc?.id;
+            const title = doc?.title?.display || doc?.title?.raw || 'Без названия';
+            const subtitle = doc?.title?.subtitle;
+            const publicationYear = doc?.publicationYear;
+            const languageCode = doc?.language?.code;
+            const rawIsbn = doc?.isbn?.raw;
+            const availableCopies = Number(doc?.copies?.available ?? NaN);
+
+            return (
+              <a
+                key={doc?.id || identifier}
+                href={identifier ? `/book/${encodeURIComponent(identifier)}` : '/catalog'}
+                className="result-card"
+              >
+                <div className="card-topline">
+                  <span className={`card-badge ${availableCopies > 0 ? 'card-badge--available' : 'card-badge--muted'}`}>
+                    {availableCopies > 0 ? 'В наличии' : 'Проверить доступность'}
+                  </span>
+                  {languageCode && <span className="card-badge card-badge--muted">{languageCode.toUpperCase()}</span>}
+                </div>
+                <div className="card-title">{title}</div>
+                {subtitle && <div className="card-subtitle">{subtitle}</div>}
+                <div className="card-meta">
+                  {publicationYear && <span className="meta-year">{publicationYear}</span>}
+                  {rawIsbn && <span className="meta-isbn">ISBN: {rawIsbn}</span>}
+                </div>
+                {!Number.isNaN(availableCopies) && (
+                  <div className={`card-availability ${availableCopies > 0 ? 'available' : 'unavailable'}`}>
+                    {availableCopies > 0
+                      ? `${availableCopies} экз. доступно`
+                      : 'Сейчас нет в наличии'}
+                  </div>
+                )}
+                <div className="card-link-hint">Открыть карточку →</div>
+              </a>
+            );
+          })}
         </div>
       )}
 
-      {total > 20 && (
+      {results.length === 0 && !loading && (
+        <div className="empty-state">
+          <div className="empty-state-icon">🔎</div>
+          <strong>{query ? 'Ничего не найдено' : 'Начните поиск по фонду'}</strong>
+          <p>
+            {query
+              ? 'Попробуйте изменить запрос, язык или диапазон лет, чтобы расширить выдачу.'
+              : 'Введите название, автора или ISBN, чтобы увидеть подходящие издания.'}
+          </p>
+        </div>
+      )}
+
+      {total > PAGE_SIZE && (
         <div className="pagination">
           <button
             className="page-btn"
             disabled={page <= 1}
-            onClick={() => search(query, page - 1)}
+            onClick={() => handlePageChange(page - 1)}
           >
             ← Назад
           </button>
           <span className="page-info">
-            Стр. {page} из {Math.ceil(total / 20)}
+            Стр. {Math.min(page, totalPages)} из {totalPages}
           </span>
           <button
             className="page-btn"
-            disabled={page >= Math.ceil(total / 20)}
-            onClick={() => search(query, page + 1)}
+            disabled={page >= totalPages}
+            onClick={() => handlePageChange(page + 1)}
           >
             Далее →
           </button>

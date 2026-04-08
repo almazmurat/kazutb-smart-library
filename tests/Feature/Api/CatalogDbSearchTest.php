@@ -109,9 +109,26 @@ class CatalogDbSearchTest extends TestCase
         }
 
         $keyword = mb_substr($first, 0, 8);
-        $response = $this->getJson('/api/v1/catalog-db?q=' . urlencode($keyword) . '&limit=3');
+        $response = $this->getJson('/api/v1/catalog-db?q='.urlencode($keyword).'&limit=3');
         $response->assertOk();
         $this->assertGreaterThan(0, $response->json('meta.total'));
+    }
+
+    public function test_catalog_db_no_result_query_returns_empty_payload(): void
+    {
+        if (! $this->canUseLivePgsql()) {
+            $this->markTestSkipped('Live PostgreSQL not available.');
+        }
+
+        $needle = '__A2_NO_MATCH__'.uniqid();
+
+        $response = $this->getJson('/api/v1/catalog-db?q='.urlencode($needle).'&limit=5');
+
+        $response->assertOk()
+            ->assertJsonPath('meta.total', 0)
+            ->assertJsonPath('meta.per_page', 5);
+
+        $this->assertSame([], $response->json('data'));
     }
 
     public function test_catalog_db_validates_bad_params(): void
@@ -125,6 +142,7 @@ class CatalogDbSearchTest extends TestCase
     {
         try {
             DB::connection('pgsql')->getPdo();
+
             return true;
         } catch (\Throwable) {
             return false;

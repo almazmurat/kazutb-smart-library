@@ -6,9 +6,25 @@ use Tests\TestCase;
 
 class InternalStewardshipPageTest extends TestCase
 {
+    private function staffSession(): array
+    {
+        return [
+            'library.user' => [
+                'id' => 'staff-1',
+                'name' => 'Library Staff',
+                'email' => 'staff@example.com',
+                'login' => 'staff01',
+                'ad_login' => 'staff01',
+                'role' => 'librarian',
+            ],
+            'library.crm_token' => 'test-staff-token',
+            'library.authenticated_at' => now()->toIso8601String(),
+        ];
+    }
+
     public function test_stewardship_page_renders_successfully(): void
     {
-        $response = $this->get('/internal/stewardship');
+        $response = $this->withSession($this->staffSession())->get('/internal/stewardship');
 
         $response
             ->assertOk()
@@ -22,7 +38,7 @@ class InternalStewardshipPageTest extends TestCase
 
     public function test_stewardship_page_has_tab_navigation(): void
     {
-        $response = $this->get('/internal/stewardship');
+        $response = $this->withSession($this->staffSession())->get('/internal/stewardship');
 
         $response
             ->assertOk()
@@ -34,7 +50,7 @@ class InternalStewardshipPageTest extends TestCase
 
     public function test_stewardship_page_has_action_endpoints(): void
     {
-        $response = $this->get('/internal/stewardship');
+        $response = $this->withSession($this->staffSession())->get('/internal/stewardship');
 
         $response
             ->assertOk()
@@ -45,7 +61,7 @@ class InternalStewardshipPageTest extends TestCase
 
     public function test_stewardship_page_has_bulk_action_ui(): void
     {
-        $response = $this->get('/internal/stewardship');
+        $response = $this->withSession($this->staffSession())->get('/internal/stewardship');
 
         $response
             ->assertOk()
@@ -62,7 +78,7 @@ class InternalStewardshipPageTest extends TestCase
 
     public function test_stewardship_page_links_to_other_internal_pages(): void
     {
-        $response = $this->get('/internal/stewardship');
+        $response = $this->withSession($this->staffSession())->get('/internal/stewardship');
 
         $response
             ->assertOk()

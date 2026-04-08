@@ -5,21 +5,45 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint-and-test:
-    name: Lint & SQLite Tests
+  secret-scan:
+    name: Secret Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  backend-quality:
+    name: Backend QA & Coverage
+    runs-on: ubuntu-latest
+    needs: secret-scan
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
           extensions: pdo, pdo_pgsql, pdo_sqlite, mbstring, xml, bcmath, ctype, json, tokenizer
-          coverage: none
+          coverage: pcov
 
       - name: Cache Composer dependencies
         uses: actions/cache@v4
@@ -31,71 +55,95 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Run PHP lint (Pint)
-        run: ./vendor/bin/pint --test
-
-      - name: Run tests (SQLite)
-        run: php artisan test --no-interaction
+      - name: Run local CI gates
+        run: composer qa:ci
         env:
           APP_ENV: testing
-          APP_KEY: base64:testkeyfortestingonlynotproduction=
+          APP_KEY: base64:QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUE=
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
           CACHE_STORE: array
           SESSION_DRIVER: array
           QUEUE_CONNECTION: sync
 
-  test-postgres:
-    name: PostgreSQL Tests
-    runs-on: ubuntu-latest
-    needs: lint-and-test
-
-    services:
-      postgres:
-        image: postgres:16
+      - name: Generate PHPUnit coverage and JUnit artifacts
+        run: |
+          mkdir -p build/test-results
+          ./vendor/bin/phpunit \
+            --testsuite=Feature \
+            --log-junit build/test-results/phpunit-feature.xml \
+            --coverage-clover build/test-results/clover.xml
         env:
-          POSTGRES_DB: library_test
-          POSTGRES_USER: library_test
-          POSTGRES_PASSWORD: library_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U library_test"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          APP_ENV: testing
+          APP_KEY: base64:QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUE=
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ':memory:'
+          CACHE_STORE: array
+          SESSION_DRIVER: array
+          QUEUE_CONNECTION: sync
+
+      - name: Enforce minimum coverage threshold
+        run: php scripts/dev/check-coverage-threshold.php build/test-results/clover.xml 20
+
+      - name: Upload backend QA artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-qa-artifacts
+          path: build/test-results
+
+  browser-smoke:
+    name: Frontend Build & Playwright Smoke
+    runs-on: ubuntu-latest
+    needs: secret-scan
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: pdo, pdo_pgsql, pdo_sqlite, mbstring, xml, bcmath, ctype, json, tokenizer
+          extensions: pdo, pdo_sqlite, mbstring, xml, bcmath, ctype, json, tokenizer
           coverage: none
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
-          restore-keys: composer-
+          node-version: '22'
+          cache: npm
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Run PostgreSQL-dependent tests
-        run: php artisan test --no-interaction
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser smoke tests
+        run: npm run test:e2e
         env:
+          CI: true
           APP_ENV: testing
-          APP_KEY: base64:testkeyfortestingonlynotproduction=
-          DB_CONNECTION: pgsql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
-          DB_DATABASE: library_test
-          DB_USERNAME: library_test
-          DB_PASSWORD: library_test
+          APP_KEY: base64:QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUE=
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ':memory:'
           CACHE_STORE: array
           SESSION_DRIVER: array
           QUEUE_CONNECTION: sync
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:8000
+
+      - name: Upload Playwright artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-artifacts
+          path: |
+            playwright-report
+            test-results/playwright-artifacts

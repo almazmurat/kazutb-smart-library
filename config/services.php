@@ -36,8 +36,12 @@ return [
     ],
 
     'external_auth' => [
-        'login_url' => env('EXTERNAL_AUTH_LOGIN_URL', 'http://10.0.1.47/api/login'),
-        'logout_url' => env('EXTERNAL_AUTH_LOGOUT_URL', ''),
+        'login_url' => env('EXTERNAL_AUTH_LOGIN_URL', 'http://crm.local/api/login'),
+        'logout_url' => env('EXTERNAL_AUTH_LOGOUT_URL', 'http://crm.local/api/logout'),
+    ],
+
+    'public_catalog_proxy' => [
+        'url' => env('FRONTEND_CATALOG_PROXY_URL', 'http://localhost:5173/api/v1/catalog'),
     ],
 
     'integration' => [

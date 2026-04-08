@@ -6,31 +6,32 @@
     <title>Internal Review</title>
     <style>
         :root {
-            --bg: #f4f1ea;
-            --paper: #fffdf9;
-            --ink: #1f2937;
-            --muted: #6b7280;
-            --line: rgba(31, 41, 55, 0.12);
-            --accent: #124559;
-            --accent-soft: #d9e9ee;
-            --danger: #991b1b;
+            --bg: #eef4ff;
+            --paper: rgba(255, 255, 255, 0.94);
+            --ink: #14213d;
+            --muted: #64748b;
+            --line: rgba(20, 33, 61, 0.10);
+            --accent: #2563eb;
+            --accent-soft: rgba(59, 130, 246, 0.10);
+            --danger: #b91c1c;
             --danger-soft: #fee2e2;
-            --warn: #9a3412;
-            --warn-soft: #ffedd5;
-            --ok: #166534;
+            --warn: #b45309;
+            --warn-soft: #fef3c7;
+            --ok: #15803d;
             --ok-soft: #dcfce7;
-            --shadow: 0 16px 40px rgba(31, 41, 55, 0.08);
+            --shadow: 0 20px 50px rgba(21, 34, 66, 0.08);
         }
 
         * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: Georgia, 'Times New Roman', serif;
+            font-family: 'Inter', system-ui, sans-serif;
             color: var(--ink);
             background:
-                radial-gradient(circle at top left, rgba(18, 69, 89, 0.08), transparent 22%),
-                linear-gradient(180deg, #fcfaf5 0%, var(--bg) 100%);
+                radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 20%),
+                radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.08), transparent 22%),
+                linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
         }
 
         .shell {

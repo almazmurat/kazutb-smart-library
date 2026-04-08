@@ -54,7 +54,7 @@ class CatalogController extends Controller
         ]);
 
         try {
-            $externalApiUrl = 'http://10.0.1.8:5173/api/v1/catalog';
+            $externalApiUrl = (string) config('services.public_catalog_proxy.url', 'http://localhost:5173/api/v1/catalog');
 
             $response = Http::get($externalApiUrl, array_filter([
                 'q' => $validated['q'] ?? null,

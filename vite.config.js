@@ -10,7 +10,6 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/css/spa.css',
                 'resources/js/spa/main.jsx',
             ],
             refresh: true,

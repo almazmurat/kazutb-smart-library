@@ -1,140 +1,217 @@
-# KazUTB Smart Library
+# Digital Library KazUTB
 
-Цифровая умная библиотека KazUTB — новая операционная платформа библиотеки университета, построенная на Laravel 13 + PostgreSQL + React.
+A production-oriented university digital library platform built with **Laravel**, **PostgreSQL**, **Blade/React/Vite**, and **Docker Compose**.
 
-**Stage**: Advanced prototype, frontend demo-ready, transitioning to operational platform.
+Digital Library KazUTB is not just a landing site or a catalog skin. It is the new library application layer for public discovery, reader accounts, staff operations, digital materials, and future reporting/analytics workflows.
 
 ---
 
-## What this is
+## Project overview
 
-A real library platform, not a demo or interface refresh. It is intended to replace the legacy library environment and support:
-- public catalog, search, and book detail UX (12 public routes, shared design system)
-- teacher-facing academic resource discovery and syllabus support
-- thematic discovery by knowledge areas with catalog deep-linking
+The platform combines:
+- public catalog and book-detail discovery
+- search and subject navigation with growing **UDC-driven** workflows
 - reader account and reservation flows
-- internal librarian and staff workflows (circulation, review, stewardship)
-- CRM integration boundary (reservation read/approve/reject)
-- data quality stewardship workflows
-- future reporting, digital materials, and analytics layers
+- teacher shortlist / syllabus-support workflows
+- internal review, stewardship, and circulation surfaces
+- licensed external resource access and controlled digital material handling
+- an auth/integration boundary to the university CRM
 
-See [`project-context/00-project-truth.md`](project-context/00-project-truth.md) for full product truth.
+## Major capabilities
 
----
-
-## Public routes
-
-| Route | Description |
-|-------|-------------|
-| `/` | Homepage with discovery cards, catalog preview, hero |
-| `/catalog` | DB-backed catalog search with filters (supports `?q=` and `?sort=` deep-links) |
-| `/book/{isbn}` | Book detail page |
-| `/login` | Library login (CRM-proxied auth) |
-| `/account` | Reader personal cabinet (loans, reservations, profile) |
-| `/for-teachers` | Teacher-facing landing: feature cards, syllabus workflow, FAQ |
-| `/discover` | Thematic discovery: 9 knowledge areas with keyword chips → catalog |
-| `/services` | Library services overview |
-| `/resources` | Electronic resources and databases |
-| `/about` | About the library |
-| `/contacts` | Contact information |
-| `/news` | News and events |
+- **Reader-facing public shell** across homepage, catalog, resources, contacts, and discovery pages
+- **Catalog search API** with URL-synced filters for query, language, year range, sort, and availability
+- **Account area** for authenticated reader summaries, loans, and reservations
+- **Protected internal staff routes** for dashboard, review, stewardship, circulation, and AI-assisted support tools
+- **Faculty support flows** consolidated into `/resources`, `/shortlist`, and `/account`
+- **Integration-safe auth boundary** where CRM handles authentication without owning library business logic
 
 ---
 
-## Tech stack
+## Stack
 
 | Layer | Technology |
-|-------|-----------|
-| Backend | PHP 8.3+, Laravel 13 |
-| Database | PostgreSQL 18 |
-| Frontend | Laravel Blade + React 19 (SPA at `/app/*`) |
-| Bundler | Vite 8 |
-| CSS | Tailwind CSS 4 |
-| Auth | Session + CRM API (LDAP/AD proxy) + Sanctum |
-| Deployment | Docker (php-fpm + Nginx + Supervisor) |
-| CI | GitHub Actions (`.github/workflows/ci.yml`) |
+|---|---|
+| Backend | Laravel 13, PHP 8.4+ |
+| Frontend | Blade, React, Vite |
+| Database | PostgreSQL |
+| Runtime | Docker Compose |
+| Testing | PHPUnit feature/API tests, Playwright smoke tests |
+| CI/CD | GitHub Actions |
 
 ---
 
-## Quick start
+## Architecture summary
 
+- **Library platform owns** catalog, discovery, holdings/copies logic, accounts, reservations, stewardship, internal operations, and reporting-compatible library behavior.
+- **CRM owns** authentication/integration APIs and must **not** connect directly to the library database.
+- **PostgreSQL** is the canonical application data store.
+- **Blade + React/Vite** are used together: Blade for public/institutional pages and React for richer SPA surfaces under `/app/*`.
+
+For more detail, see:
+- `project-context/00-canonical-platform-truth.md`
+- `project-context/01-runtime-stack-and-entrypoints.md`
+- `project-context/02-domain-boundaries-and-integrations.md`
+
+---
+
+## Local setup
+
+### Requirements
+- PHP **8.4+**
+- Composer
+- Node.js **20.19+** (or Docker with `node:22`)
+- npm
+- Docker + Docker Compose
+- PostgreSQL 16+
+
+### 1) Configure environment
 ```bash
-# 1. Install dependencies
-composer setup          # composer install + .env + key:generate + migrate + npm build
-
-# 2. Start dev environment (server + queue + logs + Vite HMR)
-composer dev
-
-# App: http://localhost:8000
-# Vite HMR: http://localhost:5173
+cp .env.example .env
 ```
 
-### Docker
+Update local values in `.env` as needed, especially:
+- `DB_*`
+- `POSTGRES_*`
+- `EXTERNAL_AUTH_LOGIN_URL`
+- `API_KEY_21ST` (optional; only needed for the internal 21st integration)
 
+### 2) Install dependencies
 ```bash
-docker compose up --build -d
-docker compose exec -T app php artisan migrate
+composer install
+npm install
+```
+
+### 3) Start with Docker (recommended)
+```bash
+docker compose up --build -d app frontend-dev
+```
+
+Open the app at:
+- `http://localhost`
+
+### 4) Live-edit workflow
+With Docker live sync enabled:
+- changes under `resources/views/*`, `routes/*`, `app/*`, and `public/css/*` appear on refresh
+- changes under `resources/js/*` and `resources/css/*` update through the Vite dev server
+
+To restart the app stack:
+```bash
+docker compose up -d app frontend-dev
 ```
 
 ---
 
-## Key commands
+## Testing and QA
 
+### Run the main automated checks
 ```bash
-# Tests
-composer test                          # all tests
-composer test:internal                 # circulation + copy + review
-composer test:reservation-core         # reservation + circulation
-composer test:integration-reservations # CRM integration tests
-composer test:stewardship              # stewardship tests
+composer qa:ci
+```
 
-# Lint / format
-./vendor/bin/pint                      # format
-./vendor/bin/pint --test               # check only
+This runs:
+- Laravel Pint style checks
+- critical-path PHPUnit feature/API regression tests
+- frontend production build verification
 
-# Dev checks
-composer dev:check                     # environment check
-composer dev:session-start             # pre-session checklist
+### Run the full Laravel test suite
+```bash
+composer test
+```
+
+### Run browser smoke tests
+```bash
+npm run test:e2e:install
+npm run test:e2e
+```
+
+### CI-relevant readiness check
+```bash
+composer dev:sdlc-check
 ```
 
 ---
 
-## Where truth lives
+## CI/CD
 
-| What | Where |
-|------|-------|
-| Project truth and domain ownership | [`project-context/00-project-truth.md`](project-context/00-project-truth.md) |
-| Current platform stage | [`project-context/01-current-stage.md`](project-context/01-current-stage.md) |
-| Active roadmap | [`project-context/02-active-roadmap.md`](project-context/02-active-roadmap.md) |
-| API contracts and boundaries | [`project-context/03-api-contracts.md`](project-context/03-api-contracts.md) |
-| Known risks | [`project-context/04-known-risks.md`](project-context/04-known-risks.md) |
-| Agent and working rules | [`project-context/05-agent-working-rules.md`](project-context/05-agent-working-rules.md) |
-| Current execution focus | [`project-context/06-current-focus.md`](project-context/06-current-focus.md) |
-| Deep product context | [`project-context/98-product-master-context.md`](project-context/98-product-master-context.md) |
+GitHub Actions is configured to:
+- run on **push**, **pull request**, and manual dispatch
+- scan for committed secrets
+- run backend quality gates and regression tests
+- generate PHPUnit/JUnit and coverage artifacts
+- build the frontend
+- run Playwright smoke checks against the public reader flow
+- package release-ready source artifacts for manual download/review
 
----
-
-## For Copilot / AI agents
-
-**Always read first**: [`AGENT_START_HERE.md`](AGENT_START_HERE.md)
-
-Agent startup order is defined there. Do not skip it.
-
-Repo structure and normalization rules: [`docs/developer/REPO_NORMALIZATION_PLAN.md`](docs/developer/REPO_NORMALIZATION_PLAN.md)
-
-Developer workflow: [`docs/developer/AI_WORKFLOW.md`](docs/developer/AI_WORKFLOW.md)
-
-Prompt templates:
-- CLI prompts: [`prompts/`](prompts/)
-- VS Code Copilot Chat: [`.github/prompts/`](.github/prompts/)
+See:
+- `.github/workflows/ci.yml`
+- `.github/workflows/release-package.yml`
+- `docs/assignment-2/`
 
 ---
 
-## Integration notes
+## Repository structure
 
-- CRM is the **auth provider** and integration client — not the domain owner.
-- Library platform owns the domain model, reader UX, and internal workflows.
-- CRM integration boundary: `/api/integration/v1` (reservation read + approve/reject).
-- Scope is intentionally frozen — do not expand without explicit decision.
+```text
+app/                 Laravel application code
+config/              runtime and integration configuration
+database/            migrations, factories, seeders
+resources/           Blade views, React/Vite frontend sources
+routes/              web and API routes
+tests/               PHPUnit feature/API tests + Playwright smoke tests
+scripts/dev/         local QA, workflow, and maintenance automation
+public/              public assets and entrypoint
+docs/assignment-2/   QA automation, CI/CD, and assignment evidence
+project-context/     canonical startup context for contributors and agents
+```
 
-See [`docs/integration-api-contract.json`](docs/integration-api-contract.json) for the full integration API spec.
+---
+
+## Current project status
+
+The repository is in an **active hardening and product-delivery phase**. Current verified areas include:
+- homepage and public shell modernization
+- critical catalog discovery behavior
+- account/reader auth boundaries
+- protected internal staff route access
+- CI-ready regression automation and publication hardening
+
+### Major next areas
+- richer catalog and book-detail UX
+- deeper metadata correction workflows for librarians/admins
+- UDC-centered discovery expansion
+- controlled digital material access
+- reporting and analytics
+
+---
+
+## Auth boundary note
+
+The CRM remains an **authentication/integration boundary**. It is used for login and related integration APIs, but it does not own the library product model and must not connect directly to the library database.
+
+---
+
+## Assignment 2 / QA evidence
+
+Assignment-ready QA and automation materials live in:
+- `docs/assignment-2/README.md`
+- `docs/assignment-2/test-scope.md`
+- `docs/assignment-2/quality-gates.md`
+- `docs/assignment-2/ci-cd.md`
+- `docs/assignment-2/evidence-index.md`
+
+---
+
+## Contribution workflow
+
+1. create/update `docs/sdlc/current/draft.md`
+2. implement and verify the change locally
+3. run the QA gates
+4. open a pull request
+
+---
+
+## Security and publication note
+
+Do **not** commit `.env`, API keys, tokens, or local database credentials. Public-safe defaults live in `.env.example`, and CI includes a secret-scanning gate.
+

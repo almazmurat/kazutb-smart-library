@@ -159,6 +159,19 @@ class ReservationMutateTest extends TestCase
             ->assertJsonPath('error.reason_code', 'invalid_operator_org_context');
     }
 
+    public function test_malformed_operator_org_context_returns_400_before_mutation(): void
+    {
+        $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';
+        $headers = $this->headers;
+        $headers['X-Operator-Org-Context'] = '{"branch_id":';
+
+        $response = $this->withHeaders($headers)
+            ->postJson("/api/integration/v1/reservations/{$id}/approve");
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.reason_code', 'invalid_operator_org_context');
+    }
+
     public function test_replay_same_payload_returns_success(): void
     {
         $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';
@@ -259,7 +272,7 @@ class ReservationMutateTest extends TestCase
     }
 
     /**
-     * @param array{status:int, body:array<string,mixed>, replayed:bool} $result
+     * @param  array{status:int, body:array<string,mixed>, replayed:bool}  $result
      */
     private function bindApproveResult(string $id, array $result): void
     {

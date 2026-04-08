@@ -17,7 +17,6 @@ check_cmd php
 check_cmd composer
 check_cmd node
 check_cmd npm
-check_cmd copilot
 
 echo
 echo "== Versions (if available) =="
@@ -28,15 +27,3 @@ command -v php >/dev/null 2>&1 && php -v | head -n 1 || true
 command -v composer >/dev/null 2>&1 && composer --version || true
 command -v node >/dev/null 2>&1 && node -v || true
 command -v npm >/dev/null 2>&1 && npm -v || true
-
-echo
-echo "== Optional MCP check (Context7) =="
-if command -v npx >/dev/null 2>&1; then
-  if npx ctx7 --help >/dev/null 2>&1; then
-    echo "[ok] ctx7"
-  else
-    echo "[warn] ctx7 is not ready. If Node is below 20, upgrade Node and retry."
-  fi
-else
-  echo "[warn] npx not available; cannot verify ctx7"
-fi

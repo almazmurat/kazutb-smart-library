@@ -33,9 +33,11 @@
       font-family: 'Inter', system-ui, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 10%, rgba(59,130,246,.08), transparent 18%),
-        radial-gradient(circle at 90% 10%, rgba(236,72,153,.06), transparent 16%),
-        linear-gradient(180deg, #ffffff 0%, #f7f9fd 42%, #f3f6fb 100%);
+        radial-gradient(circle at 0% 0%, rgba(37,99,235,.16), transparent 22%),
+        radial-gradient(circle at 100% 0%, rgba(168,85,247,.14), transparent 18%),
+        radial-gradient(circle at 82% 82%, rgba(6,182,212,.12), transparent 22%),
+        linear-gradient(135deg, #f8fbff 0%, #eef4ff 40%, #f8f3ff 72%, #eefbfd 100%);
+      background-attachment: fixed;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -107,9 +109,10 @@
 
     .panel {
       border-radius: var(--radius-xl);
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.95);
-      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 64px rgba(15,23,42,.14);
       padding: 30px;
     }
 
@@ -117,10 +120,11 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      color: #f8fbff;
       background:
-        radial-gradient(circle at 90% 18%, rgba(245,158,11,.12), transparent 26%),
-        radial-gradient(circle at 18% 26%, rgba(59,130,246,.10), transparent 26%),
-        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.93));
+        radial-gradient(circle at 90% 18%, rgba(245,158,11,.18), transparent 26%),
+        radial-gradient(circle at 18% 26%, rgba(59,130,246,.16), transparent 26%),
+        linear-gradient(135deg, #0f172a 0%, #172554 52%, #0f766e 100%);
     }
 
     .eyebrow {
@@ -148,7 +152,7 @@
 
     .promo p {
       margin: 0;
-      color: var(--muted);
+      color: rgba(226,232,240,.86);
       font-size: 16px;
       line-height: 1.7;
       max-width: 470px;

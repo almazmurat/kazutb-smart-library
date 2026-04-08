@@ -33,7 +33,7 @@ Route::get('/digital-viewer/{materialId}', function (Request $request, string $m
 Route::get('/account', function (Request $request) {
     $user = $request->session()->get('library.user');
     if (! is_array($user)) {
-        return redirect('/login?redirect=' . urlencode('/account'));
+        return redirect('/login?redirect='.urlencode('/account'));
     }
 
     return view('account', ['sessionUser' => $user]);
@@ -77,9 +77,7 @@ Route::get('/resources', function () {
     return view('resources', ['activePage' => 'resources']);
 });
 
-Route::get('/for-teachers', function () {
-    return view('for-teachers', ['activePage' => 'for-teachers']);
-});
+Route::get('/for-teachers', fn () => redirect('/resources', 301));
 
 Route::get('/discover', function () {
     return view('discover', ['activePage' => 'discover']);
@@ -87,18 +85,6 @@ Route::get('/discover', function () {
 
 Route::get('/shortlist', function () {
     return view('shortlist', ['activePage' => '']);
-});
-
-Route::get('/internal/dashboard', function () {
-    return view('internal-dashboard');
-});
-
-Route::get('/internal/review', function () {
-    return view('internal-review');
-});
-
-Route::get('/internal/ai-chat', function (Request $request) use ($internalStaffView) {
-    return $internalStaffView($request, 'internal-ai-chat');
 });
 
 // WS1 convergence freeze:
@@ -109,17 +95,17 @@ Route::get('/book/{isbn}/read', function ($isbn) {
 })->name('reader.transitional');
 
 Route::prefix('internal')->group(function () use ($internalStaffView) {
-    Route::get('/dashboard', function () {
-        return view('internal-dashboard');
+    Route::get('/dashboard', function (Request $request) use ($internalStaffView) {
+        return $internalStaffView($request, 'internal-dashboard');
     });
-    Route::get('/review', function () {
-        return view('internal-review');
+    Route::get('/review', function (Request $request) use ($internalStaffView) {
+        return $internalStaffView($request, 'internal-review');
     });
-    Route::get('/stewardship', function () {
-        return view('internal-stewardship');
+    Route::get('/stewardship', function (Request $request) use ($internalStaffView) {
+        return $internalStaffView($request, 'internal-stewardship');
     });
-    Route::get('/circulation', function () {
-        return view('internal-circulation');
+    Route::get('/circulation', function (Request $request) use ($internalStaffView) {
+        return $internalStaffView($request, 'internal-circulation');
     });
     Route::get('/ai-chat', function (Request $request) use ($internalStaffView) {
         return $internalStaffView($request, 'internal-ai-chat');

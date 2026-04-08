@@ -1,0 +1,55 @@
+
+   PASS  Tests\Feature\Api\AuthHardeningTest
+  ✓ login failure does not leak crm response details                     0.22s  
+  ✓ login crm unavailable does not leak exception message                0.01s  
+  ✓ login success returns user without token                             0.01s  
+  ✓ failed login is logged                                               0.01s  
+  ✓ crm unavailable is logged as error                                   0.01s  
+  ✓ login has rate limiting                                              0.01s  
+  ✓ login validation rejects blank credentials                           0.01s  
+  ✓ integration rejects invalid token when allowlist configured          0.01s  
+  ✓ integration accepts valid token when allowlist configured            0.02s  
+  ✓ integration accepts any token when allowlist not configured          0.01s  
+  ✓ login page does not expose crm api url                               0.01s  
+
+   WARN  Tests\Feature\Api\CatalogDbSearchTest
+  - catalog db returns paginated results → Live PostgreSQL not availabl… 0.05s  
+  - catalog db language filter → Live PostgreSQL not available.          0.02s  
+  - catalog db year filter → Live PostgreSQL not available.              0.02s  
+  - catalog db available only filter → Live PostgreSQL not available.    0.02s  
+  - catalog db sort options → Live PostgreSQL not available.             0.02s  
+  - catalog db search query → Live PostgreSQL not available.             0.02s  
+  - catalog db no result query returns empty payload → Live PostgreSQL…  0.02s  
+  ✓ catalog db validates bad params                                      0.01s  
+
+   PASS  Tests\Feature\Api\Integration\ReservationMutateTest
+  ✓ approve success                                                      0.03s  
+  ✓ reject success                                                       0.01s  
+  ✓ invalid transition returns conflict                                  0.01s  
+  ✓ missing idempotency key returns 400                                  0.01s  
+  ✓ invalid operator org context returns 400 before mutation             0.01s  
+  ✓ malformed operator org context returns 400 before mutation           0.01s  
+  ✓ replay same payload returns success                                  0.01s  
+  ✓ same key different payload returns conflict                          0.01s  
+  ✓ reject missing reason or origin returns 400                          0.01s  
+  ✓ approve requires reservations approve operator role                  0.01s  
+  ✓ reject requires reservations reject operator role                    0.01s  
+
+   WARN  Tests\Feature\Api\InternalCirculationRenewalTest
+  ✓ renew route exists                                                   0.05s  
+  - renew returns 404 for nonexistent loan → Live PostgreSQL not availa… 0.02s  
+  ✓ renew validates uuid                                                 0.02s  
+  ✓ renew requires staff session                                         0.02s  
+  ✓ renew rejects reader role session                                    0.02s  
+  - renew succeeds for active loan → Live PostgreSQL not available.      0.02s  
+  - renew fails when max renewals reached → Live PostgreSQL not availab… 0.02s  
+  - staff can renew overdue loan → Live PostgreSQL not available.        0.01s  
+  - renew fails for returned loan → Live PostgreSQL not available.       0.02s  
+  - renew increments renew count correctly → Live PostgreSQL not availa… 0.02s  
+  - renew creates audit event → Live PostgreSQL not available.           0.02s  
+  ✓ service max renewals constant                                        0.02s  
+  ✓ service renewal days constant                                        0.02s  
+
+  Tests:    14 skipped, 29 passed (70 assertions)
+  Duration: 1.00s
+

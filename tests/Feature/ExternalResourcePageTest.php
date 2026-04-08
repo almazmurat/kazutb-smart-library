@@ -6,6 +6,17 @@ use Tests\TestCase;
 
 class ExternalResourcePageTest extends TestCase
 {
+    public function test_resources_page_uses_curated_access_panels(): void
+    {
+        $response = $this->get('/resources');
+
+        $response
+            ->assertOk()
+            ->assertSee('resource-hero-panels', false)
+            ->assertSee('resource-policy-note', false)
+            ->assertSee('resource-access-matrix', false);
+    }
+
     public function test_resources_page_renders_successfully(): void
     {
         $response = $this->get('/resources');
@@ -60,27 +71,24 @@ class ExternalResourcePageTest extends TestCase
             ->assertSee('/api/v1/shortlist', false);
     }
 
-    public function test_for_teachers_page_renders_successfully(): void
+    public function test_for_teachers_redirects_to_resources(): void
     {
         $response = $this->get('/for-teachers');
 
         $response
-            ->assertOk()
-            ->assertSee('Преподавателям', false)
-            ->assertSee('teacher-ext-resources', false)
-            ->assertSee('/api/v1/external-resources', false);
+            ->assertRedirect('/resources')
+            ->assertStatus(301);
     }
 
-    public function test_for_teachers_page_has_existing_features(): void
+    public function test_resources_page_has_faculty_support_actions(): void
     {
-        $response = $this->get('/for-teachers');
+        $response = $this->get('/resources');
 
         $response
             ->assertOk()
-            ->assertSee('Подборка литературы для силлабуса', false)
+            ->assertSee('Подборка литературы', false)
             ->assertSee('href="/shortlist"', false)
-            ->assertSee('href="/catalog"', false)
-            ->assertSee('href="/discover"', false);
+            ->assertDontSee('href="/for-teachers"', false);
     }
 
     public function test_shortlist_page_still_renders(): void

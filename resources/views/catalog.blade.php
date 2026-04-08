@@ -37,9 +37,11 @@
       font-family: 'Inter', system-ui, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 10%, rgba(59,130,246,.08), transparent 18%),
-        radial-gradient(circle at 90% 10%, rgba(236,72,153,.06), transparent 16%),
-        linear-gradient(180deg, #ffffff 0%, #f7f9fd 42%, #f3f6fb 100%);
+        radial-gradient(circle at 0% 0%, rgba(37,99,235,.16), transparent 22%),
+        radial-gradient(circle at 100% 0%, rgba(168,85,247,.14), transparent 18%),
+        radial-gradient(circle at 82% 82%, rgba(6,182,212,.12), transparent 22%),
+        linear-gradient(135deg, #f8fbff 0%, #eef4ff 40%, #f8f3ff 72%, #eefbfd 100%);
+      background-attachment: fixed;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -113,14 +115,18 @@
     .page { padding: 34px 0 70px; }
 
     .hero {
-      background: rgba(255,255,255,.92);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      background:
+        radial-gradient(circle at 18% 22%, rgba(34,211,238,.18), transparent 16%),
+        radial-gradient(circle at 85% 18%, rgba(192,132,252,.20), transparent 18%),
+        linear-gradient(135deg, rgba(15,23,42,.94) 0%, rgba(30,41,59,.88) 48%, rgba(8,145,178,.78) 100%);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 28px 70px rgba(15,23,42,.18);
       border-radius: var(--radius-xl);
       padding: 30px;
       margin-bottom: 22px;
       overflow: hidden;
       position: relative;
+      color: #f8fbff;
     }
 
     .hero::before {
@@ -131,7 +137,7 @@
       width: 260px;
       height: 260px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,.12), transparent 70%);
+      background: radial-gradient(circle, rgba(59,130,246,.22), transparent 70%);
     }
 
     .eyebrow {
@@ -154,7 +160,7 @@
 
     .hero p {
       margin: 0;
-      color: var(--muted);
+      color: rgba(226,232,240,.88);
       font-size: 17px;
       line-height: 1.8;
       max-width: 900px;

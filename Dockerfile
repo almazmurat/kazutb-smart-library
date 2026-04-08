@@ -51,6 +51,9 @@ RUN composer install \
 # Copy application source
 COPY . .
 
+# Never ship a stale Vite hot-file into the production image.
+RUN rm -f /app/public/hot
+
 # ── Permissions ────────────────────────────────────────────────
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
     && chmod -R 775 /app/storage /app/bootstrap/cache

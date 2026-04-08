@@ -1,0 +1,15 @@
+1e507d9 (HEAD -> main) feat: digital materials controlled viewer — first slice
+a1eff33 feat: structured consolidation wave 2 — stronger task-oriented pages
+04a8dc5 feat: functional consolidation wave — remove static pages, role-aware account, catalog UX
+c3e4083 feat: loan renewal depth — eligibility assessment, renewal UX, loading states, block reasons
+55b6df6 feat: loan/circulation visibility — enriched loan data, summary stats, account UX upgrade
+008d109 feat: reservation lifecycle — create, cancel, check, account cancel UX, book page reserve
+f6ff26b feat: persistent DB-backed shortlist / literature draft storage
+b731546 feat: dev/demo quick-login for multiple roles
+7dd7b37 feat: teacher workbench — account shortlist section, draft metadata, cabinet links
+59e2703 feat: bibliography export / syllabus-ready shortlist output
+57c44d8 feat: add external licensed resources as first-class product feature
+e68e7ac feat: implement shortlist/syllabus-draft feature end-to-end
+82172be docs: update next-step.md after subject feature completion
+ce27394 feat: end-to-end subject/classification catalog feature
+3e1acc3 docs: comprehensive project context update to reflect current platform state
