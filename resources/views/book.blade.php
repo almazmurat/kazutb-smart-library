@@ -189,15 +189,28 @@
         }
 
         .book-cover-wrap {
+            position: relative;
             border-radius: var(--radius-xl);
             min-height: 580px;
             padding: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(180deg, #f3f4f5 0%, #edeeef 100%);
+            background:
+                radial-gradient(circle at top right, rgba(20,105,109,.10), transparent 24%),
+                radial-gradient(circle at bottom left, rgba(0,30,64,.08), transparent 24%),
+                linear-gradient(180deg, #f3f4f5 0%, #edeeef 100%);
             overflow: hidden;
             perspective: 1400px;
+        }
+
+        .book-cover-wrap::after {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border-radius: calc(var(--radius-xl) - 2px);
+            border: 1px solid rgba(255,255,255,.46);
+            pointer-events: none;
         }
 
         .book-mockup {
@@ -211,7 +224,7 @@
             justify-content: flex-end;
             position: relative;
             background: linear-gradient(180deg, #003366 0%, #001e40 100%);
-            box-shadow: var(--shadow);
+            box-shadow: 0 24px 44px rgba(25, 28, 29, .12);
             overflow: hidden;
             transform-style: preserve-3d;
             transition: transform .32s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .32s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -358,8 +371,15 @@
         .meta-item {
             padding: 18px;
             border-radius: var(--radius-xl);
-            background: var(--surface-soft);
+            background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
             border: 1px solid var(--border);
+            transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .meta-item:hover {
+            transform: translate3d(0, -2px, 0);
+            box-shadow: 0 12px 26px rgba(25, 28, 29, .04);
+            border-color: rgba(20,105,109,.18);
         }
 
         .meta-label {
@@ -479,6 +499,14 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 18px;
+        }
+
+        .cards-section .book-card:nth-child(2) {
+            transform: translate3d(0, 10px, 0);
+        }
+
+        .cards-section .book-card:nth-child(2):hover {
+            transform: translate3d(0, 4px, 0);
         }
 
         .book-card {

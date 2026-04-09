@@ -89,7 +89,7 @@
         <h2 class="heading-xl">{{ $copy['mission_title'] }}</h2>
         <p class="text-body" style="margin: 0 0 18px;">{{ $copy['mission_body'] }}</p>
         <div class="contact-facts">
-          <div><strong>50K+</strong><span>{{ ['ru' => 'Единиц фонда', 'kk' => 'Қор бірліктері', 'en' => 'Collection items'][$lang] }}</span></div>
+          <div><strong>{{ ['ru' => 'Более 50 000', 'kk' => '50 000+', 'en' => '50,000+'][$lang] }}</strong><span>{{ ['ru' => 'Единиц фонда', 'kk' => 'Қор бірліктері', 'en' => 'Collection items'][$lang] }}</span></div>
           <div><strong>24/7</strong><span>{{ ['ru' => 'Цифровой доступ', 'kk' => 'Цифрлық қолжетімділік', 'en' => 'Digital access'][$lang] }}</span></div>
           <div><strong>{{ ['ru' => 'Гибрид', 'kk' => 'Гибрид', 'en' => 'Hybrid'][$lang] }}</strong><span>{{ ['ru' => 'Печатный + цифровой', 'kk' => 'Баспа + цифрлық', 'en' => 'Print + digital'][$lang] }}</span></div>
         </div>
@@ -165,7 +165,7 @@
   .contact-highlight {
     padding: 20px;
     border-radius: var(--radius-xl);
-    background: #fff;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid var(--border);
     box-shadow: var(--shadow-soft);
     display: grid;
@@ -221,7 +221,7 @@
   .contact-facts div {
     padding: 14px;
     border-radius: var(--radius-lg);
-    background: #fff;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid var(--border);
     transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }

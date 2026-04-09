@@ -119,13 +119,13 @@
     .profile-grid {
       display: grid;
       grid-template-columns: 1.05fr .95fr;
-      gap: 22px;
+      gap: 24px;
       margin-bottom: 24px;
     }
 
     .card {
       border-radius: var(--radius-xl);
-      background: rgba(255,255,255,.98);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
       padding: 28px;
@@ -210,6 +210,7 @@
     .alerts {
       display: grid;
       gap: 12px;
+      align-content: start;
     }
 
     .alert {
@@ -250,7 +251,7 @@
 
     .showcase {
       border-radius: var(--radius-xl);
-      background: rgba(255,255,255,.98);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,248,249,.96));
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
       padding: 24px;
@@ -266,7 +267,15 @@
     .book-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      gap: 16px;
+    }
+
+    .showcase .book-card:nth-child(3n + 2) {
+      transform: translate3d(0, 10px, 0);
+    }
+
+    .showcase .book-card:nth-child(3n + 2):hover {
+      transform: translate3d(0, 4px, 0) rotateX(0.5deg);
     }
 
     .book-card {
@@ -436,6 +445,7 @@
       .profile-grid { grid-template-columns: 1fr; }
       .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .stats { grid-template-columns: repeat(2, 1fr); }
+      .showcase .book-card:nth-child(3n + 2) { transform: none; }
     }
 
     @media (max-width: 900px) {

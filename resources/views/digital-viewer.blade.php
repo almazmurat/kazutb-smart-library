@@ -17,7 +17,10 @@
     display: flex;
     flex-direction: column;
     min-height: calc(100vh - 160px);
-    background: linear-gradient(180deg, #fbfcfc 0%, #f8f9fa 100%);
+    background:
+      radial-gradient(circle at top right, rgba(20,105,109,.06), transparent 22%),
+      radial-gradient(circle at bottom left, rgba(0,30,64,.05), transparent 22%),
+      linear-gradient(180deg, #fbfcfc 0%, #f8f9fa 100%);
   }
   .viewer-toolbar {
     display: flex;
@@ -75,7 +78,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f3f4f5;
+    background:
+      radial-gradient(circle at top, rgba(255,255,255,.5), transparent 28%),
+      #f3f4f5;
     min-height: 600px;
     padding: 18px;
   }
@@ -92,14 +97,29 @@
   .viewer-error,
   .viewer-denied,
   .viewer-loading {
+    position: relative;
+    overflow: hidden;
     text-align: center;
     padding: 40px 24px;
     max-width: 560px;
     width: 100%;
-    background: #fff;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid rgba(195, 198, 209, 0.55);
-    border-radius: 8px;
-    box-shadow: 0 6px 16px rgba(25, 28, 29, 0.03);
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(25, 28, 29, 0.04);
+  }
+
+  .viewer-error::after,
+  .viewer-denied::after,
+  .viewer-loading::after {
+    content: '';
+    position: absolute;
+    inset: -30px -30px auto auto;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(20,105,109,.08), transparent 72%);
+    pointer-events: none;
   }
   .viewer-error h2,
   .viewer-denied h2 {

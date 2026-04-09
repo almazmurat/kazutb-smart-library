@@ -64,12 +64,14 @@ body {
 .app-shell {
   display: flex;
   min-height: 100vh;
-  background: #f8f9fa;
+  background:
+    radial-gradient(circle at top right, rgba(20, 105, 109, 0.05), transparent 16%),
+    #f8f9fa;
 }
 
 .app-sidebar {
   width: var(--sidebar-w);
-  background: #f8f9fa;
+  background: linear-gradient(180deg, rgba(248, 249, 250, .98), rgba(243, 244, 245, .96));
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -189,6 +191,7 @@ body {
   color: #14696d;
   font-weight: 700;
   border-color: var(--border);
+  box-shadow: 0 10px 22px rgba(25, 28, 29, 0.035);
 }
 
 .nav-link--back {
@@ -254,7 +257,7 @@ body {
   margin-bottom: 24px;
   padding: 14px 18px;
   border-radius: 18px;
-  background: rgba(255, 252, 246, .82);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(248, 249, 250, .88));
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }

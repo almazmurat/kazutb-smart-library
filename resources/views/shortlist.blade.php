@@ -319,10 +319,19 @@
     margin-bottom: 28px;
     flex-wrap: wrap;
     gap: 12px;
+    padding: 16px 18px;
+    border-radius: var(--radius-lg, 6px);
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 24px rgba(25,28,29,.03);
   }
 
   .shortlist-type-section {
     margin-bottom: 28px;
+    padding: 16px;
+    border-radius: var(--radius-lg, 6px);
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(195,198,209,.45);
   }
 
   .shortlist-type-heading {
@@ -501,7 +510,7 @@
   }
 
   .bibliography-text-area {
-    background: var(--bg-soft, #f8fafc);
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 18px;
@@ -521,12 +530,25 @@
   }
 
   .shortlist-state {
+    position: relative;
+    overflow: hidden;
     text-align: center;
     padding: 48px 24px;
-    background: #fff;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid var(--border);
     border-radius: var(--radius-lg, 6px);
     transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .shortlist-state::after {
+    content: '';
+    position: absolute;
+    inset: -40px -40px auto auto;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(20,105,109,.08), transparent 72%);
+    pointer-events: none;
   }
 
   .shortlist-state--loading {
@@ -564,6 +586,7 @@
     font-weight: 800;
     letter-spacing: .12em;
     text-transform: uppercase;
+    box-shadow: 0 10px 20px rgba(25,28,29,.03);
   }
 
   .shortlist-state h2 {

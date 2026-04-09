@@ -220,9 +220,41 @@
   .landing-shell {
     max-width: 980px;
     margin: 0 auto;
+    padding: clamp(18px, 3vw, 26px);
     text-align: center;
     position: relative;
+    overflow: hidden;
     animation: landingReveal .55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .landing-shell::before,
+  .landing-shell::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: .8;
+  }
+
+  .landing-shell::before {
+    top: -36px;
+    right: -22px;
+    width: 170px;
+    height: 170px;
+    background: radial-gradient(circle, rgba(20,105,109,.10), transparent 70%);
+  }
+
+  .landing-shell::after {
+    left: -28px;
+    bottom: -42px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(0,30,64,.08), transparent 70%);
+  }
+
+  .landing-shell > * {
+    position: relative;
+    z-index: 1;
   }
 
   .landing-kicker {
@@ -315,11 +347,51 @@
     padding-inline: 24px;
   }
 
+  .hero-quick-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .hero-quick-link {
+    display: grid;
+    gap: 4px;
+    padding: 12px 14px;
+    text-align: left;
+    border-radius: 16px;
+    background: rgba(255,255,255,.78);
+    border: 1px solid rgba(195,198,209,.55);
+    box-shadow: 0 10px 24px rgba(25,28,29,.035);
+    transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .16s cubic-bezier(0.2, 0.8, 0.2, 1), background .16s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .hero-quick-link:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 16px 32px rgba(25,28,29,.05);
+    border-color: rgba(20,105,109,.18);
+    background: rgba(255,255,255,.96);
+  }
+
+  .hero-quick-link span {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .hero-quick-link strong {
+    color: var(--blue);
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
   .landing-stats {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 18px 28px;
+    gap: 10px 12px;
     margin-top: 18px;
     color: var(--muted);
     font-size: 12px;
@@ -332,6 +404,11 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.76);
+    border: 1px solid rgba(195,198,209,.55);
+    box-shadow: 0 8px 20px rgba(25,28,29,.03);
   }
 
   .landing-feature-grid {
@@ -339,6 +416,14 @@
     grid-template-columns: 2fr 1fr 1fr;
     gap: 16px;
     perspective: 1400px;
+  }
+
+  .landing-feature-grid .feature-entry:nth-child(2) {
+    transform: translate3d(0, 12px, 0);
+  }
+
+  .landing-feature-grid .feature-entry:nth-child(2):hover {
+    transform: translate3d(0, 4px, 0) rotateX(0.8deg);
   }
 
   .feature-entry {
@@ -604,8 +689,13 @@
   @media (max-width: 980px) {
     .landing-feature-grid,
     .subject-grid,
-    .trust-section {
+    .trust-section,
+    .hero-quick-links {
       grid-template-columns: 1fr;
+    }
+
+    .landing-feature-grid .feature-entry:nth-child(2) {
+      transform: none;
     }
   }
 
@@ -620,6 +710,10 @@
     .landing-search {
       border-radius: 8px;
     }
+
+    .hero-quick-link {
+      padding: 11px 12px;
+    }
   }
 </style>
 @endsection
@@ -633,13 +727,22 @@
         <h1 class="landing-title">{{ $copy['hero'] }}</h1>
         <p class="landing-copy">{{ $copy['lead'] }}</p>
 
-        <form class="landing-search" action="/catalog" method="get" data-hero-search>
+        <form id="heroSearch" class="landing-search hero-search-bar" action="/catalog" method="get" data-hero-search>
           @if($lang !== 'ru')
             <input type="hidden" name="lang" value="{{ $lang }}">
           @endif
           <input type="search" name="q" placeholder="{{ $copy['search_placeholder'] }}" aria-label="{{ $copy['search_placeholder'] }}">
           <button type="submit" class="btn btn-primary">{{ $copy['search_cta'] }}</button>
         </form>
+
+        <div class="hero-quick-links" aria-label="Quick routes">
+          @foreach($pathCards as $card)
+            <a href="{{ $withLang($card['href']) }}" class="hero-quick-link">
+              <span>{{ $card['tag'] }}</span>
+              <strong>{{ $card['title'] }}</strong>
+            </a>
+          @endforeach
+        </div>
 
         <div class="landing-stats" aria-label="Library highlights">
           @foreach($copy['stats'] as $stat)

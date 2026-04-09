@@ -67,6 +67,11 @@
   }
   .resource-hero-stats .rh-stat {
     text-align: center;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.74);
+    border: 1px solid rgba(195,198,209,.55);
+    box-shadow: 0 10px 22px rgba(25,28,29,.03);
   }
   .resource-hero-stats .rh-stat strong {
     display: block;
@@ -86,6 +91,10 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
+  }
+
+  .resource-hero-panels .resource-hero-panel:nth-child(2) {
+    transform: translate3d(0, 10px, 0);
   }
   .resource-hero-panel {
     text-align: left;
@@ -324,8 +333,9 @@
   .faq-item {
     padding: 24px;
     border-radius: var(--radius-md);
-    background: var(--surface-glass);
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
     border: 1px solid var(--border);
+    box-shadow: 0 12px 24px rgba(25,28,29,.03);
   }
   .faq-item h4 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
   .faq-item p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
@@ -337,6 +347,10 @@
     .resource-hero-stats { gap: 24px; flex-wrap: wrap; }
     .resource-hero-panels,
     .resource-access-matrix { grid-template-columns: 1fr; }
+
+    .resource-hero-panels .resource-hero-panel:nth-child(2) {
+      transform: none;
+    }
   }
 
   @media (max-width: 680px) {

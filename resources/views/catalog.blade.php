@@ -224,7 +224,7 @@
     .layout {
       display: grid;
       grid-template-columns: 320px 1fr;
-      gap: 22px;
+      gap: 24px;
       align-items: start;
     }
 
@@ -238,7 +238,8 @@
     .filters {
       padding: 24px;
       position: sticky;
-      top: 104px;
+      top: 96px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     }
 
     .filter-header {
@@ -391,7 +392,22 @@
     .check-item span:last-child { color: var(--muted); font-size: 13px; }
 
     .results {
+      position: relative;
       padding: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,248,249,.96));
+      overflow: hidden;
+      min-height: 640px;
+    }
+
+    .results::before {
+      content: "";
+      position: absolute;
+      inset: -80px -60px auto auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20,105,109,.08), transparent 72%);
+      pointer-events: none;
     }
 
     .results-top {
@@ -400,6 +416,8 @@
       justify-content: space-between;
       gap: 14px;
       margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(195,198,209,.55);
       flex-wrap: wrap;
     }
 
@@ -415,18 +433,23 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: 20px;
+      align-items: start;
     }
 
     .book-card {
       padding: 18px;
       border-radius: var(--radius-xl);
-      background: #fff;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,249,250,.96));
       border: 1px solid var(--border);
       box-shadow: none;
       transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease, background-color 0.2s ease, box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
       cursor: pointer;
       transform-style: preserve-3d;
+    }
+
+    .grid .book-card:nth-child(3n + 2) {
+      transform: translate3d(0, 10px, 0);
     }
 
     .book-card:hover {
@@ -446,6 +469,15 @@
       overflow: hidden;
       margin-bottom: 16px;
       background: linear-gradient(180deg, #2d4268 0%, #223758 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .book-preview::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      pointer-events: none;
     }
 
     .book-card:nth-child(2) .book-preview,
@@ -660,6 +692,7 @@
 
     @media (max-width: 1200px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
+      .grid .book-card:nth-child(3n + 2) { transform: none; }
     }
 
     @media (max-width: 920px) {
@@ -957,7 +990,7 @@
         const meta = data.meta || {};
 
         if (books.length === 0) {
-          grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px 24px; color:var(--muted); border:1px solid var(--border); border-radius:8px; background:#fff;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:88px;height:34px;padding:0 12px;border-radius:999px;background:rgba(0,30,64,.05);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">${CATALOG_I18N.noResultBadge}</span><p style="margin:12px 0 0; font-weight:700; color:var(--blue);">${CATALOG_I18N.noBooks}</p><p style="margin:4px 0 0;">${CATALOG_I18N.tryChange}</p></div>`;
+          grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:44px 24px; color:var(--muted); border:1px solid var(--border); border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94)); box-shadow:0 14px 28px rgba(25,28,29,.04);"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:96px;height:34px;padding:0 12px;border-radius:999px;background:rgba(0,30,64,.05);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">${CATALOG_I18N.noResultBadge}</span><p style="margin:14px 0 0; font-weight:700; color:var(--blue); font-size:18px;">${CATALOG_I18N.noBooks}</p><p style="margin:6px 0 0; max-width:420px; margin-inline:auto;">${CATALOG_I18N.tryChange}</p></div>`;
           resultsCount.textContent = CATALOG_I18N.foundZero;
           document.getElementById('pagination').innerHTML = '';
         } else {

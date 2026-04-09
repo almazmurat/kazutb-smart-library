@@ -327,16 +327,19 @@
 
   .discover-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 20px;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
     align-items: start;
   }
 
   .discover-rail {
+    position: sticky;
+    top: 96px;
     padding: 22px;
     border-radius: var(--radius-xl);
-    background: var(--bg-soft);
-    border: 1px solid rgba(195, 198, 209, 0.35);
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
+    border: 1px solid rgba(195, 198, 209, 0.42);
+    box-shadow: var(--shadow-soft);
     transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -379,9 +382,10 @@
   .discover-panel {
     padding: 24px;
     border-radius: var(--radius-xl);
-    background: #fff;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid var(--border);
     box-shadow: var(--shadow-soft);
+    overflow: hidden;
     transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -405,17 +409,26 @@
   }
 
   .discover-loading {
-    padding: 28px 12px;
+    padding: 30px 16px;
     text-align: center;
     color: var(--muted);
-    background: var(--bg-soft);
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
     border-radius: var(--radius-lg);
+    border: 1px dashed rgba(195,198,209,.7);
   }
 
   .discover-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    gap: 18px;
+  }
+
+  .discover-grid .discover-card:nth-child(3n + 2) {
+    transform: translate3d(0, 10px, 0);
+  }
+
+  .discover-grid .discover-card:nth-child(3n + 2):hover {
+    transform: translate3d(0, 6px, 0);
   }
 
   .discover-card {
@@ -505,6 +518,10 @@
     background: #fff;
     border: 1px solid var(--border);
     transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .workflow-step:nth-child(even) {
+    transform: translate3d(12px, 0, 0);
   }
 
   .workflow-step:hover {
@@ -612,6 +629,16 @@
     .discover-layout {
       grid-template-columns: 1fr;
       display: grid;
+    }
+
+    .discover-rail {
+      position: static;
+      top: auto;
+    }
+
+    .discover-grid .discover-card:nth-child(3n + 2),
+    .workflow-step:nth-child(even) {
+      transform: none;
     }
   }
 
