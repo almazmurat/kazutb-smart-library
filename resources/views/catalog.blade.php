@@ -45,7 +45,13 @@
       font-family: 'Manrope', system-ui, sans-serif;
       color: var(--text);
       background: var(--bg);
-      background-attachment: fixed;
+      background-attachment: scroll;
+    }
+
+    body.site-shell::before,
+    body.site-shell::after {
+      content: none;
+      display: none;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -119,7 +125,7 @@
     .page { padding: 34px 0 70px; }
 
     .hero {
-      background: linear-gradient(180deg, #ffffff 0%, #f3f4f5 100%);
+      background: #ffffff;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       border-radius: var(--radius-xl);
@@ -128,29 +134,22 @@
       overflow: hidden;
       position: relative;
       color: var(--text);
-      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .16s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: box-shadow .2s ease, border-color .16s ease;
     }
 
     .hero::before {
-      content: "";
-      position: absolute;
-      right: -70px;
-      top: -70px;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(20,105,109,.10), transparent 72%);
-      transition: transform .42s cubic-bezier(0.2, 0.8, 0.2, 1), opacity .16s cubic-bezier(0.2, 0.8, 0.2, 1);
+      content: none;
+      display: none;
     }
 
     .hero:hover {
-      transform: translate3d(0, -2px, 0);
-      box-shadow: 0 18px 38px rgba(25, 28, 29, .06);
-      border-color: rgba(0,30,64,.12);
+      transform: none;
+      box-shadow: var(--shadow);
+      border-color: var(--border);
     }
 
     .hero:hover::before {
-      transform: translate3d(-12px, 10px, 0);
+      transform: none;
     }
 
     .eyebrow {
@@ -239,7 +238,7 @@
       padding: 24px;
       position: sticky;
       top: var(--shell-sticky-offset);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+      background: #ffffff;
     }
 
     .filter-header {
@@ -560,19 +559,14 @@
     .results {
       position: relative;
       padding: 24px;
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,248,249,.96));
+      background: #ffffff;
       overflow: hidden;
       min-height: 640px;
     }
 
     .results::before {
-      content: "";
-      position: absolute;
-      inset: -80px -60px auto auto;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(20,105,109,.08), transparent 72%);
+      content: none;
+      display: none;
       pointer-events: none;
     }
 
@@ -618,7 +612,7 @@
       background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
       border: 1px solid rgba(195,198,209,.7);
       box-shadow: 0 10px 24px rgba(25,28,29,.03);
-      transition: transform .32s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .2s ease, background-color .2s ease, box-shadow .32s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
       cursor: pointer;
       overflow: hidden;
     }
@@ -633,9 +627,9 @@
     }
 
     .book-card:hover {
-      transform: translate3d(0, -6px, 0);
-      box-shadow: 0 18px 38px rgba(25,28,29,.07);
-      border-color: rgba(0,30,64,.14);
+      transform: none;
+      box-shadow: 0 14px 28px rgba(25,28,29,.05);
+      border-color: rgba(0,30,64,.12);
       background: rgba(248,249,250,.99);
     }
 
@@ -643,28 +637,33 @@
       position: relative;
       height: 310px;
       margin-bottom: 16px;
-      perspective: 1700px;
+      perspective: none;
     }
 
     .book-body {
       position: absolute;
       inset: 10px 10px 6px 12px;
       border-radius: 6px 14px 14px 6px;
-      background: linear-gradient(180deg, #fffdf7 0%, #f3ede1 100%);
-      border: 1px solid rgba(203,188,160,.48);
-      box-shadow: inset 10px 0 18px rgba(0,0,0,.05), 0 18px 30px rgba(25,28,29,.10);
+      background: linear-gradient(180deg, #f2e7cb 0%, #e6d4ad 100%);
+      border: 1px solid rgba(161,134,83,.34);
+      box-shadow: inset 10px 0 18px rgba(75, 57, 29, .07), 0 18px 30px rgba(25,28,29,.10);
       padding: 16px 18px 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 12px;
       color: #4c4435;
-      transition: transform .32s cubic-bezier(0.2, 0.8, 0.2, 1);
-      background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.025) 3px);
+      transition: none;
+      background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 2px, rgba(93,74,38,.05) 3px);
     }
 
     .book-card:hover .book-body {
-      transform: translate3d(10px, 0, 0);
+      transform: none;
+    }
+
+    .book-body-copy {
+      display: grid;
+      gap: 12px;
     }
 
     .book-body-label {
@@ -680,7 +679,36 @@
       font-size: 12px;
       line-height: 1.65;
       color: #625740;
-      max-width: 86%;
+      max-width: 92%;
+    }
+
+    .book-body-meta {
+      display: grid;
+      gap: 8px;
+    }
+
+    .book-body-meta-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(124, 110, 84, .18);
+      font-size: 11px;
+    }
+
+    .book-body-meta-row span {
+      color: #7c6e54;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .book-body-meta-row strong {
+      color: #403623;
+      font-size: 11px;
+      text-align: right;
+      word-break: break-word;
     }
 
     .book-body-stat {
@@ -703,10 +731,10 @@
       border-radius: 6px 16px 16px 6px;
       padding: 18px 18px 20px 24px;
       transform-origin: left center;
-      transform-style: preserve-3d;
+      transform-style: flat;
       backface-visibility: hidden;
-      will-change: transform;
-      transition: transform .85s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .32s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: auto;
+      transition: box-shadow .2s ease;
       border-left: 10px solid rgba(0,0,0,.18);
       display: flex;
       flex-direction: column;
@@ -719,7 +747,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.08), transparent 55%);
+      background: linear-gradient(135deg, rgba(255,255,255,.03), transparent 45%, rgba(0,0,0,.08) 100%);
       pointer-events: none;
     }
 
@@ -727,13 +755,13 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0));
+      background: linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,0));
       pointer-events: none;
     }
 
     .book-card:hover .book-cover {
-      transform: rotateY(-104deg);
-      box-shadow: 2px 10px 20px rgba(25,28,29,.12);
+      transform: none;
+      box-shadow: 6px 18px 28px rgba(25,28,29,.14);
     }
 
     .tone-navy { background: linear-gradient(180deg, #263d63 0%, #172943 100%); }
@@ -1167,7 +1195,7 @@
         addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
         foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
         yearLabel: 'Год', availableOnly: 'В наличии', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
-        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри записи', previewAvailable: 'Доступно {available} из {total}. Откройте запись для полной библиографии и действий.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить цифровой доступ.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', formatHybrid: 'Печатная + PDF', formatDigital: 'PDF', formatLabel: 'Формат'
+        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри записи', previewAvailable: 'Доступно {available} из {total}. Откройте запись для полной библиографии и действий.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить цифровой доступ.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', formatHybrid: 'Печатная + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'УДК'
       },
       kk: {
         untitled: 'Атауы жоқ', authorMissing: 'Автор көрсетілмеген', publisherMissing: 'Баспа көрсетілмеген', languageMissing: 'Көрсетілмеген',
@@ -1175,7 +1203,7 @@
         addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
         foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
         yearLabel: 'Жыл', availableOnly: 'Қолда бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
-        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Жазба ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Толық библиография мен әрекеттер үшін жазбаны ашыңыз.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Цифрлық қолжетімділікті тексеру үшін жазбаны ашыңыз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', formatHybrid: 'Баспа + PDF', formatDigital: 'PDF', formatLabel: 'Формат'
+        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Жазба ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Толық библиография мен әрекеттер үшін жазбаны ашыңыз.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Цифрлық қолжетімділікті тексеру үшін жазбаны ашыңыз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', formatHybrid: 'Баспа + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ'
       },
       en: {
         untitled: 'Untitled', authorMissing: 'Author not specified', publisherMissing: 'Publisher not specified', languageMissing: 'Not specified',
@@ -1183,7 +1211,7 @@
         addShortlist: 'Add to shortlist', removeShortlist: 'Remove from shortlist', updateCatalog: 'Refreshing catalog', noResultBadge: 'No result', noBooks: 'No books found', tryChange: 'Try adjusting the search parameters.',
         foundZero: 'Found 0 books', foundMany: 'Found {count} books', retry: 'Retry', loadError: 'Catalog load error', refreshPage: 'Try refreshing the page.',
         yearLabel: 'Year', availableOnly: 'Available', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
-        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the record', previewAvailable: '{available} of {total} copies are ready now. Open the record for full bibliography and actions.', previewUnavailable: 'Copies are currently unavailable. Open the record to review digital access options.', loadingBody: 'Refining the catalog view around your active filters.', formatHybrid: 'Print + PDF', formatDigital: 'PDF', formatLabel: 'Format'
+        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the record', previewAvailable: '{available} of {total} copies are ready now. Open the record for full bibliography and actions.', previewUnavailable: 'Copies are currently unavailable. Open the record to review digital access options.', loadingBody: 'Refining the catalog view around your active filters.', formatHybrid: 'Print + PDF', formatDigital: 'PDF', formatLabel: 'Format', isbnLabel: 'ISBN', udcLabel: 'UDC'
       }
     };
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
@@ -1350,6 +1378,7 @@
       const classification = Array.isArray(book.classification) ? book.classification : [];
       const specialization = classification.find(c => c.sourceKind === 'specialization');
       const department = classification.find(c => c.sourceKind === 'department');
+      const subject = classification.find(c => c.sourceKind === 'subject');
       return {
         title: book.title?.display || book.title?.raw || CATALOG_I18N.untitled,
         author: book.primaryAuthor || CATALOG_I18N.authorMissing,
@@ -1360,6 +1389,7 @@
         available: book.copies?.available || 0,
         total: book.copies?.total || 0,
         isbn: book.isbn?.raw || '',
+        udc: book.udc?.raw || subject?.label || '',
         id: book.id || '',
         specialization: specialization ? specialization.label : '',
         department: department ? department.label : '',
@@ -1378,6 +1408,8 @@
       const previewSummary = isAvailable
         ? CATALOG_I18N.previewAvailable.replace('{available}', data.available).replace('{total}', data.total)
         : CATALOG_I18N.previewUnavailable;
+      const isbnValue = data.isbn || '—';
+      const udcValue = data.udc || '—';
 
       const isShortlisted = shortlistState[identifier] || false;
 
@@ -1385,9 +1417,15 @@
         <article class="book-card" onclick="goToBook('${escapeHtml(identifier)}')">
           <div class="book-stage">
             <div class="book-body">
-              <div>
-                <div class="book-body-label">${CATALOG_I18N.insideRecord}</div>
-                <div class="book-body-preview">${escapeHtml(previewSummary)}</div>
+              <div class="book-body-copy">
+                <div>
+                  <div class="book-body-label">${CATALOG_I18N.insideRecord}</div>
+                  <div class="book-body-preview">${escapeHtml(previewSummary)}</div>
+                </div>
+                <div class="book-body-meta">
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.isbnLabel}</span><strong>${escapeHtml(isbnValue)}</strong></div>
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.udcLabel}</span><strong>${escapeHtml(udcValue)}</strong></div>
+                </div>
               </div>
               <span class="book-body-stat">${escapeHtml(data.format)} · ${escapeHtml(data.language)}</span>
             </div>
