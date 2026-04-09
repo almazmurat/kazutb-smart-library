@@ -37,6 +37,9 @@
   --radius-md: 4px;
   --radius-sm: 2px;
   --container: 1280px;
+  --shell-nav-height: 72px;
+  --shell-sticky-offset: 92px;
+  --shell-footer-gap: 72px;
   --footer-bg: #f3f4f5;
   --footer-surface: rgba(255, 255, 255, 0.84);
   --footer-border: rgba(195, 198, 209, 0.55);
@@ -173,8 +176,9 @@ main {
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 40;
-  background: rgba(255, 255, 255, 0.84);
+  z-index: 50;
+  min-height: var(--shell-nav-height) !important;
+  background: rgba(255, 255, 255, 0.88);
   border-bottom: 1px solid rgba(195, 198, 209, 0.45);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -189,7 +193,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 72px;
+  min-height: var(--shell-nav-height) !important;
   gap: 18px;
 }
 
@@ -794,8 +798,9 @@ main {
     radial-gradient(circle at top right, rgba(20, 105, 109, 0.05), transparent 18%),
     linear-gradient(180deg, #f4f5f6 0%, #eff1f2 100%);
   color: var(--footer-text);
-  margin-top: 72px;
+  margin-top: var(--shell-footer-gap);
   position: relative;
+  flex-shrink: 0;
   border-top: 1px solid var(--footer-border);
 }
 
@@ -973,6 +978,7 @@ main {
   text-align: center;
   color: var(--muted);
   overflow: hidden;
+  box-shadow: var(--shadow-soft);
 }
 
 .loading::after {
@@ -984,6 +990,28 @@ main {
   animation: loadingSweep 2.8s linear infinite;
   pointer-events: none;
   opacity: 0.75;
+}
+
+.error {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(186, 26, 26, 0.18);
+  background: linear-gradient(180deg, rgba(255, 248, 248, 0.98), rgba(255, 240, 240, 0.96));
+  padding: 22px 24px;
+  color: #8a1d1d;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.error::after {
+  content: '';
+  position: absolute;
+  inset: -20% auto auto -10%;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(186, 26, 26, 0.12), transparent 72%);
+  pointer-events: none;
 }
 
 .cta-section {

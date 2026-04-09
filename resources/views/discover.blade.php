@@ -334,7 +334,7 @@
 
   .discover-rail {
     position: sticky;
-    top: 96px;
+    top: var(--shell-sticky-offset);
     padding: 22px;
     border-radius: var(--radius-xl);
     background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));

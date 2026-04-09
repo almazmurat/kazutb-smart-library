@@ -368,15 +368,30 @@
     }
 
     .loading {
-      border-radius: 8px;
-      border: 1px dashed var(--border);
-      background: #fff;
+      position: relative;
+      border-radius: 12px;
+      border: 1px dashed rgba(195,198,209,.72);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
       padding: 24px;
       text-align: center;
       color: var(--muted);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.45) 45%, transparent 100%);
+      transform: translateX(-120%);
+      animation: loadingSweep 2.8s linear infinite;
+      pointer-events: none;
+      opacity: .75;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes loadingSweep { to { transform: translateX(120%); } }
     .spinner {
       display: inline-block;
       width: 32px; height: 32px;
@@ -474,7 +489,7 @@
     }
   </style>
 </head>
-<body>
+<body class="site-shell">
   @include('partials.navbar', ['activePage' => 'account'])
 
   <main class="page">

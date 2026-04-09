@@ -105,7 +105,7 @@
       'en' => [
           'title' => 'Digital Library — Home',
           'eyebrow' => 'Unified academic access',
-          'hero' => 'Knowledge, curated for academic work.',
+          'hero' => 'Knowledge, Curated for the Scholar.',
           'lead' => 'Digital Library connects university holdings, digital collections, and external research platforms inside one practical workflow.',
           'search_placeholder' => 'Search books, authors, ISBN, UDC, or keywords',
           'search_cta' => 'Open catalog',

@@ -143,7 +143,7 @@
     .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
 
     .page {
-      min-height: calc(100vh - 84px);
+      min-height: calc(100vh - var(--shell-nav-height));
       display: grid;
       place-items: center;
       padding: 38px 0;
@@ -457,7 +457,7 @@
     }
   </style>
 </head>
-<body>
+<body class="site-shell">
   @include('partials.navbar', ['activePage' => ''])
 
   <main class="page">

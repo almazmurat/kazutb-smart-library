@@ -185,7 +185,7 @@
         .book-panel {
             padding: 26px;
             position: sticky;
-            top: 104px;
+            top: var(--shell-sticky-offset);
         }
 
         .book-cover-wrap {
@@ -305,13 +305,30 @@
         }
 
         .mini-action {
-            padding: 14px;
+            padding: 14px 12px;
             border-radius: var(--radius-lg);
-            background: var(--surface-soft);
+            background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
             border: 1px solid var(--border);
             text-align: center;
-            font-weight: 600;
             color: #334155;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .mini-action strong {
+            display: block;
+            font-size: 18px;
+            color: var(--blue);
+            letter-spacing: -.03em;
+        }
+
+        .mini-action span {
+            display: block;
+            margin-top: 4px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--muted);
         }
 
         .details-card {
@@ -717,13 +734,31 @@
         }
 
         .loading {
+            position: relative;
             text-align: center;
-            padding: 3rem;
-            font-size: 1.125rem;
+            padding: 2rem 1.5rem;
+            font-size: 1.05rem;
             color: var(--muted);
+            border-radius: var(--radius-xl);
+            border: 1px dashed rgba(195,198,209,.7);
+            background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.45) 45%, transparent 100%);
+            transform: translateX(-120%);
+            animation: loadingSweep 2.8s linear infinite;
+            pointer-events: none;
+            opacity: .75;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes loadingSweep { to { transform: translateX(120%); } }
         .spinner {
             display: inline-block;
             width: 32px; height: 32px;
@@ -734,11 +769,13 @@
         }
 
         .error {
-            background: #fee2e2;
-            border: 1px solid #fca5a5;
-            color: #991b1b;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
+            position: relative;
+            background: linear-gradient(180deg, rgba(255,248,248,.98), rgba(255,240,240,.95));
+            border: 1px solid rgba(186,26,26,.18);
+            color: #8a1d1d;
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
             margin: 2rem 0;
             text-align: center;
         }
@@ -850,7 +887,7 @@
         }
     </style>
 </head>
-<body>
+<body class="site-shell">
     @include('partials.navbar', ['activePage' => 'catalog'])
 
     <main class="page">
@@ -1078,6 +1115,20 @@
                                 <div class="cover-top">${BOOK_I18N.coverTop}</div>
                                 <h1 class="cover-title">${escapeHtml(title.substring(0, 40))}</h1>
                                 <div class="cover-author">${escapeHtml(author.substring(0, 30))}</div>
+                            </div>
+                        </div>
+                        <div class="mini-actions">
+                            <div class="mini-action">
+                                <strong>${escapeHtml(String(year))}</strong>
+                                <span>${BOOK_I18N.publicationYear}</span>
+                            </div>
+                            <div class="mini-action">
+                                <strong>${escapeHtml(language)}</strong>
+                                <span>${BOOK_I18N.language}</span>
+                            </div>
+                            <div class="mini-action">
+                                <strong>${isAvailable ? `${available}/${total}` : `0/${total}`}</strong>
+                                <span>${BOOK_I18N.availableShort}</span>
                             </div>
                         </div>
                     </aside>

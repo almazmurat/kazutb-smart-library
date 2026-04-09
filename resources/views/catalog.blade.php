@@ -238,7 +238,7 @@
     .filters {
       padding: 24px;
       position: sticky;
-      top: 96px;
+      top: var(--shell-sticky-offset);
       background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     }
 
@@ -259,54 +259,123 @@
 
     .filter-badge {
       font-size: 12px;
-      font-weight: 700;
-      background: var(--blue);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
       color: #fff;
       border-radius: 999px;
-      min-width: 22px;
-      height: 22px;
+      min-width: 24px;
+      height: 24px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0 6px;
+      padding: 0 7px;
+      box-shadow: 0 8px 18px rgba(0,30,64,.12);
     }
 
     .btn-clear-filters {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--muted);
-      background: none;
+      background: rgba(255,255,255,.82);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 14px;
+      border-radius: 999px;
+      padding: 7px 14px;
       cursor: pointer;
-      transition: all .2s;
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), color .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .btn-clear-filters:hover {
       color: #dc2626;
-      border-color: #dc2626;
+      border-color: rgba(220, 38, 38, .35);
       background: rgba(220, 38, 38, .04);
+      transform: translate3d(0, -1px, 0);
     }
 
     .mobile-filter-toggle {
       display: none;
       width: 100%;
-      padding: 14px;
+      padding: 14px 16px;
       font-size: 15px;
-      font-weight: 700;
-      background: var(--surface);
+      font-weight: 800;
+      background: rgba(255,255,255,.88);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       cursor: pointer;
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-soft);
     }
 
-    .filter-group { margin-bottom: 22px; }
-    .filter-group:last-child { margin-bottom: 0; }
+    .filter-toolbar {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(195,198,209,.55);
+      background: rgba(255,255,255,.82);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+    }
+
+    .filter-lead strong {
+      display: block;
+      font-size: 14px;
+      color: var(--blue);
+      margin-bottom: 4px;
+    }
+
+    .filter-lead p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .filter-toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-action-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,30,64,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .filter-action-pill:hover {
+      transform: translate3d(0, -1px, 0);
+      box-shadow: 0 10px 22px rgba(25,28,29,.05);
+      border-color: rgba(20,105,109,.22);
+    }
+
+    .filter-group {
+      margin-bottom: 22px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(195,198,209,.45);
+    }
+    .filter-group:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
 
     .filter-label {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       font-size: 14px;
       font-weight: 800;
       margin-bottom: 12px;
@@ -318,29 +387,126 @@
     .chip {
       padding: 10px 14px;
       border-radius: 999px;
-      background: #fff;
-      border: 1px solid var(--border);
-      font-size: 14px;
-      font-weight: 600;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(195,198,209,.7);
+      font-size: 13px;
+      font-weight: 700;
       color: #334155;
       box-shadow: var(--shadow-soft);
       cursor: pointer;
-      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
       font-family: inherit;
       line-height: 1.4;
     }
 
     .chip:hover {
-      border-color: var(--blue);
+      border-color: rgba(0,30,64,.22);
       background: rgba(0,30,64,.04);
       transform: translate3d(0, -1px, 0);
       box-shadow: 0 10px 22px rgba(25,28,29,.04);
     }
 
     .chip.active {
-      background: rgba(0,30,64,.07);
+      background: linear-gradient(135deg, rgba(0,30,64,.08), rgba(20,105,109,.08));
       color: var(--blue);
-      border-color: rgba(0,30,64,.12);
+      border-color: rgba(0,30,64,.14);
+    }
+
+    .preset-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .preset-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(195,198,209,.65);
+      background: rgba(255,255,255,.9);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .preset-chip span:last-child {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .preset-chip:hover,
+    .preset-chip.active {
+      transform: translate3d(0, -1px, 0);
+      border-color: rgba(20,105,109,.24);
+      background: linear-gradient(135deg, rgba(0,30,64,.04), rgba(20,105,109,.05));
+      box-shadow: 0 12px 24px rgba(25,28,29,.05);
+    }
+
+    .filter-meta {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .range-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .range-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .range-field span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .range-input,
+    .subject-search,
+    .subject-select {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid rgba(195,198,209,.72);
+      border-radius: 12px;
+      background: rgba(255,255,255,.94);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .subject-search {
+      margin-bottom: 10px;
+    }
+
+    .range-input:focus,
+    .subject-search:focus,
+    .subject-select:focus {
+      outline: none;
+      border-color: rgba(0,30,64,.18);
+      box-shadow: 0 0 0 4px rgba(0,30,64,.05);
+      background: #fff;
+    }
+
+    .filter-footer {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
     }
 
     .active-filters {
@@ -348,16 +514,16 @@
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
     .active-filter-chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 7px 14px;
       border-radius: 999px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       background: rgba(0,30,64,.07);
       color: var(--blue);
       border: 1px solid rgba(0,30,64,.12);
@@ -369,7 +535,7 @@
       padding: 6px 12px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       background: none;
       border: none;
       color: var(--muted);
@@ -385,7 +551,7 @@
       justify-content: space-between;
       gap: 10px;
       color: #334155;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .check-item input { accent-color: var(--blue); cursor: pointer; }
@@ -428,96 +594,190 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(195,198,209,.55);
+      box-shadow: var(--shadow-soft);
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      align-items: start;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      align-items: stretch;
     }
 
     .book-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
       padding: 18px;
-      border-radius: var(--radius-xl);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,249,250,.96));
-      border: 1px solid var(--border);
-      box-shadow: none;
-      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease, background-color 0.2s ease, box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      border-radius: calc(var(--radius-xl) + 2px);
+      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
+      border: 1px solid rgba(195,198,209,.7);
+      box-shadow: 0 10px 24px rgba(25,28,29,.03);
+      transition: transform .32s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .2s ease, background-color .2s ease, box-shadow .32s cubic-bezier(0.2, 0.8, 0.2, 1);
       cursor: pointer;
-      transform-style: preserve-3d;
+      overflow: hidden;
     }
 
-    .grid .book-card:nth-child(3n + 2) {
-      transform: translate3d(0, 10px, 0);
+    .book-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(20,105,109,0), rgba(20,105,109,.38), rgba(20,105,109,0));
+      opacity: .75;
     }
 
     .book-card:hover {
-      transform: translate3d(0, -3px, 0) rotateX(0.6deg);
-      box-shadow: 0 16px 34px rgba(25,28,29,.05);
-      border-color: rgba(0,30,64,.12);
-      background: rgba(248,249,250,.98);
+      transform: translate3d(0, -6px, 0);
+      box-shadow: 0 18px 38px rgba(25,28,29,.07);
+      border-color: rgba(0,30,64,.14);
+      background: rgba(248,249,250,.99);
     }
 
-    .book-preview {
-      height: 450px;
-      border-radius: var(--radius-xl);
-      padding: 18px;
-      display: flex;
-      align-items: flex-end;
+    .book-stage {
       position: relative;
-      overflow: hidden;
+      height: 310px;
       margin-bottom: 16px;
-      background: linear-gradient(180deg, #2d4268 0%, #223758 100%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+      perspective: 1700px;
     }
 
-    .book-preview::after {
+    .book-body {
+      position: absolute;
+      inset: 10px 10px 6px 12px;
+      border-radius: 6px 14px 14px 6px;
+      background: linear-gradient(180deg, #fffdf7 0%, #f3ede1 100%);
+      border: 1px solid rgba(203,188,160,.48);
+      box-shadow: inset 10px 0 18px rgba(0,0,0,.05), 0 18px 30px rgba(25,28,29,.10);
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      color: #4c4435;
+      transition: transform .32s cubic-bezier(0.2, 0.8, 0.2, 1);
+      background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.025) 3px);
+    }
+
+    .book-card:hover .book-body {
+      transform: translate3d(10px, 0, 0);
+    }
+
+    .book-body-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #7c6e54;
+      margin-bottom: 8px;
+    }
+
+    .book-body-preview {
+      font-size: 12px;
+      line-height: 1.65;
+      color: #625740;
+      max-width: 86%;
+    }
+
+    .book-body-stat {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,30,64,.05);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .book-cover {
+      position: absolute;
+      inset: 0;
+      border-radius: 6px 16px 16px 6px;
+      padding: 18px 18px 20px 24px;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      will-change: transform;
+      transition: transform .85s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .32s cubic-bezier(0.2, 0.8, 0.2, 1);
+      border-left: 10px solid rgba(0,0,0,.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      box-shadow: 6px 18px 28px rgba(25,28,29,.14);
+    }
+
+    .book-cover::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      background: linear-gradient(135deg, rgba(255,255,255,.08), transparent 55%);
       pointer-events: none;
     }
 
-    .book-card:nth-child(2) .book-preview,
-    .book-card:nth-child(5) .book-preview {
-      background: linear-gradient(180deg, #8f1f1f 0%, #6d1111 100%);
-    }
-
-    .book-card:nth-child(3) .book-preview,
-    .book-card:nth-child(6) .book-preview {
-      background: linear-gradient(180deg, #205f43 0%, #134935 100%);
-    }
-
-    .book-preview::before {
+    .book-cover::after {
       content: "";
       position: absolute;
-      inset: 0 auto 0 0;
-      width: 10px;
-      background: rgba(0,0,0,.18);
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0));
+      pointer-events: none;
     }
 
-    .book-preview small {
-      position: absolute;
-      left: 18px;
-      top: 18px;
-      color: rgba(255,255,255,.58);
+    .book-card:hover .book-cover {
+      transform: rotateY(-104deg);
+      box-shadow: 2px 10px 20px rgba(25,28,29,.12);
+    }
+
+    .tone-navy { background: linear-gradient(180deg, #263d63 0%, #172943 100%); }
+    .tone-wine { background: linear-gradient(180deg, #6f1f24 0%, #4f1115 100%); }
+    .tone-forest { background: linear-gradient(180deg, #235544 0%, #15392e 100%); }
+    .tone-wood { background: linear-gradient(180deg, #5a3d2d 0%, #39241a 100%); }
+
+    .cover-year {
+      align-self: flex-start;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
       font-size: 11px;
-      letter-spacing: .16em;
+      font-weight: 800;
+      letter-spacing: .06em;
+      backdrop-filter: blur(12px);
+    }
+
+    .cover-kicker {
+      color: rgba(255,255,255,.6);
+      font-size: 11px;
+      letter-spacing: .18em;
       text-transform: uppercase;
       font-weight: 700;
+      margin-bottom: 10px;
     }
 
-    .book-preview h3 {
-      position: relative;
-      z-index: 1;
+    .cover-title {
       margin: 0;
-      color: #f1d08e;
-      font-size: 28px;
-      line-height: .98;
+      color: #f3d99d;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 30px;
+      line-height: .96;
       letter-spacing: -.8px;
-      max-width: 170px;
+      text-shadow: 1px 1px 0 rgba(0,0,0,.28);
+    }
+
+    .cover-subline {
+      margin-top: 14px;
+      color: rgba(255,255,255,.76);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .06em;
     }
 
     .meta-row {
@@ -531,7 +791,7 @@
       padding: 8px 12px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       background: rgba(0,30,64,.07);
       color: var(--blue);
     }
@@ -555,7 +815,7 @@
       padding: 12px 18px;
       background: linear-gradient(135deg, rgba(0,30,64,.03), rgba(20,105,109,.05));
       border: 1px solid rgba(0,30,64,.10);
-      border-radius: 8px;
+      border-radius: 12px;
       margin-bottom: 16px;
       font-size: 14px;
       color: var(--text);
@@ -567,38 +827,27 @@
 
     .active-subject-banner .clear-btn {
       margin-left: auto;
-      padding: 4px 12px;
+      padding: 5px 12px;
       border-radius: 999px;
       border: 1px solid rgba(0,30,64,.12);
       background: #fff;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--blue);
       cursor: pointer;
     }
 
-    .subject-select {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: #fff;
-      font-size: 13px;
-      font-family: inherit;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .subject-select:focus {
-      outline: none;
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(0,30,64,.08);
+    .book-copy {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
     }
 
     .book-title {
       margin: 0 0 8px;
       font-size: 22px;
       line-height: 1.15;
+      min-height: 52px;
     }
 
     .book-desc {
@@ -606,12 +855,13 @@
       color: var(--muted);
       line-height: 1.7;
       font-size: 14px;
-      min-height: 72px;
+      min-height: 48px;
     }
 
     .book-info {
       display: grid;
       gap: 10px;
+      margin-top: auto;
       margin-bottom: 16px;
     }
 
@@ -632,11 +882,13 @@
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 10px;
+      margin-top: auto;
     }
 
     .icon-btn {
       width: 50px;
-      border-radius: 8px;
+      height: 48px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       background: #fff;
       box-shadow: none;
@@ -656,6 +908,54 @@
       background: rgba(20,105,109,.08);
       border-color: var(--cyan);
       color: var(--cyan);
+    }
+
+    .catalog-state-card {
+      grid-column: 1 / -1;
+      display: grid;
+      place-items: center;
+      gap: 10px;
+      min-height: 220px;
+      padding: 28px 24px;
+      border-radius: 18px;
+      border: 1px solid rgba(195,198,209,.65);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+    }
+
+    .catalog-state-card strong {
+      color: var(--blue);
+      font-size: 18px;
+    }
+
+    .catalog-state-card p {
+      margin: 0;
+      max-width: 440px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .catalog-state-card--error {
+      border-color: rgba(186,26,26,.18);
+      background: linear-gradient(180deg, rgba(255,248,248,.98), rgba(255,240,240,.95));
+    }
+
+    .catalog-state-card--error strong,
+    .catalog-state-card--error p {
+      color: #8a1d1d;
+    }
+
+    .catalog-state-card__icon {
+      display: inline-grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(0,30,64,.06);
+      color: var(--blue);
+      font-size: 24px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
     }
 
     .pagination {
@@ -702,7 +1002,6 @@
       .mobile-filter-toggle { display: block; }
       #filters-body { display: none; }
       #filters-body.open { display: block; }
-      .nav-links, .nav-actions { display: none; }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
       .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
@@ -712,6 +1011,8 @@
       .container { width: min(100% - 20px, var(--container)); }
       .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
+      .range-row { grid-template-columns: 1fr; }
+      .book-stage { height: 280px; }
       .book-actions { grid-template-columns: 1fr; }
       .icon-btn { width: 100%; height: 50px; min-height: 44px; }
       .search-wrap { grid-template-columns: 1fr; }
@@ -723,7 +1024,7 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-<body>
+<body class="site-shell">
   @include('partials.navbar', ['activePage' => 'catalog'])
 
   <main class="page">
@@ -734,8 +1035,8 @@
         <p>{{ ['ru' => 'Удобный поиск по фонду библиотеки с фильтрами по категориям, формату, году издания, языку и доступности.', 'kk' => 'Категория, формат, басылым жылы, тіл және қолжетімділік бойынша сүзгілері бар ыңғайлы іздеу.', 'en' => 'Search the library collection with filters for category, format, publication year, language, and availability.'][$lang] }}</p>
 
         <div class="search-wrap" style="grid-template-columns: 1fr auto;">
-          <input class="input" id="search-input" type="text" placeholder="{{ ['ru' => 'Поиск по названию, автору, ISBN или ключевому слову', 'kk' => 'Атауы, авторы, ISBN немесе кілтсөз бойынша іздеу', 'en' => 'Search by title, author, ISBN, or keyword'][$lang] }}" onkeydown="if(event.key==='Enter'){loadCatalog()}" />
-          <button class="btn btn-primary" onclick="loadCatalog()">{{ ['ru' => 'Найти', 'kk' => 'Іздеу', 'en' => 'Search'][$lang] }}</button>
+          <input class="input" id="search-input" type="text" placeholder="{{ ['ru' => 'Поиск по названию, автору, ISBN или ключевому слову', 'kk' => 'Атауы, авторы, ISBN немесе кілтсөз бойынша іздеу', 'en' => 'Search by title, author, ISBN, or keyword'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}" />
+          <button class="btn btn-primary" onclick="applyFilters()">{{ ['ru' => 'Найти', 'kk' => 'Іздеу', 'en' => 'Search'][$lang] }}</button>
         </div>
       </section>
 
@@ -748,7 +1049,26 @@
           <button type="button" class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleFilters()">
             🔎 {{ ['ru' => 'Фильтры', 'kk' => 'Сүзгілер', 'en' => 'Filters'][$lang] }} <span id="mobile-filter-count"></span>
           </button>
+          <div class="filter-toolbar">
+            <div class="filter-lead">
+              <strong>{{ ['ru' => 'Премиальные сценарии поиска', 'kk' => 'Премиум іздеу сценарийлері', 'en' => 'Premium search modes'][$lang] }}</strong>
+              <p>{{ ['ru' => 'Комбинируйте быстрые режимы, точный диапазон лет и тематический поиск без перегрузки интерфейса.', 'kk' => 'Жылдам режимдерді, нақты жыл ауқымын және тақырыптық іздеуді интерфейсті ауырлатпай біріктіріңіз.', 'en' => 'Blend quick modes, precise year ranges, and subject search without overloading the interface.'][$lang] }}</p>
+            </div>
+            <div class="filter-toolbar-actions">
+              <button type="button" class="filter-action-pill" id="share-catalog-view" onclick="copyCatalogLink()">🔗 {{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
+            </div>
+          </div>
           <div id="filters-body">
+
+          <div class="filter-group">
+            <span class="filter-label">{{ ['ru' => 'Готовые режимы', 'kk' => 'Дайын режимдер', 'en' => 'Quick modes'][$lang] }}</span>
+            <div class="preset-grid" id="preset-chips">
+              <button type="button" class="preset-chip" data-preset="available_recent"><span>⚡ {{ ['ru' => 'Свежие и доступные', 'kk' => 'Жаңа әрі қолжетімді', 'en' => 'Recent & available'][$lang] }}</span><span>{{ ['ru' => 'сейчас', 'kk' => 'қазір', 'en' => 'now'][$lang] }}</span></button>
+              <button type="button" class="preset-chip" data-preset="english_research"><span>🌐 {{ ['ru' => 'Исследования на English', 'kk' => 'English зерттеулері', 'en' => 'English research'][$lang] }}</span><span>{{ ['ru' => 'глобально', 'kk' => 'ғаламдық', 'en' => 'global'][$lang] }}</span></button>
+              <button type="button" class="preset-chip" data-preset="syllabus"><span>🎓 {{ ['ru' => 'Для силлабуса', 'kk' => 'Силлабус үшін', 'en' => 'Syllabus set'][$lang] }}</span><span>{{ ['ru' => 'курс', 'kk' => 'курс', 'en' => 'course'][$lang] }}</span></button>
+            </div>
+            <div class="filter-meta">{{ ['ru' => 'Один клик применяет сбалансированную комбинацию фильтров и сортировки.', 'kk' => 'Бір басу сүзгілер мен сұрыптаудың теңгерімді комбинациясын қолданады.', 'en' => 'One click applies a balanced combination of filters and sorting.'][$lang] }}</div>
+          </div>
 
           <div class="filter-group">
             <span class="filter-label">{{ ['ru' => 'Доступность', 'kk' => 'Қолжетімділік', 'en' => 'Availability'][$lang] }}</span>
@@ -779,10 +1099,22 @@
               <button type="button" class="chip" data-year="2020-2022">2020–2022</button>
               <button type="button" class="chip" data-year="older">{{ ['ru' => 'Ранее', 'kk' => 'Ертерек', 'en' => 'Earlier'][$lang] }}</button>
             </div>
+            <div class="range-row">
+              <label class="range-field">
+                <span>{{ ['ru' => 'С', 'kk' => 'Бастап', 'en' => 'From'][$lang] }}</span>
+                <input type="number" id="year-from-input" class="range-input" min="1900" max="2100" placeholder="2020">
+              </label>
+              <label class="range-field">
+                <span>{{ ['ru' => 'По', 'kk' => 'Дейін', 'en' => 'To'][$lang] }}</span>
+                <input type="number" id="year-to-input" class="range-input" min="1900" max="2100" placeholder="2026">
+              </label>
+            </div>
+            <div class="filter-meta">{{ ['ru' => 'Для точной выборки задайте собственный диапазон лет — он имеет приоритет над быстрыми чипами.', 'kk' => 'Нақты іріктеу үшін өз жыл ауқымыңызды орнатыңыз — ол жылдам чиптерден басым болады.', 'en' => 'Set a custom year range for precise discovery — it overrides the quick chips above.'][$lang] }}</div>
           </div>
 
           <div class="filter-group" id="subject-filter-group">
             <span class="filter-label">{{ ['ru' => 'Направление / Специальность', 'kk' => 'Бағыт / Мамандану', 'en' => 'Track / specialization'][$lang] }}</span>
+            <input type="search" class="subject-search" id="subject-search" placeholder="{{ ['ru' => 'Быстрый поиск по направлениям', 'kk' => 'Бағыттар бойынша жылдам іздеу', 'en' => 'Quick subject search'][$lang] }}" oninput="filterSubjectOptions(this.value)">
             <select class="subject-select" id="subject-select" onchange="applyFilters()">
               <option value="">{{ ['ru' => 'Все направления', 'kk' => 'Барлық бағыттар', 'en' => 'All tracks'][$lang] }}</option>
             </select>
@@ -790,7 +1122,9 @@
 
           </div>{{-- /filters-body --}}
 
-          <button class="btn btn-primary" style="width:100%; margin-top:6px;" onclick="applyFilters()">{{ ['ru' => 'Применить фильтры', 'kk' => 'Сүзгілерді қолдану', 'en' => 'Apply filters'][$lang] }}</button>
+          <div class="filter-footer">
+            <button class="btn btn-primary" style="width:100%;" onclick="applyFilters()">{{ ['ru' => 'Применить фильтры', 'kk' => 'Сүзгілерді қолдану', 'en' => 'Apply filters'][$lang] }}</button>
+          </div>
         </aside>
 
         <div class="card results">
@@ -802,7 +1136,7 @@
             </div>
             <div class="sort-box">
               <span style="color:var(--muted); font-weight:600;">{{ ['ru' => 'Сортировка:', 'kk' => 'Сұрыптау:', 'en' => 'Sort by:'][$lang] }}</span>
-              <select class="select" id="sort-select" style="min-width:220px;" onchange="loadCatalog()">
+              <select class="select" id="sort-select" style="min-width:220px;" onchange="applyFilters()">
                 <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
                 <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
                 <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
@@ -833,7 +1167,7 @@
         addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
         foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
         yearLabel: 'Год', availableOnly: 'В наличии', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
-        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти'
+        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри записи', previewAvailable: 'Доступно {available} из {total}. Откройте запись для полной библиографии и действий.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить цифровой доступ.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', formatHybrid: 'Печатная + PDF', formatDigital: 'PDF', formatLabel: 'Формат'
       },
       kk: {
         untitled: 'Атауы жоқ', authorMissing: 'Автор көрсетілмеген', publisherMissing: 'Баспа көрсетілмеген', languageMissing: 'Көрсетілмеген',
@@ -841,7 +1175,7 @@
         addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
         foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
         yearLabel: 'Жыл', availableOnly: 'Қолда бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
-        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру'
+        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Жазба ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Толық библиография мен әрекеттер үшін жазбаны ашыңыз.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Цифрлық қолжетімділікті тексеру үшін жазбаны ашыңыз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', formatHybrid: 'Баспа + PDF', formatDigital: 'PDF', formatLabel: 'Формат'
       },
       en: {
         untitled: 'Untitled', authorMissing: 'Author not specified', publisherMissing: 'Publisher not specified', languageMissing: 'Not specified',
@@ -849,7 +1183,7 @@
         addShortlist: 'Add to shortlist', removeShortlist: 'Remove from shortlist', updateCatalog: 'Refreshing catalog', noResultBadge: 'No result', noBooks: 'No books found', tryChange: 'Try adjusting the search parameters.',
         foundZero: 'Found 0 books', foundMany: 'Found {count} books', retry: 'Retry', loadError: 'Catalog load error', refreshPage: 'Try refreshing the page.',
         yearLabel: 'Year', availableOnly: 'Available', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
-        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in'
+        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the record', previewAvailable: '{available} of {total} copies are ready now. Open the record for full bibliography and actions.', previewUnavailable: 'Copies are currently unavailable. Open the record to review digital access options.', loadingBody: 'Refining the catalog view around your active filters.', formatHybrid: 'Print + PDF', formatDigital: 'PDF', formatLabel: 'Format'
       }
     };
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
@@ -867,6 +1201,7 @@
     let activeSubjectLabel = '';
     let subjectsData = null;
     let shortlistState = {};
+    let activePreset = '';
 
     function escapeHtml(text) {
       const div = document.createElement('div');
@@ -885,6 +1220,12 @@
     }
 
     function getYearParams() {
+      const customFrom = document.getElementById('year-from-input')?.value?.trim();
+      const customTo = document.getElementById('year-to-input')?.value?.trim();
+      if (customFrom || customTo) {
+        return { year_from: customFrom || '', year_to: customTo || '' };
+      }
+
       const year = getActiveYear();
       if (!year) return {};
       if (year === 'older') return { year_to: 2019 };
@@ -893,6 +1234,116 @@
         return { year_from: from, year_to: to };
       }
       return { year_from: year, year_to: year };
+    }
+
+    function setChipValue(selector, dataKey, value = '') {
+      document.querySelectorAll(selector).forEach((chip) => {
+        chip.classList.toggle('active', (chip.dataset[dataKey] || '') === value);
+      });
+    }
+
+    function updatePresetButtons() {
+      document.querySelectorAll('#preset-chips .preset-chip').forEach((button) => {
+        button.classList.toggle('active', button.dataset.preset === activePreset);
+      });
+    }
+
+    function applyPreset(preset) {
+      activePreset = preset;
+      updatePresetButtons();
+
+      const availableOnly = document.getElementById('filter-available-only');
+      const yearFromInput = document.getElementById('year-from-input');
+      const yearToInput = document.getElementById('year-to-input');
+      const sortSelect = document.getElementById('sort-select');
+
+      if (availableOnly) availableOnly.checked = false;
+      if (yearFromInput) yearFromInput.value = '';
+      if (yearToInput) yearToInput.value = '';
+      setChipValue('#language-chips .chip', 'lang', '');
+      setChipValue('#year-chips .chip', 'year', '');
+      if (sortSelect) sortSelect.value = 'popular';
+
+      if (preset === 'available_recent') {
+        if (availableOnly) availableOnly.checked = true;
+        setChipValue('#year-chips .chip', 'year', '2024');
+        if (sortSelect) sortSelect.value = 'newest';
+      }
+
+      if (preset === 'english_research') {
+        setChipValue('#language-chips .chip', 'lang', 'en');
+        setChipValue('#year-chips .chip', 'year', '2020-2022');
+        if (sortSelect) sortSelect.value = 'author';
+      }
+
+      if (preset === 'syllabus') {
+        if (availableOnly) availableOnly.checked = true;
+        if (yearFromInput) yearFromInput.value = '2018';
+        if (yearToInput) yearToInput.value = String(new Date().getFullYear());
+        if (sortSelect) sortSelect.value = 'title';
+      }
+
+      applyFilters();
+    }
+
+    async function copyCatalogLink() {
+      const button = document.getElementById('share-catalog-view');
+      const originalLabel = button?.dataset.originalLabel || button?.textContent || CATALOG_I18N.shareView;
+      if (button && !button.dataset.originalLabel) {
+        button.dataset.originalLabel = originalLabel;
+      }
+
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        if (button) {
+          button.textContent = `✓ ${CATALOG_I18N.shareCopied}`;
+          window.setTimeout(() => {
+            button.textContent = originalLabel;
+          }, 1600);
+        }
+      } catch (_) {
+        window.prompt(CATALOG_I18N.shareView, window.location.href);
+      }
+    }
+
+    function filterSubjectOptions(value) {
+      const query = (value || '').trim().toLowerCase();
+      const select = document.getElementById('subject-select');
+      if (!select) return;
+
+      Array.from(select.options).forEach((option, index) => {
+        if (index === 0 || !query) {
+          option.hidden = false;
+          return;
+        }
+
+        const haystack = `${option.dataset.label || ''} ${option.textContent || ''}`.toLowerCase();
+        option.hidden = !haystack.includes(query);
+      });
+    }
+
+    function syncCatalogUrl(params) {
+      const url = new URL(window.location.href);
+      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label'].forEach((key) => {
+        url.searchParams.delete(key);
+      });
+
+      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id'].forEach((key) => {
+        const value = params.get(key);
+        if (value) {
+          url.searchParams.set(key, value);
+        }
+      });
+
+      if (currentPage > 1) {
+        url.searchParams.set('page', String(currentPage));
+      }
+
+      if (activeSubjectLabel) {
+        url.searchParams.set('subject_label', activeSubjectLabel);
+      }
+
+      history.replaceState(null, '', `${url.pathname}${url.search}`);
     }
 
     function formatBookData(book) {
@@ -905,7 +1356,7 @@
         publisher: book.publisher?.name || CATALOG_I18N.publisherMissing,
         year: book.publicationYear || '—',
         language: book.language?.raw || book.language?.code || CATALOG_I18N.languageMissing,
-        format: book.copies?.available > 0 ? 'Печатная + PDF' : 'PDF',
+        format: book.copies?.available > 0 ? CATALOG_I18N.formatHybrid : CATALOG_I18N.formatDigital,
         available: book.copies?.available || 0,
         total: book.copies?.total || 0,
         isbn: book.isbn?.raw || '',
@@ -916,33 +1367,52 @@
       };
     }
 
-    function renderBookCard(book) {
+    function renderBookCard(book, index = 0) {
       const data = formatBookData(book);
       const isAvailable = data.available > 0;
       const identifier = data.isbn || data.id;
+      const tone = ['tone-navy', 'tone-wine', 'tone-forest', 'tone-wood'][index % 4];
       const subjectBadge = data.specialization
         ? `<span class="tag subject" title="${escapeHtml(data.specialization)}">${escapeHtml(data.specialization.length > 25 ? data.specialization.substring(0, 25) + '…' : data.specialization)}</span>`
         : (data.department ? `<span class="tag subject" title="${escapeHtml(data.department)}">${escapeHtml(data.department.length > 25 ? data.department.substring(0, 25) + '…' : data.department)}</span>` : '');
+      const previewSummary = isAvailable
+        ? CATALOG_I18N.previewAvailable.replace('{available}', data.available).replace('{total}', data.total)
+        : CATALOG_I18N.previewUnavailable;
 
       const isShortlisted = shortlistState[identifier] || false;
 
       return `
         <article class="book-card" onclick="goToBook('${escapeHtml(identifier)}')">
-          <div class="book-preview">
-            <small>${escapeHtml(data.publisher.substring(0, 15))}</small>
-            <h3>${escapeHtml(data.title.substring(0, 30))}</h3>
+          <div class="book-stage">
+            <div class="book-body">
+              <div>
+                <div class="book-body-label">${CATALOG_I18N.insideRecord}</div>
+                <div class="book-body-preview">${escapeHtml(previewSummary)}</div>
+              </div>
+              <span class="book-body-stat">${escapeHtml(data.format)} · ${escapeHtml(data.language)}</span>
+            </div>
+            <div class="book-cover ${tone}">
+              <span class="cover-year">${escapeHtml(String(data.year))}</span>
+              <div>
+                <div class="cover-kicker">${escapeHtml(data.publisher.substring(0, 24))}</div>
+                <h3 class="cover-title">${escapeHtml(data.title.substring(0, 42))}</h3>
+                <div class="cover-subline">${escapeHtml(data.author.substring(0, 36))}</div>
+              </div>
+            </div>
           </div>
           <div class="meta-row">
             <span class="tag">${escapeHtml(String(data.year))}</span>
             <span class="tag ${isAvailable ? 'green' : ''}">${isAvailable ? `${data.available} ${CATALOG_I18N.copies}` : CATALOG_I18N.unavailable}</span>
             ${subjectBadge}
           </div>
-          <h3 class="book-title">${escapeHtml(data.title)}</h3>
-          <p class="book-desc">${escapeHtml(data.publisher)}</p>
-          <div class="book-info">
-            <div><span>${CATALOG_I18N.author}</span><span>${escapeHtml(data.author.substring(0, 40))}</span></div>
-            <div><span>${CATALOG_I18N.year}</span><span>${escapeHtml(String(data.year))}</span></div>
-            <div><span>${CATALOG_I18N.language}</span><span>${escapeHtml(data.language)}</span></div>
+          <div class="book-copy">
+            <h3 class="book-title">${escapeHtml(data.title)}</h3>
+            <p class="book-desc">${escapeHtml(data.publisher)}</p>
+            <div class="book-info">
+              <div><span>${CATALOG_I18N.author}</span><span>${escapeHtml(data.author.substring(0, 40))}</span></div>
+              <div><span>${CATALOG_I18N.language}</span><span>${escapeHtml(data.language)}</span></div>
+              <div><span>${CATALOG_I18N.formatLabel}</span><span>${escapeHtml(data.format)}</span></div>
+            </div>
           </div>
           <div class="book-actions">
             <button class="btn btn-primary" onclick="event.stopPropagation(); goToBook('${escapeHtml(identifier)}')">${CATALOG_I18N.viewBook}</button>
@@ -959,7 +1429,7 @@
       const resultsCount = document.getElementById('results-count');
 
       try {
-        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:34px 24px; color:var(--muted); background:#fff; border:1px solid var(--border); border-radius:8px;"><div style="display:inline-block;width:32px;height:32px;border:3px solid rgba(195,198,209,.55);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div><p style="margin:8px 0 0; font-weight:600; color:var(--blue);">${CATALOG_I18N.updateCatalog}</p></div>`;
+        grid.innerHTML = `<div class="catalog-state-card"><div class="catalog-state-card__icon"><div class="spinner"></div></div><strong>${CATALOG_I18N.updateCatalog}</strong><p>${CATALOG_I18N.loadingBody}</p></div>`;
 
         const params = new URLSearchParams();
         if (searchInput.value) params.set('q', searchInput.value);
@@ -978,6 +1448,7 @@
         if (availableOnly && availableOnly.checked) params.set('available_only', '1');
 
         if (activeSubjectId) params.set('subject_id', activeSubjectId);
+        syncCatalogUrl(params);
 
         const response = await fetch(`${API_ENDPOINT}?${params}`, {
           headers: { 'Accept': 'application/json' }
@@ -990,24 +1461,24 @@
         const meta = data.meta || {};
 
         if (books.length === 0) {
-          grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:44px 24px; color:var(--muted); border:1px solid var(--border); border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94)); box-shadow:0 14px 28px rgba(25,28,29,.04);"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:96px;height:34px;padding:0 12px;border-radius:999px;background:rgba(0,30,64,.05);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">${CATALOG_I18N.noResultBadge}</span><p style="margin:14px 0 0; font-weight:700; color:var(--blue); font-size:18px;">${CATALOG_I18N.noBooks}</p><p style="margin:6px 0 0; max-width:420px; margin-inline:auto;">${CATALOG_I18N.tryChange}</p></div>`;
+          grid.innerHTML = `<div class="catalog-state-card"><div class="catalog-state-card__icon">🔎</div><strong>${CATALOG_I18N.noBooks}</strong><p>${CATALOG_I18N.tryChange}</p><button type="button" class="btn btn-ghost" onclick="clearAllFilters()">${CATALOG_I18N.resetAll}</button></div>`;
           resultsCount.textContent = CATALOG_I18N.foundZero;
           document.getElementById('pagination').innerHTML = '';
         } else {
-          // Check shortlist state for rendered books, then re-render
           const identifiers = books.map(b => {
             const d = formatBookData(b);
             return d.isbn || d.id;
           }).filter(Boolean);
           await loadShortlistState(identifiers);
-          grid.innerHTML = books.map(renderBookCard).join('');
+          grid.innerHTML = books.map((item, index) => renderBookCard(item, index)).join('');
           resultsCount.textContent = CATALOG_I18N.foundMany.replace('{count}', meta.total || books.length);
           totalPages = meta.totalPages || 1;
           renderPagination();
         }
         renderActiveFilters();
+        updateFilterBadge();
       } catch (err) {
-        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px 24px; border:1px solid rgba(186,26,26,.16); border-radius:8px; background:rgba(186,26,26,.05);"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:96px;height:34px;padding:0 12px;border-radius:999px;background:rgba(186,26,26,.08);color:#ba1a1a;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">${CATALOG_I18N.retry}</span><p style="margin:12px 0 0; font-weight:700; color:#ba1a1a;">${CATALOG_I18N.loadError}</p><p style="margin:4px 0 0; color:#7a2323;">${CATALOG_I18N.refreshPage}</p></div>`;
+        grid.innerHTML = `<div class="catalog-state-card catalog-state-card--error"><div class="catalog-state-card__icon">!</div><strong>${CATALOG_I18N.loadError}</strong><p>${CATALOG_I18N.refreshPage}</p><button type="button" class="btn btn-ghost" onclick="loadCatalog()">${CATALOG_I18N.retry}</button></div>`;
         console.error(err);
       }
     }
@@ -1017,29 +1488,79 @@
       if (!container) return;
       const chips = [];
       const searchVal = document.getElementById('search-input')?.value?.trim();
-      if (searchVal) chips.push({label: `«${searchVal}»`, clear: () => { document.getElementById('search-input').value = ''; }});
+      if (searchVal) chips.push({ label: `«${searchVal}»`, clear: () => { document.getElementById('search-input').value = ''; } });
+
       const lang = getActiveLanguage();
-      if (lang) { const labels = {ru:'Русский',kk:'Қазақша',en:'English'}; chips.push({label: labels[lang]||lang, clear: () => { document.querySelectorAll('#language-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.lang === '')); }}); }
+      if (lang) {
+        const labels = { ru: 'Русский', kk: 'Қазақша', en: 'English' };
+        chips.push({ label: labels[lang] || lang, clear: () => { setChipValue('#language-chips .chip', 'lang', ''); } });
+      }
+
       const yp = getYearParams();
-      if (yp.year_from || yp.year_to) { const activeY = document.querySelector('#year-chips .chip.active'); chips.push({label: activeY?.textContent || CATALOG_I18N.yearLabel, clear: () => { document.querySelectorAll('#year-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.year === '')); }}); }
+      if (yp.year_from || yp.year_to) {
+        const hasCustomRange = document.getElementById('year-from-input')?.value || document.getElementById('year-to-input')?.value;
+        const yearLabel = hasCustomRange
+          ? `${yp.year_from || '…'}–${yp.year_to || '…'}`
+          : (document.querySelector('#year-chips .chip.active')?.textContent || CATALOG_I18N.yearLabel);
+        chips.push({
+          label: yearLabel,
+          clear: () => {
+            const yearFromInput = document.getElementById('year-from-input');
+            const yearToInput = document.getElementById('year-to-input');
+            if (yearFromInput) yearFromInput.value = '';
+            if (yearToInput) yearToInput.value = '';
+            setChipValue('#year-chips .chip', 'year', '');
+          }
+        });
+      }
+
       const avail = document.getElementById('filter-available-only');
-      if (avail?.checked) chips.push({label: CATALOG_I18N.availableOnly, clear: () => { avail.checked = false; }});
-      if (activeSubjectLabel) chips.push({label: activeSubjectLabel, clear: () => { activeSubjectId = ''; activeSubjectLabel = ''; }});
-      if (chips.length === 0) { container.style.display = 'none'; return; }
+      if (avail?.checked) chips.push({ label: CATALOG_I18N.availableOnly, clear: () => { avail.checked = false; } });
+      if (activeSubjectLabel) chips.push({ label: activeSubjectLabel, clear: () => { activeSubjectId = ''; activeSubjectLabel = ''; } });
+
+      if (chips.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
       container.style.display = 'flex';
       container.innerHTML = chips.map(c => `<button type="button" class="active-filter-chip" onclick="this._clear()">${escapeHtml(c.label)} ✕</button>`).join('') +
         `<button type="button" class="active-filter-reset" onclick="clearAllFilters()">${CATALOG_I18N.resetAll}</button>`;
-      container.querySelectorAll('.active-filter-chip').forEach((el, i) => { el._clear = () => { chips[i].clear(); loadCatalog(); }; });
+      container.querySelectorAll('.active-filter-chip').forEach((el, i) => {
+        el._clear = () => {
+          chips[i].clear();
+          activePreset = '';
+          updatePresetButtons();
+          applyFilters();
+        };
+      });
     }
 
     function clearAllFilters() {
-      document.getElementById('search-input').value = '';
-      document.querySelectorAll('#language-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.lang === ''));
-      document.querySelectorAll('#year-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.year === ''));
+      const searchInput = document.getElementById('search-input');
+      const yearFromInput = document.getElementById('year-from-input');
+      const yearToInput = document.getElementById('year-to-input');
+      const subjectSearch = document.getElementById('subject-search');
+      const subjectSelect = document.getElementById('subject-select');
+      const sortSelect = document.getElementById('sort-select');
       const avail = document.getElementById('filter-available-only');
+
+      if (searchInput) searchInput.value = '';
+      if (yearFromInput) yearFromInput.value = '';
+      if (yearToInput) yearToInput.value = '';
+      if (subjectSearch) subjectSearch.value = '';
+      if (subjectSelect) subjectSelect.value = '';
+      if (sortSelect) sortSelect.value = 'popular';
       if (avail) avail.checked = false;
-      activeSubjectId = ''; activeSubjectLabel = '';
-      loadCatalog();
+
+      setChipValue('#language-chips .chip', 'lang', '');
+      setChipValue('#year-chips .chip', 'year', '');
+      activeSubjectId = '';
+      activeSubjectLabel = '';
+      activePreset = '';
+      updatePresetButtons();
+      updateSubjectBanner();
+      applyFilters();
     }
 
     function renderPagination() {
@@ -1170,16 +1691,29 @@
     }
 
     function clearAllFilters() {
-      document.getElementById('filter-available-only').checked = false;
-      document.querySelectorAll('#language-chips .chip').forEach((c, i) => {
-        c.classList.toggle('active', i === 0);
-      });
-      document.querySelectorAll('#year-chips .chip').forEach((c, i) => {
-        c.classList.toggle('active', i === 0);
-      });
-      document.getElementById('subject-select').value = '';
+      const searchInput = document.getElementById('search-input');
+      const yearFromInput = document.getElementById('year-from-input');
+      const yearToInput = document.getElementById('year-to-input');
+      const subjectSearch = document.getElementById('subject-search');
+      const subjectSelect = document.getElementById('subject-select');
+      const sortSelect = document.getElementById('sort-select');
+      const avail = document.getElementById('filter-available-only');
+
+      if (searchInput) searchInput.value = '';
+      if (yearFromInput) yearFromInput.value = '';
+      if (yearToInput) yearToInput.value = '';
+      if (subjectSearch) subjectSearch.value = '';
+      if (subjectSelect) subjectSelect.value = '';
+      if (sortSelect) sortSelect.value = 'popular';
+      if (avail) avail.checked = false;
+
+      setChipValue('#language-chips .chip', 'lang', '');
+      setChipValue('#year-chips .chip', 'year', '');
       activeSubjectId = '';
       activeSubjectLabel = '';
+      activePreset = '';
+      updatePresetButtons();
+      updateSubjectBanner();
       applyFilters();
     }
 
@@ -1187,8 +1721,9 @@
       let count = 0;
       if (document.getElementById('filter-available-only')?.checked) count++;
       if (getActiveLanguage()) count++;
-      if (getActiveYear()) count++;
-      if (document.getElementById('subject-select')?.value) count++;
+      const yearParams = getYearParams();
+      if (yearParams.year_from || yearParams.year_to) count++;
+      if (activeSubjectId || document.getElementById('subject-select')?.value) count++;
       return count;
     }
 
@@ -1231,9 +1766,37 @@
     // Chip filter behavior — click activates chip and reloads catalog
     document.querySelectorAll('#language-chips .chip, #year-chips .chip').forEach(chip => {
       chip.addEventListener('click', function() {
+        if (this.closest('#year-chips')) {
+          const yearFromInput = document.getElementById('year-from-input');
+          const yearToInput = document.getElementById('year-to-input');
+          if (yearFromInput) yearFromInput.value = '';
+          if (yearToInput) yearToInput.value = '';
+        }
+        activePreset = '';
+        updatePresetButtons();
         this.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         this.classList.add('active');
         applyFilters();
+      });
+    });
+
+    document.querySelectorAll('#preset-chips .preset-chip').forEach((chip) => {
+      chip.addEventListener('click', () => applyPreset(chip.dataset.preset || ''));
+    });
+
+    ['year-from-input', 'year-to-input'].forEach((id) => {
+      const input = document.getElementById(id);
+      input?.addEventListener('input', () => {
+        setChipValue('#year-chips .chip', 'year', '');
+        activePreset = '';
+        updatePresetButtons();
+        updateFilterBadge();
+      });
+      input?.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          applyFilters();
+        }
       });
     });
 
@@ -1242,13 +1805,48 @@
       const urlParams = new URLSearchParams(window.location.search);
       const urlQ = urlParams.get('q');
       const urlSort = urlParams.get('sort');
+      const urlLanguage = urlParams.get('language');
+      const urlYearFrom = urlParams.get('year_from');
+      const urlYearTo = urlParams.get('year_to');
+      const urlAvailableOnly = urlParams.get('available_only');
       const urlSubjectId = urlParams.get('subject_id');
       const urlSubjectLabel = urlParams.get('subject_label');
+      const urlPage = Number(urlParams.get('page') || '1');
+
       if (urlQ && document.getElementById('search-input')) {
         document.getElementById('search-input').value = urlQ;
       }
       if (urlSort && document.getElementById('sort-select')) {
         document.getElementById('sort-select').value = urlSort;
+      }
+      if (urlLanguage) {
+        setChipValue('#language-chips .chip', 'lang', urlLanguage);
+      }
+      if (urlAvailableOnly === '1' && document.getElementById('filter-available-only')) {
+        document.getElementById('filter-available-only').checked = true;
+      }
+      if (urlYearFrom || urlYearTo) {
+        const combined = urlYearFrom && urlYearTo && urlYearFrom === urlYearTo ? urlYearFrom : `${urlYearFrom || ''}-${urlYearTo || ''}`;
+        const matchedChip = Array.from(document.querySelectorAll('#year-chips .chip')).find((chip) => {
+          const value = chip.dataset.year || '';
+          if (!value) return false;
+          if (value === combined) return true;
+          return value === 'older' && urlYearTo && Number(urlYearTo) <= 2019;
+        });
+
+        if (matchedChip) {
+          matchedChip.parentElement.querySelectorAll('.chip').forEach((chip) => chip.classList.remove('active'));
+          matchedChip.classList.add('active');
+        } else {
+          setChipValue('#year-chips .chip', 'year', '');
+          const yearFromInput = document.getElementById('year-from-input');
+          const yearToInput = document.getElementById('year-to-input');
+          if (yearFromInput) yearFromInput.value = urlYearFrom || '';
+          if (yearToInput) yearToInput.value = urlYearTo || '';
+        }
+      }
+      if (urlPage > 1) {
+        currentPage = urlPage;
       }
       if (urlSubjectId) {
         activeSubjectId = urlSubjectId;
@@ -1274,7 +1872,9 @@
       activeSubjectId = '';
       activeSubjectLabel = '';
       const sel = document.getElementById('subject-select');
+      const search = document.getElementById('subject-search');
       if (sel) sel.value = '';
+      if (search) search.value = '';
       updateSubjectBanner();
       const url = new URL(window.location);
       url.searchParams.delete('subject_id');
@@ -1331,6 +1931,7 @@
     });
 
     // Initial load
+    updatePresetButtons();
     loadSubjects();
     loadCatalog();
     updateFilterBadge();
