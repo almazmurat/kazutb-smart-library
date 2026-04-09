@@ -3,6 +3,15 @@
 @php
   $lang = request()->query('lang', 'ru');
   $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+  $routeWithLang = static function (string $path) use ($lang): string {
+    if ($lang === 'ru') {
+      return $path;
+    }
+
+    $separator = str_contains($path, '?') ? '&' : '?';
+    return $path . $separator . 'lang=' . $lang;
+  };
+
   $copy = [
     'ru' => [
       'meta' => 'Электронные ресурсы — Digital Library',
@@ -64,14 +73,11 @@
     font-size: 36px;
     font-weight: 900;
     letter-spacing: -1px;
-    background: linear-gradient(135deg, var(--blue), var(--violet));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--blue);
   }
   .resource-hero-stats .rh-stat span {
     font-size: 14px;
-    color: rgba(241, 245, 249, .76);
+    color: var(--muted);
     font-weight: 600;
   }
 
@@ -84,9 +90,17 @@
   .resource-hero-panel {
     text-align: left;
     padding: 18px;
-    border-radius: 18px;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.12);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--border);
+    box-shadow: none;
+    transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .resource-hero-panel:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
+    border-color: rgba(20,105,109,.18);
   }
   .resource-hero-panel span {
     display: block;
@@ -94,7 +108,7 @@
     font-weight: 800;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: #d9b35e;
+    color: var(--violet);
     margin-bottom: 8px;
   }
   .resource-hero-panel strong {
@@ -102,13 +116,13 @@
     font-size: 18px;
     line-height: 1.25;
     margin-bottom: 6px;
-    color: #f8fafc;
+    color: var(--blue);
     font-family: 'Newsreader', Georgia, serif;
     font-weight: 700;
   }
   .resource-hero-panel p {
     margin: 0;
-    color: rgba(241,245,249,.78);
+    color: var(--muted);
     font-size: 14px;
     line-height: 1.6;
   }
@@ -120,10 +134,17 @@
     justify-content: space-between;
     gap: 24px;
     padding: 28px 32px;
-    background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(247,244,238,.92));
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft);
+    box-shadow: none;
+    transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .local-catalog-banner:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 16px 32px rgba(25, 28, 29, 0.05);
+    border-color: rgba(0,30,64,.12);
   }
   .local-catalog-banner h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; font-family: 'Newsreader', Georgia, serif; }
   .local-catalog-banner p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
@@ -137,15 +158,15 @@
   }
   .access-chip {
     padding: 12px 18px;
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     font-size: 14px;
     line-height: 1.4;
     border: 1px solid var(--border);
-    background: var(--surface-glass);
+    background: #fff;
   }
-  .access-chip--campus { border-color: rgba(59,130,246,.2); background: rgba(59,130,246,.04); }
-  .access-chip--remote { border-color: rgba(124,58,237,.2); background: rgba(124,58,237,.04); }
-  .access-chip--open { border-color: rgba(34,197,94,.2); background: rgba(34,197,94,.04); }
+  .access-chip--campus { border-color: rgba(0,30,64,.16); background: rgba(0,30,64,.03); }
+  .access-chip--remote { border-color: rgba(20,105,109,.16); background: rgba(20,105,109,.04); }
+  .access-chip--open { border-color: rgba(27,109,113,.16); background: rgba(27,109,113,.05); }
 
   .resource-section-grid {
     display: grid;
@@ -181,18 +202,20 @@
     gap: 16px;
     padding: 20px;
     border-radius: var(--radius-md);
-    background: var(--surface-glass);
+    background: #fff;
     border: 1px solid var(--border);
-    transition: transform .2s, box-shadow .2s;
+    transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), background .2s ease, box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .resource-list-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-soft);
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25,28,29,.05);
+    background: rgba(243,244,245,.96);
+    border-color: rgba(20,105,109,.18);
   }
   .resource-list-item .rli-icon {
     width: 48px;
     height: 48px;
-    border-radius: 14px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
     font-size: 22px;
@@ -212,21 +235,23 @@
     gap: 24px;
   }
   .access-card {
-    background: var(--surface-glass);
+    background: #fff;
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 32px 28px;
     text-align: center;
-    transition: transform .25s, box-shadow .25s;
+    transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), background .2s ease, box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .access-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow);
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25,28,29,.05);
+    background: rgba(243,244,245,.96);
+    border-color: rgba(0,30,64,.12);
   }
   .access-card .ac-icon {
     width: 64px;
     height: 64px;
-    border-radius: 20px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
     font-size: 28px;
@@ -242,14 +267,14 @@
     font-size: 13px;
     font-weight: 700;
   }
-  .access-badge--campus { background: rgba(59,130,246,.1); color: var(--blue); }
-  .access-badge--remote { background: rgba(124,58,237,.1); color: var(--violet); }
-  .access-badge--open { background: rgba(34,197,94,.1); color: var(--green); }
+  .access-badge--campus { background: rgba(0,30,64,.08); color: var(--blue); }
+  .access-badge--remote { background: rgba(20,105,109,.10); color: var(--cyan); }
+  .access-badge--open { background: rgba(42,28,0,.08); color: var(--violet); }
 
   .resource-policy-note {
     margin-top: 16px;
     padding: 14px 16px;
-    border-radius: 14px;
+    border-radius: 8px;
     background: rgba(23,60,107,.04);
     border: 1px solid rgba(23,60,107,.10);
     color: var(--text);
@@ -265,10 +290,17 @@
   }
   .resource-access-card {
     padding: 18px;
-    border-radius: 18px;
-    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,244,238,.92));
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-soft);
+    box-shadow: none;
+    transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .resource-access-card:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25,28,29,.05);
+    border-color: rgba(20,105,109,.18);
   }
   .resource-access-card strong {
     display: block;
@@ -351,11 +383,12 @@
     font-weight: 600;
     color: var(--muted);
     cursor: pointer;
-    transition: all .2s;
+    transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .ext-filter-btn:hover {
     border-color: var(--blue);
     color: var(--blue);
+    transform: translate3d(0, -1px, 0);
   }
   .ext-filter-btn--active {
     background: var(--blue);
@@ -378,13 +411,14 @@
     border-top: 3px solid rgba(23,60,107,.16);
     border-radius: var(--radius-lg);
     padding: 28px;
-    transition: transform .25s, box-shadow .25s;
+    transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .2s ease, background-color .2s ease, box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1);
     display: flex;
     flex-direction: column;
   }
   .ext-resource-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25,28,29,.05);
+    border-color: rgba(0,30,64,.12);
   }
   .ext-resource-card__header {
     display: flex;
@@ -395,17 +429,17 @@
   .ext-resource-card__icon {
     width: 48px;
     height: 48px;
-    border-radius: 14px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
     font-size: 22px;
     flex-shrink: 0;
     color: #fff;
   }
-  .ext-resource-card__icon--blue { background: linear-gradient(135deg, var(--blue), var(--cyan)); }
+  .ext-resource-card__icon--blue { background: linear-gradient(135deg, var(--blue), #214c6f); }
   .ext-resource-card__icon--violet { background: linear-gradient(135deg, var(--violet), var(--pink)); }
-  .ext-resource-card__icon--green { background: linear-gradient(135deg, var(--green), var(--cyan)); }
-  .ext-resource-card__icon--pink { background: linear-gradient(135deg, var(--pink), #f97316); }
+  .ext-resource-card__icon--green { background: linear-gradient(135deg, var(--cyan), #1b6d71); }
+  .ext-resource-card__icon--pink { background: linear-gradient(135deg, var(--pink), #5d4201); }
   .ext-resource-card__title {
     margin: 0;
     font-size: 18px;
@@ -496,27 +530,27 @@
     <h1>{{ $copy['hero'] }}</h1>
     <p>{{ $copy['lead'] }}</p>
     <div class="resource-hero-stats">
-      <div class="rh-stat"><strong id="stat-total">—</strong><span>внешних ресурсов</span></div>
-      <div class="rh-stat"><strong>50 000+</strong><span>электронных документов</span></div>
-      <div class="rh-stat"><strong>24/7</strong><span>удалённый доступ</span></div>
-      <div class="rh-stat"><strong>3</strong><span>режима доступа</span></div>
+      <div class="rh-stat"><strong id="stat-total">—</strong><span>{{ ['ru' => 'внешних ресурсов', 'kk' => 'сыртқы ресурс', 'en' => 'external resources'][$lang] }}</span></div>
+      <div class="rh-stat"><strong>50 000+</strong><span>{{ ['ru' => 'электронных документов', 'kk' => 'электрондық құжат', 'en' => 'digital documents'][$lang] }}</span></div>
+      <div class="rh-stat"><strong>24/7</strong><span>{{ ['ru' => 'удалённый доступ', 'kk' => 'қашықтан қолжетімділік', 'en' => 'remote access'][$lang] }}</span></div>
+      <div class="rh-stat"><strong>3</strong><span>{{ ['ru' => 'режима доступа', 'kk' => 'қолжетімділік режимі', 'en' => 'access modes'][$lang] }}</span></div>
     </div>
 
     <div class="resource-hero-panels" id="resource-hero-panels">
       <article class="resource-hero-panel">
-        <span>Licensed access</span>
-        <strong>Подписные базы и цифровая библиотека</strong>
-        <p>Соберите маршрут от каталога к внешней платформе без отдельного преподавательского лендинга.</p>
+        <span>{{ ['ru' => 'Лицензионный доступ', 'kk' => 'Лицензиялық қолжетімділік', 'en' => 'Licensed access'][$lang] }}</span>
+        <strong>{{ ['ru' => 'Подписные базы и цифровая библиотека', 'kk' => 'Жазылым дерекқорлары мен цифрлық кітапхана', 'en' => 'Subscribed databases and the digital library'][$lang] }}</strong>
+        <p>{{ ['ru' => 'Соберите маршрут от каталога к внешней платформе без отдельного преподавательского лендинга.', 'kk' => 'Каталогтан сыртқы платформаға дейінгі маршрутты бөлек оқытушы лендингінсіз жинаңыз.', 'en' => 'Move from the catalog to the external platform without a separate faculty landing page.'][$lang] }}</p>
       </article>
       <article class="resource-hero-panel">
-        <span>Remote work</span>
-        <strong>Удалённый сценарий для учебы и исследований</strong>
-        <p>Переходите к ресурсам из кабинета, подборки литературы и страницы доступа в едином стиле.</p>
+        <span>{{ ['ru' => 'Удалённая работа', 'kk' => 'Қашықтан жұмыс', 'en' => 'Remote work'][$lang] }}</span>
+        <strong>{{ ['ru' => 'Удалённый сценарий для учебы и исследований', 'kk' => 'Оқу мен зерттеуге арналған қашықтан сценарий', 'en' => 'Remote flows for study and research'][$lang] }}</strong>
+        <p>{{ ['ru' => 'Переходите к ресурсам из кабинета, подборки литературы и страницы доступа в едином стиле.', 'kk' => 'Ресурстарға кабинеттен, әдебиеттер топтамасынан және қолжетімділік бетінен бірізді стильде өтіңіз.', 'en' => 'Open resources from the account, reading list, and access surfaces within one shared shell.'][$lang] }}</p>
       </article>
       <article class="resource-hero-panel">
-        <span>Open knowledge</span>
-        <strong>Открытые коллекции и академические сервисы</strong>
-        <p>Разделяйте campus-only, remote и open access источники по понятным статусам и подсказкам.</p>
+        <span>{{ ['ru' => 'Открытое знание', 'kk' => 'Ашық білім', 'en' => 'Open knowledge'][$lang] }}</span>
+        <strong>{{ ['ru' => 'Открытые коллекции и академические сервисы', 'kk' => 'Ашық коллекциялар мен академиялық сервистер', 'en' => 'Open collections and academic services'][$lang] }}</strong>
+        <p>{{ ['ru' => 'Разделяйте кампусные, удалённые и открытые источники по понятным статусам и подсказкам.', 'kk' => 'Кампус ішіндегі, қашықтан және ашық ресурстарды түсінікті мәртебелер арқылы ажыратыңыз.', 'en' => 'Distinguish campus-only, remote, and open resources through clear status labels and guidance.'][$lang] }}</p>
       </article>
     </div>
   </div>
@@ -529,9 +563,9 @@
       <div>
         <h2>{{ $copy['banner'] }}</h2>
         <p>{{ $copy['banner_body'] }}</p>
-        <div class="resource-policy-note" id="resource-policy-note">Эта страница теперь выстроена как единый академический маршрут: сначала понимаем режим доступа, затем открываем внешний ресурс или продолжаем работу через каталог и подборку литературы.</div>
+        <div class="resource-policy-note" id="resource-policy-note">{{ ['ru' => 'Эта страница теперь выстроена как единый академический маршрут: сначала понимаем режим доступа, затем открываем внешний ресурс или продолжаем работу через каталог и подборку литературы.', 'kk' => 'Бұл бет енді бірыңғай академиялық маршрут ретінде құрылған: алдымен қолжетімділік режимін түсінеміз, содан кейін сыртқы ресурсты ашамыз немесе каталог пен әдебиеттер топтамасы арқылы жұмысты жалғастырамыз.', 'en' => 'This page now follows one academic route: first confirm the access mode, then open the external resource or continue through the catalog and reading list workbench.'][$lang] }}</div>
       </div>
-      <a href="/catalog" class="btn btn-primary">Перейти в каталог</a>
+      <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-primary">{{ ['ru' => 'Перейти в каталог', 'kk' => 'Каталогқа өту', 'en' => 'Open catalog'][$lang] }}</a>
     </div>
   </div>
 </section>
@@ -544,8 +578,8 @@
         <h2>{{ $copy['support_title'] }}</h2>
         <p>{{ $copy['support_body'] }}</p>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <a href="/shortlist" class="btn btn-primary">Открыть подборку литературы</a>
-          <a href="/catalog" class="btn btn-ghost">Искать в каталоге</a>
+          <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-primary">{{ ['ru' => 'Открыть подборку', 'kk' => 'Іріктемені ашу', 'en' => 'Open shortlist'][$lang] }}</a>
+          <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-ghost">{{ ['ru' => 'Искать в каталоге', 'kk' => 'Каталогтан іздеу', 'en' => 'Search the catalog'][$lang] }}</a>
         </div>
       </div>
 
@@ -553,22 +587,22 @@
         <li class="resource-list-item">
           <div class="rli-icon rli-icon--violet">📋</div>
           <div>
-            <h4>Подборка литературы</h4>
-            <p>Собирайте учебники, монографии и внешние базы в единый черновик для силлабуса или рабочей программы.</p>
+            <h4>{{ ['ru' => 'Подборка литературы', 'kk' => 'Әдебиеттер топтамасы', 'en' => 'Shortlist'][$lang] }}</h4>
+            <p>{{ ['ru' => 'Собирайте учебники, монографии и внешние базы в единый черновик для силлабуса или рабочей программы.', 'kk' => 'Оқулықтарды, монографияларды және сыртқы базаларды силлабус не оқу бағдарламасына арналған бір жұмыс нұсқасына жинаңыз.', 'en' => 'Collect textbooks, monographs, and external databases into one working draft for a syllabus or course plan.'][$lang] }}</p>
           </div>
         </li>
         <li class="resource-list-item">
           <div class="rli-icon rli-icon--blue">🔎</div>
           <div>
-            <h4>Поиск по направлениям</h4>
-            <p>Используйте каталог и раздел направлений, чтобы быстро отобрать литературу по теме курса или исследовательскому треку.</p>
+            <h4>{{ ['ru' => 'Поиск по направлениям', 'kk' => 'Бағыттар бойынша іздеу', 'en' => 'Browse subjects'][$lang] }}</h4>
+            <p>{{ ['ru' => 'Используйте каталог и раздел направлений, чтобы быстро отобрать литературу по теме курса или исследовательскому треку.', 'kk' => 'Каталог пен бағыттар бөлімін пайдаланып, курс тақырыбы немесе зерттеу бағыты бойынша әдебиетті жылдам іріктеңіз.', 'en' => 'Use the catalog and the subject area to quickly narrow literature by course topic or research track.'][$lang] }}</p>
           </div>
         </li>
         <li class="resource-list-item">
           <div class="rli-icon rli-icon--green">🌐</div>
           <div>
-            <h4>Электронные ресурсы</h4>
-            <p>Дополняйте список лицензированными платформами и открытыми научными коллекциями с учётом режима доступа.</p>
+            <h4>{{ ['ru' => 'Электронные ресурсы', 'kk' => 'Электрондық ресурстар', 'en' => 'Electronic resources'][$lang] }}</h4>
+            <p>{{ ['ru' => 'Дополняйте список лицензированными платформами и открытыми научными коллекциями с учётом режима доступа.', 'kk' => 'Тізімді қолжетімділік режимін ескере отырып, лицензиялық платформалармен және ашық ғылыми коллекциялармен толықтырыңыз.', 'en' => 'Extend the list with licensed platforms and open scholarly collections while keeping the access mode clear.'][$lang] }}</p>
           </div>
         </li>
       </ul>
@@ -581,19 +615,19 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <div class="eyebrow eyebrow--violet">Внешние лицензированные ресурсы</div>
-        <h2>Подписные платформы и научные базы данных</h2>
-        <p>Внешние электронные ресурсы, доступные пользователям платформы по подписке или в открытом доступе. Это не материалы библиотечного фонда — каждый ресурс размещён на внешней платформе со своими условиями доступа.</p>
+        <div class="eyebrow eyebrow--violet">{{ ['ru' => 'Внешние лицензированные ресурсы', 'kk' => 'Сыртқы лицензиялық ресурстар', 'en' => 'External licensed resources'][$lang] }}</div>
+        <h2>{{ ['ru' => 'Подписные платформы и научные базы данных', 'kk' => 'Жазылым платформалары мен ғылыми дерекқорлар', 'en' => 'Subscribed platforms and research databases'][$lang] }}</h2>
+        <p>{{ ['ru' => 'Внешние электронные ресурсы, доступные пользователям платформы по подписке или в открытом доступе. Это не материалы библиотечного фонда — каждый ресурс размещён на внешней платформе со своими условиями доступа.', 'kk' => 'Платформа пайдаланушыларына жазылым немесе ашық қолжетімділік арқылы берілетін сыртқы электрондық ресурстар. Бұл кітапхана қорының материалдары емес — әр ресурс өзінің шарттары бар сыртқы платформада орналасқан.', 'en' => 'External electronic resources available to platform users through subscription or open access. These are not library collection holdings — each resource lives on its own external platform with its own access rules.'][$lang] }}</p>
       </div>
     </div>
 
     <div class="ext-filter-bar" id="ext-filter-bar">
-      <button class="ext-filter-btn ext-filter-btn--active" data-filter="all">Все</button>
+      <button class="ext-filter-btn ext-filter-btn--active" data-filter="all">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
     </div>
 
     <div id="ext-resources-loading" style="text-align:center; padding:32px;">
       <div style="display:inline-block;width:28px;height:28px;border:3px solid #e5e7eb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div>
-      <p style="margin:8px 0 0; color:var(--muted); font-size:14px;">Загрузка ресурсов...</p>
+      <p style="margin:8px 0 0; color:var(--muted); font-size:14px;">{{ ['ru' => 'Загрузка ресурсов...', 'kk' => 'Ресурстар жүктелуде...', 'en' => 'Loading resources...'][$lang] }}</p>
     </div>
 
     <div id="ext-resources-grid" class="ext-resources-grid" style="display:none;"></div>
@@ -602,25 +636,25 @@
 
 <section class="page-section">
   <div class="container">
-    <h2 style="margin-bottom: 16px;">Режимы доступа</h2>
+    <h2 style="margin-bottom: 16px;">{{ ['ru' => 'Режимы доступа', 'kk' => 'Қолжетімділік режимдері', 'en' => 'Access modes'][$lang] }}</h2>
     <div class="access-inline">
-      <div class="access-chip access-chip--campus">🏫 <strong>Из кампуса</strong> — автоматически через Wi‑Fi и компьютеры залов</div>
-      <div class="access-chip access-chip--remote">🌐 <strong>Удалённо</strong> — через личный кабинет библиотеки</div>
-      <div class="access-chip access-chip--open">🔓 <strong>Открытый доступ</strong> — без ограничений</div>
+      <div class="access-chip access-chip--campus">🏫 <strong>{{ ['ru' => 'Из кампуса', 'kk' => 'Кампустан', 'en' => 'On campus'][$lang] }}</strong> — {{ ['ru' => 'автоматически через Wi‑Fi и компьютеры залов', 'kk' => 'Wi‑Fi және оқу залдарының компьютерлері арқылы автоматты түрде', 'en' => 'automatically through campus Wi‑Fi and library workstations'][$lang] }}</div>
+      <div class="access-chip access-chip--remote">🌐 <strong>{{ ['ru' => 'Удалённо', 'kk' => 'Қашықтан', 'en' => 'Remote'][$lang] }}</strong> — {{ ['ru' => 'через личный кабинет библиотеки', 'kk' => 'кітапхананың жеке кабинеті арқылы', 'en' => 'through the library account'][$lang] }}</div>
+      <div class="access-chip access-chip--open">🔓 <strong>{{ ['ru' => 'Открытый доступ', 'kk' => 'Ашық қолжетімділік', 'en' => 'Open access'][$lang] }}</strong> — {{ ['ru' => 'без ограничений', 'kk' => 'шектеусіз', 'en' => 'without restrictions'][$lang] }}</div>
     </div>
 
     <div class="resource-access-matrix" id="resource-access-matrix">
       <article class="resource-access-card">
-        <strong>1. Найдите источник</strong>
-        <p>Начните с каталога или из блока подписных платформ, чтобы понять, где находится нужный материал.</p>
+        <strong>{{ ['ru' => '1. Найдите источник', 'kk' => '1. Дереккөзді табыңыз', 'en' => '1. Find the source'][$lang] }}</strong>
+        <p>{{ ['ru' => 'Начните с каталога или из блока подписных платформ, чтобы понять, где находится нужный материал.', 'kk' => 'Қажетті материалдың қайда орналасқанын түсіну үшін каталогтан немесе жазылым платформалары блогынан бастаңыз.', 'en' => 'Start from the catalog or the subscribed-platform block to understand where the needed material lives.'][$lang] }}</p>
       </article>
       <article class="resource-access-card">
-        <strong>2. Проверьте режим доступа</strong>
-        <p>Ориентируйтесь на кампусные, удалённые и открытые статусы — они показывают реальный сценарий входа.</p>
+        <strong>{{ ['ru' => '2. Проверьте режим доступа', 'kk' => '2. Қолжетімділік режимін тексеріңіз', 'en' => '2. Check the access mode'][$lang] }}</strong>
+        <p>{{ ['ru' => 'Ориентируйтесь на кампусные, удалённые и открытые статусы — они показывают реальный сценарий входа.', 'kk' => 'Кампус, қашықтан және ашық мәртебелерге назар аударыңыз — олар нақты кіру сценарийін көрсетеді.', 'en' => 'Use the campus, remote, and open statuses to understand the real entry flow.'][$lang] }}</p>
       </article>
       <article class="resource-access-card">
-        <strong>3. Добавьте в рабочую подборку</strong>
-        <p>Если ресурс нужен для курса или исследования, сразу отправляйте его в <a href="/shortlist" style="color:var(--blue);font-weight:700;">подборку литературы</a>.</p>
+        <strong>{{ ['ru' => '3. Добавьте в рабочую подборку', 'kk' => '3. Жұмыс топтамасына қосыңыз', 'en' => '3. Add it to the working shortlist'][$lang] }}</strong>
+        <p>{!! ['ru' => 'Если ресурс нужен для курса или исследования, сразу отправляйте его в <a href="' . $routeWithLang('/shortlist') . '" style="color:var(--blue);font-weight:700;">подборку литературы</a>.', 'kk' => 'Егер ресурс курсқа немесе зерттеуге қажет болса, оны бірден <a href="' . $routeWithLang('/shortlist') . '" style="color:var(--blue);font-weight:700;">әдебиеттер топтамасына</a> жіберіңіз.', 'en' => 'If the resource is needed for a course or research, send it straight to the <a href="' . $routeWithLang('/shortlist') . '" style="color:var(--blue);font-weight:700;">reading list workbench</a>.'][$lang] !!}</p>
       </article>
     </div>
   </div>
@@ -637,16 +671,16 @@
 
     <div class="faq-list">
       <div class="faq-item">
-        <h4>Как получить удалённый доступ?</h4>
-        <p>Войдите в <a href="/account" style="color:var(--blue);font-weight:600;text-decoration:none;">личный кабинет</a> — после авторизации подписные ресурсы будут доступны из любой точки.</p>
+        <h4>{{ ['ru' => 'Как получить удалённый доступ?', 'kk' => 'Қашықтан қолжетімділікті қалай алуға болады?', 'en' => 'How do I get remote access?'][$lang] }}</h4>
+        <p>{!! ['ru' => 'Войдите в <a href="' . $routeWithLang('/account') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">личный кабинет</a> — после авторизации подписные ресурсы будут доступны из любой точки.', 'kk' => '<a href="' . $routeWithLang('/account') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">Жеке кабинетке</a> кіріңіз — авторизациядан кейін жазылым ресурстары кез келген жерден қолжетімді болады.', 'en' => 'Sign in to your <a href="' . $routeWithLang('/account') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">account</a> and the subscribed resources will be available from any location.'][$lang] !!}</p>
       </div>
       <div class="faq-item">
-        <h4>Можно ли скачивать материалы?</h4>
-        <p>Зависит от лицензии ресурса. Некоторые материалы доступны только для просмотра.</p>
+        <h4>{{ ['ru' => 'Можно ли скачивать материалы?', 'kk' => 'Материалдарды жүктеп алуға бола ма?', 'en' => 'Can I download the materials?'][$lang] }}</h4>
+        <p>{{ ['ru' => 'Зависит от лицензии ресурса. Некоторые материалы доступны только для просмотра.', 'kk' => 'Бұл ресурс лицензиясына байланысты. Кейбір материалдар тек қарауға ғана ашылады.', 'en' => 'It depends on the resource license. Some materials are available for viewing only.'][$lang] }}</p>
       </div>
       <div class="faq-item">
-        <h4>Нужна помощь с подбором литературы?</h4>
-        <p>Обратитесь в библиографический отдел через <a href="/contacts" style="color:var(--blue);font-weight:600;text-decoration:none;">контакты</a>, откройте <a href="/shortlist" style="color:var(--blue);font-weight:600;text-decoration:none;">подборку литературы</a> или начните поиск в <a href="/catalog" style="color:var(--blue);font-weight:600;text-decoration:none;">каталоге</a>.</p>
+        <h4>{{ ['ru' => 'Нужна помощь с подбором литературы?', 'kk' => 'Әдебиеттерді іріктеуге көмек керек пе?', 'en' => 'Need help building a reading list?'][$lang] }}</h4>
+        <p>{!! ['ru' => 'Обратитесь в библиографический отдел через <a href="' . $routeWithLang('/contacts') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">контакты</a>, откройте <a href="' . $routeWithLang('/shortlist') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">подборку литературы</a> или начните поиск в <a href="' . $routeWithLang('/catalog') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">каталоге</a>.', 'kk' => 'Библиографиялық бөлімге <a href="' . $routeWithLang('/contacts') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">байланыс беті</a> арқылы жүгініңіз, <a href="' . $routeWithLang('/shortlist') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">әдебиеттер топтамасын</a> ашыңыз немесе іздеуді <a href="' . $routeWithLang('/catalog') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">каталогтан</a> бастаңыз.', 'en' => 'Reach the bibliographic team through <a href="' . $routeWithLang('/contacts') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">contacts</a>, open the <a href="' . $routeWithLang('/shortlist') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">reading list workbench</a>, or begin the search in the <a href="' . $routeWithLang('/catalog') . '" style="color:var(--blue);font-weight:600;text-decoration:none;">catalog</a>.'][$lang] !!}</p>
       </div>
     </div>
   </div>
@@ -660,6 +694,34 @@
   const API_URL = '/api/v1/external-resources';
   const SHORTLIST_API = '/api/v1/shortlist';
   const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
+  const RES_LANG = @json($lang);
+  const RES_I18N_MAP = {
+    ru: {
+      all: 'Все',
+      validUntil: 'Действует',
+      open: 'Перейти ↗',
+      add: '+ В подборку',
+      added: '✓ В подборке',
+      loadingFailed: 'Не удалось загрузить внешние ресурсы.',
+    },
+    kk: {
+      all: 'Барлығы',
+      validUntil: 'Қолданыста',
+      open: 'Ашу ↗',
+      add: '+ Топтамаға',
+      added: '✓ Топтамада',
+      loadingFailed: 'Сыртқы ресурстарды жүктеу мүмкін болмады.',
+    },
+    en: {
+      all: 'All',
+      validUntil: 'Available until',
+      open: 'Open ↗',
+      add: '+ Add to shortlist',
+      added: '✓ In shortlist',
+      loadingFailed: 'Unable to load external resources.',
+    },
+  };
+  const RES_I18N = RES_I18N_MAP[RES_LANG] || RES_I18N_MAP.ru;
 
   const accessBadgeClass = {
     campus: 'access-badge--campus',
@@ -696,7 +758,7 @@
   function renderFilterBar() {
     const bar = document.getElementById('ext-filter-bar');
     const usedCats = [...new Set(allResources.map(r => r.category))];
-    let html = '<button class="ext-filter-btn ext-filter-btn--active" data-filter="all">Все (' + allResources.length + ')</button>';
+    let html = `<button class="ext-filter-btn ext-filter-btn--active" data-filter="all">${RES_I18N.all} (${allResources.length})</button>`;
     usedCats.forEach(cat => {
       const info = categories[cat] || {};
       const count = allResources.filter(r => r.category === cat).length;
@@ -735,14 +797,14 @@
           <p class="ext-resource-card__desc">${escapeHtml(r.description)}</p>
           <div class="ext-resource-card__footer">
             <span class="ext-resource-card__badge ${badgeClass}">${escapeHtml(accInfo.label || r.access_type)}</span>
-            ${r.expiry_date ? `<span class="ext-resource-card__expiry">Действует ${formatExpiry(r.expiry_date)}</span>` : ''}
+            ${r.expiry_date ? `<span class="ext-resource-card__expiry">${RES_I18N.validUntil} ${formatExpiry(r.expiry_date)}</span>` : ''}
           </div>
           <div class="ext-resource-card__actions">
-            ${r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="ext-link-btn">Перейти ↗</a>` : ''}
+            ${r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="ext-link-btn">${RES_I18N.open}</a>` : ''}
             <button class="ext-shortlist-btn ${inShortlist ? 'ext-shortlist-btn--added' : ''}"
               onclick="addExtToShortlist(this, '${escapeHtml(r.slug)}')"
               ${inShortlist ? 'disabled' : ''}>
-              ${inShortlist ? '✓ В подборке' : '+ В подборку'}
+              ${inShortlist ? RES_I18N.added : RES_I18N.add}
             </button>
           </div>
         </div>
@@ -779,11 +841,11 @@
       });
 
       if (res.ok || res.status === 409) {
-        btn.textContent = '✓ В подборке';
+        btn.textContent = RES_I18N.added;
         btn.classList.add('ext-shortlist-btn--added');
         shortlistedIds.add('ext:' + slug);
       } else {
-        btn.textContent = '+ В подборку';
+        btn.textContent = RES_I18N.add;
         btn.disabled = false;
       }
     } catch (e) {
@@ -824,7 +886,7 @@
       renderFilterBar();
       renderResources('all');
     } catch (e) {
-      loading.innerHTML = '<p style="color:var(--muted);">Не удалось загрузить внешние ресурсы.</p>';
+      loading.innerHTML = `<p style="color:var(--muted);">${RES_I18N.loadingFailed}</p>`;
       console.error('External resources load error:', e);
     }
   }

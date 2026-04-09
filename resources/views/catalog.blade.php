@@ -1,46 +1,50 @@
+@php
+  $lang = app()->getLocale();
+  $catalogTitle = [
+    'ru' => 'Каталог книг — Digital Library',
+    'kk' => 'Кітаптар каталогы — Digital Library',
+    'en' => 'Book catalog — Digital Library',
+  ][$lang] ?? 'Каталог книг — Digital Library';
+@endphp
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ $lang }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>Каталог книг — Library Hub</title>
+  <title>{{ $catalogTitle }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/shell.css">
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: #f8f9fa;
       --surface: #ffffff;
-      --surface-soft: #f8fbff;
-      --border: rgba(15, 23, 42, .08);
-      --text: #14213d;
-      --muted: #64748b;
-      --blue: #3b82f6;
-      --cyan: #06b6d4;
-      --violet: #7c3aed;
-      --pink: #ec4899;
-      --gold: #d6a85f;
-      --success: #16a34a;
-      --shadow: 0 20px 50px rgba(15, 23, 42, .08);
-      --shadow-soft: 0 12px 26px rgba(15, 23, 42, .05);
-      --radius-xl: 30px;
-      --radius-lg: 24px;
-      --radius-md: 18px;
-      --container: 1650px;
+      --surface-soft: #f3f4f5;
+      --border: rgba(195, 198, 209, .55);
+      --text: #191c1d;
+      --muted: #43474f;
+      --blue: #001e40;
+      --cyan: #14696d;
+      --violet: #453000;
+      --pink: #2a1c00;
+      --gold: #e9c176;
+      --success: #14696d;
+      --shadow: 0 12px 32px rgba(25, 28, 29, .04);
+      --shadow-soft: 0 6px 16px rgba(25, 28, 29, .03);
+      --radius-xl: 8px;
+      --radius-lg: 6px;
+      --radius-md: 4px;
+      --container: 1280px;
     }
 
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Manrope', system-ui, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(37,99,235,.16), transparent 22%),
-        radial-gradient(circle at 100% 0%, rgba(168,85,247,.14), transparent 18%),
-        radial-gradient(circle at 82% 82%, rgba(6,182,212,.12), transparent 22%),
-        linear-gradient(135deg, #f8fbff 0%, #eef4ff 40%, #f8f3ff 72%, #eefbfd 100%);
+      background: var(--bg);
       background-attachment: fixed;
     }
 
@@ -98,7 +102,7 @@
       border: 0;
       cursor: pointer;
       font: inherit;
-      border-radius: 16px;
+      border-radius: var(--radius-lg);
       padding: 14px 22px;
       display: inline-flex;
       align-items: center;
@@ -108,59 +112,72 @@
       font-weight: 700;
     }
 
-    .btn:hover { transform: translateY(-2px); }
-    .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), var(--cyan)); box-shadow: 0 16px 30px rgba(59,130,246,.22); }
-    .btn-ghost { background: #fff; border: 1px solid var(--border); color: var(--text); box-shadow: var(--shadow-soft); }
+    .btn:hover { transform: none; }
+    .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), #003366); box-shadow: var(--shadow-soft); border-radius: 999px; }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
 
     .page { padding: 34px 0 70px; }
 
     .hero {
-      background:
-        radial-gradient(circle at 18% 22%, rgba(34,211,238,.18), transparent 16%),
-        radial-gradient(circle at 85% 18%, rgba(192,132,252,.20), transparent 18%),
-        linear-gradient(135deg, rgba(15,23,42,.94) 0%, rgba(30,41,59,.88) 48%, rgba(8,145,178,.78) 100%);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 28px 70px rgba(15,23,42,.18);
+      background: linear-gradient(180deg, #ffffff 0%, #f3f4f5 100%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
       border-radius: var(--radius-xl);
       padding: 30px;
       margin-bottom: 22px;
       overflow: hidden;
       position: relative;
-      color: #f8fbff;
+      color: var(--text);
+      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .16s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .hero::before {
       content: "";
       position: absolute;
-      right: -80px;
-      top: -80px;
-      width: 260px;
-      height: 260px;
+      right: -70px;
+      top: -70px;
+      width: 220px;
+      height: 220px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,.22), transparent 70%);
+      background: radial-gradient(circle, rgba(20,105,109,.10), transparent 72%);
+      transition: transform .42s cubic-bezier(0.2, 0.8, 0.2, 1), opacity .16s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .hero:hover {
+      transform: translate3d(0, -2px, 0);
+      box-shadow: 0 18px 38px rgba(25, 28, 29, .06);
+      border-color: rgba(0,30,64,.12);
+    }
+
+    .hero:hover::before {
+      transform: translate3d(-12px, 10px, 0);
     }
 
     .eyebrow {
       display: inline-flex;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(59,130,246,.08);
-      border: 1px solid rgba(59,130,246,.10);
-      color: var(--blue);
-      font-size: 14px;
-      font-weight: 700;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
     }
 
     .hero h1 {
       margin: 16px 0 12px;
+      font-family: 'Newsreader', Georgia, serif;
       font-size: clamp(34px, 5vw, 58px);
       line-height: .98;
       letter-spacing: -1.8px;
+      color: var(--blue);
     }
 
     .hero p {
       margin: 0;
-      color: rgba(226,232,240,.88);
+      color: var(--muted);
       font-size: 17px;
       line-height: 1.8;
       max-width: 900px;
@@ -171,6 +188,18 @@
       grid-template-columns: 1.2fr .8fr .6fr auto;
       gap: 12px;
       margin-top: 24px;
+      padding: 8px;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(195,198,209,.45);
+      box-shadow: var(--shadow-soft);
+      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .16s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .search-wrap:focus-within {
+      transform: translate3d(0, -2px, 0);
+      box-shadow: 0 18px 38px rgba(25,28,29,.06);
+      border-color: rgba(0,30,64,.12);
     }
 
     .input, .select {
@@ -178,11 +207,18 @@
       border: 1px solid var(--border);
       background: #fff;
       color: var(--text);
-      border-radius: 16px;
+      border-radius: 999px;
       padding: 15px 16px;
       outline: none;
       font: inherit;
-      box-shadow: var(--shadow-soft);
+      box-shadow: none;
+      transition: border-color .16s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .16s cubic-bezier(0.2, 0.8, 0.2, 1), background .16s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .input:focus, .select:focus {
+      border-color: rgba(0,30,64,.14);
+      box-shadow: 0 0 0 4px rgba(0,30,64,.06);
+      background: rgba(255,255,255,.98);
     }
 
     .layout {
@@ -193,9 +229,9 @@
     }
 
     .card {
-      background: rgba(255,255,255,.95);
+      background: rgba(255,255,255,.98);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-soft);
       border-radius: var(--radius-xl);
     }
 
@@ -288,20 +324,22 @@
       color: #334155;
       box-shadow: var(--shadow-soft);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
       font-family: inherit;
       line-height: 1.4;
     }
 
     .chip:hover {
       border-color: var(--blue);
-      background: rgba(59,130,246,.04);
+      background: rgba(0,30,64,.04);
+      transform: translate3d(0, -1px, 0);
+      box-shadow: 0 10px 22px rgba(25,28,29,.04);
     }
 
     .chip.active {
-      background: rgba(59,130,246,.08);
+      background: rgba(0,30,64,.07);
       color: var(--blue);
-      border-color: rgba(59,130,246,.14);
+      border-color: rgba(0,30,64,.12);
     }
 
     .active-filters {
@@ -319,13 +357,13 @@
       border-radius: 999px;
       font-size: 13px;
       font-weight: 600;
-      background: rgba(59,130,246,.08);
+      background: rgba(0,30,64,.07);
       color: var(--blue);
-      border: 1px solid rgba(59,130,246,.14);
+      border: 1px solid rgba(0,30,64,.12);
       cursor: pointer;
       transition: background .15s;
     }
-    .active-filter-chip:hover { background: rgba(59,130,246,.15); }
+    .active-filter-chip:hover { background: rgba(0,30,64,.12); }
     .active-filter-reset {
       padding: 6px 12px;
       border-radius: 999px;
@@ -382,22 +420,25 @@
 
     .book-card {
       padding: 18px;
-      border-radius: 24px;
+      border-radius: var(--radius-xl);
       background: #fff;
       border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      transition: all 0.3s ease;
+      box-shadow: none;
+      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease, background-color 0.2s ease, box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
       cursor: pointer;
+      transform-style: preserve-3d;
     }
 
     .book-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
+      transform: translate3d(0, -3px, 0) rotateX(0.6deg);
+      box-shadow: 0 16px 34px rgba(25,28,29,.05);
+      border-color: rgba(0,30,64,.12);
+      background: rgba(248,249,250,.98);
     }
 
     .book-preview {
       height: 450px;
-      border-radius: 18px;
+      border-radius: var(--radius-xl);
       padding: 18px;
       display: flex;
       align-items: flex-end;
@@ -459,17 +500,17 @@
       border-radius: 999px;
       font-size: 12px;
       font-weight: 700;
-      background: rgba(59,130,246,.08);
+      background: rgba(0,30,64,.07);
       color: var(--blue);
     }
 
     .tag.green {
-      background: rgba(22,163,74,.08);
+      background: rgba(20,105,109,.08);
       color: var(--success);
     }
 
     .tag.subject {
-      background: rgba(124,58,237,.08);
+      background: rgba(42,28,0,.07);
       color: var(--violet);
       font-size: 11px;
       padding: 5px 10px;
@@ -480,27 +521,27 @@
       align-items: center;
       gap: 10px;
       padding: 12px 18px;
-      background: linear-gradient(135deg, rgba(124,58,237,.06), rgba(59,130,246,.06));
-      border: 1px solid rgba(124,58,237,.15);
-      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0,30,64,.03), rgba(20,105,109,.05));
+      border: 1px solid rgba(0,30,64,.10);
+      border-radius: 8px;
       margin-bottom: 16px;
       font-size: 14px;
       color: var(--text);
     }
 
     .active-subject-banner strong {
-      color: var(--violet);
+      color: var(--blue);
     }
 
     .active-subject-banner .clear-btn {
       margin-left: auto;
       padding: 4px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(124,58,237,.2);
+      border: 1px solid rgba(0,30,64,.12);
       background: #fff;
       font-size: 12px;
       font-weight: 600;
-      color: var(--violet);
+      color: var(--blue);
       cursor: pointer;
     }
 
@@ -508,7 +549,7 @@
       width: 100%;
       padding: 10px 14px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 8px;
       background: #fff;
       font-size: 13px;
       font-family: inherit;
@@ -518,8 +559,8 @@
 
     .subject-select:focus {
       outline: none;
-      border-color: var(--violet);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.1);
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,30,64,.08);
     }
 
     .book-title {
@@ -563,24 +604,26 @@
 
     .icon-btn {
       width: 50px;
-      border-radius: 16px;
+      border-radius: 8px;
       border: 1px solid var(--border);
       background: #fff;
-      box-shadow: var(--shadow-soft);
+      box-shadow: none;
       font-size: 18px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .icon-btn:hover {
-      background: rgba(124,58,237,.08);
-      border-color: var(--violet);
+      background: rgba(20,105,109,.06);
+      border-color: var(--cyan);
+      transform: translate3d(0, -1px, 0);
+      box-shadow: 0 10px 22px rgba(25,28,29,.04);
     }
 
     .icon-btn.shortlisted {
-      background: rgba(124,58,237,.1);
-      border-color: var(--violet);
-      color: var(--violet);
+      background: rgba(20,105,109,.08);
+      border-color: var(--cyan);
+      color: var(--cyan);
     }
 
     .pagination {
@@ -594,7 +637,7 @@
     .page-btn {
       min-width: 46px;
       height: 46px;
-      border-radius: 14px;
+      border-radius: 8px;
       border: 1px solid var(--border);
       background: #fff;
       box-shadow: var(--shadow-soft);
@@ -605,7 +648,8 @@
 
     .page-btn:hover {
       border-color: var(--blue);
-      background: rgba(59,130,246,.04);
+      background: rgba(0,30,64,.04);
+      transform: translate3d(0, -1px, 0);
     }
 
     .page-btn.active {
@@ -652,40 +696,40 @@
   <main class="page">
     <div class="container">
       <section class="hero">
-        <div class="eyebrow">Каталог университетской библиотеки</div>
-        <h1>Найдите нужную книгу, учебник или научное издание</h1>
-        <p>Удобный поиск по фонду библиотеки с фильтрами по категориям, формату, году издания, языку и доступности.</p>
+        <div class="eyebrow">{{ ['ru' => 'Каталог университетской библиотеки', 'kk' => 'Университет кітапханасының каталогы', 'en' => 'University library catalog'][$lang] }}</div>
+        <h1>{{ ['ru' => 'Найдите нужную книгу, учебник или научное издание', 'kk' => 'Қажетті кітапты, оқулықты немесе ғылыми басылымды табыңыз', 'en' => 'Find the right book, textbook, or scholarly edition'][$lang] }}</h1>
+        <p>{{ ['ru' => 'Удобный поиск по фонду библиотеки с фильтрами по категориям, формату, году издания, языку и доступности.', 'kk' => 'Категория, формат, басылым жылы, тіл және қолжетімділік бойынша сүзгілері бар ыңғайлы іздеу.', 'en' => 'Search the library collection with filters for category, format, publication year, language, and availability.'][$lang] }}</p>
 
         <div class="search-wrap" style="grid-template-columns: 1fr auto;">
-          <input class="input" id="search-input" type="text" placeholder="Поиск по названию, автору, ISBN или ключевому слову" onkeydown="if(event.key==='Enter'){loadCatalog()}" />
-          <button class="btn btn-primary" onclick="loadCatalog()">Найти</button>
+          <input class="input" id="search-input" type="text" placeholder="{{ ['ru' => 'Поиск по названию, автору, ISBN или ключевому слову', 'kk' => 'Атауы, авторы, ISBN немесе кілтсөз бойынша іздеу', 'en' => 'Search by title, author, ISBN, or keyword'][$lang] }}" onkeydown="if(event.key==='Enter'){loadCatalog()}" />
+          <button class="btn btn-primary" onclick="loadCatalog()">{{ ['ru' => 'Найти', 'kk' => 'Іздеу', 'en' => 'Search'][$lang] }}</button>
         </div>
       </section>
 
       <section class="layout">
         <aside class="card filters" id="filters-panel">
           <div class="filter-header">
-            <h2 class="filter-title">Фильтры <span id="filter-count-badge" class="filter-badge" style="display:none;"></span></h2>
-            <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ Сбросить</button>
+            <h2 class="filter-title">{{ ['ru' => 'Фильтры', 'kk' => 'Сүзгілер', 'en' => 'Filters'][$lang] }} <span id="filter-count-badge" class="filter-badge" style="display:none;"></span></h2>
+            <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ {{ ['ru' => 'Сбросить', 'kk' => 'Тазарту', 'en' => 'Reset'][$lang] }}</button>
           </div>
           <button type="button" class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleFilters()">
-            🔎 Фильтры <span id="mobile-filter-count"></span>
+            🔎 {{ ['ru' => 'Фильтры', 'kk' => 'Сүзгілер', 'en' => 'Filters'][$lang] }} <span id="mobile-filter-count"></span>
           </button>
           <div id="filters-body">
 
           <div class="filter-group">
-            <span class="filter-label">Доступность</span>
+            <span class="filter-label">{{ ['ru' => 'Доступность', 'kk' => 'Қолжетімділік', 'en' => 'Availability'][$lang] }}</span>
             <div class="check-list">
               <label class="check-item">
-                <span><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> Только в наличии</span>
+                <span><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> {{ ['ru' => 'Только в наличии', 'kk' => 'Тек қолда барлары', 'en' => 'Available only'][$lang] }}</span>
               </label>
             </div>
           </div>
 
           <div class="filter-group">
-            <span class="filter-label">Язык</span>
+            <span class="filter-label">{{ ['ru' => 'Язык', 'kk' => 'Тіл', 'en' => 'Language'][$lang] }}</span>
             <div class="chips" id="language-chips">
-              <button type="button" class="chip active" data-lang="">Все</button>
+              <button type="button" class="chip active" data-lang="">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
               <button type="button" class="chip" data-lang="ru">Русский</button>
               <button type="button" class="chip" data-lang="kk">Қазақша</button>
               <button type="button" class="chip" data-lang="en">English</button>
@@ -693,43 +737,43 @@
           </div>
 
           <div class="filter-group">
-            <span class="filter-label">Год издания</span>
+            <span class="filter-label">{{ ['ru' => 'Год издания', 'kk' => 'Басылым жылы', 'en' => 'Publication year'][$lang] }}</span>
             <div class="chips" id="year-chips">
-              <button type="button" class="chip active" data-year="">Все</button>
+              <button type="button" class="chip active" data-year="">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
               <button type="button" class="chip" data-year="2025">2025</button>
               <button type="button" class="chip" data-year="2024">2024</button>
               <button type="button" class="chip" data-year="2023">2023</button>
               <button type="button" class="chip" data-year="2020-2022">2020–2022</button>
-              <button type="button" class="chip" data-year="older">Ранее</button>
+              <button type="button" class="chip" data-year="older">{{ ['ru' => 'Ранее', 'kk' => 'Ертерек', 'en' => 'Earlier'][$lang] }}</button>
             </div>
           </div>
 
           <div class="filter-group" id="subject-filter-group">
-            <span class="filter-label">Направление / Специальность</span>
+            <span class="filter-label">{{ ['ru' => 'Направление / Специальность', 'kk' => 'Бағыт / Мамандану', 'en' => 'Track / specialization'][$lang] }}</span>
             <select class="subject-select" id="subject-select" onchange="applyFilters()">
-              <option value="">Все направления</option>
+              <option value="">{{ ['ru' => 'Все направления', 'kk' => 'Барлық бағыттар', 'en' => 'All tracks'][$lang] }}</option>
             </select>
           </div>
 
           </div>{{-- /filters-body --}}
 
-          <button class="btn btn-primary" style="width:100%; margin-top:6px;" onclick="applyFilters()">Применить фильтры</button>
+          <button class="btn btn-primary" style="width:100%; margin-top:6px;" onclick="applyFilters()">{{ ['ru' => 'Применить фильтры', 'kk' => 'Сүзгілерді қолдану', 'en' => 'Apply filters'][$lang] }}</button>
         </aside>
 
         <div class="card results">
           <div id="active-subject-banner"></div>
           <div class="results-top">
             <div>
-              <strong id="results-count">Найдено 0 книг</strong>
-              <p>Подборка учебной и научной литературы по выбранным параметрам.</p>
+              <strong id="results-count">{{ ['ru' => 'Найдено 0 книг', 'kk' => '0 кітап табылды', 'en' => 'Found 0 books'][$lang] }}</strong>
+              <p>{{ ['ru' => 'Подборка учебной и научной литературы по выбранным параметрам.', 'kk' => 'Таңдалған параметрлер бойынша оқу және ғылыми әдебиеттер топтамасы.', 'en' => 'A filtered selection of course and research literature.'][$lang] }}</p>
             </div>
             <div class="sort-box">
-              <span style="color:var(--muted); font-weight:600;">Сортировка:</span>
+              <span style="color:var(--muted); font-weight:600;">{{ ['ru' => 'Сортировка:', 'kk' => 'Сұрыптау:', 'en' => 'Sort by:'][$lang] }}</span>
               <select class="select" id="sort-select" style="min-width:220px;" onchange="loadCatalog()">
-                <option value="popular">Сначала популярные</option>
-                <option value="newest">Сначала новые</option>
-                <option value="title">По названию</option>
-                <option value="author">По автору</option>
+                <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
+                <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
+                <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
+                <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
               </select>
             </div>
           </div>
@@ -748,6 +792,42 @@
   <script>
     const API_ENDPOINT = '/api/v1/catalog-db';
     const SHORTLIST_API = '/api/v1/shortlist';
+    const CATALOG_LANG = @json($lang);
+    const CATALOG_I18N_MAP = {
+      ru: {
+        untitled: 'Без названия', authorMissing: 'Автор не указан', publisherMissing: 'Издатель не указан', languageMissing: 'Не указан',
+        copies: 'экз.', unavailable: 'Нет в наличии', author: 'Автор', year: 'Год', language: 'Язык', viewBook: 'Смотреть книгу',
+        addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
+        foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
+        yearLabel: 'Год', availableOnly: 'В наличии', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
+        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти'
+      },
+      kk: {
+        untitled: 'Атауы жоқ', authorMissing: 'Автор көрсетілмеген', publisherMissing: 'Баспа көрсетілмеген', languageMissing: 'Көрсетілмеген',
+        copies: 'дана', unavailable: 'Қолжетімсіз', author: 'Автор', year: 'Жыл', language: 'Тіл', viewBook: 'Кітапты ашу',
+        addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
+        foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
+        yearLabel: 'Жыл', availableOnly: 'Қолда бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
+        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру'
+      },
+      en: {
+        untitled: 'Untitled', authorMissing: 'Author not specified', publisherMissing: 'Publisher not specified', languageMissing: 'Not specified',
+        copies: 'copies', unavailable: 'Unavailable', author: 'Author', year: 'Year', language: 'Language', viewBook: 'Open book',
+        addShortlist: 'Add to shortlist', removeShortlist: 'Remove from shortlist', updateCatalog: 'Refreshing catalog', noResultBadge: 'No result', noBooks: 'No books found', tryChange: 'Try adjusting the search parameters.',
+        foundZero: 'Found 0 books', foundMany: 'Found {count} books', retry: 'Retry', loadError: 'Catalog load error', refreshPage: 'Try refreshing the page.',
+        yearLabel: 'Year', availableOnly: 'Available', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
+        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in'
+      }
+    };
+    const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
+
+    function withLang(path) {
+      const url = new URL(path, window.location.origin);
+      if (CATALOG_LANG !== 'ru' && !url.searchParams.has('lang')) {
+        url.searchParams.set('lang', CATALOG_LANG);
+      }
+      return `${url.pathname}${url.search}`;
+    }
     let currentPage = 1;
     let totalPages = 1;
     let activeSubjectId = '';
@@ -787,11 +867,11 @@
       const specialization = classification.find(c => c.sourceKind === 'specialization');
       const department = classification.find(c => c.sourceKind === 'department');
       return {
-        title: book.title?.display || book.title?.raw || 'Без названия',
-        author: book.primaryAuthor || 'Автор не указан',
-        publisher: book.publisher?.name || 'Издатель не указан',
+        title: book.title?.display || book.title?.raw || CATALOG_I18N.untitled,
+        author: book.primaryAuthor || CATALOG_I18N.authorMissing,
+        publisher: book.publisher?.name || CATALOG_I18N.publisherMissing,
         year: book.publicationYear || '—',
-        language: book.language?.raw || book.language?.code || 'Не указан',
+        language: book.language?.raw || book.language?.code || CATALOG_I18N.languageMissing,
         format: book.copies?.available > 0 ? 'Печатная + PDF' : 'PDF',
         available: book.copies?.available || 0,
         total: book.copies?.total || 0,
@@ -821,19 +901,19 @@
           </div>
           <div class="meta-row">
             <span class="tag">${escapeHtml(String(data.year))}</span>
-            <span class="tag ${isAvailable ? 'green' : ''}">${isAvailable ? data.available + ' экз.' : 'Нет в наличии'}</span>
+            <span class="tag ${isAvailable ? 'green' : ''}">${isAvailable ? `${data.available} ${CATALOG_I18N.copies}` : CATALOG_I18N.unavailable}</span>
             ${subjectBadge}
           </div>
           <h3 class="book-title">${escapeHtml(data.title)}</h3>
           <p class="book-desc">${escapeHtml(data.publisher)}</p>
           <div class="book-info">
-            <div><span>Автор</span><span>${escapeHtml(data.author.substring(0, 40))}</span></div>
-            <div><span>Год</span><span>${escapeHtml(String(data.year))}</span></div>
-            <div><span>Язык</span><span>${escapeHtml(data.language)}</span></div>
+            <div><span>${CATALOG_I18N.author}</span><span>${escapeHtml(data.author.substring(0, 40))}</span></div>
+            <div><span>${CATALOG_I18N.year}</span><span>${escapeHtml(String(data.year))}</span></div>
+            <div><span>${CATALOG_I18N.language}</span><span>${escapeHtml(data.language)}</span></div>
           </div>
           <div class="book-actions">
-            <button class="btn btn-primary" onclick="event.stopPropagation(); goToBook('${escapeHtml(identifier)}')">Смотреть книгу</button>
-            <button class="icon-btn ${isShortlisted ? 'shortlisted' : ''}" onclick="event.stopPropagation(); toggleShortlist(this, ${JSON.stringify(JSON.stringify(data))})" title="${isShortlisted ? 'Убрать из подборки' : 'В подборку'}" aria-label="${isShortlisted ? 'Убрать из подборки' : 'Добавить в подборку'}">${isShortlisted ? '★' : '☆'}</button>
+            <button class="btn btn-primary" onclick="event.stopPropagation(); goToBook('${escapeHtml(identifier)}')">${CATALOG_I18N.viewBook}</button>
+            <button class="icon-btn ${isShortlisted ? 'shortlisted' : ''}" onclick="event.stopPropagation(); toggleShortlist(this, ${JSON.stringify(JSON.stringify(data))})" title="${isShortlisted ? CATALOG_I18N.removeShortlist : CATALOG_I18N.addShortlist}" aria-label="${isShortlisted ? CATALOG_I18N.removeShortlist : CATALOG_I18N.addShortlist}">${isShortlisted ? '★' : '☆'}</button>
           </div>
         </article>
       `;
@@ -846,7 +926,7 @@
       const resultsCount = document.getElementById('results-count');
 
       try {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);"><div style="display:inline-block;width:32px;height:32px;border:3px solid #e5e7eb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div><p style="margin:8px 0 0;">Загрузка...</p></div>';
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:34px 24px; color:var(--muted); background:#fff; border:1px solid var(--border); border-radius:8px;"><div style="display:inline-block;width:32px;height:32px;border:3px solid rgba(195,198,209,.55);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div><p style="margin:8px 0 0; font-weight:600; color:var(--blue);">${CATALOG_I18N.updateCatalog}</p></div>`;
 
         const params = new URLSearchParams();
         if (searchInput.value) params.set('q', searchInput.value);
@@ -877,8 +957,8 @@
         const meta = data.meta || {};
 
         if (books.length === 0) {
-          grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:48px; color:var(--muted); border:1px dashed #e2e8f0; border-radius:16px; background:#f8fafc;"><span style="font-size:32px;">🔍</span><p style="margin:12px 0 0; font-weight:600; color:#334155;">Книги не найдены</p><p style="margin:4px 0 0;">Попробуйте изменить параметры поиска.</p></div>';
-          resultsCount.textContent = 'Найдено 0 книг';
+          grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px 24px; color:var(--muted); border:1px solid var(--border); border-radius:8px; background:#fff;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:88px;height:34px;padding:0 12px;border-radius:999px;background:rgba(0,30,64,.05);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">${CATALOG_I18N.noResultBadge}</span><p style="margin:12px 0 0; font-weight:700; color:var(--blue);">${CATALOG_I18N.noBooks}</p><p style="margin:4px 0 0;">${CATALOG_I18N.tryChange}</p></div>`;
+          resultsCount.textContent = CATALOG_I18N.foundZero;
           document.getElementById('pagination').innerHTML = '';
         } else {
           // Check shortlist state for rendered books, then re-render
@@ -888,13 +968,13 @@
           }).filter(Boolean);
           await loadShortlistState(identifiers);
           grid.innerHTML = books.map(renderBookCard).join('');
-          resultsCount.textContent = `Найдено ${meta.total || books.length} книг`;
+          resultsCount.textContent = CATALOG_I18N.foundMany.replace('{count}', meta.total || books.length);
           totalPages = meta.totalPages || 1;
           renderPagination();
         }
         renderActiveFilters();
       } catch (err) {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:48px; border:1px solid #fca5a5; border-radius:16px; background:#fef2f2;"><span style="font-size:32px;">⚠️</span><p style="margin:12px 0 0; font-weight:600; color:#991b1b;">Ошибка загрузки каталога</p><p style="margin:4px 0 0; color:#b91c1c;">Попробуйте обновить страницу.</p></div>';
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px 24px; border:1px solid rgba(186,26,26,.16); border-radius:8px; background:rgba(186,26,26,.05);"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:96px;height:34px;padding:0 12px;border-radius:999px;background:rgba(186,26,26,.08);color:#ba1a1a;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">${CATALOG_I18N.retry}</span><p style="margin:12px 0 0; font-weight:700; color:#ba1a1a;">${CATALOG_I18N.loadError}</p><p style="margin:4px 0 0; color:#7a2323;">${CATALOG_I18N.refreshPage}</p></div>`;
         console.error(err);
       }
     }
@@ -908,14 +988,14 @@
       const lang = getActiveLanguage();
       if (lang) { const labels = {ru:'Русский',kk:'Қазақша',en:'English'}; chips.push({label: labels[lang]||lang, clear: () => { document.querySelectorAll('#language-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.lang === '')); }}); }
       const yp = getYearParams();
-      if (yp.year_from || yp.year_to) { const activeY = document.querySelector('#year-chips .chip.active'); chips.push({label: activeY?.textContent || 'Год', clear: () => { document.querySelectorAll('#year-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.year === '')); }}); }
+      if (yp.year_from || yp.year_to) { const activeY = document.querySelector('#year-chips .chip.active'); chips.push({label: activeY?.textContent || CATALOG_I18N.yearLabel, clear: () => { document.querySelectorAll('#year-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.year === '')); }}); }
       const avail = document.getElementById('filter-available-only');
-      if (avail?.checked) chips.push({label: 'В наличии', clear: () => { avail.checked = false; }});
+      if (avail?.checked) chips.push({label: CATALOG_I18N.availableOnly, clear: () => { avail.checked = false; }});
       if (activeSubjectLabel) chips.push({label: activeSubjectLabel, clear: () => { activeSubjectId = ''; activeSubjectLabel = ''; }});
       if (chips.length === 0) { container.style.display = 'none'; return; }
       container.style.display = 'flex';
       container.innerHTML = chips.map(c => `<button type="button" class="active-filter-chip" onclick="this._clear()">${escapeHtml(c.label)} ✕</button>`).join('') +
-        `<button type="button" class="active-filter-reset" onclick="clearAllFilters()">Сбросить все</button>`;
+        `<button type="button" class="active-filter-reset" onclick="clearAllFilters()">${CATALOG_I18N.resetAll}</button>`;
       container.querySelectorAll('.active-filter-chip').forEach((el, i) => { el._clear = () => { chips[i].clear(); loadCatalog(); }; });
     }
 
@@ -973,7 +1053,7 @@
 
     function goToBook(identifier) {
       if (!identifier) return;
-      window.location.href = `/book/${encodeURIComponent(identifier)}`;
+      window.location.href = withLang(`/book/${encodeURIComponent(identifier)}`);
     }
 
     async function toggleShortlist(btn, dataJson) {
@@ -993,7 +1073,7 @@
             shortlistState[identifier] = false;
             btn.textContent = '☆';
             btn.classList.remove('shortlisted');
-            btn.title = 'В подборку';
+            btn.title = CATALOG_I18N.addShortlist;
           }
         } catch (e) { console.error(e); }
       } else {
@@ -1023,7 +1103,7 @@
             shortlistState[identifier] = true;
             btn.textContent = '★';
             btn.classList.add('shortlisted');
-            btn.title = 'Убрать из подборки';
+            btn.title = CATALOG_I18N.removeShortlist;
           }
         } catch (e) { console.error(e); }
       }
@@ -1111,7 +1191,7 @@
         });
       } catch (_) {}
       localStorage.removeItem('library.auth.user');
-      window.location.href = '/login';
+      window.location.href = withLang('/login');
     });
     @endif
 
@@ -1149,8 +1229,8 @@
       if (activeSubjectId && activeSubjectLabel) {
         banner.innerHTML = `<div class="active-subject-banner">
           <span>📚</span>
-          <span>Фильтр по направлению: <strong>${escapeHtml(activeSubjectLabel)}</strong></span>
-          <button class="clear-btn" onclick="clearSubjectFilter()">✕ Сбросить</button>
+          <span>${CATALOG_I18N.subjectFilter}: <strong>${escapeHtml(activeSubjectLabel)}</strong></span>
+          <button class="clear-btn" onclick="clearSubjectFilter()">✕ ${CATALOG_I18N.clear}</button>
         </div>`;
       } else {
         banner.innerHTML = '';
@@ -1192,9 +1272,9 @@
           sel.appendChild(group);
         };
 
-        addGroup('Факультеты', subjectsData.faculties);
-        addGroup('Кафедры', subjectsData.departments);
-        addGroup('Специальности', subjectsData.specializations);
+        addGroup(CATALOG_I18N.faculties, subjectsData.faculties);
+        addGroup(CATALOG_I18N.departments, subjectsData.departments);
+        addGroup(CATALOG_I18N.specializations, subjectsData.specializations);
 
         if (activeSubjectId) {
           sel.value = activeSubjectId;

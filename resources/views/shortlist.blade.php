@@ -1,33 +1,140 @@
-@extends('layouts.public')
+@extends('layouts.public', ['activePage' => 'shortlist'])
 
-@section('title', 'Подборка литературы — Digital Library')
+@php
+  $lang = app()->getLocale();
+  $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+  $withLang = function (string $path, array $query = []) use ($lang): string {
+      if ($lang !== 'ru' && ! array_key_exists('lang', $query)) {
+          $query['lang'] = $lang;
+      }
+
+      $queryString = http_build_query(array_filter($query, static fn ($value) => $value !== null && $value !== ''));
+      return $path . ($queryString !== '' ? ('?' . $queryString) : '');
+  };
+
+  $copy = [
+      'ru' => [
+          'title' => 'Подборка литературы — Digital Library',
+          'hero_eyebrow' => 'Подборка литературы',
+          'hero_title' => 'Черновик списка литературы',
+          'hero_body' => 'Собирайте книги из каталога и электронные ресурсы для подготовки силлабуса. Выберите формат — скопируйте или распечатайте готовый список.',
+          'loading' => 'Загрузка подборки...',
+          'empty_icon' => 'Подборка',
+          'empty_title' => 'Подборка пока пуста',
+          'empty_body' => 'Добавляйте издания из каталога или прикрепляйте записи из электронных ресурсов. Сохранённый набор появится здесь для экспорта.',
+          'open_catalog' => 'Открыть каталог',
+          'resources' => 'Ресурсы',
+          'browse_subjects' => 'Поиск по направлениям',
+          'back_to_account' => '← Вернуться в кабинет',
+          'draft_title_label' => 'Название черновика',
+          'draft_title_placeholder' => 'Например: Литература для дисциплины «Информатика»',
+          'draft_notes_label' => 'Заметки',
+          'draft_notes_placeholder' => 'Заметки для себя: семестр, группа, комментарии...',
+          'selected_sources' => 'Выбранные источники',
+          'items_suffix' => 'в подборке',
+          'print' => '🖨 Печать',
+          'clear' => '🗑 Очистить',
+          'books_title' => 'Основная литература',
+          'external_title' => 'Электронные ресурсы',
+          'bibliography_title' => '📄 Список литературы',
+          'bibliography_body' => 'Готовый текст для вставки в силлабус или документ',
+          'format' => 'Формат:',
+          'format_numbered' => 'Нумерованный список',
+          'format_grouped' => 'По разделам',
+          'format_syllabus' => 'Для силлабуса',
+          'copy_text' => '📋 Скопировать текст',
+      ],
+      'kk' => [
+          'title' => 'Әдебиет іріктемесі — Digital Library',
+          'hero_eyebrow' => 'Әдебиет іріктемесі',
+          'hero_title' => 'Әдебиет тізімінің жұмыс нұсқасы',
+          'hero_body' => 'Силлабус дайындау үшін каталогтағы кітаптарды және электрондық ресурстарды жинаңыз. Қажетті форматты таңдап, дайын тізімді көшіріп не басып шығарыңыз.',
+          'loading' => 'Іріктеме жүктелуде...',
+          'empty_icon' => 'Іріктеме',
+          'empty_title' => 'Іріктеме әзірге бос',
+          'empty_body' => 'Каталогтан басылымдарды қосыңыз немесе электрондық ресурстардан қажетті материалдарды тіркеңіз. Сақталған жиынтық экспорт үшін осында көрсетіледі.',
+          'open_catalog' => 'Каталогты ашу',
+          'resources' => 'Ресурстар',
+          'browse_subjects' => 'Тақырыптарды қарау',
+          'back_to_account' => '← Кабинетке оралу',
+          'draft_title_label' => 'Жұмыс нұсқасының атауы',
+          'draft_title_placeholder' => 'Мысалы: «Информатика» пәніне арналған әдебиет',
+          'draft_notes_label' => 'Ескертпелер',
+          'draft_notes_placeholder' => 'Өзіңізге арналған белгі: семестр, топ, түсініктеме...',
+          'selected_sources' => 'Таңдалған дереккөздер',
+          'items_suffix' => 'іріктемеде',
+          'print' => '🖨 Басып шығару',
+          'clear' => '🗑 Тазарту',
+          'books_title' => 'Негізгі әдебиет',
+          'external_title' => 'Электрондық ресурстар',
+          'bibliography_title' => '📄 Әдебиет тізімі',
+          'bibliography_body' => 'Силлабусқа немесе құжатқа енгізуге дайын мәтін',
+          'format' => 'Формат:',
+          'format_numbered' => 'Нөмірленген тізім',
+          'format_grouped' => 'Бөлімдер бойынша',
+          'format_syllabus' => 'Силлабус үшін',
+          'copy_text' => '📋 Мәтінді көшіру',
+      ],
+      'en' => [
+          'title' => 'Shortlist — Digital Library',
+          'hero_eyebrow' => 'Teaching shortlist',
+          'hero_title' => 'Draft reading list',
+          'hero_body' => 'Collect catalog titles and electronic resources for syllabus preparation. Choose the output format, then copy or print the final list.',
+          'loading' => 'Loading shortlist...',
+          'empty_icon' => 'Shortlist',
+          'empty_title' => 'The shortlist is empty',
+          'empty_body' => 'Add titles from the catalog or attach relevant entries from research resources. The saved set will appear here for export.',
+          'open_catalog' => 'Open catalog',
+          'resources' => 'Resources',
+          'browse_subjects' => 'Browse subjects',
+          'back_to_account' => '← Return to account',
+          'draft_title_label' => 'Draft title',
+          'draft_title_placeholder' => 'For example: Reading list for “Computer Science”',
+          'draft_notes_label' => 'Notes',
+          'draft_notes_placeholder' => 'Working notes: semester, group, comments...',
+          'selected_sources' => 'Selected sources',
+          'items_suffix' => 'in shortlist',
+          'print' => '🖨 Print',
+          'clear' => '🗑 Clear',
+          'books_title' => 'Core readings',
+          'external_title' => 'Electronic resources',
+          'bibliography_title' => '📄 Bibliography',
+          'bibliography_body' => 'Ready-to-use text for a syllabus or working document',
+          'format' => 'Format:',
+          'format_numbered' => 'Numbered list',
+          'format_grouped' => 'Grouped by section',
+          'format_syllabus' => 'Syllabus format',
+          'copy_text' => '📋 Copy text',
+      ],
+  ][$lang];
+@endphp
+
+@section('title', $copy['title'])
 
 @section('content')
   <section class="page-hero">
     <div class="container">
-      <div class="eyebrow eyebrow--violet">Подборка литературы</div>
-      <h1>Черновик списка литературы</h1>
-      <p>Собирайте книги из каталога и электронные ресурсы для подготовки силлабуса. Выберите формат — скопируйте или распечатайте готовый список.</p>
+      <div class="eyebrow eyebrow--violet">{{ $copy['hero_eyebrow'] }}</div>
+      <h1>{{ $copy['hero_title'] }}</h1>
+      <p>{{ $copy['hero_body'] }}</p>
     </div>
   </section>
 
   <section class="page-section">
     <div class="container">
-      <div id="shortlist-loading" style="text-align:center; padding:48px;">
-        <div style="display:inline-block;width:32px;height:32px;border:3px solid #e5e7eb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div>
-        <p style="margin:8px 0 0; color:var(--muted);">Загрузка подборки...</p>
+      <div id="shortlist-loading" class="shortlist-state shortlist-state--loading">
+        <div class="shortlist-spinner"></div>
+        <p>{{ $copy['loading'] }}</p>
       </div>
 
-      <div id="shortlist-empty" style="display:none; text-align:center; padding:64px 24px;">
-        <div style="font-size:64px; margin-bottom:16px;">📋</div>
-        <h2 style="margin:0 0 12px; font-size:24px;">Подборка пуста</h2>
-        <p style="color:var(--muted); max-width:480px; margin:0 auto 24px; line-height:1.7;">
-          Добавляйте книги из <a href="/catalog" style="color:var(--blue); font-weight:600;">каталога</a> или <a href="/resources" style="color:var(--blue); font-weight:600;">электронные ресурсы</a>, нажимая кнопку «В подборку». Собранные источники появятся здесь.
-        </p>
-        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-          <a href="/catalog" class="btn btn-primary">Открыть каталог</a>
-          <a href="/resources" class="btn btn-ghost">Электронные ресурсы</a>
-          <a href="/discover" class="btn btn-ghost">По направлениям</a>
+      <div id="shortlist-empty" class="shortlist-state" style="display:none;">
+        <div class="shortlist-state-icon">{{ $copy['empty_icon'] }}</div>
+        <h2>{{ $copy['empty_title'] }}</h2>
+        <p>{{ $copy['empty_body'] }}</p>
+        <div class="shortlist-state-actions">
+          <a href="{{ $withLang('/catalog') }}" class="btn btn-primary">{{ $copy['open_catalog'] }}</a>
+          <a href="{{ $withLang('/resources') }}" class="btn btn-ghost">{{ $copy['resources'] }}</a>
+          <a href="{{ $withLang('/discover') }}" class="btn btn-ghost">{{ $copy['browse_subjects'] }}</a>
         </div>
       </div>
 
@@ -35,7 +142,7 @@
         {{-- Cabinet navigation --}}
         @if(session('library.user'))
         <div style="margin-bottom:18px;">
-          <a href="/account" style="color:var(--blue, #3b82f6); font-size:14px; font-weight:600; text-decoration:none;">← Вернуться в кабинет</a>
+          <a href="{{ $withLang('/account') }}" style="color:var(--blue); font-size:14px; font-weight:600; text-decoration:none;">{{ $copy['back_to_account'] }}</a>
         </div>
         @endif
 
@@ -44,12 +151,12 @@
           <div id="draft-persistence-badge" class="draft-persistence-badge" style="display:none;"></div>
           <div class="draft-meta-fields">
             <div class="draft-field-group">
-              <label for="draft-title" class="draft-label">Название черновика</label>
-              <input type="text" id="draft-title" class="draft-input" placeholder="Например: Литература для дисциплины «Информатика»" maxlength="500">
+              <label for="draft-title" class="draft-label">{{ $copy['draft_title_label'] }}</label>
+              <input type="text" id="draft-title" class="draft-input" placeholder="{{ $copy['draft_title_placeholder'] }}" maxlength="500">
             </div>
             <div class="draft-field-group">
-              <label for="draft-notes" class="draft-label">Заметки</label>
-              <textarea id="draft-notes" class="draft-textarea" placeholder="Заметки для себя: семестр, группа, комментарии..." maxlength="2000" rows="2"></textarea>
+              <label for="draft-notes" class="draft-label">{{ $copy['draft_notes_label'] }}</label>
+              <textarea id="draft-notes" class="draft-textarea" placeholder="{{ $copy['draft_notes_placeholder'] }}" maxlength="2000" rows="2"></textarea>
             </div>
           </div>
           <div id="draft-save-status" class="draft-save-status"></div>
@@ -58,15 +165,15 @@
         {{-- Header with stats and actions --}}
         <div class="shortlist-header">
           <div>
-            <h2 style="margin:0 0 4px; font-size:22px;">Выбранные источники</h2>
+            <h2 style="margin:0 0 4px; font-size:22px;">{{ $copy['selected_sources'] }}</h2>
             <p style="margin:0; color:var(--muted); font-size:14px;">
-              <span id="shortlist-count">0</span> <span id="shortlist-count-label">источников</span> в подборке
+              <span id="shortlist-count">0</span> <span id="shortlist-count-label">0</span> {{ $copy['items_suffix'] }}
               <span id="shortlist-type-summary" style="margin-left:4px;"></span>
             </p>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn btn-ghost" onclick="window.print()" title="Печать списка литературы">🖨 Печать</button>
-            <button class="btn btn-ghost" onclick="clearShortlist()" style="color:var(--danger);">🗑 Очистить</button>
+            <button class="btn btn-ghost" onclick="window.print()" title="{{ $copy['print'] }}">{{ $copy['print'] }}</button>
+            <button class="btn btn-ghost" onclick="clearShortlist()" style="color:var(--danger);">{{ $copy['clear'] }}</button>
           </div>
         </div>
 
@@ -74,7 +181,7 @@
         <div id="shortlist-books-section" class="shortlist-type-section" style="display:none;">
           <div class="shortlist-type-heading">
             <span class="shortlist-type-icon">📚</span>
-            <h3>Основная литература</h3>
+            <h3>{{ $copy['books_title'] }}</h3>
             <span id="shortlist-books-count" class="shortlist-type-count"></span>
           </div>
           <div id="shortlist-books" class="shortlist-grid"></div>
@@ -83,7 +190,7 @@
         <div id="shortlist-external-section" class="shortlist-type-section" style="display:none;">
           <div class="shortlist-type-heading">
             <span class="shortlist-type-icon">🌐</span>
-            <h3>Электронные ресурсы</h3>
+            <h3>{{ $copy['external_title'] }}</h3>
             <span id="shortlist-external-count" class="shortlist-type-count"></span>
           </div>
           <div id="shortlist-external" class="shortlist-grid"></div>
@@ -93,15 +200,15 @@
         <div id="bibliography-block" class="bibliography-export-block">
           <div class="bibliography-export-header">
             <div>
-              <h3 style="margin:0 0 4px; font-size:18px;">📄 Список литературы</h3>
-              <p style="color:var(--muted); font-size:13px; margin:0;">Готовый текст для вставки в силлабус или документ</p>
+              <h3 style="margin:0 0 4px; font-size:18px;">{{ $copy['bibliography_title'] }}</h3>
+              <p style="color:var(--muted); font-size:13px; margin:0;">{{ $copy['bibliography_body'] }}</p>
             </div>
             <div class="bibliography-format-controls">
-              <label class="bibliography-format-label" for="bib-format">Формат:</label>
+              <label class="bibliography-format-label" for="bib-format">{{ $copy['format'] }}</label>
               <select id="bib-format" class="bibliography-format-select" onchange="loadExport()">
-                <option value="numbered">Нумерованный список</option>
-                <option value="grouped" selected>По разделам</option>
-                <option value="syllabus">Для силлабуса</option>
+                <option value="numbered">{{ $copy['format_numbered'] }}</option>
+                <option value="grouped" selected>{{ $copy['format_grouped'] }}</option>
+                <option value="syllabus">{{ $copy['format_syllabus'] }}</option>
               </select>
             </div>
           </div>
@@ -109,8 +216,8 @@
           <div id="bibliography-text" class="bibliography-text-area"></div>
 
           <div class="bibliography-export-actions">
-            <button class="btn btn-primary" onclick="copyBibliography()" id="copy-bib-btn">📋 Скопировать текст</button>
-            <button class="btn btn-ghost" onclick="window.print()">🖨 Печать</button>
+            <button class="btn btn-primary" onclick="copyBibliography()" id="copy-bib-btn">{{ $copy['copy_text'] }}</button>
+            <button class="btn btn-ghost" onclick="window.print()">{{ $copy['print'] }}</button>
           </div>
         </div>
       </div>
@@ -124,9 +231,16 @@
   .draft-meta-block {
     margin-bottom: 24px;
     padding: 20px 22px;
-    background: var(--surface-glass, #fff);
+    background: #fff;
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg, 24px);
+    border-radius: var(--radius-lg, 6px);
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .draft-meta-block:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
+    border-color: rgba(0,30,64,.12);
   }
 
   .draft-meta-fields {
@@ -149,20 +263,22 @@
   }
 
   .draft-input, .draft-textarea {
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--bg-soft, #f8fafc);
+    padding: 10px 0;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
     font-size: 15px;
     font-family: inherit;
     color: var(--text, #1a1a1a);
-    transition: border-color .2s;
+    transition: border-color .2s, background .2s ease;
     resize: vertical;
   }
 
   .draft-input:focus, .draft-textarea:focus {
     outline: none;
     border-color: var(--blue);
+    background: rgba(255,255,255,.42);
   }
 
   .draft-save-status {
@@ -185,15 +301,15 @@
   }
 
   .draft-persistence-badge.persistent {
-    background: rgba(22,163,74,.08);
-    color: #16a34a;
-    border: 1px solid rgba(22,163,74,.16);
+    background: rgba(20,105,109,.08);
+    color: #14696d;
+    border: 1px solid rgba(20,105,109,.16);
   }
 
   .draft-persistence-badge.session-only {
-    background: rgba(245,158,11,.08);
-    color: #b45309;
-    border: 1px solid rgba(245,158,11,.16);
+    background: rgba(93,66,1,.08);
+    color: #5d4201;
+    border: 1px solid rgba(93,66,1,.16);
   }
 
   .shortlist-header {
@@ -215,13 +331,15 @@
     gap: 10px;
     margin-bottom: 14px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--border, #e5e7eb);
+    border-bottom: 0;
   }
 
   .shortlist-type-heading h3 {
     margin: 0;
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Newsreader', Georgia, serif;
+    color: var(--blue);
   }
 
   .shortlist-type-icon {
@@ -254,14 +372,17 @@
     align-items: start;
     gap: 16px;
     padding: 18px 22px;
-    background: var(--surface-glass, #fff);
+    background: #fff;
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg, 24px);
-    transition: box-shadow .2s;
+    border-radius: var(--radius-lg, 6px);
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), background .2s ease, box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .shortlist-item:hover {
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 14px 28px rgba(25,28,29,.05);
+    background: rgba(243,244,245,.96);
+    border-color: rgba(20,105,109,.18);
+    transform: translate3d(0, -2px, 0);
   }
 
   .shortlist-item-info h4 {
@@ -300,9 +421,9 @@
 
   .shortlist-remove-btn {
     padding: 8px 16px;
-    border-radius: 14px;
+    border-radius: var(--radius-md, 4px);
     border: 1px solid var(--border);
-    background: #fff;
+    background: transparent;
     font-size: 13px;
     font-weight: 600;
     color: var(--muted);
@@ -320,10 +441,18 @@
   /* Bibliography export block */
   .bibliography-export-block {
     margin-top: 36px;
-    padding: 28px;
-    background: var(--surface-glass, #fff);
+    padding: 24px;
+    background: #fff;
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg, 24px);
+    border-radius: var(--radius-lg, 6px);
+    box-shadow: none;
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .bibliography-export-block:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25,28,29,.05);
+    border-color: rgba(0,30,64,.12);
   }
 
   .bibliography-export-header {
@@ -351,10 +480,10 @@
   .bibliography-format-select {
     padding: 7px 14px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 6px;
     background: var(--bg-soft, #f8fafc);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text, #1a1a1a);
     cursor: pointer;
     transition: border-color .2s;
@@ -374,12 +503,12 @@
   .bibliography-text-area {
     background: var(--bg-soft, #f8fafc);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 22px;
+    border-radius: 6px;
+    padding: 18px;
     font-size: 14px;
     line-height: 1.85;
     white-space: pre-wrap;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     min-height: 80px;
     color: var(--text, #1a1a1a);
   }
@@ -388,6 +517,79 @@
     display: flex;
     gap: 10px;
     margin-top: 18px;
+    flex-wrap: wrap;
+  }
+
+  .shortlist-state {
+    text-align: center;
+    padding: 48px 24px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg, 6px);
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .shortlist-state--loading {
+    background: var(--bg-soft, #f8fafc);
+  }
+
+  .shortlist-state:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25,28,29,.05);
+    border-color: rgba(0,30,64,.12);
+  }
+
+  .shortlist-spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(195,198,209,.55);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+
+  .shortlist-state-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    height: 36px;
+    padding: 0 14px;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    background: rgba(0,30,64,.05);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .shortlist-state h2 {
+    margin: 0 0 10px;
+    font-size: 26px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .shortlist-state p {
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 20px;
+    line-height: 1.7;
+  }
+
+  .shortlist-state a {
+    color: var(--blue);
+    font-weight: 700;
+  }
+
+  .shortlist-state-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
     flex-wrap: wrap;
   }
 
@@ -450,9 +652,81 @@
 <script>
   const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content;
   const API_BASE = '/api/v1/shortlist';
+  const SHORTLIST_LANG = @json($lang);
+  const SHORTLIST_I18N_MAP = {!! json_encode([
+    'ru' => [
+      'untitled' => 'Без названия',
+      'platformPrefix' => 'Платформа',
+      'remove' => '✕ Убрать',
+      'campus' => 'Только в кампусе',
+      'remote_auth' => 'Доступ по авторизации',
+      'open' => 'Открытый доступ',
+      'loadFailed' => 'Не удалось загрузить подборку',
+      'exportFailed' => 'Не удалось подготовить экспорт',
+      'clearConfirm' => 'Очистить всю подборку?',
+      'copied' => '✓ Скопировано',
+      'savedToAccount' => '☁ Сохраняется в аккаунте',
+      'sessionOnly' => '⏳ Только в текущей сессии',
+      'saving' => 'Сохранение...',
+      'saved' => '✓ Сохранено',
+      'saveError' => 'Ошибка сохранения',
+      'networkError' => 'Ошибка сети',
+      'booksCount' => 'книг',
+      'externalCount' => 'эл. ресурсов',
+    ],
+    'kk' => [
+      'untitled' => 'Атауы жоқ',
+      'platformPrefix' => 'Платформа',
+      'remove' => '✕ Алып тастау',
+      'campus' => 'Тек кампуста',
+      'remote_auth' => 'Авторизация арқылы',
+      'open' => 'Ашық қолжетімділік',
+      'loadFailed' => 'Іріктемені жүктеу мүмкін болмады',
+      'exportFailed' => 'Экспортты дайындау мүмкін болмады',
+      'clearConfirm' => 'Бүкіл іріктемені тазарту керек пе?',
+      'copied' => '✓ Көшірілді',
+      'savedToAccount' => '☁ Аккаунтта сақталады',
+      'sessionOnly' => '⏳ Тек ағымдағы сессияда',
+      'saving' => 'Сақталуда...',
+      'saved' => '✓ Сақталды',
+      'saveError' => 'Сақтау қатесі',
+      'networkError' => 'Желі қатесі',
+      'booksCount' => 'кітап',
+      'externalCount' => 'эл. ресурс',
+    ],
+    'en' => [
+      'untitled' => 'Untitled',
+      'platformPrefix' => 'Platform',
+      'remove' => '✕ Remove',
+      'campus' => 'Campus only',
+      'remote_auth' => 'Authenticated access',
+      'open' => 'Open access',
+      'loadFailed' => 'Unable to load the shortlist',
+      'exportFailed' => 'Unable to prepare the export',
+      'clearConfirm' => 'Clear the entire shortlist?',
+      'copied' => '✓ Copied',
+      'savedToAccount' => '☁ Saved to account',
+      'sessionOnly' => '⏳ Session only',
+      'saving' => 'Saving...',
+      'saved' => '✓ Saved',
+      'saveError' => 'Save failed',
+      'networkError' => 'Network error',
+      'booksCount' => 'books',
+      'externalCount' => 'e-resources',
+    ],
+  ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!};
+  const SHORTLIST_I18N = SHORTLIST_I18N_MAP[SHORTLIST_LANG] || SHORTLIST_I18N_MAP.ru;
 
   let currentItems = [];
   let draftSaveTimer = null;
+
+  function withLang(path) {
+    const url = new URL(path, window.location.origin);
+    if (SHORTLIST_LANG !== 'ru' && !url.searchParams.has('lang')) {
+      url.searchParams.set('lang', SHORTLIST_LANG);
+    }
+    return url.pathname + url.search;
+  }
 
   function escapeHtml(text) {
     if (!text) return '';
@@ -462,9 +736,17 @@
   }
 
   function pluralItems(n) {
-    if (n % 10 === 1 && n % 100 !== 11) return 'источник';
-    if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'источника';
-    return 'источников';
+    if (SHORTLIST_LANG === 'ru') {
+      if (n % 10 === 1 && n % 100 !== 11) return 'источник';
+      if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return 'источника';
+      return 'источников';
+    }
+
+    if (SHORTLIST_LANG === 'kk') {
+      return 'дереккөз';
+    }
+
+    return n === 1 ? 'source' : 'sources';
   }
 
   async function loadShortlist() {
@@ -478,12 +760,11 @@
         credentials: 'same-origin',
       });
 
-      if (!res.ok) throw new Error('Failed to load');
+      if (!res.ok) throw new Error(SHORTLIST_I18N.loadFailed);
 
       const json = await res.json();
-      const items = json.data || [];
+      const items = Array.isArray(json.data) ? json.data : [];
       currentItems = items;
-
       loading.style.display = 'none';
 
       if (items.length === 0) {
@@ -498,15 +779,14 @@
       document.getElementById('shortlist-count').textContent = items.length;
       document.getElementById('shortlist-count-label').textContent = pluralItems(items.length);
 
-      const books = items.filter(i => (i.type || 'book') !== 'external_resource');
-      const external = items.filter(i => i.type === 'external_resource');
-
-      // Type summary
+      const books = items.filter((item) => (item.type || 'book') !== 'external_resource');
+      const external = items.filter((item) => item.type === 'external_resource');
       const summaryParts = [];
-      if (books.length > 0) summaryParts.push(`${books.length} книг`);
-      if (external.length > 0) summaryParts.push(`${external.length} эл. ресурсов`);
-      document.getElementById('shortlist-type-summary').textContent =
-        summaryParts.length === 2 ? `(${summaryParts.join(', ')})` : '';
+
+      if (books.length > 0) summaryParts.push(`${books.length} ${SHORTLIST_I18N.booksCount}`);
+      if (external.length > 0) summaryParts.push(`${external.length} ${SHORTLIST_I18N.externalCount}`);
+
+      document.getElementById('shortlist-type-summary').textContent = summaryParts.length ? `(${summaryParts.join(', ')})` : '';
 
       renderGroupedItems(books, external);
       loadExport();
@@ -544,7 +824,7 @@
 
   function renderItemCard(item, num, isExternal) {
     const identifier = item.identifier || '';
-    const title = escapeHtml(item.title || 'Без названия');
+    const title = escapeHtml(item.title || SHORTLIST_I18N.untitled);
     const author = escapeHtml(item.author || '');
     const publisher = escapeHtml(item.publisher || '');
     const provider = escapeHtml(item.provider || '');
@@ -554,21 +834,21 @@
     const accessType = item.access_type || '';
 
     const accessLabels = {
-      campus: 'Из кампуса',
-      remote_auth: 'По авторизации',
-      open: 'Свободный доступ'
+      campus: SHORTLIST_I18N.campus,
+      remote_auth: SHORTLIST_I18N.remote_auth,
+      open: SHORTLIST_I18N.open,
     };
 
     const tags = [
       year ? `<span class="tag">${year}</span>` : '',
       language ? `<span class="tag">${language}</span>` : '',
       isbn ? `<span class="tag">ISBN: ${isbn}</span>` : '',
-      isExternal && accessType ? `<span class="tag" style="background:rgba(124,58,237,.08);color:var(--violet);">${escapeHtml(accessLabels[accessType] || accessType)}</span>` : '',
+      isExternal && accessType
+        ? `<span class="tag" style="background:rgba(20,105,109,.08);color:var(--cyan);">${escapeHtml(accessLabels[accessType] || accessType)}</span>`
+        : '',
     ].filter(Boolean).join('');
 
-    const linkHref = isExternal && item.url
-      ? item.url
-      : `/book/${encodeURIComponent(identifier)}`;
+    const linkHref = isExternal && item.url ? item.url : withLang(`/book/${encodeURIComponent(identifier)}`);
     const linkTarget = isExternal ? ' target="_blank" rel="noopener"' : '';
     const linkSuffix = isExternal ? ' ↗' : '';
 
@@ -578,10 +858,10 @@
           <h4><a href="${linkHref}"${linkTarget}>${num}. ${title}${linkSuffix}</a></h4>
           ${author ? `<div style="color:var(--muted); font-size:14px;">${author}</div>` : ''}
           ${publisher ? `<div style="color:var(--muted); font-size:13px;">${publisher}</div>` : ''}
-          ${isExternal && provider ? `<div style="color:var(--muted); font-size:13px;">Платформа: ${provider}</div>` : ''}
+          ${isExternal && provider ? `<div style="color:var(--muted); font-size:13px;">${SHORTLIST_I18N.platformPrefix}: ${provider}</div>` : ''}
           <div class="shortlist-item-meta">${tags}</div>
         </div>
-        <button class="shortlist-remove-btn" onclick="removeItem('${escapeHtml(identifier)}')">✕ Убрать</button>
+        <button class="shortlist-remove-btn" onclick="removeItem('${escapeHtml(identifier)}')">${SHORTLIST_I18N.remove}</button>
       </div>
     `;
   }
@@ -596,15 +876,14 @@
         credentials: 'same-origin',
       });
 
-      if (!res.ok) throw new Error('Export failed');
+      if (!res.ok) throw new Error(SHORTLIST_I18N.exportFailed);
       const json = await res.json();
       block.textContent = json.data?.text || '';
     } catch (err) {
-      // Client-side fallback
       block.textContent = currentItems.map((item, idx) => {
         const parts = [];
         if (item.author) parts.push(item.author);
-        parts.push(item.title || 'Без названия');
+        parts.push(item.title || SHORTLIST_I18N.untitled);
         if (item.publisher) parts.push(item.publisher);
         if (item.year) parts.push(item.year);
         return `${idx + 1}. ${parts.join('. ')}.`;
@@ -632,7 +911,7 @@
   }
 
   async function clearShortlist() {
-    if (!confirm('Очистить всю подборку?')) return;
+    if (!confirm(SHORTLIST_I18N.clearConfirm)) return;
 
     try {
       await fetch(`${API_BASE}/clear`, {
@@ -654,14 +933,15 @@
     if (!text) return;
 
     const btn = document.getElementById('copy-bib-btn');
-    navigator.clipboard.writeText(text).then(() => {
-      if (btn) {
-        const orig = btn.innerHTML;
-        btn.innerHTML = '✓ Скопировано';
-        btn.style.background = 'var(--green, #16a34a)';
-        setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2000);
-      }
-    }).catch(() => {
+    const showCopied = () => {
+      if (!btn) return;
+      const orig = btn.innerHTML;
+      btn.innerHTML = SHORTLIST_I18N.copied;
+      btn.style.background = 'var(--cyan, #14696d)';
+      setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2000);
+    };
+
+    navigator.clipboard.writeText(text).then(showCopied).catch(() => {
       const ta = document.createElement('textarea');
       ta.value = text;
       ta.style.position = 'fixed';
@@ -670,11 +950,7 @@
       ta.select();
       document.execCommand('copy');
       document.body.removeChild(ta);
-      if (btn) {
-        const orig = btn.innerHTML;
-        btn.innerHTML = '✓ Скопировано';
-        setTimeout(() => { btn.innerHTML = orig; }, 2000);
-      }
+      showCopied();
     });
   }
 
@@ -695,13 +971,8 @@
 
       const badge = document.getElementById('draft-persistence-badge');
       if (badge) {
-        if (draft.persistent) {
-          badge.textContent = '☁ Сохраняется в аккаунте';
-          badge.className = 'draft-persistence-badge persistent';
-        } else {
-          badge.textContent = '⏳ Только в текущей сессии';
-          badge.className = 'draft-persistence-badge session-only';
-        }
+        badge.textContent = draft.persistent ? SHORTLIST_I18N.savedToAccount : SHORTLIST_I18N.sessionOnly;
+        badge.className = `draft-persistence-badge ${draft.persistent ? 'persistent' : 'session-only'}`;
         badge.style.display = '';
       }
     } catch (err) {
@@ -712,7 +983,7 @@
   function saveDraftMeta() {
     clearTimeout(draftSaveTimer);
     const statusEl = document.getElementById('draft-save-status');
-    if (statusEl) statusEl.textContent = 'Сохранение...';
+    if (statusEl) statusEl.textContent = SHORTLIST_I18N.saving;
 
     draftSaveTimer = setTimeout(async () => {
       const title = document.getElementById('draft-title')?.value || '';
@@ -731,11 +1002,11 @@
         });
 
         if (statusEl) {
-          statusEl.textContent = res.ok ? '✓ Сохранено' : 'Ошибка сохранения';
+          statusEl.textContent = res.ok ? SHORTLIST_I18N.saved : SHORTLIST_I18N.saveError;
           setTimeout(() => { statusEl.textContent = ''; }, 3000);
         }
       } catch (err) {
-        if (statusEl) statusEl.textContent = 'Ошибка сети';
+        if (statusEl) statusEl.textContent = SHORTLIST_I18N.networkError;
       }
     }, 800);
   }

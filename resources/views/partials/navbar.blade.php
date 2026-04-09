@@ -1,50 +1,61 @@
-{{-- Shared navbar partial — @include('partials.navbar', ['activePage' => 'home']) --}}
 @php
-  $pageLang = request()->query('lang', 'ru');
+  $pageLang = $pageLang ?? app()->getLocale();
   $pageLang = in_array($pageLang, ['kk', 'ru', 'en'], true) ? $pageLang : 'ru';
-  $langSuffix = $pageLang === 'ru' ? '' : ('?lang=' . $pageLang);
+  $routeWithLang = static function (string $path, array $query = []) use ($pageLang): string {
+      $normalizedPath = '/' . ltrim($path, '/');
+      if ($normalizedPath === '//') {
+          $normalizedPath = '/';
+      }
+
+      if ($pageLang !== 'ru' && ! array_key_exists('lang', $query)) {
+          $query['lang'] = $pageLang;
+      }
+
+      $query = array_filter($query, static fn ($value) => $value !== null && $value !== '');
+
+      return $normalizedPath . ($query ? ('?' . http_build_query($query)) : '');
+  };
 @endphp
 <header class="topbar topbar--glass">
   <div class="container nav">
-    <a href="/" class="brand" aria-label="Перейти на главную страницу Digital Library">
-      <div class="brand-badge">
-        <img src="/logo.png" alt="Логотип Digital Library" class="logo-img">
-      </div>
-      <div class="brand-text">
-        DIGITAL LIBRARY
-        <small>единое пространство знаний</small>
-      </div>
+    <a href="{{ $routeWithLang('/') }}" class="brand" aria-label="{{ __('ui.brand.home_aria') }}">
+      <span class="brand-mark">DL</span>
+      <span class="brand-text">
+        {{ __('ui.brand.title') }}
+        <small>{{ __('ui.brand.subtitle') }}</small>
+      </span>
     </a>
 
     <button
       class="mobile-toggle"
       type="button"
       onclick="const nav = this.parentElement.querySelector('.nav-links'); nav?.classList.toggle('open'); this.setAttribute('aria-expanded', nav?.classList.contains('open') ? 'true' : 'false');"
-      aria-label="Открыть меню сайта"
+      aria-label="{{ __('ui.aria.open_menu') }}"
       aria-expanded="false"
       aria-controls="site-nav"
     >☰</button>
 
-    <nav id="site-nav" class="nav-links" aria-label="Основная навигация сайта" onclick="if(window.innerWidth<=900){ this.classList.remove('open'); this.parentElement.querySelector('.mobile-toggle')?.setAttribute('aria-expanded', 'false'); }">
-      <a href="/{{ $langSuffix }}" class="nav-link-pill @if(($activePage ?? '') === 'home') active @endif">Главная</a>
-      <a href="/catalog{{ $langSuffix }}" class="nav-link-pill @if(($activePage ?? '') === 'catalog') active @endif">Каталог</a>
-      <a href="/resources{{ $langSuffix }}" class="nav-link-pill @if(($activePage ?? '') === 'resources') active @endif">Ресурсы</a>
-      <a href="/discover{{ $langSuffix }}" class="nav-link-pill @if(($activePage ?? '') === 'discover') active @endif">Направления</a>
-      <a href="/contacts{{ $langSuffix }}" class="nav-link-pill @if(($activePage ?? '') === 'contacts') active @endif">Контакты</a>
+    <nav id="site-nav" class="nav-links" aria-label="{{ __('ui.aria.main_navigation') }}" onclick="if(window.innerWidth<=900){ this.classList.remove('open'); this.parentElement.querySelector('.mobile-toggle')?.setAttribute('aria-expanded', 'false'); }">
+      <a href="{{ $routeWithLang('/') }}" class="nav-link-pill @if(($activePage ?? '') === 'home') active @endif">{{ __('ui.nav.home') }}</a>
+      <a href="{{ $routeWithLang('/catalog') }}" class="nav-link-pill @if(($activePage ?? '') === 'catalog') active @endif">{{ __('ui.nav.catalog') }}</a>
+      <a href="{{ $routeWithLang('/resources') }}" class="nav-link-pill @if(($activePage ?? '') === 'resources') active @endif">{{ __('ui.nav.resources') }}</a>
+      <a href="{{ $routeWithLang('/discover') }}" class="nav-link-pill @if(($activePage ?? '') === 'discover') active @endif">{{ __('ui.nav.discover') }}</a>
+      <a href="{{ $routeWithLang('/shortlist') }}" class="nav-link-pill @if(($activePage ?? '') === 'shortlist') active @endif">{{ __('ui.nav.shortlist') }}</a>
+      <a href="{{ $routeWithLang('/account') }}" class="nav-link-pill @if(($activePage ?? '') === 'account') active @endif">{{ __('ui.nav.account') }}</a>
     </nav>
 
     <div class="nav-actions">
-      <div class="locale-switcher" data-locale-switcher aria-label="Переключение языка">
+      <div class="locale-switcher" data-locale-switcher aria-label="{{ __('ui.aria.locale_switcher') }}">
         <a href="{{ request()->fullUrlWithQuery(['lang' => 'kk']) }}" class="locale-link @if($pageLang === 'kk') active @endif">KK</a>
         <a href="{{ request()->fullUrlWithQuery(['lang' => 'ru']) }}" class="locale-link @if($pageLang === 'ru') active @endif">RU</a>
         <a href="{{ request()->fullUrlWithQuery(['lang' => 'en']) }}" class="locale-link @if($pageLang === 'en') active @endif">EN</a>
       </div>
       @if(session('library.user'))
-        <a href="/account" class="btn btn-ghost">Кабинет</a>
-        <button type="button" class="btn btn-primary" id="shared-logout-btn">Выйти</button>
+        <a href="{{ $routeWithLang('/account') }}" class="shell-btn shell-btn--ghost">{{ __('ui.actions.account') }}</a>
+        <button type="button" class="shell-btn shell-btn--primary" id="shared-logout-btn">{{ __('ui.actions.sign_out') }}</button>
       @else
-        <a href="/login" class="btn btn-ghost">Войти</a>
-        <a href="/account" class="btn btn-primary">Открыть кабинет</a>
+        <a href="{{ $routeWithLang('/login') }}" class="shell-btn shell-btn--ghost">{{ __('ui.actions.sign_in') }}</a>
+        <a href="{{ $routeWithLang('/account') }}" class="shell-btn shell-btn--primary">{{ __('ui.actions.open_portal') }}</a>
       @endif
     </div>
   </div>

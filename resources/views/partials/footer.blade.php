@@ -1,66 +1,68 @@
-{{-- Shared footer partial — @include('partials.footer') --}}
 @php
-  $pageLang = request()->query('lang', 'ru');
+  $pageLang = $pageLang ?? app()->getLocale();
   $pageLang = in_array($pageLang, ['kk', 'ru', 'en'], true) ? $pageLang : 'ru';
-  $langSuffix = $pageLang === 'ru' ? '' : ('?lang=' . $pageLang);
+  $routeWithLang = static function (string $path, array $query = []) use ($pageLang): string {
+      $normalizedPath = '/' . ltrim($path, '/');
+      if ($normalizedPath === '//') {
+          $normalizedPath = '/';
+      }
+
+      if ($pageLang !== 'ru' && ! array_key_exists('lang', $query)) {
+          $query['lang'] = $pageLang;
+      }
+
+      $query = array_filter($query, static fn ($value) => $value !== null && $value !== '');
+
+      return $normalizedPath . ($query ? ('?' . http_build_query($query)) : '');
+  };
 @endphp
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-col">
       <div class="footer-brand">
-        <img src="/logo.png" alt="Digital Library" class="logo-img">
+        <span class="brand-mark">DL</span>
         <div class="footer-brand-name">
-          Digital Library
-          <small>Academic knowledge platform</small>
+          {{ __('ui.brand.title') }}
+          <small>{{ __('ui.brand.subtitle') }}</small>
         </div>
       </div>
-      <p>Современная библиотечная платформа для доступа к академическому фонду, электронным ресурсам, подборкам литературы и внутренним сервисам.</p>
-      <div class="footer-badge-row" aria-label="Ключевые преимущества платформы">
-        <span class="footer-badge">Каталог 24/7</span>
-        <span class="footer-badge">Reader-first UX</span>
-        <span class="footer-badge">Digital + print</span>
+      <p>{{ __('ui.footer.description') }}</p>
+      <div class="footer-badge-row" aria-label="{{ __('ui.aria.platform_features') }}">
+        <span class="footer-badge">{{ __('ui.footer.badge_catalog') }}</span>
+        <span class="footer-badge">{{ __('ui.footer.badge_resources') }}</span>
+        <span class="footer-badge">{{ __('ui.footer.badge_portal') }}</span>
       </div>
     </div>
 
     <div class="footer-col">
-      <div class="footer-title">Студентам</div>
-      <a href="/catalog{{ $langSuffix }}">Каталог литературы</a>
-      <a href="/resources{{ $langSuffix }}">Электронные ресурсы</a>
-      <a href="/account">Личный кабинет</a>
-      <a href="/discover{{ $langSuffix }}">По направлениям</a>
+      <div class="footer-title">{{ __('ui.footer.explore') }}</div>
+      <a href="{{ $routeWithLang('/catalog') }}">{{ __('ui.nav.catalog') }}</a>
+      <a href="{{ $routeWithLang('/resources') }}">{{ __('ui.nav.resources') }}</a>
+      <a href="{{ $routeWithLang('/discover') }}">{{ __('ui.footer.subjects') }}</a>
     </div>
 
     <div class="footer-col">
-      <div class="footer-title">Преподавателям и исследователям</div>
-      <a href="/shortlist">Подборка литературы</a>
-      <a href="/catalog{{ $langSuffix }}">Научная литература</a>
-      <a href="/resources{{ $langSuffix }}">Базы данных и доступ</a>
-      <a href="/discover{{ $langSuffix }}">По направлениям</a>
+      <div class="footer-title">{{ __('ui.footer.portal') }}</div>
+      <a href="{{ $routeWithLang('/account') }}">{{ __('ui.nav.account') }}</a>
+      <a href="{{ $routeWithLang('/shortlist') }}">{{ __('ui.footer.shortlist') }}</a>
+      <a href="{{ $routeWithLang('/login') }}">{{ __('ui.footer.secure_access') }}</a>
     </div>
 
     <div class="footer-col">
-      <div class="footer-title">О библиотеке</div>
-      <a href="/contacts{{ $langSuffix }}">О нас и контакты</a>
-      <a href="/catalog{{ $langSuffix }}">Каталог</a>
-      <a href="/resources{{ $langSuffix }}">Электронные ресурсы</a>
-      <a href="/login">Вход в систему</a>
-    </div>
-
-    <div class="footer-col">
-      <div class="footer-title">Контакты</div>
-      <p>г. Астана, ул. Кайым Мухамедханова, 37А</p>
+      <div class="footer-title">{{ __('ui.footer.support') }}</div>
+      <p>{{ __('ui.footer.support_copy') }}</p>
       <a href="tel:+77172645858">+7 (7172) 64-58-58</a>
       <a href="mailto:library@digital-library.demo">library@digital-library.demo</a>
-      <p class="footer-note">Пн–Пт: 09:00–18:00 · Сб: 10:00–14:00</p>
+      <p class="footer-note">{{ __('ui.footer.hours') }}</p>
     </div>
   </div>
 
   <div class="container footer-bottom">
-    <p>© {{ date('Y') }} Digital Library. Все права защищены.</p>
+    <p>© {{ date('Y') }} {{ __('ui.brand.subtitle') }}. {{ __('ui.footer.copyright') }}</p>
     <div class="footer-bottom-links">
-      <a href="/{{ $langSuffix }}">Главная</a>
-      <a href="/catalog{{ $langSuffix }}">Каталог</a>
-      <a href="/contacts{{ $langSuffix }}">О библиотеке</a>
+      <a href="{{ $routeWithLang('/') }}">{{ __('ui.nav.home') }}</a>
+      <a href="{{ $routeWithLang('/catalog') }}">{{ __('ui.nav.catalog') }}</a>
+      <a href="{{ $routeWithLang('/contacts') }}">{{ __('ui.footer.contact_librarian') }}</a>
     </div>
   </div>
 </footer>

@@ -1,216 +1,224 @@
-# global-library-frontend-modernization — implementation plan
+# Stitch design extraction and redesign planning pass
 
-## Scope summary
-- Deliver the next **global frontend modernization wave** across the existing Blade pages, the React/Vite SPA under `/app`, and the internal operational screens so the platform feels like one coherent university library product.
-- Ground the content and information architecture in the established institutional library patterns while using the Lovable reference (`https://lovable.dev/projects/22d25805-2d7b-424f-b3d2-ee61cbc34d43`) only as art-direction inspiration.
-- Keep Laravel routes, API payloads, CRM/session auth, and PostgreSQL schema stable; this plan is intentionally **frontend-first** with only minimal supporting controller/view wiring where the current UI needs content or locale state.
+## Goal
+Produce a **planning-only** redesign map using the live Stitch project as the primary visual source for the real Digital Library routes and screens.
 
-## Delivery decisions fixed in /design
-- Keep the current mixed architecture: **Laravel + Blade + React/Vite + PostgreSQL + Docker Compose**.
-- Preserve canonical public/reader endpoints such as `/api/v1/landing`, `/api/v1/catalog-db`, `/api/v1/book-db/{isbn}`, `/api/v1/account/*`, `/api/v1/shortlist/*`, and `/api/v1/external-resources`.
-- Treat `/for-teachers` as a **legacy entry point** that will be absorbed into the broader IA:
-  - teacher-facing support content moves into `/resources`, `/shortlist`, and `/account`
-  - the standalone nav item is removed
-  - the legacy route should end as a `301` redirect to `/resources`
-- Implement tri-language support as the **simplest viable public-content layer** (`kk`, `ru`, `en`) rather than a large full-product localization rewrite.
+> Constraint: **do not implement additional UI changes in this phase**. This document is the grounded mapping artifact for the next execution wave.
 
-## Official content mapping
-| Source content block | Planned destination surface |
-|---|---|
-| Library identity, mission, value, hero narrative | `/`, `LandingController`, shared public shell |
-| Director, librarians, hours, contacts | `/contacts` |
-| Licensed resources, agreements, access guidance | `/resources` |
-| Discovery and academic navigation | `/discover`, `/catalog`, `/app/catalog` |
-| Teacher/syllabus support and shortlist workflow | `/resources`, `/shortlist`, `/account` |
-| Rules / access notes for digital materials | `/resources`, `/digital-viewer/{materialId}` |
+---
 
-## Traceability matrix
-| Requirement | Use cases | Plan steps | Tests |
+## 1. Full page inventory
+
+### Public reader surfaces
+| Route | Purpose | Primary file | Mapping status |
 |---|---|---|---|
-| `R1` | `UC1`, `UC2`, `UC3`, `UC4` | `S1`, `S2`, `S3`, `S4`, `S5` | `T1`, `T2`, `T4`, `T5` |
-| `R2` | `UC1`, `UC3`, `UC5` | `S1`, `S2`, `S3` | `T1`, `T3`, `T6` |
-| `R3` | `UC1`, `UC2`, `UC4` | `S2`, `S3`, `S4`, `S5` | `T1`, `T2`, `T5`, `T7` |
-| `R4` | `UC3`, `UC6` | `S1`, `S3`, `S6` | `T3`, `T6` |
-| `R5` | `UC1`, `UC5` | `S1`, `S2`, `S4` | `T1`, `T6` |
-| `R6` | `UC2`, `UC3`, `UC4` | `S1`, `S3`, `S4`, `S5`, `S6` | `T2`, `T3`, `T4`, `T5` |
-| `R7` | `UC2` | `S2`, `S4` | `T2`, `T4` |
-| `R8` | `UC4` | `S5`, `S6` | `T5`, `T7` |
-| `R9` | `UC1`, `UC2`, `UC4` | `S2`, `S5` | `T1`, `T7` |
-| `R10` | `UC1`, `UC2`, `UC4`, `UC5` | `S2`, `S4`, `S5`, `S6` | `T1`, `T4`, `T5`, `T7` |
-| `R11` | `UC1`, `UC2`, `UC3`, `UC4`, `UC5`, `UC6` | `S1`, `S2`, `S3`, `S4`, `S5`, `S6` | `T1`-`T7` |
+| `/` | Homepage / library entry | `resources/views/welcome.blade.php` | **Direct Stitch match** |
+| `/catalog` | Blade catalog shell | `resources/views/catalog.blade.php` | **Direct Stitch match** |
+| `/book/{isbn}` | Book detail | `resources/views/book.blade.php` | **Direct Stitch match** |
+| `/digital-viewer/{materialId}` | Controlled digital access viewer | `resources/views/digital-viewer.blade.php` | **Extension design** |
+| `/contacts` | Library identity / contact information | `resources/views/contacts.blade.php` | **Extension design** |
+| `/resources` | Academic resources portal | `resources/views/resources.blade.php` | **Direct Stitch match** |
+| `/discover` | Discovery-first academic navigation | `resources/views/discover.blade.php` | **Extension design** |
+| `/shortlist` | Teacher shortlist / literature prep | `resources/views/shortlist.blade.php` | **Direct Stitch + extension** |
+| `/login` | Secure access | `resources/views/auth.blade.php` | **Direct Stitch match** |
+| `/account` | Member dashboard | `resources/views/account.blade.php` | **Direct Stitch match** |
+| `/book/{isbn}/read` | Transitional reader route | `resources/views/reader.blade.php` | **Extension design** |
 
-## Implementation steps
-- [x] `S1.` **Lock the IA, content sources, and lightweight locale strategy before visual rewrites**.
-  - map the official library content into the existing route families (`/`, `/contacts`, `/resources`, `/discover`, `/shortlist`, `/account`)
-  - define the simple locale-state approach for public content (`?lang=kk|ru|en` and/or session-backed selection) without changing the auth model
-  - formalize the `/for-teachers` retirement path and update affected tests from “page exists” to “legacy redirect + consolidated faculty support”
+### SPA surfaces
+| Route | Purpose | Primary file | Mapping status |
+|---|---|---|---|
+| `/app/*` | React shell | `resources/views/spa.blade.php` | **Shared shell alignment** |
+| `/app/catalog` | Main SPA catalog workflow | `resources/js/spa/pages/CatalogPage.jsx` | **Direct Stitch match** |
+| SPA fallback | Not found / missing route | `resources/js/spa/pages/NotFoundPage.jsx` | **Extension design** |
 
-- [x] `S2.` **Build the shared visual system and public shell foundation**.
-  - centralize typography, spacing, color tokens, card styles, badges, CTA groups, empty states, and motion rules in `public/css/shell.css`, `resources/css/spa.css`, and `resources/css/app.css`
-  - modernize `resources/views/layouts/public.blade.php`, `resources/views/partials/navbar.blade.php`, and `resources/views/partials/footer.blade.php`
-  - add strong focus states, keyboard-visible navigation, and `prefers-reduced-motion` coverage as first-class constraints
+### Internal staff surfaces
+| Route | Purpose | Primary file | Mapping status |
+|---|---|---|---|
+| `/internal/dashboard` | Staff overview | `resources/views/internal-dashboard.blade.php` | **Derived from Librarian Operations** |
+| `/internal/review` | Review / moderation | `resources/views/internal-review.blade.php` | **Derived from Librarian Operations** |
+| `/internal/stewardship` | Metadata stewardship | `resources/views/internal-stewardship.blade.php` | **Derived from Librarian Operations** |
+| `/internal/circulation` | Circulation operations | `resources/views/internal-circulation.blade.php` | **Derived from Librarian Operations** |
+| `/internal/ai-chat` | Staff AI assistance | `resources/views/internal-ai-chat.blade.php` | **Extension design** |
 
-- [x] `S3.` **Rebuild the public content routes around the official library narrative and new IA**.
-  - refresh `resources/views/welcome.blade.php` so the homepage presents the scientific library identity, modern editorial sections, and strong resource/discovery CTAs
-  - migrate institutional/about content into `resources/views/contacts.blade.php` and resource access/support content into `resources/views/resources.blade.php`
-  - retune `resources/views/discover.blade.php` for discovery-first academic entry points
-  - remove the top-level `/for-teachers` Blade landing page from navigation and replace the route with the agreed legacy redirect behavior
+### Legacy / redirected routes
+| Route | Behavior | Note |
+|---|---|---|
+| `/for-teachers` | `301` → `/resources` | legacy IA retained only for compatibility |
+| `/services`, `/news` | `301` → `/` | deprecated public pages |
+| `/about` | `301` → `/contacts` | consolidated into contact/about surface |
 
-- [x] `S4.` **Unify the reader journey surfaces without breaking their current APIs**.
-  - restyle `resources/views/catalog.blade.php`, `book.blade.php`, `auth.blade.php`, `account.blade.php`, `shortlist.blade.php`, and `digital-viewer.blade.php`
-  - keep the live data hookups untouched: `/api/v1/catalog-db`, `/api/v1/book-db/{isbn}`, `/api/v1/account/*`, `/api/v1/shortlist/*`, and digital-material endpoints
-  - make teacher-relevant actions discoverable through `/shortlist` and `/account` instead of a separate public landing page
+---
 
-- [x] `S5.` **Bring the `/app` SPA and internal operational surfaces into the same design language**.
-  - update `resources/js/spa/App.jsx`, `resources/js/spa/components/AppLayout.jsx`, `resources/js/spa/pages/CatalogPage.jsx`, `resources/js/spa/pages/NotFoundPage.jsx`, and `resources/css/spa.css`
-  - refresh `resources/views/internal-dashboard.blade.php`, `internal-review.blade.php`, `internal-stewardship.blade.php`, `internal-circulation.blade.php`, and `internal-ai-chat.blade.php` with a denser operator-friendly variant of the same system
-  - keep operational scanning fast: tighter spacing, status emphasis, and fewer decorative effects than the public marketing shell
+## 2. Stitch-to-project design mapping
 
-- [x] `S6.` **Finish with contract-safe regression coverage, browser verification, and rollout proof**.
-  - update or add feature tests for nav/footer structure, public landing/info pages, `/for-teachers` redirect behavior, SPA shell rendering, and internal page smoke coverage
-  - run PHP tests, a production Vite build, and browser-level smoke checks on `http://10.0.1.8`
-  - keep rollback simple and file-local by avoiding schema or service-contract rewrites
+## Verified Stitch design system
+- **Body font:** `MANROPE`
+- **Editorial headline font:** `NEWSREADER`
+- **Mode:** `LIGHT`
+- **Primary institutional color:** `#003366`
+- **Roundness:** `ROUND_FOUR`
+- **Visual language:** editorial asymmetry, calm paper surfaces, tonal separation, dense academic browsing, search-first discovery
 
-## Impacted files and layers
-### Backend
-- `routes/web.php`
-  - keep public/internal route truth stable; the only planned route-behavior change is the legacy consolidation of `/for-teachers`
-- `routes/api.php`
-  - preserve canonical reader/internal APIs already consumed by the UI
-- `app/Http/Controllers/Api/LandingController.php`
-  - likely minor content/locale-aware payload cleanup for the modern homepage while keeping existing JSON sections stable
-- `app/Http/Controllers/Api/BookController.php`
-- `app/Http/Controllers/Api/AccountController.php`
-- `app/Http/Controllers/Api/ExternalResourceController.php`
-  - contract-preservation review only; redesign should consume these controllers as-is unless a tiny presentation helper is needed
-- `app/Services/Library/CatalogReadService.php`
-  - search/sort/filter contract stays unchanged and remains the truth for `/catalog` and `/app/catalog`
+## Verified Stitch screen mapping
+| Stitch screen | Screen id | Real route / surface | Repo target | Adaptation note |
+|---|---|---|---|---|
+| `Homepage - Digital Library` | `d3368194512b4112a5dac3ad4c7b4081` | `/` | `resources/views/welcome.blade.php` | Search-first institutional landing page |
+| `Catalog Search - Digital Library` | `3c1e3537278d4de7a7da0ee88980975d` | `/catalog`, `/app/catalog` | `resources/views/catalog.blade.php`, `resources/js/spa/pages/CatalogPage.jsx` | Core product working surface |
+| `Academic Resources - Digital Library` | `5cc308be4a50495cadf9d94f00acb318` | `/resources` | `resources/views/resources.blade.php` | Utility-first access portal |
+| `Book Details - Digital Library` | `ee26d2059f664feeb7d158a963b23633` | `/book/{isbn}` | `resources/views/book.blade.php` | Scholarly record hierarchy |
+| `Secure Access - Digital Library` | `1568211d66fb4e30b8bb27715eb865d8` | `/login` | `resources/views/auth.blade.php` | Calm first-party auth surface |
+| `Member Dashboard - Digital Library` | `e3f15ac499574de192f3d0efcaaf1a42` | `/account` | `resources/views/account.blade.php` | Operational member portal |
+| `Teachers Portal - Digital Library` | `6d9c107a96fb45b4808d1cf7a3a989ef` | `/shortlist` | `resources/views/shortlist.blade.php` | Faculty support overview |
+| `Literature Workbench - Teachers` | `6b4e75f96f9b49df830a8ba29de5d604` | shortlist flow | `resources/views/shortlist.blade.php` | Draft/export workbench detail |
+| `Librarian Operations - Admin Portal` | `d180cd2098bb4aa5b5f6b13ff9748b4b` | `/internal/*` | `resources/views/internal-*.blade.php` | Denser operator UI variant |
 
-### Frontend
-- shared shell:
-  - `resources/views/layouts/public.blade.php`
-  - `resources/views/partials/navbar.blade.php`
-  - `resources/views/partials/footer.blade.php`
-  - `public/css/shell.css`
-- public + reader Blade routes:
-  - `resources/views/welcome.blade.php`
-  - `resources/views/contacts.blade.php`
-  - `resources/views/resources.blade.php`
-  - `resources/views/discover.blade.php`
-  - `resources/views/catalog.blade.php`
-  - `resources/views/book.blade.php`
-  - `resources/views/auth.blade.php`
-  - `resources/views/account.blade.php`
-  - `resources/views/shortlist.blade.php`
-  - `resources/views/digital-viewer.blade.php`
-  - `resources/views/for-teachers.blade.php` (expected to be retired or reduced to redirect-only handling)
-- SPA shell:
-  - `resources/js/spa/App.jsx`
-  - `resources/js/spa/components/AppLayout.jsx`
-  - `resources/js/spa/pages/CatalogPage.jsx`
-  - `resources/js/spa/pages/NotFoundPage.jsx`
-  - `resources/css/spa.css`
-- internal surfaces:
-  - `resources/views/internal-dashboard.blade.php`
-  - `resources/views/internal-review.blade.php`
-  - `resources/views/internal-stewardship.blade.php`
-  - `resources/views/internal-circulation.blade.php`
-  - `resources/views/internal-ai-chat.blade.php`
-- build entrypoints:
-  - `vite.config.js`
-  - `resources/css/app.css`
-  - `resources/js/spa/main.jsx`
+## Secondary Stitch variants to reuse as references
+| Variant screen | Use |
+|---|---|
+| `Catalog - Digital Library` (`627b6320ebb84c8d90eaf549c8cbdbc7`) | alternate catalog density and layout hierarchy |
+| `Teacher Workbench - Digital Library` (`01298862a45d4aefba3a27ad3eb6a317`) | workbench structure for shortlist detail actions |
+| alternate `Book Details`, `Member Dashboard`, `Academic Resources`, and `Secure Access` screens | section hierarchy and content rhythm, not separate routes |
 
-### Database
-- `database/migrations/*`
-  - **no planned edits**
-- no schema, seed, or query-shape rewrite is part of this redesign wave
+---
 
-### CRM / auth boundary
-- `config/services.php` and session-based `library.user` behavior remain intact
-- login/logout/CRM handoff stays HTTP-boundary based; no CRM UI embedding or protocol change is in scope
-- any locale state must stay library-side and must not alter CRM token exchange or RBAC flow
+## 3. Missing-page design list
 
-### Tests
-- public/shell coverage to update or add:
-  - `tests/Feature/PublicShellTest.php`
-  - `tests/Feature/ExternalResourcePageTest.php`
-  - `tests/Feature/Api/ConsolidationTest.php`
-- reader flow coverage to keep green:
-  - `tests/Feature/CatalogPageTest.php`
-  - `tests/Feature/BookPageTest.php`
-  - `tests/Feature/AccountPageTest.php`
-  - `tests/Feature/ShortlistPageTest.php`
-- SPA/internal smoke coverage:
-  - `tests/Feature/SpaShellTest.php`
-  - `tests/Feature/InternalDashboardPageTest.php`
-  - `tests/Feature/InternalReviewPageTest.php`
-  - `tests/Feature/InternalStewardshipPageTest.php`
-  - `tests/Feature/InternalCirculationPageTest.php`
-- contract checks that must keep passing:
-  - `tests/Feature/Api/CatalogDbSearchTest.php`
-  - `tests/Feature/Api/BookDetailDbTest.php`
-  - `tests/Feature/Api/AccountSummaryDbTest.php`
+These real product surfaces do **not** have a one-to-one Stitch page and need extension design that preserves the same system:
 
-## Contract notes
-- routes / payloads to preserve:
-  - public routes: `GET /`, `/catalog`, `/contacts`, `/resources`, `/discover`, `/login`, `/account`, `/shortlist`, `/book/{isbn}`, `/digital-viewer/{materialId}`
-  - SPA shell: `GET /app/{any?}` renders the same React root for `/app` and subroutes
-  - internal routes: `GET /internal/dashboard`, `/internal/review`, `/internal/stewardship`, `/internal/circulation`, `/internal/ai-chat`
-  - legacy consolidation: `/for-teachers` changes from a standalone destination to a redirect-only legacy path
-  - public APIs: `/api/v1/landing`, `/api/v1/catalog-db`, `/api/v1/book-db/{isbn}`, `/api/v1/account/*`, `/api/v1/shortlist/*`, `/api/v1/external-resources`, `/api/v1/documents/{documentId}/digital-materials`, `/api/v1/digital-materials/{id}/stream`
-- service interfaces:
-  - continue using existing read services and controller shapes; do not add redesign-only business logic to `CatalogReadService`, book/account services, or CRM auth plumbing
-- DB effects / migrations:
-  - none expected
-  - if implementation later requires persistent locale preferences or new content tables, that would need a separate clarify/design cycle
+1. **`/contacts`**
+   - Extend the homepage/resources typography and quiet section rhythm.
+   - Use editorial info blocks for hours, librarians, contacts, and institutional notes.
 
-## Test plan
-- `T1.` **Public shell + accessibility regression**: homepage, contacts, resources, discover, and login render with the shared shell, visible focus states, and reduced-motion-safe behavior.
-- `T2.` **Reader journey regression**: `/catalog`, `/book/{isbn}`, `/account`, and `/shortlist` preserve current API integrations and session-aware behavior after the redesign.
-- `T3.` **Faculty-support consolidation regression**: `/for-teachers` is no longer advertised in nav/footer, and the legacy route redirects users into the new faculty-support experience under `/resources`.
-- `T4.` **SPA parity regression**: `/app` and `/app/catalog` still render the same SPA shell and keep canonical `/api/v1/catalog-db` behavior.
-- `T5.` **Internal operations regression**: dashboard/review/stewardship/circulation/AI chat pages still render expected task surfaces and do not lose scanning density.
-- `T6.` **Tri-language smoke verification**: the main public content can be viewed in `kk`, `ru`, and `en` without losing route compatibility or core meaning.
-- `T7.` **Responsive/performance smoke**: desktop/mobile layouts remain stable, animation remains modest, and the production Vite bundle still builds cleanly.
+2. **`/discover`**
+   - Extend catalog discovery language into a guided academic exploration page.
+   - Emphasize subjects, search jump points, and research starting paths.
 
-## Verification commands
-```bash
-php artisan test --filter='PublicShellTest|ExternalResourcePageTest|ConsolidationTest'
-php artisan test --filter='CatalogPageTest|BookPageTest|AccountPageTest|ShortlistPageTest'
-php artisan test --filter='SpaShellTest|Internal(Dashboard|Review|Stewardship|Circulation)PageTest'
-php artisan test --filter='CatalogDbSearchTest|BookDetailDbTest|AccountSummaryDbTest'
-npm run build
+3. **`/digital-viewer/{materialId}`**
+   - Use book-detail and secure-access patterns for controlled reading surfaces.
+   - Prioritize focus mode, access status, citation/help panel, and minimal chrome.
 
-# Docker / fallback commands for this repo:
-docker compose run --rm --entrypoint sh -v "$PWD":/app app -lc 'php artisan test --filter="PublicShellTest|ExternalResourcePageTest|ConsolidationTest|CatalogPageTest|BookPageTest|AccountPageTest|ShortlistPageTest|SpaShellTest"'
-docker run --rm -v "$PWD":/workspace -w /workspace node:22 sh -lc 'npm run build'
-```
+4. **`/book/{isbn}/read`**
+   - Transitional reader should visually align with the digital viewer, not legacy branding.
 
-## Risks / rollback notes
-- **Scope-creep risk:** trying to redesign content, IA, localization, and new features at the same time. Mitigation: keep this wave presentation-first and contract-safe.
-- **Consistency risk:** Blade, SPA, and internal views may diverge again if tokens are duplicated. Mitigation: land the shared visual system in `shell.css` and `spa.css` first.
-- **Localization risk:** a full Laravel i18n rewrite would slow delivery. Mitigation: keep the first implementation to a lightweight public-content locale layer only.
-- **Operational UX risk:** internal staff pages could become too “marketing-like.” Mitigation: use a denser, lower-motion operator variant for internal routes.
-- **Rollback plan:** revert changed Blade/CSS/SPA view files and the `/for-teachers` route adjustment; no migration or deep service rollback should be required.
+5. **`/internal/ai-chat`**
+   - Extend the librarian operations visual system into a utility-first assistant workspace.
+   - Keep low-decoration, high-clarity chat panels and evidence/result blocks.
 
-## Not in scope reminders
-- no Laravel/Blade-to-Next.js or other stack migration
-- no CRM auth redesign or direct CRM UI embedding
-- no PostgreSQL schema or migration work in this wave
-- no new catalog/reservation/circulation business rules hidden inside the redesign
-- no direct copying of protected Lovable assets or copyrighted layouts
-- no broad multilingual rewrite of every backend message, validation error, or admin workflow beyond the main public-content experience
+6. **Empty / loading / error / no-results states**
+   - No explicit Stitch screens were found for these, but they must inherit the editorial tone.
 
-## Ready for /verify
-- yes
-- notes:
-  - the public IA now consolidates faculty support into the main routes: `/for-teachers` returns `301` to `/resources`, and the shared nav/footer no longer advertise a separate teacher landing page
-  - the public shell now exposes a lightweight `kk / ru / en` locale switcher and localized copy on the main public routes
-  - fresh implementation evidence collected on 2026-04-08:
-    - `docker compose run --rm --entrypoint sh -v "$PWD":/app app -lc 'php artisan optimize:clear >/dev/null && php artisan test --filter="PublicShellTest|ExternalResourcePageTest|ShortlistPageTest|ConsolidationTest|SpaShellTest|CatalogPageTest|BookPageTest|AccountPageTest"'` → `81 passed (259 assertions)`
-    - `docker run --rm -v "$PWD":/workspace -w /workspace node:22 sh -lc 'npm run build >/tmp/build.log && tail -n 25 /tmp/build.log'` → Vite production build succeeded
-    - live smoke check after `docker compose up -d --build app`:
-      - `GET http://10.0.1.8/for-teachers` → `301 Moved Permanently` to `/resources`
-      - `GET http://10.0.1.8/resources?lang=en` → `200` with `data-locale-switcher` and `Digital collections and research databases`
-      - `GET http://10.0.1.8/contacts?lang=en` → `200` with `About the library and contacts`
+---
+
+## 4. Reusable component list
+
+### Global shell components
+- institutional navbar
+- compact footer with route-group navigation
+- paper-toned page header / intro band
+- editorial section title block
+- quiet CTA cluster
+- breadcrumb / route context strip
+
+### Discovery components
+- large pill search bar
+- left filter rail
+- active filter summary row
+- availability/status chips
+- metadata list / bibliographic table
+- result card with cover, holdings, and actions
+- “related topics / adjacent works” modules
+
+### Portal / dashboard components
+- summary stat cards with subdued emphasis
+- action queue / task list
+- timeline or status rail
+- reservation / renewal cards
+- teacher shortlist preview block
+- role-aware quick action strip
+
+### Staff operation components
+- compact metric grid
+- tabular work queues
+- status legend/chip set
+- review/approval panel
+- stewardship issue cards
+- circulation action drawer or dense side panel
+
+---
+
+## 5. Motion opportunities list
+
+Motion should remain subtle and optional, consistent with the calm academic tone.
+
+1. **Search focus lift**
+   - gentle shadow/outline emphasis on focus for the homepage and catalog search bar
+2. **Filter interaction feedback**
+   - small chip transitions when filters are added/removed
+3. **Card hover refinement**
+   - restrained elevation or tonal change on results and resource cards
+4. **Section reveal on scroll**
+   - very light fade/translate for editorial sections only
+5. **Dashboard state refresh cues**
+   - small live-state transitions for holds, renewals, and staff queue counts
+6. **Drawer/panel transitions**
+   - shortlist details, circulation actions, or metadata side panels can slide/fade minimally
+
+> All motion must respect `prefers-reduced-motion` and avoid marketing-style animation.
+
+---
+
+## 6. Implementation order recommendation
+
+### Wave 1 — system foundation
+- `public/css/shell.css`
+- `resources/css/spa.css`
+- `resources/views/partials/navbar.blade.php`
+- `resources/views/partials/footer.blade.php`
+
+**Why first:** this establishes the institutional design language once and prevents page-by-page drift.
+
+### Wave 2 — public entry and discovery
+- `resources/views/welcome.blade.php`
+- `resources/views/resources.blade.php`
+- `resources/views/contacts.blade.php`
+- `resources/views/discover.blade.php`
+
+**Why second:** this sets the public-facing expectation and aligns the entry routes with Stitch.
+
+### Wave 3 — core catalog journey
+- `resources/views/catalog.blade.php`
+- `resources/js/spa/pages/CatalogPage.jsx`
+- `resources/views/book.blade.php`
+- `resources/views/digital-viewer.blade.php`
+
+**Why third:** the catalog and detail views are the real product center of gravity.
+
+### Wave 4 — account and faculty workflows
+- `resources/views/auth.blade.php`
+- `resources/views/account.blade.php`
+- `resources/views/shortlist.blade.php`
+- `resources/views/reader.blade.php`
+
+**Why fourth:** these routes depend on the discovery and shell language already being stable.
+
+### Wave 5 — internal operations alignment
+- `resources/views/internal-dashboard.blade.php`
+- `resources/views/internal-review.blade.php`
+- `resources/views/internal-stewardship.blade.php`
+- `resources/views/internal-circulation.blade.php`
+- `resources/views/internal-ai-chat.blade.php`
+
+**Why fifth:** internal tools should inherit the system, then tighten into a denser operational variant.
+
+---
+
+## Guardrails for the next implementation phase
+- Keep the **catalog** as the product center of gravity.
+- Do **not** reintroduce heavy gradients, dark hero blocks, or generic SaaS marketing tropes.
+- Reuse Stitch direction, but do **not** copy it literally or invent unsupported features.
+- Preserve route truth, API contracts, session auth behavior, and test markers required by the repo.
+- Extend the design system to missing pages so nothing looks visually orphaned.
+
+## Ready for next step
+- **Status:** mapping is now strong enough for implementation sequencing.
+- **Recommended next command:** `/implement` against Wave 1 → Wave 3 in order, with verification after each wave.

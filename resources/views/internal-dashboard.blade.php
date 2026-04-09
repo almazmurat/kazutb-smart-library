@@ -6,32 +6,31 @@
     <title>Internal Dashboard</title>
     <style>
         :root {
-            --bg: #eef4ff;
-            --paper: rgba(255, 255, 255, 0.94);
-            --ink: #14213d;
-            --muted: #64748b;
-            --line: rgba(20, 33, 61, 0.10);
-            --accent: #2563eb;
-            --accent-soft: rgba(59, 130, 246, 0.10);
-            --warn: #b45309;
-            --warn-soft: #fef3c7;
-            --danger: #b91c1c;
-            --danger-soft: #fee2e2;
-            --ok: #15803d;
-            --ok-soft: #dcfce7;
-            --shadow: 0 20px 50px rgba(21, 34, 66, 0.08);
+            --bg: #f8f9fa;
+            --paper: rgba(255, 255, 255, 0.96);
+            --ink: #191c1d;
+            --muted: #43474f;
+            --line: rgba(195, 198, 209, 0.55);
+            --accent: #001e40;
+            --accent-soft: rgba(0, 30, 64, 0.05);
+            --warn: #5d4201;
+            --warn-soft: rgba(93, 66, 1, 0.10);
+            --danger: #ba1a1a;
+            --danger-soft: rgba(186, 26, 26, 0.08);
+            --ok: #14696d;
+            --ok-soft: rgba(20, 105, 109, 0.10);
+            --shadow: 0 12px 32px rgba(25, 28, 29, 0.04);
         }
 
         * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Manrope', system-ui, sans-serif;
             color: var(--ink);
             background:
-                radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 20%),
-                radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.08), transparent 22%),
-                linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+                radial-gradient(circle at top left, rgba(0, 30, 64, 0.04), transparent 20%),
+                linear-gradient(180deg, #fbfcfc 0%, var(--bg) 100%);
         }
 
         a { color: inherit; }
@@ -45,7 +44,7 @@
         .hero {
             background: var(--paper);
             border: 1px solid var(--line);
-            border-radius: 24px;
+            border-radius: 8px;
             padding: 28px;
             box-shadow: var(--shadow);
         }
@@ -67,7 +66,10 @@
             margin: 16px 0 8px;
             font-size: clamp(32px, 5vw, 48px);
             line-height: 1.05;
-            font-weight: 700;
+            font-weight: 600;
+            font-family: 'Newsreader', Georgia, serif;
+            letter-spacing: -0.03em;
+            color: var(--accent);
         }
 
         .subtitle {
@@ -97,12 +99,19 @@
             justify-content: center;
             min-height: 44px;
             padding: 0 16px;
-            border-radius: 14px;
+            border-radius: 8px;
             border: 1px solid var(--line);
             background: #fff;
             color: var(--ink);
             text-decoration: none;
             font-size: 15px;
+            transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+        }
+
+        .nav-link:hover {
+            transform: translate3d(0, -1px, 0);
+            border-color: rgba(0,30,64,.14);
+            background: rgba(243,244,245,.96);
         }
 
         .nav-link.primary {
@@ -142,7 +151,7 @@
             grid-column: span 12;
             background: var(--paper);
             border: 1px solid var(--line);
-            border-radius: 24px;
+            border-radius: 8px;
             padding: 22px;
             box-shadow: var(--shadow);
         }
@@ -161,9 +170,16 @@
         .metric {
             background: #fff;
             border: 1px solid var(--line);
-            border-radius: 18px;
+            border-radius: 8px;
             padding: 16px;
             min-height: 124px;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .metric:hover {
+            transform: translate3d(0, -2px, 0);
+            border-color: rgba(20,105,109,.18);
+            box-shadow: 0 12px 24px rgba(25, 28, 29, 0.04);
         }
 
         .metric-label {
@@ -204,10 +220,17 @@
             justify-content: space-between;
             gap: 16px;
             padding: 14px 16px;
-            border-radius: 16px;
+            border-radius: 8px;
             background: #fff;
             border: 1px solid var(--line);
             font-size: 15px;
+            transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
+        }
+
+        .issue-item:hover {
+            transform: translate3d(0, -1px, 0);
+            border-color: rgba(0,30,64,.12);
+            background: rgba(243,244,245,.96);
         }
 
         .issue-count {
@@ -223,7 +246,7 @@
         .error-box {
             margin-top: 18px;
             padding: 14px 16px;
-            border-radius: 16px;
+            border-radius: 8px;
             background: var(--danger-soft);
             color: var(--danger);
             border: 1px solid rgba(153, 27, 27, 0.15);
@@ -236,7 +259,7 @@
 
         @media (max-width: 640px) {
             .shell { width: min(100% - 20px, 1120px); }
-            .hero, .panel { padding: 18px; border-radius: 18px; }
+            .hero, .panel { padding: 18px; border-radius: 8px; }
             .cards { grid-template-columns: 1fr; }
             .issue-item { flex-direction: column; }
         }

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,10 +17,15 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $locale = in_array(app()->getLocale(), ['ru', 'kk', 'en'], true) ? app()->getLocale() : 'ru';
+
+        app()->setLocale($locale);
+        View::share('pageLang', $locale);
+
         // Login rate limiter — prevents brute force on /api/login
         $loginLimit = (int) env('LOGIN_RATE_LIMIT', 5);
         RateLimiter::for('login', function (Request $request) use ($loginLimit) {
-            $key = 'login:' . ($request->input('login') ?? $request->input('email') ?? '') . '|' . $request->ip();
+            $key = 'login:'.($request->input('login') ?? $request->input('email') ?? '').'|'.$request->ip();
 
             return Limit::perMinute($loginLimit)
                 ->by($key)
@@ -39,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('integration', function (Request $request) use ($globalLimit) {
             $clientRef = $request->attributes->get('integration.authenticated_client_ref', 'unknown');
 
-            return Limit::perMinute($globalLimit)->by('integration:' . $clientRef);
+            return Limit::perMinute($globalLimit)->by('integration:'.$clientRef);
         });
 
         // Stricter limiter for mutation (write) endpoints
@@ -47,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
             $clientRef = $request->attributes->get('integration.authenticated_client_ref', 'unknown');
 
             return Limit::perMinute($mutateLimit)
-                ->by('integration:mutate:' . $clientRef)
+                ->by('integration:mutate:'.$clientRef)
                 ->response(function () use ($mutateLimit) {
                     return response()->json([
                         'error' => [

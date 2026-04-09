@@ -1,28 +1,81 @@
+@php
+  $lang = app()->getLocale();
+  $copy = [
+    'ru' => [
+      'title' => 'Безопасный вход — Digital Library',
+      'eyebrow' => 'Безопасный вход',
+      'hero' => 'Вход в портал читателя',
+      'lead' => 'Авторизуйтесь, чтобы открыть личный кабинет, проверить выдачи, управлять бронированиями и переходить к контролируемым цифровым материалам.',
+      'badges' => ['Единый вход через API', 'Доступ к каталогу 24/7', 'Личный профиль читателя'],
+      'formTitle' => 'Авторизация',
+      'formSub' => 'Введите логин или email и пароль. После успешного входа вы будете перенаправлены в кабинет читателя.',
+      'loginLabel' => 'Логин или Email',
+      'loginPlaceholder' => 'Например: student01 или mail@example.com',
+      'passwordLabel' => 'Пароль',
+      'passwordPlaceholder' => 'Введите пароль',
+      'submit' => 'Войти',
+      'demoTitle' => 'Быстрый вход',
+      'demoSub' => 'Нажмите на карточку для мгновенного входа под выбранной ролью.',
+    ],
+    'kk' => [
+      'title' => 'Қауіпсіз кіру — Digital Library',
+      'eyebrow' => 'Қауіпсіз кіру',
+      'hero' => 'Оқырман порталына кіру',
+      'lead' => 'Жеке кабинетке кіру, берілімдерді тексеру, броньдарды басқару және бақыланатын цифрлық материалдарға өту үшін авторизациядан өтіңіз.',
+      'badges' => ['API арқылы бірыңғай кіру', 'Каталогқа 24/7 қолжетімділік', 'Оқырманның жеке профилі'],
+      'formTitle' => 'Кіру',
+      'formSub' => 'Логин немесе email мен құпиясөзді енгізіңіз. Сәтті кіргеннен кейін оқырман кабинетіне өтесіз.',
+      'loginLabel' => 'Логин немесе Email',
+      'loginPlaceholder' => 'Мысалы: student01 немесе mail@example.com',
+      'passwordLabel' => 'Құпиясөз',
+      'passwordPlaceholder' => 'Құпиясөзді енгізіңіз',
+      'submit' => 'Кіру',
+      'demoTitle' => 'Жедел кіру',
+      'demoSub' => 'Таңдалған рөлмен бірден кіру үшін карточканы басыңыз.',
+    ],
+    'en' => [
+      'title' => 'Secure access — Digital Library',
+      'eyebrow' => 'Secure access',
+      'hero' => 'Sign in to the member portal',
+      'lead' => 'Authenticate to open your account, review loans, manage reservations, and move into controlled digital materials.',
+      'badges' => ['Single sign-on via API', '24/7 catalog access', 'Personal reader profile'],
+      'formTitle' => 'Sign in',
+      'formSub' => 'Enter your login or email and password. After a successful sign-in you will be redirected to the reader account.',
+      'loginLabel' => 'Login or email',
+      'loginPlaceholder' => 'Example: student01 or mail@example.com',
+      'passwordLabel' => 'Password',
+      'passwordPlaceholder' => 'Enter your password',
+      'submit' => 'Sign in',
+      'demoTitle' => 'Quick sign-in',
+      'demoSub' => 'Choose a card to sign in instantly with the selected role.',
+    ],
+  ][$lang];
+@endphp
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ $lang }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>Авторизация — Library Hub</title>
+  <title>{{ $copy['title'] }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/shell.css">
   <style>
     :root {
-      --border: rgba(15, 23, 42, .08);
-      --text: #14213d;
-      --muted: #64748b;
-      --blue: #3b82f6;
-      --cyan: #06b6d4;
-      --danger: #dc2626;
-      --success: #16a34a;
-      --shadow: 0 20px 50px rgba(15, 23, 42, .08);
-      --shadow-soft: 0 12px 26px rgba(15, 23, 42, .05);
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --container: 1650px;
+      --border: rgba(195, 198, 209, .55);
+      --text: #191c1d;
+      --muted: #43474f;
+      --blue: #001e40;
+      --cyan: #14696d;
+      --danger: #ba1a1a;
+      --success: #14696d;
+      --shadow: 0 12px 32px rgba(25, 28, 29, .04);
+      --shadow-soft: 0 6px 16px rgba(25, 28, 29, .03);
+      --radius-xl: 8px;
+      --radius-lg: 6px;
+      --container: 1280px;
     }
 
     * { box-sizing: border-box; }
@@ -30,13 +83,9 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Manrope', system-ui, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(37,99,235,.16), transparent 22%),
-        radial-gradient(circle at 100% 0%, rgba(168,85,247,.14), transparent 18%),
-        radial-gradient(circle at 82% 82%, rgba(6,182,212,.12), transparent 22%),
-        linear-gradient(135deg, #f8fbff 0%, #eef4ff 40%, #f8f3ff 72%, #eefbfd 100%);
+      background: #f8f9fa;
       background-attachment: fixed;
     }
 
@@ -79,19 +128,19 @@
       border: 0;
       cursor: pointer;
       font: inherit;
-      border-radius: 16px;
+      border-radius: var(--radius-lg);
       padding: 12px 18px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      transition: .25s ease;
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
       font-weight: 700;
     }
 
-    .btn:hover { transform: translateY(-2px); }
-    .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), var(--cyan)); box-shadow: 0 16px 30px rgba(59,130,246,.22); }
-    .btn-ghost { background: #fff; border: 1px solid var(--border); color: var(--text); box-shadow: var(--shadow-soft); }
+    .btn:hover { transform: translate3d(0, -1px, 0); }
+    .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), #003366); box-shadow: var(--shadow-soft); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
 
     .page {
       min-height: calc(100vh - 84px);
@@ -109,52 +158,76 @@
 
     .panel {
       border-radius: var(--radius-xl);
-      border: 1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
-      backdrop-filter: blur(18px);
-      box-shadow: 0 24px 64px rgba(15,23,42,.14);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+      box-shadow: var(--shadow);
       padding: 30px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .panel:hover {
+      transform: translate3d(0, -2px, 0);
+      box-shadow: 0 18px 38px rgba(25, 28, 29, .06);
+      border-color: rgba(0,30,64,.12);
     }
 
     .promo {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      color: #f8fbff;
-      background:
-        radial-gradient(circle at 90% 18%, rgba(245,158,11,.18), transparent 26%),
-        radial-gradient(circle at 18% 26%, rgba(59,130,246,.16), transparent 26%),
-        linear-gradient(135deg, #0f172a 0%, #172554 52%, #0f766e 100%);
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+      border-color: var(--border);
+    }
+
+    .promo::after {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20,105,109,.10), transparent 70%);
+      transition: transform .42s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .promo:hover::after {
+      transform: translate3d(-10px, 10px, 0);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 9px 12px;
-      border-radius: 999px;
+      padding: 0;
+      border-radius: 0;
       width: fit-content;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .08em;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      color: #1d4ed8;
-      background: rgba(59,130,246,.10);
-      border: 1px solid rgba(59,130,246,.16);
+      color: var(--cyan);
+      background: transparent;
+      border: 0;
     }
 
     .promo h1 {
       margin: 16px 0 12px;
+      font-family: 'Newsreader', Georgia, serif;
       font-size: 38px;
       letter-spacing: -1px;
       line-height: 1.08;
+      color: var(--blue);
     }
 
     .promo p {
       margin: 0;
-      color: rgba(226,232,240,.86);
+      color: var(--muted);
       font-size: 16px;
-      line-height: 1.7;
+      line-height: 1.75;
       max-width: 470px;
     }
 
@@ -168,12 +241,12 @@
     .badge {
       padding: 10px 14px;
       border-radius: 999px;
-      background: #fff;
+      background: rgba(255,255,255,.82);
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
       font-size: 13px;
       font-weight: 600;
-      color: #334155;
+      color: var(--text);
     }
 
     .form-title {
@@ -201,19 +274,22 @@
 
     .input {
       width: 100%;
-      border: 1px solid var(--border);
-      background: #fff;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      background: transparent;
       color: var(--text);
-      border-radius: 14px;
-      padding: 13px 14px;
+      border-radius: 0;
+      padding: 13px 0;
       outline: none;
       font: inherit;
-      box-shadow: var(--shadow-soft);
+      box-shadow: none;
+      transition: border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .input:focus {
-      border-color: rgba(59,130,246,.45);
-      box-shadow: 0 0 0 4px rgba(59,130,246,.12);
+      border-color: var(--blue);
+      box-shadow: none;
+      background: rgba(255,255,255,.42);
     }
 
     .submit {
@@ -308,20 +384,20 @@
       gap: 10px;
       padding: 12px 14px;
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 8px;
       background: #fff;
       cursor: pointer;
-      transition: .2s ease;
+      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
       text-align: left;
       font: inherit;
       color: var(--text);
     }
 
     .demo-card:hover {
-      border-color: rgba(59,130,246,.35);
-      background: rgba(59,130,246,.03);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-soft);
+      border-color: rgba(0,30,64,.16);
+      background: rgba(0,30,64,.03);
+      transform: translate3d(0, -2px, 0);
+      box-shadow: 0 12px 26px rgba(25,28,29,.04);
     }
 
     .demo-card:disabled {
@@ -379,45 +455,42 @@
     <div class="container layout">
       <section class="panel promo">
         <div>
-          <span class="eyebrow">Library Hub</span>
-          <h1>Вход в личный кабинет библиотеки</h1>
-          <p>
-            Авторизуйтесь с помощью логина или email, чтобы просматривать доступ к электронным материалам,
-            управлять выдачей книг и следить за активными бронями.
-          </p>
+          <span class="eyebrow">{{ $copy['eyebrow'] }}</span>
+          <h1>{{ $copy['hero'] }}</h1>
+          <p>{{ $copy['lead'] }}</p>
         </div>
 
         <div class="badge-row">
-          <span class="badge">Единый вход через API</span>
-          <span class="badge">Доступ к каталогу 24/7</span>
-          <span class="badge">Личный профиль читателя</span>
+          @foreach($copy['badges'] as $badge)
+            <span class="badge">{{ $badge }}</span>
+          @endforeach
         </div>
       </section>
 
       <section class="panel">
-        <h2 class="form-title">Авторизация</h2>
-        <p class="form-sub">Введите логин или email и пароль. После успешного входа вы будете перенаправлены в кабинет читателя.</p>
+        <h2 class="form-title">{{ $copy['formTitle'] }}</h2>
+        <p class="form-sub">{{ $copy['formSub'] }}</p>
 
         <form id="login-form" novalidate>
           <div class="field">
-            <label class="label" for="login">Логин или Email</label>
-            <input class="input" id="login" name="login" type="text" placeholder="Например: student01 или mail@example.com" autocomplete="username" required />
+            <label class="label" for="login">{{ $copy['loginLabel'] }}</label>
+            <input class="input" id="login" name="login" type="text" placeholder="{{ $copy['loginPlaceholder'] }}" autocomplete="username" required />
           </div>
 
           <div class="field">
-            <label class="label" for="password">Пароль</label>
-            <input class="input" id="password" name="password" type="password" placeholder="Введите пароль" autocomplete="current-password" required />
+            <label class="label" for="password">{{ $copy['passwordLabel'] }}</label>
+            <input class="input" id="password" name="password" type="password" placeholder="{{ $copy['passwordPlaceholder'] }}" autocomplete="current-password" required />
           </div>
 
-          <button id="submit-btn" type="submit" class="btn btn-primary submit">Войти</button>
+          <button id="submit-btn" type="submit" class="btn btn-primary submit">{{ $copy['submit'] }}</button>
           <div id="form-message" class="message"></div>
         </form>
 
         @if(!empty($demoEnabled) && !empty($demoIdentities))
         <div class="demo-block" id="demo-login-block">
           <span class="demo-env-badge">⚠ Dev / Demo</span>
-          <p class="demo-block-title">Быстрый вход</p>
-          <p class="demo-block-subtitle">Нажмите на карточку для мгновенного входа под выбранной ролью.</p>
+          <p class="demo-block-title">{{ $copy['demoTitle'] }}</p>
+          <p class="demo-block-subtitle">{{ $copy['demoSub'] }}</p>
           <div class="demo-cards">
             @foreach($demoIdentities as $identity)
             <button class="demo-card" data-demo-slug="{{ $identity['slug'] }}" onclick="demoLogin('{{ $identity['slug'] }}', this)">
@@ -439,6 +512,48 @@
 
   <script>
     const AUTH_USER_KEY = 'library.auth.user';
+    const AUTH_LANG = @json($lang);
+    const AUTH_I18N_MAP = {!! json_encode([
+      'ru' => [
+        'authError' => 'Ошибка авторизации',
+        'fillFields' => 'Заполните логин/email и пароль.',
+        'submitting' => 'Входим...',
+        'success' => 'Вход выполнен успешно. Перенаправление...',
+        'submitError' => 'Не удалось выполнить вход',
+        'submitDefault' => 'Войти',
+        'demoSuccess' => 'Быстрый вход выполнен. Перенаправление...',
+        'demoError' => 'Ошибка быстрого входа',
+      ],
+      'kk' => [
+        'authError' => 'Кіру қатесі',
+        'fillFields' => 'Логин/email мен құпиясөзді толтырыңыз.',
+        'submitting' => 'Кіріп жатырмыз...',
+        'success' => 'Кіру сәтті өтті. Қайта бағытталуда...',
+        'submitError' => 'Кіру мүмкін болмады',
+        'submitDefault' => 'Кіру',
+        'demoSuccess' => 'Жедел кіру орындалды. Қайта бағытталуда...',
+        'demoError' => 'Жедел кіру қатесі',
+      ],
+      'en' => [
+        'authError' => 'Authentication failed',
+        'fillFields' => 'Enter both login/email and password.',
+        'submitting' => 'Signing in...',
+        'success' => 'Sign-in successful. Redirecting...',
+        'submitError' => 'Unable to sign in',
+        'submitDefault' => 'Sign in',
+        'demoSuccess' => 'Quick sign-in completed. Redirecting...',
+        'demoError' => 'Quick sign-in failed',
+      ],
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!};
+    const AUTH_I18N = AUTH_I18N_MAP[AUTH_LANG] || AUTH_I18N_MAP.ru;
+
+    function withLang(path) {
+      const url = new URL(path, window.location.origin);
+      if (AUTH_LANG !== 'ru' && !url.searchParams.has('lang')) {
+        url.searchParams.set('lang', AUTH_LANG);
+      }
+      return `${url.pathname}${url.search}`;
+    }
 
     function getCsrfToken() {
       return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
@@ -483,7 +598,7 @@
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        const message = data?.message || data?.details?.message || 'Ошибка авторизации';
+        const message = data?.message || data?.details?.message || AUTH_I18N.authError;
         throw new Error(message);
       }
 
@@ -505,31 +620,30 @@
       const passwordValue = (passwordInput?.value || '').trim();
 
       if (!loginValue || !passwordValue) {
-        showMessage('Заполните логин/email и пароль.', 'error');
+        showMessage(AUTH_I18N.fillFields, 'error');
         return;
       }
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Входим...';
+        submitBtn.textContent = AUTH_I18N.submitting;
       }
 
       try {
         await submitLogin(loginValue, passwordValue);
-        showMessage('Вход выполнен успешно. Перенаправление...', 'success');
+        showMessage(AUTH_I18N.success, 'success');
         window.setTimeout(() => {
           const params = new URLSearchParams(window.location.search);
-          const redirectTo = params.get('redirect') || '/account';
-          // Only allow relative redirects (prevent open redirect)
-          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : '/account';
+          const redirectTo = params.get('redirect') || withLang('/account');
+          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
           window.location.href = safeRedirect;
         }, 350);
       } catch (error) {
-        showMessage(error?.message || 'Не удалось выполнить вход', 'error');
+        showMessage(error?.message || AUTH_I18N.submitError, 'error');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Войти';
+          submitBtn.textContent = AUTH_I18N.submitDefault;
         }
       }
     });
@@ -561,15 +675,15 @@
           localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
         }
 
-        showMessage('Быстрый вход выполнен. Перенаправление...', 'success');
+        showMessage(AUTH_I18N.demoSuccess, 'success');
         window.setTimeout(() => {
           const params = new URLSearchParams(window.location.search);
-          const redirectTo = params.get('redirect') || '/account';
-          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : '/account';
+          const redirectTo = params.get('redirect') || withLang('/account');
+          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
           window.location.href = safeRedirect;
         }, 300);
       } catch (error) {
-        showMessage(error?.message || 'Ошибка быстрого входа', 'error');
+        showMessage(error?.message || AUTH_I18N.demoError, 'error');
         allCards.forEach(c => c.disabled = false);
       }
     }

@@ -1,47 +1,52 @@
+@php
+    $lang = app()->getLocale();
+    $bookPageTitle = [
+        'ru' => 'Библиографическая запись — Digital Library',
+        'kk' => 'Библиографиялық жазба — Digital Library',
+        'en' => 'Bibliographic record — Digital Library',
+    ][$lang] ?? 'Библиографическая запись — Digital Library';
+@endphp
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ $lang }}">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>Просмотр книги — Library Hub</title>
+    <title>{{ $bookPageTitle }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/shell.css">
     <style>
         :root {
-            --bg: #f5f7fb;
+            --bg: #f8f9fa;
             --surface: #ffffff;
-            --surface-soft: #f8fbff;
-            --border: rgba(15, 23, 42, .08);
-            --text: #14213d;
-            --muted: #64748b;
-            --blue: #3b82f6;
-            --cyan: #06b6d4;
-            --violet: #7c3aed;
-            --pink: #ec4899;
-            --gold: #d6a85f;
-            --success: #16a34a;
-            --warning: #f59e0b;
-            --shadow: 0 20px 50px rgba(15, 23, 42, .08);
-            --shadow-soft: 0 12px 26px rgba(15, 23, 42, .05);
-            --radius-xl: 30px;
-            --radius-lg: 24px;
-            --radius-md: 18px;
-            --container: 1650px;
+            --surface-soft: #f3f4f5;
+            --border: rgba(195, 198, 209, .55);
+            --text: #191c1d;
+            --muted: #43474f;
+            --blue: #001e40;
+            --cyan: #14696d;
+            --violet: #453000;
+            --pink: #2a1c00;
+            --gold: #e9c176;
+            --success: #14696d;
+            --warning: #5d4201;
+            --shadow: 0 12px 32px rgba(25, 28, 29, .04);
+            --shadow-soft: 0 6px 16px rgba(25, 28, 29, .03);
+            --radius-xl: 8px;
+            --radius-lg: 6px;
+            --radius-md: 4px;
+            --container: 1280px;
         }
 
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             margin: 0;
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Manrope', system-ui, sans-serif;
             color: var(--text);
-            background:
-                radial-gradient(circle at 10% 10%, rgba(59,130,246,.08), transparent 18%),
-                radial-gradient(circle at 90% 10%, rgba(236,72,153,.06), transparent 16%),
-                linear-gradient(180deg, #ffffff 0%, #f7f9fd 42%, #f3f6fb 100%);
+            background: #f8f9fa;
         }
 
         a { color: inherit; text-decoration: none; }
@@ -105,35 +110,35 @@
             border: 0;
             cursor: pointer;
             font: inherit;
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             padding: 14px 22px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: .25s ease;
+            transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
             font-weight: 700;
         }
 
-        .btn:hover { transform: translateY(-2px); }
+        .btn:hover { transform: translate3d(0, -1px, 0); }
 
         .btn-primary {
             color: white;
-            background: linear-gradient(135deg, var(--blue), var(--cyan));
-            box-shadow: 0 16px 30px rgba(59,130,246,.22);
+            background: linear-gradient(135deg, var(--blue), #003366);
+            box-shadow: var(--shadow-soft);
         }
 
         .btn-secondary {
             color: white;
-            background: linear-gradient(135deg, var(--pink), var(--violet));
-            box-shadow: 0 16px 30px rgba(124,58,237,.18);
+            background: linear-gradient(135deg, var(--cyan), #1b6d71);
+            box-shadow: var(--shadow-soft);
         }
 
         .btn-ghost {
-            background: #fff;
+            background: transparent;
             border: 1px solid var(--border);
             color: var(--text);
-            box-shadow: var(--shadow-soft);
+            box-shadow: none;
         }
 
         .page {
@@ -162,10 +167,19 @@
         }
 
         .card {
-            background: rgba(255,255,255,.95);
+            background: rgba(255,255,255,.98);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-soft);
             border-radius: var(--radius-xl);
+            position: relative;
+            overflow: hidden;
+            transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translate3d(0, -2px, 0);
+            box-shadow: 0 16px 34px rgba(25, 28, 29, .05);
+            border-color: rgba(0, 30, 64, .12);
         }
 
         .book-panel {
@@ -175,32 +189,37 @@
         }
 
         .book-cover-wrap {
-            border-radius: 24px;
+            border-radius: var(--radius-xl);
             min-height: 580px;
             padding: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background:
-                radial-gradient(circle at 20% 20%, rgba(59,130,246,.10), transparent 18%),
-                radial-gradient(circle at 80% 20%, rgba(236,72,153,.08), transparent 18%),
-                linear-gradient(180deg, #f4f7ff 0%, #eef3fc 100%);
+            background: linear-gradient(180deg, #f3f4f5 0%, #edeeef 100%);
             overflow: hidden;
+            perspective: 1400px;
         }
 
         .book-mockup {
             width: 310px;
             max-width: 100%;
             height: 450px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             padding: 26px 24px 26px 30px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             position: relative;
-            background: linear-gradient(180deg, #2d4268 0%, #223758 100%);
-            box-shadow: 0 24px 45px rgba(37, 58, 97, .24);
+            background: linear-gradient(180deg, #003366 0%, #001e40 100%);
+            box-shadow: var(--shadow);
             overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform .32s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .32s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .book-panel:hover .book-mockup {
+            transform: translate3d(0, -4px, 0) rotateY(-4deg) rotateX(1deg);
+            box-shadow: 0 22px 42px rgba(25, 28, 29, .10);
         }
 
         .book-mockup::before {
@@ -274,7 +293,7 @@
 
         .mini-action {
             padding: 14px;
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             background: var(--surface-soft);
             border: 1px solid var(--border);
             text-align: center;
@@ -302,15 +321,15 @@
         }
 
         .badge-blue {
-            background: rgba(59,130,246,.08);
+            background: rgba(0,30,64,.06);
             color: var(--blue);
-            border-color: rgba(59,130,246,.12);
+            border-color: rgba(0,30,64,.10);
         }
 
         .badge-green {
-            background: rgba(22,163,74,.08);
+            background: rgba(20,105,109,.08);
             color: var(--success);
-            border-color: rgba(22,163,74,.12);
+            border-color: rgba(20,105,109,.12);
         }
 
         .title {
@@ -338,7 +357,7 @@
 
         .meta-item {
             padding: 18px;
-            border-radius: 20px;
+            border-radius: var(--radius-xl);
             background: var(--surface-soft);
             border: 1px solid var(--border);
         }
@@ -417,7 +436,7 @@
             justify-content: space-between;
             gap: 16px;
             padding: 18px 20px;
-            border-radius: 20px;
+            border-radius: var(--radius-xl);
             margin-top: 20px;
             background: linear-gradient(135deg, rgba(22,163,74,.08), rgba(6,182,212,.06));
             border: 1px solid rgba(22,163,74,.12);
@@ -464,15 +483,23 @@
 
         .book-card {
             padding: 18px;
-            border-radius: 24px;
+            border-radius: var(--radius-xl);
             background: #fff;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-soft);
+            box-shadow: none;
+            transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .book-card:hover {
+            transform: translate3d(0, -2px, 0);
+            box-shadow: 0 16px 34px rgba(25, 28, 29, .05);
+            border-color: rgba(0,30,64,.12);
+            background: rgba(248,249,250,.98);
         }
 
         .book-preview {
             height: 220px;
-            border-radius: 18px;
+            border-radius: var(--radius-xl);
             padding: 18px;
             display: flex;
             align-items: flex-end;
@@ -585,7 +612,7 @@
         .review-notice {
             margin-top: 12px;
             padding: 12px 16px;
-            border-radius: 14px;
+            border-radius: 8px;
             background: #fef3c7;
             border: 1px solid rgba(245, 158, 11, .2);
             font-size: 13px;
@@ -606,17 +633,18 @@
         .classification-section {
             margin-top: 16px;
             padding: 16px;
-            background: linear-gradient(135deg, rgba(124,58,237,.04), rgba(59,130,246,.04));
-            border: 1px solid rgba(124,58,237,.12);
-            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(0,30,64,.03), rgba(20,105,109,.05));
+            border: 1px solid rgba(0,30,64,.10);
+            border-radius: var(--radius-xl);
         }
 
         .classification-section h4 {
             margin: 0 0 10px;
             font-size: 13px;
-            font-weight: 600;
-            color: #6d28d9;
+            font-weight: 700;
+            color: var(--blue);
             letter-spacing: .02em;
+            font-family: 'Newsreader', Georgia, serif;
         }
 
         .classification-chips {
@@ -633,30 +661,31 @@
             font-size: 12px;
             font-weight: 600;
             text-decoration: none;
-            transition: all .2s;
+            transition: background-color .2s ease, border-color .2s ease, color .2s ease;
         }
 
         .classification-chip.specialization {
-            background: rgba(124,58,237,.08);
-            color: #6d28d9;
-            border: 1px solid rgba(124,58,237,.15);
+            background: rgba(42,28,0,.06);
+            color: var(--violet);
+            border: 1px solid rgba(42,28,0,.12);
         }
 
         .classification-chip.department {
-            background: rgba(59,130,246,.08);
-            color: #2563eb;
-            border: 1px solid rgba(59,130,246,.15);
+            background: rgba(0,30,64,.06);
+            color: var(--blue);
+            border: 1px solid rgba(0,30,64,.12);
         }
 
         .classification-chip.faculty {
-            background: rgba(6,182,212,.08);
-            color: #0891b2;
-            border: 1px solid rgba(6,182,212,.15);
+            background: rgba(20,105,109,.08);
+            color: var(--cyan);
+            border: 1px solid rgba(20,105,109,.14);
         }
 
         .classification-chip:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,.06);
+            transform: none;
+            box-shadow: none;
+            background: rgba(243,244,245,.96);
         }
 
         .loading {
@@ -695,10 +724,17 @@
             justify-content: space-between;
             gap: 16px;
             padding: 18px 22px;
-            background: rgba(59,130,246,.03);
-            border: 1px solid rgba(59,130,246,.12);
-            border-radius: var(--radius-md, 14px);
+            background: rgba(0,30,64,.02);
+            border: 1px solid rgba(0,30,64,.10);
+            border-radius: var(--radius-xl);
             margin-bottom: 10px;
+            transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .dm-card:hover {
+            transform: translate3d(0, -1px, 0);
+            box-shadow: 0 12px 26px rgba(25, 28, 29, .04);
+            border-color: rgba(20,105,109,.16);
         }
         .dm-info {
             display: flex;
@@ -709,12 +745,12 @@
         .dm-icon {
             width: 44px;
             height: 44px;
-            border-radius: 12px;
+            border-radius: 8px;
             display: grid;
             place-items: center;
             font-size: 20px;
             flex-shrink: 0;
-            background: linear-gradient(135deg, var(--blue, #3b82f6), var(--cyan, #06b6d4));
+            background: linear-gradient(135deg, var(--blue), #214c6f);
             color: #fff;
         }
         .dm-label { font-weight: 700; font-size: 15px; margin: 0 0 2px; }
@@ -791,7 +827,8 @@
 
     <main class="page">
         <div class="container">
-            <div id="loading" class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">Загрузка информации о книге...</p></div>
+            <div class="sr-only">{{ ['ru' => 'Просмотр книги', 'kk' => 'Кітапты қарау', 'en' => 'Book view'][$lang] }}</div>
+            <div id="loading" class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка информации о книге...', 'kk' => 'Кітап туралы ақпарат жүктелуде...', 'en' => 'Loading book details...'][$lang] }}</p></div>
             <div id="error" class="error" style="display: none;"></div>
             <div id="content"></div>
         </div>
@@ -802,6 +839,60 @@
     <script>
         const isbn = window.location.pathname.split('/').pop();
         const BOOK_DB_API_ENDPOINT = '/api/v1/book-db/';
+        const BOOK_LANG = @json($lang);
+        const BOOK_I18N_MAP = {
+            ru: {
+                notFound: 'Книга не найдена', genericError: 'Ошибка', backToCatalog: 'Вернуться в каталог', untitled: 'Без названия', unknownAuthor: 'Неизвестный автор',
+                publisherMissing: 'Издатель не указан', isbnMissing: 'ISBN не указан', yearMissing: 'Год не указан', languageMissing: 'Язык неизвестен',
+                unit: 'Подразделение', campus: 'Кампус', servicePoint: 'Пункт выдачи', total: 'Всего', available: 'Доступно', locationsUnavailable: 'Информация о местах хранения недоступна',
+                reviewPrefix: '⚠ Данные этого документа проходят проверку:', trainingTracks: '📚 Направления подготовки', showAllBooks: 'Показать все книги', home: 'Главная', catalog: 'Каталог',
+                coverTop: 'Каталог', availableNow: '✓ Доступно сейчас', unavailableNow: '✗ Недоступно', invalidIsbn: 'ISBN не валиден', authors: 'Авторы', author: 'Автор', publicationYear: 'Год издания', language: 'Язык',
+                availableShort: 'Доступно', copySummary: '{available} из {total}', copyAvailable: 'Экземпляр доступен для выдачи', copyAvailableBody: 'В фонде {available} доступных экземпляров из {total}.',
+                allCheckedOut: 'Все экземпляры выданы', allCheckedOutBody: 'Все {total} экземпляров в данный момент выданы.', inStock: 'В наличии', unavailable: 'Недоступно',
+                reserve: 'Забронировать книгу', signInToReserve: 'Войдите для бронирования', shortlistAdd: '☆ В подборку', shortlistAdded: '★ В подборке', characteristics: 'Характеристики',
+                publisher: 'Издательство', publicationLanguage: 'Язык издания', totalCopies: 'Всего экземпляров', availableNowLabel: 'Доступно сейчас', availabilityByPoint: 'Наличие по пунктам выдачи',
+                digitalMaterials: '💻 Электронные материалы', open: 'Открыть', login: 'Войти', checking: '⏳ Проверка...', reservedReady: '✓ Уже забронировано', reserving: '⏳ Бронирование...', noCopies: 'Нет экземпляров', reservationUnavailable: 'Бронирование недоступно',
+                reservedState: '✓ Забронировано ({status})', readyForPickup: 'готово к выдаче', waiting: 'ожидание', reserveSuccess: 'Книга успешно забронирована!', validUntil: 'Действует до {date}.', followStatus: 'Следите за статусом в кабинете.',
+                reserveFailed: 'Не удалось создать бронирование.', networkError: 'Ошибка сети. Попробуйте ещё раз.'
+            },
+            kk: {
+                notFound: 'Кітап табылмады', genericError: 'Қате', backToCatalog: 'Каталогқа оралу', untitled: 'Атауы жоқ', unknownAuthor: 'Автор белгісіз',
+                publisherMissing: 'Баспа көрсетілмеген', isbnMissing: 'ISBN көрсетілмеген', yearMissing: 'Жылы көрсетілмеген', languageMissing: 'Тілі белгісіз',
+                unit: 'Бөлім', campus: 'Кампус', servicePoint: 'Берілім нүктесі', total: 'Барлығы', available: 'Қолжетімді', locationsUnavailable: 'Сақталу орындары туралы ақпарат жоқ',
+                reviewPrefix: '⚠ Бұл құжаттың деректері тексерілуде:', trainingTracks: '📚 Дайындық бағыттары', showAllBooks: 'Осы бағыттағы барлық кітаптарды көрсету', home: 'Басты бет', catalog: 'Каталог',
+                coverTop: 'Каталог', availableNow: '✓ Қазір қолжетімді', unavailableNow: '✗ Қолжетімсіз', invalidIsbn: 'ISBN жарамсыз', authors: 'Авторлар', author: 'Автор', publicationYear: 'Басылым жылы', language: 'Тіл',
+                availableShort: 'Қолжетімді', copySummary: '{available} / {total}', copyAvailable: 'Данасы берілуге қолжетімді', copyAvailableBody: 'Қорда {total}-ның {available} данасы қолжетімді.',
+                allCheckedOut: 'Барлық даналар берілген', allCheckedOutBody: '{total} дананың барлығы қазір пайдалануда.', inStock: 'Қолда бар', unavailable: 'Қолжетімсіз',
+                reserve: 'Кітапты брондау', signInToReserve: 'Брондау үшін кіріңіз', shortlistAdd: '☆ Топтамаға', shortlistAdded: '★ Топтамада', characteristics: 'Сипаттамалар',
+                publisher: 'Баспа', publicationLanguage: 'Басылым тілі', totalCopies: 'Жалпы дана', availableNowLabel: 'Қазір қолжетімді', availabilityByPoint: 'Берілім нүктелері бойынша қолжетімділік',
+                digitalMaterials: '💻 Электрондық материалдар', open: 'Ашу', login: 'Кіру', checking: '⏳ Тексеру...', reservedReady: '✓ Бұрыннан брондалған', reserving: '⏳ Брондау...', noCopies: 'Дана жоқ', reservationUnavailable: 'Брондау қолжетімсіз',
+                reservedState: '✓ Брондалған ({status})', readyForPickup: 'беруге дайын', waiting: 'күту', reserveSuccess: 'Кітап сәтті брондалды!', validUntil: '{date} дейін жарамды.', followStatus: 'Күйін кабинеттен бақылаңыз.',
+                reserveFailed: 'Брондауды жасау мүмкін болмады.', networkError: 'Желі қатесі. Қайта көріңіз.'
+            },
+            en: {
+                notFound: 'Book not found', genericError: 'Error', backToCatalog: 'Back to catalog', untitled: 'Untitled', unknownAuthor: 'Unknown author',
+                publisherMissing: 'Publisher not specified', isbnMissing: 'ISBN not provided', yearMissing: 'Year not specified', languageMissing: 'Language unknown',
+                unit: 'Unit', campus: 'Campus', servicePoint: 'Service point', total: 'Total', available: 'Available', locationsUnavailable: 'Location details are unavailable',
+                reviewPrefix: '⚠ This record is currently under review:', trainingTracks: '📚 Academic tracks', showAllBooks: 'Show all books for this track', home: 'Home', catalog: 'Catalog',
+                coverTop: 'Catalog', availableNow: '✓ Available now', unavailableNow: '✗ Unavailable', invalidIsbn: 'Invalid ISBN', authors: 'Authors', author: 'Author', publicationYear: 'Publication year', language: 'Language',
+                availableShort: 'Available', copySummary: '{available} of {total}', copyAvailable: 'A copy is available for checkout', copyAvailableBody: '{available} of {total} copies are currently available.',
+                allCheckedOut: 'All copies are checked out', allCheckedOutBody: 'All {total} copies are currently in use.', inStock: 'In stock', unavailable: 'Unavailable',
+                reserve: 'Reserve book', signInToReserve: 'Sign in to reserve', shortlistAdd: '☆ Add to shortlist', shortlistAdded: '★ In shortlist', characteristics: 'Details',
+                publisher: 'Publisher', publicationLanguage: 'Publication language', totalCopies: 'Total copies', availableNowLabel: 'Available now', availabilityByPoint: 'Availability by service point',
+                digitalMaterials: '💻 Digital materials', open: 'Open', login: 'Sign in', checking: '⏳ Checking...', reservedReady: '✓ Already reserved', reserving: '⏳ Reserving...', noCopies: 'No copies', reservationUnavailable: 'Reservation unavailable',
+                reservedState: '✓ Reserved ({status})', readyForPickup: 'ready for pickup', waiting: 'waiting', reserveSuccess: 'The book has been reserved successfully!', validUntil: 'Valid until {date}.', followStatus: 'Track the status in your account.',
+                reserveFailed: 'Unable to create the reservation.', networkError: 'Network error. Please try again.'
+            }
+        };
+        const BOOK_I18N = BOOK_I18N_MAP[BOOK_LANG] || BOOK_I18N_MAP.ru;
+
+        function withLang(path) {
+            const url = new URL(path, window.location.origin);
+            if (BOOK_LANG !== 'ru' && !url.searchParams.has('lang')) {
+                url.searchParams.set('lang', BOOK_LANG);
+            }
+            return `${url.pathname}${url.search}`;
+        }
 
         async function loadBook() {
             const loading = document.getElementById('loading');
@@ -812,7 +903,7 @@
                 const book = await fetchBookWithFallback(isbn);
 
                 if (!book) {
-                    throw new Error('Книга не найдена');
+                    throw new Error(BOOK_I18N.notFound);
                 }
 
                 renderBook(book);
@@ -821,9 +912,9 @@
                 loading.style.display = 'none';
                 error.style.display = 'block';
                 error.innerHTML = `
-                    <strong>Ошибка:</strong> ${err.message}
+                    <strong>${BOOK_I18N.genericError}:</strong> ${err.message}
                     <div style="margin-top: 1rem;">
-                        <a href="/" class="btn btn-ghost">Вернуться в каталог</a>
+                        <a href="${withLang('/catalog')}" class="btn btn-ghost">${BOOK_I18N.backToCatalog}</a>
                     </div>
                 `;
             }
@@ -843,7 +934,7 @@
 
                     if (!response.ok) {
                         if (response.status === 404) {
-                            lastError = new Error('Книга не найдена');
+                            lastError = new Error(BOOK_I18N.notFound);
                             continue;
                         }
 
@@ -859,7 +950,7 @@
                 }
             }
 
-            throw lastError || new Error('Книга не найдена');
+            throw lastError || new Error(BOOK_I18N.notFound);
         }
 
         function normalizeText(value, fallback = '') {
@@ -877,12 +968,12 @@
 
         function renderBook(book) {
             const content = document.getElementById('content');
-            const title = escapeHtml(normalizeText(book?.title?.display || book?.title?.raw, 'Без названия'));
-            const author = escapeHtml(normalizeText(book?.primaryAuthor || 'Неизвестный автор'));
-            const publisher = escapeHtml(normalizeText(book?.publisher?.name || 'Издатель не указан'));
-            const isbn = escapeHtml(normalizeText(book?.isbn?.raw || 'ISBN не указан'));
-            const year = escapeHtml(normalizeText(book?.publicationYear || 'Год не указан'));
-            const language = escapeHtml(normalizeText(book?.language?.raw || 'Язык неизвестен'));
+            const title = escapeHtml(normalizeText(book?.title?.display || book?.title?.raw, BOOK_I18N.untitled));
+            const author = escapeHtml(normalizeText(book?.primaryAuthor || BOOK_I18N.unknownAuthor));
+            const publisher = escapeHtml(normalizeText(book?.publisher?.name || BOOK_I18N.publisherMissing));
+            const isbn = escapeHtml(normalizeText(book?.isbn?.raw || BOOK_I18N.isbnMissing));
+            const year = escapeHtml(normalizeText(book?.publicationYear || BOOK_I18N.yearMissing));
+            const language = escapeHtml(normalizeText(book?.language?.raw || BOOK_I18N.languageMissing));
             const available = book?.copies?.available || 0;
             const total = book?.copies?.total || 0;
             const subtitle = normalizeText(book?.title?.subtitle);
@@ -894,7 +985,7 @@
 
             const isAvailable = available > 0;
 
-            document.title = `${title} - KazTBU Library`;
+            document.title = `${title} - Digital Library`;
 
             const authorsHtml = authors.length > 1
                 ? `<div class="authors-list">${authors.map(a => `<span class="author-chip">${escapeHtml(a.name || a)}</span>`).join('')}</div>`
@@ -903,11 +994,11 @@
             const locationsTableHtml = locations.length
                 ? `<table class="locations-table">
                     <thead><tr>
-                        <th>Подразделение</th>
-                        <th>Кампус</th>
-                        <th>Пункт выдачи</th>
-                        <th>Всего</th>
-                        <th>Доступно</th>
+                        <th>${BOOK_I18N.unit}</th>
+                        <th>${BOOK_I18N.campus}</th>
+                        <th>${BOOK_I18N.servicePoint}</th>
+                        <th>${BOOK_I18N.total}</th>
+                        <th>${BOOK_I18N.available}</th>
                     </tr></thead>
                     <tbody>${locations.map(loc => {
                         const avail = loc.copies?.available || 0;
@@ -921,22 +1012,22 @@
                         </tr>`;
                     }).join('')}</tbody>
                    </table>`
-                : '<p style="color:var(--muted);font-size:14px;">Информация о местах хранения недоступна</p>';
+                : `<p style="color:var(--muted);font-size:14px;">${BOOK_I18N.locationsUnavailable}</p>`;
 
             const reviewHtml = needsReview && reviewCodes.length
                 ? `<div class="review-notice">
-                    ⚠ Данные этого документа проходят проверку: ${reviewCodes.map(c => `<span class="reason-badge">${escapeHtml(c)}</span>`).join(' ')}
+                    ${BOOK_I18N.reviewPrefix} ${reviewCodes.map(c => `<span class="reason-badge">${escapeHtml(c)}</span>`).join(' ')}
                    </div>`
                 : '';
 
             const classificationHtml = classification.length > 0
                 ? `<div class="classification-section">
-                    <h4>📚 Направления подготовки</h4>
+                    <h4>${BOOK_I18N.trainingTracks}</h4>
                     <div class="classification-chips">
                         ${classification.map(c => {
                             const kind = c.sourceKind || 'department';
-                            const url = '/catalog?subject_id=' + encodeURIComponent(c.id) + '&subject_label=' + encodeURIComponent(c.label);
-                            return `<a href="${url}" class="classification-chip ${kind}" title="Показать все книги: ${escapeHtml(c.label)}">${escapeHtml(c.label)}</a>`;
+                            const url = withLang('/catalog?subject_id=' + encodeURIComponent(c.id) + '&subject_label=' + encodeURIComponent(c.label));
+                            return `<a href="${url}" class="classification-chip ${kind}" title="${BOOK_I18N.showAllBooks}: ${escapeHtml(c.label)}">${escapeHtml(c.label)}</a>`;
                         }).join('')}
                     </div>
                    </div>`
@@ -944,9 +1035,9 @@
 
             content.innerHTML = `
                 <div class="breadcrumbs">
-                    <span>Главная</span>
+                    <span>${BOOK_I18N.home}</span>
                     <span>•</span>
-                    <a href="/catalog">Каталог</a>
+                    <a href="${withLang('/catalog')}">${BOOK_I18N.catalog}</a>
                     <span>•</span>
                     <span>${escapeHtml(title.substring(0, 50))}</span>
                 </div>
@@ -956,7 +1047,7 @@
                         <div class="book-cover-wrap">
                             <div class="book-mockup">
                                 <div class="cover-badge">${escapeHtml(year)}</div>
-                                <div class="cover-top">Каталог</div>
+                                <div class="cover-top">${BOOK_I18N.coverTop}</div>
                                 <h1 class="cover-title">${escapeHtml(title.substring(0, 40))}</h1>
                                 <div class="cover-author">${escapeHtml(author.substring(0, 30))}</div>
                             </div>
@@ -966,8 +1057,8 @@
                     <div>
                         <section class="card details-card">
                             <div class="badges">
-                                <span class="badge badge-${isAvailable ? 'green' : 'blue'}">${isAvailable ? '✓ Доступно сейчас' : '✗ Недоступно'}</span>
-                                ${book?.isbn?.isValid === false && isbn !== 'ISBN не указан' ? '<span class="badge badge-blue">ISBN не валиден</span>' : ''}
+                                <span class="badge badge-${isAvailable ? 'green' : 'blue'}">${isAvailable ? BOOK_I18N.availableNow : BOOK_I18N.unavailableNow}</span>
+                                ${book?.isbn?.isValid === false && isbn !== BOOK_I18N.isbnMissing ? `<span class="badge badge-blue">${BOOK_I18N.invalidIsbn}</span>` : ''}
                             </div>
 
                             <h2 class="title">${escapeHtml(title)}</h2>
@@ -975,20 +1066,20 @@
 
                             <div class="meta-grid">
                                 <div class="meta-item">
-                                    <span class="meta-label">${authors.length > 1 ? 'Авторы' : 'Автор'}</span>
+                                    <span class="meta-label">${authors.length > 1 ? BOOK_I18N.authors : BOOK_I18N.author}</span>
                                     <span class="meta-value">${authorsHtml}</span>
                                 </div>
                                 <div class="meta-item">
-                                    <span class="meta-label">Год издания</span>
+                                    <span class="meta-label">${BOOK_I18N.publicationYear}</span>
                                     <span class="meta-value">${escapeHtml(year)}</span>
                                 </div>
                                 <div class="meta-item">
-                                    <span class="meta-label">Язык</span>
+                                    <span class="meta-label">${BOOK_I18N.language}</span>
                                     <span class="meta-value">${escapeHtml(language)}</span>
                                 </div>
                                 <div class="meta-item">
-                                    <span class="meta-label">Доступно</span>
-                                    <span class="meta-value">${available} из ${total}</span>
+                                    <span class="meta-label">${BOOK_I18N.availableShort}</span>
+                                    <span class="meta-value">${BOOK_I18N.copySummary.replace('{available}', available).replace('{total}', total)}</span>
                                 </div>
                             </div>
 
@@ -999,39 +1090,39 @@
 
                             <div class="status-box ${isAvailable ? '' : 'unavailable'}">
                                 <div>
-                                    <strong>${isAvailable ? 'Экземпляр доступен для выдачи' : 'Все экземпляры выданы'}</strong>
-                                    <p>${isAvailable ? `В фонде ${available} доступных экземпляров из ${total}.` : `Все ${total} экземпляров в данный момент выданы.`}</p>
+                                    <strong>${isAvailable ? BOOK_I18N.copyAvailable : BOOK_I18N.allCheckedOut}</strong>
+                                    <p>${isAvailable ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total) : BOOK_I18N.allCheckedOutBody.replace('{total}', total)}</p>
                                 </div>
-                                <div class="status-pill ${isAvailable ? '' : 'unavailable'}">${isAvailable ? 'В наличии' : 'Недоступно'}</div>
+                                <div class="status-pill ${isAvailable ? '' : 'unavailable'}">${isAvailable ? BOOK_I18N.inStock : BOOK_I18N.unavailable}</div>
                             </div>
 
                             <div class="action-row">
                                 @if(session('library.user'))
-                                <button class="btn btn-primary" id="reserve-btn" onclick="handleReserve()" disabled>Забронировать книгу</button>
+                                <button class="btn btn-primary" id="reserve-btn" onclick="handleReserve()" disabled>${BOOK_I18N.reserve}</button>
                                 @else
-                                <a href="/login" class="btn btn-primary" style="text-align:center;">Войдите для бронирования</a>
+                                <a href="{{ $lang === 'ru' ? '/login' : '/login?lang=' . $lang }}" class="btn btn-primary" style="text-align:center;">${BOOK_I18N.signInToReserve}</a>
                                 @endif
-                                <button class="btn btn-ghost" id="book-shortlist-btn" onclick="toggleBookShortlist()" style="border-color:var(--violet); color:var(--violet);">☆ В подборку</button>
-                                <a href="/catalog" class="btn btn-ghost">Вернуться в каталог</a>
+                                <button class="btn btn-ghost" id="book-shortlist-btn" onclick="toggleBookShortlist()" style="border-color:var(--cyan); color:var(--cyan);">${BOOK_I18N.shortlistAdd}</button>
+                                <a href="${withLang('/catalog')}" class="btn btn-ghost">${BOOK_I18N.backToCatalog}</a>
                             </div>
-                            <div id="reserve-feedback" style="display:none; margin-top:12px; padding:14px 18px; border-radius:14px; font-size:14px;"></div>
+                            <div id="reserve-feedback" style="display:none; margin-top:12px; padding:14px 18px; border-radius:8px; font-size:14px;"></div>
                         </section>
 
                         <section class="info-grid">
                             <div class="card info-card">
-                                <h3 class="section-title">Характеристики</h3>
+                                <h3 class="section-title">${BOOK_I18N.characteristics}</h3>
                                 <div class="info-list">
                                     <div class="info-row"><span>ISBN</span><span>${escapeHtml(isbn)}</span></div>
-                                    <div class="info-row"><span>Издательство</span><span>${escapeHtml(publisher)}</span></div>
-                                    <div class="info-row"><span>Язык издания</span><span>${escapeHtml(language)}</span></div>
-                                    <div class="info-row"><span>Год издания</span><span>${escapeHtml(year)}</span></div>
-                                    <div class="info-row"><span>Всего экземпляров</span><span>${total}</span></div>
-                                    <div class="info-row"><span>Доступно сейчас</span><span style="color: ${isAvailable ? 'var(--success)' : '#dc2626'};">${available}</span></div>
+                                    <div class="info-row"><span>${BOOK_I18N.publisher}</span><span>${escapeHtml(publisher)}</span></div>
+                                    <div class="info-row"><span>${BOOK_I18N.publicationLanguage}</span><span>${escapeHtml(language)}</span></div>
+                                    <div class="info-row"><span>${BOOK_I18N.publicationYear}</span><span>${escapeHtml(year)}</span></div>
+                                    <div class="info-row"><span>${BOOK_I18N.totalCopies}</span><span>${total}</span></div>
+                                    <div class="info-row"><span>${BOOK_I18N.availableNowLabel}</span><span style="color: ${isAvailable ? 'var(--success)' : '#dc2626'};">${available}</span></div>
                                 </div>
                             </div>
 
                             <div class="card info-card">
-                                <h3 class="section-title">Наличие по пунктам выдачи</h3>
+                                <h3 class="section-title">${BOOK_I18N.availabilityByPoint}</h3>
                                 ${locationsTableHtml}
                             </div>
                         </section>
@@ -1058,7 +1149,7 @@
 
                 slot.innerHTML = `
                     <div class="digital-materials-section">
-                        <h4 style="margin:0 0 12px; font-size:16px; font-weight:700;">💻 Электронные материалы</h4>
+                        <h4 style="margin:0 0 12px; font-size:16px; font-weight:700;">${BOOK_I18N.digitalMaterials}</h4>
                         ${materials.map(m => {
                             const icon = fileIcons[m.fileType] || '📁';
                             if (m.canAccess) {
@@ -1071,7 +1162,7 @@
                                         </div>
                                     </div>
                                     <div class="dm-actions">
-                                        <a href="${escapeHtml(m.viewerUrl)}" class="btn btn-primary" style="padding:8px 18px;font-size:14px;">Открыть</a>
+                                        <a href="${escapeHtml(m.viewerUrl)}" class="btn btn-primary" style="padding:8px 18px;font-size:14px;">${BOOK_I18N.open}</a>
                                     </div>
                                 </div>`;
                             } else {
@@ -1103,7 +1194,7 @@
                 });
             } catch (_) {}
             localStorage.removeItem('library.auth.user');
-            window.location.href = '/login';
+            window.location.href = withLang('/login');
         });
         @endif
 
@@ -1137,15 +1228,15 @@
             const btn = document.getElementById('book-shortlist-btn');
             if (!btn) return;
             if (bookShortlisted) {
-                btn.innerHTML = '★ В подборке';
-                btn.style.background = 'rgba(124,58,237,.1)';
-                btn.style.borderColor = 'var(--violet)';
-                btn.style.color = 'var(--violet)';
+                btn.innerHTML = BOOK_I18N.shortlistAdded;
+                btn.style.background = 'rgba(20,105,109,.08)';
+                btn.style.borderColor = 'var(--cyan)';
+                btn.style.color = 'var(--cyan)';
             } else {
-                btn.innerHTML = '☆ В подборку';
+                btn.innerHTML = BOOK_I18N.shortlistAdd;
                 btn.style.background = '';
-                btn.style.borderColor = 'var(--violet)';
-                btn.style.color = 'var(--violet)';
+                btn.style.borderColor = 'var(--cyan)';
+                btn.style.color = 'var(--cyan)';
             }
         }
 
@@ -1193,7 +1284,7 @@
             const identifier = (book?.isbn?.raw || book?.id || isbn);
             currentBookData = {
                 identifier: identifier,
-                title: normalizeText(book?.title?.display || book?.title?.raw, 'Без названия'),
+                title: normalizeText(book?.title?.display || book?.title?.raw, BOOK_I18N.untitled),
                 author: normalizeText(book?.primaryAuthor),
                 publisher: normalizeText(book?.publisher?.name),
                 year: normalizeText(book?.publicationYear),
@@ -1220,12 +1311,12 @@
             const btn = document.getElementById('reserve-btn');
             if (!btn) return;
             const states = {
-                loading: { disabled: true, opacity: '.6', cursor: 'wait', text: label || '⏳ Проверка...' },
-                ready: { disabled: false, opacity: '1', cursor: 'pointer', text: label || 'Забронировать книгу' },
-                reserved: { disabled: true, opacity: '.85', cursor: 'default', text: label || '✓ Уже забронировано' },
-                submitting: { disabled: true, opacity: '.6', cursor: 'wait', text: label || '⏳ Бронирование...' },
-                unavailable: { disabled: true, opacity: '.5', cursor: 'not-allowed', text: label || 'Нет экземпляров' },
-                no_reservation: { disabled: true, opacity: '.5', cursor: 'not-allowed', text: label || 'Бронирование недоступно' },
+                loading: { disabled: true, opacity: '.6', cursor: 'wait', text: label || BOOK_I18N.checking },
+                ready: { disabled: false, opacity: '1', cursor: 'pointer', text: label || BOOK_I18N.reserve },
+                reserved: { disabled: true, opacity: '.85', cursor: 'default', text: label || BOOK_I18N.reservedReady },
+                submitting: { disabled: true, opacity: '.6', cursor: 'wait', text: label || BOOK_I18N.reserving },
+                unavailable: { disabled: true, opacity: '.5', cursor: 'not-allowed', text: label || BOOK_I18N.noCopies },
+                no_reservation: { disabled: true, opacity: '.5', cursor: 'not-allowed', text: label || BOOK_I18N.reservationUnavailable },
             };
             const s = states[state] || states.loading;
             btn.disabled = s.disabled;
@@ -1280,7 +1371,7 @@
                     const json = await res.json();
                     if (json.hasActive) {
                         reservationActive = json.reservation;
-                        setReserveButtonState('reserved', `✓ Забронировано (${json.reservation?.status === 'READY' ? 'готово к выдаче' : 'ожидание'})`);
+                        setReserveButtonState('reserved', BOOK_I18N.reservedState.replace('{status}', json.reservation?.status === 'READY' ? BOOK_I18N.readyForPickup : BOOK_I18N.waiting));
                         return;
                     }
                 }
@@ -1317,15 +1408,14 @@
                     const expires = json.reservation?.expiresAt
                         ? new Date(json.reservation.expiresAt).toLocaleDateString('ru-RU')
                         : '';
-                    showReserveFeedback('success',
-                        `Книга успешно забронирована!${expires ? ` Действует до ${expires}.` : ''} Следите за статусом в кабинете.`);
+                    showReserveFeedback('success', `${BOOK_I18N.reserveSuccess}${expires ? ` ${BOOK_I18N.validUntil.replace('{date}', expires)}` : ''} ${BOOK_I18N.followStatus}`);
                 } else {
                     setReserveButtonState('ready');
-                    showReserveFeedback('error', json.message || 'Не удалось создать бронирование.');
+                    showReserveFeedback('error', json.message || BOOK_I18N.reserveFailed);
                 }
             } catch (e) {
                 setReserveButtonState('ready');
-                showReserveFeedback('error', 'Ошибка сети. Попробуйте ещё раз.');
+                showReserveFeedback('error', BOOK_I18N.networkError);
             }
         }
         @endif

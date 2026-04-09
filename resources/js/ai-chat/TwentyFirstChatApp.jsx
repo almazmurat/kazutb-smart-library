@@ -61,16 +61,16 @@ function ChatRuntime({ agent, tokenUrl, session, onNewThread }) {
     const { messages, sendMessage, status, stop, error } = useChat({ chat });
 
     return (
-        <div className="flex min-h-[680px] flex-col rounded-[28px] border border-slate-200 bg-white/90 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+        <div className="flex min-h-[680px] flex-col rounded-[10px] border border-[#d6d9dd] bg-white shadow-[0_12px_32px_rgba(25,28,29,0.04)]">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#d6d9dd] px-5 py-4">
                 <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">21st Frontend Agent</p>
-                    <p className="mt-1 text-sm text-slate-600">Sandbox {session.sandboxId.slice(0, 12)}... · Thread {session.threadId.slice(0, 12)}...</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#43474f]">Library AI assistant</p>
+                    <p className="mt-1 text-sm text-[#43474f]">Sandbox {session.sandboxId.slice(0, 12)}... · Thread {session.threadId.slice(0, 12)}...</p>
                 </div>
                 <button
                     type="button"
                     onClick={onNewThread}
-                    className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                    className="inline-flex min-h-11 items-center justify-center rounded-[6px] border border-[#d6d9dd] px-4 text-sm font-medium text-[#191c1d] transition hover:border-[#001e40]/20 hover:bg-[#f3f4f5]"
                 >
                     New thread
                 </button>
@@ -90,14 +90,14 @@ function ChatRuntime({ agent, tokenUrl, session, onNewThread }) {
                     colorMode="light"
                     theme={{
                         light: {
-                            '--an-chat-accent': '#124559',
+                            '--an-chat-accent': '#001e40',
                             '--an-chat-accent-foreground': '#ffffff',
                             '--an-chat-background': '#ffffff',
-                            '--an-chat-surface': '#f8fafc',
-                            '--an-chat-surface-2': '#eef2f7',
-                            '--an-chat-border': '#d7e0ea',
-                            '--an-chat-text': '#0f172a',
-                            '--an-chat-text-muted': '#64748b',
+                            '--an-chat-surface': '#f8f9fa',
+                            '--an-chat-surface-2': '#f3f4f5',
+                            '--an-chat-border': '#d6d9dd',
+                            '--an-chat-text': '#191c1d',
+                            '--an-chat-text-muted': '#43474f',
                         },
                     }}
                 />
@@ -183,35 +183,34 @@ export function TwentyFirstChatApp({ agent, sessionUrl, tokenUrl, threadUrl, sta
     };
 
     return (
-        <section className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef4f3_100%)] px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
+        <section className="min-h-screen bg-[#f8f9fa] px-4 py-8 text-[#191c1d] sm:px-6 lg:px-8">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-                <header className="rounded-[28px] border border-slate-200 bg-white/85 px-6 py-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur">
+                <header className="rounded-[10px] border border-[#d6d9dd] bg-white px-6 py-6 shadow-[0_12px_32px_rgba(25,28,29,0.04)]">
                     <div className="flex flex-wrap items-start justify-between gap-6">
                         <div className="max-w-3xl">
-                            <p className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-600">Internal Tooling</p>
-                            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">21st AI chat for frontend development</h1>
-                            <p className="mt-3 text-base leading-7 text-slate-600">
-                                Internal staff-only assistant for UI work inside the current Laravel + Blade + Vite stack. It keeps the 21st API key on the server,
-                                creates a sandbox and thread via Laravel bridge endpoints, and connects the browser chat with short-lived tokens.
+                            <p className="inline-flex rounded-full bg-[#f3f4f5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#43474f]">Internal assistance</p>
+                            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-[#001e40] sm:text-4xl">Library AI assistance for staff operations</h1>
+                            <p className="mt-3 text-base leading-7 text-[#43474f]">
+                                Staff-only assistant for operational UI work, guided support, and internal tooling across the current Digital Library workspace.
                             </p>
                         </div>
-                        <div className="min-w-[240px] rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-                            <p className="font-semibold text-slate-900">Signed in staff</p>
+                        <div className="min-w-[240px] rounded-[8px] border border-[#d6d9dd] bg-[#f8f9fa] px-4 py-4 text-sm text-[#43474f]">
+                            <p className="font-semibold text-[#191c1d]">Signed in staff</p>
                             <p className="mt-1">{staffName}</p>
-                            <p className="mt-3 text-xs uppercase tracking-[0.18em] text-slate-500">Agent</p>
-                            <p className="mt-1 font-mono text-xs text-slate-700">{agent}</p>
+                            <p className="mt-3 text-xs uppercase tracking-[0.18em] text-[#43474f]">Agent</p>
+                            <p className="mt-1 font-mono text-xs text-[#191c1d]">{agent}</p>
                         </div>
                     </div>
                 </header>
 
                 {bootstrapError ? (
-                    <div className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                    <div className="rounded-[8px] border border-[#e3c98f] bg-[#fbf7ef] px-4 py-3 text-sm text-[#5d4201]">
                         {bootstrapError}
                     </div>
                 ) : null}
 
                 {isBootstrapping || !session ? (
-                    <div className="rounded-[28px] border border-slate-200 bg-white px-6 py-12 text-center text-slate-600 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+                    <div className="rounded-[10px] border border-[#d6d9dd] bg-white px-6 py-12 text-center text-[#43474f] shadow-[0_12px_32px_rgba(25,28,29,0.04)]">
                         Preparing sandbox and chat thread...
                     </div>
                 ) : (

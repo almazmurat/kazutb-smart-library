@@ -27,7 +27,7 @@
     background: linear-gradient(135deg, var(--blue), var(--cyan));
     color: #fff;
     border-color: transparent;
-    box-shadow: 0 8px 20px rgba(59,130,246,.2);
+    box-shadow: 0 6px 16px rgba(25,28,29,.04);
   }
 
   .news-grid {
@@ -44,8 +44,8 @@
     transition: transform .25s, box-shadow .25s;
   }
   .news-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow);
+    transform: none;
+    box-shadow: none;
   }
   .news-card-media {
     height: 200px;
@@ -151,19 +151,19 @@
     transition: transform .2s, box-shadow .2s;
   }
   .event-timeline-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-soft);
+    transform: none;
+    box-shadow: none;
   }
   .eti-date {
-    border-radius: 16px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 12px;
     text-align: center;
-    background: linear-gradient(135deg, rgba(59,130,246,.1), rgba(124,58,237,.08));
-    border: 1px solid rgba(59,130,246,.1);
+    background: linear-gradient(135deg, rgba(0,30,64,.05), rgba(20,105,109,.07));
+    border: 1px solid rgba(0,30,64,.10);
   }
   .eti-date strong {
     display: block;
@@ -205,7 +205,7 @@
   .announcement-card h4 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
   .announcement-card p { margin: 0 0 12px; color: var(--muted); font-size: 15px; line-height: 1.6; }
   .announcement-card .ann-date { font-size: 13px; color: var(--muted); font-weight: 600; }
-  .announcement-card:nth-child(2) { border-left-color: var(--violet); }
+  .announcement-card:nth-child(2) { border-left-color: #5d4201; }
   .announcement-card:nth-child(3) { border-left-color: var(--green); }
 
   @media (max-width: 900px) {
@@ -273,7 +273,7 @@
 
     <div class="featured-news">
       <div class="featured-card">
-        <div class="fc-media" style="background: linear-gradient(135deg, rgba(59,130,246,.8), rgba(6,182,212,.6)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80') center/cover;"></div>
+        <div class="fc-media" style="background: linear-gradient(135deg, rgba(0,30,64,.78), rgba(20,105,109,.56)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80') center/cover;"></div>
         <div class="fc-body">
           <h2>Запуск цифровой платформы «Digital Library»</h2>
           <p>Запущена новая цифровая библиотечная платформа с онлайн-каталогом, личным кабинетом, системой бронирования и доступом к электронным ресурсам. Платформа заменяет устаревшие сценарии и формирует современную библиотечную инфраструктуру.</p>
@@ -283,8 +283,8 @@
 
       <div style="display:grid; gap:24px;">
         <div class="news-card">
-          <div class="news-card-media" style="height:140px; background: linear-gradient(135deg, rgba(124,58,237,.7), rgba(236,72,153,.5)), url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80') center/cover;">
-            <span class="media-category" style="background:rgba(124,58,237,.85);">Ресурсы</span>
+          <div class="news-card-media" style="height:140px; background: linear-gradient(135deg, rgba(42,28,0,.72), rgba(93,66,1,.50)), url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80') center/cover;">
+            <span class="media-category" style="background:rgba(42,28,0,.82);">Ресурсы</span>
           </div>
           <div class="news-card-body">
             <div class="news-card-date">28 марта 2026</div>
@@ -386,8 +386,8 @@
   <div class="container">
     <div class="news-grid">
       <div class="news-card">
-        <div class="news-card-media" style="background: linear-gradient(135deg, rgba(59,130,246,.7), rgba(124,58,237,.5)), url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80') center/cover;">
-          <span class="media-category" style="background:rgba(59,130,246,.85);">Образование</span>
+        <div class="news-card-media" style="background: linear-gradient(135deg, rgba(0,30,64,.72), rgba(20,105,109,.50)), url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80') center/cover;">
+          <span class="media-category" style="background:rgba(0,30,64,.82);">Образование</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-date">5 марта 2026</div>
@@ -416,8 +416,8 @@
         </div>
       </div>
       <div class="news-card">
-        <div class="news-card-media" style="background: linear-gradient(135deg, rgba(124,58,237,.7), rgba(59,130,246,.5)), url('https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80') center/cover;">
-          <span class="media-category" style="background:rgba(124,58,237,.85);">Наука</span>
+        <div class="news-card-media" style="background: linear-gradient(135deg, rgba(20,105,109,.70), rgba(0,30,64,.50)), url('https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80') center/cover;">
+          <span class="media-category" style="background:rgba(20,105,109,.82);">Наука</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-date">1 февраля 2026</div>

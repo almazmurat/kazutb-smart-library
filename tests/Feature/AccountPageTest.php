@@ -6,13 +6,13 @@ use Tests\TestCase;
 
 class AccountPageTest extends TestCase
 {
-    private function authenticatedSession(): array
+    private function authenticatedSession(array $userOverrides = []): array
     {
         return [
-            'library.user' => [
+            'library.user' => array_merge([
                 'id' => 'u-test-1', 'name' => 'Test', 'email' => 'test@example.com',
                 'login' => 'test01', 'ad_login' => 'test01', 'role' => 'reader',
-            ],
+            ], $userOverrides),
             'library.crm_token' => 'test-token',
             'library.authenticated_at' => now()->toIso8601String(),
         ];
@@ -56,7 +56,9 @@ class AccountPageTest extends TestCase
 
     public function test_account_page_shows_workbench_section(): void
     {
-        $response = $this->withSession($this->authenticatedSession())->get('/account');
+        $response = $this->withSession($this->authenticatedSession([
+            'profile_type' => 'teacher',
+        ]))->get('/account');
 
         $response
             ->assertOk()
@@ -67,7 +69,9 @@ class AccountPageTest extends TestCase
 
     public function test_account_page_workbench_calls_summary_api(): void
     {
-        $response = $this->withSession($this->authenticatedSession())->get('/account');
+        $response = $this->withSession($this->authenticatedSession([
+            'profile_type' => 'teacher',
+        ]))->get('/account');
 
         $response
             ->assertOk()

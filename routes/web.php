@@ -32,26 +32,63 @@ Route::get('/digital-viewer/{materialId}', function (Request $request, string $m
 
 Route::get('/account', function (Request $request) {
     $user = $request->session()->get('library.user');
+    $lang = $request->query('lang', 'ru');
+    $lang = in_array($lang, ['ru', 'kk', 'en'], true) ? $lang : 'ru';
+    $accountPath = $lang === 'ru' ? '/account' : ('/account?lang='.$lang);
+
     if (! is_array($user)) {
-        return redirect('/login?redirect='.urlencode('/account'));
+        $loginPath = '/login?redirect='.urlencode($accountPath);
+        if ($lang !== 'ru') {
+            $loginPath .= '&lang='.$lang;
+        }
+
+        return redirect($loginPath);
     }
 
     return view('account', ['sessionUser' => $user]);
 });
 
 Route::get('/login', function (Request $request) {
+    $lang = $request->query('lang', 'ru');
+    $lang = in_array($lang, ['ru', 'kk', 'en'], true) ? $lang : 'ru';
+
     if (is_array($request->session()->get('library.user'))) {
-        return redirect('/account');
+        return redirect($lang === 'ru' ? '/account' : ('/account?lang='.$lang));
     }
 
     $demoEnabled = (bool) config('demo_auth.enabled');
     $demoIdentities = [];
     if ($demoEnabled) {
+        $demoTranslations = [
+            'student' => [
+                'ru' => ['label' => 'Студент', 'description' => 'Демо-доступ — поиск, каталог, подборка, кабинет'],
+                'kk' => ['label' => 'Студент', 'description' => 'Демо-қолжетімділік — іздеу, каталог, іріктеме, кабинет'],
+                'en' => ['label' => 'Student', 'description' => 'Demo access — search, catalog, shortlist, account'],
+            ],
+            'teacher' => [
+                'ru' => ['label' => 'Преподаватель', 'description' => 'Демо-доступ — силлабус, подборка, рабочий стол'],
+                'kk' => ['label' => 'Оқытушы', 'description' => 'Демо-қолжетімділік — силлабус, іріктеме, жұмыс аймағы'],
+                'en' => ['label' => 'Faculty', 'description' => 'Demo access — syllabus, shortlist, teaching workspace'],
+            ],
+            'librarian' => [
+                'ru' => ['label' => 'Библиотекарь', 'description' => 'Демо-доступ — выдача, возврат, фонд, рецензирование'],
+                'kk' => ['label' => 'Кітапханашы', 'description' => 'Демо-қолжетімділік — беру, қайтару, қор, сараптау'],
+                'en' => ['label' => 'Librarian', 'description' => 'Demo access — circulation, returns, holdings, review'],
+            ],
+            'admin' => [
+                'ru' => ['label' => 'Администратор', 'description' => 'Демо-доступ — управление, настройки, отчёты'],
+                'kk' => ['label' => 'Әкімші', 'description' => 'Демо-қолжетімділік — басқару, баптаулар, есептер'],
+                'en' => ['label' => 'Administrator', 'description' => 'Demo access — management, settings, reports'],
+            ],
+        ];
+
         foreach (config('demo_auth.identities', []) as $slug => $identity) {
+            $localizedIdentity = $demoTranslations[$slug][$lang] ?? null;
+
             $demoIdentities[] = [
                 'slug' => $slug,
-                'label' => $identity['label'] ?? $slug,
-                'description' => $identity['description'] ?? '',
+                'label' => $localizedIdentity['label'] ?? ($identity['label'] ?? $slug),
+                'description' => $localizedIdentity['description'] ?? ($identity['description'] ?? ''),
                 'icon' => $identity['icon'] ?? '👤',
                 'role' => $identity['role'] ?? 'reader',
             ];

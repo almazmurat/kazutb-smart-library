@@ -6,32 +6,31 @@
     <title>Data Stewardship — Internal</title>
     <style>
         :root {
-            --bg: #eef4ff;
-            --paper: rgba(255, 255, 255, 0.94);
-            --ink: #14213d;
-            --muted: #64748b;
-            --line: rgba(20, 33, 61, 0.10);
-            --accent: #2563eb;
-            --accent-soft: rgba(59, 130, 246, 0.10);
-            --danger: #b91c1c;
-            --danger-soft: #fee2e2;
-            --warn: #b45309;
-            --warn-soft: #fef3c7;
-            --ok: #15803d;
-            --ok-soft: #dcfce7;
-            --shadow: 0 20px 50px rgba(21, 34, 66, 0.08);
+            --bg: #f8f9fa;
+            --paper: rgba(255, 255, 255, 0.96);
+            --ink: #191c1d;
+            --muted: #43474f;
+            --line: rgba(195, 198, 209, 0.55);
+            --accent: #001e40;
+            --accent-soft: rgba(0, 30, 64, 0.05);
+            --danger: #ba1a1a;
+            --danger-soft: rgba(186, 26, 26, 0.08);
+            --warn: #5d4201;
+            --warn-soft: rgba(93, 66, 1, 0.10);
+            --ok: #14696d;
+            --ok-soft: rgba(20, 105, 109, 0.10);
+            --shadow: 0 12px 32px rgba(25, 28, 29, 0.04);
         }
 
         * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Manrope', system-ui, sans-serif;
             color: var(--ink);
             background:
-                radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 20%),
-                radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.08), transparent 22%),
-                linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+                radial-gradient(circle at top left, rgba(0, 30, 64, 0.04), transparent 20%),
+                linear-gradient(180deg, #fbfcfc 0%, var(--bg) 100%);
         }
 
         a { color: inherit; }
@@ -45,7 +44,7 @@
         .hero, .panel {
             background: var(--paper);
             border: 1px solid var(--line);
-            border-radius: 24px;
+            border-radius: 8px;
             box-shadow: var(--shadow);
         }
 
@@ -69,7 +68,10 @@
             margin: 16px 0 8px;
             font-size: clamp(30px, 4vw, 44px);
             line-height: 1.05;
-            font-weight: 700;
+            font-weight: 600;
+            font-family: 'Newsreader', Georgia, serif;
+            letter-spacing: -0.03em;
+            color: var(--accent);
         }
 
         h2 { margin: 0 0 14px; font-size: 20px; }
@@ -90,12 +92,19 @@
             justify-content: center;
             min-height: 44px;
             padding: 0 16px;
-            border-radius: 14px;
+            border-radius: 8px;
             border: 1px solid var(--line);
             background: #fff;
             color: var(--ink);
             text-decoration: none;
             font-size: 15px;
+            transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+        }
+
+        .nav-link:hover {
+            transform: translate3d(0, -1px, 0);
+            border-color: rgba(0,30,64,.14);
+            background: rgba(243,244,245,.96);
         }
 
         .nav-link.primary {
@@ -114,7 +123,7 @@
 
         .tab-btn {
             padding: 10px 20px;
-            border-radius: 14px 14px 0 0;
+            border-radius: 8px 8px 0 0;
             border: 1px solid var(--line);
             border-bottom: none;
             background: #fff;
@@ -122,7 +131,11 @@
             font: inherit;
             font-size: 15px;
             cursor: pointer;
-            transition: background 0.15s, color 0.15s;
+            transition: background 0.15s, color 0.15s, transform .15s ease;
+        }
+
+        .tab-btn:hover {
+            transform: translate3d(0, -1px, 0);
         }
 
         .tab-btn.active {
@@ -145,9 +158,16 @@
         .metric {
             background: #fff;
             border: 1px solid var(--line);
-            border-radius: 18px;
+            border-radius: 8px;
             padding: 16px;
             min-height: 110px;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .metric:hover {
+            transform: translate3d(0, -2px, 0);
+            border-color: rgba(20,105,109,.18);
+            box-shadow: 0 12px 24px rgba(25, 28, 29, 0.04);
         }
 
         .metric-label {
@@ -206,7 +226,7 @@
 
         .select, .input, .button {
             min-height: 44px;
-            border-radius: 14px;
+            border-radius: 8px;
             border: 1px solid var(--line);
             background: #fff;
             color: var(--ink);
@@ -383,7 +403,7 @@
         .error-box {
             margin-top: 16px;
             padding: 14px 16px;
-            border-radius: 16px;
+            border-radius: 8px;
             background: var(--danger-soft);
             color: var(--danger);
             border: 1px solid rgba(153, 27, 27, 0.15);
@@ -395,21 +415,21 @@
             bottom: 24px;
             right: 24px;
             padding: 14px 20px;
-            border-radius: 14px;
+            border-radius: 8px;
             background: var(--ok-soft);
             color: var(--ok);
             border: 1px solid rgba(22, 101, 52, 0.2);
             font-size: 14px;
             z-index: 1000;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translate3d(0, 10px, 0);
             transition: opacity 0.3s, transform 0.3s;
             pointer-events: none;
         }
 
         .success-toast.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
         }
 
         /* Reason code list in overview */
@@ -421,7 +441,7 @@
             gap: 16px;
             align-items: center;
             padding: 12px 14px;
-            border-radius: 14px;
+            border-radius: 8px;
             background: #fff;
             border: 1px solid var(--line);
             font-size: 14px;
@@ -452,7 +472,7 @@
             gap: 12px;
             padding: 12px 16px;
             margin-bottom: 12px;
-            border-radius: 16px;
+            border-radius: 8px;
             background: var(--accent-soft);
             border: 1px solid rgba(18, 69, 89, 0.2);
         }
@@ -489,7 +509,7 @@
 
         @media (max-width: 640px) {
             .shell { width: min(100% - 20px, 1200px); }
-            .hero, .panel { padding: 18px; border-radius: 18px; }
+            .hero, .panel { padding: 18px; border-radius: 8px; }
             .cards { grid-template-columns: 1fr; }
             .pager { flex-direction: column; align-items: flex-start; }
             .tab-btn { font-size: 13px; padding: 8px 14px; }

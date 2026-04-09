@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { api } from '../lib/api';
+import { formatNumber, spaLang, t, withLang } from '../lib/i18n';
 
 const PAGE_SIZE = 20;
 const DEFAULT_SORT = 'popular';
 const LANGUAGE_OPTIONS = [
-  { value: '', label: 'Все языки' },
+  { value: '', label: t('catalog.allLanguages') },
   { value: 'ru', label: 'Русский' },
   { value: 'kk', label: 'Қазақша' },
   { value: 'en', label: 'English' },
 ];
 const YEAR_PRESET_OPTIONS = [
-  { value: '', label: 'Все годы' },
+  { value: '', label: t('catalog.allYears') },
   { value: 'recent', label: '2024–2026' },
   { value: 'modern', label: '2020–2023' },
-  { value: 'classic', label: 'До 2019' },
+  { value: 'classic', label: t('catalog.before2019') },
 ];
 
 function readPositiveInt(value, fallback = 1) {
@@ -51,8 +52,8 @@ export function CatalogPage() {
   }, [yearFrom, yearTo]);
   const yearSummary = useMemo(() => {
     if (yearFrom && yearTo) return `${yearFrom}–${yearTo}`;
-    if (yearFrom) return `с ${yearFrom}`;
-    if (yearTo) return `до ${yearTo}`;
+    if (yearFrom) return spaLang === 'en' ? `from ${yearFrom}` : spaLang === 'kk' ? `${yearFrom} жылдан` : `с ${yearFrom}`;
+    if (yearTo) return spaLang === 'en' ? `until ${yearTo}` : spaLang === 'kk' ? `${yearTo} дейін` : `до ${yearTo}`;
 
     return '';
   }, [yearFrom, yearTo]);
@@ -173,39 +174,37 @@ export function CatalogPage() {
     <div className="page-catalog">
       <section className="catalog-overview">
         <div className="catalog-hero-card">
-          <span className="catalog-kicker">Smart discovery</span>
-          <h1 className="page-title">Каталог</h1>
+          <span className="catalog-kicker">{t('catalog.kicker')}</span>
+          <h1 className="page-title">{t('catalog.title')}</h1>
           <p className="page-subtitle">
             {total > 0
-              ? `${total.toLocaleString('ru-RU')} документов в актуальной выборке`
-              : 'Поиск по каталогу, авторам, ISBN и доступности фонда'}
+              ? t('catalog.subtitleResults', { count: formatNumber(total) })
+              : t('catalog.subtitleEmpty')}
           </p>
           <div className="catalog-tag-row">
-            <span className="catalog-tag">Reader-first UX</span>
-            <span className="catalog-tag">Живой статус экземпляров</span>
-            <span className="catalog-tag">Быстрый переход к карточке книги</span>
+            <span className="catalog-tag">{t('catalog.tagFormat')}</span>
+            <span className="catalog-tag">{t('catalog.tagAvailability')}</span>
+            <span className="catalog-tag">{t('catalog.tagDetail')}</span>
           </div>
         </div>
 
         <aside className="catalog-insight-card">
           <div className="insight-block">
-            <span className="insight-label">Найдено</span>
-            <strong className="insight-value">{total > 0 ? total.toLocaleString('ru-RU') : '—'}</strong>
+            <span className="insight-label">{t('catalog.found')}</span>
+            <strong className="insight-value">{total > 0 ? formatNumber(total) : '—'}</strong>
           </div>
           <div className="insight-grid">
             <div className="insight-mini">
-              <span>Фильтров</span>
+              <span>{t('catalog.filters')}</span>
               <strong>{activeFilterCount}</strong>
             </div>
             <div className="insight-mini">
-              <span>Страница</span>
+              <span>{t('catalog.page')}</span>
               <strong>{Math.min(page, totalPages)}/{totalPages}</strong>
             </div>
           </div>
           <p className="insight-copy">
-            {query
-              ? `Фокус по запросу «${query}» с учётом активных ограничений.`
-              : 'Показываем полный академический фонд с быстрым маршрутом к нужной книге.'}
+            {query ? t('catalog.focusQuery', { query }) : t('catalog.focusDefault')}
           </p>
         </aside>
       </section>
@@ -214,29 +213,29 @@ export function CatalogPage() {
         <input
           type="text"
           className="search-input"
-          placeholder="Поиск по названию, автору, ISBN…"
+          placeholder={t('catalog.searchPlaceholder')}
           value={draftQuery}
           onChange={(e) => setDraftQuery(e.target.value)}
         />
         <button type="submit" className="search-btn" disabled={loading}>
-          {loading ? '⏳' : '🔍'} Найти
+          {loading ? '⏳' : t('catalog.search')}
         </button>
       </form>
 
       <div className="catalog-toolbar">
         <div className="catalog-filters">
           <label className="filter-select-wrap">
-            <span>Сортировка</span>
+            <span>{t('catalog.sorting')}</span>
             <select className="filter-select" value={sort} onChange={handleSortChange}>
-              <option value="popular">Сначала доступные</option>
-              <option value="newest">Сначала новые</option>
-              <option value="title">По названию</option>
-              <option value="author">По автору</option>
+              <option value="popular">{t('catalog.sortPopular')}</option>
+              <option value="newest">{t('catalog.sortNewest')}</option>
+              <option value="title">{t('catalog.sortTitle')}</option>
+              <option value="author">{t('catalog.sortAuthor')}</option>
             </select>
           </label>
 
           <label className="filter-select-wrap">
-            <span>Язык</span>
+            <span>{t('catalog.language')}</span>
             <select className="filter-select" value={language} onChange={handleLanguageChange}>
               {LANGUAGE_OPTIONS.map((option) => (
                 <option key={option.value || 'all'} value={option.value}>{option.label}</option>
@@ -245,7 +244,7 @@ export function CatalogPage() {
           </label>
 
           <label className="filter-select-wrap">
-            <span>Год издания</span>
+            <span>{t('catalog.year')}</span>
             <select className="filter-select" value={yearPreset} onChange={handleYearPresetChange}>
               {YEAR_PRESET_OPTIONS.map((option) => (
                 <option key={option.value || 'all-years'} value={option.value}>{option.label}</option>
@@ -255,28 +254,28 @@ export function CatalogPage() {
 
           <label className="filter-checkbox">
             <input type="checkbox" checked={availableOnly} onChange={handleAvailabilityChange} />
-            <span>Только доступные экземпляры</span>
+            <span>{t('catalog.availableOnly')}</span>
           </label>
         </div>
 
         <div className="toolbar-actions">
           <div className="search-summary">
-            {query ? `Запрос: «${query}»` : 'Показаны все документы'}
-            {language ? ` · язык: ${language.toUpperCase()}` : ''}
-            {yearSummary ? ` · годы: ${yearSummary}` : ''}
-            {availableOnly ? ' · только в наличии' : ''}
+            {query ? t('catalog.querySummary', { query }) : t('catalog.summaryAll')}
+            {language ? ` · ${t('catalog.summaryLanguage', { language: language.toUpperCase() })}` : ''}
+            {yearSummary ? ` · ${t('catalog.summaryYears', { years: yearSummary })}` : ''}
+            {availableOnly ? ` · ${t('catalog.summaryAvailable')}` : ''}
           </div>
 
           {hasActiveFilters && (
             <button type="button" className="clear-btn" onClick={clearFilters}>
-              Сбросить
+              {t('catalog.reset')}
             </button>
           )}
         </div>
       </div>
 
       {loading && results.length > 0 && (
-        <div className="loading-inline">Обновляем подборку…</div>
+        <div className="loading-inline">{t('catalog.refreshing')}</div>
       )}
 
       {loading && results.length === 0 ? (
@@ -294,7 +293,7 @@ export function CatalogPage() {
         <div className="results-grid">
           {results.map((doc) => {
             const identifier = doc?.isbn?.raw || doc?.id;
-            const title = doc?.title?.display || doc?.title?.raw || 'Без названия';
+            const title = doc?.title?.display || doc?.title?.raw || t('catalog.untitled');
             const subtitle = doc?.title?.subtitle;
             const publicationYear = doc?.publicationYear;
             const languageCode = doc?.language?.code;
@@ -304,12 +303,12 @@ export function CatalogPage() {
             return (
               <a
                 key={doc?.id || identifier}
-                href={identifier ? `/book/${encodeURIComponent(identifier)}` : '/catalog'}
+                href={identifier ? withLang(`/book/${encodeURIComponent(identifier)}`) : withLang('/catalog')}
                 className="result-card"
               >
                 <div className="card-topline">
                   <span className={`card-badge ${availableCopies > 0 ? 'card-badge--available' : 'card-badge--muted'}`}>
-                    {availableCopies > 0 ? 'В наличии' : 'Проверить доступность'}
+                    {availableCopies > 0 ? t('catalog.available') : t('catalog.checkAvailability')}
                   </span>
                   {languageCode && <span className="card-badge card-badge--muted">{languageCode.toUpperCase()}</span>}
                 </div>
@@ -322,11 +321,11 @@ export function CatalogPage() {
                 {!Number.isNaN(availableCopies) && (
                   <div className={`card-availability ${availableCopies > 0 ? 'available' : 'unavailable'}`}>
                     {availableCopies > 0
-                      ? `${availableCopies} экз. доступно`
-                      : 'Сейчас нет в наличии'}
+                      ? t('catalog.copiesAvailable', { count: availableCopies })
+                      : t('catalog.unavailable')}
                   </div>
                 )}
-                <div className="card-link-hint">Открыть карточку →</div>
+                <div className="card-link-hint">{t('catalog.openCard')}</div>
               </a>
             );
           })}
@@ -336,11 +335,9 @@ export function CatalogPage() {
       {results.length === 0 && !loading && (
         <div className="empty-state">
           <div className="empty-state-icon">🔎</div>
-          <strong>{query ? 'Ничего не найдено' : 'Начните поиск по фонду'}</strong>
+          <strong>{query ? t('catalog.emptyQuery') : t('catalog.emptyStart')}</strong>
           <p>
-            {query
-              ? 'Попробуйте изменить запрос, язык или диапазон лет, чтобы расширить выдачу.'
-              : 'Введите название, автора или ISBN, чтобы увидеть подходящие издания.'}
+            {query ? t('catalog.emptyQueryBody') : t('catalog.emptyStartBody')}
           </p>
         </div>
       )}
@@ -352,17 +349,17 @@ export function CatalogPage() {
             disabled={page <= 1}
             onClick={() => handlePageChange(page - 1)}
           >
-            ← Назад
+            {t('catalog.prev')}
           </button>
           <span className="page-info">
-            Стр. {Math.min(page, totalPages)} из {totalPages}
+            {t('catalog.pageOf', { page: Math.min(page, totalPages), total: totalPages })}
           </span>
           <button
             className="page-btn"
             disabled={page >= totalPages}
             onClick={() => handlePageChange(page + 1)}
           >
-            Далее →
+            {t('catalog.next')}
           </button>
         </div>
       )}

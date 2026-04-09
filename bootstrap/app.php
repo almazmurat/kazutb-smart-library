@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Middleware\EnsureAuthenticatedReader;
+use App\Http\Middleware\EnsureIntegrationBoundary;
+use App\Http\Middleware\EnsureInternalCirculationStaff;
+use App\Http\Middleware\LogIntegrationRequest;
+use App\Http\Middleware\SetRequestLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\EnsureInternalCirculationStaff;
-use App\Http\Middleware\EnsureIntegrationBoundary;
-use App\Http\Middleware\EnsureAuthenticatedReader;
-use App\Http\Middleware\LogIntegrationRequest;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            SetRequestLocale::class,
+        ]);
+
         $middleware->alias([
             'internal.circulation.staff' => EnsureInternalCirculationStaff::class,
             'integration.boundary' => EnsureIntegrationBoundary::class,

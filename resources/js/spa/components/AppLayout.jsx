@@ -1,14 +1,15 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import { t, withLang } from '../lib/i18n';
 
 const NAV_ITEMS = [
-  { to: '/catalog', label: 'Каталог', icon: '📚', description: 'Поиск по фонду' },
+  { to: '/catalog', labelKey: 'layout.navCatalog', icon: '▣', descriptionKey: 'layout.navCatalogDesc' },
 ];
 
 const QUICK_LINKS = [
-  { href: '/catalog', label: 'Печатный каталог' },
-  { href: '/shortlist', label: 'Подборка литературы' },
-  { href: '/resources', label: 'Электронные ресурсы' },
+  { href: '/catalog', labelKey: 'layout.quickCatalog' },
+  { href: '/shortlist', labelKey: 'layout.quickShortlist' },
+  { href: '/resources', labelKey: 'layout.quickResources' },
 ];
 
 export function AppLayout() {
@@ -16,51 +17,49 @@ export function AppLayout() {
     <div className="app-shell">
       <aside className="app-sidebar">
         <div className="sidebar-header">
-          <a href="/" className="sidebar-brand" aria-label="Вернуться на сайт библиотеки">
-            <span className="brand-icon">📖</span>
+          <a href={withLang('/')} className="sidebar-brand" aria-label={t('layout.backToSiteAria')}>
+            <span className="brand-icon">DL</span>
             <span className="brand-text">
-              Digital Library
-              <small>Reader workspace</small>
+              The Academic Curator
+              <small>Digital Library</small>
             </span>
           </a>
-          <p className="sidebar-copy">
-            Единое пространство для поиска, отбора и быстрого перехода к карточке книги.
-          </p>
-          <div className="sidebar-status">● Live catalog</div>
+          <p className="sidebar-copy">{t('layout.sidebarCopy')}</p>
+          <div className="sidebar-status">{t('layout.sidebarStatus')}</div>
         </div>
 
-        <nav className="sidebar-nav" aria-label="Навигация приложения">
-          {NAV_ITEMS.map(({ to, label, icon, description }) => (
+        <nav className="sidebar-nav" aria-label={t('layout.title')}>
+          {NAV_ITEMS.map(({ to, labelKey, icon, descriptionKey }) => (
             <NavLink
               key={to}
-              to={to}
+              to={withLang(to)}
               className={({ isActive }) =>
                 `nav-link${isActive ? ' nav-link--active' : ''}`
               }
             >
               <span className="nav-icon">{icon}</span>
               <span className="nav-copy">
-                <span className="nav-label">{label}</span>
-                <span className="nav-description">{description}</span>
+                <span className="nav-label">{t(labelKey)}</span>
+                <span className="nav-description">{t(descriptionKey)}</span>
               </span>
             </NavLink>
           ))}
         </nav>
 
         <div className="sidebar-panel">
-          <div className="sidebar-panel-title">Быстрые переходы</div>
+          <div className="sidebar-panel-title">{t('layout.quickLinks')}</div>
           <div className="sidebar-shortcuts">
-            {QUICK_LINKS.map(({ href, label }) => (
-              <a key={href} href={href} className="sidebar-shortcut">
-                {label}
+            {QUICK_LINKS.map(({ href, labelKey }) => (
+              <a key={href} href={withLang(href)} className="sidebar-shortcut">
+                {t(labelKey)}
               </a>
             ))}
           </div>
         </div>
 
         <div className="sidebar-footer">
-          <a href="/" className="nav-link nav-link--back">
-            ← На сайт
+          <a href={withLang('/')} className="nav-link nav-link--back">
+            {t('layout.backToSite')}
           </a>
         </div>
       </aside>
@@ -68,12 +67,12 @@ export function AppLayout() {
       <main className="app-main">
         <div className="app-topbar">
           <div>
-            <div className="app-topbar-kicker">Smart discovery</div>
-            <div className="app-topbar-title">Найти нужную литературу быстрее</div>
+            <div className="app-topbar-kicker">{t('layout.kicker')}</div>
+            <div className="app-topbar-title">{t('layout.title')}</div>
           </div>
           <div className="app-topbar-actions">
-            <a href="/account" className="topbar-chip">Кабинет</a>
-            <a href="/resources" className="topbar-chip">Базы данных</a>
+            <a href={withLang('/account')} className="topbar-chip">{t('layout.account')}</a>
+            <a href={withLang('/resources')} className="topbar-chip">{t('layout.resources')}</a>
           </div>
         </div>
         <Outlet />

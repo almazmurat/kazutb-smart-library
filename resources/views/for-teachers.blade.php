@@ -204,8 +204,8 @@
   }
 
   .action-group--primary {
-    border: 2px solid var(--violet, #7c3aed);
-    background: linear-gradient(135deg, rgba(124,58,237,.03), rgba(124,58,237,.07));
+    border: 1px solid rgba(0,30,64,.12);
+    background: linear-gradient(135deg, rgba(0,30,64,.03), rgba(20,105,109,.05));
   }
 
   .action-group-header {
@@ -218,16 +218,16 @@
     flex-shrink: 0;
     width: 48px;
     height: 48px;
-    border-radius: 14px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 22px;
-    background: rgba(59,130,246,.08);
+    background: rgba(0,30,64,.07);
   }
 
   .action-group--primary .action-icon {
-    background: rgba(124,58,237,.12);
+    background: rgba(20,105,109,.10);
   }
 
   .action-group h3 {
@@ -256,7 +256,7 @@
     color: var(--blue);
     text-decoration: none;
   }
-  .action-link:hover { color: var(--violet); }
+  .action-link:hover { color: var(--cyan); }
 
   .syllabus-steps {
     display: grid;
