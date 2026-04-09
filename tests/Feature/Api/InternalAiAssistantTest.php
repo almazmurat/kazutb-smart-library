@@ -25,11 +25,6 @@ class InternalAiAssistantTest extends TestCase
         ];
     }
 
-    private function integrationHeaders(): array
-    {
-        return [];
-    }
-
     // ── Access control ────────────────────────────────────────────
 
     public function test_token_endpoint_rejects_unauthenticated_guests(): void

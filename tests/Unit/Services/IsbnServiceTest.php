@@ -116,11 +116,11 @@ class IsbnServiceTest extends TestCase
 
     public function test_validate_isbn13_with_letter_in_body_is_invalid(): void
     {
-        // After normalization, 'X' in non-check position will still be a non-digit.
-        // The ISBN-13 checksum algorithm requires all-numeric.
+        // normalize() keeps X but strips other non-digit chars, so '978X161484100' stays
+        // 13 chars long. validateIsbn13() requires all-numeric via preg_match('/^\d{13}$/'),
+        // so the X in a non-check position causes checksum validation to fail.
         $result = $this->service->validate('978X161484100');
 
-        // Normalization strips non-digit non-X chars; X is kept, making length 13 but checksum fails.
         $this->assertFalse($result['valid']);
     }
 
