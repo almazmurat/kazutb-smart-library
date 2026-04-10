@@ -3,6 +3,11 @@
 ## Core identity
 Digital Library is the new primary university digital library platform. It is replacing legacy library software in stages, not acting as a temporary demo site, a frontend-only shell, or a CRM-owned wrapper.
 
+## Institutional naming convention
+- In Kazakh/Cyrillic-facing UI copy, default to **`КазТБУ`**.
+- Use **`КазУТБ`** only when explicitly referring to the Russian-language institutional name.
+- Existing technical identifiers and English transliterations such as `kazutb-smart-library` or `KazUTB` stay unchanged unless a separate rename task requests it.
+
 ## What the platform is growing into
 The platform is expected to serve all major university-library roles directly over time:
 - readers and students
