@@ -233,7 +233,7 @@
   }
 
   .landing-shell {
-    max-width: 980px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: clamp(18px, 3vw, 26px);
     text-align: center;
@@ -274,14 +274,16 @@
 
   .landing-hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 360px);
-    gap: 24px;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    gap: clamp(36px, 4vw, 64px);
+    align-items: start;
     text-align: left;
   }
 
   .landing-intro {
     min-width: 0;
+    max-width: 560px;
+    padding-right: clamp(4px, 1vw, 16px);
   }
 
   .landing-kicker {
@@ -320,11 +322,13 @@
   }
 
   .landing-title {
-    margin: 0 0 16px;
+    max-width: 10ch;
+    margin: 0 0 18px;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2.8rem, 6vw, 4.8rem);
-    line-height: 1;
-    letter-spacing: -.05em;
+    font-size: clamp(2.8rem, 5.3vw, 4.5rem);
+    line-height: .94;
+    letter-spacing: -.055em;
+    text-wrap: balance;
     color: var(--blue);
   }
 
@@ -338,8 +342,10 @@
 
   .landing-campus-panel {
     display: grid;
-    gap: 12px;
+    gap: 18px;
     justify-items: center;
+    align-content: start;
+    padding-top: 10px;
   }
 
   .hero-campus-mark {
@@ -411,7 +417,8 @@
   }
 
   .landing-campus-note {
-    width: 100%;
+    width: min(100%, 340px);
+    margin-top: 2px;
     padding: 14px 16px;
     border-radius: 20px;
     background: rgba(255,255,255,.82);
@@ -846,8 +853,9 @@
       margin-inline: auto;
     }
 
+    .landing-title,
     .landing-copy {
-      margin: 0 auto;
+      margin-inline: auto;
     }
 
     .landing-campus-note {
