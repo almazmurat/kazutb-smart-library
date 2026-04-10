@@ -278,6 +278,14 @@ class ConsolidationTest extends TestCase
         $response->assertSee('Библиотека КазТБУ');
     }
 
+    public function test_homepage_uses_real_kaztbu_logo_in_hero_mark(): void
+    {
+        $response = $this->get('/');
+        $response->assertOk();
+        $response->assertSee('campus-mark__logo', false);
+        $response->assertSee('logo.png', false);
+    }
+
     public function test_homepage_no_advantages_section(): void
     {
         $response = $this->get('/');

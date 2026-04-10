@@ -21,9 +21,10 @@
           'lead' => 'Спокойный цифровой вход в университетский фонд, электронные коллекции и научные ресурсы — всё в одном современном маршруте.',
           'identity_badge' => 'Библиотека КазТБУ',
           'identity_note' => 'Официальная библиотека университета: каталог, цифровые коллекции и сервисы для студентов и преподавателей.',
-          'campus_mark_eyebrow' => 'University Library',
+          'logo_alt' => 'Логотип КазТБУ',
+          'campus_mark_eyebrow' => 'Официальный логотип',
           'campus_mark_title' => 'КазТБУ',
-          'campus_mark_label' => 'Астана · академический доступ',
+          'campus_mark_label' => 'Знак университета',
           'search_placeholder' => 'Искать книги, авторов, ISBN, УДК или ключевые слова',
           'search_cta' => 'Открыть каталог',
           'summary_kicker' => 'Платформа',
@@ -70,9 +71,10 @@
           'lead' => 'Университет қоры, цифрлық коллекциялар және ғылыми ресурстар бір заманауи әрі жинақы маршрутқа біріктірілді.',
           'identity_badge' => 'КазТБУ кітапханасы',
           'identity_note' => 'Университеттің ресми кітапханасы: каталог, цифрлық коллекциялар және студенттер мен оқытушыларға арналған сервистер.',
-          'campus_mark_eyebrow' => 'University Library',
+          'logo_alt' => 'КазТБУ логотипі',
+          'campus_mark_eyebrow' => 'Ресми логотип',
           'campus_mark_title' => 'КазТБУ',
-          'campus_mark_label' => 'Астана · академиялық қолжетімділік',
+          'campus_mark_label' => 'Университет белгісі',
           'search_placeholder' => 'Кітап, автор, ISBN, ӘОЖ немесе кілт сөз бойынша іздеу',
           'search_cta' => 'Каталогты ашу',
           'summary_kicker' => 'Платформа',
@@ -119,9 +121,10 @@
           'lead' => 'A calm digital entry into the university holdings, electronic collections, and research resources — kept clear and practical.',
           'identity_badge' => 'KazTBU Library',
           'identity_note' => 'The university’s official library surface for catalog search, digital collections, and academic services.',
-          'campus_mark_eyebrow' => 'University Library',
+          'logo_alt' => 'KazTBU logo',
+          'campus_mark_eyebrow' => 'Official logo',
           'campus_mark_title' => 'KazTBU',
-          'campus_mark_label' => 'Astana · academic access',
+          'campus_mark_label' => 'University mark',
           'search_placeholder' => 'Search books, authors, ISBN, UDC, or keywords',
           'search_cta' => 'Open catalog',
           'summary_kicker' => 'Platform',
@@ -382,38 +385,48 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
     text-align: center;
-    padding: 22px;
+    padding: 22px 24px 24px;
     background: rgba(255,255,255,.92);
     border: 1px solid rgba(255,255,255,.72);
     box-shadow: inset 0 0 0 1px rgba(0, 30, 64, 0.05);
   }
 
   .campus-mark__eyebrow {
+    max-width: 170px;
     color: var(--cyan);
-    font-size: 10px;
+    font-size: 9px;
+    line-height: 1.35;
     font-weight: 800;
     letter-spacing: .18em;
     text-transform: uppercase;
+    text-wrap: balance;
   }
 
-  .campus-mark__inner strong {
+  .campus-mark__logo {
     display: block;
-    margin: 6px 0 4px;
-    color: var(--blue);
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2.1rem, 4vw, 2.9rem);
-    line-height: 1;
+    width: min(172px, 70%);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 18px rgba(0, 30, 64, 0.08));
   }
 
   .campus-mark__inner small {
+    display: block;
+    max-width: 168px;
     color: var(--muted);
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 10px;
+    line-height: 1.35;
+    font-weight: 800;
     letter-spacing: .12em;
     text-transform: uppercase;
+    text-wrap: balance;
   }
 
   .landing-campus-note {
@@ -904,7 +917,7 @@
             <div class="hero-campus-mark">
               <div class="campus-mark__inner">
                 <span class="campus-mark__eyebrow">{{ $copy['campus_mark_eyebrow'] }}</span>
-                <strong>{{ $copy['campus_mark_title'] }}</strong>
+                <img src="{{ asset('logo.png') }}" alt="{{ $copy['logo_alt'] }}" class="campus-mark__logo" loading="eager" decoding="async">
                 <small>{{ $copy['campus_mark_label'] }}</small>
               </div>
             </div>
