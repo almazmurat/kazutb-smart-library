@@ -17,8 +17,13 @@
       'ru' => [
           'title' => 'Digital Library — Главная',
           'eyebrow' => 'Единый академический доступ',
-          'hero' => 'Знание, собранное для академической работы.',
-          'lead' => 'Digital Library соединяет университетский фонд, цифровые коллекции и внешние научные платформы в едином рабочем маршруте.',
+          'hero' => 'Библиотека КазТБУ для учёбы, поиска и академической работы.',
+          'lead' => 'Спокойный цифровой вход в университетский фонд, электронные коллекции и научные ресурсы — всё в одном современном маршруте.',
+          'identity_badge' => 'Библиотека КазТБУ',
+          'identity_note' => 'Официальная библиотека университета: каталог, цифровые коллекции и сервисы для студентов и преподавателей.',
+          'campus_mark_eyebrow' => 'University Library',
+          'campus_mark_title' => 'КазТБУ',
+          'campus_mark_label' => 'Астана · академический доступ',
           'search_placeholder' => 'Искать книги, авторов, ISBN, УДК или ключевые слова',
           'search_cta' => 'Открыть каталог',
           'summary_kicker' => 'Платформа',
@@ -61,8 +66,13 @@
       'kk' => [
           'title' => 'Digital Library — Басты бет',
           'eyebrow' => 'Бірыңғай академиялық қолжетімділік',
-          'hero' => 'Білім академиялық жұмыс үшін жүйеленді.',
-          'lead' => 'Digital Library университет қорын, цифрлық коллекцияларды және сыртқы ғылыми платформаларды біртұтас жұмыс маршрутына біріктіреді.',
+          'hero' => 'КазТБУ кітапханасы оқу, іздеу және академиялық жұмысқа арналған бірыңғай орта.',
+          'lead' => 'Университет қоры, цифрлық коллекциялар және ғылыми ресурстар бір заманауи әрі жинақы маршрутқа біріктірілді.',
+          'identity_badge' => 'КазТБУ кітапханасы',
+          'identity_note' => 'Университеттің ресми кітапханасы: каталог, цифрлық коллекциялар және студенттер мен оқытушыларға арналған сервистер.',
+          'campus_mark_eyebrow' => 'University Library',
+          'campus_mark_title' => 'КазТБУ',
+          'campus_mark_label' => 'Астана · академиялық қолжетімділік',
           'search_placeholder' => 'Кітап, автор, ISBN, ӘОЖ немесе кілт сөз бойынша іздеу',
           'search_cta' => 'Каталогты ашу',
           'summary_kicker' => 'Платформа',
@@ -105,8 +115,13 @@
       'en' => [
           'title' => 'Digital Library — Home',
           'eyebrow' => 'Unified academic access',
-          'hero' => 'Knowledge, Curated for the Scholar.',
-          'lead' => 'Digital Library connects university holdings, digital collections, and external research platforms inside one practical workflow.',
+          'hero' => 'KazTBU Library for study, search, and academic work.',
+          'lead' => 'A calm digital entry into the university holdings, electronic collections, and research resources — kept clear and practical.',
+          'identity_badge' => 'KazTBU Library',
+          'identity_note' => 'The university’s official library surface for catalog search, digital collections, and academic services.',
+          'campus_mark_eyebrow' => 'University Library',
+          'campus_mark_title' => 'KazTBU',
+          'campus_mark_label' => 'Astana · academic access',
           'search_placeholder' => 'Search books, authors, ISBN, UDC, or keywords',
           'search_cta' => 'Open catalog',
           'summary_kicker' => 'Platform',
@@ -257,6 +272,18 @@
     z-index: 1;
   }
 
+  .landing-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 360px);
+    gap: 24px;
+    align-items: center;
+    text-align: left;
+  }
+
+  .landing-intro {
+    min-width: 0;
+  }
+
   .landing-kicker {
     display: inline-block;
     margin-bottom: 12px;
@@ -275,6 +302,23 @@
     font-size: 1.2rem;
   }
 
+  .landing-identity-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin-bottom: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(0, 30, 64, 0.06);
+    border: 1px solid rgba(0, 30, 64, 0.08);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
   .landing-title {
     margin: 0 0 16px;
     font-family: 'Newsreader', Georgia, serif;
@@ -285,11 +329,109 @@
   }
 
   .landing-copy {
-    margin: 0 auto;
-    max-width: 760px;
+    margin: 0;
+    max-width: 680px;
     color: var(--muted);
     font-size: 17px;
     line-height: 1.75;
+  }
+
+  .landing-campus-panel {
+    display: grid;
+    gap: 12px;
+    justify-items: center;
+  }
+
+  .hero-campus-mark {
+    position: relative;
+    width: min(320px, 100%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 18px;
+    overflow: hidden;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.94) 0%, rgba(190,221,224,.92) 34%, rgba(0,51,102,.95) 100%);
+    box-shadow: 0 24px 54px rgba(0, 30, 64, 0.14);
+  }
+
+  .hero-campus-mark::before,
+  .hero-campus-mark::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    inset: 10%;
+    border: 1px solid rgba(255,255,255,.24);
+  }
+
+  .hero-campus-mark::after {
+    inset: auto 18% 16% 18%;
+    height: 12px;
+    border: 0;
+    background: rgba(255,255,255,.18);
+    filter: blur(12px);
+  }
+
+  .campus-mark__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 22px;
+    background: rgba(255,255,255,.92);
+    border: 1px solid rgba(255,255,255,.72);
+    box-shadow: inset 0 0 0 1px rgba(0, 30, 64, 0.05);
+  }
+
+  .campus-mark__eyebrow {
+    color: var(--cyan);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .campus-mark__inner strong {
+    display: block;
+    margin: 6px 0 4px;
+    color: var(--blue);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(2.1rem, 4vw, 2.9rem);
+    line-height: 1;
+  }
+
+  .campus-mark__inner small {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .landing-campus-note {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.82);
+    border: 1px solid rgba(195,198,209,.55);
+    box-shadow: 0 10px 24px rgba(25,28,29,.04);
+    text-align: left;
+  }
+
+  .landing-campus-note strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--blue);
+    font-size: 15px;
+  }
+
+  .landing-campus-note p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
   }
 
   .landing-search {
@@ -687,11 +829,30 @@
   }
 
   @media (max-width: 980px) {
+    .landing-hero-grid,
     .landing-feature-grid,
     .subject-grid,
     .trust-section,
     .hero-quick-links {
       grid-template-columns: 1fr;
+    }
+
+    .landing-hero-grid,
+    .landing-intro {
+      text-align: center;
+    }
+
+    .landing-identity-chip {
+      margin-inline: auto;
+    }
+
+    .landing-copy {
+      margin: 0 auto;
+    }
+
+    .landing-campus-note {
+      max-width: 420px;
+      text-align: center;
     }
 
     .landing-feature-grid .feature-entry:nth-child(2) {
@@ -722,10 +883,29 @@
   <section class="landing-hero" data-homepage-stitch-reset>
     <div class="container">
       <div class="landing-shell">
-        <div class="landing-kicker">{{ $copy['eyebrow'] }}</div>
-        <div class="landing-curator">{{ __('ui.brand.title') }}</div>
-        <h1 class="landing-title">{{ $copy['hero'] }}</h1>
-        <p class="landing-copy">{{ $copy['lead'] }}</p>
+        <div class="landing-hero-grid">
+          <div class="landing-intro">
+            <div class="landing-kicker">{{ $copy['eyebrow'] }}</div>
+            <div class="landing-curator">{{ __('ui.brand.title') }}</div>
+            <div class="landing-identity-chip">{{ $copy['identity_badge'] }}</div>
+            <h1 class="landing-title">{{ $copy['hero'] }}</h1>
+            <p class="landing-copy">{{ $copy['lead'] }}</p>
+          </div>
+
+          <aside class="landing-campus-panel" aria-label="{{ $copy['identity_badge'] }}">
+            <div class="hero-campus-mark">
+              <div class="campus-mark__inner">
+                <span class="campus-mark__eyebrow">{{ $copy['campus_mark_eyebrow'] }}</span>
+                <strong>{{ $copy['campus_mark_title'] }}</strong>
+                <small>{{ $copy['campus_mark_label'] }}</small>
+              </div>
+            </div>
+            <div class="landing-campus-note">
+              <strong>{{ $copy['identity_badge'] }}</strong>
+              <p>{{ $copy['identity_note'] }}</p>
+            </div>
+          </aside>
+        </div>
 
         <form id="heroSearch" class="landing-search hero-search-bar" action="/catalog" method="get" data-hero-search>
           @if($lang !== 'ru')
