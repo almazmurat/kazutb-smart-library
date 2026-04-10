@@ -59,3 +59,13 @@ The closeout script now keeps three synchronized outputs:
 - prefer rich, meaning-carrying file names
 - update the vault at the end of each meaningful session
 - archive stale structures instead of leaving duplicates alive
+
+## Second-brain quality bar
+The vault should behave like a real **second brain** for the project and its operators, not like a pile of loose notes.
+
+Agents should keep it useful by default:
+- capture goals, decisions, key numbers, constraints, done/in-progress/next state, and important ideas when they appear
+- normalize rough chat notes or `draft.md` context into linked, durable notes rather than leaving meaning trapped in one long dump
+- use descriptive filenames such as `investor-meeting-2026-01.md` or `homepage-branding-decision-2026-04-10.md`, not generic names like `note-48.md`
+- answer from this connected context whenever relevant, instead of relying on blank-session guesses
+- keep repo docs concise and operational while letting Obsidian hold the richer narrative and cross-links
