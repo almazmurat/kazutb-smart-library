@@ -19,7 +19,9 @@
 <header class="topbar topbar--glass">
   <div class="container nav">
     <a href="{{ $routeWithLang('/') }}" class="brand" aria-label="{{ __('ui.brand.home_aria') }}">
-      <span class="brand-mark">DL</span>
+      <span class="brand-mark brand-mark--logo">
+        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="logo-img logo-img--brand navbar-brand-logo" loading="eager" decoding="async">
+      </span>
       <span class="brand-text">
         {{ __('ui.brand.title') }}
         <small>{{ __('ui.brand.subtitle') }}</small>

@@ -286,6 +286,22 @@ class ConsolidationTest extends TestCase
         $response->assertSee('logo.png', false);
     }
 
+    public function test_homepage_hides_helper_text_inside_hero_logo(): void
+    {
+        $response = $this->get('/');
+        $response->assertOk();
+        $response->assertDontSee('Официальный логотип');
+        $response->assertDontSee('Знак университета');
+    }
+
+    public function test_navbar_uses_real_kaztbu_logo(): void
+    {
+        $response = $this->get('/');
+        $response->assertOk();
+        $response->assertSee('navbar-brand-logo', false);
+        $response->assertSee('logo.png', false);
+    }
+
     public function test_homepage_no_advantages_section(): void
     {
         $response = $this->get('/');

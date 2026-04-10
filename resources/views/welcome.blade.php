@@ -385,48 +385,31 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    display: grid;
+    place-items: center;
     overflow: hidden;
-    text-align: center;
-    padding: 22px 24px 24px;
+    padding: 22px;
     background: rgba(255,255,255,.92);
     border: 1px solid rgba(255,255,255,.72);
     box-shadow: inset 0 0 0 1px rgba(0, 30, 64, 0.05);
   }
 
-  .campus-mark__eyebrow {
-    max-width: 170px;
-    color: var(--cyan);
-    font-size: 9px;
-    line-height: 1.35;
-    font-weight: 800;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    text-wrap: balance;
+  .campus-mark__logo-shell {
+    width: min(190px, 78%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fff;
+    border: 4px solid rgba(0, 30, 64, 0.12);
+    box-shadow: 0 12px 24px rgba(0, 30, 64, 0.08);
   }
 
   .campus-mark__logo {
     display: block;
-    width: min(172px, 70%);
-    height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 18px rgba(0, 30, 64, 0.08));
-  }
-
-  .campus-mark__inner small {
-    display: block;
-    max-width: 168px;
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.35;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    text-wrap: balance;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   .landing-campus-note {
@@ -916,9 +899,9 @@
           <aside class="landing-campus-panel" aria-label="{{ $copy['identity_badge'] }}">
             <div class="hero-campus-mark">
               <div class="campus-mark__inner">
-                <span class="campus-mark__eyebrow">{{ $copy['campus_mark_eyebrow'] }}</span>
-                <img src="{{ asset('logo.png') }}" alt="{{ $copy['logo_alt'] }}" class="campus-mark__logo" loading="eager" decoding="async">
-                <small>{{ $copy['campus_mark_label'] }}</small>
+                <div class="campus-mark__logo-shell">
+                  <img src="{{ asset('logo.png') }}" alt="{{ $copy['logo_alt'] }}" class="campus-mark__logo" loading="eager" decoding="async">
+                </div>
               </div>
             </div>
             <div class="landing-campus-note">
