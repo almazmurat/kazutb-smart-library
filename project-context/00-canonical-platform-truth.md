@@ -26,3 +26,8 @@ The platform is expected to serve all major university-library roles directly ov
 - Digital materials, licensed external resources, and access-control rules are real product layers and must stay explicit in planning.
 - Weak metadata quality is an operational reality; it must be surfaced and improved, not hidden.
 - Future AI/NLP assistance for metadata cleanup, semantic discovery, and librarian support is a likely product direction.
+
+## Product-planning posture
+- Even when a request is phrased as “make a page” or “add a section”, treat the work as part of one coherent КазТБУ product surface rather than as an isolated screen.
+- Within this repository, that means public pages, authenticated reader/teacher flows, and internal/staff operations should feel like one system and reuse shared patterns.
+- New content or structural work should be planned so it can be governed, extended, and managed through staff/admin workflows over time, without losing the repo’s library-centered boundary.
