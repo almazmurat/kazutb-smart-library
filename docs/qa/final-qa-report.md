@@ -9,11 +9,11 @@
 ---
 
 ## Abstract
-This report evaluates the quality-assurance maturity of the КазТБУ Digital Library, a Laravel-, PostgreSQL-, and Vite-based university library platform that includes public discovery, authenticated reader services, internal staff operations, and bounded integration APIs. The goal of the final QA phase was not merely to accumulate tests, but to produce a **defensible engineering and academic package**: a repository state with reproducible quality gates, evidence-backed results, and a report structure suitable for technical review and oral defense.
+This report evaluates the quality-assurance maturity of the КазТБУ Digital Library, a Laravel-, PostgreSQL-, and Vite-based university library platform that includes public discovery, authenticated reader services, internal staff operations, and bounded integration APIs. The work was conducted as an empirical QA study of a live repository, using **PHPUnit**, **Playwright**, **Clover/JUnit reporting**, and **GitHub Actions** to collect repeatable verification evidence rather than relying on narrative claims alone.
 
-The final evidence shows that the project is strongest in the areas with the highest operational risk: authentication, reader account access, internal staff boundaries, catalog discovery, and integration safety. The most important observed failures were not purely business-logic defects; they were failures of **environment normalization and detectability**, including locale-sensitive assertions, missing frontend tooling on clean runners, and artifact-permission drift in browser verification. This distinction matters because it changes how the system should be evaluated: a system can be logically correct and still operationally unreliable if verification is brittle.
+The resulting dataset combined local gate logs, browser-smoke results, coverage artifacts, metrics charts, and recent clean-runner workflow history. Those sources show that the project is strongest in the areas with the highest operational risk: authentication, reader account access, internal staff boundaries, catalog discovery, and integration safety. The most important observed failures were not purely business-logic defects; they were failures of **environment normalization and detectability**, including locale-sensitive assertions, missing frontend tooling on clean runners, and artifact-permission drift in browser verification.
 
-The report therefore uses two complementary coverage dimensions. **Global line coverage** from Clover is intentionally low because the measured suite is compared against the full application namespace. **High-risk scenario coverage** is much stronger and better reflects release confidence for the defended critical path. The resulting conclusion is not that the repository is “fully tested,” but that it is **meaningfully verified, empirically analyzed, and ready for a strong defense** provided its documented limitations are explained honestly.
+The report therefore interprets QA outcomes through two complementary coverage dimensions. **Global line coverage** from Clover remains intentionally low because the defended suite is measured against the full application namespace, while **high-risk scenario coverage** is much stronger and more informative for the platform’s critical path. The final conclusion is not that the repository is exhaustively tested, but that it is **meaningfully verified, empirically analyzed, and ready for technical report submission and defense** as long as its documented limitations are presented honestly.
 
 ---
 
@@ -23,6 +23,8 @@ The КазТБУ Digital Library is a multi-surface web application rather than 
 The QA work in this repository therefore had two goals. The first was engineering-oriented: build a reliable automation baseline that catches meaningful regressions. The second was report-oriented: convert that baseline into an empirical narrative that explains **what was tested, what actually failed, why it failed, what improved, and what still remains limited**. That second goal is especially important for academic evaluation because raw pass counts alone do not explain whether the chosen strategy was appropriate or whether the evidence is strong enough to defend.
 
 The central question of this report is therefore: **Does the current QA strategy provide credible release confidence for the highest-risk parts of the digital library, and can that claim be defended with concrete evidence?** The answer is largely positive, but only when the evidence is interpreted carefully and its limitations are made explicit.
+
+The remainder of the report is organized as follows: Section 2 states the strict gap audit, Sections 3 and 4 explain the theoretical and methodological basis of the verification strategy, Sections 5 and 6 present the implemented automation and measured results, Section 7 analyzes cause and effect, and the final sections summarize limitations, conclusions, and defense readiness.
 
 ---
 
@@ -102,6 +104,9 @@ Risk was re-evaluated by looking at **observed failure modes**, not only initial
 - **Detectability** — how reliably the current automation would expose it.
 
 This approach made it possible to separate business-logic issues from environment and observability issues.
+
+### 4.6 Why this methodology is valid for this system
+This methodology is valid for the КазТБУ Digital Library because the system’s most important risks are boundary- and workflow-oriented rather than purely algorithmic. A mixed strategy of unit, integration, and browser smoke checks is therefore more appropriate than relying on any single metric or single test layer. PHPUnit fits the repository’s Laravel architecture, Playwright provides real user-facing proof for the public shell, and GitHub Actions verifies that the same conclusions still hold on a clean runner. The evidence model is consequently aligned with both the technical architecture and the kinds of failures the system is most likely to produce.
 
 ---
 
@@ -218,7 +223,7 @@ These commands are intentionally simple enough to be shown live during a defense
 | risk was mostly about auth and integration only | detectability and environment normalization became major risk factors too | QA strategy must include operational realism |
 
 ### 6.11 Integrated visual evidence
-The main report includes the same visual evidence used in the supporting QA materials so it can be reviewed or exported as a single document.
+The main report includes the same visual evidence used in the supporting QA materials so it can be reviewed or exported as a single document. The figures below are not decorative; each one supports a different analytical claim about coverage strength, execution practicality, or verification stability.
 
 #### Figure 1 — Coverage by high-risk module
 ![Coverage by high-risk module](../../evidence/verification/charts/coverage-by-module.svg)
@@ -228,6 +233,28 @@ The main report includes the same visual evidence used in the supporting QA mate
 
 #### Figure 3 — Verification status distribution
 ![Verification status distribution](../../evidence/verification/charts/run-status-distribution.svg)
+
+#### Figure 4 — Testing strategy architecture
+```mermaid
+flowchart LR
+    U[Unit checks\nBibliographyFormatterTest] --> C[composer qa:ci]
+    F[Feature and integration checks\nAuth, account, catalog, staff, integration] --> C
+    C --> B[JUnit + Clover artifacts]
+    E[Browser smoke\npublic-smoke.spec.ts] --> P[npm run test:e2e]
+    P --> A[Playwright report + traces]
+    B --> R[Report evidence and metrics]
+    A --> R
+    R --> D[Defense-ready QA narrative]
+```
+
+| Visual ID | Type | Purpose | File Path | Referenced in Report? | Interpretation Included? |
+|---|---|---|---|---|---|
+| `V1` | SVG chart | compare scenario coverage across high-risk modules | `evidence/verification/charts/coverage-by-module.svg` | Yes | Yes |
+| `V2` | SVG chart | show whether the defended verification path stays practical to rerun | `evidence/verification/charts/execution-time-by-run.svg` | Yes | Yes |
+| `V3` | SVG chart | summarize the resolved pass/fail distribution of the current verification scope | `evidence/verification/charts/run-status-distribution.svg` | Yes | Yes |
+| `V4` | Mermaid diagram | explain why the layered testing strategy fits this repository architecture | embedded in this section | Yes | Yes |
+
+**Interpretation of the visual layer:** Figure 1 makes the remaining weak area immediately visible by showing external-resource entitlement behavior below the stronger core modules. Figure 2 supports the claim that the current verification strategy is practical enough for repeated local and CI use, since the primary gates stay lightweight. Figure 3 reinforces the argument that the recent instability was reduced after hardening rather than merely hidden. Figure 4 explains why the project depends on multiple complementary layers rather than a single coverage number.
 
 ---
 

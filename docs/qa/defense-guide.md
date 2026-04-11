@@ -37,6 +37,17 @@ From `docs/qa/final-qa-report.md`:
 - coverage-by-module chart
 - execution-time chart
 - verification status distribution chart
+- testing strategy architecture diagram
+
+### Fast artifact map
+| Artifact / visual | Where to open it | What it proves |
+|---|---|---|
+| Main report | `docs/qa/final-qa-report.md` | the full article-style narrative and final conclusion |
+| Coverage chart | `evidence/verification/charts/coverage-by-module.svg` | which high-risk areas are strongest and which one is still below `70%` scenario coverage |
+| Execution-time chart | `evidence/verification/charts/execution-time-by-run.svg` | the verification path is practical to rerun during active development |
+| Verification-status chart | `evidence/verification/charts/run-status-distribution.svg` | current stability is backed by a mostly green outcome profile |
+| GitHub Actions successful run | latest successful `Continuous Verification` run on `main` | the repository is green on a clean runner, not only locally |
+| Job detail screen | same GitHub Actions run, open `Backend Verification & Coverage` and `Frontend Build & Browser Smoke` | exactly what the CI pipeline executed |
 
 ## 6. How to explain the quality gates
 Use this short explanation:
