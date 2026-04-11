@@ -160,6 +160,51 @@ class DocumentManagementTest extends TestCase
             ->assertJsonPath('error.reason_code', 'invalid_request_body');
     }
 
+    public function test_show_rejects_invalid_uuid(): void
+    {
+        $response = $this->withHeaders($this->headers)
+            ->getJson('/api/integration/v1/documents/not-a-uuid');
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'invalid_document_id');
+    }
+
+    public function test_patch_without_mutable_fields_returns_400(): void
+    {
+        $id = 'd4f798b5-357e-4969-b4d0-224583f609a9';
+
+        $response = $this->withHeaders($this->headers)
+            ->patchJson("/api/integration/v1/documents/{$id}", []);
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'no_mutable_fields_provided');
+    }
+
+    public function test_list_rejects_per_page_above_allowed_range(): void
+    {
+        $response = $this->withHeaders($this->headers)
+            ->getJson('/api/integration/v1/documents?per_page=101');
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'invalid_filter_value');
+    }
+
+    public function test_create_rejects_publication_year_above_range(): void
+    {
+        $response = $this->withHeaders($this->headers)
+            ->postJson('/api/integration/v1/documents', [
+                'title' => 'Future Book',
+                'publication_year' => 2501,
+            ]);
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'invalid_request_body');
+    }
+
     public function test_patch_rejects_empty_title(): void
     {
         $id = 'd4f798b5-357e-4969-b4d0-224583f609a9';

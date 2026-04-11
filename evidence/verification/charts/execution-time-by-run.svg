@@ -1,16 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="374" viewBox="0 0 1000 374">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520">
 <rect width="100%" height="100%" fill="#ffffff"/>
-<text x="40" y="42" font-size="28" font-family="Arial, sans-serif" font-weight="bold">Verified Execution Time by Step</text>
-<text x="40" y="114" font-size="18" font-family="Arial, sans-serif">PHPUnit critical path</text>
-<rect x="260" y="90" width="660" height="36" fill="#eef2ff" rx="6"/>
-<rect x="260" y="90" width="660" height="36" fill="#4C78A8" rx="6"/>
-<text x="930" y="114" font-size="18" font-family="Arial, sans-serif">6.79s</text>
-<text x="40" y="202" font-size="18" font-family="Arial, sans-serif">Vite build</text>
-<rect x="260" y="178" width="660" height="36" fill="#eef2ff" rx="6"/>
-<rect x="260" y="178" width="113" height="36" fill="#4C78A8" rx="6"/>
-<text x="383" y="202" font-size="18" font-family="Arial, sans-serif">1.17s</text>
-<text x="40" y="290" font-size="18" font-family="Arial, sans-serif">Playwright smoke</text>
-<rect x="260" y="266" width="660" height="36" fill="#eef2ff" rx="6"/>
-<rect x="260" y="266" width="544" height="36" fill="#4C78A8" rx="6"/>
-<text x="814" y="290" font-size="18" font-family="Arial, sans-serif">5.6s</text>
+<text x="32" y="40" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#111827">Execution time by verification step</text>
+<text x="32" y="66" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#4b5563">Backend + browser timings from 20260411-010532</text>
+<line x1="220" y1="450" x2="920" y2="450" stroke="#d1d5db" stroke-width="1"/>
+<line x1="220.0" y1="90" x2="220.0" y2="450" stroke="#f3f4f6" stroke-width="1"/>
+<text x="220.0" y="472" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">0s</text>
+<line x1="360.0" y1="90" x2="360.0" y2="450" stroke="#f3f4f6" stroke-width="1"/>
+<text x="360.0" y="472" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">2s</text>
+<line x1="500.0" y1="90" x2="500.0" y2="450" stroke="#f3f4f6" stroke-width="1"/>
+<text x="500.0" y="472" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">3s</text>
+<line x1="640.0" y1="90" x2="640.0" y2="450" stroke="#f3f4f6" stroke-width="1"/>
+<text x="640.0" y="472" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">5s</text>
+<line x1="780.0" y1="90" x2="780.0" y2="450" stroke="#f3f4f6" stroke-width="1"/>
+<text x="780.0" y="472" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">6s</text>
+<line x1="920.0" y1="90" x2="920.0" y2="450" stroke="#f3f4f6" stroke-width="1"/>
+<text x="920.0" y="472" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">8s</text>
+<text x="208" y="149.0" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">composer qa:ci</text>
+<rect x="220" y="90" width="700.0" height="110" rx="6" fill="#7c3aed" opacity="0.9"/>
+<text x="928.0" y="149.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">8.05s</text>
+<text x="208" y="273.0" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">npm run test:e2e</text>
+<rect x="220" y="214" width="408.7" height="110" rx="6" fill="#7c3aed" opacity="0.9"/>
+<text x="636.7" y="273.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">4.7s</text>
+<text x="208" y="397.0" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">vite build</text>
+<rect x="220" y="338" width="108.7" height="110" rx="6" fill="#7c3aed" opacity="0.9"/>
+<text x="336.7" y="397.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">1.25s</text>
 </svg>

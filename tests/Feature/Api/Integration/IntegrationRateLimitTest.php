@@ -32,6 +32,34 @@ class IntegrationRateLimitTest extends TestCase
             ->assertHeader('X-Correlation-Id', 'corr-rl-001');
     }
 
+    public function test_missing_operator_roles_header_returns_400(): void
+    {
+        $headers = $this->fullHeaders();
+        unset($headers['X-Operator-Roles']);
+
+        $response = $this
+            ->withHeaders($headers)
+            ->getJson('/api/integration/v1/_boundary/ping');
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'missing_required_header');
+    }
+
+    public function test_invalid_source_system_is_rejected(): void
+    {
+        $headers = $this->fullHeaders();
+        $headers['X-Source-System'] = 'erp';
+
+        $response = $this
+            ->withHeaders($headers)
+            ->getJson('/api/integration/v1/_boundary/ping');
+
+        $response->assertStatus(400)
+            ->assertJsonPath('error.error_code', 'invalid_request')
+            ->assertJsonPath('error.reason_code', 'invalid_source_system');
+    }
+
     public function test_governance_headers_present_on_error(): void
     {
         // Missing bearer token — error response should still have governance headers
@@ -175,7 +203,7 @@ class IntegrationRateLimitTest extends TestCase
     private function fullHeaders(string $token = 'test-integration-token'): array
     {
         return [
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
             'X-Request-Id' => 'req-rl-001',
             'X-Correlation-Id' => 'corr-rl-001',
             'X-Source-System' => 'crm',

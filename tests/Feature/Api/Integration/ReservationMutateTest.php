@@ -196,6 +196,78 @@ class ReservationMutateTest extends TestCase
             ->assertJsonPath('data.status', 'READY');
     }
 
+    public function test_approve_replay_preserves_traceability_fields(): void
+    {
+        $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';
+        $this->bindApproveResult($id, [
+            'status' => 200,
+            'body' => [
+                'data' => [
+                    'id' => $id,
+                    'status' => 'READY',
+                ],
+                'request_id' => 'req-mut-001',
+                'correlation_id' => 'corr-mut-001',
+                'timestamp' => '2026-04-01T20:00:00.000000Z',
+            ],
+            'replayed' => true,
+        ]);
+
+        $response = $this->withHeaders($this->headers)
+            ->postJson("/api/integration/v1/reservations/{$id}/approve");
+
+        $response->assertOk()
+            ->assertJsonPath('request_id', 'req-mut-001')
+            ->assertJsonPath('correlation_id', 'corr-mut-001');
+    }
+
+    public function test_reject_replay_preserves_traceability_fields(): void
+    {
+        $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';
+
+        /** @var MockInterface&IntegrationReservationWriteService $mock */
+        $mock = Mockery::mock(IntegrationReservationWriteService::class);
+        $mock->shouldReceive('reject')
+            ->once()
+            ->with(
+                $id,
+                'idem-001',
+                'OPERATOR_REJECT',
+                'ITEM_NOT_ELIGIBLE',
+                Mockery::type('array')
+            )
+            ->andReturn([
+                'status' => 200,
+                'body' => [
+                    'data' => [
+                        'id' => $id,
+                        'status' => 'CANCELLED',
+                        'cancel_origin' => 'OPERATOR_REJECT',
+                        'cancel_reason_code' => 'ITEM_NOT_ELIGIBLE',
+                    ],
+                    'request_id' => 'req-mut-001',
+                    'correlation_id' => 'corr-mut-001',
+                    'timestamp' => '2026-04-01T20:00:00.000000Z',
+                ],
+                'replayed' => true,
+            ]);
+
+        $this->app->instance(IntegrationReservationWriteService::class, $mock);
+
+        $response = $this->withHeaders($this->headers)->postJson(
+            "/api/integration/v1/reservations/{$id}/reject",
+            [
+                'cancel_origin' => 'OPERATOR_REJECT',
+                'cancel_reason_code' => 'ITEM_NOT_ELIGIBLE',
+            ]
+        );
+
+        $response->assertOk()
+            ->assertJsonPath('data.status', 'CANCELLED')
+            ->assertJsonPath('request_id', 'req-mut-001')
+            ->assertJsonPath('correlation_id', 'corr-mut-001');
+    }
+
     public function test_same_key_different_payload_returns_conflict(): void
     {
         $id = '4327164d-49ae-48ad-98c5-cff27c3aa8fc';

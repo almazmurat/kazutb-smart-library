@@ -94,6 +94,92 @@ class AuthHardeningTest extends TestCase
         $this->assertArrayNotHasKey('access_token', $json);
     }
 
+    public function test_login_success_without_token_returns_502_and_does_not_authenticate_session(): void
+    {
+        Http::fake([
+            '*' => Http::response([
+                'user' => [
+                    'id' => 'u-missing-token',
+                    'name' => 'Tokenless User',
+                    'email' => 'tokenless@example.com',
+                    'role' => 'reader',
+                ],
+            ], 200),
+        ]);
+
+        $response = $this
+            ->withoutMiddleware(PreventRequestForgery::class)
+            ->postJson('/api/login', [
+                'login' => 'tokenless',
+                'password' => 'correct-pass',
+            ]);
+
+        $response
+            ->assertStatus(502)
+            ->assertJsonPath('message', 'Authentication service returned an unexpected response.');
+
+        $this->assertNull(session('library.crm_token'));
+        $this->assertNull(session('library.user'));
+    }
+
+    public function test_login_normalizes_unknown_role_to_reader(): void
+    {
+        Http::fake([
+            '*' => Http::response([
+                'token' => 'crm-test-bearer-abc123',
+                'user' => [
+                    'id' => 'u-unknown-role',
+                    'name' => 'Unknown Role',
+                    'email' => 'unknown-role@example.com',
+                    'login' => 'unknown-role',
+                    'ad_login' => 'unknown-role',
+                    'role' => 'supervisor',
+                ],
+            ], 200),
+        ]);
+
+        $response = $this
+            ->withoutMiddleware(PreventRequestForgery::class)
+            ->postJson('/api/login', [
+                'login' => 'unknown-role',
+                'password' => 'correct-pass',
+            ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('user.role', 'reader');
+    }
+
+    public function test_login_normalizes_whitespace_padded_librarian_role(): void
+    {
+        Http::fake([
+            '*' => Http::response([
+                'token' => 'crm-test-bearer-abc123',
+                'user' => [
+                    'id' => 'u-librarian',
+                    'name' => 'Librarian User',
+                    'email' => 'librarian@example.com',
+                    'login' => 'librarian-user',
+                    'ad_login' => 'librarian-user',
+                    'role' => ' Librarian ',
+                ],
+            ], 200),
+        ]);
+
+        $response = $this
+            ->withoutMiddleware(PreventRequestForgery::class)
+            ->postJson('/api/login', [
+                'login' => 'librarian-user',
+                'password' => 'correct-pass',
+            ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('user.role', 'librarian');
+    }
+
     // ──────────────────────────────────────────────────
     // Login: failure logging
     // ──────────────────────────────────────────────────

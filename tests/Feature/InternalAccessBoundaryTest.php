@@ -48,6 +48,32 @@ class InternalAccessBoundaryTest extends TestCase
         }
     }
 
+    public function test_internal_pages_allow_admin_sessions(): void
+    {
+        foreach ([
+            '/internal/dashboard',
+            '/internal/review',
+            '/internal/stewardship',
+            '/internal/circulation',
+            '/internal/ai-chat',
+        ] as $uri) {
+            $this->withSession($this->staffSession('admin'))->get($uri)->assertOk();
+        }
+    }
+
+    public function test_internal_pages_reject_authenticated_sessions_without_staff_role(): void
+    {
+        foreach ([
+            '/internal/dashboard',
+            '/internal/review',
+            '/internal/stewardship',
+            '/internal/circulation',
+            '/internal/ai-chat',
+        ] as $uri) {
+            $this->withSession($this->staffSession(''))->get($uri)->assertForbidden();
+        }
+    }
+
     public function test_internal_pages_reject_reader_sessions(): void
     {
         foreach ([

@@ -1,14 +1,14 @@
-# Assignment 2 — Test Automation Implementation Package
+# Midterm QA Implementation & Empirical Analysis Package
 
 ## Short direct answer
-This repository is already a **web-based digital library platform** with a working QA baseline. The package below maps the live project to the Assignment 2 deliverables using the repo’s real tests, CI/CD workflow, metrics, and evidence artifacts.
+This repository is already a **web-based digital library platform** with a working QA baseline. The package below reframes the live repo as a professional midterm QA implementation and empirical analysis set using the project’s real tests, CI/CD workflow, metrics, and evidence artifacts.
 
 ---
 
 ## Assumptions
-- The submission should be **repo-specific**, not a generic textbook plan.
-- The instructor accepts **risk-based automation** instead of full-monolith automation.
-- Evidence can come from **real repository logs, GitHub Actions artifacts, Playwright traces, PHPUnit/JUnit XML, and Clover coverage**.
+- The deliverable should be **repo-specific**, not a generic textbook plan.
+- A professional review can defend **risk-based automation** instead of pretending full-monolith coverage.
+- Evidence should come from **real repository logs, GitHub Actions artifacts, Playwright traces, PHPUnit/JUnit XML, and Clover coverage**.
 - The strongest deliverable is a **reproducible engineering package**: tests + CI + metrics + documentation + evidence.
 
 ---
@@ -102,6 +102,10 @@ Keep **Playwright + PHPUnit + GitHub Actions** as the defended automation baseli
 | `TC-E2E-01` | Public shell | homepage shows KazTBU search-first hero | public site reachable | `/?lang=en` | hero heading and search bar visible | Positive | UI / E2E |
 | `TC-E2E-02` | Public shell | catalog keeps critical filters visible | public site reachable | `/catalog` | language chips, sort, availability visible | Positive | UI / E2E |
 | `TC-API-INT-01` | Integration boundary | invalid token/idempotency handling stays safe | integration middleware active | bad token / malformed org context | request rejected with stable reason code | Negative | Integration |
+| `TC-AUTH-04` | Auth | CRM success without a bearer token must fail closed | auth stubbed without token | valid-looking user body, missing token | `502` and no authenticated session is created | Negative | API |
+| `TC-INT-03` | Internal boundary | authenticated sessions without staff role stay blocked | session exists but role is blank | `role = ''` | `403 Forbidden` on core `/internal/*` routes | Negative | Feature |
+| `TC-DOC-03` | Document management | invalid document identifiers and empty mutations are rejected | integration middleware active | invalid UUID / empty PATCH body | `400` with stable `reason_code` | Negative | Integration |
+| `TC-CONC-01` | Reservation mutation | idempotent replay preserves traceability fields | replay-safe service contract active | repeated approve/reject with same idempotency key | `200` with original `request_id` / `correlation_id` | Edge / Concurrency | Integration |
 
 ---
 
@@ -157,7 +161,7 @@ Keep **Playwright + PHPUnit + GitHub Actions** as the defended automation baseli
 ### Commit naming convention
 - `test: add auth/session regression coverage`
 - `fix: stabilize Playwright output permissions`
-- `docs: add assignment 2 submission pack`
+- `docs: add midterm QA implementation analysis`
 - `ci: harden verification workflow`
 
 ### Example traceable history
@@ -168,11 +172,11 @@ Keep **Playwright + PHPUnit + GitHub Actions** as the defended automation baseli
 | `734f2d9` | 2026-04-08 | QA gate | installed frontend deps in QA gate | made local/CI execution reproducible |
 | `cea7d76` | 2026-04-08 | backend verification | stabilized backend CI workflow | improved coverage artifact reliability |
 | `afa1598` | 2026-04-08 | coverage parser | fixed Clover threshold compatibility | made metrics trustworthy |
-| `3e8ff3d` | 2026-04-08 | assignment evidence/docs | completed earlier assignment audit package | added documentation traceability |
+| `3e8ff3d` | 2026-04-08 | QA evidence/docs | completed the earlier QA audit package | added documentation traceability |
 
 ---
 
-## Part G — Evidence for the research paper
+## Part G — Evidence for the midterm report
 
 ### Evidence structure
 ```text
@@ -191,10 +195,10 @@ build/test-results/
 
 | Evidence ID | Module / Feature | Type | Description | File Location | Why It Matters |
 |---|---|---|---|---|---|
-| `E1` | local QA gate | Log | fresh full gate output from `composer qa:ci` | `evidence/verification/qa-gates-20260411-001523.txt` | proves backend/style/build checks really ran |
-| `E2` | browser smoke | Log | fresh Playwright run | `evidence/verification/playwright-smoke-20260411-001523.txt` | proves UI automation executed successfully |
-| `E3` | traceability | Log | git history around QA/CI/doc files | `evidence/verification/ci-traceability-20260411-001523.txt` | shows evolution of automation work |
-| `E4` | remote CI | Log | recent GitHub Actions summary | `evidence/verification/remote-ci-summary-20260411-001523.txt` | proves CI/CD integration exists remotely |
+| `E1` | local QA gate | Log | fresh full gate output from `composer qa:ci` | `evidence/verification/qa-gates-20260411-010532.txt` | proves backend/style/build checks really ran |
+| `E2` | browser smoke | Log | fresh Playwright run | `evidence/verification/playwright-smoke-20260411-010532.txt` | proves UI automation executed successfully |
+| `E3` | traceability | Log | git history around QA/CI/doc files | `evidence/verification/ci-traceability-20260411-010532.txt` | shows evolution of automation work |
+| `E4` | remote CI | Log | recent GitHub Actions summary | `evidence/verification/remote-ci-summary-20260411-010532.txt` | proves CI/CD integration exists remotely |
 | `E5` | structured test report | XML | JUnit export for backend verification | `build/test-results/phpunit-feature.xml` | suitable for reproducible reporting |
 | `E6` | coverage report | XML | Clover line-coverage artifact | `build/test-results/clover.xml` | supports metrics and threshold checks |
 | `E7` | Playwright artifacts | HTML / trace / screenshot | report, trace, video on failures | configured output folder from Playwright | supports reproducibility and debugging |
@@ -272,7 +276,8 @@ Because this repo currently uses a **risk-based defended suite**, not full-monol
 | Auth & session | login/logout/session | Yes | 100 | planned P1 scenarios are automated |
 | Reader account & reservations | summary, redirects, reservations | Yes | 89 | strong defended coverage |
 | Catalog discovery & detail | search, sort, filters, empty results, detail | Yes | 88 | core search paths are automated |
-| Internal staff boundary | protected views and staff-only behavior | Yes | 80 | boundary is covered; deeper workflows can expand |
+| Internal staff boundary | protected views and staff-only behavior | Yes | 85 | boundary is covered with admin/librarian and deny-by-default checks |
+| Integration boundary & idempotent mutations | document CRUD guards, rate limits, replay-safe reservation mutations | Yes | 92 | invalid input, replay, and boundary safety are now explicitly automated |
 | Public shell smoke | homepage, catalog shell, guest redirect | Yes | 100 | full smoke scope currently automated |
 
 > `*Coverage %` here means **critical-scenario coverage**, not monolith-wide line coverage.
@@ -281,9 +286,9 @@ Because this repo currently uses a **risk-based defended suite**, not full-monol
 
 | Module / Step | Number of Tests | Execution Time | Environment | Notes |
 |---|---:|---:|---|---|
-| `composer qa:ci` backend critical path | 80 | `8.50s` | local verified run (2026-04-11) | includes 397 assertions |
-| Vite production build | — | `5.64s` | local verified run (2026-04-11 evidence capture) | part of `composer qa:ci` |
-| `npm run test:e2e` | 3 | `5.0s` | local verified run (2026-04-11) | post-fix Playwright smoke baseline |
+| `composer qa:ci` backend critical path | 125 | `8.05s` | local verified run (2026-04-11) | includes 550 assertions |
+| Vite production build | — | `1.25s` | local verified run (2026-04-11 evidence capture) | part of `composer qa:ci` after a clean-runner `npm ci` bootstrap |
+| `npm run test:e2e` | 3 | `4.7s` | local verified run (2026-04-11) | Playwright smoke baseline after output-path hardening |
 
 ### 3) Defects vs expected risk
 
@@ -346,7 +351,7 @@ Use that file as the **Methods + Implementation + Reproducibility** backbone for
 
 ### Likely questions and short answers
 - **Why not 80% overall line coverage?**  
-  Because this submission uses a truthful **risk-based automation scope**; global line coverage on the whole monolith would misrepresent the real maturity of the defended suite.
+  Because this package uses a truthful **risk-based automation scope**; global line coverage on the whole monolith would misrepresent the real maturity of the defended suite.
 - **How do you know the tests are maintainable?**  
   They follow repo-native frameworks, stable route contracts, and thin smoke coverage instead of brittle UI over-automation.
 - **How is CI connected to release confidence?**  
@@ -375,4 +380,4 @@ Use that file as the **Methods + Implementation + Reproducibility** backbone for
 1. Does the instructor want **all tables in English**, Russian, or both?
 2. Is **GitHub Actions screenshot evidence** mandatory, or are raw logs sufficient?
 3. Is the defended scope expected to stay **risk-based**, or should the next iteration expand into deeper internal-circulation E2E coverage?
-4. Should a nightly workflow be added now, or is the current PR/push pipeline enough for the assignment?
+4. Should a nightly workflow be added now, or is the current PR/push pipeline enough for the current midterm review?

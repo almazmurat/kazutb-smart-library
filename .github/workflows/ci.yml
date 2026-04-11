@@ -86,7 +86,7 @@ jobs:
         run: |
           mkdir -p build/test-results
           ./vendor/bin/phpunit \
-            --filter='PublicShellTest|CatalogPageTest|AccountPageTest|InternalAccessBoundaryTest|InternalDashboardPageTest|InternalReviewPageTest|InternalStewardshipPageTest|InternalCirculationPageTest|AuthHardeningTest|ReaderAccessProtectionTest|CatalogDbSearchTest|AuthSessionLifecycleTest|AuthSessionMeTest|BookDetailDbTest|AccountReservationsTest' \
+            --filter='PublicShellTest|CatalogPageTest|AccountPageTest|InternalAccessBoundaryTest|InternalDashboardPageTest|InternalReviewPageTest|InternalStewardshipPageTest|InternalCirculationPageTest|AuthHardeningTest|ReaderAccessProtectionTest|CatalogDbSearchTest|AuthSessionLifecycleTest|AuthSessionMeTest|BookDetailDbTest|AccountReservationsTest|ReservationMutateTest|DocumentManagementTest|IntegrationRateLimitTest' \
             --log-junit build/test-results/phpunit-feature.xml \
             --coverage-clover build/test-results/clover.xml
         env:

@@ -3,7 +3,7 @@
 ## 1. Executive summary
 A strict engineering review was performed against the live repository, workflow history, evidence logs, and current QA commands. The goal was not to prove that CI had gone green once, but to confirm that the repository now presents a **stable, professional verification baseline** for external reviewers and future maintainers.
 
-**Current result:** the repository now has a clean `docs/qa/` documentation area, a normalized `evidence/verification/` artifact layout, and a hardened CI baseline that is deterministic on clean runners. The strongest current proof remains the verified command output from `composer qa:ci`, `npm run test:e2e`, and the successful GitHub Actions run `24156292471`.
+**Current result:** the repository now has a clean `docs/qa/` documentation area, a normalized `evidence/verification/` artifact layout, and a hardened CI baseline that is deterministic on clean runners. The strongest current proof remains the verified command output from `composer qa:ci` (**125 passed, 550 assertions**), `npm run test:e2e` (**3 passed, 4.7s**), and the successful GitHub Actions run `24156292471`.
 
 ## 2. Failure-history investigation
 The recent CI instability was real and occurred in a clear sequence:
@@ -22,7 +22,7 @@ The repository was normalized around those root causes rather than papering over
 - hardened `scripts/dev/run-ci-gates.sh` so a clean runner installs frontend dependencies before building
 - made the coverage threshold parser resilient to the Clover structures emitted by current PHPUnit versions
 - aligned the coverage floor with the actual defended critical-path suite instead of an unrealistic monolith-wide percentage
-- upgraded the QA docs from assignment-style labeling to a repository-facing verification structure under `docs/qa/`
+- upgraded the QA docs from coursework-style labeling to a repository-facing verification structure under `docs/qa/`
 - renamed the evidence area to `evidence/verification/` and standardized the terminology used in scripts and indexes
 - refreshed the workflow baseline with current GitHub Actions versions and explicit Node 24 forcing for JavaScript actions
 
@@ -53,6 +53,6 @@ GH_PAGER=cat gh run view 24155301754 --log-failed
 ## 7. Professional readiness assessment
 The repository is now suitable to present as a real product codebase:
 - the primary QA material lives in a clear `docs/qa/` section
-- evidence is organized under `evidence/verification/` instead of assignment-labeled paths
+- evidence is organized under `evidence/verification/` instead of coursework-labeled paths
 - the recent CI failure chain is documented with root causes and concrete fixes
 - the main verification commands are reproducible locally and aligned with the GitHub Actions pipeline

@@ -1,77 +1,83 @@
-from __future__ import annotations
-
+#!/usr/bin/env python3
 import json
-from html import escape
 from pathlib import Path
 
-OUTPUT_DIR = Path(__file__).resolve().parent
-METRICS_FILE = OUTPUT_DIR.parent / "quality-metrics.json"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / 'quality-metrics.json'
+OUT = ROOT / 'charts'
+OUT.mkdir(parents=True, exist_ok=True)
 
-with METRICS_FILE.open("r", encoding="utf-8") as fh:
+with DATA.open('r', encoding='utf-8') as fh:
     metrics = json.load(fh)
 
 
-def write_bar_chart(filename: str, title: str, labels: list[str], values: list[float], value_suffix: str = "") -> None:
-    width = 1000
-    height = 110 + len(labels) * 88
-    margin_left = 260
-    margin_right = 80
-    bar_height = 36
-    max_value = max(values) if values else 1
-    usable_width = width - margin_left - margin_right
+def esc(text: str) -> str:
+    return (text.replace('&', '&amp;')
+                .replace('<', '&lt;')
+                .replace('>', '&gt;'))
 
-    rows: list[str] = [
+
+def write_svg(path: Path, title: str, subtitle: str, labels, values, color='#2563eb', value_suffix=''):
+    width = 960
+    height = 520
+    margin_left = 220
+    margin_right = 40
+    margin_top = 90
+    margin_bottom = 70
+    chart_width = width - margin_left - margin_right
+    bar_gap = 14
+    bar_height = max(24, int((height - margin_top - margin_bottom - (len(labels) - 1) * bar_gap) / max(len(labels), 1)))
+    max_value = max(values) if values else 1
+
+    parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         '<rect width="100%" height="100%" fill="#ffffff"/>',
-        f'<text x="40" y="42" font-size="28" font-family="Arial, sans-serif" font-weight="bold">{escape(title)}</text>',
+        f'<text x="32" y="40" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#111827">{esc(title)}</text>',
+        f'<text x="32" y="66" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#4b5563">{esc(subtitle)}</text>',
+        f'<line x1="{margin_left}" y1="{height - margin_bottom}" x2="{width - margin_right}" y2="{height - margin_bottom}" stroke="#d1d5db" stroke-width="1"/>'
     ]
 
-    for index, (label, value) in enumerate(zip(labels, values)):
-        y = 90 + index * 88
-        bar_width = 0 if max_value == 0 else int((value / max_value) * usable_width)
-        rows.append(f'<text x="40" y="{y + 24}" font-size="18" font-family="Arial, sans-serif">{escape(label)}</text>')
-        rows.append(f'<rect x="{margin_left}" y="{y}" width="{usable_width}" height="{bar_height}" fill="#eef2ff" rx="6"/>')
-        rows.append(f'<rect x="{margin_left}" y="{y}" width="{bar_width}" height="{bar_height}" fill="#4C78A8" rx="6"/>')
-        rows.append(f'<text x="{margin_left + bar_width + 10}" y="{y + 24}" font-size="18" font-family="Arial, sans-serif">{value:g}{escape(value_suffix)}</text>')
+    for step in range(0, 6):
+        x = margin_left + chart_width * (step / 5)
+        value = max_value * (step / 5)
+        parts.append(f'<line x1="{x:.1f}" y1="{margin_top}" x2="{x:.1f}" y2="{height - margin_bottom}" stroke="#f3f4f6" stroke-width="1"/>')
+        parts.append(f'<text x="{x:.1f}" y="{height - margin_bottom + 22}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">{value:.0f}{esc(value_suffix)}</text>')
 
-    rows.append('</svg>')
-    (OUTPUT_DIR / filename).write_text('\n'.join(rows), encoding='utf-8')
+    for i, (label, value) in enumerate(zip(labels, values)):
+        y = margin_top + i * (bar_height + bar_gap)
+        bar_width = 0 if max_value == 0 else chart_width * (value / max_value)
+        parts.append(f'<text x="{margin_left - 12}" y="{y + bar_height / 2 + 4:.1f}" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">{esc(label)}</text>')
+        parts.append(f'<rect x="{margin_left}" y="{y}" width="{bar_width:.1f}" height="{bar_height}" rx="6" fill="{color}" opacity="0.9"/>')
+        parts.append(f'<text x="{margin_left + bar_width + 8:.1f}" y="{y + bar_height / 2 + 4:.1f}" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#111827">{value}{esc(value_suffix)}</text>')
 
+    parts.append('</svg>')
+    path.write_text('\n'.join(parts), encoding='utf-8')
 
-risk_labels = [entry["module"] for entry in metrics["risk_module_checks"]]
-risk_values = [entry["checks"] for entry in metrics["risk_module_checks"]]
-write_bar_chart(
-    "coverage-by-module.svg",
-    "Automated Checks by Risk Module",
-    risk_labels,
-    risk_values,
+risk = metrics['risk_automation']
+write_svg(
+    OUT / 'coverage-by-module.svg',
+    'Critical-path coverage by module',
+    f"Verification bundle {metrics['verification_run_id']} — counts derived from real repo tests",
+    [item['area'] for item in risk],
+    [item['checks'] for item in risk],
+    color='#0f766e'
 )
 
-execution_labels = ["PHPUnit critical path", "Vite build", "Playwright smoke"]
-execution_values = [
-    metrics["local_quality_gate"]["phpunit_duration_seconds"],
-    metrics["local_quality_gate"]["vite_build_duration_seconds"],
-    metrics["playwright_smoke"]["duration_seconds"],
-]
-write_bar_chart(
-    "execution-time-by-run.svg",
-    "Verified Execution Time by Step",
-    execution_labels,
-    execution_values,
-    value_suffix="s",
+write_svg(
+    OUT / 'execution-time-by-run.svg',
+    'Execution time by verification step',
+    f"Backend + browser timings from {metrics['verification_run_id']}",
+    ['composer qa:ci', 'npm run test:e2e', 'vite build'],
+    [metrics['commands']['composer qa:ci']['duration_seconds'], metrics['commands']['npm run test:e2e']['duration_seconds'], metrics['commands']['composer qa:ci']['frontend_build_seconds']],
+    color='#7c3aed',
+    value_suffix='s'
 )
 
-severity_counts: dict[str, int] = {}
-for defect in metrics["audit_defects_resolved"]:
-    severity = defect["severity"].capitalize()
-    severity_counts[severity] = severity_counts.get(severity, 0) + 1
-
-write_bar_chart(
-    "run-status-distribution.svg",
-    "Resolved Audit Defects by Severity",
-    list(severity_counts.keys()),
-    list(severity_counts.values()),
+write_svg(
+    OUT / 'run-status-distribution.svg',
+    'Verification status distribution',
+    'Passed checks and resolved blocker summary for the current defended scope',
+    ['Backend checks passed', 'Browser checks passed', 'Open blockers'],
+    [metrics['commands']['composer qa:ci']['tests'], metrics['commands']['npm run test:e2e']['tests'], 0],
+    color='#dc2626'
 )
-
-print(f"Charts saved to: {OUTPUT_DIR}")

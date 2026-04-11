@@ -1,7 +1,7 @@
-# assignment-2-qa-automation-package — implementation plan
+# midterm-qa-implementation-analysis — implementation plan
 
 ## Scope summary
-Package the repo’s real automation baseline into a submission-ready Assignment 2 deliverable, refresh the QA docs with current metrics, fix any reproducibility blockers in local browser execution, and verify the result with fresh evidence.
+Package the repo’s real automation baseline into a professional midterm QA deliverable, refresh the QA docs with current metrics, remove the visible coursework wording, expand the integration risk pack, and verify the result with fresh evidence.
 
 ## Traceability matrix
 | Requirement | Use cases | Plan steps | Tests |
@@ -14,8 +14,8 @@ Package the repo’s real automation baseline into a submission-ready Assignment
 
 ## Implementation steps
 - [x] `S1.` Inspect the current QA surface in `docs/qa/`, `.github/workflows/ci.yml`, `tests/Feature/`, `tests/e2e/`, and `scripts/dev/` to map the real automation baseline.
-- [x] `S2.` Create a submission-ready package in `docs/qa/assignment-2-submission-pack.md` and `docs/qa/qa-test-strategy-document.md` with the required tables, deliverable mapping, and defense notes.
-- [x] `S3.` Harden the local browser automation flow by fixing the Playwright output-path permission issue and updating the stale homepage smoke expectation to current KazTBU copy.
+- [x] `S2.` Create and professionalize the main package in `docs/qa/midterm-qa-implementation-analysis.md` and `docs/qa/qa-test-strategy-document.md` with the required tables, empirical findings, and defense notes.
+- [x] `S3.` Expand the integration risk pack and harden the local/browser automation flow where needed.
 - [x] `S4.` Verify the completed package with `composer qa:ci`, `npm run test:e2e`, and `composer qa:evidence`, then refresh `docs/sdlc/current/verify.md` with the evidence.
 
 ## Impacted files and layers
@@ -24,7 +24,7 @@ Package the repo’s real automation baseline into a submission-ready Assignment
 - `tests/e2e/public-smoke.spec.ts`
 
 ### Documentation
-- `docs/qa/assignment-2-submission-pack.md`
+- `docs/qa/midterm-qa-implementation-analysis.md`
 - `docs/qa/qa-test-strategy-document.md`
 - `docs/qa/README.md`
 - `docs/qa/test-scope.md`
@@ -32,10 +32,10 @@ Package the repo’s real automation baseline into a submission-ready Assignment
 - `docs/qa/quality-gates.md`
 
 ### Evidence
-- `evidence/verification/qa-gates-20260411-001523.txt`
-- `evidence/verification/playwright-smoke-20260411-001523.txt`
-- `evidence/verification/ci-traceability-20260411-001523.txt`
-- `evidence/verification/remote-ci-summary-20260411-001523.txt`
+- `evidence/verification/qa-gates-20260411-010532.txt`
+- `evidence/verification/playwright-smoke-20260411-010532.txt`
+- `evidence/verification/ci-traceability-20260411-010532.txt`
+- `evidence/verification/remote-ci-summary-20260411-010532.txt`
 
 ## Test plan
 - `T1.` Run `composer qa:ci` and confirm the critical-path backend gate still passes.
@@ -57,7 +57,7 @@ cd /home/admlibrary/kazutb-smart-library-main && composer qa:evidence
 ## Ready for /implement
 - completed
 - notes:
-  - The Assignment 2 package now exists under `docs/qa/`.
+  - The professional midterm QA package now exists under `docs/qa/`.
   - The local Playwright reproducibility issue and stale smoke expectation were addressed.
 
 ## Ready for /verify

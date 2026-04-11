@@ -14,6 +14,7 @@ The submission scope was selected by **risk**, not by convenience. Modules were 
 | P1 | Internal staff boundary | `/internal/*` must reject guests/readers and allow staff only | `routes/web.php`, internal Blade views | `InternalAccessBoundaryTest`, internal page tests |
 | P2 | Catalog discovery and book detail | catalog errors directly break the main public value of the library | `CatalogController.php`, `/api/v1/catalog-db`, `/catalog`, `/book/*` | `CatalogDbSearchTest`, `BookDetailDbTest`, `CatalogPageTest` |
 | P2 | Public shell and smoke flows | homepage/resources/login redirect issues are visible to all users | public Blade shell and Playwright routes | `PublicShellTest`, `public-smoke.spec.ts` |
+| P2 | Integration boundary and idempotent mutations | upstream CRM/library handoff must remain auditable and safe under invalid or replayed requests | `/api/integration/v1/*`, integration middleware, document/reservation services | `DocumentManagementTest`, `IntegrationRateLimitTest`, `ReservationMutateTest` |
 
 ## 2) Detailed test-case design
 
@@ -58,8 +59,8 @@ The automation work is traceable in Git history and was not added as a one-off d
 | fresh log collector | `scripts/dev/run-verification-evidence.sh` | evidence can be regenerated on demand |
 
 ## 6) Current verified execution
-- `composer qa:ci` → **80 passed (397 assertions)** on the fresh 2026-04-11 verification run
-- `npm run test:e2e` → **3 passed (5.0s)** after the Playwright hardening update
+- `composer qa:ci` → **125 passed (550 assertions)** on the fresh 2026-04-11 verification run with the expanded integration risk pack
+- `npm run test:e2e` → **3 passed (4.7s)** on the latest Playwright smoke refresh
 
 ## 7) Scope limitation
 This verification set is intentionally **critical-path oriented** rather than exhaustive. That limitation is disclosed because the repository still contains broader legacy areas that are not fully automated at the same depth.
