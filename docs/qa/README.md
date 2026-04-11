@@ -20,7 +20,7 @@ composer qa:evidence
 - GitHub Actions remains configured with `Secret Scan`, `Backend Verification & Coverage`, and `Frontend Build & Browser Smoke`
 
 ## Document map
-- `midterm-qa-implementation-analysis.md` — professional midterm QA implementation and empirical analysis package for the live repo
+- `qa-implementation-analysis.md` — professional QA implementation and empirical analysis package for the live repo
 - `qa-test-strategy-document.md` — formal QA strategy outline for the written report / research paper
 - `verification-report.md` — executive summary, failure-history audit, and stabilization results
 - `test-scope.md` — risk-ranked automation scope, scenario design, and traceability
