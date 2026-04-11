@@ -20,8 +20,10 @@ composer qa:evidence
 - GitHub Actions remains configured with `Secret Scan`, `Backend Verification & Coverage`, and `Frontend Build & Browser Smoke`
 
 ## Document map
-- `qa-implementation-analysis.md` — professional QA implementation and empirical analysis package for the live repo
-- `technical-qa-report.md` — consolidated analytical QA report with figures, findings, and operational conclusions
+- `final-qa-report.md` — **open this first** for the polished, self-contained defense/report narrative
+- `defense-guide.md` — concise live-demo walkthrough, likely questions, and presentation flow
+- `qa-implementation-analysis.md` — implementation-focused QA analysis package for the live repo
+- `technical-qa-report.md` — supporting analytical report with tables, figures, and operational conclusions
 - `qa-test-strategy-document.md` — formal QA strategy outline for the written report / research paper
 - `verification-report.md` — executive summary, failure-history audit, and stabilization results
 - `test-scope.md` — risk-ranked automation scope, scenario design, and traceability

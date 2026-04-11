@@ -4,6 +4,7 @@
 - **Evidence bundle used in this draft:** `evidence/verification/*-20260411-014142.*`
 - **Local verification baseline:** `composer qa:ci` → **139 passed, 595 assertions**; `npm run test:e2e` → **3 passed (4.8s)**
 - **Current delivery posture:** all required report sections are now present, and the latest main-branch cleanup verification is green in GitHub Actions.
+- **Primary presentation document:** for the most polished self-contained version, open `docs/qa/final-qa-report.md` first.
 
 ---
 

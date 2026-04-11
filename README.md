@@ -191,6 +191,8 @@ The CRM remains an **authentication/integration boundary**. It is used for login
 ## QA and verification
 
 Repository-facing QA and automation materials live in:
+- `docs/qa/final-qa-report.md` *(primary defense/report document)*
+- `docs/qa/defense-guide.md`
 - `docs/qa/README.md`
 - `docs/qa/test-scope.md`
 - `docs/qa/quality-gates.md`
