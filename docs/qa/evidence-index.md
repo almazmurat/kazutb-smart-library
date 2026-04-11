@@ -21,6 +21,13 @@ composer qa:evidence
 
 ## Latest verified command summary
 - `composer qa:ci` → **139 passed (595 assertions)** and the frontend build succeeded on the 2026-04-11 evidence refresh
-- `npm run test:e2e` → **3 passed (4.8s)** on the latest smoke verification bundle
-- the latest successful main-branch `Continuous Verification` run → **completed success** during the 2026-04-11 repository cleanup verification
+- `npm run test:e2e` → **3 passed (4.7s)** on the latest smoke verification bundle
+- the latest successful main-branch `Continuous Verification` run → **`24274728457` completed success** on the current report package
 - Clover coverage floor currently defended in CI → **4.24% measured vs 4.0% minimum**
+
+## Latest evidence bundle
+The most recent refresh captured under `evidence/verification/` is the `20260411-034516` bundle:
+- `qa-gates-20260411-034516.txt`
+- `playwright-smoke-20260411-034516.txt`
+- `remote-ci-summary-20260411-034516.txt`
+- `ci-traceability-20260411-034516.txt`

@@ -52,15 +52,16 @@ The automation work is traceable in Git history and was not added as a one-off d
 
 | Evidence type | Location | What it proves |
 |---|---|---|
-| local QA pass log | `evidence/verification/verification-2026-04-08.txt` | `composer qa:ci` and `npm run test:e2e` really passed |
-| commit trace | `evidence/verification/git-history.txt` | automation work evolved through multiple hardening commits |
-| GitHub screenshots | `evidence/verification/github-actions-*.png` | CI exists and runs on GitHub Actions |
+| local QA pass log | `evidence/verification/qa-gates-20260411-034516.txt` | `composer qa:ci` really passed for the current defended scope |
+| browser smoke log | `evidence/verification/playwright-smoke-20260411-034516.txt` | the public critical path passed in Playwright |
+| remote CI summary | `evidence/verification/remote-ci-summary-20260411-034516.txt` | the latest main-branch verification state is captured from GitHub Actions |
+| commit trace | `evidence/verification/ci-traceability-20260411-034516.txt` | the QA/report package is traceable in git history |
 | structured metrics | `evidence/verification/quality-metrics.json` | numeric metrics used in the report are reproducible |
 | fresh log collector | `scripts/dev/run-verification-evidence.sh` | evidence can be regenerated on demand |
 
 ## 6) Current verified execution
 - `composer qa:ci` → **139 passed (595 assertions)** on the fresh 2026-04-11 verification run with the expanded unit + integration risk pack
-- `npm run test:e2e` → **3 passed (4.8s)** on the latest Playwright smoke refresh
+- `npm run test:e2e` → **3 passed (4.7s)** on the latest Playwright smoke refresh
 
 ## 7) Scope limitation
 This verification set is intentionally **critical-path oriented** rather than exhaustive. That limitation is disclosed because the repository still contains broader legacy areas that are not fully automated at the same depth.

@@ -3,8 +3,9 @@
 ## Status snapshot
 - **Repository:** `almazmurat/digital-library`
 - **Verification date:** 2026-04-11
+- **Latest evidence refresh:** `evidence/verification/*-20260411-034516.*`
 - **Local baseline:** `composer qa:ci` → **139 passed / 595 assertions**; `npm run test:e2e` → **3 passed (4.7s)**
-- **Remote baseline:** the latest `Continuous Verification` run on `main` was confirmed green during the final hardening cycle
+- **Remote baseline:** `Continuous Verification` run **`24274728457`** on `main` completed successfully for the polished report package
 
 ---
 

@@ -20,16 +20,16 @@ The repository does **not** claim full-monolith automation coverage. The defende
 
 | Command / step | Verified result |
 |---|---|
-| `composer qa:ci` critical-path PHPUnit stage | `139 passed (595 assertions)` in `8.19s` |
-| Vite production build inside `composer qa:ci` | completed in `1.10s` after the clean-runner `npm ci` bootstrap |
-| `npm run test:e2e` | `3 passed` in `4.8s` |
-| GitHub Actions backend job (`run 24156029659`) | completed successfully in about `40s` |
-| GitHub Actions frontend smoke job (`run 24156029659`) | completed successfully in about `60s` |
+| `composer qa:ci` critical-path PHPUnit stage | `139 passed (595 assertions)` in `8.01s` |
+| Vite production build inside `composer qa:ci` | completed in `1.17s` after the clean-runner `npm ci` bootstrap |
+| `npm run test:e2e` | `3 passed` in `4.7s` |
+| GitHub Actions backend job (`run 24274728457`) | completed successfully in about `36s` |
+| GitHub Actions frontend smoke job (`run 24274728457`) | completed successfully in about `55s` |
 
 Source logs:
-- `evidence/verification/qa-gates-20260411-014142.txt`
-- `evidence/verification/playwright-smoke-20260411-014142.txt`
-- GitHub Actions run logs referenced in `evidence-index.md`
+- `evidence/verification/qa-gates-20260411-034516.txt`
+- `evidence/verification/playwright-smoke-20260411-034516.txt`
+- `evidence/verification/remote-ci-summary-20260411-034516.txt` and GitHub Actions run `24274728457`
 
 ## 3) Coverage metric
 

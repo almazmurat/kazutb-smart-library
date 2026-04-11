@@ -139,7 +139,7 @@ Use fresh, real evidence only.
 ### Verified baseline on 2026-04-11
 - `composer qa:ci` → **139 passed, 595 assertions**
 - frontend production build completed successfully
-- `npm run test:e2e` → **3 passed (4.8s)**
+- `npm run test:e2e` → **3 passed (4.7s)**
 
 **Insert:**
 - command outputs or screenshots

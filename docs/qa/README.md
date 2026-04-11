@@ -15,9 +15,10 @@ composer qa:evidence
 
 ### Latest verified results
 - `composer qa:ci` → **139 passed** (`595 assertions`) on the fresh 2026-04-11 verification run with the expanded unit + integration risk pack
-- `npm run test:e2e` → **3 passed** (`4.8s`) on the latest smoke refresh
+- `npm run test:e2e` → **3 passed** (`4.7s`) on the latest smoke refresh
 - critical-path Clover line coverage remains defended at **4.24%** against the full `app/` namespace
 - GitHub Actions remains configured with `Secret Scan`, `Backend Verification & Coverage`, and `Frontend Build & Browser Smoke`
+- the latest successful main-branch verification run is `Continuous Verification` **`24274728457`**
 
 ## Document map
 - `final-qa-report.md` — **open this first** for the polished, self-contained defense/report narrative

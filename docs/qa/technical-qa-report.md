@@ -1,9 +1,9 @@
 # Technical QA Report — Empirical Verification Analysis for the КазТБУ Digital Library
 
 ## Status snapshot
-- **Evidence bundle used in this draft:** `evidence/verification/*-20260411-014142.*`
-- **Local verification baseline:** `composer qa:ci` → **139 passed, 595 assertions**; `npm run test:e2e` → **3 passed (4.8s)**
-- **Current delivery posture:** all required report sections are now present, and the latest main-branch cleanup verification is green in GitHub Actions.
+- **Evidence bundle used in this draft:** `evidence/verification/*-20260411-034516.*`
+- **Local verification baseline:** `composer qa:ci` → **139 passed, 595 assertions**; `npm run test:e2e` → **3 passed (4.7s)**
+- **Current delivery posture:** all required report sections are now present, and the latest main-branch cleanup verification is green in GitHub Actions (`24274728457`).
 - **Primary presentation document:** for the most polished self-contained version, open `docs/qa/final-qa-report.md` first.
 
 ---
@@ -247,7 +247,7 @@ The only gate that remains deliberately modest is global line coverage. This is 
 |---|---|---|---|---|---|
 | `composer qa:ci` | `8.50s` (earlier 2026-04-11 baseline) | `8.19s` | `8.19s` | slight improvement | broader suite still stays under 10 seconds |
 | Vite build inside gate | `5.64s` (earlier clean-runner evidence) | `1.10s` | `1.10s` | faster in current environment | timing differs because dependency installation and Docker state vary |
-| `npm run test:e2e` | `5.0s` | `4.8s` | `4.8s` | modest improvement | stable single-worker Chromium smoke run |
+| `npm run test:e2e` | `5.0s` | `4.8s` | `4.7s` | modest improvement | stable single-worker Chromium smoke run |
 
 ### 10D. Stability
 | Test / Suite | Passes | Failures | Flaky Rate | Evidence | Notes |

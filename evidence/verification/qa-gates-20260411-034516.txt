@@ -1,0 +1,222 @@
+Verification evidence capture
+Timestamp: 2026-04-11T03:45:16+00:00
+Repository: kazutb-smart-library-main
+
+> composer qa:ci
+
+  [37;44m INFO [39;49m Clearing cached bootstrap files.  
+
+  config [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 1.13ms[39m [32;1mDONE[39;22m
+  cache [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 1.19ms[39m [32;1mDONE[39;22m
+  compiled [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 0.93ms[39m [32;1mDONE[39;22m
+  events [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 0.57ms[39m [32;1mDONE[39;22m
+  routes [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 0.54ms[39m [32;1mDONE[39;22m
+  views [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m 4.20ms[39m [32;1mDONE[39;22m
+
+
+  ................
+
+  ──────────────────────────────────────────────────────────────────── Laravel  
+    PASS   .......................................................... 16 files  
+
+
+   PASS  Tests\Unit\Services\BibliographyFormatterTest
+  ✓ empty items return empty text
+  ✓ numbered format single book
+  ✓ numbered format external resource
+  ✓ grouped format separates types
+  ✓ grouped format books only
+  ✓ syllabus format has header and sections
+  ✓ syllabus format language labels
+  ✓ invalid format falls back to numbered
+  ✓ missing optional fields handled gracefully
+  ✓ book entry without title uses fallback
+  ✓ external access type labels in syllabus
+  ✓ grouped format external only omits books section
+  ✓ syllabus preserves unknown language and access labels
+  ✓ numbered format preserves original item order
+
+   PASS  Tests\Feature\AccountPageTest
+  ✓ account page renders successfully                                    0.13s  
+  ✓ account page loads real loans not catalog                            0.01s  
+  ✓ account page shows loan section                                      0.01s  
+  ✓ account page redirects unauthenticated                               0.01s  
+  ✓ account page shows workbench section                                 0.01s  
+  ✓ account page workbench calls summary api                             0.01s  
+
+   PASS  Tests\Feature\Api\AccountReservationsTest
+  ✓ reservations route exists                                            0.05s  
+  ✓ reservations requires auth                                           0.03s  
+  ✓ reservations returns empty for unknown user                          0.04s  
+  ✓ reservations returns data for known user                             0.04s  
+  ✓ reservations filters by status                                       0.03s  
+  ✓ reservations includes book snapshot                                  0.03s  
+  ✓ account page renders reservations section                            0.03s  
+
+   PASS  Tests\Feature\Api\AuthHardeningTest
+  ✓ login failure does not leak crm response details                     0.04s  
+  ✓ login crm unavailable does not leak exception message                0.02s  
+  ✓ login success returns user without token                             0.01s  
+  ✓ login success without token returns 502 and does not authenticate s… 0.01s  
+  ✓ login normalizes unknown role to reader                              0.01s  
+  ✓ login normalizes whitespace padded librarian role                    0.01s  
+  ✓ failed login is logged                                               0.01s  
+  ✓ crm unavailable is logged as error                                   0.01s  
+  ✓ login has rate limiting                                              0.01s  
+  ✓ login validation rejects blank credentials                           0.01s  
+  ✓ integration rejects invalid token when allowlist configured          0.01s  
+  ✓ integration accepts valid token when allowlist configured            0.03s  
+  ✓ integration accepts any token when allowlist not configured          0.02s  
+  ✓ login page does not expose crm api url                               0.01s  
+
+   PASS  Tests\Feature\Api\AuthSessionLifecycleTest
+  ✓ logout clears session and returns success                            0.04s  
+  ✓ logout without session returns unauthenticated                       0.02s  
+  ✓ me after logout returns unauthenticated                              0.01s  
+  ✓ staff middleware rejects reader role                                 0.01s  
+
+   PASS  Tests\Feature\Api\AuthSessionMeTest
+  ✓ me returns 401 when session is missing                               0.02s  
+  ✓ me returns user context from session                                 0.01s  
+
+   PASS  Tests\Feature\Api\BookDetailDbTest
+  ✓ book db endpoint returns existing book                               0.04s  
+  ✓ book db endpoint returns 404 for missing book                        0.04s  
+
+   PASS  Tests\Feature\Api\CatalogDbSearchTest
+  ✓ catalog db returns paginated results                                 1.25s  
+  ✓ catalog db language filter                                           0.05s  
+  ✓ catalog db year filter                                               0.19s  
+  ✓ catalog db available only filter                                     2.06s  
+  ✓ catalog db sort options                                              1.44s  
+  ✓ catalog db search query                                              0.29s  
+  ✓ catalog db no result query returns empty payload                     0.28s  
+  ✓ catalog db validates bad params                                      0.02s  
+
+   PASS  Tests\Feature\Api\Integration\DocumentManagementTest
+  ✓ list success                                                         0.05s  
+  ✓ detail success                                                       0.02s  
+  ✓ create success                                                       0.02s  
+  ✓ patch success                                                        0.02s  
+  ✓ archive success                                                      0.02s  
+  ✓ validation failure returns 400                                       0.03s  
+  ✓ show rejects invalid uuid                                            0.02s  
+  ✓ patch without mutable fields returns 400                             0.04s  
+  ✓ list rejects per page above allowed range                            0.03s  
+  ✓ create rejects publication year above range                          0.03s  
+  ✓ patch rejects empty title                                            0.02s  
+  ✓ not found returns 404                                                0.02s  
+  ✓ boundary enforcement missing bearer                                  0.02s  
+  ✓ unexpected service error returns consistent 500 envelope             0.03s  
+
+   PASS  Tests\Feature\Api\Integration\IntegrationRateLimitTest
+  ✓ read endpoint returns rate limit headers                             0.06s  
+  ✓ governance headers present on success                                0.02s  
+  ✓ missing operator roles header returns 400                            0.01s  
+  ✓ invalid source system is rejected                                    0.01s  
+  ✓ governance headers present on error                                  0.01s  
+  ✓ rate limiter name is applied                                         0.03s  
+  ✓ mutation route applies mutation rate limiter                         0.02s  
+  ✓ different clients have independent rate limits                       0.02s  
+  ✓ openapi contract file exists                                         0.01s  
+  ✓ openapi contract covers all integration routes                       0.01s  
+  ✓ contract documents rate limits                                       0.01s  
+  ✓ contract documents authentication                                    0.01s  
+  ✓ contract documents scope restrictions                                0.01s  
+
+   PASS  Tests\Feature\Api\Integration\ReservationMutateTest
+  ✓ approve success                                                      0.05s  
+  ✓ reject success                                                       0.02s  
+  ✓ invalid transition returns conflict                                  0.02s  
+  ✓ missing idempotency key returns 400                                  0.02s  
+  ✓ invalid operator org context returns 400 before mutation             0.02s  
+  ✓ malformed operator org context returns 400 before mutation           0.02s  
+  ✓ replay same payload returns success                                  0.02s  
+  ✓ approve replay preserves traceability fields                         0.02s  
+  ✓ reject replay preserves traceability fields                          0.02s  
+  ✓ same key different payload returns conflict                          0.02s  
+  ✓ reject missing reason or origin returns 400                          0.02s  
+  ✓ approve requires reservations approve operator role                  0.02s  
+  ✓ reject requires reservations reject operator role                    0.03s  
+
+   PASS  Tests\Feature\Api\ReaderAccessProtectionTest
+  ✓ account summary rejects unauthenticated                              0.04s  
+  ✓ account loans rejects unauthenticated                                0.01s  
+  ✓ account reservations rejects unauthenticated                         0.01s  
+  ✓ me rejects unauthenticated                                           0.01s  
+  ✓ logout rejects unauthenticated                                       0.01s  
+  ✓ me returns user when authenticated                                   0.01s  
+  ✓ account summary accessible when authenticated                        0.02s  
+  ✓ account page redirects to login when unauthenticated                 0.01s  
+  ✓ account page renders when authenticated                              0.01s  
+  ✓ login page loads with redirect param                                 0.01s  
+  ✓ login route remains public                                           0.01s  
+  ✓ catalog route remains public                                         0.02s  
+  ✓ welcome route remains public                                         0.01s  
+  ✓ middleware sets authenticated reader attribute                       0.01s  
+
+   PASS  Tests\Feature\CatalogPageTest
+  ✓ catalog page renders successfully                                    0.04s  
+  ✓ catalog page has functional filter chips                             0.01s  
+  ✓ catalog page sends filters to api                                    0.01s  
+  ✓ catalog page uses canonical catalog db endpoint only                 0.01s  
+
+   PASS  Tests\Feature\InternalAccessBoundaryTest
+  ✓ internal pages reject guests                                         0.03s  
+  ✓ internal pages allow librarian sessions                              0.02s  
+  ✓ internal pages allow admin sessions                                  0.01s  
+  ✓ internal pages reject authenticated sessions without staff role      0.01s  
+  ✓ internal pages reject reader sessions                                0.02s  
+
+   PASS  Tests\Feature\InternalCirculationPageTest
+  ✓ circulation page renders successfully                                0.02s  
+  ✓ circulation page has checkout form                                   0.01s  
+  ✓ circulation page has return form                                     0.01s  
+  ✓ circulation page has reader lookup                                   0.01s  
+  ✓ circulation page links to other internal pages                       0.01s  
+
+   PASS  Tests\Feature\InternalDashboardPageTest
+  ✓ internal dashboard page renders successfully                         0.02s  
+
+   PASS  Tests\Feature\InternalReviewPageTest
+  ✓ internal review page renders successfully                            0.01s  
+
+   PASS  Tests\Feature\InternalStewardshipPageTest
+  ✓ stewardship page renders successfully                                0.01s  
+  ✓ stewardship page has tab navigation                                  0.01s  
+  ✓ stewardship page has action endpoints                                0.01s  
+  ✓ stewardship page has bulk action ui                                  0.02s  
+  ✓ stewardship page links to other internal pages                       0.01s  
+
+   PASS  Tests\Feature\PublicShellTest
+  ✓ homepage exposes stitch aligned search and subject sections          0.02s  
+  ✓ resources page uses accessible shared public shell                   0.01s  
+  ✓ resources page exposes language switcher                             0.01s  
+  ✓ contacts page can render in english                                  0.01s  
+  ✓ public shell localizes navbar actions in all supported languages     0.02s  
+  ✓ shortlist page hero copy is fully localized                          0.01s  
+  ✓ authenticated account page renders localized shell for each languag… 0.01s  
+
+  Tests:    139 passed (595 assertions)
+  Duration: 8.13s
+
+
+added 253 packages in 7s
+
+> build
+> vite build
+
+vite v8.0.3 building client environment for production...
+[2Ktransforming...✓ 2580 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json                       0.81 kB │ gzip:   0.27 kB
+public/build/assets/app-DymURjGZ.css            21.27 kB │ gzip:   5.03 kB
+public/build/assets/app-BSr1lyio.css            26.43 kB │ gzip:   5.30 kB
+public/build/assets/main-azFwdjL2.css           27.99 kB │ gzip:   6.68 kB
+public/build/assets/main-DATMxl13.js            65.07 kB │ gzip:  22.07 kB
+public/build/assets/jsx-runtime-COWfAziP.js    190.78 kB │ gzip:  60.18 kB
+public/build/assets/app-PuTk4XMf.js          1,305.50 kB │ gzip: 419.21 kB
+
+✓ built in 1.16s
+QA verification passed: Pint, critical-path tests, and the frontend production build.
