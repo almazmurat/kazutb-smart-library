@@ -11,6 +11,12 @@
 - use `/remember` for pure context or project-memory updates that do not ship product code
 - every meaningful task should leave an Obsidian writeback trail: daily note, handoff, and task log node
 
+## Current QA / reporting posture
+- the defended verification baseline is **risk-based**, centered on auth/session, reader account/reservations, internal staff boundary, catalog discovery/detail, and public-shell smoke coverage
+- canonical verification commands are `composer qa:ci`, `npm run test:e2e`, and `composer qa:evidence`
+- current research/submission packaging lives under `docs/qa/` with reproducibility artifacts in `evidence/verification/`
+- the current Clover floor (`4.0%` against the full `app/` namespace) is a scoped regression guard, not a claim of broad full-system automation coverage
+
 ## Known risks
 - Docker app/runtime rebuilds may still be needed before code changes appear live
 - live verification may depend on Vite state, `public/hot`, and writable Laravel cache paths
