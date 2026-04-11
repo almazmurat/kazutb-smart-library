@@ -1,7 +1,7 @@
-# midterm-qa-implementation-analysis — implementation plan
+# qa-implementation-analysis — implementation plan
 
 ## Scope summary
-Package the repo’s real automation baseline into a professional midterm QA deliverable, refresh the QA docs with current metrics, remove the visible coursework wording, expand the integration risk pack, and verify the result with fresh evidence.
+Package the repo’s real automation baseline into a professional QA deliverable, refresh the QA docs with current metrics, remove the visible coursework wording, expand the integration risk pack, and verify the result with fresh evidence.
 
 ## Traceability matrix
 | Requirement | Use cases | Plan steps | Tests |
@@ -57,7 +57,7 @@ cd /home/admlibrary/kazutb-smart-library-main && composer qa:evidence
 ## Ready for /implement
 - completed
 - notes:
-  - The professional midterm QA package now exists under `docs/qa/`.
+  - The professional QA package now exists under `docs/qa/`.
   - The local Playwright reproducibility issue and stale smoke expectation were addressed.
 
 ## Ready for /verify

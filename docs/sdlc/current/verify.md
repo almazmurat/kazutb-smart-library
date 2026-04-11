@@ -1,4 +1,4 @@
-# Verification — Midterm QA implementation analysis
+# Verification — QA implementation analysis
 
 ## Artifact under review
 - draft: `docs/sdlc/current/draft.md`
@@ -31,7 +31,7 @@ cd /home/admlibrary/kazutb-smart-library-main && composer qa:evidence
 ## Use-case coverage
 | Use case | Evidence | Result |
 |---|---|---|
-| `UC1` | reviewer can open the new professional midterm QA package under `docs/qa/` | PASS |
+| `UC1` | reviewer can open the professional QA package under `docs/qa/` | PASS |
 | `UC2` | maintainer can run the local QA and browser smoke suites successfully | PASS |
 | `UC3` | evidence logs exist under `evidence/verification/qa-gates-20260411-010532.txt` and related files | PASS |
 

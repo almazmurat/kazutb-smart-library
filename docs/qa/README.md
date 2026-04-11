@@ -21,8 +21,7 @@ composer qa:evidence
 
 ## Document map
 - `qa-implementation-analysis.md` — professional QA implementation and empirical analysis package for the live repo
-- `midterm-technical-report-draft.md` — article-style technical report draft with empirical analysis, figures, and completion matrices
-- `midterm-strict-master-prompt.md` — strict delivery prompt for future midterm-quality QA execution
+- `technical-qa-report.md` — consolidated analytical QA report with figures, findings, and operational conclusions
 - `qa-test-strategy-document.md` — formal QA strategy outline for the written report / research paper
 - `verification-report.md` — executive summary, failure-history audit, and stabilization results
 - `test-scope.md` — risk-ranked automation scope, scenario design, and traceability

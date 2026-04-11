@@ -32,3 +32,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# Local QA scratch and temporary research files
+/.playwright-mcp
+/scr
+/docs/sdlc/draft.md
+/docs/qa/*-draft*.md

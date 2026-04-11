@@ -1,4 +1,4 @@
-# Midterm Technical Report Draft — QA Implementation & Empirical Analysis for the КазТБУ Digital Library
+# Technical QA Report — Empirical Verification Analysis for the КазТБУ Digital Library
 
 ## Status snapshot
 - **Evidence bundle used in this draft:** `evidence/verification/*-20260411-014142.*`
@@ -8,7 +8,7 @@
 ---
 
 ## Abstract
-This midterm deliverable evaluates the quality-engineering maturity of the КазТБУ Digital Library, a Laravel- and Vite-based web platform that serves public discovery, authenticated reader accounts, librarian workflows, and integration-boundary APIs. The work moved beyond a checklist-style QA package and into an empirical analysis baseline by combining repository audit data, historical CI failures, fresh local execution evidence, and expanded automation across **unit**, **integration**, and **E2E** layers.
+This report evaluates the quality-engineering maturity of the КазТБУ Digital Library, a Laravel- and Vite-based web platform that serves public discovery, authenticated reader accounts, librarian workflows, and integration-boundary APIs. The work moved beyond a checklist-style QA package and into an empirical analysis baseline by combining repository audit data, historical CI failures, fresh local execution evidence, and expanded automation across **unit**, **integration**, and **E2E** layers.
 
 The main findings are twofold. First, the defended automation scope is strongest where business impact is highest: authentication, reservations, staff-boundary access, catalog discovery, and integration safety. Second, the most important defects uncovered during the verification cycle were not random product bugs but **environment and contract drift issues**: missing frontend tooling on clean runners, Playwright report permission problems, and locale-sensitive assertions that were stable locally but failed in GitHub-hosted CI. These findings changed the risk interpretation of the platform: direct security and integrity risks are now better controlled, while **detectability and operational stability** remain the main drivers of residual risk.
 
@@ -17,7 +17,7 @@ The main findings are twofold. First, the defended automation scope is strongest
 ## 1. Introduction
 The КазТБУ Digital Library is not a static website. It is a multi-surface digital platform that combines public catalog discovery, reader account services, internal librarian operations, and bounded integration endpoints. That mix makes QA work non-trivial: the project must protect role boundaries, maintain reliable reader flows, and remain reproducible in CI/CD despite a layered PHP + JavaScript toolchain.
 
-The midterm objective was therefore broader than “add some tests.” The repository had to be brought to a state where the following could be shown with real evidence:
+The objective was therefore broader than “add some tests.” The repository had to be brought to a state where the following could be shown with real evidence:
 1. a risk-driven automation strategy,
 2. implemented and repeatable checks at unit, integration, and E2E levels,
 3. quality gates enforced locally and in GitHub Actions,
@@ -31,7 +31,7 @@ This draft intentionally treats the repository as an engineering system under st
 ## 2. Literature Review
 Current software-quality practice consistently favors three ideas that are directly relevant here. First, **risk-based testing** argues that limited automation effort should be concentrated on high-impact and high-likelihood failure zones rather than evenly distributed across every file. For a library platform, those zones are authentication, protected reader data, catalog correctness, and integration boundaries.
 
-Second, the **testing pyramid** remains useful when adapted pragmatically. Unit tests offer fast feedback on pure transformation logic, integration tests validate route and service contracts, and E2E checks confirm that user-visible critical paths remain operational in a real browser. A mature midterm submission therefore should not rely on a single layer. It should show why each layer exists and how the layers complement one another.
+Second, the **testing pyramid** remains useful when adapted pragmatically. Unit tests offer fast feedback on pure transformation logic, integration tests validate route and service contracts, and E2E checks confirm that user-visible critical paths remain operational in a real browser. A mature verification package should not rely on a single layer. It should show why each layer exists and how the layers complement one another.
 
 Third, **continuous verification** in CI/CD is now part of quality assurance, not a separate operational concern. A test suite that passes only on one machine but fails on clean runners reveals a QA maturity gap. That is why the present work explicitly analyzes clean-runner failures, artifact generation, and the realism of gate thresholds rather than treating pipeline behavior as an afterthought.
 
@@ -59,7 +59,7 @@ flowchart LR
   E[E2E browser smoke\npublic-smoke.spec.ts] --> P[npm run test:e2e]
   C --> A[JUnit + Clover + gate logs]
   P --> B[Playwright HTML + smoke logs]
-  A --> R[Midterm report evidence]
+  A --> R[Technical report evidence]
   B --> R
 ```
 
@@ -69,8 +69,8 @@ Risk and evidence were evaluated across **Likelihood**, **Impact**, and **Detect
 - **Impact** remained high for security, access control, or reader-facing business flows.
 - **Detectability** decreased when failures were hidden by environment drift or shallow assertions.
 
-### 3.4 Midterm compliance matrix
-| Midterm Requirement | Required by Brief? | Current Status | Existing Repo Evidence | Gap | Action Needed |
+### 3.4 Compliance matrix
+| Requirement | Required by Brief? | Current Status | Existing Repo Evidence | Gap | Action Needed |
 |---|---|---|---|---|---|
 | Risk re-evaluation with evidence | Yes | DONE | Sections 4–6 of this report; `docs/qa/qa-implementation-analysis.md` | none | maintain on future iterations |
 | Failed test extraction | Yes | DONE | Table 4.1; remote run `24271227472`; `remote-ci-summary-20260411-014142.txt` | none | keep historical failure log |
@@ -85,7 +85,7 @@ Risk and evidence were evaluated across **Likelihood**, **Impact**, and **Detect
 | Planned vs actual analysis | Yes | DONE | Section 11 | none | repeat at final report stage |
 | Technical report draft sections | Yes | DONE | this file | none | convert to final paper later |
 | Visuals integrated into report | Yes | DONE | Figures 1–3 and Mermaid diagram | none | optional caption polishing |
-| Professional wording cleanup | Yes | DONE | `docs/qa/*`, `docs/sdlc/current/*` | user scratch draft may still hold informal text outside the tracked package | supersede with strict prompt file |
+| Professional wording cleanup | Yes | DONE | `docs/qa/*`, `docs/sdlc/current/*` | user scratch drafts can still exist locally outside the tracked surface | keep the tracked repo limited to operational docs |
 
 ---
 
@@ -158,7 +158,7 @@ Risk and evidence were evaluated across **Likelihood**, **Impact**, and **Detect
 
 ---
 
-## 6. New Tests Added in this midterm cycle
+## 6. New Tests Added in this QA-hardening cycle
 | Test ID | Module | Scenario Category | Input Data | Expected Result | Actual Result | Test Level | File | Status |
 |---|---|---|---|---|---|---|---|---|
 | `T-NEW-01` | Auth | Failure scenario | CRM response without token | `502` and no session authentication | PASS | Integration/API | `tests/Feature/Api/AuthHardeningTest.php` | DONE |
@@ -260,9 +260,9 @@ The only gate that remains deliberately modest is global line coverage. This is 
 ## 11. Comparative Analysis — Planned vs Actual
 | Aspect | Planned Earlier | Actual Observed | Gap | Root Cause | Insight |
 |---|---|---|---|---|---|
-| QA packaging | a renamed QA bundle might be enough | a real midterm needs analytical prose, evidence matrices, and report sections | High | previous docs were strong operational notes but weak as an article draft | report-quality structure matters as much as test count |
+| QA packaging | a renamed QA bundle might be enough | a real semi-production QA package needs analytical prose, evidence matrices, and report sections | High | previous docs were strong operational notes but weak as an article draft | report-quality structure matters as much as test count |
 | Risk estimates | auth and integration would dominate | CI detectability/localization drift also became a significant operational risk | Medium | clean-runner behavior surfaced hidden assumptions | risk should include environment and observability, not just product logic |
-| Unit depth | existing unit coverage might be acceptable implicitly | explicit unit proof was needed for Task 2.2 | Medium | integration tests dominated the repo | a midterm brief needs visible layer balance |
+| Unit depth | existing unit coverage might be acceptable implicitly | explicit unit proof was needed for layer balance and maintainability | Medium | integration tests dominated the repo | a strong QA baseline needs visible layer balance |
 | CI confidence | local verification implied remote confidence | remote CI still found locale-sensitive drift on the pushed commit | High | assertions depended on the default locale | local green is necessary but not sufficient |
 | Visual evidence | charts existed as assets | visuals must be referenced and interpreted in the report | Medium | earlier docs treated visuals as appendices only | a technical report must explain what the figures mean |
 
@@ -271,9 +271,9 @@ The largest methodological lesson is that some of the most valuable findings wer
 ---
 
 ## 12. Discussion
-The midterm exercise changed the emphasis of the QA work from implementation alone to **evidence-backed interpretation**. The repository is now in a better position not only because more tests exist, but because the most recent failures are understandable, reproducible, and linked to specific causes. Authentication and integration flows are now more defensible because their failure modes were deliberately tested rather than assumed away. At the same time, the remaining limitations are openly acknowledged: global line coverage is still modest, and deeper multi-step E2E for internal circulation remains future work rather than present fact.
+This QA-hardening exercise changed the emphasis of the work from implementation alone to **evidence-backed interpretation**. The repository is now in a better position not only because more tests exist, but because the most recent failures are understandable, reproducible, and linked to specific causes. Authentication and integration flows are now more defensible because their failure modes were deliberately tested rather than assumed away. At the same time, the remaining limitations are openly acknowledged: global line coverage is still modest, and deeper multi-step E2E for internal circulation remains future work rather than present fact.
 
-This matters academically because the report can now argue cause and effect. The observed failures on clean GitHub runners were caused by missing environment normalization and locale assumptions. The effect was a misleadingly unstable CI surface. The response was not to lower the bar, but to make the environment, tests, and assertions more truthful. That is a stronger midterm result than a superficial claim of “all tests pass.”
+This matters operationally because the report can now argue cause and effect. The observed failures on clean GitHub runners were caused by missing environment normalization and locale assumptions. The effect was a misleadingly unstable CI surface. The response was not to lower the bar, but to make the environment, tests, and assertions more truthful. That is a stronger result than a superficial claim of “all tests pass.”
 
 ### Threats to validity
 - the E2E layer still focuses on smoke coverage rather than a wide browser matrix;
@@ -281,7 +281,7 @@ This matters academically because the report can now argue cause and effect. The
 - flaky-rate conclusions are based on the currently available run window, not months of nightly data.
 
 ### Conclusion
-The repository now supports a defensible midterm narrative: the QA baseline is reproducible, risk-aware, and empirically analyzed. The remaining limitations are explicit, bounded, and non-blocking for the current report draft.
+The repository now supports a defensible technical narrative: the QA baseline is reproducible, risk-aware, and empirically analyzed. The remaining limitations are explicit, bounded, and non-blocking for the current report.
 
 ### Future work
 1. add deeper internal-circulation and reservation-browser flows,
@@ -306,7 +306,7 @@ The repository now supports a defensible midterm narrative: the QA baseline is r
 | `V1` | SVG bar chart | compare automated checks across high-risk modules | `evidence/verification/quality-metrics.json` | `evidence/verification/charts/coverage-by-module.svg` | Yes |
 | `V2` | SVG time chart | show runtime efficiency of the defended suites | `evidence/verification/quality-metrics.json` | `evidence/verification/charts/execution-time-by-run.svg` | Yes |
 | `V3` | SVG status chart | summarize pass/fail distribution for the current scope | `evidence/verification/quality-metrics.json` | `evidence/verification/charts/run-status-distribution.svg` | Yes |
-| `V4` | Mermaid architecture diagram | explain the layered test strategy and artifact flow | embedded in Section 3 | `docs/qa/midterm-technical-report-draft.md` | Yes |
+| `V4` | Mermaid architecture diagram | explain the layered test strategy and artifact flow | embedded in Section 3 | `docs/qa/technical-qa-report.md` | Yes |
 
 ---
 
@@ -315,7 +315,7 @@ The repository now supports a defensible midterm narrative: the QA baseline is r
 |---|---|---|---|
 | Audit QA docs wording | Yes | `docs/qa/*` wording cleanup and professional renames | — |
 | Add deeper risk tests | Yes | Section 6; new auth, internal, integration, and unit tests | — |
-| Refresh midterm reports | Yes | this report + `docs/qa/qa-implementation-analysis.md` | — |
+| Refresh analytical QA report | Yes | this report + `docs/qa/qa-implementation-analysis.md` | — |
 | Verify QA evidence | Yes | `qa-gates-20260411-014142.txt`, `playwright-smoke-20260411-014142.txt` | — |
 | Commit and push updates | Yes | commit `5d32fd2` on `main` and GitHub Actions run `24271956341` (`completed success`) | — |
 
@@ -336,7 +336,7 @@ The repository now supports a defensible midterm narrative: the QA baseline is r
 | Real metrics collection | DONE | Section 10 and `quality-metrics.json` | local runtime/coverage/stability data recorded |
 | Planned vs actual comparison | DONE | Section 11 | gaps and lessons explained |
 | Visuals integrated into report | DONE | Section 13 | figures embedded and referenced |
-| Professional wording cleanup | DONE | `docs/qa/*`, `docs/sdlc/current/*` | no visible `Assignment 2` wording remains in the tracked professional docs |
+| Professional wording cleanup | DONE | `docs/qa/*`, `docs/sdlc/current/*` | no visible classroom-style wording remains in the tracked professional docs |
 | Remaining limitations clearly marked | DONE | Discussion + matrix | no silent omissions |
 
-> **Verdict at this revision:** **MIDTERM-READY**, with two non-blocking limitations explicitly acknowledged: modest global monolith-wide line coverage and still-thin deep internal-workflow E2E breadth.
+> **Verdict at this revision:** the repository is **release-ready for the defended QA scope**, with two explicitly documented non-blocking limitations: modest global monolith-wide line coverage and still-thin deep internal-workflow E2E breadth.

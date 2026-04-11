@@ -1,7 +1,7 @@
 # QA Implementation & Empirical Analysis Package
 
 ## Short direct answer
-This repository is already a **web-based digital library platform** with a working QA baseline. The package below reframes the live repo as a professional QA implementation and empirical analysis set using the project’s real tests, CI/CD workflow, metrics, and evidence artifacts. The companion article-style report draft now lives at `docs/qa/midterm-technical-report-draft.md`.
+This repository is already a **web-based digital library platform** with a working QA baseline. The package below reframes the live repo as a professional QA implementation and empirical analysis set using the project’s real tests, CI/CD workflow, metrics, and evidence artifacts. The companion analytical report now lives at `docs/qa/technical-qa-report.md`.
 
 ---
 
