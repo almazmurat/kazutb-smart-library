@@ -3,7 +3,7 @@
 ## Status snapshot
 - **Evidence bundle used in this draft:** `evidence/verification/*-20260411-014142.*`
 - **Local verification baseline:** `composer qa:ci` → **139 passed, 595 assertions**; `npm run test:e2e` → **3 passed (4.8s)**
-- **Current delivery posture:** all required report sections are now present; the only operational item that needed closure after the previous revision was the remote CI locale-drift fix, which is documented below and tied to the next push/rerun.
+- **Current delivery posture:** all required report sections are now present, and the pushed locale-fix/report revision is **green in GitHub Actions run `24271956341`**.
 
 ---
 
@@ -201,7 +201,7 @@ The mandatory categories from the brief are satisfied explicitly: **failure scen
 | `backend-quality` | Composer + PHPUnit + Pint | push / PR / manual | `composer qa:ci`, JUnit and Clover generation | `build/test-results/phpunit-feature.xml`, `clover.xml` | `qa-gates-20260411-014142.txt` | DONE |
 | `browser-smoke` | Node 22 + Playwright | push / PR / manual | `npm run build`, `npm run test:e2e` | Playwright report and traces | `playwright-smoke-20260411-014142.txt` | DONE |
 | `artifact upload` | GitHub Actions upload-artifact | always | backend + Playwright artifact publishing | CI artifacts | `.github/workflows/ci.yml` | DONE |
-| `remote failure evidence` | GitHub Actions history | completed runs | historical pass/fail behavior and root-cause evidence | run logs | `remote-ci-summary-20260411-014142.txt`, run `24271227472` | DONE |
+| `remote pass/fail evidence` | GitHub Actions history | completed runs | historical failure analysis plus confirmed green rerun on the fixed revision | run logs | `remote-ci-summary-20260411-014142.txt`, `remote-ci-summary-20260411-015413.txt`, runs `24271227472` and `24271956341` | DONE |
 
 ---
 
@@ -317,7 +317,7 @@ The repository now supports a defensible midterm narrative: the QA baseline is r
 | Add deeper risk tests | Yes | Section 6; new auth, internal, integration, and unit tests | — |
 | Refresh midterm reports | Yes | this report + `docs/qa/qa-implementation-analysis.md` | — |
 | Verify QA evidence | Yes | `qa-gates-20260411-014142.txt`, `playwright-smoke-20260411-014142.txt` | — |
-| Commit and push updates | Pending until final push of the locale-fix/report revision | git evidence after the final commit | not yet closed at the time this draft text was written |
+| Commit and push updates | Yes | commit `5d32fd2` on `main` and GitHub Actions run `24271956341` (`completed success`) | — |
 
 ---
 

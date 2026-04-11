@@ -8,7 +8,7 @@ The following artifacts support the repository’s QA and verification baseline.
 | `evidence/verification/qa-gates-*.txt` | timestamped backend/local QA gate logs |
 | `evidence/verification/playwright-smoke-*.txt` | timestamped Playwright smoke logs |
 | `evidence/verification/ci-traceability-*.txt` | timestamped git-history trace for QA/CI files |
-| `evidence/verification/remote-ci-summary-*.txt` | timestamped snapshot of recent GitHub Actions runs |
+| `evidence/verification/remote-ci-summary-*.txt` | timestamped snapshot of recent GitHub Actions runs, including the green run `24271956341` after the locale-fix push |
 | `evidence/verification/remote-ci-success-2026-04-08.json` | successful GitHub Actions run summary for the stabilized baseline |
 | `evidence/verification/quality-metrics.json` | structured source of the numeric metrics used in the docs and charts |
 | `evidence/verification/commit-diff-tests-ci.png` | screenshot of the tests/CI-focused repository diff |
@@ -36,4 +36,5 @@ composer qa:evidence
 ## Latest verified command summary
 - `composer qa:ci` → **139 passed (595 assertions)** and the frontend build succeeded on the 2026-04-11 evidence refresh
 - `npm run test:e2e` → **3 passed (4.8s)** on the latest smoke verification bundle
+- GitHub Actions `Continuous Verification` run `24271956341` → **completed success** after the locale-aware CI fix
 - Clover coverage floor currently defended in CI → **4.24% measured vs 4.0% minimum**
