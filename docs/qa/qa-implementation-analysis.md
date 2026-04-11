@@ -373,11 +373,3 @@ Use that file as the **Methods + Implementation + Reproducibility** backbone for
 | Repository Link | GitHub repo on `main` | `almazmurat/digital-library` | Ready | repo URL |
 | Code Snippets | workflow, tests, scripts | `tests/`, `scripts/dev/`, `.github/workflows/` | Ready | excerpt in paper/report |
 | Charts / exported reports | Clover/JUnit + optional SVG/CSV exports | `build/test-results/`, `evidence/verification/charts/` | Ready with optional refresh | attach generated assets |
-
----
-
-## What should be clarified next
-1. Does the instructor want **all tables in English**, Russian, or both?
-2. Is **GitHub Actions screenshot evidence** mandatory, or are raw logs sufficient?
-3. Is the defended scope expected to stay **risk-based**, or should the next iteration expand into deeper internal-circulation E2E coverage?
-4. Should a nightly workflow be added now, or is the current PR/push pipeline enough for the current review?
