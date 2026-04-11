@@ -1,7 +1,7 @@
-# Midterm QA Implementation & Empirical Analysis Package
+# QA Implementation & Empirical Analysis Package
 
 ## Short direct answer
-This repository is already a **web-based digital library platform** with a working QA baseline. The package below reframes the live repo as a professional midterm QA implementation and empirical analysis set using the project’s real tests, CI/CD workflow, metrics, and evidence artifacts.
+This repository is already a **web-based digital library platform** with a working QA baseline. The package below reframes the live repo as a professional QA implementation and empirical analysis set using the project’s real tests, CI/CD workflow, metrics, and evidence artifacts.
 
 ---
 
@@ -161,7 +161,7 @@ Keep **Playwright + PHPUnit + GitHub Actions** as the defended automation baseli
 ### Commit naming convention
 - `test: add auth/session regression coverage`
 - `fix: stabilize Playwright output permissions`
-- `docs: add midterm QA implementation analysis`
+- `docs: add QA implementation analysis`
 - `ci: harden verification workflow`
 
 ### Example traceable history
@@ -176,7 +176,7 @@ Keep **Playwright + PHPUnit + GitHub Actions** as the defended automation baseli
 
 ---
 
-## Part G — Evidence for the midterm report
+## Part G — Evidence for the report
 
 ### Evidence structure
 ```text
@@ -380,4 +380,4 @@ Use that file as the **Methods + Implementation + Reproducibility** backbone for
 1. Does the instructor want **all tables in English**, Russian, or both?
 2. Is **GitHub Actions screenshot evidence** mandatory, or are raw logs sufficient?
 3. Is the defended scope expected to stay **risk-based**, or should the next iteration expand into deeper internal-circulation E2E coverage?
-4. Should a nightly workflow be added now, or is the current PR/push pipeline enough for the current midterm review?
+4. Should a nightly workflow be added now, or is the current PR/push pipeline enough for the current review?
