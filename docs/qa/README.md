@@ -14,13 +14,15 @@ composer qa:evidence
 ```
 
 ### Latest verified results
-- `composer qa:ci` → **125 passed** (`550 assertions`) on the fresh 2026-04-11 verification run with the expanded integration risk pack
-- `npm run test:e2e` → **3 passed** (`4.7s`) on the latest smoke refresh
+- `composer qa:ci` → **139 passed** (`595 assertions`) on the fresh 2026-04-11 verification run with the expanded unit + integration risk pack
+- `npm run test:e2e` → **3 passed** (`4.8s`) on the latest smoke refresh
 - critical-path Clover line coverage remains defended at **4.24%** against the full `app/` namespace
 - GitHub Actions remains configured with `Secret Scan`, `Backend Verification & Coverage`, and `Frontend Build & Browser Smoke`
 
 ## Document map
 - `qa-implementation-analysis.md` — professional QA implementation and empirical analysis package for the live repo
+- `midterm-technical-report-draft.md` — article-style technical report draft with empirical analysis, figures, and completion matrices
+- `midterm-strict-master-prompt.md` — strict delivery prompt for future midterm-quality QA execution
 - `qa-test-strategy-document.md` — formal QA strategy outline for the written report / research paper
 - `verification-report.md` — executive summary, failure-history audit, and stabilization results
 - `test-scope.md` — risk-ranked automation scope, scenario design, and traceability

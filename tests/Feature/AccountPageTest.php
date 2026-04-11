@@ -20,7 +20,7 @@ class AccountPageTest extends TestCase
 
     public function test_account_page_renders_successfully(): void
     {
-        $response = $this->withSession($this->authenticatedSession())->get('/account');
+        $response = $this->withSession($this->authenticatedSession())->get('/account?lang=ru');
 
         $response
             ->assertOk()
@@ -40,7 +40,7 @@ class AccountPageTest extends TestCase
 
     public function test_account_page_shows_loan_section(): void
     {
-        $response = $this->withSession($this->authenticatedSession())->get('/account');
+        $response = $this->withSession($this->authenticatedSession())->get('/account?lang=ru');
 
         $response
             ->assertOk()
@@ -58,7 +58,7 @@ class AccountPageTest extends TestCase
     {
         $response = $this->withSession($this->authenticatedSession([
             'profile_type' => 'teacher',
-        ]))->get('/account');
+        ]))->get('/account?lang=ru');
 
         $response
             ->assertOk()

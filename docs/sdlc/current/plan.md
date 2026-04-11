@@ -14,7 +14,7 @@ Package the repo’s real automation baseline into a professional midterm QA del
 
 ## Implementation steps
 - [x] `S1.` Inspect the current QA surface in `docs/qa/`, `.github/workflows/ci.yml`, `tests/Feature/`, `tests/e2e/`, and `scripts/dev/` to map the real automation baseline.
-- [x] `S2.` Create and professionalize the main package in `docs/qa/midterm-qa-implementation-analysis.md` and `docs/qa/qa-test-strategy-document.md` with the required tables, empirical findings, and defense notes.
+- [x] `S2.` Create and professionalize the main package in `docs/qa/qa-implementation-analysis.md` and `docs/qa/qa-test-strategy-document.md` with the required tables, empirical findings, and defense notes.
 - [x] `S3.` Expand the integration risk pack and harden the local/browser automation flow where needed.
 - [x] `S4.` Verify the completed package with `composer qa:ci`, `npm run test:e2e`, and `composer qa:evidence`, then refresh `docs/sdlc/current/verify.md` with the evidence.
 
@@ -24,7 +24,7 @@ Package the repo’s real automation baseline into a professional midterm QA del
 - `tests/e2e/public-smoke.spec.ts`
 
 ### Documentation
-- `docs/qa/midterm-qa-implementation-analysis.md`
+- `docs/qa/qa-implementation-analysis.md`
 - `docs/qa/qa-test-strategy-document.md`
 - `docs/qa/README.md`
 - `docs/qa/test-scope.md`

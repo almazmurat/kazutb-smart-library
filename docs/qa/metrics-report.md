@@ -10,24 +10,25 @@ The repository does **not** claim full-monolith automation coverage. The defende
 |---|---:|---|
 | Authentication & session boundary | 20 | `tests/Feature/Api/AuthHardeningTest.php`, `tests/Feature/Api/AuthSessionLifecycleTest.php`, `tests/Feature/Api/AuthSessionMeTest.php` |
 | Reader account & reservations | 27 | `tests/Feature/AccountPageTest.php`, `tests/Feature/Api/AccountReservationsTest.php`, `tests/Feature/Api/ReaderAccessProtectionTest.php` |
-| Catalog discovery & detail | 14 | `tests/Feature/CatalogPageTest.php`, `tests/Feature/Api/CatalogDbSearchTest.php`, `tests/Feature/Api/BookDetailDbTest.php` |
+| Catalog discovery & detail | 16 | `tests/Feature/CatalogPageTest.php`, `tests/Feature/Api/CatalogDbSearchTest.php`, `tests/Feature/Api/BookDetailDbTest.php` |
 | Internal staff access & operations | 17 | `tests/Feature/InternalAccessBoundaryTest.php`, `tests/Feature/InternalDashboardPageTest.php`, `tests/Feature/InternalReviewPageTest.php`, `tests/Feature/InternalStewardshipPageTest.php`, `tests/Feature/InternalCirculationPageTest.php` |
 | Integration boundary & idempotency | 40 | `tests/Feature/Api/Integration/DocumentManagementTest.php`, `tests/Feature/Api/Integration/IntegrationRateLimitTest.php`, `tests/Feature/Api/Integration/ReservationMutateTest.php` |
+| Teacher shortlist / bibliography formatting | 14 | `tests/Unit/Services/BibliographyFormatterTest.php` |
 | Public shell & browser smoke | 10 | `tests/Feature/PublicShellTest.php`, `tests/e2e/public-smoke.spec.ts` |
 
 ## 2) Verified execution times (TTE)
 
 | Command / step | Verified result |
 |---|---|
-| `composer qa:ci` critical-path PHPUnit stage | `125 passed (550 assertions)` in `8.05s` |
-| Vite production build inside `composer qa:ci` | completed in `1.25s` after the clean-runner `npm ci` bootstrap |
-| `npm run test:e2e` | `3 passed` in `4.7s` |
+| `composer qa:ci` critical-path PHPUnit stage | `139 passed (595 assertions)` in `8.19s` |
+| Vite production build inside `composer qa:ci` | completed in `1.10s` after the clean-runner `npm ci` bootstrap |
+| `npm run test:e2e` | `3 passed` in `4.8s` |
 | GitHub Actions backend job (`run 24156029659`) | completed successfully in about `40s` |
 | GitHub Actions frontend smoke job (`run 24156029659`) | completed successfully in about `60s` |
 
 Source logs:
-- `evidence/verification/qa-gates-20260411-010532.txt`
-- `evidence/verification/playwright-smoke-20260411-010532.txt`
+- `evidence/verification/qa-gates-20260411-014142.txt`
+- `evidence/verification/playwright-smoke-20260411-014142.txt`
 - GitHub Actions run logs referenced in `evidence-index.md`
 
 ## 3) Coverage metric

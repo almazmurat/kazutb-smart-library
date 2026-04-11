@@ -107,7 +107,7 @@
         ],
         "test:critical-paths": [
             "@php artisan config:clear --ansi",
-            "@php artisan test --filter='CatalogDbSearchTest|BookDetailDbTest|AuthSessionMeTest|AuthSessionLifecycleTest|LoginTest|ReservationReadTest|ReservationMutateTest|AccountReservationsTest|InternalCirculationCheckoutReturnTest|InternalCirculationRenewalTest|InternalCirculationReadbackTest|DocumentManagementTest|IntegrationRateLimitTest'"
+            "@php artisan test --filter='BibliographyFormatterTest|CatalogDbSearchTest|BookDetailDbTest|AuthSessionMeTest|AuthSessionLifecycleTest|LoginTest|ReservationReadTest|ReservationMutateTest|AccountReservationsTest|InternalCirculationCheckoutReturnTest|InternalCirculationRenewalTest|InternalCirculationReadbackTest|DocumentManagementTest|IntegrationRateLimitTest'"
         ],
         "dev:critical-paths": [
             "bash scripts/dev/check-runtime-critical-paths.sh"

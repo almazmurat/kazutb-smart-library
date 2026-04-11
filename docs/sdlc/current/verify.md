@@ -22,7 +22,7 @@ cd /home/admlibrary/kazutb-smart-library-main && composer qa:evidence
 ## Requirement traceability
 | Requirement | Evidence | Result |
 |---|---|---|
-| `R1` | `docs/qa/midterm-qa-implementation-analysis.md` and `docs/qa/qa-test-strategy-document.md` | PASS |
+| `R1` | `docs/qa/qa-implementation-analysis.md` and `docs/qa/qa-test-strategy-document.md` | PASS |
 | `R2` | new docs reference actual repo paths, tests, routes, and CI workflow | PASS |
 | `R3` | `playwright.config.ts` now falls back to writable temp report/artifact folders when repo paths are not writable | PASS |
 | `R4` | `tests/e2e/public-smoke.spec.ts` now checks the current English KazTBU homepage copy | PASS |

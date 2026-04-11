@@ -182,4 +182,47 @@ class BibliographyFormatterTest extends TestCase
         $this->assertStringContainsString('открытый доступ', $result['text']);
         $this->assertStringContainsString('доступ по авторизации', $result['text']);
     }
+
+    public function test_grouped_format_external_only_omits_books_section(): void
+    {
+        $items = [
+            ['title' => 'EBSCO', 'type' => 'external_resource', 'provider' => 'EBSCO'],
+        ];
+
+        $result = $this->formatter->format($items, 'grouped');
+
+        $this->assertSame('grouped', $result['format']);
+        $this->assertSame(1, $result['count']);
+        $this->assertArrayNotHasKey('books', $result['sections']);
+        $this->assertSame(1, $result['sections']['external']);
+        $this->assertStringContainsString('Электронные ресурсы и базы данных', $result['text']);
+    }
+
+    public function test_syllabus_preserves_unknown_language_and_access_labels(): void
+    {
+        $items = [
+            ['title' => 'Deutsch Book', 'type' => 'book', 'language' => 'de'],
+            ['title' => 'Custom Access', 'type' => 'external_resource', 'access_type' => 'vpn_proxy'],
+        ];
+
+        $result = $this->formatter->format($items, 'syllabus');
+
+        $this->assertStringContainsString('[de]', $result['text']);
+        $this->assertStringContainsString('(vpn_proxy)', $result['text']);
+    }
+
+    public function test_numbered_format_preserves_original_item_order(): void
+    {
+        $items = [
+            ['title' => 'First item', 'type' => 'book'],
+            ['title' => 'Second item', 'type' => 'external_resource'],
+        ];
+
+        $result = $this->formatter->format($items, 'numbered');
+
+        $this->assertLessThan(
+            strpos($result['text'], 'Second item'),
+            strpos($result['text'], 'First item')
+        );
+    }
 }

@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-04-11T01:05:32Z",
-  "verification_run_id": "20260411-010532",
+  "generated_at": "2026-04-11T01:41:42Z",
+  "verification_run_id": "20260411-014142",
   "repository": "kazutb-smart-library-main",
   "commands": {
     "composer qa:ci": {
       "status": "passed",
-      "tests": 125,
-      "assertions": 550,
-      "duration_seconds": 8.05,
-      "frontend_build_seconds": 1.25,
-      "notes": "Includes the expanded integration risk pack and clean-runner npm bootstrap.",
-      "evidence": "evidence/verification/qa-gates-20260411-010532.txt"
+      "tests": 139,
+      "assertions": 595,
+      "duration_seconds": 8.19,
+      "frontend_build_seconds": 1.10,
+      "notes": "Includes the expanded unit + integration risk pack and locale-pinned CI regression fix.",
+      "evidence": "evidence/verification/qa-gates-20260411-014142.txt"
     },
     "npm run test:e2e": {
       "status": "passed",
       "tests": 3,
-      "duration_seconds": 4.7,
-      "notes": "Chromium smoke suite after Playwright output-path hardening.",
-      "evidence": "evidence/verification/playwright-smoke-20260411-010532.txt"
+      "duration_seconds": 4.8,
+      "notes": "Chromium smoke suite after Playwright output-path hardening and the locale-sensitive CI assertion fix.",
+      "evidence": "evidence/verification/playwright-smoke-20260411-014142.txt"
     }
   },
   "coverage": {
@@ -38,7 +38,7 @@
     },
     {
       "area": "Catalog discovery & detail",
-      "checks": 14,
+      "checks": 16,
       "critical_scenario_coverage_percent": 88
     },
     {
@@ -50,6 +50,11 @@
       "area": "Integration boundary & idempotency",
       "checks": 40,
       "critical_scenario_coverage_percent": 92
+    },
+    {
+      "area": "Teacher shortlist / bibliography formatting",
+      "checks": 14,
+      "critical_scenario_coverage_percent": 78
     },
     {
       "area": "Public shell & browser smoke",

@@ -216,7 +216,7 @@ class AccountReservationsTest extends TestCase
             ],
             'library.crm_token' => 'test-token',
             'library.authenticated_at' => now()->toIso8601String(),
-        ])->get('/account');
+        ])->get('/account?lang=ru');
 
         $response->assertOk();
         $response->assertSee('Мои бронирования');

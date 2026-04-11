@@ -8,7 +8,7 @@ class CatalogPageTest extends TestCase
 {
     public function test_catalog_page_renders_successfully(): void
     {
-        $response = $this->get('/catalog');
+        $response = $this->get('/catalog?lang=ru');
 
         $response
             ->assertOk()
@@ -17,7 +17,9 @@ class CatalogPageTest extends TestCase
             ->assertSee('id="language-chips"', false)
             ->assertSee('id="year-chips"', false)
             ->assertSee('id="filter-available-only"', false)
-            ->assertSee('id="sort-select"', false);
+            ->assertSee('id="sort-select"', false)
+            ->assertSee('ISBN', false)
+            ->assertSee('УДК', false);
     }
 
     public function test_catalog_page_has_functional_filter_chips(): void

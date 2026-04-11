@@ -20,7 +20,7 @@ class PublicShellTest extends TestCase
 
     public function test_resources_page_uses_accessible_shared_public_shell(): void
     {
-        $response = $this->get('/resources');
+        $response = $this->get('/resources?lang=ru');
 
         $response
             ->assertOk()

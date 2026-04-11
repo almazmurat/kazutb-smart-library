@@ -37,7 +37,7 @@ The repository already contains a real QA baseline, but the user now needs the p
 - `R5.` Fresh verification evidence must exist for `composer qa:ci`, `npm run test:e2e`, and `composer qa:evidence`.
 
 ## User / system flows
-- `UC1.` A reviewer opens `docs/qa/midterm-qa-implementation-analysis.md` and can map the real repo to the midterm QA checklist immediately.
+- `UC1.` A reviewer opens `docs/qa/qa-implementation-analysis.md` and can map the real repo to the midterm QA checklist immediately.
 - `UC2.` A maintainer runs `composer qa:ci` and `npm run test:e2e` successfully on the current repo state.
 - `UC3.` A reviewer can locate fresh reproducibility evidence under `evidence/verification/`.
 

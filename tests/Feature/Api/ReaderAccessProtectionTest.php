@@ -96,7 +96,7 @@ class ReaderAccessProtectionTest extends TestCase
     {
         $response = $this
             ->withSession($this->authenticatedSession())
-            ->get('/account');
+            ->get('/account?lang=ru');
 
         $response->assertOk();
         $response->assertSee('Кабинет', false);
@@ -108,7 +108,7 @@ class ReaderAccessProtectionTest extends TestCase
 
     public function test_login_page_loads_with_redirect_param(): void
     {
-        $response = $this->get('/login?redirect=%2Faccount');
+        $response = $this->get('/login?lang=ru&redirect=%2Faccount');
         $response->assertOk();
         $response->assertSee('Авторизация', false);
     }

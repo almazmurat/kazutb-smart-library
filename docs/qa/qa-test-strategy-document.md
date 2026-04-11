@@ -137,9 +137,9 @@ Explain which metrics are collected and how.
 Use fresh, real evidence only.
 
 ### Verified baseline on 2026-04-11
-- `composer qa:ci` → **125 passed, 550 assertions**
+- `composer qa:ci` → **139 passed, 595 assertions**
 - frontend production build completed successfully
-- `npm run test:e2e` → **3 passed (4.7s)**
+- `npm run test:e2e` → **3 passed (4.8s)**
 
 **Insert:**
 - command outputs or screenshots

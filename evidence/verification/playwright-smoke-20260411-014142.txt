@@ -1,0 +1,20 @@
+
+----------------------------------------
+> npm run test:e2e
+
+> test:e2e
+> playwright test
+
+
+Running 3 tests using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/public-smoke.spec.ts:4:3 › public smoke coverage › homepage renders the KazTBU library search-first shell (1.1s)
+  ✓  2 [chromium] › tests/e2e/public-smoke.spec.ts:13:3 › public smoke coverage › catalog keeps the critical discovery controls visible (1.1s)
+  ✓  3 [chromium] › tests/e2e/public-smoke.spec.ts:21:3 › public smoke coverage › guest account access redirects to login while resources stay public (1.4s)
+
+  3 passed (4.8s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report ../../../tmp/digital-library-playwright/html-report[39m
+[36m[39m

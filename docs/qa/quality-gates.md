@@ -21,7 +21,7 @@ composer qa:ci
 This wrapper executes `scripts/dev/run-ci-gates.sh`, which performs:
 1. Laravel configuration reset for a clean testing context
 2. targeted `Pint` checks on the hardened critical-path files
-3. critical-path PHPUnit feature/API regression tests, including the integration boundary pack (`DocumentManagementTest`, `IntegrationRateLimitTest`, `ReservationMutateTest`)
+3. critical-path PHPUnit feature/API regression tests, including the unit-level bibliography formatter pack and the integration boundary pack (`BibliographyFormatterTest`, `DocumentManagementTest`, `IntegrationRateLimitTest`, `ReservationMutateTest`)
 4. frontend production build verification with Vite
 
 ## 3) Threshold justification
