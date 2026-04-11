@@ -3,7 +3,7 @@
 ## 1. Executive summary
 A strict engineering review was performed against the live repository, workflow history, evidence logs, and current QA commands. The goal was not to prove that CI had gone green once, but to confirm that the repository now presents a **stable, professional verification baseline** for external reviewers and future maintainers.
 
-**Current result:** the repository now has a clean `docs/qa/` documentation area, a normalized `evidence/verification/` artifact layout, and a hardened CI baseline that is deterministic on clean runners. The strongest current proof remains the verified command output from `composer qa:ci` (**139 passed, 595 assertions**), `npm run test:e2e` (**3 passed, 4.8s**), and the successful GitHub Actions run `24271956341`.
+**Current result:** the repository now has a clean `docs/qa/` documentation area, a normalized `evidence/verification/` artifact layout, and a hardened CI baseline that is deterministic on clean runners. The strongest current proof remains the verified command output from `composer qa:ci` (**139 passed, 595 assertions**), `npm run test:e2e` (**3 passed, 4.8s**), and the latest successful `Continuous Verification` run on `main`.
 
 ## 2. Failure-history investigation
 The recent CI instability was real and occurred in a clear sequence:

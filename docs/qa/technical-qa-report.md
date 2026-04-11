@@ -3,7 +3,7 @@
 ## Status snapshot
 - **Evidence bundle used in this draft:** `evidence/verification/*-20260411-014142.*`
 - **Local verification baseline:** `composer qa:ci` → **139 passed, 595 assertions**; `npm run test:e2e` → **3 passed (4.8s)**
-- **Current delivery posture:** all required report sections are now present, and the pushed locale-fix/report revision is **green in GitHub Actions run `24271956341`**.
+- **Current delivery posture:** all required report sections are now present, and the latest main-branch cleanup verification is green in GitHub Actions.
 
 ---
 
@@ -85,7 +85,7 @@ Risk and evidence were evaluated across **Likelihood**, **Impact**, and **Detect
 | Planned vs actual analysis | Yes | DONE | Section 11 | none | repeat at final report stage |
 | Technical report draft sections | Yes | DONE | this file | none | convert to final paper later |
 | Visuals integrated into report | Yes | DONE | Figures 1–3 and Mermaid diagram | none | optional caption polishing |
-| Professional wording cleanup | Yes | DONE | `docs/qa/*`, `docs/sdlc/current/*` | user scratch drafts can still exist locally outside the tracked surface | keep the tracked repo limited to operational docs |
+| Professional wording cleanup | Yes | DONE | `docs/qa/*` and repository-facing markdown cleanup | temporary planning and agent-workflow files were removed from the tracked repo surface | keep the tracked repo limited to operational docs |
 
 ---
 
@@ -201,7 +201,7 @@ The mandatory categories from the brief are satisfied explicitly: **failure scen
 | `backend-quality` | Composer + PHPUnit + Pint | push / PR / manual | `composer qa:ci`, JUnit and Clover generation | `build/test-results/phpunit-feature.xml`, `clover.xml` | `qa-gates-20260411-014142.txt` | DONE |
 | `browser-smoke` | Node 22 + Playwright | push / PR / manual | `npm run build`, `npm run test:e2e` | Playwright report and traces | `playwright-smoke-20260411-014142.txt` | DONE |
 | `artifact upload` | GitHub Actions upload-artifact | always | backend + Playwright artifact publishing | CI artifacts | `.github/workflows/ci.yml` | DONE |
-| `remote pass/fail evidence` | GitHub Actions history | completed runs | historical failure analysis plus confirmed green rerun on the fixed revision | run logs | `remote-ci-summary-20260411-014142.txt`, `remote-ci-summary-20260411-015413.txt`, runs `24271227472` and `24271956341` | DONE |
+| `remote pass/fail evidence` | GitHub Actions history | completed runs | historical failure analysis plus the latest successful main-branch verification run | run logs | `remote-ci-summary-*.txt` and the current `Continuous Verification` run on `main` | DONE |
 
 ---
 
@@ -317,7 +317,7 @@ The repository now supports a defensible technical narrative: the QA baseline is
 | Add deeper risk tests | Yes | Section 6; new auth, internal, integration, and unit tests | — |
 | Refresh analytical QA report | Yes | this report + `docs/qa/qa-implementation-analysis.md` | — |
 | Verify QA evidence | Yes | `qa-gates-20260411-014142.txt`, `playwright-smoke-20260411-014142.txt` | — |
-| Commit and push updates | Yes | commit `5d32fd2` on `main` and GitHub Actions run `24271956341` (`completed success`) | — |
+| Commit and push updates | Yes | latest cleanup commit on `main` with a successful GitHub Actions verification run | — |
 
 ---
 
@@ -336,7 +336,7 @@ The repository now supports a defensible technical narrative: the QA baseline is
 | Real metrics collection | DONE | Section 10 and `quality-metrics.json` | local runtime/coverage/stability data recorded |
 | Planned vs actual comparison | DONE | Section 11 | gaps and lessons explained |
 | Visuals integrated into report | DONE | Section 13 | figures embedded and referenced |
-| Professional wording cleanup | DONE | `docs/qa/*`, `docs/sdlc/current/*` | no visible classroom-style wording remains in the tracked professional docs |
+| Professional wording cleanup | DONE | `docs/qa/*` and repository-facing markdown cleanup | no visible classroom-style or agent-workflow wording remains in the tracked professional docs |
 | Remaining limitations clearly marked | DONE | Discussion + matrix | no silent omissions |
 
 > **Verdict at this revision:** the repository is **release-ready for the defended QA scope**, with two explicitly documented non-blocking limitations: modest global monolith-wide line coverage and still-thin deep internal-workflow E2E breadth.

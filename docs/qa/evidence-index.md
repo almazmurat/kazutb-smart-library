@@ -22,5 +22,5 @@ composer qa:evidence
 ## Latest verified command summary
 - `composer qa:ci` → **139 passed (595 assertions)** and the frontend build succeeded on the 2026-04-11 evidence refresh
 - `npm run test:e2e` → **3 passed (4.8s)** on the latest smoke verification bundle
-- GitHub Actions `Continuous Verification` run `24271956341` → **completed success** after the locale-aware CI fix
+- the latest successful main-branch `Continuous Verification` run → **completed success** during the 2026-04-11 repository cleanup verification
 - Clover coverage floor currently defended in CI → **4.24% measured vs 4.0% minimum**

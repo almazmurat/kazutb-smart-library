@@ -22,7 +22,7 @@ The platform combines:
 - **Reader-facing public shell** across homepage, catalog, resources, contacts, and discovery pages
 - **Catalog search API** with URL-synced filters for query, language, year range, sort, and availability
 - **Account area** for authenticated reader summaries, loans, and reservations
-- **Protected internal staff routes** for dashboard, review, stewardship, circulation, and AI-assisted support tools
+- **Protected internal staff routes** for dashboard, review, stewardship, circulation, and internal support tools
 - **Faculty support flows** consolidated into `/resources`, `/shortlist`, and `/account`
 - **Integration-safe auth boundary** where CRM handles authentication without owning library business logic
 
@@ -48,10 +48,7 @@ The platform combines:
 - **PostgreSQL** is the canonical application data store.
 - **Blade + React/Vite** are used together: Blade for public-facing pages and React for richer SPA surfaces under `/app/*`.
 
-For more detail, see:
-- `project-context/00-canonical-platform-truth.md`
-- `project-context/01-runtime-stack-and-entrypoints.md`
-- `project-context/02-domain-boundaries-and-integrations.md`
+For more detail, review the live runtime code in `routes/`, `app/Services/Library/`, and the repository-facing verification materials in `docs/qa/`.
 
 ---
 
@@ -125,9 +122,10 @@ npm run test:e2e:install
 npm run test:e2e
 ```
 
-### CI-relevant readiness check
+### Push readiness check
+Before pushing changes, run:
 ```bash
-composer dev:sdlc-check
+composer qa:ci
 ```
 
 ---
@@ -162,7 +160,6 @@ tests/               PHPUnit feature/API tests + Playwright smoke tests
 scripts/dev/         local QA, workflow, and maintenance automation
 public/              public assets and entrypoint
 docs/qa/             QA automation, CI/CD, verification reports, and evidence indexes
-project-context/     canonical startup context for contributors and agents
 ```
 
 ---
@@ -205,8 +202,8 @@ Repository-facing QA and automation materials live in:
 
 ## Contribution workflow
 
-1. create/update `docs/sdlc/current/draft.md`
-2. implement and verify the change locally
+1. implement the required change on a focused branch
+2. verify it locally with the project QA commands
 3. run the QA gates
 4. open a pull request
 
