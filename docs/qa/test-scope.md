@@ -58,8 +58,8 @@ The automation work is traceable in Git history and was not added as a one-off d
 | fresh log collector | `scripts/dev/run-verification-evidence.sh` | evidence can be regenerated on demand |
 
 ## 6) Current verified execution
-- `composer qa:ci` → **77 passed (350 assertions)**
-- `npm run test:e2e` → **3 passed (5.4s)**
+- `composer qa:ci` → **80 passed (397 assertions)** on the fresh 2026-04-11 verification run
+- `npm run test:e2e` → **3 passed (5.0s)** after the Playwright hardening update
 
 ## 7) Scope limitation
 This verification set is intentionally **critical-path oriented** rather than exhaustive. That limitation is disclosed because the repository still contains broader legacy areas that are not fully automated at the same depth.

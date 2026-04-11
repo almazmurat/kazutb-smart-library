@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('public smoke coverage', () => {
-  test('homepage renders the new editorial search-first shell', async ({ page }) => {
+  test('homepage renders the KazTBU library search-first shell', async ({ page }) => {
     await page.goto('/?lang=en');
 
     await expect(page.locator('[data-homepage-stitch-reset]')).toBeVisible();
     await expect(page.locator('[data-hero-search]')).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Knowledge, Curated for the Scholar/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /KazTBU Library for study, search, and academic work/i })).toBeVisible();
+    await expect(page.getByText(/KazTBU Library/i).first()).toBeVisible();
   });
 
   test('catalog keeps the critical discovery controls visible', async ({ page }) => {

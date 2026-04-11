@@ -1,4 +1,4 @@
-# Autopilot verification — homepage KazТБУ hero refinement
+# Verification — Assignment 2 QA automation package
 
 ## Artifact under review
 - draft: `docs/sdlc/current/draft.md`
@@ -7,47 +7,38 @@
 
 ## Commands executed
 ```bash
-cd /home/admlibrary/kazutb-smart-library-main && \
-  docker compose run --rm --entrypoint sh -v "$PWD":/app app -lc 'php artisan test --filter="test_homepage_has_hero_search_bar|test_homepage_has_hero_quick_links|test_homepage_has_kaztbu_identity_mark|test_homepage_no_advantages_section"'
-
-cd /home/admlibrary/kazutb-smart-library-main && \
-  docker run --rm -v "$PWD":/app -w /app node:22 bash -lc 'npm run build'
+cd /home/admlibrary/kazutb-smart-library-main && composer qa:ci
+cd /home/admlibrary/kazutb-smart-library-main && npm run test:e2e
+cd /home/admlibrary/kazutb-smart-library-main && composer qa:evidence
 ```
-
-## Visual check evidence
-- Playwright opened `http://localhost/` successfully.
-- The updated hero rendered:
-  - title: `Библиотека КазТБУ для учёбы, поиска и академической работы.`
-  - note: `Библиотека КазТБУ` + supporting description
-  - round hero mark size on desktop: `320 × 320`
-- Mobile re-check at `390px` width confirmed the hero grid stacked cleanly and the note aligned to center.
 
 ## Results
 | Check | ID | Status | Evidence |
 |---|---|---|---|
-| homepage regression tests | `V1` | PASS | `4 passed (12 assertions)` in `Tests\Feature\Api\ConsolidationTest` |
-| display verification | `V2` | PASS | Playwright confirmed the new `hero-campus-mark`, the `Библиотека КазТБУ` note, and responsive stacking on mobile |
-| frontend production build | `V3` | PASS | `vite v8.0.3` → `✓ built in 4.44s` using the supported `node:22` runtime |
+| main local QA gate | `V1` | PASS | `composer qa:ci` → `80 passed (397 assertions)` and frontend build completed successfully |
+| browser smoke suite | `V2` | PASS | `npm run test:e2e` → `3 passed (5.0s)` after the Playwright output-path hardening |
+| reproducibility evidence refresh | `V3` | PASS | `composer qa:evidence` wrote fresh logs under `evidence/verification/` with timestamp `20260411-001523` |
 
 ## Requirement traceability
 | Requirement | Evidence | Result |
 |---|---|---|
-| `R1` | `landing-title`, `landing-campus-note`, `Библиотека КазТБУ` copy in `resources/views/welcome.blade.php` | PASS |
-| `R2` | `.hero-campus-mark` round institutional visual | PASS |
-| `R3` | search bar + quick links preserved and the new copy remains concise | PASS |
-| `R4` | Playwright mobile re-check at `390px` width | PASS |
-| `R5` | fresh PHPUnit run + Playwright check + production build | PASS |
+| `R1` | `docs/qa/assignment-2-submission-pack.md` and `docs/qa/qa-test-strategy-document.md` | PASS |
+| `R2` | new docs reference actual repo paths, tests, routes, and CI workflow | PASS |
+| `R3` | `playwright.config.ts` now falls back to writable temp report/artifact folders when repo paths are not writable | PASS |
+| `R4` | `tests/e2e/public-smoke.spec.ts` now checks the current English KazTBU homepage copy | PASS |
+| `R5` | fresh command outputs and timestamped evidence logs from 2026-04-11 | PASS |
 
 ## Use-case coverage
 | Use case | Evidence | Result |
 |---|---|---|
-| `UC1` | Visitor sees `Библиотека КазТБУ` immediately in the first screen | PASS |
-| `UC2` | Search and quick routes still render after the visual update | PASS |
-| `UC3` | Mobile layout stacks correctly without visual overload | PASS |
+| `UC1` | reviewer can open the new Assignment 2 package under `docs/qa/` | PASS |
+| `UC2` | maintainer can run the local QA and browser smoke suites successfully | PASS |
+| `UC3` | evidence logs exist under `evidence/verification/qa-gates-20260411-001523.txt` and related files | PASS |
 
 ## Notes
-- Host `npm run build` on Node 18 failed because Vite 8 requires Node 20.19+ or 22.12+; the supported Node 22 container build passed, so the repo verification remains green.
-- No backend or route contracts were changed for this task.
+- The initial local `npm run test:e2e` failure was investigated rather than ignored. The root cause was an `EACCES` write failure against Docker-owned report folders plus a stale homepage text assertion.
+- Both issues were fixed and then re-verified with a clean Playwright pass.
+- The QA package remains intentionally **risk-based** and truthful about scope rather than claiming exhaustive monolith coverage.
 
 ## Ready for /document
 - yes

@@ -34,6 +34,6 @@ composer qa:evidence
 ```
 
 ## Latest verified command summary
-- `composer qa:ci` → **77 passed (350 assertions)** and the frontend build succeeded
-- `npm run test:e2e` → **3 passed (5.5s)**
+- `composer qa:ci` → **80 passed (397 assertions)** and the frontend build succeeded on the 2026-04-11 evidence refresh
+- `npm run test:e2e` → **3 passed (5.0s)** after the Playwright output-path hardening
 - Clover coverage floor currently defended in CI → **4.24% measured vs 4.0% minimum**

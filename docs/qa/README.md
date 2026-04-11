@@ -14,12 +14,14 @@ composer qa:evidence
 ```
 
 ### Latest verified results
-- `composer qa:ci` → **77 passed** (`350 assertions`) and the Vite production build completed successfully
-- `npm run test:e2e` → **3 passed** (`5.5s`)
-- critical-path Clover line coverage → **4.24%** against the full `app/` namespace
-- GitHub Actions run `24156292471` completed successfully with `Secret Scan`, `Backend QA & Coverage`, and `Frontend Build & Playwright Smoke`
+- `composer qa:ci` → **80 passed** (`397 assertions`) on the fresh 2026-04-11 verification run
+- `npm run test:e2e` → **3 passed** (`5.0s`) after the Playwright output-path hardening
+- critical-path Clover line coverage remains defended at **4.24%** against the full `app/` namespace
+- GitHub Actions remains configured with `Secret Scan`, `Backend Verification & Coverage`, and `Frontend Build & Browser Smoke`
 
 ## Document map
+- `assignment-2-submission-pack.md` — submission-ready mapping of the live repo to the Assignment 2 deliverables
+- `qa-test-strategy-document.md` — formal QA strategy outline for the written report / research paper
 - `verification-report.md` — executive summary, failure-history audit, and stabilization results
 - `test-scope.md` — risk-ranked automation scope, scenario design, and traceability
 - `tooling-rationale.md` — why PHPUnit, Playwright, Pint, Docker, and GitHub Actions are the right fit here

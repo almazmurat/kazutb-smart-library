@@ -39,6 +39,7 @@ This wrapper executes `scripts/dev/run-ci-gates.sh`, which performs:
 The QA baseline is explicitly hardened for fresh machines and GitHub-hosted runners:
 - the wrapper detects whether the host has **PHP 8.4+** and falls back to Docker automatically if it does not
 - frontend dependency installation is performed before the build when `vite` is not already present
+- Playwright now falls back to a writable temp report/artifact directory when repo-owned output folders are not writable locally
 - CI uses Node `22` for the toolchain and `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true` for JavaScript-action runtime compatibility
 - npm install steps use quieter, non-auditing flags to avoid unnecessary noise in CI logs
 

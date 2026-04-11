@@ -18,15 +18,15 @@ The repository does **not** claim full-monolith automation coverage. The defende
 
 | Command / step | Verified result |
 |---|---|
-| `composer qa:ci` critical-path PHPUnit stage | `77 passed (350 assertions)` in `6.79s` |
-| Vite production build inside `composer qa:ci` | completed in `1.17s` |
-| `npm run test:e2e` | `3 passed` in `5.6s` |
+| `composer qa:ci` critical-path PHPUnit stage | `80 passed (397 assertions)` in `8.50s` |
+| Vite production build inside `composer qa:ci` | completed in `5.64s` |
+| `npm run test:e2e` | `3 passed` in `5.0s` |
 | GitHub Actions backend job (`run 24156029659`) | completed successfully in about `40s` |
 | GitHub Actions frontend smoke job (`run 24156029659`) | completed successfully in about `60s` |
 
 Source logs:
-- `evidence/verification/verification-2026-04-08.txt`
-- `evidence/verification/timing-output.txt`
+- `evidence/verification/qa-gates-20260411-001523.txt`
+- `evidence/verification/playwright-smoke-20260411-001523.txt`
 - GitHub Actions run logs referenced in `evidence-index.md`
 
 ## 3) Coverage metric
@@ -46,6 +46,8 @@ Source logs:
 | clean CI runners lacked `vite` because `node_modules` was absent | high | fixed | `scripts/dev/run-ci-gates.sh` change |
 | Clover parsing assumed a `line-rate` attribute that was not always present | medium | fixed | `scripts/dev/check-coverage-threshold.php` change |
 | coverage floor and documentation were misaligned with the defended critical-path scope | medium | fixed | `.github/workflows/ci.yml`, `composer.json`, `quality-gates.md` |
+| local Playwright runs could fail with `EACCES` when prior Docker-owned report folders were not writable | medium | fixed | `playwright.config.ts` writable-directory fallback |
+| the homepage smoke test still asserted stale hero copy after the KazTBU branding refresh | medium | fixed | `tests/e2e/public-smoke.spec.ts` update + fresh 2026-04-11 pass |
 
 ## 5) Structured metrics source
 
