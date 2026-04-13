@@ -572,14 +572,14 @@
 
     .hero h1 {
       margin: 0 0 8px;
-      font-size: clamp(38px, 4.2vw, 54px);
-      line-height: 1.04;
-      letter-spacing: -.6px;
+      font-size: clamp(30px, 3.2vw, 36px);
+      line-height: 1.14;
+      letter-spacing: -.2px;
       color: #0d2c57;
+      font-weight: 600;
     }
 
-    .hero h1::after {
-      content: ' Academic Catalog';
+    .hero-accent {
       color: #0f7f8a;
       font-style: italic;
       font-weight: 500;
@@ -617,6 +617,8 @@
       letter-spacing: .06em;
       text-transform: uppercase;
       font-size: 12px;
+      background: #002450;
+      box-shadow: none;
     }
 
     .layout {
@@ -692,21 +694,11 @@
 
     .filter-group--advanced { order: 0; }
 
-    .advanced-toggle { display: none !important; }
-
-    #advanced-toggle-state { display: none; }
-
     .range-row {
       display: flex;
       align-items: center;
       gap: 6px;
       margin-top: 0;
-    }
-
-    .range-field {
-      flex: 1;
-      display: flex;
-      align-items: center;
     }
 
     .year-sep {
@@ -725,58 +717,43 @@
       font-weight: 800;
     }
 
-    #advanced-toggle-state {
-      color: #0d2c57;
-      font-size: 14px;
-    }
-
-    .advanced-filters { margin-top: 0; }
-
-    .advanced-toggle {
-      border-radius: 0;
-      min-height: 34px;
-      padding: 7px 10px;
-      border: 1px solid #cfd7e2;
-      background: #fff;
-      color: #0b2a55;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .04em;
-    }
-
-    .advanced-toggle:hover {
-      border-color: #0b2a55;
-      background: #f4f7fb;
-    }
-
-    .advanced-panel {
-      position: static !important;
-      display: grid !important;
-      box-shadow: none;
-      max-height: none;
-      overflow: visible;
-      border: none;
-      background: transparent;
-      padding: 0;
-      gap: 8px;
-    }
-
-    .advanced-field span {
-      font-size: 10px;
-      color: #6f7b89;
-      letter-spacing: .14em;
-    }
-
-    .advanced-input,
     .range-input,
-    .subject-search,
-    .subject-select {
+    .subject-select,
+    .institution-select {
       border-radius: 0;
       min-height: 34px;
       padding: 8px 10px;
       font-size: 12px;
       border: 1px solid #cfd7e2;
       background: #fff;
+    }
+
+    .subject-search { display: none; }
+
+    .institution-select {
+      width: 100%;
+      font-family: inherit;
+      color: #0b2a55;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #5a6673;
+    }
+
+    .check-item input {
+      width: 14px;
+      height: 14px;
+      accent-color: #0f7f8a;
     }
 
     .chips {
@@ -792,6 +769,7 @@
       text-align: center;
       font-size: 11px;
       font-weight: 700;
+      text-transform: uppercase;
       border: 1px solid #cfd7e2;
       background: #fff;
       box-shadow: none;
@@ -924,19 +902,24 @@
     }
     .active-filter-reset:hover { color: #334155; }
 
-    .check-list { display: grid; gap: 12px; }
+    .check-list { display: grid; gap: 8px; }
 
     .check-item {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      color: #334155;
-      font-weight: 600;
+      justify-content: flex-start;
+      gap: 8px;
+      color: #5a6673;
+      font-weight: 500;
     }
 
-    .check-item input { accent-color: var(--blue); cursor: pointer; }
-    .check-item span:last-child { color: var(--muted); font-size: 13px; }
+    .check-item input {
+      width: 14px;
+      height: 14px;
+      accent-color: #0f7f8a;
+      cursor: pointer;
+    }
+    .check-item span:last-child { color: #5a6673; font-size: 13px; }
 
     .results {
       position: relative;
@@ -1551,7 +1534,7 @@
       .container { width: min(100% - 20px, var(--container)); }
       .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
-      .range-row { grid-template-columns: 1fr; }
+      .range-row { flex-wrap: wrap; }
       .book-stage { height: 380px; }
       .book-actions { grid-template-columns: 1fr; }
       .icon-btn { width: 100%; height: 50px; min-height: 44px; }
@@ -1571,7 +1554,7 @@
     <div class="container">
       <section class="hero">
         <div class="eyebrow">{{ ['ru' => 'Каталог университетской библиотеки', 'kk' => 'Университет кітапханасының каталогы', 'en' => 'University library catalog'][$lang] }}</div>
-        <h1>{{ ['ru' => 'Найдите нужную книгу, учебник или научное издание', 'kk' => 'Қажетті кітапты, оқулықты немесе ғылыми басылымды табыңыз', 'en' => 'Find the right book, textbook, or scholarly edition'][$lang] }}</h1>
+        <h1>{{ ['ru' => 'Digital Library', 'kk' => 'Digital Library', 'en' => 'Digital Library'][$lang] }} <span class="hero-accent">Academic Catalog</span></h1>
         <p>{{ ['ru' => 'Удобный поиск по фонду библиотеки с фильтрами по категориям, году издания, языку и доступности.', 'kk' => 'Категория, басылым жылы, тіл және қолжетімділік бойынша сүзгілері бар ыңғайлы іздеу.', 'en' => 'Search the library collection with filters for category, publication year, language, and availability.'][$lang] }}</p>
 
         <div class="search-wrap" style="grid-template-columns: 1fr auto;">
@@ -1592,27 +1575,8 @@
           </div>
           <div id="filters-body">
 
-          <div class="filter-group filter-group--availability">
-            <span class="filter-label">{{ ['ru' => 'Доступность', 'kk' => 'Қолжетімділік', 'en' => 'Availability'][$lang] }}</span>
-            <div class="check-list">
-              <label class="check-item">
-                <span><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> {{ ['ru' => 'Только в наличии', 'kk' => 'Тек қолда барлары', 'en' => 'Available only'][$lang] }}</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="filter-group filter-group--language">
-            <span class="filter-label">{{ ['ru' => 'Язык', 'kk' => 'Тіл', 'en' => 'Language'][$lang] }}</span>
-            <div class="chips" id="language-chips">
-              <button type="button" class="chip active" data-lang="">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
-              <button type="button" class="chip" data-lang="ru">Русский</button>
-              <button type="button" class="chip" data-lang="kk">Қазақша</button>
-              <button type="button" class="chip" data-lang="en">English</button>
-            </div>
-          </div>
-
           <div class="filter-group filter-group--year">
-            <span class="filter-label">{{ ['ru' => 'Год издания', 'kk' => 'Басылым жылы', 'en' => 'Publication year'][$lang] }}</span>
+            <span class="filter-label">{{ ['ru' => 'Период публикации', 'kk' => 'Жарияланым кезеңі', 'en' => 'Publication period'][$lang] }}</span>
             <div class="range-row">
               <input type="number" id="year-from-input" class="range-input" min="1900" max="2100" placeholder="2020">
               <span class="year-sep">—</span>
@@ -1620,42 +1584,40 @@
             </div>
           </div>
 
+          <div class="filter-group filter-group--availability">
+            <span class="filter-label">{{ ['ru' => 'Тип ресурса', 'kk' => 'Ресурс түрі', 'en' => 'Resource type'][$lang] }}</span>
+            <div class="check-list">
+              <label class="check-item"><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> <span>{{ ['ru' => 'Цифровые (E-Book/PDF)', 'kk' => 'Сандық (E-Book/PDF)', 'en' => 'Digital (E-Book/PDF)'][$lang] }}</span></label>
+              <label class="check-item"><input type="checkbox" id="filter-physical-only"> <span>{{ ['ru' => 'Физический фонд', 'kk' => 'Физикалық қор', 'en' => 'Physical Collection'][$lang] }}</span></label>
+              <label class="check-item"><input type="checkbox" id="filter-external-only"> <span>{{ ['ru' => 'Внешние базы', 'kk' => 'Сыртқы базалар', 'en' => 'External Databases'][$lang] }}</span></label>
+            </div>
+          </div>
+
+          <div class="filter-group filter-group--language">
+            <span class="filter-label">{{ ['ru' => 'Язык', 'kk' => 'Тіл', 'en' => 'Language'][$lang] }}</span>
+            <div class="chips" id="language-chips">
+              <button type="button" class="chip active" data-lang="">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
+              <button type="button" class="chip" data-lang="en">ENGLISH</button>
+              <button type="button" class="chip" data-lang="kk">KAZAKH</button>
+              <button type="button" class="chip" data-lang="ru">RUSSIAN</button>
+              <button type="button" class="chip" data-lang="de">GERMAN</button>
+            </div>
+          </div>
+
           <div class="filter-group filter-group--subject" id="subject-filter-group">
-            <span class="filter-label">{{ ['ru' => 'Направление / Специальность', 'kk' => 'Бағыт / Мамандану', 'en' => 'Track / specialization'][$lang] }}</span>
-            <input type="search" class="subject-search" id="subject-search" placeholder="{{ ['ru' => 'Быстрый поиск по направлениям', 'kk' => 'Бағыттар бойынша жылдам іздеу', 'en' => 'Quick subject search'][$lang] }}" oninput="filterSubjectOptions(this.value)">
+            <span class="filter-label">{{ ['ru' => 'Классификация УДК', 'kk' => 'ӘОЖ классификациясы', 'en' => 'UDC classification'][$lang] }}</span>
             <select class="subject-select" id="subject-select" onchange="applyFilters()">
-              <option value="">{{ ['ru' => 'Все направления', 'kk' => 'Барлық бағыттар', 'en' => 'All tracks'][$lang] }}</option>
+              <option value="">{{ ['ru' => 'Все категории', 'kk' => 'Барлық санат', 'en' => 'All categories'][$lang] }}</option>
             </select>
           </div>
 
-          <div class="filter-group filter-group--advanced">
-            <span class="filter-label">{{ ['ru' => 'Уточнить поиск', 'kk' => 'Іздеуді нақтылау', 'en' => 'Refine search'][$lang] }} <span id="advanced-toggle-state" style="display:none">⚙</span></span>
-            <div class="advanced-filters">
-              <div class="advanced-panel" id="advanced-filters-panel">
-                <div class="advanced-grid">
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'Название', 'kk' => 'Атауы', 'en' => 'Title'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-title" type="text" placeholder="{{ ['ru' => 'Например: Статистика', 'kk' => 'Мысалы: Статистика', 'en' => 'Example: Statistics'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'Автор', 'kk' => 'Автор', 'en' => 'Author'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-author" type="text" placeholder="{{ ['ru' => 'ФИО автора', 'kk' => 'Автор аты-жөні', 'en' => 'Author name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'Издатель', 'kk' => 'Баспа', 'en' => 'Publisher'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-publisher" type="text" placeholder="{{ ['ru' => 'Название издателя', 'kk' => 'Баспа атауы', 'en' => 'Publisher name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>ISBN</span>
-                    <input class="advanced-input" id="adv-isbn" type="text" placeholder="978..." onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'УДК', 'kk' => 'ӘОЖ', 'en' => 'UDC'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-udc" type="text" placeholder="5, 004, ..." onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                </div>
-              </div>
-            </div>
+          <div class="filter-group filter-group--institution">
+            <span class="filter-label">{{ ['ru' => 'Институциональная коллекция', 'kk' => 'Институционалдық жинақ', 'en' => 'Institutional collection'][$lang] }}</span>
+            <select class="institution-select" id="institution-select">
+              <option value="">{{ ['ru' => 'Центральная библиотека', 'kk' => 'Орталық кітапхана', 'en' => 'Central Library'][$lang] }}</option>
+              <option value="engineering">{{ ['ru' => 'Инженерный архив', 'kk' => 'Инженерлік архив', 'en' => 'Engineering Archive'][$lang] }}</option>
+              <option value="law">{{ ['ru' => 'Факультет права', 'kk' => 'Құқық факультеті', 'en' => 'Faculty of Law'][$lang] }}</option>
+            </select>
           </div>
 
           </div>{{-- /filters-body --}}
