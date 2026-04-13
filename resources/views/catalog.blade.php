@@ -664,12 +664,23 @@
       position: relative;
       height: 420px;
       margin-bottom: 16px;
-      perspective: none;
-      transform-style: flat;
+      perspective: 1200px;
+      transform-style: preserve-3d;
     }
 
     .book-body {
-      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(250,250,250,.94));
+      border: 1px solid rgba(195,198,209,.3);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.4);
     }
 
     .book-body-copy {
@@ -741,20 +752,21 @@
     }
 
     .book-cover {
-      position: relative;
-      inset: auto;
-      z-index: 1;
-      height: 100%;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
       border-radius: var(--radius-md);
       padding: 16px;
-      transform: none;
-      border-left: 0;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 12px 24px rgba(25,28,29,.1);
       isolation: isolate;
+      transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
 
     .book-cover::before {
@@ -773,7 +785,7 @@
       pointer-events: none;
     }
 
-    .book-card:hover .book-cover { transform: none; }
+    .book-card:hover .book-cover { transform: rotateY(-100deg); }
 
     .cover-top {
       display: flex;
@@ -1487,9 +1499,29 @@
 
       const isShortlisted = shortlistState[identifier] || false;
 
+      const trackValue = data.specialization || data.department || '—';
+      const previewSummary = isAvailable
+        ? CATALOG_I18N.previewAvailable.replace('{available}', data.available).replace('{total}', data.total)
+        : CATALOG_I18N.previewUnavailable;
+
       return `
         <article class="book-card" onclick="goToBook('${escapeHtml(identifier)}')">
           <div class="book-stage">
+            <div class="book-body">
+              <div style="display: grid; gap: 12px; min-height: 0;">
+                <div>
+                  <div class="book-body-label">${CATALOG_I18N.insideRecord}</div>
+                  <div style="font-size: 12px; line-height: 1.6; color: #625740; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">${escapeHtml(previewSummary)}</div>
+                </div>
+                <div style="display: grid; gap: 7px; align-content: start;">
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.publisherLabel}</span><strong>${escapeHtml(data.publisher.substring(0, 40))}</strong></div>
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.copiesLabel}</span><strong>${isAvailable ? `${data.available}/${data.total}` : CATALOG_I18N.unavailable}</strong></div>
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.isbnLabel}</span><strong>${escapeHtml(isbnValue)}</strong></div>
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.trackLabel}</span><strong>${escapeHtml(String(trackValue).substring(0, 34))}</strong></div>
+                </div>
+              </div>
+              <span style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 2px; background: rgba(0,30,64,.05); color: var(--blue); font-size: 11px; font-weight: 800; white-space: normal;">${escapeHtml(data.format)} · ${escapeHtml(data.language)} · ${escapeHtml(String(data.year))}</span>
+            </div>
             <div class="book-cover ${tone}">
               <div class="cover-top">
                 <span class="cover-year">${escapeHtml(String(data.year))}</span>
