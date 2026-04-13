@@ -641,11 +641,6 @@
       gap: 10px;
     }
 
-    .filters.filters--advanced-open {
-      max-height: none;
-      grid-template-rows: auto auto auto;
-    }
-
     .filter-header {
       margin-bottom: 10px;
       padding-bottom: 10px;
@@ -723,11 +718,6 @@
       padding-right: 4px;
     }
 
-    .filters.filters--advanced-open #filters-body {
-      overflow: visible;
-      padding-right: 0;
-    }
-
     .filter-group {
       border-bottom: 1px solid #dce2ea;
       padding-bottom: 12px;
@@ -801,9 +791,7 @@
 
     .advanced-panel.open {
       display: grid;
-      margin-bottom: 12px;
-      border-bottom: 1px solid #dce2ea;
-      padding-bottom: 10px;
+      margin-bottom: 2px;
     }
 
     .advanced-grid {
@@ -1676,6 +1664,8 @@
             </div>
             <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ {{ ['ru' => 'Сбросить', 'kk' => 'Тазарту', 'en' => 'Reset'][$lang] }}</button>
           </div>
+          <div id="filters-body">
+
           <div class="advanced-filters" id="advanced-filters-wrap">
             <div class="advanced-panel" id="advanced-filters-panel">
               <div class="advanced-grid">
@@ -1702,8 +1692,6 @@
               </div>
             </div>
           </div>
-
-          <div id="filters-body">
 
           <div class="filter-group filter-group--year">
             <span class="filter-label">{{ ['ru' => 'Период публикации', 'kk' => 'Жарияланым кезеңі', 'en' => 'Publication period'][$lang] }}</span>
@@ -1884,12 +1872,10 @@
       const panel = document.getElementById('advanced-filters-panel');
       const state = document.getElementById('advanced-toggle-state');
       const toggleButtons = document.querySelectorAll('.filter-title-icon');
-      const filtersPanel = document.getElementById('filters-panel');
       const filtersBody = document.getElementById('filters-body');
       if (!panel || !state) return;
       const open = forceOpen === null ? !panel.classList.contains('open') : Boolean(forceOpen);
       panel.classList.toggle('open', open);
-      filtersPanel?.classList.toggle('filters--advanced-open', open);
       state.textContent = open ? '▴' : '⚙';
       toggleButtons.forEach((btn) => btn.setAttribute('aria-expanded', open ? 'true' : 'false'));
       if (open && filtersBody) {
