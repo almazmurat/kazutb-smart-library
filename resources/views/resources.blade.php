@@ -671,16 +671,13 @@
       <aside class="support-rail">
         <div class="support-rail-head">
           <h3>{{ ['ru' => 'КазТБУ', 'kk' => 'КазТБУ', 'en' => 'KazUTB'][$lang] }}</h3>
-          <p>{{ ['ru' => 'Academic Resources Desk', 'kk' => 'Academic Resources Desk', 'en' => 'Academic Resources Desk'][$lang] }}</p>
+          <p>{{ ['ru' => 'Служба поддержки по академическим вопросам', 'kk' => 'Academic Resources Desk', 'en' => 'Academic Resources Desk'][$lang] }}</p>
         </div>
         <nav class="support-rail-nav">
           <a href="#resources-hero" class="support-rail-link is-active">{{ ['ru' => 'Обзор и ориентиры', 'kk' => 'Шолу және бағыттар', 'en' => 'Overview and orientation'][$lang] }}</a>
           <a href="#resources-directory" class="support-rail-link">{{ ['ru' => 'Каталог платформ', 'kk' => 'Платформа каталогы', 'en' => 'Platform directory'][$lang] }}</a>
           <a href="#resources-help" class="support-rail-link">{{ ['ru' => 'Нужна помощь', 'kk' => 'Көмек қажет', 'en' => 'Need support'][$lang] }}</a>
-          <a href="{{ $routeWithLang('/shortlist') }}" class="support-rail-link">{{ ['ru' => 'Подборка литературы', 'kk' => 'Әдебиеттер топтамасы', 'en' => 'Reading shortlist'][$lang] }}</a>
-          <a href="{{ $routeWithLang('/catalog') }}" class="support-rail-link">{{ ['ru' => 'Каталог фонда', 'kk' => 'Қор каталогы', 'en' => 'Library catalog'][$lang] }}</a>
-          <a href="{{ $routeWithLang('/contacts') }}" class="support-rail-link">{{ ['ru' => 'Контакты библиотеки', 'kk' => 'Кітапхана байланыстары', 'en' => 'Library contacts'][$lang] }}</a>
-        </nav>
+          </nav>
         <a href="{{ $routeWithLang('/catalog') }}" class="support-rail-cta">{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}</a>
       </aside>
 
@@ -833,6 +830,64 @@
   let categories = {};
   let accessTypes = {};
   let shortlistedIds = new Set();
+  const railLinks = Array.from(document.querySelectorAll('.support-rail-link'));
+
+  function setActiveRailLink(targetId) {
+    railLinks.forEach(link => {
+      const isActive = link.getAttribute('href') === `#${targetId}`;
+      link.classList.toggle('is-active', isActive);
+      if (isActive) {
+        link.setAttribute('aria-current', 'true');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  function initSupportRailSpy() {
+    const sectionMap = railLinks
+      .map(link => {
+        const href = link.getAttribute('href') || '';
+        const targetId = href.startsWith('#') ? href.slice(1) : '';
+        return {
+          link,
+          targetId,
+          section: targetId ? document.getElementById(targetId) : null,
+        };
+      })
+      .filter(item => item.section);
+
+    if (!sectionMap.length) {
+      return;
+    }
+
+    const updateActiveLink = () => {
+      const viewportOffset = Math.max(window.innerHeight * 0.24, 120);
+      let activeTargetId = sectionMap[0].targetId;
+
+      for (const item of sectionMap) {
+        const top = item.section.getBoundingClientRect().top;
+        if (top - viewportOffset <= 0) {
+          activeTargetId = item.targetId;
+        }
+      }
+
+      setActiveRailLink(activeTargetId);
+    };
+
+    railLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const href = link.getAttribute('href') || '';
+        if (href.startsWith('#')) {
+          setActiveRailLink(href.slice(1));
+        }
+      });
+    });
+
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    window.addEventListener('resize', updateActiveLink);
+    updateActiveLink();
+  }
 
   function escapeHtml(text) {
     if (!text) return '';
@@ -961,6 +1016,8 @@
 
   async function init() {
     const loading = document.getElementById('ext-resources-loading');
+    initSupportRailSpy();
+
     try {
       const [resResponse] = await Promise.all([
         fetch(API_URL, { headers: { Accept: 'application/json' } }),
