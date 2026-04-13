@@ -1343,12 +1343,16 @@
             z-index: 2;
             border-radius: 2px;
             padding: 12px;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
             box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 12px 24px rgba(25,28,29,.1);
             isolation: isolate;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
         .catalog-book-cover::before {
@@ -1480,6 +1484,45 @@
             color: #5a6673;
             line-height: 1.4;
             font-size: 12px;
+        }
+
+        .catalog-book-info {
+            margin-top: 10px;
+            display: grid;
+            gap: 0;
+        }
+
+        .catalog-book-info-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e7ebf0;
+            font-size: 12px;
+        }
+
+        .catalog-book-info-row span:first-child {
+            color: #6b7280;
+        }
+
+        .catalog-book-info-row span:last-child {
+            color: #374151;
+            font-weight: 700;
+            text-align: right;
+            max-width: 62%;
+            overflow-wrap: anywhere;
+        }
+
+        .catalog-missing {
+            margin-top: 8px;
+            color: #9f1239;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .catalog-book-card--featured:hover .catalog-book-cover {
+            transform: rotateY(-100deg);
         }
 
         .catalog-tone-navy { background: linear-gradient(180deg, #2d4268 0%, #223758 100%); }
@@ -1823,6 +1866,11 @@
                 : BOOK_I18N.locationsUnavailable;
             const primaryLocation = locations[0]?.servicePoint?.name || locations[0]?.campus?.name || BOOK_I18N.allCollections;
             const copySummaryText = BOOK_I18N.copySummary.replace('{available}', String(available)).replace('{total}', String(total));
+            const missingParts = [];
+            if (!book?.udc?.raw) missingParts.push('УДК');
+            if (!locations.length) missingParts.push('локация');
+            if (!book?.classification?.length) missingParts.push('направление');
+            const missingMetaText = missingParts.length ? `Отсутствует: ${missingParts.join(' · ')}` : '';
 
             document.title = `${title} - Digital Library`;
 
@@ -1865,7 +1913,7 @@
             content.innerHTML = `
                 <section class="detail-shell">
                     <aside class="detail-left">
-                        <article class="catalog-book-card">
+                        <article class="catalog-book-card catalog-book-card--featured">
                             <div class="catalog-book-stage">
                                 <div class="catalog-book-body">
                                     <div style="display:grid; gap:8px;">
@@ -1894,6 +1942,12 @@
                             <div class="catalog-copy">
                                 <h3>${escapeHtml(title)}</h3>
                                 <p>${escapeHtml(publisher)}</p>
+                                <div class="catalog-book-info">
+                                    <div class="catalog-book-info-row"><span>${BOOK_I18N.author}</span><span>${escapeHtml(author.substring(0, 40))}</span></div>
+                                    <div class="catalog-book-info-row"><span>${BOOK_I18N.language}</span><span>${escapeHtml(language)}</span></div>
+                                    <div class="catalog-book-info-row"><span>Локация</span><span>${escapeHtml(primaryLocation)}</span></div>
+                                </div>
+                                ${missingMetaText ? `<p class="catalog-missing">${escapeHtml(missingMetaText)}</p>` : ''}
                             </div>
                         </article>
 
