@@ -631,6 +631,12 @@
       background: #f6f7f9;
       border: 1px solid #e0e4eb;
       box-shadow: none;
+      position: sticky;
+      top: calc(var(--shell-sticky-offset) + 4px);
+      max-height: calc(100vh - var(--shell-sticky-offset) - 16px);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 10px;
     }
 
     .filter-header {
@@ -650,6 +656,9 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
     .filter-group {
@@ -676,17 +685,37 @@
 
     .advanced-filters { margin-top: 0; }
 
-    .advanced-panel,
-    .advanced-panel.open {
+    .advanced-toggle {
+      border-radius: 0;
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid #cfd7e2;
+      background: #fff;
+      color: #0b2a55;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .advanced-toggle:hover {
+      border-color: #0b2a55;
+      background: #f4f7fb;
+    }
+
+    .advanced-panel {
       position: static;
-      display: grid;
+      display: none;
       box-shadow: none;
-      max-height: none;
-      overflow: visible;
-      border: 0;
-      background: transparent;
-      padding: 0;
+      max-height: min(45vh, 360px);
+      overflow-y: auto;
+      border: 1px solid #d7dee8;
+      background: #fdfefe;
+      padding: 8px;
       gap: 8px;
+    }
+
+    .advanced-panel.open {
+      display: grid;
     }
 
     .advanced-field span {
@@ -731,7 +760,12 @@
       border-color: #0b2a55;
     }
 
-    .filter-footer { margin-top: 8px; }
+    .filter-footer {
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid #dce2ea;
+      background: linear-gradient(180deg, rgba(246,247,249,0), rgba(246,247,249,.95) 36%);
+    }
     .filter-footer .btn-primary {
       border-radius: 0;
       background: #e9ecf1;
@@ -1450,7 +1484,16 @@
 
     @media (max-width: 920px) {
       .layout { grid-template-columns: 1fr; }
-      .filters { position: static; top: auto; }
+      .filters {
+        position: static;
+        top: auto;
+        max-height: none;
+        grid-template-rows: auto auto auto;
+      }
+      #filters-body {
+        overflow: visible;
+        padding-right: 0;
+      }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
       .sort-box {
@@ -1544,9 +1587,13 @@
           </div>
 
           <div class="filter-group filter-group--advanced">
-            <span class="filter-label">{{ ['ru' => 'Расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілер', 'en' => 'Advanced Filters'][$lang] }} <span id="advanced-toggle-state">⚚</span></span>
+            <span class="filter-label">{{ ['ru' => 'Расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілер', 'en' => 'Advanced Filters'][$lang] }} <span id="advanced-toggle-state">⚙</span></span>
             <div class="advanced-filters">
-              <div class="advanced-panel open" id="advanced-filters-panel">
+              <button type="button" class="advanced-toggle" onclick="toggleAdvancedFilters()" aria-controls="advanced-filters-panel" aria-expanded="false">
+                <span>{{ ['ru' => 'Открыть расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілерді ашу', 'en' => 'Open advanced filters'][$lang] }}</span>
+                <span>▾</span>
+              </button>
+              <div class="advanced-panel" id="advanced-filters-panel">
                 <div class="advanced-grid">
                   <label class="advanced-field">
                     <span>{{ ['ru' => 'Название', 'kk' => 'Атауы', 'en' => 'Title'][$lang] }}</span>
@@ -1707,10 +1754,14 @@
     function toggleAdvancedFilters(forceOpen = null) {
       const panel = document.getElementById('advanced-filters-panel');
       const state = document.getElementById('advanced-toggle-state');
+      const toggleBtn = document.querySelector('.advanced-toggle');
       if (!panel || !state) return;
       const open = forceOpen === null ? !panel.classList.contains('open') : Boolean(forceOpen);
       panel.classList.toggle('open', open);
       state.textContent = open ? '▴' : '⚙';
+      if (toggleBtn) {
+        toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
     }
 
     function setChipValue(selector, dataKey, value = '') {
