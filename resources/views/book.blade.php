@@ -1235,6 +1235,218 @@
             text-transform: uppercase;
         }
 
+        /* Catalog card parity for detail/similar sections */
+        .catalog-book-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
+            border: 1px solid rgba(195,198,209,.7);
+            box-shadow: 0 10px 24px rgba(25,28,29,.03);
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        .catalog-book-stage {
+            position: relative;
+            height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .catalog-book-body {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: 2px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(250,250,250,.94));
+            border: 1px solid rgba(195,198,209,.3);
+        }
+
+        .catalog-book-body-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(124, 110, 84, .14);
+            font-size: 10px;
+        }
+
+        .catalog-book-body-row span {
+            color: #7c6e54;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .catalog-book-body-row strong {
+            color: #403623;
+            font-size: 10px;
+            text-align: right;
+            max-width: 58%;
+            word-break: break-word;
+        }
+
+        .catalog-book-cover {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            border-radius: 2px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 12px 24px rgba(25,28,29,.1);
+            isolation: isolate;
+        }
+
+        .catalog-book-cover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,.04), transparent 42%, rgba(0,0,0,.06) 100%);
+            pointer-events: none;
+        }
+
+        .catalog-cover-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .catalog-cover-year {
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.09);
+            color: rgba(255,255,255,.88);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .catalog-cover-code {
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.09);
+            color: rgba(255,255,255,.88);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .catalog-cover-kicker {
+            color: rgba(255,255,255,.64);
+            font-size: 11px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .catalog-cover-title {
+            margin: 6px 0 0;
+            color: #f2d79b;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 52px;
+            line-height: .9;
+            letter-spacing: -.8px;
+        }
+
+        .catalog-cover-subline {
+            margin-top: 6px;
+            color: rgba(255,255,255,.84);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .catalog-cover-isbn {
+            color: rgba(255,255,255,.68);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .catalog-cover-isbn strong {
+            display: block;
+            margin-top: 3px;
+            color: #fff;
+            letter-spacing: .02em;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .catalog-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .catalog-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 9px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #1f3552;
+            background: #eef2f7;
+            border: 1px solid rgba(195,198,209,.7);
+        }
+
+        .catalog-tag.green {
+            color: #0f766e;
+            background: #dff5ee;
+        }
+
+        .catalog-copy h3 {
+            margin: 0 0 8px;
+            font-size: 42px;
+            font-family: 'Newsreader', Georgia, serif;
+            line-height: .95;
+            color: #0b2a55;
+        }
+
+        .catalog-copy p {
+            margin: 0;
+            color: #5a6673;
+            line-height: 1.4;
+            font-size: 12px;
+        }
+
+        .catalog-tone-navy { background: linear-gradient(180deg, #2d4268 0%, #223758 100%); }
+        .catalog-tone-wine { background: linear-gradient(180deg, #8f1f1f 0%, #6d1111 100%); }
+        .catalog-tone-forest { background: linear-gradient(180deg, #205f43 0%, #134935 100%); }
+
+        .catalog-book-card--mini .catalog-book-stage {
+            height: 200px;
+        }
+
+        .catalog-book-card--mini .catalog-cover-title {
+            font-size: 28px;
+        }
+
+        .catalog-book-card--mini .catalog-cover-subline {
+            font-size: 11px;
+        }
+
+        .catalog-book-card--mini .catalog-cover-isbn strong {
+            font-size: 16px;
+        }
+
+        .catalog-book-card--mini .catalog-copy h3 {
+            font-size: 18px;
+        }
+
         @media (max-width: 1120px) {
             .detail-shell,
             .dual-grid {
@@ -1513,24 +1725,45 @@
                 : `<div class="licensed-chip">${BOOK_I18N.allCollections}</div>`;
 
             const similarCards = [
-                { title: title.split(' ').slice(0, 3).join(' ') || title, meta: escapeHtml(author.substring(0, 26)) },
-                { title: escapeHtml(publisher.substring(0, 26)) || 'KazTBU Archives', meta: 'UNIVERSITY ARCHIVES' },
-                { title: `${escapeHtml(language)} · ${escapeHtml(year)}`, meta: escapeHtml(isbn.substring(0, 18)) }
+                { title: title.split(' ').slice(0, 3).join(' ') || title, meta: escapeHtml(author.substring(0, 26)), tone: 'catalog-tone-navy' },
+                { title: escapeHtml(publisher.substring(0, 26)) || 'KazTBU Archives', meta: 'UNIVERSITY ARCHIVES', tone: 'catalog-tone-wine' },
+                { title: `${escapeHtml(language)} · ${escapeHtml(year)}`, meta: escapeHtml(isbn.substring(0, 18)), tone: 'catalog-tone-forest' }
             ];
 
             content.innerHTML = `
                 <section class="detail-shell">
                     <aside class="detail-left">
-                        <div class="detail-cover-card">
-                            <div class="detail-cover-art">
-                                <span class="detail-cover-year">${escapeHtml(year)}</span>
-                                <div>
-                                    <h2 class="detail-cover-title">${escapeHtml(title.substring(0, 30))}</h2>
-                                    <div class="detail-cover-author">${escapeHtml(author.substring(0, 34))}</div>
+                        <article class="catalog-book-card">
+                            <div class="catalog-book-stage">
+                                <div class="catalog-book-body">
+                                    <div style="display:grid; gap:8px;">
+                                        <div class="catalog-book-body-row"><span>${BOOK_I18N.publisher}</span><strong>${escapeHtml(publisher.substring(0, 22))}</strong></div>
+                                        <div class="catalog-book-body-row"><span>${BOOK_I18N.language}</span><strong>${escapeHtml(language)}</strong></div>
+                                        <div class="catalog-book-body-row"><span>${BOOK_I18N.total}</span><strong>${total}</strong></div>
+                                    </div>
                                 </div>
-                                <div class="detail-cover-isbn">ISBN<strong>${escapeHtml(isbn.substring(0, 18))}</strong></div>
+                                <div class="catalog-book-cover catalog-tone-navy">
+                                    <div class="catalog-cover-top">
+                                        <span class="catalog-cover-year">${escapeHtml(year)}</span>
+                                        <span class="catalog-cover-code">УДК: ${escapeHtml(book?.udc?.raw || '—')}</span>
+                                    </div>
+                                    <div>
+                                        <div class="catalog-cover-kicker">${escapeHtml(publisher.substring(0, 20))}</div>
+                                        <h2 class="catalog-cover-title">${escapeHtml(title.substring(0, 28))}</h2>
+                                        <div class="catalog-cover-subline">${escapeHtml(author.substring(0, 26))}</div>
+                                    </div>
+                                    <div class="catalog-cover-isbn">ISBN<strong>${escapeHtml(isbn.substring(0, 18))}</strong></div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="catalog-meta-row">
+                                <span class="catalog-tag">${escapeHtml(year)}</span>
+                                <span class="catalog-tag ${isAvailable ? 'green' : ''}">${isAvailable ? `${available} ${BOOK_I18N.availableShort}` : BOOK_I18N.unavailable}</span>
+                            </div>
+                            <div class="catalog-copy">
+                                <h3>${escapeHtml(title)}</h3>
+                                <p>${escapeHtml(publisher)}</p>
+                            </div>
+                        </article>
 
                         @if(session('library.user'))
                         <button class="btn btn-primary" id="reserve-btn" onclick="handleReserve()" disabled>${BOOK_I18N.reserve}</button>
@@ -1598,11 +1831,22 @@
                             </div>
                             <div class="similar-grid">
                                 ${similarCards.map((item) => `
-                                    <article class="similar-card">
-                                        <div class="similar-image"></div>
-                                        <div class="similar-body">
-                                            <h4 class="similar-title">${item.title}</h4>
-                                            <div class="similar-meta">${item.meta}</div>
+                                    <article class="catalog-book-card catalog-book-card--mini">
+                                        <div class="catalog-book-stage">
+                                            <div class="catalog-book-cover ${item.tone}">
+                                                <div class="catalog-cover-top">
+                                                    <span class="catalog-cover-year">${escapeHtml(year)}</span>
+                                                </div>
+                                                <div>
+                                                    <h4 class="catalog-cover-title">${item.title}</h4>
+                                                    <div class="catalog-cover-subline">${item.meta}</div>
+                                                </div>
+                                                <div class="catalog-cover-isbn">ISBN<strong>${escapeHtml(isbn.substring(0, 12))}</strong></div>
+                                            </div>
+                                        </div>
+                                        <div class="catalog-copy">
+                                            <h3>${item.title}</h3>
+                                            <p>${item.meta}</p>
                                         </div>
                                     </article>
                                 `).join('')}
