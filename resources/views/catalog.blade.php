@@ -645,11 +645,11 @@
       margin-bottom: 10px;
       padding-bottom: 10px;
       border-bottom: 1px solid #dbe1ea;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
+      column-gap: 8px;
+      row-gap: 6px;
     }
 
     .filter-header-left {
@@ -658,6 +658,7 @@
       gap: 6px;
       flex: 1;
       min-width: 0;
+      overflow: hidden;
     }
 
     .filter-title {
@@ -668,6 +669,24 @@
       color: #0b2a55;
       font-family: 'Manrope', 'Inter', sans-serif;
       flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .filter-badge {
+      flex-shrink: 0;
+    }
+
+    .btn-clear-filters {
+      margin: 0;
+      justify-self: end;
+      white-space: nowrap;
+      border-radius: 0;
+      padding: 6px 10px;
+      font-size: 12px;
+      line-height: 1;
     }
 
     .filter-title-icon {
@@ -750,12 +769,11 @@
     }
 
     .advanced-filters {
-      margin-top: 0;
-      margin-bottom: 12px;
+      margin: 0;
       display: grid;
       gap: 8px;
-      border-bottom: 1px solid #dce2ea;
-      padding-bottom: 12px;
+      border: 0;
+      padding: 0;
     }
 
     .advanced-panel {
@@ -771,7 +789,12 @@
       overflow: visible;
     }
 
-    .advanced-panel.open { display: grid; }
+    .advanced-panel.open {
+      display: grid;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #dce2ea;
+      padding-bottom: 10px;
+    }
 
     .advanced-grid {
       display: grid;
