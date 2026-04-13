@@ -388,20 +388,21 @@
     display: grid;
     place-items: center;
     overflow: hidden;
-    padding: 22px;
+    padding: 8px;
     background: rgba(255,255,255,.92);
     border: 1px solid rgba(255,255,255,.72);
     box-shadow: inset 0 0 0 1px rgba(0, 30, 64, 0.05);
   }
 
   .campus-mark__logo-shell {
-    width: min(190px, 78%);
+    width: 100%;
+    height: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
     overflow: hidden;
-    background: #fff;
-    border: 4px solid rgba(0, 30, 64, 0.12);
-    box-shadow: 0 12px 24px rgba(0, 30, 64, 0.08);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
   }
 
   .campus-mark__logo {
@@ -409,9 +410,9 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
-    transform: scale(1.18);
+    transform: scale(1.08);
     transform-origin: center;
   }
 
