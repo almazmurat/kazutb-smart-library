@@ -565,77 +565,97 @@
 
     .support-section-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
-      gap: 22px;
+      grid-template-columns: minmax(0, 1.18fr) minmax(312px, .82fr);
+      gap: 24px;
       align-items: start;
-      margin-top: 30px;
+      margin-top: 34px;
+    }
+
+    .support-section-heading {
+      gap: 14px;
+      max-width: 760px;
+    }
+
+    .support-section-heading .section-title {
+      max-width: 12.5ch;
+      line-height: 1.01;
+      letter-spacing: -.38px;
+    }
+
+    .support-section-heading .section-lead {
+      max-width: 690px;
+      line-height: 1.84;
+      color: #5a6879;
     }
 
     .support-steps {
-      border: 1px solid rgba(179, 191, 207, .5);
-      border-radius: 22px;
-      background: linear-gradient(180deg, #ffffff, #fbfcfd);
-      padding: 8px;
+      border: 1px solid rgba(188, 198, 212, .46);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,252,253,.96));
+      padding: 10px;
       display: grid;
       gap: 0;
     }
 
     .support-step {
       display: grid;
-      grid-template-columns: 44px minmax(0, 1fr);
-      gap: 16px;
+      grid-template-columns: 40px minmax(0, 1fr);
+      gap: 14px;
       align-items: start;
-      padding: 20px;
-      border-radius: 16px;
-      transition: background-color .18s ease;
+      padding: 20px 18px;
+      border-radius: 14px;
+      transition: background-color .18s ease, box-shadow .18s ease;
     }
 
     .support-step + .support-step {
-      border-top: 1px solid rgba(179, 191, 207, .34);
+      border-top: 1px solid rgba(188, 198, 212, .3);
     }
 
     .support-step:hover {
-      background: rgba(244, 248, 250, .72);
+      background: rgba(247, 250, 252, .9);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
     }
 
     .support-step-index {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border-radius: 999px;
       display: grid;
       place-items: center;
-      font-size: 12px;
-      font-weight: 800;
-      background: linear-gradient(180deg, rgba(20,105,109,.16), rgba(20,105,109,.09));
+      font-size: 11px;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(180deg, rgba(20,105,109,.15), rgba(20,105,109,.08));
       color: var(--res-accent);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.56);
+      margin-top: 2px;
     }
 
     .support-step h4 {
-      margin: 0 0 8px;
-      font-size: 21px;
+      margin: 0 0 6px;
+      font-size: 20px;
       color: var(--res-ink);
       font-family: 'Newsreader', Georgia, serif;
-      line-height: 1.06;
-      letter-spacing: -.15px;
+      line-height: 1.08;
+      letter-spacing: -.12px;
     }
 
     .support-step p {
       margin: 0;
       color: var(--res-muted);
       font-size: 14px;
-      line-height: 1.72;
+      line-height: 1.76;
     }
 
     .help-card {
-      border-radius: 24px;
+      border-radius: 20px;
       background: linear-gradient(180deg, #102b51, #0b2242 68%, #091b34 100%);
       color: #e5edf7;
-      padding: 24px;
+      padding: 26px 24px 24px;
       border: 1px solid rgba(152, 180, 215, .24);
       box-shadow: 0 18px 36px rgba(9, 27, 52, .16);
       display: grid;
-      gap: 16px;
+      gap: 14px;
     }
 
     .help-card__eyebrow {
@@ -651,25 +671,25 @@
       margin: 0;
       color: #fff;
       font-family: 'Newsreader', Georgia, serif;
-      font-size: 34px;
-      line-height: .98;
-      letter-spacing: -.24px;
+      font-size: 32px;
+      line-height: 1.01;
+      letter-spacing: -.2px;
     }
 
     .help-card p {
       margin: 0;
       font-size: 14px;
-      line-height: 1.72;
+      line-height: 1.76;
       color: #c5d4e8;
     }
 
     .help-meta {
       display: grid;
-      gap: 8px;
-      padding: 14px 0 4px;
+      gap: 7px;
+      padding: 16px 0 6px;
       border-top: 1px solid rgba(197, 212, 232, .16);
       font-size: 12px;
-      line-height: 1.45;
+      line-height: 1.5;
       font-weight: 700;
     }
 
@@ -677,9 +697,11 @@
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      min-height: 42px;
-      width: 100%;
-      border-radius: 999px;
+      min-height: 44px;
+      width: auto;
+      min-width: 210px;
+      padding: 0 20px;
+      border-radius: 10px;
       background: #e8f3f3;
       color: #0b2347;
       border: 1px solid rgba(232, 243, 243, .65);
@@ -772,6 +794,11 @@
         gap: 18px;
       }
 
+      .support-section-heading .section-title,
+      .support-section-heading .section-lead {
+        max-width: none;
+      }
+
       .support-rail {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -817,6 +844,10 @@
 
       .help-card {
         padding: 20px;
+      }
+
+      .help-card a {
+        width: 100%;
       }
     }
 </style>
@@ -891,7 +922,7 @@
         </section>
 
         <section class="section-block" id="resources-help">
-          <div class="section-heading">
+          <div class="section-heading support-section-heading">
             <p class="section-eyebrow">{{ $copy['support_label'] }}</p>
             <h2 class="section-title">{{ $copy['support_title'] }}</h2>
             <p class="section-lead">{{ $copy['support_body'] }}</p>
