@@ -18,7 +18,7 @@
           'title' => 'Digital Library — Главная',
           'eyebrow' => 'Единый академический доступ',
           'hero' => 'Библиотека КазТБУ для учёбы, поиска и академической работы.',
-          'lead' => 'Спокойный цифровой вход в университетский фонд, электронные коллекции и научные ресурсы — всё в одном современном маршруте.',
+          'lead' => 'Цифровой вход в университетский фонд, электронные коллекции и научные ресурсы — всё в одном современном маршруте.',
           'identity_badge' => 'Библиотека КазТБУ',
           'identity_note' => 'Официальная библиотека университета: каталог, цифровые коллекции и сервисы для студентов и преподавателей.',
           'logo_alt' => 'Логотип КазТБУ',
@@ -43,7 +43,7 @@
           'service_copy' => 'Работайте по реальному сценарию: открыть каталог, перейти к базе данных, собрать список литературы или связаться с библиотекой.',
           'cta_title' => 'Начните с маршрута, который нужен сейчас',
           'cta_copy' => 'Для поиска по фонду откройте каталог. Для платформ и баз данных — раздел ресурсов. Для учебных подборок — раздел подборки.',
-          'stats' => ['✓ 2.5M+ цифровых объектов', '✓ 800K печатных изданий', '✓ институциональный вход'],
+          'stats' => ['✓ единый каталог и цифровые коллекции', '✓ личный кабинет, бронирования и продления', '✓ безопасный институциональный вход'],
           'feature_cards' => [
               ['meta_left' => 'Университетские архивы', 'meta_right' => 'Внутренняя сеть', 'title' => 'Университетские архивы', 'body' => 'Доступ к диссертациям, локальным изданиям и специализированным академическим материалам.'],
               ['meta_left' => 'Цифровая коллекция', 'meta_right' => 'Удалённый доступ', 'title' => 'Цифровая коллекция', 'body' => 'Книги, журналы и исследовательские материалы доступны круглосуточно из единого библиотечного интерфейса.'],
@@ -61,7 +61,7 @@
           'quote' => '«Библиотека — сердце университета; наша задача — направлять знание к каждому студенту и исследователю.»',
           'trust_title' => 'Казахский университет технологии и бизнеса',
           'trust_body' => 'Мы соединяем классическое каталогизирование и современную навигацию, чтобы студенты и исследователи свободно переходили между печатным фондом, цифровыми коллекциями и лицензируемыми ресурсами.',
-          'trust_stats' => [['value' => '1996', 'label' => 'год основания'], ['value' => '24/7', 'label' => 'удалённый доступ к библиотеке']],
+          'trust_stats' => [['value' => '2003', 'label' => 'система Digital Library'], ['value' => '24/7', 'label' => 'доступ к электронным ресурсам']],
           'trust_actions' => ['catalog' => 'Каталог', 'resources' => 'Ресурсы', 'shortlist' => 'Подборка'],
       ],
       'kk' => [
@@ -93,7 +93,7 @@
           'service_copy' => 'Нақты сценариймен жұмыс істеңіз: каталогты ашу, дерекқорға өту, әдебиет тізімін жинау немесе кітапханамен байланысу.',
           'cta_title' => 'Қазір қажет бағыттан бастаңыз',
           'cta_copy' => 'Қор бойынша іздеу үшін каталогты ашыңыз. Платформалар мен базалар үшін — ресурстар бөлімі. Оқу іріктемелері үшін — іріктеме бөлімі.',
-          'stats' => ['✓ 2.5M+ цифрлық нысан', '✓ 800K баспа басылымы', '✓ институционалдық кіру'],
+          'stats' => ['✓ бірыңғай каталог және цифрлық коллекциялар', '✓ оқырман кабинеті, бронь және ұзарту', '✓ қауіпсіз институционалдық кіру'],
           'feature_cards' => [
               ['meta_left' => 'Университет архиві', 'meta_right' => 'Ішкі желі', 'title' => 'Университет архиві', 'body' => 'Диссертацияларға, жергілікті басылымдарға және арнайы академиялық материалдарға қолжетімділік.'],
               ['meta_left' => 'Цифрлық коллекция', 'meta_right' => 'Қашықтан қолжетімділік', 'title' => 'Цифрлық коллекция', 'body' => 'Кітаптар, журналдар және зерттеу материалдары бірыңғай кітапханалық интерфейсте тәулік бойы қолжетімді.'],
@@ -111,7 +111,7 @@
           'quote' => '«Кітапхана — университеттің жүрегі; біздің міндетіміз — білімді әр студент пен зерттеушіге жеткізу.»',
           'trust_title' => 'Қазақ технология және бизнес университеті',
           'trust_body' => 'Біз классикалық каталогтауды заманауи навигациямен біріктіріп, студенттер мен зерттеушілердің баспа қор, цифрлық коллекциялар және лицензиялық ресурстар арасында еркін қозғалуына жағдай жасаймыз.',
-          'trust_stats' => [['value' => '1996', 'label' => 'құрылған жыл'], ['value' => '24/7', 'label' => 'қашықтан кітапханаға қолжетімділік']],
+          'trust_stats' => [['value' => '2003', 'label' => 'Digital Library жүйесі'], ['value' => '24/7', 'label' => 'электрондық ресурстарға қолжетімділік']],
           'trust_actions' => ['catalog' => 'Каталог', 'resources' => 'Ресурстар', 'shortlist' => 'Іріктеме'],
       ],
       'en' => [
@@ -143,7 +143,7 @@
           'service_copy' => 'Work by intent: open the catalog, move into a database, build a reading list, or contact the library team.',
           'cta_title' => 'Start with the route you need now',
           'cta_copy' => 'Open the catalog for holdings search, resources for research platforms, or shortlist for course-support work.',
-          'stats' => ['✓ 2.5M+ digital assets', '✓ 800K print volumes', '✓ institutional sign-in'],
+          'stats' => ['✓ unified catalog and digital collections', '✓ reader account, reservations, and renewals', '✓ secure institutional sign-in'],
           'feature_cards' => [
               ['meta_left' => 'University Archives', 'meta_right' => 'Internal Network', 'title' => 'University Archives', 'body' => 'Access to theses, local publications, and specialized academic materials.'],
               ['meta_left' => 'Digital Collection', 'meta_right' => 'Remote Access', 'title' => 'Digital Collection', 'body' => 'Books, journals, and research materials remain available around the clock in one library surface.'],
@@ -161,7 +161,7 @@
           'quote' => '“The library is the heart of the university; our role is to move knowledge toward every student and researcher.”',
           'trust_title' => 'Kazakh University of Technology and Business',
           'trust_body' => 'We connect classical cataloging with modern discovery so students and researchers can move naturally between print holdings, digital collections, and licensed resources.',
-          'trust_stats' => [['value' => '1996', 'label' => 'foundation year'], ['value' => '24/7', 'label' => 'remote library access']],
+          'trust_stats' => [['value' => '2003', 'label' => 'Digital Library system'], ['value' => '24/7', 'label' => 'access to e-resources']],
           'trust_actions' => ['catalog' => 'Catalog', 'resources' => 'Resources', 'shortlist' => 'Shortlist'],
       ],
   ][$lang];
@@ -611,9 +611,25 @@
   }
 
   .feature-entry--primary {
-    background: var(--blue);
+    background: linear-gradient(160deg, #001e40 0%, #003c73 58%, #0e5f9d 100%);
     color: #fff;
     border-color: transparent;
+  }
+
+  .feature-entry--primary::before {
+    content: '';
+    position: absolute;
+    right: -24px;
+    bottom: -22px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background-image: url('/logo.png');
+    background-size: cover;
+    background-position: center;
+    opacity: .12;
+    filter: grayscale(1) brightness(1.9);
+    pointer-events: none;
   }
 
   .feature-meta {
@@ -628,12 +644,6 @@
     color: var(--muted);
   }
 
-  .feature-entry--primary .feature-meta,
-  .feature-entry--primary p,
-  .feature-entry--primary h3 {
-    color: #fff;
-  }
-
   .feature-entry h3 {
     margin: 0 0 8px;
     font-family: 'Newsreader', Georgia, serif;
@@ -646,6 +656,18 @@
     color: var(--muted);
     line-height: 1.7;
     font-size: 14px;
+  }
+
+  .feature-entry.feature-entry--primary .feature-meta {
+    color: rgba(255,255,255,.92);
+  }
+
+  .feature-entry.feature-entry--primary h3 {
+    color: #ffffff;
+  }
+
+  .feature-entry.feature-entry--primary p {
+    color: rgba(245,249,255,.96);
   }
 
   .subject-block {
@@ -960,8 +982,8 @@
       <div class="subject-block">
         <div class="subject-head">
           <div>
-            <div class="eyebrow eyebrow--cyan">Classification System</div>
-            <h2>Browse by Subject</h2>
+            <div class="eyebrow eyebrow--cyan">Система классификации</div>
+            <h2>Просмотр по темам</h2>
           </div>
           <a href="{{ $withLang('/discover') }}" class="subject-link">{{ $copy['subject_link'] }}</a>
         </div>
