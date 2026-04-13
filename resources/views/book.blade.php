@@ -1094,6 +1094,10 @@
             padding-top: 4px;
         }
 
+        .dual-grid--single {
+            grid-template-columns: 1fr;
+        }
+
         .section-head {
             margin: 0 0 12px;
             font-size: 12px;
@@ -1724,23 +1728,13 @@
             const language = escapeHtml(normalizeText(book?.language?.raw || BOOK_I18N.languageMissing));
             const available = book?.copies?.available || 0;
             const total = book?.copies?.total || 0;
-            const subtitle = normalizeText(book?.title?.subtitle);
             const authors = Array.isArray(book?.authors) ? book.authors : [];
             const locations = Array.isArray(book?.availability?.locations) ? book.availability.locations : [];
-            const needsReview = book?.quality?.needsReview === true;
-            const reviewCodes = Array.isArray(book?.quality?.reviewReasonCodes) ? book.quality.reviewReasonCodes : [];
-            const classification = Array.isArray(book?.classification) ? book.classification : [];
 
             const isAvailable = available > 0;
             const servicePointsText = locations.length > 0
                 ? locations.slice(0, 4).map(loc => loc.servicePoint?.name || loc.campus?.name || '').filter(Boolean).join(' · ')
                 : BOOK_I18N.locationsUnavailable;
-            const descriptionText = subtitle
-                ? escapeHtml(subtitle)
-                : `<strong>${escapeHtml(title)}</strong> — ${escapeHtml(publisher)}. ${isAvailable
-                    ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total)
-                    : BOOK_I18N.allCheckedOutBody.replace('{total}', total)
-                }`;
 
             document.title = `${title} - Digital Library`;
 
@@ -1758,19 +1752,6 @@
                     </div>`;
                 }).join('')
                 : `<div class="storage-item"><span>${BOOK_I18N.locationsUnavailable}</span><span class="storage-pill unavailable">0</span></div>`;
-
-            const reviewHtml = needsReview && reviewCodes.length
-                ? `<div class="review-notice">
-                    ${BOOK_I18N.reviewPrefix} ${reviewCodes.map(c => `<span class="reason-badge">${escapeHtml(c)}</span>`).join(' ')}
-                   </div>`
-                : '';
-
-            const classificationHtml = classification.length > 0
-                ? `${classification.slice(0, 2).map(c => {
-                    const url = withLang('/catalog?subject_id=' + encodeURIComponent(c.id) + '&subject_label=' + encodeURIComponent(c.label));
-                    return `<a href="${url}" class="licensed-chip" title="${BOOK_I18N.showAllBooks}: ${escapeHtml(c.label)}">${escapeHtml(c.label)}</a>`;
-                }).join('')}`
-                : `<div class="licensed-chip">${BOOK_I18N.allCollections}</div>`;
 
             const similarCards = [
                 { title: title.split(' ').slice(0, 3).join(' ') || title, meta: escapeHtml(author.substring(0, 26)), tone: 'catalog-tone-navy' },
@@ -1843,27 +1824,7 @@
                             </div>
                         </div>
 
-                        <div class="dual-grid">
-                            <div>
-                                <h3 class="section-head">${BOOK_I18N.description}</h3>
-                                <p class="desc-text">${descriptionText}</p>
-
-                                ${reviewHtml}
-
-                                <div class="licensed">
-                                    <h3 class="section-head">${BOOK_I18N.licensedResources}</h3>
-                                    <div class="licensed-items">
-                                        <div class="licensed-chip">JSTOR · Related Journal Articles</div>
-                                        <div class="licensed-chip">ELSEVIER · Technical Data Sheets</div>
-                                        ${classificationHtml}
-                                    </div>
-                                </div>
-
-                                <div class="meta-aux">
-                                    ${classification.length > 0 ? classification.slice(0, 4).map(c => `<span class="meta-pill">${escapeHtml(c.label)}</span>`).join('') : `<span class="meta-pill">${BOOK_I18N.allCollections}</span>`}
-                                </div>
-                            </div>
-
+                        <div class="dual-grid dual-grid--single">
                             <div>
                                 <h3 class="section-head">${BOOK_I18N.metadata}</h3>
                                 <div class="meta-list">
