@@ -1766,9 +1766,6 @@
 
           </div>{{-- /filters-body --}}
 
-          <div class="filter-footer">
-            <button class="btn btn-primary" onclick="applyFilters()">{{ ['ru' => 'Применить фильтры', 'kk' => 'Сүзгілерді қолдану', 'en' => 'Apply filters'][$lang] }}</button>
-          </div>
         </aside>
 
         <div class="card results">
@@ -1858,6 +1855,7 @@
     let activeSubjectLabel = '';
     let subjectsData = null;
     let shortlistState = {};
+    let filterApplyTimer = null;
 
     function escapeHtml(text) {
       const div = document.createElement('div');
@@ -2450,6 +2448,15 @@
       updateFilterBadge();
     }
 
+    function scheduleApplyFilters(delay = 320) {
+      if (filterApplyTimer) {
+        window.clearTimeout(filterApplyTimer);
+      }
+      filterApplyTimer = window.setTimeout(() => {
+        applyFilters();
+      }, delay);
+    }
+
     function countActiveFilters() {
       let count = 0;
       if (document.getElementById('filter-available-only')?.checked) count++;
@@ -2518,6 +2525,7 @@
       const input = document.getElementById(id);
       input?.addEventListener('input', () => {
         updateFilterBadge();
+        scheduleApplyFilters();
       });
       input?.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
@@ -2534,7 +2542,12 @@
           toggleAdvancedFilters(true);
         }
         updateFilterBadge();
+        scheduleApplyFilters();
       });
+    });
+
+    document.getElementById('search-input')?.addEventListener('input', () => {
+      scheduleApplyFilters();
     });
 
     document.addEventListener('click', (event) => {
