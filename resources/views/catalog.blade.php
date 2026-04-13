@@ -567,28 +567,12 @@
       position: relative;
       height: 292px;
       margin-bottom: 16px;
-      perspective: 2200px;
-      transform-style: preserve-3d;
+      perspective: none;
+      transform-style: flat;
     }
 
     .book-body {
-      position: absolute;
-      inset: 10px 14px 8px 16px;
-      z-index: 1;
-      border-radius: 6px 14px 14px 6px;
-      background: linear-gradient(180deg, #f2e7cb 0%, #e6d4ad 100%);
-      border: 1px solid rgba(161,134,83,.34);
-      box-shadow: inset 10px 0 18px rgba(75, 57, 29, .07), 0 18px 30px rgba(25,28,29,.10);
-      padding: 18px 18px 18px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-      color: #4c4435;
-      transition: none;
-      background-image: none;
-      transform: none;
-      opacity: 1;
+      display: none;
     }
 
     .book-body-copy {
@@ -659,14 +643,14 @@
     .book-cover {
       position: absolute;
       inset: 0;
-      z-index: 2;
+      z-index: 1;
       border-radius: 6px 16px 16px 6px;
       padding: 18px 18px 20px 24px;
-      transform-origin: left center;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-      will-change: transform;
-      transition: transform .88s cubic-bezier(0.34, 1.2, 0.2, 1);
+      transform-origin: initial;
+      transform-style: flat;
+      backface-visibility: visible;
+      will-change: auto;
+      transition: none;
       border-left: 10px solid rgba(0,0,0,.18);
       display: flex;
       flex-direction: column;
@@ -685,7 +669,7 @@
     }
 
     .book-card:hover .book-cover {
-      transform: rotateY(-102deg);
+      transform: none;
     }
 
     .cover-top {
