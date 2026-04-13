@@ -643,13 +643,36 @@
       margin-bottom: 10px;
       padding-bottom: 10px;
       border-bottom: 1px solid #dbe1ea;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-header-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
     }
 
     .filter-title {
-      font-size: 34px;
-      font-family: 'Newsreader', Georgia, serif;
-      font-weight: 500;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .22em;
+      text-transform: uppercase;
       color: #0b2a55;
+      font-family: 'Manrope', 'Inter', sans-serif;
+      flex: 1;
+    }
+
+    .filter-title-icon {
+      font-size: 15px;
+      color: #667282;
+      cursor: default;
+      margin-left: 4px;
     }
 
     #filters-body {
@@ -667,7 +690,31 @@
       margin: 0;
     }
 
-    .filter-group--advanced { order: -10; }
+    .filter-group--advanced { order: 0; }
+
+    .advanced-toggle { display: none !important; }
+
+    #advanced-toggle-state { display: none; }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 0;
+    }
+
+    .range-field {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .year-sep {
+      color: #8896a5;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
 
     .filter-label {
       margin-bottom: 10px;
@@ -703,19 +750,15 @@
     }
 
     .advanced-panel {
-      position: static;
-      display: none;
+      position: static !important;
+      display: grid !important;
       box-shadow: none;
-      max-height: min(45vh, 360px);
-      overflow-y: auto;
-      border: 1px solid #d7dee8;
-      background: #fdfefe;
-      padding: 8px;
+      max-height: none;
+      overflow: visible;
+      border: none;
+      background: transparent;
+      padding: 0;
       gap: 8px;
-    }
-
-    .advanced-panel.open {
-      display: grid;
     }
 
     .advanced-field span {
@@ -1540,7 +1583,11 @@
       <section class="layout">
         <aside class="card filters" id="filters-panel">
           <div class="filter-header">
-            <h2 class="filter-title">{{ ['ru' => 'Фильтры', 'kk' => 'Сүзгілер', 'en' => 'Filters'][$lang] }} <span id="filter-count-badge" class="filter-badge" style="display:none;"></span></h2>
+            <div class="filter-header-left">
+              <span class="filter-title">{{ ['ru' => 'Расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілер', 'en' => 'Advanced Filters'][$lang] }}</span>
+              <span class="filter-title-icon">⚙</span>
+              <span id="filter-count-badge" class="filter-badge" style="display:none;"></span>
+            </div>
             <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ {{ ['ru' => 'Сбросить', 'kk' => 'Тазарту', 'en' => 'Reset'][$lang] }}</button>
           </div>
           <div id="filters-body">
@@ -1567,14 +1614,9 @@
           <div class="filter-group filter-group--year">
             <span class="filter-label">{{ ['ru' => 'Год издания', 'kk' => 'Басылым жылы', 'en' => 'Publication year'][$lang] }}</span>
             <div class="range-row">
-              <label class="range-field">
-                <span>{{ ['ru' => 'С', 'kk' => 'Бастап', 'en' => 'From'][$lang] }}</span>
-                <input type="number" id="year-from-input" class="range-input" min="1900" max="2100" placeholder="2020">
-              </label>
-              <label class="range-field">
-                <span>{{ ['ru' => 'По', 'kk' => 'Дейін', 'en' => 'To'][$lang] }}</span>
-                <input type="number" id="year-to-input" class="range-input" min="1900" max="2100" placeholder="2026">
-              </label>
+              <input type="number" id="year-from-input" class="range-input" min="1900" max="2100" placeholder="2020">
+              <span class="year-sep">—</span>
+              <input type="number" id="year-to-input" class="range-input" min="1900" max="2100" placeholder="2026">
             </div>
           </div>
 
@@ -1587,12 +1629,8 @@
           </div>
 
           <div class="filter-group filter-group--advanced">
-            <span class="filter-label">{{ ['ru' => 'Расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілер', 'en' => 'Advanced Filters'][$lang] }} <span id="advanced-toggle-state">⚙</span></span>
+            <span class="filter-label">{{ ['ru' => 'Уточнить поиск', 'kk' => 'Іздеуді нақтылау', 'en' => 'Refine search'][$lang] }} <span id="advanced-toggle-state" style="display:none">⚙</span></span>
             <div class="advanced-filters">
-              <button type="button" class="advanced-toggle" onclick="toggleAdvancedFilters()" aria-controls="advanced-filters-panel" aria-expanded="false">
-                <span>{{ ['ru' => 'Открыть расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілерді ашу', 'en' => 'Open advanced filters'][$lang] }}</span>
-                <span>▾</span>
-              </button>
               <div class="advanced-panel" id="advanced-filters-panel">
                 <div class="advanced-grid">
                   <label class="advanced-field">
