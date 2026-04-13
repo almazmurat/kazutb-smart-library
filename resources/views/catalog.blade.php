@@ -1148,20 +1148,31 @@
 
     .toolbar-btn {
       min-height: 42px;
-      padding: 0 14px;
-      border: 1px solid rgba(182,189,203,.78);
-      background: rgba(255,255,255,.92);
-      color: #203246;
+      padding: 0 13px;
+      border: 1px solid rgba(182,189,203,.52);
+      background: rgba(255,255,255,.72);
+      color: #33465c;
       font: inherit;
-      font-weight: 700;
+      font-weight: 600;
+      letter-spacing: .01em;
       cursor: pointer;
-      transition: border-color .18s ease, background-color .18s ease, color .18s ease, box-shadow .18s ease;
-      box-shadow: 0 4px 10px rgba(25,28,29,.04);
+      transition: border-color .18s ease, background-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+      box-shadow: 0 2px 8px rgba(25,28,29,.035);
+    }
+
+    .toolbar-btn__icon {
+      display: inline-block;
+      margin-right: 6px;
+      font-size: 13px;
+      line-height: 1;
+      opacity: .82;
     }
 
     .toolbar-btn:hover {
-      border-color: rgba(0,30,64,.28);
-      background: #fff;
+      border-color: rgba(0,30,64,.22);
+      background: rgba(255,255,255,.96);
+      color: #1d3048;
+      transform: translate3d(0, -1px, 0);
     }
 
     .toolbar-btn:focus-visible {
@@ -1173,27 +1184,34 @@
     .toolbar-segment {
       display: inline-flex;
       align-items: center;
-      padding: 4px;
-      border: 1px solid rgba(182,189,203,.72);
-      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(244,247,250,.96));
-      box-shadow: 0 6px 16px rgba(25,28,29,.05);
+      padding: 3px;
+      border: 1px solid rgba(182,189,203,.62);
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(246,249,251,.92));
+      box-shadow: 0 4px 12px rgba(25,28,29,.04);
     }
 
     .view-mode-btn {
       min-height: 34px;
-      padding: 0 12px;
+      padding: 0 11px;
       border: 0;
       background: transparent;
-      color: #5b6775;
+      color: #637184;
       font: inherit;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       transition: background-color .16s ease, color .16s ease;
+    }
+
+    .view-mode-btn:hover {
+      color: #34465e;
+      background: rgba(0,30,64,.06);
     }
 
     .view-mode-btn.active {
       background: var(--blue);
       color: #fff;
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
     }
 
     .results.results--compact .grid {
@@ -1895,11 +1913,11 @@
                 </span>
               </div>
               <div class="toolbar-actions">
-                <button class="toolbar-btn" type="button" id="share-view-btn" onclick="shareCatalogView()">{{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
-                <button class="toolbar-btn" type="button" onclick="clearAllFilters()">{{ ['ru' => 'Сбросить все', 'kk' => 'Барлығын тазарту', 'en' => 'Reset all'][$lang] }}</button>
+                <button class="toolbar-btn" type="button" id="share-view-btn" onclick="shareCatalogView()"><span class="toolbar-btn__icon" aria-hidden="true">↗</span>{{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
+                <button class="toolbar-btn" type="button" onclick="clearAllFilters()"><span class="toolbar-btn__icon" aria-hidden="true">⟲</span>{{ ['ru' => 'Сбросить все', 'kk' => 'Барлығын тазарту', 'en' => 'Reset all'][$lang] }}</button>
                 <div class="toolbar-segment" role="group" aria-label="{{ ['ru' => 'Режим отображения', 'kk' => 'Көрсету режимі', 'en' => 'View mode'][$lang] }}">
-                  <button class="view-mode-btn active" type="button" data-view-mode="comfortable" onclick="setViewMode('comfortable')">{{ ['ru' => 'Карточки', 'kk' => 'Карточкалар', 'en' => 'Cards'][$lang] }}</button>
-                  <button class="view-mode-btn" type="button" data-view-mode="compact" onclick="setViewMode('compact')">{{ ['ru' => 'Компактно', 'kk' => 'Ықшам', 'en' => 'Compact'][$lang] }}</button>
+                  <button class="view-mode-btn active" type="button" data-view-mode="comfortable" onclick="setViewMode('comfortable')">▦ {{ ['ru' => 'Карточки', 'kk' => 'Карточкалар', 'en' => 'Cards'][$lang] }}</button>
+                  <button class="view-mode-btn" type="button" data-view-mode="compact" onclick="setViewMode('compact')">☰ {{ ['ru' => 'Компактно', 'kk' => 'Ықшам', 'en' => 'Compact'][$lang] }}</button>
                 </div>
               </div>
             </div>
@@ -2183,9 +2201,9 @@
         if (campusCode === 'university_technological') value += 40;
         if (campusCode === 'college_main') value += 40;
         if (selectedInstitution === 'ktslib' && servicePointCode === 'kstlib') value += 500;
-        if (selectedInstitution === 'economic_library' && campusCode === 'university_economic') value += 500;
-        if (selectedInstitution === 'technology_library' && campusCode === 'university_technological') value += 500;
-        if (selectedInstitution === 'college_library' && (campusCode === 'college_main' || normalizeKey(location?.institutionUnit?.code) === 'college')) value += 500;
+        if (selectedInstitution === 'economic_library' && (campusCode === 'university_economic' || servicePointCode === '1')) value += 500;
+        if (selectedInstitution === 'technology_library' && (campusCode === 'university_technological' || servicePointCode === '2')) value += 500;
+        if (selectedInstitution === 'college_library' && (campusCode === 'college_main' || normalizeKey(location?.institutionUnit?.code) === 'college' || servicePointCode === '3')) value += 500;
         value += Number(location?.copies?.available || 0) * 2;
         value += Number(location?.copies?.total || 0);
         return value;
