@@ -14,6 +14,11 @@ class CatalogController extends Controller
     {
         $validated = $request->validate([
             'q' => ['nullable', 'string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:255'],
+            'author' => ['nullable', 'string', 'max:255'],
+            'publisher' => ['nullable', 'string', 'max:255'],
+            'isbn' => ['nullable', 'string', 'max:64'],
+            'udc' => ['nullable', 'string', 'max:128'],
             'language' => ['nullable', 'string', 'max:10'],
             'page' => ['nullable', 'integer', 'min:1'],
             'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
@@ -26,6 +31,11 @@ class CatalogController extends Controller
 
         $result = $service->search(
             query: (string) ($validated['q'] ?? ''),
+            title: isset($validated['title']) ? (string) $validated['title'] : null,
+            author: isset($validated['author']) ? (string) $validated['author'] : null,
+            publisher: isset($validated['publisher']) ? (string) $validated['publisher'] : null,
+            isbn: isset($validated['isbn']) ? (string) $validated['isbn'] : null,
+            udc: isset($validated['udc']) ? (string) $validated['udc'] : null,
             language: isset($validated['language']) ? (string) $validated['language'] : null,
             page: (int) ($validated['page'] ?? 1),
             limit: (int) ($validated['limit'] ?? 10),

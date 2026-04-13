@@ -256,7 +256,7 @@
       position: sticky;
       top: var(--shell-sticky-offset);
       background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(247,248,249,.97));
-      overflow: hidden;
+      overflow: visible;
     }
 
     .filter-header {
@@ -470,6 +470,7 @@
 
     .advanced-filters {
       margin-top: 6px;
+      position: relative;
       display: grid;
       gap: 10px;
     }
@@ -492,10 +493,10 @@
 
     .advanced-toggle span:last-child {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: .06em;
-      text-transform: uppercase;
+      letter-spacing: 0;
+      text-transform: none;
     }
 
     .advanced-panel {
@@ -505,6 +506,14 @@
       border-radius: var(--radius-md);
       background: #fff;
       padding: 10px;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 30;
+      box-shadow: 0 18px 34px rgba(25, 28, 29, .12);
+      max-height: min(65vh, 480px);
+      overflow-y: auto;
     }
 
     .advanced-panel.open {
@@ -664,8 +673,8 @@
       position: relative;
       height: 420px;
       margin-bottom: 16px;
-      perspective: 1200px;
-      transform-style: preserve-3d;
+      perspective: none;
+      transform-style: flat;
     }
 
     .book-body {
@@ -1198,14 +1207,6 @@
 
           <div class="filter-group filter-group--year">
             <span class="filter-label">{{ ['ru' => 'Год издания', 'kk' => 'Басылым жылы', 'en' => 'Publication year'][$lang] }}</span>
-            <div class="chips" id="year-chips">
-              <button type="button" class="chip active" data-year="">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
-              <button type="button" class="chip" data-year="2025">2025</button>
-              <button type="button" class="chip" data-year="2024">2024</button>
-              <button type="button" class="chip" data-year="2023">2023</button>
-              <button type="button" class="chip" data-year="2020-2022">2020–2022</button>
-              <button type="button" class="chip" data-year="older">{{ ['ru' => 'Ранее', 'kk' => 'Ертерек', 'en' => 'Earlier'][$lang] }}</button>
-            </div>
             <div class="range-row">
               <label class="range-field">
                 <span>{{ ['ru' => 'С', 'kk' => 'Бастап', 'en' => 'From'][$lang] }}</span>
@@ -1230,8 +1231,8 @@
             <span class="filter-label">{{ ['ru' => 'Расширенный поиск', 'kk' => 'Кеңейтілген іздеу', 'en' => 'Advanced search'][$lang] }}</span>
             <div class="advanced-filters">
               <button type="button" class="advanced-toggle" onclick="toggleAdvancedFilters()">
-                <span>{{ ['ru' => 'Advanced Filters', 'kk' => 'Advanced Filters', 'en' => 'Advanced Filters'][$lang] }}</span>
-                <span id="advanced-toggle-state">OFF</span>
+                <span>{{ ['ru' => 'Расширенный фильтр', 'kk' => 'Толык филтьр', 'en' => 'Advanced Filters'][$lang] }}</span>
+                <span id="advanced-toggle-state">⚙</span>
               </button>
               <div class="advanced-panel" id="advanced-filters-panel">
                 <div class="advanced-grid">
@@ -1361,11 +1362,6 @@
       return active ? active.dataset.lang || '' : '';
     }
 
-    function getActiveYear() {
-      const active = document.querySelector('#year-chips .chip.active');
-      return active ? active.dataset.year || '' : '';
-    }
-
     function getYearParams() {
       const customFrom = document.getElementById('year-from-input')?.value?.trim();
       const customTo = document.getElementById('year-to-input')?.value?.trim();
@@ -1373,14 +1369,7 @@
         return { year_from: customFrom || '', year_to: customTo || '' };
       }
 
-      const year = getActiveYear();
-      if (!year) return {};
-      if (year === 'older') return { year_to: 2019 };
-      if (year.includes('-')) {
-        const [from, to] = year.split('-');
-        return { year_from: from, year_to: to };
-      }
-      return { year_from: year, year_to: year };
+      return {};
     }
 
     function getAdvancedFilters() {
@@ -1404,7 +1393,7 @@
       if (!panel || !state) return;
       const open = forceOpen === null ? !panel.classList.contains('open') : Boolean(forceOpen);
       panel.classList.toggle('open', open);
-      state.textContent = open ? ADV_FILTER_UI.on : ADV_FILTER_UI.off;
+      state.textContent = open ? '▴' : '⚙';
     }
 
     function setChipValue(selector, dataKey, value = '') {
@@ -1474,15 +1463,6 @@
         department: department ? department.label : '',
         subjectId: specialization ? specialization.id : (department ? department.id : ''),
       };
-    }
-
-    function matchesAdvancedFilters(data, advanced) {
-      const titleOk = !advanced.title || data.title.toLowerCase().includes(advanced.title.toLowerCase());
-      const authorOk = !advanced.author || data.author.toLowerCase().includes(advanced.author.toLowerCase());
-      const publisherOk = !advanced.publisher || data.publisher.toLowerCase().includes(advanced.publisher.toLowerCase());
-      const isbnOk = !advanced.isbn || String(data.isbn || '').toLowerCase().includes(advanced.isbn.toLowerCase());
-      const udcOk = !advanced.udc || String(data.udc || '').toLowerCase().includes(advanced.udc.toLowerCase());
-      return titleOk && authorOk && publisherOk && isbnOk && udcOk;
     }
 
     function renderBookCard(book, index = 0) {
@@ -1602,14 +1582,8 @@
         if (!response.ok) throw new Error('API Error');
 
         const data = await response.json();
-        let books = data.data || [];
+        const books = data.data || [];
         const meta = data.meta || {};
-        const advancedMode = hasAdvancedFilters();
-
-        if (advancedMode) {
-          const advanced = getAdvancedFilters();
-          books = books.filter((book) => matchesAdvancedFilters(formatBookData(book), advanced));
-        }
 
         if (books.length === 0) {
           grid.innerHTML = `<div class="catalog-state-card"><div class="catalog-state-card__icon">🔎</div><strong>${CATALOG_I18N.noBooks}</strong><p>${CATALOG_I18N.tryChange}</p><button type="button" class="btn btn-ghost" onclick="clearAllFilters()">${CATALOG_I18N.resetAll}</button></div>`;
@@ -1622,8 +1596,8 @@
           }).filter(Boolean);
           await loadShortlistState(identifiers);
           grid.innerHTML = books.map((item, index) => renderBookCard(item, index)).join('');
-          resultsCount.textContent = CATALOG_I18N.foundMany.replace('{count}', advancedMode ? books.length : (meta.total || books.length));
-          totalPages = advancedMode ? 1 : (meta.totalPages || 1);
+          resultsCount.textContent = CATALOG_I18N.foundMany.replace('{count}', meta.total || books.length);
+          totalPages = meta.totalPages || 1;
           renderPagination();
         }
         renderActiveFilters();
@@ -1649,18 +1623,13 @@
 
       const yp = getYearParams();
       if (yp.year_from || yp.year_to) {
-        const hasCustomRange = document.getElementById('year-from-input')?.value || document.getElementById('year-to-input')?.value;
-        const yearLabel = hasCustomRange
-          ? `${yp.year_from || '…'}–${yp.year_to || '…'}`
-          : (document.querySelector('#year-chips .chip.active')?.textContent || CATALOG_I18N.yearLabel);
         chips.push({
-          label: yearLabel,
+          label: `${yp.year_from || '…'}–${yp.year_to || '…'}`,
           clear: () => {
             const yearFromInput = document.getElementById('year-from-input');
             const yearToInput = document.getElementById('year-to-input');
             if (yearFromInput) yearFromInput.value = '';
             if (yearToInput) yearToInput.value = '';
-            setChipValue('#year-chips .chip', 'year', '');
           }
         });
       }
@@ -1720,7 +1689,6 @@
       if (advUdc) advUdc.value = '';
 
       setChipValue('#language-chips .chip', 'lang', '');
-      setChipValue('#year-chips .chip', 'year', '');
       activeSubjectId = '';
       activeSubjectLabel = '';
       toggleAdvancedFilters(false);
@@ -1876,7 +1844,6 @@
       const badge = document.getElementById('filter-count-badge');
       const clearBtn = document.getElementById('clear-filters-btn');
       const mobileCount = document.getElementById('mobile-filter-count');
-      const advancedState = document.getElementById('advanced-toggle-state');
       if (badge) {
         badge.textContent = count;
         badge.style.display = count > 0 ? 'inline-flex' : 'none';
@@ -1886,9 +1853,6 @@
       }
       if (mobileCount) {
         mobileCount.textContent = count > 0 ? `(${count})` : '';
-      }
-      if (advancedState) {
-        advancedState.textContent = hasAdvancedFilters() ? ADV_FILTER_UI.on : ADV_FILTER_UI.off;
       }
     }
 
@@ -1912,14 +1876,8 @@
     @endif
 
     // Chip filter behavior — click activates chip and reloads catalog
-    document.querySelectorAll('#language-chips .chip, #year-chips .chip').forEach(chip => {
+    document.querySelectorAll('#language-chips .chip').forEach(chip => {
       chip.addEventListener('click', function() {
-        if (this.closest('#year-chips')) {
-          const yearFromInput = document.getElementById('year-from-input');
-          const yearToInput = document.getElementById('year-to-input');
-          if (yearFromInput) yearFromInput.value = '';
-          if (yearToInput) yearToInput.value = '';
-        }
         this.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         this.classList.add('active');
         applyFilters();
@@ -1929,7 +1887,6 @@
     ['year-from-input', 'year-to-input'].forEach((id) => {
       const input = document.getElementById(id);
       input?.addEventListener('input', () => {
-        setChipValue('#year-chips .chip', 'year', '');
         updateFilterBadge();
       });
       input?.addEventListener('keydown', (event) => {
@@ -1948,6 +1905,17 @@
         }
         updateFilterBadge();
       });
+    });
+
+    document.addEventListener('click', (event) => {
+      const panel = document.getElementById('advanced-filters-panel');
+      const toggle = document.querySelector('.advanced-toggle');
+      if (!panel || !toggle) return;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (!panel.classList.contains('open')) return;
+      if (panel.contains(target) || toggle.contains(target)) return;
+      toggleAdvancedFilters(false);
     });
 
     // Read URL params for deep-linking from discovery pages
@@ -1981,24 +1949,10 @@
         document.getElementById('filter-available-only').checked = true;
       }
       if (urlYearFrom || urlYearTo) {
-        const combined = urlYearFrom && urlYearTo && urlYearFrom === urlYearTo ? urlYearFrom : `${urlYearFrom || ''}-${urlYearTo || ''}`;
-        const matchedChip = Array.from(document.querySelectorAll('#year-chips .chip')).find((chip) => {
-          const value = chip.dataset.year || '';
-          if (!value) return false;
-          if (value === combined) return true;
-          return value === 'older' && urlYearTo && Number(urlYearTo) <= 2019;
-        });
-
-        if (matchedChip) {
-          matchedChip.parentElement.querySelectorAll('.chip').forEach((chip) => chip.classList.remove('active'));
-          matchedChip.classList.add('active');
-        } else {
-          setChipValue('#year-chips .chip', 'year', '');
-          const yearFromInput = document.getElementById('year-from-input');
-          const yearToInput = document.getElementById('year-to-input');
-          if (yearFromInput) yearFromInput.value = urlYearFrom || '';
-          if (yearToInput) yearToInput.value = urlYearTo || '';
-        }
+        const yearFromInput = document.getElementById('year-from-input');
+        const yearToInput = document.getElementById('year-to-input');
+        if (yearFromInput) yearFromInput.value = urlYearFrom || '';
+        if (yearToInput) yearToInput.value = urlYearTo || '';
       }
       if (urlPage > 1) {
         currentPage = urlPage;
