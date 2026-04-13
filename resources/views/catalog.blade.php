@@ -1315,11 +1315,14 @@
       }
     };
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
-    const ADV_FILTER_UI = @json([
-      'ru' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Название', 'author' => 'Автор', 'publisher' => 'Издатель', 'isbn' => 'ISBN', 'udc' => 'УДК'],
-      'kk' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Атауы', 'author' => 'Автор', 'publisher' => 'Баспа', 'isbn' => 'ISBN', 'udc' => 'ӘОЖ'],
-      'en' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Title', 'author' => 'Author', 'publisher' => 'Publisher', 'isbn' => 'ISBN', 'udc' => 'UDC'],
-    ][$lang] ?? ['on' => 'ON', 'off' => 'OFF', 'title' => 'Title', 'author' => 'Author', 'publisher' => 'Publisher', 'isbn' => 'ISBN', 'udc' => 'UDC']);
+    const ADV_FILTER_UI = @php
+      $advFilterMap = [
+        'ru' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Название', 'author' => 'Автор', 'publisher' => 'Издатель', 'isbn' => 'ISBN', 'udc' => 'УДК'],
+        'kk' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Атауы', 'author' => 'Автор', 'publisher' => 'Баспа', 'isbn' => 'ISBN', 'udc' => 'ӘОЖ'],
+        'en' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Title', 'author' => 'Author', 'publisher' => 'Publisher', 'isbn' => 'ISBN', 'udc' => 'UDC'],
+      ];
+      $advFilterUI = $advFilterMap[$lang] ?? $advFilterMap['en'];
+    @endphp @json($advFilterUI);
 
     function withLang(path) {
       const url = new URL(path, window.location.origin);
