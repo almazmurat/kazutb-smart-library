@@ -1544,7 +1544,7 @@
           </div>
 
           <div class="filter-group filter-group--advanced">
-            <span class="filter-label">{{ ['ru' => 'Advanced Filters', 'kk' => 'Advanced Filters', 'en' => 'Advanced Filters'][$lang] }} <span id="advanced-toggle-state">⚚</span></span>
+            <span class="filter-label">{{ ['ru' => 'Расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілер', 'en' => 'Advanced Filters'][$lang] }} <span id="advanced-toggle-state">⚚</span></span>
             <div class="advanced-filters">
               <div class="advanced-panel open" id="advanced-filters-panel">
                 <div class="advanced-grid">
@@ -1617,8 +1617,8 @@
     const CATALOG_LANG = @json($lang);
     const CATALOG_I18N_MAP = {
       ru: {
-        untitled: 'Missed title', authorMissing: 'Missed author', publisherMissing: 'Missed publisher', languageMissing: 'Missed language',
-        yearMissing: 'Missed year', isbnMissing: 'Missed ISBN', udcMissing: 'Missed UDC', locationMissing: 'Missed location', trackMissing: 'Missed track',
+        untitled: 'Отсутствует название', authorMissing: 'Отсутствует автор', publisherMissing: 'Отсутствует издатель', languageMissing: 'Отсутствует язык',
+        yearMissing: 'Отсутствует год', isbnMissing: 'Отсутствует ISBN', udcMissing: 'Отсутствует УДК', locationMissing: 'Отсутствует локация', trackMissing: 'Отсутствует направление',
         copies: 'экз.', unavailable: 'Нет в наличии', author: 'Автор', year: 'Год', language: 'Язык', viewBook: 'Смотреть книгу',
         addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
         foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
@@ -1626,8 +1626,8 @@
         faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри книги', previewAvailable: 'Доступно {available} из {total}. При открытии записи можно проверить экземпляры, ISBN и тематическую привязку.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить библиографию и расположение.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', isbnLabel: 'ISBN', udcLabel: 'УДК', publisherLabel: 'Издатель', copiesLabel: 'Экземпляры', trackLabel: 'Направление', locationLabel: 'Локация', coverHint: 'Открыть превью'
       },
       kk: {
-        untitled: 'Missed title', authorMissing: 'Missed author', publisherMissing: 'Missed publisher', languageMissing: 'Missed language',
-        yearMissing: 'Missed year', isbnMissing: 'Missed ISBN', udcMissing: 'Missed UDC', locationMissing: 'Missed location', trackMissing: 'Missed track',
+        untitled: 'Атауы жоқ', authorMissing: 'Автор жоқ', publisherMissing: 'Баспа жоқ', languageMissing: 'Тіл жоқ',
+        yearMissing: 'Жылы жоқ', isbnMissing: 'ISBN жоқ', udcMissing: 'ӘОЖ жоқ', locationMissing: 'Орналасуы жоқ', trackMissing: 'Бағыты жоқ',
         copies: 'дана', unavailable: 'Қолжетімсіз', author: 'Автор', year: 'Жыл', language: 'Тіл', viewBook: 'Кітапты ашу',
         addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
         foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
@@ -1647,8 +1647,8 @@
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
     const ADV_FILTER_UI = @php
       $advFilterMap = [
-        'ru' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Название', 'author' => 'Автор', 'publisher' => 'Издатель', 'isbn' => 'ISBN', 'udc' => 'УДК'],
-        'kk' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Атауы', 'author' => 'Автор', 'publisher' => 'Баспа', 'isbn' => 'ISBN', 'udc' => 'ӘОЖ'],
+        'ru' => ['on' => 'ВКЛ', 'off' => 'ВЫКЛ', 'title' => 'Название', 'author' => 'Автор', 'publisher' => 'Издатель', 'isbn' => 'ISBN', 'udc' => 'УДК'],
+        'kk' => ['on' => 'ҚОСУ', 'off' => 'ӨШІРУ', 'title' => 'Атауы', 'author' => 'Автор', 'publisher' => 'Баспа', 'isbn' => 'ISBN', 'udc' => 'ӘОЖ'],
         'en' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Title', 'author' => 'Author', 'publisher' => 'Publisher', 'isbn' => 'ISBN', 'udc' => 'UDC'],
       ];
       $advFilterUI = $advFilterMap[$lang] ?? $advFilterMap['en'];
