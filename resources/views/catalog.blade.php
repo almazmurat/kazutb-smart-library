@@ -585,7 +585,7 @@
       justify-content: space-between;
       gap: 12px;
       color: #4c4435;
-      transition: transform .72s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .72s cubic-bezier(0.2, 0.8, 0.2, 1), opacity .24s ease;
+      transition: transform .72s cubic-bezier(0.2, 0.8, 0.2, 1), opacity .24s ease;
       background-image: none;
       transform: translateX(4px) scale(.985);
       opacity: 0;
@@ -593,7 +593,6 @@
 
     .book-card:hover .book-body {
       transform: translateX(10px) scale(1);
-      box-shadow: inset 10px 0 18px rgba(75, 57, 29, .07), 0 24px 36px rgba(25,28,29,.14);
       opacity: 1;
     }
 
@@ -672,7 +671,7 @@
       transform-style: preserve-3d;
       backface-visibility: hidden;
       will-change: transform;
-      transition: transform .88s cubic-bezier(0.34, 1.2, 0.2, 1), box-shadow .32s ease;
+      transition: transform .88s cubic-bezier(0.34, 1.2, 0.2, 1);
       border-left: 10px solid rgba(0,0,0,.18);
       display: flex;
       flex-direction: column;
@@ -692,7 +691,6 @@
 
     .book-card:hover .book-cover {
       transform: rotateY(-102deg);
-      box-shadow: 24px 18px 40px rgba(25,28,29,.16);
     }
 
     .cover-top {
