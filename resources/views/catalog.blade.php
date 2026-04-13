@@ -1656,7 +1656,7 @@
     <div class="container">
       <section class="hero">
         <div class="eyebrow">{{ ['ru' => 'Каталог университетской библиотеки', 'kk' => 'Университет кітапханасының каталогы', 'en' => 'University library catalog'][$lang] }}</div>
-        <h1>{{ ['ru' => 'Digital Library', 'kk' => 'Digital Library', 'en' => 'Digital Library'][$lang] }} <span class="hero-accent">Academic Catalog</span></h1>
+        <h1>{{ ['ru' => 'Digital Library', 'kk' => 'Digital Library', 'en' => 'Digital Library'][$lang] }}</h1>
         <p>{{ ['ru' => 'Удобный поиск по фонду библиотеки с фильтрами по категориям, году издания, языку и доступности.', 'kk' => 'Категория, басылым жылы, тіл және қолжетімділік бойынша сүзгілері бар ыңғайлы іздеу.', 'en' => 'Search the library collection with filters for category, publication year, language, and availability.'][$lang] }}</p>
 
         <div class="search-wrap" style="grid-template-columns: 1fr auto;">
@@ -1943,45 +1943,70 @@
       history.replaceState(null, '', `${url.pathname}${url.search}`);
     }
 
+    function resolveCatalogLocation(locations) {
+      const rows = Array.isArray(locations) ? locations : [];
+      if (!rows.length) return CATALOG_I18N.locationMissing;
+
+      const normalizeText = (value) => String(value || '').trim();
+      const normalizeKey = (value) => normalizeText(value).toLowerCase();
+
+      const toDisplayLocation = (location) => {
+        const unitName = normalizeText(location?.institutionUnit?.name);
+        const unitCode = normalizeKey(location?.institutionUnit?.code);
+        const campusName = normalizeText(location?.campus?.name);
+        const campusCode = normalizeKey(location?.campus?.code);
+        const servicePointName = normalizeText(location?.servicePoint?.name);
+        const servicePointCode = normalizeKey(location?.servicePoint?.code);
+
+        if (servicePointCode === 'kstlib' || servicePointName.toLowerCase() === 'kstlib' || campusCode === 'university_central') {
+          return 'KTSLIB';
+        }
+
+        if (campusCode === 'university_economic' || servicePointCode === '1' || servicePointName.toLowerCase().includes('абонемент 1')) {
+          return CATALOG_LANG === 'kk' ? 'Экономикалық кітапхана' : (CATALOG_LANG === 'en' ? 'Economic Library' : 'Экономическая библиотека');
+        }
+
+        if (campusCode === 'university_technological' || servicePointCode === '2' || servicePointName.toLowerCase().includes('абонемент 2')) {
+          return CATALOG_LANG === 'kk' ? 'Технологиялық кітапхана' : (CATALOG_LANG === 'en' ? 'Technology Library' : 'Технологическая библиотека');
+        }
+
+        if (campusCode === 'college_main' || unitCode === 'college' || servicePointCode === '3' || servicePointName.toLowerCase().includes('абонемент 3')) {
+          return CATALOG_LANG === 'kk' ? 'Колледж кітапханасы' : (CATALOG_LANG === 'en' ? 'College Library' : 'Библиотека Колледжа');
+        }
+
+        if (servicePointName) return servicePointName.replace(/KazUTB/gi, 'KazTBU');
+        if (campusName) return campusName.replace(/KazUTB/gi, 'KazTBU');
+        if (unitName) return unitName.replace(/KazUTB/gi, 'KazTBU');
+
+        return CATALOG_I18N.locationMissing;
+      };
+
+      const score = (location) => {
+        const display = toDisplayLocation(location);
+        const servicePointCode = normalizeKey(location?.servicePoint?.code);
+        const campusCode = normalizeKey(location?.campus?.code);
+        let value = 0;
+        if (display && display !== CATALOG_I18N.locationMissing) value += 20;
+        if (servicePointCode === 'kstlib') value += 50;
+        if (campusCode === 'university_economic') value += 40;
+        if (campusCode === 'university_technological') value += 40;
+        if (campusCode === 'college_main') value += 40;
+        value += Number(location?.copies?.available || 0) * 2;
+        value += Number(location?.copies?.total || 0);
+        return value;
+      };
+
+      const best = [...rows].sort((a, b) => score(b) - score(a))[0];
+      return toDisplayLocation(best);
+    }
+
     function formatBookData(book) {
       const classification = Array.isArray(book.classification) ? book.classification : [];
       const locations = Array.isArray(book.availability?.locations) ? book.availability.locations : [];
       const specialization = classification.find(c => c.sourceKind === 'specialization');
       const department = classification.find(c => c.sourceKind === 'department');
       const subject = classification.find(c => c.sourceKind === 'subject');
-      const scoreLocation = (location) => {
-        const unit = String(location?.institutionUnit?.name || '').trim();
-        const servicePoint = String(location?.servicePoint?.name || '').trim();
-        const campus = String(location?.campus?.name || '').trim();
-        const code = `${String(location?.institutionUnit?.code || '')} ${String(location?.servicePoint?.code || '')}`.toLowerCase();
-        const candidate = [unit, servicePoint, campus].filter(Boolean).join(' ').toLowerCase();
-
-        let score = 0;
-        if (unit) score += 30;
-        if (servicePoint) score += 20;
-        if (campus) score += 8;
-        if (candidate.includes('college') || candidate.includes('колледж')) score += 40;
-        if (candidate.includes('economic') || candidate.includes('эконом')) score += 36;
-        if (candidate.includes('technology') || candidate.includes('техн')) score += 36;
-        if (candidate.includes('kstlib') || code.includes('kstlib')) score += 45;
-        if (candidate.includes('university') || candidate.includes('универс')) score -= 10;
-        return score;
-      };
-
-      const bestLocation = [...locations]
-        .sort((a, b) => scoreLocation(b) - scoreLocation(a))[0] || null;
-
-      const locationCandidates = bestLocation
-        ? [
-            String(bestLocation?.institutionUnit?.name || '').trim(),
-            String(bestLocation?.servicePoint?.name || '').trim(),
-            String(bestLocation?.campus?.name || '').trim(),
-            String(bestLocation?.institutionUnit?.code || '').trim(),
-            String(bestLocation?.servicePoint?.code || '').trim(),
-          ].filter(Boolean)
-        : [];
-
-      const locationName = locationCandidates[0] || CATALOG_I18N.locationMissing;
+      const locationName = resolveCatalogLocation(locations);
 
       const titleValue = book.title?.display || book.title?.raw || '';
       const authorValue = book.primaryAuthor || '';
@@ -2000,7 +2025,7 @@
       if (!languageValue) missingMetadata.push('language');
       if (!isbnValue) missingMetadata.push('isbn');
       if (!udcValue) missingMetadata.push('udc');
-      if (!locationCandidates.length) missingMetadata.push('location');
+      if (!locations.length || locationName === CATALOG_I18N.locationMissing) missingMetadata.push('location');
       if (!trackValue) missingMetadata.push('track');
 
       return {
