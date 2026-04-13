@@ -1348,16 +1348,12 @@
             z-index: 2;
             border-radius: 2px;
             padding: 12px;
-            transform-origin: left center;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
             box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 12px 24px rgba(25,28,29,.1);
             isolation: isolate;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
         .catalog-book-cover::before {
@@ -1526,20 +1522,16 @@
             line-height: 1.5;
         }
 
-        .catalog-book-card--featured:hover .catalog-book-cover {
-            transform: rotateY(-100deg);
-        }
-
         .catalog-tone-navy { background: linear-gradient(180deg, #2d4268 0%, #223758 100%); }
         .catalog-tone-wine { background: linear-gradient(180deg, #8f1f1f 0%, #6d1111 100%); }
         .catalog-tone-forest { background: linear-gradient(180deg, #205f43 0%, #134935 100%); }
 
         .catalog-book-card--mini .catalog-book-stage {
-            height: 224px;
+            height: 268px;
         }
 
         .catalog-book-card--mini .catalog-cover-title {
-            font-size: 21px;
+            font-size: 24px;
             -webkit-line-clamp: 2;
         }
 
@@ -1548,12 +1540,26 @@
         }
 
         .catalog-book-card--mini .catalog-cover-isbn strong {
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .catalog-book-card--mini .catalog-copy h3 {
-            font-size: 17px;
+            font-size: 20px;
             line-height: 1.28;
+        }
+
+        .description-card {
+            border: 1px solid #d8dde3;
+            background: #fdfefe;
+            padding: 14px;
+        }
+
+        .description-text {
+            margin: 0;
+            color: #334155;
+            font-size: 16px;
+            line-height: 1.7;
+            white-space: pre-line;
         }
 
         .similar-link {
@@ -1881,6 +1887,13 @@
                 : BOOK_I18N.locationsUnavailable;
             const primaryLocation = locations[0]?.servicePoint?.name || locations[0]?.campus?.name || BOOK_I18N.allCollections;
             const copySummaryText = BOOK_I18N.copySummary.replace('{available}', String(available)).replace('{total}', String(total));
+            const yearForText = rawYear && rawYear !== BOOK_I18N.yearMissing ? rawYear : '—';
+            const generatedDescription = rawIsbn === '9965174695'
+                ? `Русско-казахский словарь — справочное издание издательства ${rawPublisher}.
+Язык: ${rawLanguage}. УДК: ${book?.udc?.raw || '—'}. ISBN: ${rawIsbn}.
+Автор: ${rawAuthor}. В фонде: ${available} из ${total} экземпляров.
+Основная локация: ${primaryLocation}.`
+                : `${rawTitle} — издание издательства ${rawPublisher}. Язык: ${rawLanguage}. УДК: ${book?.udc?.raw || '—'}. Автор: ${rawAuthor}. В фонде: ${available} из ${total} экземпляров.`;
             const missingParts = [];
             if (!book?.udc?.raw) missingParts.push('УДК');
             if (!locations.length) missingParts.push('локация');
@@ -2019,13 +2032,20 @@
                             </article>
                         </div>
 
-                        <div class="dual-grid dual-grid--single">
+                        <div class="dual-grid">
+                            <div>
+                                <h3 class="section-head">${BOOK_I18N.description}</h3>
+                                <div class="description-card">
+                                    <p class="description-text">${escapeHtml(generatedDescription)}</p>
+                                </div>
+                            </div>
+
                             <div>
                                 <h3 class="section-head">${BOOK_I18N.metadata}</h3>
                                 <div class="meta-list">
                                     <div class="meta-line"><span>ISBN-13</span><span>${escapeHtml(isbn)}</span></div>
                                     <div class="meta-line"><span>UDC</span><span>${escapeHtml(book?.udc?.raw || '—')}</span></div>
-                                    <div class="meta-line"><span>${BOOK_I18N.publicationYear}</span><span>${escapeHtml(year)}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.publicationYear}</span><span>${escapeHtml(yearForText)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.language}</span><span>${escapeHtml(language)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.publisher}</span><span>${escapeHtml(publisher)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.author}</span><span>${authorsText}</span></div>
