@@ -165,7 +165,7 @@ class CatalogReadService
             ->values()
             ->all();
 
-        $locationsByDocument = $this->loadLocationsByDocument($documentIds);
+        $locationsByDocument = $this->loadLocationsByDocument($documentIds, $institution);
 
         $data = $rows->map(function (object $row) use ($locationsByDocument): array {
             $authors = $this->decodeJsonValue($row->authors_json);
@@ -317,13 +317,13 @@ class CatalogReadService
      * @param array<int,string> $documentIds
      * @return array<string,array<int,array<string,mixed>>>
      */
-    private function loadLocationsByDocument(array $documentIds): array
+    private function loadLocationsByDocument(array $documentIds, ?string $institution = null): array
     {
         if ($documentIds === []) {
             return [];
         }
 
-        $rows = DB::table('app.document_availability_by_location_v')
+        $rowsQuery = DB::table('app.document_availability_by_location_v')
             ->select([
                 'document_id',
                 'institution_unit_name',
@@ -335,7 +335,34 @@ class CatalogReadService
                 'total_copy_count',
                 'available_copy_count',
             ])
-            ->whereIn('document_id', $documentIds)
+            ->whereIn('document_id', $documentIds);
+
+        if ($institution !== null && $institution !== '') {
+            if ($institution === 'college_library') {
+                $rowsQuery->where(function ($q): void {
+                    $q->whereRaw("LOWER(COALESCE(campus_code, '')) = ?", ['college_main'])
+                        ->orWhereRaw("LOWER(COALESCE(institution_unit_code, '')) = ?", ['college'])
+                        ->orWhereRaw("LOWER(COALESCE(service_point_code, '')) = ?", ['3']);
+                });
+            } elseif ($institution === 'economic_library') {
+                $rowsQuery->where(function ($q): void {
+                    $q->whereRaw("LOWER(COALESCE(campus_code, '')) = ?", ['university_economic'])
+                        ->orWhereRaw("LOWER(COALESCE(service_point_code, '')) = ?", ['1']);
+                });
+            } elseif ($institution === 'technology_library') {
+                $rowsQuery->where(function ($q): void {
+                    $q->whereRaw("LOWER(COALESCE(campus_code, '')) = ?", ['university_technological'])
+                        ->orWhereRaw("LOWER(COALESCE(service_point_code, '')) = ?", ['2']);
+                });
+            } elseif ($institution === 'ktslib') {
+                $rowsQuery->where(function ($q): void {
+                    $q->whereRaw("LOWER(COALESCE(service_point_code, '')) = ?", ['kstlib'])
+                        ->orWhereRaw("LOWER(COALESCE(campus_code, '')) = ?", ['university_central']);
+                });
+            }
+        }
+
+        $rows = $rowsQuery
             ->orderByDesc('available_copy_count')
             ->orderByDesc('total_copy_count')
             ->get();
