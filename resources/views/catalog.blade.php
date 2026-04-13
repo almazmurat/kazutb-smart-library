@@ -751,28 +751,11 @@
 
     .advanced-filters {
       margin-top: 0;
+      margin-bottom: 12px;
       display: grid;
       gap: 8px;
-    }
-
-    .advanced-toggle {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      border: 1px solid #cfd7e2;
-      background: #fff;
-      color: #0b2a55;
-      min-height: 34px;
-      padding: 7px 10px;
-      border-radius: 0;
-      cursor: pointer;
-      font: inherit;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-transform: uppercase;
+      border-bottom: 1px solid #dce2ea;
+      padding-bottom: 12px;
     }
 
     .advanced-panel {
@@ -788,9 +771,7 @@
       overflow: visible;
     }
 
-    .advanced-panel.open {
-      display: grid;
-    }
+    .advanced-panel.open { display: grid; }
 
     .advanced-grid {
       display: grid;
@@ -1662,6 +1643,33 @@
             </div>
             <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ {{ ['ru' => 'Сбросить', 'kk' => 'Тазарту', 'en' => 'Reset'][$lang] }}</button>
           </div>
+          <div class="advanced-filters" id="advanced-filters-wrap">
+            <div class="advanced-panel" id="advanced-filters-panel">
+              <div class="advanced-grid">
+                <label class="advanced-field">
+                  <span>{{ ['ru' => 'Название', 'kk' => 'Атауы', 'en' => 'Title'][$lang] }}</span>
+                  <input class="advanced-input" id="adv-title" type="text" placeholder="{{ ['ru' => 'Например: Статистика', 'kk' => 'Мысалы: Статистика', 'en' => 'Example: Statistics'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                </label>
+                <label class="advanced-field">
+                  <span>{{ ['ru' => 'Автор', 'kk' => 'Автор', 'en' => 'Author'][$lang] }}</span>
+                  <input class="advanced-input" id="adv-author" type="text" placeholder="{{ ['ru' => 'ФИО автора', 'kk' => 'Автор аты-жөні', 'en' => 'Author name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                </label>
+                <label class="advanced-field">
+                  <span>{{ ['ru' => 'Издатель', 'kk' => 'Баспа', 'en' => 'Publisher'][$lang] }}</span>
+                  <input class="advanced-input" id="adv-publisher" type="text" placeholder="{{ ['ru' => 'Название издателя', 'kk' => 'Баспа атауы', 'en' => 'Publisher name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                </label>
+                <label class="advanced-field">
+                  <span>ISBN</span>
+                  <input class="advanced-input" id="adv-isbn" type="text" placeholder="978..." onkeydown="if(event.key==='Enter'){applyFilters()}">
+                </label>
+                <label class="advanced-field">
+                  <span>{{ ['ru' => 'УДК', 'kk' => 'ӘОЖ', 'en' => 'UDC'][$lang] }}</span>
+                  <input class="advanced-input" id="adv-udc" type="text" placeholder="5, 004, ..." onkeydown="if(event.key==='Enter'){applyFilters()}">
+                </label>
+              </div>
+            </div>
+          </div>
+
           <div id="filters-body">
 
           <div class="filter-group filter-group--year">
@@ -1707,40 +1715,6 @@
               <option value="technology_library">{{ ['ru' => 'Технологическая библиотека', 'kk' => 'Технологиялық кітапхана', 'en' => 'Technology Library'][$lang] }}</option>
               <option value="ktslib">KTSLIB</option>
             </select>
-          </div>
-
-          <div class="filter-group filter-group--advanced">
-            <span class="filter-label">{{ ['ru' => 'Уточнить поиск', 'kk' => 'Іздеуді нақтылау', 'en' => 'Refine search'][$lang] }}</span>
-            <div class="advanced-filters">
-              <button type="button" class="advanced-toggle" onclick="toggleAdvancedFilters()" aria-controls="advanced-filters-panel" aria-expanded="false">
-                <span>{{ ['ru' => 'Открыть дополнительные параметры', 'kk' => 'Қосымша параметрлерді ашу', 'en' => 'Open additional parameters'][$lang] }}</span>
-                <span>▾</span>
-              </button>
-              <div class="advanced-panel" id="advanced-filters-panel">
-                <div class="advanced-grid">
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'Название', 'kk' => 'Атауы', 'en' => 'Title'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-title" type="text" placeholder="{{ ['ru' => 'Например: Статистика', 'kk' => 'Мысалы: Статистика', 'en' => 'Example: Statistics'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'Автор', 'kk' => 'Автор', 'en' => 'Author'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-author" type="text" placeholder="{{ ['ru' => 'ФИО автора', 'kk' => 'Автор аты-жөні', 'en' => 'Author name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'Издатель', 'kk' => 'Баспа', 'en' => 'Publisher'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-publisher" type="text" placeholder="{{ ['ru' => 'Название издателя', 'kk' => 'Баспа атауы', 'en' => 'Publisher name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>ISBN</span>
-                    <input class="advanced-input" id="adv-isbn" type="text" placeholder="978..." onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                  <label class="advanced-field">
-                    <span>{{ ['ru' => 'УДК', 'kk' => 'ӘОЖ', 'en' => 'UDC'][$lang] }}</span>
-                    <input class="advanced-input" id="adv-udc" type="text" placeholder="5, 004, ..." onkeydown="if(event.key==='Enter'){applyFilters()}">
-                  </label>
-                </div>
-              </div>
-            </div>
           </div>
 
           </div>{{-- /filters-body --}}
@@ -1877,14 +1851,12 @@
     function toggleAdvancedFilters(forceOpen = null) {
       const panel = document.getElementById('advanced-filters-panel');
       const state = document.getElementById('advanced-toggle-state');
-      const toggleButtons = document.querySelectorAll('.advanced-toggle, .filter-title-icon');
-      const chevron = document.querySelector('.advanced-toggle span:last-child');
+      const toggleButtons = document.querySelectorAll('.filter-title-icon');
       if (!panel || !state) return;
       const open = forceOpen === null ? !panel.classList.contains('open') : Boolean(forceOpen);
       panel.classList.toggle('open', open);
       state.textContent = open ? '▴' : '⚙';
       toggleButtons.forEach((btn) => btn.setAttribute('aria-expanded', open ? 'true' : 'false'));
-      if (chevron) chevron.textContent = open ? '▴' : '▾';
     }
 
     function setChipValue(selector, dataKey, value = '') {
@@ -2408,7 +2380,7 @@
 
     document.addEventListener('click', (event) => {
       const panel = document.getElementById('advanced-filters-panel');
-      const toggles = Array.from(document.querySelectorAll('.advanced-toggle, .filter-title-icon'));
+      const toggles = Array.from(document.querySelectorAll('.filter-title-icon'));
       if (!panel || !toggles.length) return;
       const target = event.target;
       if (!(target instanceof Element)) return;
