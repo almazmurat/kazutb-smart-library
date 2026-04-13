@@ -858,21 +858,22 @@
 
     .chips {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 6px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 4px;
     }
 
     .chip {
       border-radius: 0;
       min-height: 30px;
-      padding: 6px 8px;
+      padding: 6px 4px;
       text-align: center;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       border: 1px solid #cfd7e2;
       background: #fff;
       box-shadow: none;
+      letter-spacing: .02em;
     }
 
     .chip.active {
@@ -1637,6 +1638,7 @@
       .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
       .range-row { flex-wrap: wrap; }
+      .chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
       .book-stage { height: 380px; }
       .book-actions { grid-template-columns: 1fr; }
       .icon-btn { width: 100%; height: 50px; min-height: 44px; }
