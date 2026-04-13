@@ -565,10 +565,10 @@
     }
 
     .book-card:hover {
-      transform: translate3d(0, -2px, 0);
-      box-shadow: 0 14px 28px rgba(25,28,29,.05);
-      border-color: rgba(0,30,64,.12);
-      background: rgba(248,249,250,.99);
+      transform: none;
+      box-shadow: 0 10px 24px rgba(25,28,29,.03);
+      border-color: rgba(195,198,209,.7);
+      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
     }
 
     .book-stage {
