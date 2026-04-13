@@ -1794,7 +1794,7 @@
           <div class="filter-group filter-group--availability">
             <span class="filter-label">{{ ['ru' => 'Тип ресурса', 'kk' => 'Ресурс түрі', 'en' => 'Resource type'][$lang] }}</span>
             <div class="check-list">
-              <label class="check-item"><input type="checkbox" id="filter-available-only" checked onchange="applyFilters()"> <span>{{ ['ru' => 'Электронные (E-Book/PDF)', 'kk' => 'Электронды (E-Book/PDF)', 'en' => 'Digital (E-Book/PDF)'][$lang] }}</span></label>
+              <label class="check-item"><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> <span>{{ ['ru' => 'Электронные (E-Book/PDF)', 'kk' => 'Электронды (E-Book/PDF)', 'en' => 'Digital (E-Book/PDF)'][$lang] }}</span></label>
               <label class="check-item"><input type="checkbox" id="filter-physical-only" onchange="applyFilters()"> <span>{{ ['ru' => 'Физический фонд', 'kk' => 'Физикалық қор', 'en' => 'Physical Collection'][$lang] }}</span></label>
             </div>
           </div>
@@ -2650,22 +2650,7 @@
       });
     });
 
-    // Keep resource-type selection in 3 valid modes only:
-    // digital only, physical only, or both. Prevent "none selected".
-    (function initResourceTypeModes() {
-      const digital = document.getElementById('filter-available-only');
-      const physical = document.getElementById('filter-physical-only');
-      if (!digital || !physical) return;
-
-      const ensureAtLeastOneChecked = (changed) => {
-        if (!digital.checked && !physical.checked) {
-          changed.checked = true;
-        }
-      };
-
-      digital.addEventListener('change', () => ensureAtLeastOneChecked(digital));
-      physical.addEventListener('change', () => ensureAtLeastOneChecked(physical));
-    })();
+    // Allow all-books mode when both resource checkboxes are off.
 
     ['year-from-input', 'year-to-input'].forEach((id) => {
       const input = document.getElementById(id);
