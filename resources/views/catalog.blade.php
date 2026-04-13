@@ -633,14 +633,68 @@
     .results-top p { margin: 6px 0 0; color: var(--muted); }
 
     .sort-box {
-      display: flex;
+      display: grid;
+      grid-template-columns: auto minmax(240px, 1fr);
       align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.82);
-      border: 1px solid rgba(195,198,209,.55);
-      box-shadow: var(--shadow-soft);
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(246,248,250,.95));
+      border: 1px solid rgba(182,189,203,.65);
+      box-shadow: 0 8px 20px rgba(25,28,29,.05);
+      min-width: 360px;
+    }
+
+    .sort-label {
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .sort-select-wrap {
+      position: relative;
+    }
+
+    .sort-select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #4b5563;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .sort-select {
+      width: 100%;
+      min-width: 240px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: 1px solid rgba(177,185,199,.78);
+      background: #fff;
+      color: var(--text);
+      border-radius: var(--radius-md);
+      padding: 10px 34px 10px 12px;
+      font: inherit;
+      font-weight: 700;
+      line-height: 1.3;
+      transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+    }
+
+    .sort-select:hover {
+      border-color: rgba(0,30,64,.25);
+      background: rgba(255,255,255,.99);
+    }
+
+    .sort-select:focus {
+      outline: none;
+      border-color: rgba(0,30,64,.35);
+      box-shadow: 0 0 0 3px rgba(0,30,64,.08);
     }
 
     .grid {
@@ -1142,6 +1196,11 @@
       .filters { position: static; top: auto; }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
+      .sort-box {
+        width: 100%;
+        min-width: 0;
+        grid-template-columns: 1fr;
+      }
       .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
     }
 
@@ -1276,13 +1335,15 @@
               <p>{{ ['ru' => 'Подборка учебной и научной литературы по выбранным параметрам.', 'kk' => 'Таңдалған параметрлер бойынша оқу және ғылыми әдебиеттер топтамасы.', 'en' => 'A filtered selection of course and research literature.'][$lang] }}</p>
             </div>
             <div class="sort-box">
-              <span style="color:var(--muted); font-weight:600;">{{ ['ru' => 'Сортировка:', 'kk' => 'Сұрыптау:', 'en' => 'Sort by:'][$lang] }}</span>
-              <select class="select" id="sort-select" style="min-width:220px;" onchange="applyFilters()">
+              <span class="sort-label">{{ ['ru' => 'Сортировка', 'kk' => 'Сұрыптау', 'en' => 'Sort by'][$lang] }}</span>
+              <span class="sort-select-wrap">
+              <select class="sort-select" id="sort-select" onchange="applyFilters()">
                 <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
                 <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
                 <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
                 <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
               </select>
+              </span>
             </div>
           </div>
 
