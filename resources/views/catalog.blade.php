@@ -33,9 +33,9 @@
       --success: #14696d;
       --shadow: 0 12px 32px rgba(25, 28, 29, .04);
       --shadow-soft: 0 6px 16px rgba(25, 28, 29, .03);
-      --radius-xl: 8px;
-      --radius-lg: 6px;
-      --radius-md: 4px;
+      --radius-xl: 2px;
+      --radius-lg: 2px;
+      --radius-md: 2px;
       --container: 1280px;
     }
 
@@ -52,6 +52,23 @@
     body.site-shell::after {
       content: none;
       display: none;
+    }
+
+    .btn,
+    .input,
+    .select,
+    .chip,
+    .btn-clear-filters,
+    .active-filter-chip,
+    .active-filter-reset,
+    .tag,
+    .icon-btn,
+    .page-btn,
+    .book-card,
+    .book-cover,
+    .book-stage,
+    .sort-box {
+      border-radius: var(--radius-md) !important;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -451,6 +468,85 @@
       margin-top: 18px;
     }
 
+    .advanced-filters {
+      margin-top: 6px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .advanced-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(195,198,209,.72);
+      background: #fff;
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .advanced-toggle span:last-child {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .advanced-panel {
+      display: none;
+      gap: 10px;
+      border: 1px solid rgba(195,198,209,.72);
+      border-radius: var(--radius-md);
+      background: #fff;
+      padding: 10px;
+    }
+
+    .advanced-panel.open {
+      display: grid;
+    }
+
+    .advanced-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .advanced-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .advanced-field span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .advanced-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(195,198,209,.72);
+      border-radius: var(--radius-md);
+      background: #fff;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .advanced-input:focus {
+      outline: none;
+      border-color: rgba(0,30,64,.18);
+      box-shadow: 0 0 0 3px rgba(0,30,64,.05);
+    }
+
     .active-filters {
       display: flex;
       flex-wrap: wrap;
@@ -557,6 +653,7 @@
       box-shadow: 0 10px 24px rgba(25,28,29,.03);
       cursor: pointer;
       overflow: hidden;
+      min-height: 820px;
     }
 
     .book-card::before {
@@ -565,31 +662,19 @@
 
     .book-stage {
       position: relative;
-      height: 344px;
+      height: 420px;
       margin-bottom: 16px;
-      perspective: 1800px;
-      transform-style: preserve-3d;
+      perspective: none;
+      transform-style: flat;
     }
 
     .book-body {
-      position: absolute;
-      inset: 12px 12px 10px 14px;
-      z-index: 1;
-      border-radius: 8px 16px 16px 8px;
-      border: 1px solid rgba(161,134,83,.24);
-      box-shadow: inset 8px 0 14px rgba(75, 57, 29, .06);
-      padding: 16px 16px 14px;
-      display: grid;
-      grid-template-rows: 1fr auto;
-      gap: 10px;
-      color: #4c4435;
-      background-image: linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,0));
-      overflow: hidden;
+      display: none;
     }
 
     .book-body-copy {
       display: grid;
-      gap: 10px;
+      gap: 12px;
       min-height: 0;
     }
 
@@ -603,29 +688,24 @@
     }
 
     .book-body-preview {
-      font-size: 11px;
-      line-height: 1.55;
+      font-size: 12px;
+      line-height: 1.65;
       color: #625740;
       max-width: 100%;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      overflow-wrap: anywhere;
     }
 
     .book-body-meta {
       display: grid;
-      gap: 6px;
+      gap: 7px;
       align-content: start;
     }
 
     .book-body-meta-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
       gap: 12px;
-      padding-top: 6px;
+      padding-top: 7px;
       border-top: 1px solid rgba(124, 110, 84, .18);
       font-size: 11px;
     }
@@ -642,8 +722,7 @@
       font-size: 11px;
       text-align: right;
       word-break: break-word;
-      max-width: 150px;
-      overflow-wrap: anywhere;
+      max-width: 52%;
     }
 
     .book-body-stat {
@@ -656,29 +735,25 @@
       border-radius: 999px;
       background: rgba(0,30,64,.05);
       color: var(--blue);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 800;
-      white-space: normal;
-      max-width: 100%;
+      white-space: nowrap;
     }
 
     .book-cover {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      border-radius: 8px 18px 18px 8px;
-      padding: 16px 16px 16px 18px;
-      transform-origin: left center;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-      will-change: transform;
-      transition: transform .46s ease;
-      border-left: 10px solid rgba(0,0,0,.18);
+      position: relative;
+      inset: auto;
+      z-index: 1;
+      height: 100%;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      transform: none;
+      border-left: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
-      box-shadow: 6px 16px 24px rgba(25,28,29,.12);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 12px 24px rgba(25,28,29,.1);
       isolation: isolate;
     }
 
@@ -698,9 +773,7 @@
       pointer-events: none;
     }
 
-    .book-card:hover .book-cover {
-      transform: rotateY(-92deg);
-    }
+    .book-card:hover .book-cover { transform: none; }
 
     .cover-top {
       display: flex;
@@ -739,7 +812,6 @@
       font-weight: 700;
       letter-spacing: .12em;
       text-transform: uppercase;
-      max-width: 100%;
     }
 
     .cover-isbn strong {
@@ -790,8 +862,8 @@
       margin: 0;
       color: #f3d99d;
       font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(1.65rem, 1.75vw, 2.1rem);
-      line-height: 1.02;
+      font-size: clamp(1.7rem, 1.9vw, 2.2rem);
+      line-height: 1.04;
       letter-spacing: -.8px;
       text-shadow: 1px 1px 0 rgba(0,0,0,.28);
       display: -webkit-box;
@@ -893,6 +965,10 @@
       line-height: 1.15;
       min-height: 76px;
       overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .book-desc {
@@ -1053,7 +1129,7 @@
       .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
       .range-row { grid-template-columns: 1fr; }
-      .book-stage { height: 324px; }
+      .book-stage { height: 380px; }
       .book-actions { grid-template-columns: 1fr; }
       .icon-btn { width: 100%; height: 50px; min-height: 44px; }
       .search-wrap { grid-template-columns: 1fr; }
@@ -1138,6 +1214,40 @@
             </select>
           </div>
 
+          <div class="filter-group">
+            <span class="filter-label">{{ ['ru' => 'Расширенный поиск', 'kk' => 'Кеңейтілген іздеу', 'en' => 'Advanced search'][$lang] }}</span>
+            <div class="advanced-filters">
+              <button type="button" class="advanced-toggle" onclick="toggleAdvancedFilters()">
+                <span>{{ ['ru' => 'Advanced Filters', 'kk' => 'Advanced Filters', 'en' => 'Advanced Filters'][$lang] }}</span>
+                <span id="advanced-toggle-state">OFF</span>
+              </button>
+              <div class="advanced-panel" id="advanced-filters-panel">
+                <div class="advanced-grid">
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'Название', 'kk' => 'Атауы', 'en' => 'Title'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-title" type="text" placeholder="{{ ['ru' => 'Например: Статистика', 'kk' => 'Мысалы: Статистика', 'en' => 'Example: Statistics'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'Автор', 'kk' => 'Автор', 'en' => 'Author'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-author" type="text" placeholder="{{ ['ru' => 'ФИО автора', 'kk' => 'Автор аты-жөні', 'en' => 'Author name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'Издатель', 'kk' => 'Баспа', 'en' => 'Publisher'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-publisher" type="text" placeholder="{{ ['ru' => 'Название издателя', 'kk' => 'Баспа атауы', 'en' => 'Publisher name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>ISBN</span>
+                    <input class="advanced-input" id="adv-isbn" type="text" placeholder="978..." onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'УДК', 'kk' => 'ӘОЖ', 'en' => 'UDC'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-udc" type="text" placeholder="5, 004, ..." onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           </div>{{-- /filters-body --}}
 
           <div class="filter-footer">
@@ -1205,6 +1315,11 @@
       }
     };
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
+    const ADV_FILTER_UI = @json([
+      'ru' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Название', 'author' => 'Автор', 'publisher' => 'Издатель', 'isbn' => 'ISBN', 'udc' => 'УДК'],
+      'kk' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Атауы', 'author' => 'Автор', 'publisher' => 'Баспа', 'isbn' => 'ISBN', 'udc' => 'ӘОЖ'],
+      'en' => ['on' => 'ON', 'off' => 'OFF', 'title' => 'Title', 'author' => 'Author', 'publisher' => 'Publisher', 'isbn' => 'ISBN', 'udc' => 'UDC'],
+    ][$lang] ?? ['on' => 'ON', 'off' => 'OFF', 'title' => 'Title', 'author' => 'Author', 'publisher' => 'Publisher', 'isbn' => 'ISBN', 'udc' => 'UDC']);
 
     function withLang(path) {
       const url = new URL(path, window.location.origin);
@@ -1253,6 +1368,30 @@
       return { year_from: year, year_to: year };
     }
 
+    function getAdvancedFilters() {
+      return {
+        title: document.getElementById('adv-title')?.value?.trim() || '',
+        author: document.getElementById('adv-author')?.value?.trim() || '',
+        publisher: document.getElementById('adv-publisher')?.value?.trim() || '',
+        isbn: document.getElementById('adv-isbn')?.value?.trim() || '',
+        udc: document.getElementById('adv-udc')?.value?.trim() || '',
+      };
+    }
+
+    function hasAdvancedFilters() {
+      const advanced = getAdvancedFilters();
+      return Object.values(advanced).some(Boolean);
+    }
+
+    function toggleAdvancedFilters(forceOpen = null) {
+      const panel = document.getElementById('advanced-filters-panel');
+      const state = document.getElementById('advanced-toggle-state');
+      if (!panel || !state) return;
+      const open = forceOpen === null ? !panel.classList.contains('open') : Boolean(forceOpen);
+      panel.classList.toggle('open', open);
+      state.textContent = open ? ADV_FILTER_UI.on : ADV_FILTER_UI.off;
+    }
+
     function setChipValue(selector, dataKey, value = '') {
       document.querySelectorAll(selector).forEach((chip) => {
         chip.classList.toggle('active', (chip.dataset[dataKey] || '') === value);
@@ -1277,11 +1416,11 @@
 
     function syncCatalogUrl(params) {
       const url = new URL(window.location.href);
-      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label'].forEach((key) => {
+      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label', 'title', 'author', 'publisher', 'isbn', 'udc'].forEach((key) => {
         url.searchParams.delete(key);
       });
 
-      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id'].forEach((key) => {
+      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'title', 'author', 'publisher', 'isbn', 'udc'].forEach((key) => {
         const value = params.get(key);
         if (value) {
           url.searchParams.set(key, value);
@@ -1322,18 +1461,23 @@
       };
     }
 
+    function matchesAdvancedFilters(data, advanced) {
+      const titleOk = !advanced.title || data.title.toLowerCase().includes(advanced.title.toLowerCase());
+      const authorOk = !advanced.author || data.author.toLowerCase().includes(advanced.author.toLowerCase());
+      const publisherOk = !advanced.publisher || data.publisher.toLowerCase().includes(advanced.publisher.toLowerCase());
+      const isbnOk = !advanced.isbn || String(data.isbn || '').toLowerCase().includes(advanced.isbn.toLowerCase());
+      const udcOk = !advanced.udc || String(data.udc || '').toLowerCase().includes(advanced.udc.toLowerCase());
+      return titleOk && authorOk && publisherOk && isbnOk && udcOk;
+    }
+
     function renderBookCard(book, index = 0) {
       const data = formatBookData(book);
       const isAvailable = data.available > 0;
       const identifier = data.isbn || data.id;
       const tone = ['tone-navy', 'tone-wine', 'tone-forest', 'tone-wood'][index % 4];
-      const trackValue = data.specialization || data.department || '—';
       const subjectBadge = data.specialization
         ? `<span class="tag subject" title="${escapeHtml(data.specialization)}">${escapeHtml(data.specialization.length > 25 ? data.specialization.substring(0, 25) + '…' : data.specialization)}</span>`
         : (data.department ? `<span class="tag subject" title="${escapeHtml(data.department)}">${escapeHtml(data.department.length > 25 ? data.department.substring(0, 25) + '…' : data.department)}</span>` : '');
-      const previewSummary = isAvailable
-        ? CATALOG_I18N.previewAvailable.replace('{available}', data.available).replace('{total}', data.total)
-        : CATALOG_I18N.previewUnavailable;
       const isbnValue = data.isbn || '—';
       const udcValue = data.udc || '—';
       const shortIsbn = isbnValue.length > 18 ? `${isbnValue.substring(0, 18)}…` : isbnValue;
@@ -1343,21 +1487,6 @@
       return `
         <article class="book-card" onclick="goToBook('${escapeHtml(identifier)}')">
           <div class="book-stage">
-            <div class="book-body">
-              <div class="book-body-copy">
-                <div>
-                  <div class="book-body-label">${CATALOG_I18N.insideRecord}</div>
-                  <div class="book-body-preview">${escapeHtml(previewSummary)}</div>
-                </div>
-                <div class="book-body-meta">
-                  <div class="book-body-meta-row"><span>${CATALOG_I18N.publisherLabel}</span><strong>${escapeHtml(data.publisher.substring(0, 40))}</strong></div>
-                  <div class="book-body-meta-row"><span>${CATALOG_I18N.copiesLabel}</span><strong>${isAvailable ? `${data.available}/${data.total}` : CATALOG_I18N.unavailable}</strong></div>
-                  <div class="book-body-meta-row"><span>${CATALOG_I18N.isbnLabel}</span><strong>${escapeHtml(isbnValue)}</strong></div>
-                  <div class="book-body-meta-row"><span>${CATALOG_I18N.trackLabel}</span><strong>${escapeHtml(String(trackValue).substring(0, 34))}</strong></div>
-                </div>
-              </div>
-              <span class="book-body-stat">${escapeHtml(data.format)} · ${escapeHtml(data.language)} · ${escapeHtml(String(data.year))}</span>
-            </div>
             <div class="book-cover ${tone}">
               <div class="cover-top">
                 <span class="cover-year">${escapeHtml(String(data.year))}</span>
@@ -1418,6 +1547,13 @@
         if (yearParams.year_from) params.set('year_from', yearParams.year_from);
         if (yearParams.year_to) params.set('year_to', yearParams.year_to);
 
+        const advanced = getAdvancedFilters();
+        if (advanced.title) params.set('title', advanced.title);
+        if (advanced.author) params.set('author', advanced.author);
+        if (advanced.publisher) params.set('publisher', advanced.publisher);
+        if (advanced.isbn) params.set('isbn', advanced.isbn);
+        if (advanced.udc) params.set('udc', advanced.udc);
+
         const availableOnly = document.getElementById('filter-available-only');
         if (availableOnly && availableOnly.checked) params.set('available_only', '1');
 
@@ -1431,8 +1567,14 @@
         if (!response.ok) throw new Error('API Error');
 
         const data = await response.json();
-        const books = data.data || [];
+        let books = data.data || [];
         const meta = data.meta || {};
+        const advancedMode = hasAdvancedFilters();
+
+        if (advancedMode) {
+          const advanced = getAdvancedFilters();
+          books = books.filter((book) => matchesAdvancedFilters(formatBookData(book), advanced));
+        }
 
         if (books.length === 0) {
           grid.innerHTML = `<div class="catalog-state-card"><div class="catalog-state-card__icon">🔎</div><strong>${CATALOG_I18N.noBooks}</strong><p>${CATALOG_I18N.tryChange}</p><button type="button" class="btn btn-ghost" onclick="clearAllFilters()">${CATALOG_I18N.resetAll}</button></div>`;
@@ -1445,8 +1587,8 @@
           }).filter(Boolean);
           await loadShortlistState(identifiers);
           grid.innerHTML = books.map((item, index) => renderBookCard(item, index)).join('');
-          resultsCount.textContent = CATALOG_I18N.foundMany.replace('{count}', meta.total || books.length);
-          totalPages = meta.totalPages || 1;
+          resultsCount.textContent = CATALOG_I18N.foundMany.replace('{count}', advancedMode ? books.length : (meta.total || books.length));
+          totalPages = advancedMode ? 1 : (meta.totalPages || 1);
           renderPagination();
         }
         renderActiveFilters();
@@ -1492,6 +1634,13 @@
       if (avail?.checked) chips.push({ label: CATALOG_I18N.availableOnly, clear: () => { avail.checked = false; } });
       if (activeSubjectLabel) chips.push({ label: activeSubjectLabel, clear: () => { activeSubjectId = ''; activeSubjectLabel = ''; } });
 
+      const advanced = getAdvancedFilters();
+      if (advanced.title) chips.push({ label: `${ADV_FILTER_UI.title}: ${advanced.title}`, clear: () => { const el = document.getElementById('adv-title'); if (el) el.value = ''; } });
+      if (advanced.author) chips.push({ label: `${ADV_FILTER_UI.author}: ${advanced.author}`, clear: () => { const el = document.getElementById('adv-author'); if (el) el.value = ''; } });
+      if (advanced.publisher) chips.push({ label: `${ADV_FILTER_UI.publisher}: ${advanced.publisher}`, clear: () => { const el = document.getElementById('adv-publisher'); if (el) el.value = ''; } });
+      if (advanced.isbn) chips.push({ label: `${ADV_FILTER_UI.isbn}: ${advanced.isbn}`, clear: () => { const el = document.getElementById('adv-isbn'); if (el) el.value = ''; } });
+      if (advanced.udc) chips.push({ label: `${ADV_FILTER_UI.udc}: ${advanced.udc}`, clear: () => { const el = document.getElementById('adv-udc'); if (el) el.value = ''; } });
+
       if (chips.length === 0) {
         container.style.display = 'none';
         return;
@@ -1516,6 +1665,11 @@
       const subjectSelect = document.getElementById('subject-select');
       const sortSelect = document.getElementById('sort-select');
       const avail = document.getElementById('filter-available-only');
+      const advTitle = document.getElementById('adv-title');
+      const advAuthor = document.getElementById('adv-author');
+      const advPublisher = document.getElementById('adv-publisher');
+      const advIsbn = document.getElementById('adv-isbn');
+      const advUdc = document.getElementById('adv-udc');
 
       if (searchInput) searchInput.value = '';
       if (yearFromInput) yearFromInput.value = '';
@@ -1524,11 +1678,17 @@
       if (subjectSelect) subjectSelect.value = '';
       if (sortSelect) sortSelect.value = 'popular';
       if (avail) avail.checked = false;
+      if (advTitle) advTitle.value = '';
+      if (advAuthor) advAuthor.value = '';
+      if (advPublisher) advPublisher.value = '';
+      if (advIsbn) advIsbn.value = '';
+      if (advUdc) advUdc.value = '';
 
       setChipValue('#language-chips .chip', 'lang', '');
       setChipValue('#year-chips .chip', 'year', '');
       activeSubjectId = '';
       activeSubjectLabel = '';
+      toggleAdvancedFilters(false);
       updateSubjectBanner();
       applyFilters();
     }
@@ -1660,31 +1820,6 @@
       updateFilterBadge();
     }
 
-    function clearAllFilters() {
-      const searchInput = document.getElementById('search-input');
-      const yearFromInput = document.getElementById('year-from-input');
-      const yearToInput = document.getElementById('year-to-input');
-      const subjectSearch = document.getElementById('subject-search');
-      const subjectSelect = document.getElementById('subject-select');
-      const sortSelect = document.getElementById('sort-select');
-      const avail = document.getElementById('filter-available-only');
-
-      if (searchInput) searchInput.value = '';
-      if (yearFromInput) yearFromInput.value = '';
-      if (yearToInput) yearToInput.value = '';
-      if (subjectSearch) subjectSearch.value = '';
-      if (subjectSelect) subjectSelect.value = '';
-      if (sortSelect) sortSelect.value = 'popular';
-      if (avail) avail.checked = false;
-
-      setChipValue('#language-chips .chip', 'lang', '');
-      setChipValue('#year-chips .chip', 'year', '');
-      activeSubjectId = '';
-      activeSubjectLabel = '';
-      updateSubjectBanner();
-      applyFilters();
-    }
-
     function countActiveFilters() {
       let count = 0;
       if (document.getElementById('filter-available-only')?.checked) count++;
@@ -1692,6 +1827,12 @@
       const yearParams = getYearParams();
       if (yearParams.year_from || yearParams.year_to) count++;
       if (activeSubjectId || document.getElementById('subject-select')?.value) count++;
+      const advanced = getAdvancedFilters();
+      if (advanced.title) count++;
+      if (advanced.author) count++;
+      if (advanced.publisher) count++;
+      if (advanced.isbn) count++;
+      if (advanced.udc) count++;
       return count;
     }
 
@@ -1700,6 +1841,7 @@
       const badge = document.getElementById('filter-count-badge');
       const clearBtn = document.getElementById('clear-filters-btn');
       const mobileCount = document.getElementById('mobile-filter-count');
+      const advancedState = document.getElementById('advanced-toggle-state');
       if (badge) {
         badge.textContent = count;
         badge.style.display = count > 0 ? 'inline-flex' : 'none';
@@ -1709,6 +1851,9 @@
       }
       if (mobileCount) {
         mobileCount.textContent = count > 0 ? `(${count})` : '';
+      }
+      if (advancedState) {
+        advancedState.textContent = hasAdvancedFilters() ? ADV_FILTER_UI.on : ADV_FILTER_UI.off;
       }
     }
 
@@ -1760,6 +1905,16 @@
       });
     });
 
+    ['adv-title', 'adv-author', 'adv-publisher', 'adv-isbn', 'adv-udc'].forEach((id) => {
+      const input = document.getElementById(id);
+      input?.addEventListener('input', () => {
+        if ((input.value || '').trim()) {
+          toggleAdvancedFilters(true);
+        }
+        updateFilterBadge();
+      });
+    });
+
     // Read URL params for deep-linking from discovery pages
     (function() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -1771,6 +1926,11 @@
       const urlAvailableOnly = urlParams.get('available_only');
       const urlSubjectId = urlParams.get('subject_id');
       const urlSubjectLabel = urlParams.get('subject_label');
+      const urlTitle = urlParams.get('title');
+      const urlAuthor = urlParams.get('author');
+      const urlPublisher = urlParams.get('publisher');
+      const urlIsbn = urlParams.get('isbn');
+      const urlUdc = urlParams.get('udc');
       const urlPage = Number(urlParams.get('page') || '1');
 
       if (urlQ && document.getElementById('search-input')) {
@@ -1811,6 +1971,14 @@
       if (urlSubjectId) {
         activeSubjectId = urlSubjectId;
         activeSubjectLabel = urlSubjectLabel ? decodeURIComponent(urlSubjectLabel) : '';
+      }
+      if (urlTitle && document.getElementById('adv-title')) document.getElementById('adv-title').value = urlTitle;
+      if (urlAuthor && document.getElementById('adv-author')) document.getElementById('adv-author').value = urlAuthor;
+      if (urlPublisher && document.getElementById('adv-publisher')) document.getElementById('adv-publisher').value = urlPublisher;
+      if (urlIsbn && document.getElementById('adv-isbn')) document.getElementById('adv-isbn').value = urlIsbn;
+      if (urlUdc && document.getElementById('adv-udc')) document.getElementById('adv-udc').value = urlUdc;
+      if (urlTitle || urlAuthor || urlPublisher || urlIsbn || urlUdc) {
+        toggleAdvancedFilters(true);
       }
     })();
 
