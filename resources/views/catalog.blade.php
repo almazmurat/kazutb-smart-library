@@ -1052,21 +1052,13 @@
     .results-top strong { font-size: 22px; }
     .results-top p { margin: 6px 0 0; color: var(--muted); }
 
-    .results-toolbar {
-      display: grid;
-      gap: 10px;
-      min-width: min(100%, 560px);
-      justify-items: end;
-      margin-left: auto;
-    }
-
     .sort-box {
       position: relative;
       display: grid;
       grid-template-columns: auto minmax(240px, 1fr);
       align-items: center;
       gap: 14px;
-      width: 100%;
+      width: min(100%, 460px);
       padding: 12px 14px;
       border-radius: var(--radius-md);
       background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(244,247,250,.96));
@@ -1135,97 +1127,6 @@
       outline: none;
       border-color: rgba(0,30,64,.35);
       box-shadow: 0 0 0 3px rgba(0,30,64,.08);
-    }
-
-    .toolbar-actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: wrap;
-      width: 100%;
-    }
-
-    .toolbar-btn {
-      min-height: 42px;
-      padding: 0 13px;
-      border: 1px solid rgba(182,189,203,.52);
-      background: rgba(255,255,255,.72);
-      color: #33465c;
-      font: inherit;
-      font-weight: 600;
-      letter-spacing: .01em;
-      cursor: pointer;
-      transition: border-color .18s ease, background-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
-      box-shadow: 0 2px 8px rgba(25,28,29,.035);
-    }
-
-    .toolbar-btn__icon {
-      display: inline-block;
-      margin-right: 6px;
-      font-size: 13px;
-      line-height: 1;
-      opacity: .82;
-    }
-
-    .toolbar-btn:hover {
-      border-color: rgba(0,30,64,.22);
-      background: rgba(255,255,255,.96);
-      color: #1d3048;
-      transform: translate3d(0, -1px, 0);
-    }
-
-    .toolbar-btn:focus-visible {
-      outline: none;
-      border-color: rgba(0,30,64,.38);
-      box-shadow: 0 0 0 3px rgba(0,30,64,.08);
-    }
-
-    .toolbar-segment {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px;
-      border: 1px solid rgba(182,189,203,.62);
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(246,249,251,.92));
-      box-shadow: 0 4px 12px rgba(25,28,29,.04);
-    }
-
-    .view-mode-btn {
-      min-height: 34px;
-      padding: 0 11px;
-      border: 0;
-      background: transparent;
-      color: #637184;
-      font: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color .16s ease, color .16s ease;
-    }
-
-    .view-mode-btn:hover {
-      color: #34465e;
-      background: rgba(0,30,64,.06);
-    }
-
-    .view-mode-btn.active {
-      background: var(--blue);
-      color: #fff;
-      font-weight: 700;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
-    }
-
-    .results.results--compact .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .results.results--compact .book-card {
-      min-height: 660px;
-    }
-
-    .results.results--compact .book-stage {
-      height: 320px;
-      margin-bottom: 12px;
     }
 
     .grid {
@@ -1736,29 +1637,9 @@
       }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
-      .results-toolbar {
-        width: 100%;
-        justify-items: stretch;
-      }
       .sort-box {
         width: 100%;
         min-width: 0;
-        grid-template-columns: 1fr;
-      }
-      .toolbar-actions {
-        justify-content: stretch;
-      }
-      .toolbar-btn,
-      .toolbar-segment {
-        flex: 1 1 auto;
-      }
-      .toolbar-segment {
-        justify-content: stretch;
-      }
-      .view-mode-btn {
-        flex: 1 1 50%;
-      }
-      .results.results--compact .grid {
         grid-template-columns: 1fr;
       }
       .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
@@ -1774,10 +1655,6 @@
       .book-actions { grid-template-columns: 1fr; }
       .icon-btn { width: 100%; height: 50px; min-height: 44px; }
       .search-wrap { grid-template-columns: 1fr; }
-      .toolbar-actions {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
       .nav { min-height: 64px; }
       .brand-text { font-size: 13px; }
       .brand-text small { font-size: 10.5px; }
@@ -1900,26 +1777,16 @@
               <strong id="results-count">{{ ['ru' => 'Найдено 0 книг', 'kk' => '0 кітап табылды', 'en' => 'Found 0 books'][$lang] }}</strong>
               <p>{{ ['ru' => 'Подборка учебной и научной литературы по выбранным параметрам.', 'kk' => 'Таңдалған параметрлер бойынша оқу және ғылыми әдебиеттер топтамасы.', 'en' => 'A filtered selection of course and research literature.'][$lang] }}</p>
             </div>
-            <div class="results-toolbar">
-              <div class="sort-box">
-                <span class="sort-label">{{ ['ru' => 'Сортировка', 'kk' => 'Сұрыптау', 'en' => 'Sort by'][$lang] }}</span>
-                <span class="sort-select-wrap">
-                <select class="sort-select" id="sort-select" onchange="applyFilters()">
-                  <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
-                  <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
-                  <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
-                  <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
-                </select>
-                </span>
-              </div>
-              <div class="toolbar-actions">
-                <button class="toolbar-btn" type="button" id="share-view-btn" onclick="shareCatalogView()"><span class="toolbar-btn__icon" aria-hidden="true">↗</span>{{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
-                <button class="toolbar-btn" type="button" onclick="clearAllFilters()"><span class="toolbar-btn__icon" aria-hidden="true">⟲</span>{{ ['ru' => 'Сбросить все', 'kk' => 'Барлығын тазарту', 'en' => 'Reset all'][$lang] }}</button>
-                <div class="toolbar-segment" role="group" aria-label="{{ ['ru' => 'Режим отображения', 'kk' => 'Көрсету режимі', 'en' => 'View mode'][$lang] }}">
-                  <button class="view-mode-btn active" type="button" data-view-mode="comfortable" onclick="setViewMode('comfortable')">▦ {{ ['ru' => 'Карточки', 'kk' => 'Карточкалар', 'en' => 'Cards'][$lang] }}</button>
-                  <button class="view-mode-btn" type="button" data-view-mode="compact" onclick="setViewMode('compact')">☰ {{ ['ru' => 'Компактно', 'kk' => 'Ықшам', 'en' => 'Compact'][$lang] }}</button>
-                </div>
-              </div>
+            <div class="sort-box">
+              <span class="sort-label">{{ ['ru' => 'Сортировка', 'kk' => 'Сұрыптау', 'en' => 'Sort by'][$lang] }}</span>
+              <span class="sort-select-wrap">
+              <select class="sort-select" id="sort-select" onchange="applyFilters()">
+                <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
+                <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
+                <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
+                <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
+              </select>
+              </span>
             </div>
           </div>
 
@@ -1986,7 +1853,6 @@
     }
     let currentPage = 1;
     let totalPages = 1;
-    let currentViewMode = 'comfortable';
     let activeSubjectId = '';
     let activeSubjectLabel = '';
     let subjectsData = null;
@@ -2069,11 +1935,11 @@
 
     function syncCatalogUrl(params) {
       const url = new URL(window.location.href);
-      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution', 'view'].forEach((key) => {
+      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution'].forEach((key) => {
         url.searchParams.delete(key);
       });
 
-      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution', 'view'].forEach((key) => {
+      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution'].forEach((key) => {
         const value = params.get(key);
         if (value) {
           url.searchParams.set(key, value);
@@ -2089,66 +1955,6 @@
       }
 
       history.replaceState(null, '', `${url.pathname}${url.search}`);
-    }
-
-    function setViewMode(mode, persist = true) {
-      currentViewMode = mode === 'compact' ? 'compact' : 'comfortable';
-      const results = document.querySelector('.results');
-      results?.classList.toggle('results--compact', currentViewMode === 'compact');
-      document.querySelectorAll('.view-mode-btn').forEach((button) => {
-        button.classList.toggle('active', button.dataset.viewMode === currentViewMode);
-      });
-
-      if (persist) {
-        localStorage.setItem('catalog.viewMode', currentViewMode);
-        const url = new URL(window.location.href);
-        if (currentViewMode === 'compact') {
-          url.searchParams.set('view', 'compact');
-        } else {
-          url.searchParams.delete('view');
-        }
-        history.replaceState(null, '', `${url.pathname}${url.search}`);
-      }
-    }
-
-    async function copyTextToClipboard(text) {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-        return;
-      }
-
-      const input = document.createElement('textarea');
-      input.value = text;
-      input.setAttribute('readonly', 'readonly');
-      input.style.position = 'absolute';
-      input.style.left = '-9999px';
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      document.body.removeChild(input);
-    }
-
-    async function shareCatalogView() {
-      const button = document.getElementById('share-view-btn');
-      const url = new URL(window.location.href);
-      if (currentViewMode === 'compact') {
-        url.searchParams.set('view', 'compact');
-      } else {
-        url.searchParams.delete('view');
-      }
-
-      try {
-        await copyTextToClipboard(url.toString());
-        if (button) {
-          const previousLabel = button.textContent;
-          button.textContent = CATALOG_I18N.shareCopied;
-          window.setTimeout(() => {
-            button.textContent = previousLabel;
-          }, 1600);
-        }
-      } catch (error) {
-        console.warn('Share view failed:', error);
-      }
     }
 
     function resolveCatalogLocation(locations) {
@@ -2384,7 +2190,6 @@
 
         const institutionSelect = document.getElementById('institution-select');
         if (institutionSelect && institutionSelect.value) params.set('institution', institutionSelect.value);
-        if (currentViewMode === 'compact') params.set('view', 'compact');
 
         if (activeSubjectId) params.set('subject_id', activeSubjectId);
         syncCatalogUrl(params);
@@ -2768,7 +2573,6 @@
       const urlYearTo = urlParams.get('year_to');
       const urlAvailableOnly = urlParams.get('available_only');
       const urlInstitution = urlParams.get('institution');
-      const urlView = urlParams.get('view');
       const urlSubjectId = urlParams.get('subject_id');
       const urlSubjectLabel = urlParams.get('subject_label');
       const urlTitle = urlParams.get('title');
@@ -2793,7 +2597,6 @@
       if (urlInstitution && document.getElementById('institution-select')) {
         document.getElementById('institution-select').value = urlInstitution;
       }
-      setViewMode(urlView || localStorage.getItem('catalog.viewMode') || 'comfortable', false);
       if (urlYearFrom || urlYearTo) {
         const yearFromInput = document.getElementById('year-from-input');
         const yearToInput = document.getElementById('year-to-input');
