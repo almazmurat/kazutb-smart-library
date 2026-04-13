@@ -832,16 +832,16 @@
         /* Stitch-like detail layout overrides */
         .detail-shell {
             display: grid;
-            grid-template-columns: 272px minmax(0, 1fr);
-            gap: 28px;
+            grid-template-columns: clamp(320px, 31vw, 390px) minmax(0, 1fr);
+            gap: 32px;
             align-items: start;
-            max-width: 1120px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
         .detail-left {
             display: grid;
-            gap: 12px;
+            gap: 14px;
         }
 
         .detail-cover-card {
@@ -923,8 +923,9 @@
         .detail-left .btn {
             width: 100%;
             border-radius: 0;
-            min-height: 42px;
-            font-size: 14px;
+            min-height: 48px;
+            font-size: 16px;
+            font-weight: 800;
         }
 
         .detail-left .btn-primary {
@@ -942,13 +943,13 @@
         .storage-card {
             border: 1px solid #d8dde3;
             background: #fff;
-            padding: 12px;
+            padding: 14px;
         }
 
         .storage-card h4 {
             margin: 0 0 8px;
             color: #293344;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: .12em;
             text-transform: uppercase;
             font-weight: 800;
@@ -959,17 +960,17 @@
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-            padding: 7px 0;
+            padding: 9px 0;
             border-bottom: 1px solid #edf1f5;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .storage-item:last-child { border-bottom: 0; }
 
         .storage-pill {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-            padding: 3px 6px;
+            padding: 4px 8px;
             border-radius: 2px;
             white-space: nowrap;
         }
@@ -979,7 +980,7 @@
 
         .detail-main {
             display: grid;
-            gap: 16px;
+            gap: 20px;
         }
 
         .crumb-line {
@@ -1288,14 +1289,14 @@
             background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
             border: 1px solid rgba(195,198,209,.7);
             box-shadow: 0 10px 24px rgba(25,28,29,.03);
-            padding: 12px;
+            padding: 14px;
             overflow: hidden;
         }
 
         .catalog-book-stage {
             position: relative;
-            height: 300px;
-            margin-bottom: 10px;
+            height: 390px;
+            margin-bottom: 12px;
         }
 
         .catalog-book-body {
@@ -1467,7 +1468,7 @@
 
         .catalog-copy h3 {
             margin: 0 0 8px;
-            font-size: clamp(24px, 2.6vw, 36px);
+            font-size: clamp(30px, 3vw, 44px);
             font-family: 'Newsreader', Georgia, serif;
             line-height: .95;
             color: #0b2a55;
@@ -1486,7 +1487,7 @@
         .catalog-tone-forest { background: linear-gradient(180deg, #205f43 0%, #134935 100%); }
 
         .catalog-book-card--mini .catalog-book-stage {
-            height: 200px;
+            height: 224px;
         }
 
         .catalog-book-card--mini .catalog-cover-title {
@@ -1558,6 +1559,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .catalog-book-stage {
+                height: 360px;
+            }
+
             .quick-facts {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -1611,6 +1616,10 @@
             .access-banner {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .catalog-book-stage {
+                height: 318px;
             }
 
             .quick-facts {
