@@ -221,7 +221,10 @@
     }
 
     .layout {
-      display: block;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
     }
 
     .card {
@@ -232,10 +235,10 @@
     }
 
     .filters {
-      margin-bottom: 18px;
-      padding: 22px;
-      position: static;
-      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(247,248,249,.96));
+      padding: 24px;
+      position: sticky;
+      top: var(--shell-sticky-offset);
+      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(247,248,249,.97));
       overflow: hidden;
     }
 
@@ -295,79 +298,20 @@
 
     #filters-body {
       display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
       gap: 14px;
       align-items: start;
     }
 
-    .filter-toolbar {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 18px;
-      padding: 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(195,198,209,.55);
-      background: rgba(255,255,255,.82);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
-    }
-
-    .filter-lead strong {
-      display: block;
-      font-size: 14px;
-      color: var(--blue);
-      margin-bottom: 4px;
-    }
-
-    .filter-lead p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .filter-toolbar-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .filter-action-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 40px;
-      padding: 0 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,30,64,.12);
-      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .04em;
-      cursor: pointer;
-      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    .filter-action-pill:hover {
-      transform: translate3d(0, -1px, 0);
-      box-shadow: 0 10px 22px rgba(25,28,29,.05);
-      border-color: rgba(20,105,109,.22);
-    }
-
     .filter-group {
       margin: 0;
-      padding: 16px;
-      border: 1px solid rgba(195,198,209,.6);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.82);
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(195,198,209,.45);
     }
 
-    .filter-group--availability { grid-column: span 2; }
-    .filter-group--language { grid-column: span 3; }
-    .filter-group--year { grid-column: span 4; }
-    .filter-group--subject { grid-column: span 3; }
+    .filter-group:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
 
     .filter-label {
       display: flex;
@@ -502,19 +446,9 @@
     }
 
     .filter-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-
-    .filter-footer-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
     }
 
     .active-filters {
@@ -581,7 +515,7 @@
 
     .results-top {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       gap: 14px;
       margin-bottom: 18px;
@@ -606,7 +540,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 22px;
       align-items: stretch;
     }
@@ -627,12 +561,7 @@
     }
 
     .book-card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(20,105,109,0), rgba(20,105,109,.38), rgba(20,105,109,0));
-      opacity: .75;
+      content: none;
     }
 
     .book-card:hover {
@@ -644,7 +573,7 @@
 
     .book-stage {
       position: relative;
-      height: 330px;
+      height: 292px;
       margin-bottom: 16px;
       perspective: 2200px;
       transform-style: preserve-3d;
@@ -653,6 +582,7 @@
     .book-body {
       position: absolute;
       inset: 10px 14px 8px 16px;
+      z-index: 1;
       border-radius: 6px 14px 14px 6px;
       background: linear-gradient(180deg, #f2e7cb 0%, #e6d4ad 100%);
       border: 1px solid rgba(161,134,83,.34);
@@ -663,14 +593,16 @@
       justify-content: space-between;
       gap: 12px;
       color: #4c4435;
-      transition: transform .72s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .72s cubic-bezier(0.2, 0.8, 0.2, 1);
-      background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 2px, rgba(93,74,38,.05) 3px);
+      transition: transform .72s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .72s cubic-bezier(0.2, 0.8, 0.2, 1), opacity .24s ease;
+      background-image: none;
       transform: translateX(4px) scale(.985);
+      opacity: 0;
     }
 
     .book-card:hover .book-body {
       transform: translateX(10px) scale(1);
       box-shadow: inset 10px 0 18px rgba(75, 57, 29, .07), 0 24px 36px rgba(25,28,29,.14);
+      opacity: 1;
     }
 
     .book-body-copy {
@@ -741,6 +673,7 @@
     .book-cover {
       position: absolute;
       inset: 0;
+      z-index: 2;
       border-radius: 6px 16px 16px 6px;
       padding: 18px 18px 20px 24px;
       transform-origin: left center;
@@ -754,6 +687,7 @@
       justify-content: space-between;
       overflow: hidden;
       box-shadow: 6px 18px 28px rgba(25,28,29,.14);
+      isolation: isolate;
     }
 
     .book-cover::before {
@@ -765,8 +699,49 @@
     }
 
     .book-card:hover .book-cover {
-      transform: rotateY(-108deg);
+      transform: rotateY(-102deg);
       box-shadow: 24px 18px 40px rgba(25,28,29,.16);
+    }
+
+    .cover-top {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .cover-code {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.09);
+      color: rgba(255,255,255,.88);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .cover-bottom {
+      display: grid;
+      gap: 10px;
+    }
+
+    .cover-isbn {
+      color: rgba(255,255,255,.68);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .cover-isbn strong {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255,255,255,.92);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: none;
     }
 
     .tone-navy { background: linear-gradient(180deg, #263d63 0%, #172943 100%); }
@@ -1033,16 +1008,12 @@
     }
 
     @media (max-width: 1200px) {
-      #filters-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .filter-group--availability,
-      .filter-group--language,
-      .filter-group--year,
-      .filter-group--subject {
-        grid-column: span 1;
-      }
+      .grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .filters { position: static; top: auto; }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
       .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
@@ -1052,7 +1023,6 @@
       .container { width: min(100% - 20px, var(--container)); }
       .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
-      #filters-body { grid-template-columns: 1fr; }
       .range-row { grid-template-columns: 1fr; }
       .book-stage { height: 280px; }
       .book-actions { grid-template-columns: 1fr; }
@@ -1142,18 +1112,6 @@
           </div>{{-- /filters-body --}}
 
           <div class="filter-footer">
-            <div class="filter-footer-actions">
-              <div class="sort-box">
-                <span style="color:var(--muted); font-weight:600;">{{ ['ru' => 'Сортировка:', 'kk' => 'Сұрыптау:', 'en' => 'Sort by:'][$lang] }}</span>
-                <select class="select" id="sort-select" style="min-width:220px;" onchange="applyFilters()">
-                  <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
-                  <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
-                  <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
-                  <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
-                </select>
-              </div>
-              <button type="button" class="filter-action-pill" id="share-catalog-view" onclick="copyCatalogLink()">🔗 {{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
-            </div>
             <button class="btn btn-primary" onclick="applyFilters()">{{ ['ru' => 'Применить фильтры', 'kk' => 'Сүзгілерді қолдану', 'en' => 'Apply filters'][$lang] }}</button>
           </div>
         </aside>
@@ -1164,6 +1122,15 @@
             <div>
               <strong id="results-count">{{ ['ru' => 'Найдено 0 книг', 'kk' => '0 кітап табылды', 'en' => 'Found 0 books'][$lang] }}</strong>
               <p>{{ ['ru' => 'Подборка учебной и научной литературы по выбранным параметрам.', 'kk' => 'Таңдалған параметрлер бойынша оқу және ғылыми әдебиеттер топтамасы.', 'en' => 'A filtered selection of course and research literature.'][$lang] }}</p>
+            </div>
+            <div class="sort-box">
+              <span style="color:var(--muted); font-weight:600;">{{ ['ru' => 'Сортировка:', 'kk' => 'Сұрыптау:', 'en' => 'Sort by:'][$lang] }}</span>
+              <select class="select" id="sort-select" style="min-width:220px;" onchange="applyFilters()">
+                <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
+                <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
+                <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
+                <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
+              </select>
             </div>
           </div>
 
@@ -1223,7 +1190,6 @@
     let activeSubjectLabel = '';
     let subjectsData = null;
     let shortlistState = {};
-    let activePreset = '';
 
     function escapeHtml(text) {
       const div = document.createElement('div');
@@ -1262,30 +1228,6 @@
       document.querySelectorAll(selector).forEach((chip) => {
         chip.classList.toggle('active', (chip.dataset[dataKey] || '') === value);
       });
-    }
-
-    function updatePresetButtons() {}
-
-    function applyPreset() {}
-
-    async function copyCatalogLink() {
-      const button = document.getElementById('share-catalog-view');
-      const originalLabel = button?.dataset.originalLabel || button?.textContent || CATALOG_I18N.shareView;
-      if (button && !button.dataset.originalLabel) {
-        button.dataset.originalLabel = originalLabel;
-      }
-
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        if (button) {
-          button.textContent = `✓ ${CATALOG_I18N.shareCopied}`;
-          window.setTimeout(() => {
-            button.textContent = originalLabel;
-          }, 1600);
-        }
-      } catch (_) {
-        window.prompt(CATALOG_I18N.shareView, window.location.href);
-      }
     }
 
     function filterSubjectOptions(value) {
@@ -1365,6 +1307,7 @@
         : CATALOG_I18N.previewUnavailable;
       const isbnValue = data.isbn || '—';
       const udcValue = data.udc || '—';
+      const shortIsbn = isbnValue.length > 18 ? `${isbnValue.substring(0, 18)}…` : isbnValue;
 
       const isShortlisted = shortlistState[identifier] || false;
 
@@ -1387,12 +1330,18 @@
               <span class="book-body-stat">${escapeHtml(data.format)} · ${escapeHtml(data.language)} · ${escapeHtml(String(data.year))}</span>
             </div>
             <div class="book-cover ${tone}">
-              <span class="cover-year">${escapeHtml(String(data.year))}</span>
-              <div>
+              <div class="cover-top">
+                <span class="cover-year">${escapeHtml(String(data.year))}</span>
+                <span class="cover-code">${CATALOG_I18N.udcLabel}: ${escapeHtml(udcValue)}</span>
+              </div>
+              <div class="cover-bottom">
+                <div>
                 <div class="cover-kicker">${escapeHtml(data.publisher.substring(0, 24))}</div>
                 <h3 class="cover-title">${escapeHtml(data.title.substring(0, 42))}</h3>
                 <div class="cover-subline">${escapeHtml(data.author.substring(0, 36))}</div>
                 <div class="cover-hint">${CATALOG_I18N.coverHint}</div>
+                </div>
+                <div class="cover-isbn">${CATALOG_I18N.isbnLabel}<strong>${escapeHtml(shortIsbn)}</strong></div>
               </div>
             </div>
           </div>
@@ -1525,8 +1474,6 @@
       container.querySelectorAll('.active-filter-chip').forEach((el, i) => {
         el._clear = () => {
           chips[i].clear();
-          activePreset = '';
-          updatePresetButtons();
           applyFilters();
         };
       });
@@ -1553,8 +1500,6 @@
       setChipValue('#year-chips .chip', 'year', '');
       activeSubjectId = '';
       activeSubjectLabel = '';
-      activePreset = '';
-      updatePresetButtons();
       updateSubjectBanner();
       applyFilters();
     }
@@ -1707,8 +1652,6 @@
       setChipValue('#year-chips .chip', 'year', '');
       activeSubjectId = '';
       activeSubjectLabel = '';
-      activePreset = '';
-      updatePresetButtons();
       updateSubjectBanner();
       applyFilters();
     }
@@ -1768,8 +1711,6 @@
           if (yearFromInput) yearFromInput.value = '';
           if (yearToInput) yearToInput.value = '';
         }
-        activePreset = '';
-        updatePresetButtons();
         this.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         this.classList.add('active');
         applyFilters();
@@ -1780,8 +1721,6 @@
       const input = document.getElementById(id);
       input?.addEventListener('input', () => {
         setChipValue('#year-chips .chip', 'year', '');
-        activePreset = '';
-        updatePresetButtons();
         updateFilterBadge();
       });
       input?.addEventListener('keydown', (event) => {
@@ -1923,7 +1862,6 @@
     });
 
     // Initial load
-    updatePresetButtons();
     loadSubjects();
     loadCatalog();
     updateFilterBadge();
