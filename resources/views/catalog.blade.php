@@ -565,7 +565,7 @@
 
     .book-stage {
       position: relative;
-      height: 328px;
+      height: 344px;
       margin-bottom: 16px;
       perspective: 1800px;
       transform-style: preserve-3d;
@@ -576,13 +576,12 @@
       inset: 12px 12px 10px 14px;
       z-index: 1;
       border-radius: 8px 16px 16px 8px;
-      background: linear-gradient(180deg, #f7f1e4 0%, #efe2c4 100%);
       border: 1px solid rgba(161,134,83,.24);
       box-shadow: inset 8px 0 14px rgba(75, 57, 29, .06);
-      padding: 18px 18px 16px;
+      padding: 16px 16px 14px;
       display: grid;
       grid-template-rows: 1fr auto;
-      gap: 12px;
+      gap: 10px;
       color: #4c4435;
       background-image: linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,0));
       overflow: hidden;
@@ -590,7 +589,7 @@
 
     .book-body-copy {
       display: grid;
-      gap: 12px;
+      gap: 10px;
       min-height: 0;
     }
 
@@ -604,24 +603,29 @@
     }
 
     .book-body-preview {
-      font-size: 12px;
-      line-height: 1.65;
+      font-size: 11px;
+      line-height: 1.55;
       color: #625740;
       max-width: 100%;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      overflow-wrap: anywhere;
     }
 
     .book-body-meta {
       display: grid;
-      gap: 7px;
+      gap: 6px;
       align-content: start;
     }
 
     .book-body-meta-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
       gap: 12px;
-      padding-top: 7px;
+      padding-top: 6px;
       border-top: 1px solid rgba(124, 110, 84, .18);
       font-size: 11px;
     }
@@ -638,7 +642,8 @@
       font-size: 11px;
       text-align: right;
       word-break: break-word;
-      max-width: 52%;
+      max-width: 150px;
+      overflow-wrap: anywhere;
     }
 
     .book-body-stat {
@@ -651,9 +656,10 @@
       border-radius: 999px;
       background: rgba(0,30,64,.05);
       color: var(--blue);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
-      white-space: nowrap;
+      white-space: normal;
+      max-width: 100%;
     }
 
     .book-cover {
@@ -661,7 +667,7 @@
       inset: 0;
       z-index: 2;
       border-radius: 8px 18px 18px 8px;
-      padding: 18px 18px 18px 20px;
+      padding: 16px 16px 16px 18px;
       transform-origin: left center;
       transform-style: preserve-3d;
       backface-visibility: hidden;
@@ -700,7 +706,8 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 8px;
+      gap: 6px;
+      max-width: 100%;
     }
 
     .cover-code {
@@ -712,11 +719,18 @@
       font-weight: 800;
       letter-spacing: .08em;
       text-transform: uppercase;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .cover-bottom {
-      display: grid;
-      gap: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 10px;
+      min-height: 0;
     }
 
     .cover-isbn {
@@ -725,16 +739,20 @@
       font-weight: 700;
       letter-spacing: .12em;
       text-transform: uppercase;
+      max-width: 100%;
     }
 
     .cover-isbn strong {
       display: block;
       margin-top: 4px;
       color: rgba(255,255,255,.92);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: .04em;
       text-transform: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .tone-navy { background: linear-gradient(180deg, #263d63 0%, #172943 100%); }
@@ -756,43 +774,51 @@
 
     .cover-kicker {
       color: rgba(255,255,255,.6);
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: .18em;
       text-transform: uppercase;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      overflow-wrap: anywhere;
     }
 
     .cover-title {
       margin: 0;
       color: #f3d99d;
       font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(2rem, 2.1vw, 2.4rem);
-      line-height: .98;
+      font-size: clamp(1.65rem, 1.75vw, 2.1rem);
+      line-height: 1.02;
       letter-spacing: -.8px;
       text-shadow: 1px 1px 0 rgba(0,0,0,.28);
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      overflow-wrap: anywhere;
+      hyphens: auto;
     }
 
     .cover-subline {
       margin-top: 12px;
       color: rgba(255,255,255,.76);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: .06em;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      overflow-wrap: anywhere;
     }
 
     .cover-hint {
-      margin-top: 10px;
+      margin-top: 8px;
       color: rgba(255,255,255,.42);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: .18em;
       text-transform: uppercase;
@@ -866,6 +892,7 @@
       font-size: 22px;
       line-height: 1.15;
       min-height: 76px;
+      overflow-wrap: anywhere;
     }
 
     .book-desc {
@@ -895,7 +922,7 @@
 
     .book-info div:last-child { border-bottom: 0; padding-bottom: 0; }
     .book-info span:first-child { color: var(--muted); }
-    .book-info span:last-child { font-weight: 700; text-align: right; max-width: 58%; word-break: break-word; }
+    .book-info span:last-child { font-weight: 700; text-align: right; max-width: 58%; word-break: break-word; overflow-wrap: anywhere; }
 
     .book-actions {
       display: grid;
@@ -1026,7 +1053,7 @@
       .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
       .range-row { grid-template-columns: 1fr; }
-      .book-stage { height: 312px; }
+      .book-stage { height: 324px; }
       .book-actions { grid-template-columns: 1fr; }
       .icon-btn { width: 100%; height: 50px; min-height: 44px; }
       .search-wrap { grid-template-columns: 1fr; }
