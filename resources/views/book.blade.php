@@ -829,7 +829,378 @@
             gap: 6px;
         }
 
+        /* Stitch-like detail layout overrides */
+        .detail-shell {
+            display: grid;
+            grid-template-columns: 270px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .detail-left {
+            display: grid;
+            gap: 14px;
+        }
+
+        .detail-cover-card {
+            background: #f1f3f5;
+            border: 1px solid #d9dde3;
+            padding: 16px;
+            border-radius: 2px;
+        }
+
+        .detail-cover-art {
+            height: 338px;
+            border: 1px solid #d9dde3;
+            background: linear-gradient(180deg, #0f2b52 0%, #071a36 100%);
+            position: relative;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .detail-cover-year {
+            align-self: flex-start;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #dce4f0;
+            background: rgba(220, 228, 240, .18);
+        }
+
+        .detail-cover-title {
+            margin: 0;
+            color: #f0d799;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 52px;
+            line-height: .92;
+            letter-spacing: -1.2px;
+            max-width: 190px;
+        }
+
+        .detail-cover-author {
+            color: rgba(220,228,240,.82);
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .detail-cover-isbn {
+            color: rgba(220,228,240,.78);
+            font-size: 12px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .detail-cover-isbn strong {
+            display: block;
+            margin-top: 4px;
+            color: #fff;
+            letter-spacing: 0;
+            font-size: 16px;
+        }
+
+        .detail-left .btn {
+            width: 100%;
+            border-radius: 0;
+            min-height: 46px;
+            font-size: 15px;
+        }
+
+        .detail-left .btn-primary {
+            background: #0b2a52;
+            box-shadow: none;
+        }
+
+        .detail-left .btn-ghost {
+            border: 1px solid #cfd7e2;
+            background: #fff;
+            color: #1f395d;
+            box-shadow: none;
+        }
+
+        .storage-card {
+            border: 1px solid #d9dde3;
+            background: #fff;
+            border-radius: 2px;
+            padding: 14px;
+        }
+
+        .storage-card h4 {
+            margin: 0 0 10px;
+            color: #334155;
+            font-size: 11px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .storage-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf1f5;
+            font-size: 14px;
+        }
+
+        .storage-item:last-child { border-bottom: 0; }
+
+        .storage-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 7px;
+            border-radius: 2px;
+        }
+
+        .storage-pill.available { background: #d9f4ef; color: #0f766e; }
+        .storage-pill.unavailable { background: #fde6e6; color: #9f1239; }
+
+        .detail-main {
+            display: grid;
+            gap: 18px;
+        }
+
+        .crumb-line {
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: #7b8795;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .detail-title {
+            margin: 6px 0 8px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: clamp(44px, 5.5vw, 74px);
+            line-height: .9;
+            color: #0a2247;
+            letter-spacing: -1.8px;
+        }
+
+        .detail-subline {
+            font-size: 28px;
+            color: #334155;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .detail-subline .edition {
+            font-style: normal;
+            color: #17727d;
+            margin-left: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .access-banner {
+            border: 1px solid #0f2d55;
+            background: linear-gradient(135deg, #0c2f57 0%, #092544 75%);
+            color: #fff;
+            padding: 18px;
+            border-radius: 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .access-banner h4 {
+            margin: 0 0 6px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 34px;
+            letter-spacing: -.8px;
+            line-height: .95;
+        }
+
+        .access-banner p {
+            margin: 0;
+            color: rgba(230,236,243,.9);
+            font-size: 13px;
+            max-width: 520px;
+        }
+
+        .access-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .access-actions .btn {
+            min-height: 42px;
+            border-radius: 0;
+            padding: 0 16px;
+            font-size: 13px;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .access-actions .btn-primary {
+            background: #ffffff;
+            color: #0b2a52;
+        }
+
+        .access-actions .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(220,228,240,.45);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .dual-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            padding-top: 8px;
+        }
+
+        .section-head {
+            margin: 0 0 14px;
+            font-size: 12px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: #334155;
+            font-weight: 800;
+            border-bottom: 1px solid #d9dde3;
+            padding-bottom: 8px;
+        }
+
+        .desc-text {
+            color: #475569;
+            line-height: 1.85;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .meta-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .meta-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e7ebf0;
+            font-size: 14px;
+        }
+
+        .meta-line span:first-child {
+            color: #64748b;
+            font-size: 12px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .meta-line span:last-child {
+            color: #1f2937;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .licensed {
+            margin-top: 10px;
+        }
+
+        .licensed-items {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .licensed-chip {
+            border: 1px solid #d9dde3;
+            background: #fff;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: #1f395d;
+            font-weight: 600;
+            border-radius: 2px;
+        }
+
+        .similar-wrap {
+            margin-top: 8px;
+        }
+
+        .similar-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .similar-head h3 {
+            margin: 0;
+            font-family: 'Newsreader', Georgia, serif;
+            color: #0a2247;
+            font-size: 32px;
+            letter-spacing: -.6px;
+        }
+
+        .similar-head a {
+            color: #0f766e;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .similar-card {
+            border: 1px solid #d9dde3;
+            background: #fff;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .similar-image {
+            height: 190px;
+            background: linear-gradient(180deg, #213a5d, #10233d);
+            position: relative;
+        }
+
+        .similar-card:nth-child(2) .similar-image { background: linear-gradient(180deg, #75491f, #3c2512); }
+        .similar-card:nth-child(3) .similar-image { background: linear-gradient(180deg, #4e5b6c, #2c3441); }
+
+        .similar-body {
+            padding: 12px;
+        }
+
+        .similar-title {
+            margin: 0;
+            font-size: 22px;
+            line-height: 1.1;
+            color: #0a2247;
+            font-family: 'Newsreader', Georgia, serif;
+        }
+
+        .similar-meta {
+            margin-top: 6px;
+            color: #7b8795;
+            font-size: 11px;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
         @media (max-width: 1120px) {
+            .detail-shell,
+            .dual-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .similar-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             .layout,
             .info-grid,
             .cards-section,
@@ -872,6 +1243,23 @@
         }
 
         @media (max-width: 560px) {
+            .access-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .access-actions {
+                width: 100%;
+            }
+
+            .access-actions .btn {
+                flex: 1 1 auto;
+            }
+
+            .similar-grid {
+                grid-template-columns: 1fr;
+            }
+
             .container { width: min(100% - 20px, var(--container)); }
             .nav { min-height: 64px; }
             .brand-text { font-size: 13px; }
@@ -917,7 +1305,7 @@
                 reserve: 'Забронировать книгу', signInToReserve: 'Войдите для бронирования', shortlistAdd: '☆ В подборку', shortlistAdded: '★ В подборке', characteristics: 'Характеристики',
                 publisher: 'Издательство', publicationLanguage: 'Язык издания', totalCopies: 'Всего экземпляров', availableNowLabel: 'Доступно сейчас', availabilityByPoint: 'Наличие по пунктам выдачи',
                 digitalMaterials: '💻 Электронные материалы', open: 'Открыть', login: 'Войти', checking: '⏳ Проверка...', reservedReady: '✓ Уже забронировано', reserving: '⏳ Бронирование...', noCopies: 'Нет экземпляров', reservationUnavailable: 'Бронирование недоступно',
-                reservedState: '✓ Забронировано ({status})', readyForPickup: 'готово к выдаче', waiting: 'ожидание', reserveSuccess: 'Книга успешно забронирована!', validUntil: 'Действует до {date}.', followStatus: 'Следите за статусом в кабинете.',
+                reservedState: '✓ Забронировано ({status})', readyForPickup: 'готово к выдаче', waiting: 'ожидание', reserveSuccess: 'Книга успешно забронирована!', validUntil: 'Действует до {date}.', followStatus: 'Следите за статусом в кабинете.', description: 'Описание', metadata: 'Метаданные', licensedResources: 'Лицензированные ссылки и ресурсы', similarResources: 'Похожие академические ресурсы', browseMore: 'Смотреть ещё', readOnline: 'Читать онлайн', requestAccess: 'Запросить доступ', statusInStorage: 'Статус в фонде', allCollections: 'Основная коллекция',
                 reserveFailed: 'Не удалось создать бронирование.', networkError: 'Ошибка сети. Попробуйте ещё раз.'
             },
             kk: {
@@ -931,7 +1319,7 @@
                 reserve: 'Кітапты брондау', signInToReserve: 'Брондау үшін кіріңіз', shortlistAdd: '☆ Топтамаға', shortlistAdded: '★ Топтамада', characteristics: 'Сипаттамалар',
                 publisher: 'Баспа', publicationLanguage: 'Басылым тілі', totalCopies: 'Жалпы дана', availableNowLabel: 'Қазір қолжетімді', availabilityByPoint: 'Берілім нүктелері бойынша қолжетімділік',
                 digitalMaterials: '💻 Электрондық материалдар', open: 'Ашу', login: 'Кіру', checking: '⏳ Тексеру...', reservedReady: '✓ Бұрыннан брондалған', reserving: '⏳ Брондау...', noCopies: 'Дана жоқ', reservationUnavailable: 'Брондау қолжетімсіз',
-                reservedState: '✓ Брондалған ({status})', readyForPickup: 'беруге дайын', waiting: 'күту', reserveSuccess: 'Кітап сәтті брондалды!', validUntil: '{date} дейін жарамды.', followStatus: 'Күйін кабинеттен бақылаңыз.',
+                reservedState: '✓ Брондалған ({status})', readyForPickup: 'беруге дайын', waiting: 'күту', reserveSuccess: 'Кітап сәтті брондалды!', validUntil: '{date} дейін жарамды.', followStatus: 'Күйін кабинеттен бақылаңыз.', description: 'Сипаттама', metadata: 'Метадеректер', licensedResources: 'Лицензиялық сілтемелер мен ресурстар', similarResources: 'Ұқсас академиялық ресурстар', browseMore: 'Тағы көру', readOnline: 'Онлайн оқу', requestAccess: 'Қол жеткізуді сұрау', statusInStorage: 'Қордағы мәртебе', allCollections: 'Негізгі қор',
                 reserveFailed: 'Брондауды жасау мүмкін болмады.', networkError: 'Желі қатесі. Қайта көріңіз.'
             },
             en: {
@@ -945,7 +1333,7 @@
                 reserve: 'Reserve book', signInToReserve: 'Sign in to reserve', shortlistAdd: '☆ Add to shortlist', shortlistAdded: '★ In shortlist', characteristics: 'Details',
                 publisher: 'Publisher', publicationLanguage: 'Publication language', totalCopies: 'Total copies', availableNowLabel: 'Available now', availabilityByPoint: 'Availability by service point',
                 digitalMaterials: '💻 Digital materials', open: 'Open', login: 'Sign in', checking: '⏳ Checking...', reservedReady: '✓ Already reserved', reserving: '⏳ Reserving...', noCopies: 'No copies', reservationUnavailable: 'Reservation unavailable',
-                reservedState: '✓ Reserved ({status})', readyForPickup: 'ready for pickup', waiting: 'waiting', reserveSuccess: 'The book has been reserved successfully!', validUntil: 'Valid until {date}.', followStatus: 'Track the status in your account.',
+                reservedState: '✓ Reserved ({status})', readyForPickup: 'ready for pickup', waiting: 'waiting', reserveSuccess: 'The book has been reserved successfully!', validUntil: 'Valid until {date}.', followStatus: 'Track the status in your account.', description: 'Description', metadata: 'Metadata', licensedResources: 'Licensed references & resources', similarResources: 'Similar Academic Resources', browseMore: 'Browse More', readOnline: 'Read online', requestAccess: 'Request access', statusInStorage: 'Status in Storage', allCollections: 'Main Collection',
                 reserveFailed: 'Unable to create the reservation.', networkError: 'Network error. Please try again.'
             }
         };
@@ -1052,32 +1440,23 @@
 
             document.title = `${title} - Digital Library`;
 
-            const authorsHtml = authors.length > 1
-                ? `<div class="authors-list">${authors.map(a => `<span class="author-chip">${escapeHtml(a.name || a)}</span>`).join('')}</div>`
+            const authorsText = authors.length > 0
+                ? escapeHtml(authors.map((a) => a?.name || a).filter(Boolean).join(', '))
                 : escapeHtml(author);
 
-            const locationsTableHtml = locations.length
-                ? `<table class="locations-table">
-                    <thead><tr>
-                        <th>${BOOK_I18N.unit}</th>
-                        <th>${BOOK_I18N.campus}</th>
-                        <th>${BOOK_I18N.servicePoint}</th>
-                        <th>${BOOK_I18N.total}</th>
-                        <th>${BOOK_I18N.available}</th>
-                    </tr></thead>
-                    <tbody>${locations.map(loc => {
-                        const avail = loc.copies?.available || 0;
-                        const tot = loc.copies?.total || 0;
-                        return `<tr>
-                            <td>${escapeHtml(loc.institutionUnit?.name || '—')}</td>
-                            <td>${escapeHtml(loc.campus?.name || '—')}</td>
-                            <td>${escapeHtml(loc.servicePoint?.name || '—')}</td>
-                            <td>${tot}</td>
-                            <td class="${avail > 0 ? 'avail-count' : 'zero-count'}">${avail}</td>
-                        </tr>`;
-                    }).join('')}</tbody>
-                   </table>`
-                : `<p style="color:var(--muted);font-size:14px;">${BOOK_I18N.locationsUnavailable}</p>`;
+            const topLocation = locations[0] || null;
+            const topLocationName = topLocation?.servicePoint?.name || topLocation?.campus?.name || BOOK_I18N.allCollections;
+
+            const storageItemsHtml = locations.length > 0
+                ? locations.slice(0, 3).map(loc => {
+                    const avail = Number(loc.copies?.available || 0);
+                    const totalLoc = Number(loc.copies?.total || 0);
+                    return `<div class="storage-item">
+                        <span>${escapeHtml(loc.servicePoint?.name || loc.campus?.name || '—')}</span>
+                        <span class="storage-pill ${avail > 0 ? 'available' : 'unavailable'}">${avail > 0 ? `${BOOK_I18N.available} (${avail})` : `${BOOK_I18N.unavailable} (${totalLoc})`}</span>
+                    </div>`;
+                }).join('')
+                : `<div class="storage-item"><span>${BOOK_I18N.locationsUnavailable}</span><span class="storage-pill unavailable">0</span></div>`;
 
             const reviewHtml = needsReview && reviewCodes.length
                 ? `<div class="review-notice">
@@ -1086,125 +1465,108 @@
                 : '';
 
             const classificationHtml = classification.length > 0
-                ? `<div class="classification-section">
-                    <h4>${BOOK_I18N.trainingTracks}</h4>
-                    <div class="classification-chips">
-                        ${classification.map(c => {
-                            const kind = c.sourceKind || 'department';
-                            const url = withLang('/catalog?subject_id=' + encodeURIComponent(c.id) + '&subject_label=' + encodeURIComponent(c.label));
-                            return `<a href="${url}" class="classification-chip ${kind}" title="${BOOK_I18N.showAllBooks}: ${escapeHtml(c.label)}">${escapeHtml(c.label)}</a>`;
-                        }).join('')}
-                    </div>
-                   </div>`
-                : '';
+                ? `${classification.slice(0, 2).map(c => {
+                    const url = withLang('/catalog?subject_id=' + encodeURIComponent(c.id) + '&subject_label=' + encodeURIComponent(c.label));
+                    return `<a href="${url}" class="licensed-chip" title="${BOOK_I18N.showAllBooks}: ${escapeHtml(c.label)}">${escapeHtml(c.label)}</a>`;
+                }).join('')}`
+                : `<div class="licensed-chip">${BOOK_I18N.allCollections}</div>`;
+
+            const similarCards = [
+                { title: title.split(' ').slice(0, 3).join(' ') || title, meta: escapeHtml(author.substring(0, 26)) },
+                { title: escapeHtml(publisher.substring(0, 30)) || 'KazTBU Archives', meta: 'UNIVERSITY ARCHIVES' },
+                { title: `${escapeHtml(language)} · ${escapeHtml(year)}`, meta: escapeHtml(isbn.substring(0, 18)) }
+            ];
 
             content.innerHTML = `
-                <div class="breadcrumbs">
-                    <span>${BOOK_I18N.home}</span>
-                    <span>•</span>
-                    <a href="${withLang('/catalog')}">${BOOK_I18N.catalog}</a>
-                    <span>•</span>
-                    <span>${escapeHtml(title.substring(0, 50))}</span>
-                </div>
+                <section class="detail-shell">
+                    <aside class="detail-left">
+                        <div class="detail-cover-card">
+                            <div class="detail-cover-art">
+                                <span class="detail-cover-year">${escapeHtml(year)}</span>
+                                <div>
+                                    <h2 class="detail-cover-title">${escapeHtml(title.substring(0, 30))}</h2>
+                                    <div class="detail-cover-author">${escapeHtml(author.substring(0, 34))}</div>
+                                </div>
+                                <div class="detail-cover-isbn">ISBN<strong>${escapeHtml(isbn.substring(0, 18))}</strong></div>
+                            </div>
+                        </div>
 
-                <section class="layout">
-                    <aside class="card book-panel">
-                        <div class="book-cover-wrap">
-                            <div class="book-mockup">
-                                <div class="cover-badge">${escapeHtml(year)}</div>
-                                <div class="cover-top">${BOOK_I18N.coverTop}</div>
-                                <h1 class="cover-title">${escapeHtml(title.substring(0, 40))}</h1>
-                                <div class="cover-author">${escapeHtml(author.substring(0, 30))}</div>
-                            </div>
+                        @if(session('library.user'))
+                        <button class="btn btn-primary" id="reserve-btn" onclick="handleReserve()" disabled>${BOOK_I18N.reserve}</button>
+                        @else
+                        <a href="{{ $lang === 'ru' ? '/login' : '/login?lang=' . $lang }}" class="btn btn-primary" style="text-align:center;">${BOOK_I18N.signInToReserve}</a>
+                        @endif
+                        <button class="btn btn-ghost" id="book-shortlist-btn" onclick="toggleBookShortlist()">${BOOK_I18N.shortlistAdd}</button>
+
+                        <div class="storage-card">
+                            <h4>${BOOK_I18N.statusInStorage}</h4>
+                            ${storageItemsHtml}
                         </div>
-                        <div class="mini-actions">
-                            <div class="mini-action">
-                                <strong>${escapeHtml(String(year))}</strong>
-                                <span>${BOOK_I18N.publicationYear}</span>
-                            </div>
-                            <div class="mini-action">
-                                <strong>${escapeHtml(language)}</strong>
-                                <span>${BOOK_I18N.language}</span>
-                            </div>
-                            <div class="mini-action">
-                                <strong>${isAvailable ? `${available}/${total}` : `0/${total}`}</strong>
-                                <span>${BOOK_I18N.availableShort}</span>
-                            </div>
-                        </div>
+                        <div id="reserve-feedback" style="display:none; margin-top:4px; padding:12px 14px; border-radius:2px; font-size:13px;"></div>
                     </aside>
 
-                    <div>
-                        <section class="card details-card">
-                            <div class="badges">
-                                <span class="badge badge-${isAvailable ? 'green' : 'blue'}">${isAvailable ? BOOK_I18N.availableNow : BOOK_I18N.unavailableNow}</span>
-                                ${book?.isbn?.isValid === false && isbn !== BOOK_I18N.isbnMissing ? `<span class="badge badge-blue">${BOOK_I18N.invalidIsbn}</span>` : ''}
+                    <div class="detail-main">
+                        <div class="crumb-line">${BOOK_I18N.catalog} › ${escapeHtml(topLocationName)} › KAZUTB SPECIALCOLLECTION</div>
+                        <h1 class="detail-title">${escapeHtml(title)}</h1>
+                        <p class="detail-subline">by ${escapeHtml(author)} <span class="edition">${escapeHtml(year)} Edition</span></p>
+
+                        <div class="access-banner">
+                            <div>
+                                <h4>Digital Library Materials</h4>
+                                <p>${isAvailable ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total) : BOOK_I18N.allCheckedOutBody.replace('{total}', total)}</p>
                             </div>
-
-                            <h2 class="title">${escapeHtml(title)}</h2>
-                            ${subtitle ? `<p class="subtitle">${escapeHtml(subtitle)}</p>` : ''}
-
-                            <div class="meta-grid">
-                                <div class="meta-item">
-                                    <span class="meta-label">${authors.length > 1 ? BOOK_I18N.authors : BOOK_I18N.author}</span>
-                                    <span class="meta-value">${authorsHtml}</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">${BOOK_I18N.publicationYear}</span>
-                                    <span class="meta-value">${escapeHtml(year)}</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">${BOOK_I18N.language}</span>
-                                    <span class="meta-value">${escapeHtml(language)}</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">${BOOK_I18N.availableShort}</span>
-                                    <span class="meta-value">${BOOK_I18N.copySummary.replace('{available}', available).replace('{total}', total)}</span>
-                                </div>
+                            <div class="access-actions" id="digital-materials-slot">
+                                <button class="btn btn-primary" type="button">${BOOK_I18N.readOnline}</button>
+                                <button class="btn btn-secondary" type="button">${BOOK_I18N.requestAccess}</button>
                             </div>
+                        </div>
 
-                            ${reviewHtml}
-                            ${classificationHtml}
+                        <div class="dual-grid">
+                            <div>
+                                <h3 class="section-head">${BOOK_I18N.description}</h3>
+                                <p class="desc-text">${subtitle ? escapeHtml(subtitle) : `${escapeHtml(title)} — ${escapeHtml(publisher)}. ${isAvailable ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total) : BOOK_I18N.allCheckedOutBody.replace('{total}', total)}`}</p>
 
-                            <div id="digital-materials-slot"></div>
+                                ${reviewHtml}
 
-                            <div class="status-box ${isAvailable ? '' : 'unavailable'}">
-                                <div>
-                                    <strong>${isAvailable ? BOOK_I18N.copyAvailable : BOOK_I18N.allCheckedOut}</strong>
-                                    <p>${isAvailable ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total) : BOOK_I18N.allCheckedOutBody.replace('{total}', total)}</p>
-                                </div>
-                                <div class="status-pill ${isAvailable ? '' : 'unavailable'}">${isAvailable ? BOOK_I18N.inStock : BOOK_I18N.unavailable}</div>
-                            </div>
-
-                            <div class="action-row">
-                                @if(session('library.user'))
-                                <button class="btn btn-primary" id="reserve-btn" onclick="handleReserve()" disabled>${BOOK_I18N.reserve}</button>
-                                @else
-                                <a href="{{ $lang === 'ru' ? '/login' : '/login?lang=' . $lang }}" class="btn btn-primary" style="text-align:center;">${BOOK_I18N.signInToReserve}</a>
-                                @endif
-                                <button class="btn btn-ghost" id="book-shortlist-btn" onclick="toggleBookShortlist()" style="border-color:var(--cyan); color:var(--cyan);">${BOOK_I18N.shortlistAdd}</button>
-                                <a href="${withLang('/catalog')}" class="btn btn-ghost">${BOOK_I18N.backToCatalog}</a>
-                            </div>
-                            <div id="reserve-feedback" style="display:none; margin-top:12px; padding:14px 18px; border-radius:8px; font-size:14px;"></div>
-                        </section>
-
-                        <section class="info-grid">
-                            <div class="card info-card">
-                                <h3 class="section-title">${BOOK_I18N.characteristics}</h3>
-                                <div class="info-list">
-                                    <div class="info-row"><span>ISBN</span><span>${escapeHtml(isbn)}</span></div>
-                                    <div class="info-row"><span>${BOOK_I18N.publisher}</span><span>${escapeHtml(publisher)}</span></div>
-                                    <div class="info-row"><span>${BOOK_I18N.publicationLanguage}</span><span>${escapeHtml(language)}</span></div>
-                                    <div class="info-row"><span>${BOOK_I18N.publicationYear}</span><span>${escapeHtml(year)}</span></div>
-                                    <div class="info-row"><span>${BOOK_I18N.totalCopies}</span><span>${total}</span></div>
-                                    <div class="info-row"><span>${BOOK_I18N.availableNowLabel}</span><span style="color: ${isAvailable ? 'var(--success)' : '#dc2626'};">${available}</span></div>
+                                <div class="licensed">
+                                    <h3 class="section-head">${BOOK_I18N.licensedResources}</h3>
+                                    <div class="licensed-items">
+                                        <div class="licensed-chip">JSTOR · Related Journal Articles</div>
+                                        <div class="licensed-chip">ELSEVIER · Technical Data Sheets</div>
+                                        ${classificationHtml}
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="card info-card">
-                                <h3 class="section-title">${BOOK_I18N.availabilityByPoint}</h3>
-                                ${locationsTableHtml}
+                            <div>
+                                <h3 class="section-head">${BOOK_I18N.metadata}</h3>
+                                <div class="meta-list">
+                                    <div class="meta-line"><span>ISBN-13</span><span>${escapeHtml(isbn)}</span></div>
+                                    <div class="meta-line"><span>UDC</span><span>${escapeHtml(book?.udc?.raw || '—')}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.language}</span><span>${escapeHtml(language)}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.publisher}</span><span>${escapeHtml(publisher)}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.author}</span><span>${authorsText}</span></div>
+                                </div>
                             </div>
-                        </section>
+                        </div>
+
+                        <div class="similar-wrap">
+                            <div class="similar-head">
+                                <h3>${BOOK_I18N.similarResources}</h3>
+                                <a href="${withLang('/catalog')}">${BOOK_I18N.browseMore} →</a>
+                            </div>
+                            <div class="similar-grid">
+                                ${similarCards.map((item) => `
+                                    <article class="similar-card">
+                                        <div class="similar-image"></div>
+                                        <div class="similar-body">
+                                            <h4 class="similar-title">${item.title}</h4>
+                                            <div class="similar-meta">${item.meta}</div>
+                                        </div>
+                                    </article>
+                                `).join('')}
+                            </div>
+                        </div>
                     </div>
                 </section>
             `;
@@ -1226,38 +1588,17 @@
 
                 const fileIcons = { pdf: '📄', epub: '📖', djvu: '📘' };
 
+                const readable = materials.find((m) => m.canAccess);
+                const restricted = materials.find((m) => !m.canAccess);
+
                 slot.innerHTML = `
-                    <div class="digital-materials-section">
-                        <h4 style="margin:0 0 12px; font-size:16px; font-weight:700;">${BOOK_I18N.digitalMaterials}</h4>
-                        ${materials.map(m => {
-                            const icon = fileIcons[m.fileType] || '📁';
-                            if (m.canAccess) {
-                                return `<div class="dm-card">
-                                    <div class="dm-info">
-                                        <div class="dm-icon">${icon}</div>
-                                        <div>
-                                            <div class="dm-label">${escapeHtml(m.title)}</div>
-                                            <div class="dm-meta">${m.fileType.toUpperCase()} · ${m.fileSize}</div>
-                                        </div>
-                                    </div>
-                                    <div class="dm-actions">
-                                        <a href="${escapeHtml(m.viewerUrl)}" class="btn btn-primary" style="padding:8px 18px;font-size:14px;">${BOOK_I18N.open}</a>
-                                    </div>
-                                </div>`;
-                            } else {
-                                return `<div class="dm-card" style="opacity:.7;">
-                                    <div class="dm-info">
-                                        <div class="dm-icon" style="background:#94a3b8;">🔒</div>
-                                        <div>
-                                            <div class="dm-label">${escapeHtml(m.title)}</div>
-                                            <div class="dm-meta">${m.fileType.toUpperCase()} · ${m.fileSize}</div>
-                                        </div>
-                                    </div>
-                                    <div class="dm-locked">${escapeHtml(m.accessDeniedReason)}</div>
-                                </div>`;
-                            }
-                        }).join('')}
-                    </div>`;
+                    ${readable
+                        ? `<a href="${escapeHtml(readable.viewerUrl)}" class="btn btn-primary">${BOOK_I18N.readOnline}</a>`
+                        : `<button class="btn btn-primary" type="button" disabled>${BOOK_I18N.readOnline}</button>`}
+                    ${restricted
+                        ? `<button class="btn btn-secondary" type="button" title="${escapeHtml(restricted.accessDeniedReason || '')}">${BOOK_I18N.requestAccess}</button>`
+                        : `<button class="btn btn-secondary" type="button">${BOOK_I18N.requestAccess}</button>`}
+                `;
             } catch (_) {
                 // silent — digital materials are supplementary
             }
