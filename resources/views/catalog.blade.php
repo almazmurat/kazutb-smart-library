@@ -556,6 +556,263 @@
       box-shadow: 0 0 0 3px rgba(0,30,64,.05);
     }
 
+    /* Stitch-like refinement overrides */
+    .page { padding: 20px 0 48px; }
+    .hero {
+      border: 0;
+      border-bottom: 1px solid #d9dee6;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 18px 0 20px;
+      margin-bottom: 16px;
+      background: transparent;
+    }
+
+    .eyebrow { display: none; }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(38px, 4.2vw, 54px);
+      line-height: 1.04;
+      letter-spacing: -.6px;
+      color: #0d2c57;
+    }
+
+    .hero h1::after {
+      content: ' Academic Catalog';
+      color: #0f7f8a;
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .hero p {
+      max-width: 760px;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #4f5b69;
+      margin-bottom: 12px;
+    }
+
+    .search-wrap {
+      margin-top: 10px;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+      gap: 10px;
+      grid-template-columns: 1fr 120px !important;
+    }
+
+    .search-wrap .input {
+      border-radius: 0;
+      border: 1px solid #d5dbe5;
+      min-height: 44px;
+      padding: 10px 14px;
+    }
+
+    .search-wrap .btn-primary {
+      min-height: 44px;
+      border-radius: 0;
+      padding: 10px 14px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .layout {
+      grid-template-columns: 292px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .filters {
+      padding: 14px 18px 16px;
+      border-radius: 0;
+      background: #f6f7f9;
+      border: 1px solid #e0e4eb;
+      box-shadow: none;
+    }
+
+    .filter-header {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #dbe1ea;
+    }
+
+    .filter-title {
+      font-size: 34px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 500;
+      color: #0b2a55;
+    }
+
+    #filters-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .filter-group {
+      border-bottom: 1px solid #dce2ea;
+      padding-bottom: 12px;
+      margin: 0;
+    }
+
+    .filter-group--advanced { order: -10; }
+
+    .filter-label {
+      margin-bottom: 10px;
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #667282;
+      font-weight: 800;
+    }
+
+    #advanced-toggle-state {
+      color: #0d2c57;
+      font-size: 14px;
+    }
+
+    .advanced-filters { margin-top: 0; }
+
+    .advanced-panel,
+    .advanced-panel.open {
+      position: static;
+      display: grid;
+      box-shadow: none;
+      max-height: none;
+      overflow: visible;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      gap: 8px;
+    }
+
+    .advanced-field span {
+      font-size: 10px;
+      color: #6f7b89;
+      letter-spacing: .14em;
+    }
+
+    .advanced-input,
+    .range-input,
+    .subject-search,
+    .subject-select {
+      border-radius: 0;
+      min-height: 34px;
+      padding: 8px 10px;
+      font-size: 12px;
+      border: 1px solid #cfd7e2;
+      background: #fff;
+    }
+
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .chip {
+      border-radius: 0;
+      min-height: 30px;
+      padding: 6px 8px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid #cfd7e2;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .chip.active {
+      background: #0b2a55;
+      color: #fff;
+      border-color: #0b2a55;
+    }
+
+    .filter-footer { margin-top: 8px; }
+    .filter-footer .btn-primary {
+      border-radius: 0;
+      background: #e9ecf1;
+      color: #0b2a55;
+      box-shadow: none;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .12em;
+      border: 1px solid #d5dce6;
+      min-height: 36px;
+    }
+
+    .results {
+      border-radius: 0;
+      border: 1px solid #e0e4eb;
+      box-shadow: none;
+      padding: 16px 18px 20px;
+      background: #fff;
+    }
+
+    .results-top {
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #dde2ea;
+      gap: 10px;
+    }
+
+    .results-top strong {
+      font-size: 22px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 600;
+      color: #0d2c57;
+    }
+
+    .results-top p {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #5a6673;
+    }
+
+    .sort-box {
+      min-width: 0;
+      width: fit-content;
+      border-radius: 0;
+      padding: 6px 8px;
+      border: 1px solid #d4dbe5;
+      box-shadow: none;
+      background: #fff;
+      grid-template-columns: auto minmax(200px, 240px);
+    }
+
+    .sort-label {
+      font-size: 10px;
+      letter-spacing: .14em;
+      color: #75808e;
+    }
+
+    .sort-select {
+      min-width: 200px;
+      border-radius: 0;
+      padding: 7px 30px 7px 10px;
+      font-size: 13px;
+      border: 1px solid #d4dbe5;
+      box-shadow: none;
+    }
+
+    .active-filters {
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .active-filter-chip {
+      border-radius: 0;
+      padding: 4px 8px;
+      font-size: 10px;
+      letter-spacing: .03em;
+      border-color: #bed2da;
+      background: #e4f1f3;
+      color: #0d5c67;
+    }
+
     .active-filters {
       display: flex;
       flex-wrap: wrap;
@@ -1286,14 +1543,10 @@
             </select>
           </div>
 
-          <div class="filter-group">
-            <span class="filter-label">{{ ['ru' => 'Расширенный поиск', 'kk' => 'Кеңейтілген іздеу', 'en' => 'Advanced search'][$lang] }}</span>
+          <div class="filter-group filter-group--advanced">
+            <span class="filter-label">{{ ['ru' => 'Advanced Filters', 'kk' => 'Advanced Filters', 'en' => 'Advanced Filters'][$lang] }} <span id="advanced-toggle-state">⚚</span></span>
             <div class="advanced-filters">
-              <button type="button" class="advanced-toggle" onclick="toggleAdvancedFilters()">
-                <span>{{ ['ru' => 'Расширенный фильтр', 'kk' => 'Толык филтьр', 'en' => 'Advanced Filters'][$lang] }}</span>
-                <span id="advanced-toggle-state">⚙</span>
-              </button>
-              <div class="advanced-panel" id="advanced-filters-panel">
+              <div class="advanced-panel open" id="advanced-filters-panel">
                 <div class="advanced-grid">
                   <label class="advanced-field">
                     <span>{{ ['ru' => 'Название', 'kk' => 'Атауы', 'en' => 'Title'][$lang] }}</span>
