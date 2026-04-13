@@ -1486,7 +1486,7 @@
       <section class="hero">
         <div class="eyebrow">{{ ['ru' => 'Каталог университетской библиотеки', 'kk' => 'Университет кітапханасының каталогы', 'en' => 'University library catalog'][$lang] }}</div>
         <h1>{{ ['ru' => 'Найдите нужную книгу, учебник или научное издание', 'kk' => 'Қажетті кітапты, оқулықты немесе ғылыми басылымды табыңыз', 'en' => 'Find the right book, textbook, or scholarly edition'][$lang] }}</h1>
-        <p>{{ ['ru' => 'Удобный поиск по фонду библиотеки с фильтрами по категориям, формату, году издания, языку и доступности.', 'kk' => 'Категория, формат, басылым жылы, тіл және қолжетімділік бойынша сүзгілері бар ыңғайлы іздеу.', 'en' => 'Search the library collection with filters for category, format, publication year, language, and availability.'][$lang] }}</p>
+        <p>{{ ['ru' => 'Удобный поиск по фонду библиотеки с фильтрами по категориям, году издания, языку и доступности.', 'kk' => 'Категория, басылым жылы, тіл және қолжетімділік бойынша сүзгілері бар ыңғайлы іздеу.', 'en' => 'Search the library collection with filters for category, publication year, language, and availability.'][$lang] }}</p>
 
         <div class="search-wrap" style="grid-template-columns: 1fr auto;">
           <input class="input" id="search-input" type="text" placeholder="{{ ['ru' => 'Поиск по названию, автору, ISBN или ключевому слову', 'kk' => 'Атауы, авторы, ISBN немесе кілтсөз бойынша іздеу', 'en' => 'Search by title, author, ISBN, or keyword'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}" />
@@ -1617,28 +1617,31 @@
     const CATALOG_LANG = @json($lang);
     const CATALOG_I18N_MAP = {
       ru: {
-        untitled: 'Без названия', authorMissing: 'Автор не указан', publisherMissing: 'Издатель не указан', languageMissing: 'Не указан',
+        untitled: 'Missed title', authorMissing: 'Missed author', publisherMissing: 'Missed publisher', languageMissing: 'Missed language',
+        yearMissing: 'Missed year', isbnMissing: 'Missed ISBN', udcMissing: 'Missed UDC', locationMissing: 'Missed location', trackMissing: 'Missed track',
         copies: 'экз.', unavailable: 'Нет в наличии', author: 'Автор', year: 'Год', language: 'Язык', viewBook: 'Смотреть книгу',
         addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
         foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
         yearLabel: 'Год', availableOnly: 'В наличии', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
-        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри книги', previewAvailable: 'Доступно {available} из {total}. При открытии записи можно проверить экземпляры, ISBN и тематическую привязку.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить цифровой доступ и библиографию.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', formatHybrid: 'Печатная + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'УДК', publisherLabel: 'Издатель', copiesLabel: 'Экземпляры', trackLabel: 'Направление', coverHint: 'Открыть превью'
+        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри книги', previewAvailable: 'Доступно {available} из {total}. При открытии записи можно проверить экземпляры, ISBN и тематическую привязку.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить библиографию и расположение.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', isbnLabel: 'ISBN', udcLabel: 'УДК', publisherLabel: 'Издатель', copiesLabel: 'Экземпляры', trackLabel: 'Направление', locationLabel: 'Локация', coverHint: 'Открыть превью'
       },
       kk: {
-        untitled: 'Атауы жоқ', authorMissing: 'Автор көрсетілмеген', publisherMissing: 'Баспа көрсетілмеген', languageMissing: 'Көрсетілмеген',
+        untitled: 'Missed title', authorMissing: 'Missed author', publisherMissing: 'Missed publisher', languageMissing: 'Missed language',
+        yearMissing: 'Missed year', isbnMissing: 'Missed ISBN', udcMissing: 'Missed UDC', locationMissing: 'Missed location', trackMissing: 'Missed track',
         copies: 'дана', unavailable: 'Қолжетімсіз', author: 'Автор', year: 'Жыл', language: 'Тіл', viewBook: 'Кітапты ашу',
         addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
         foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
         yearLabel: 'Жыл', availableOnly: 'Қолда бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
-        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Кітап ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Жазбаны ашқанда даналар, ISBN және тақырыптық байланыс көрінеді.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Цифрлық қолжетімділік пен библиографияны тексеру үшін жазбаны ашыңыз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', formatHybrid: 'Баспа + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ', publisherLabel: 'Баспа', copiesLabel: 'Даналар', trackLabel: 'Бағыт', coverHint: 'Превью ашу'
+        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Кітап ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Жазбаны ашқанда даналар, ISBN және тақырыптық байланыс көрінеді.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Жазбаны ашып библиография мен орналасуды тексеріңіз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ', publisherLabel: 'Баспа', copiesLabel: 'Даналар', trackLabel: 'Бағыт', locationLabel: 'Орналасуы', coverHint: 'Превью ашу'
       },
       en: {
-        untitled: 'Untitled', authorMissing: 'Author not specified', publisherMissing: 'Publisher not specified', languageMissing: 'Not specified',
+        untitled: 'Missed title', authorMissing: 'Missed author', publisherMissing: 'Missed publisher', languageMissing: 'Missed language',
+        yearMissing: 'Missed year', isbnMissing: 'Missed ISBN', udcMissing: 'Missed UDC', locationMissing: 'Missed location', trackMissing: 'Missed track',
         copies: 'copies', unavailable: 'Unavailable', author: 'Author', year: 'Year', language: 'Language', viewBook: 'Open book',
         addShortlist: 'Add to shortlist', removeShortlist: 'Remove from shortlist', updateCatalog: 'Refreshing catalog', noResultBadge: 'No result', noBooks: 'No books found', tryChange: 'Try adjusting the search parameters.',
         foundZero: 'Found 0 books', foundMany: 'Found {count} books', retry: 'Retry', loadError: 'Catalog load error', refreshPage: 'Try refreshing the page.',
         yearLabel: 'Year', availableOnly: 'Available', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
-        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the book', previewAvailable: '{available} of {total} copies are ready now. Open the record for copies, ISBN, and subject placement.', previewUnavailable: 'Copies are currently unavailable. Open the record to review digital access and bibliography.', loadingBody: 'Refining the catalog view around your active filters.', formatHybrid: 'Print + PDF', formatDigital: 'PDF', formatLabel: 'Format', isbnLabel: 'ISBN', udcLabel: 'UDC', publisherLabel: 'Publisher', copiesLabel: 'Copies', trackLabel: 'Track', coverHint: 'Open preview'
+        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the book', previewAvailable: '{available} of {total} copies are ready now. Open the record for copies, ISBN, and subject placement.', previewUnavailable: 'Copies are currently unavailable. Open the record to review bibliography and location.', loadingBody: 'Refining the catalog view around your active filters.', isbnLabel: 'ISBN', udcLabel: 'UDC', publisherLabel: 'Publisher', copiesLabel: 'Copies', trackLabel: 'Track', locationLabel: 'Location', coverHint: 'Open preview'
       }
     };
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
@@ -1758,20 +1761,28 @@
 
     function formatBookData(book) {
       const classification = Array.isArray(book.classification) ? book.classification : [];
+      const locations = Array.isArray(book.availability?.locations) ? book.availability.locations : [];
       const specialization = classification.find(c => c.sourceKind === 'specialization');
       const department = classification.find(c => c.sourceKind === 'department');
       const subject = classification.find(c => c.sourceKind === 'subject');
+      const firstLocation = locations.find((location) => {
+        return location?.institutionUnit?.name || location?.campus?.name || location?.servicePoint?.name;
+      });
+      const locationName = firstLocation
+        ? (firstLocation.institutionUnit?.name || firstLocation.campus?.name || firstLocation.servicePoint?.name || CATALOG_I18N.locationMissing)
+        : CATALOG_I18N.locationMissing;
+
       return {
         title: book.title?.display || book.title?.raw || CATALOG_I18N.untitled,
         author: book.primaryAuthor || CATALOG_I18N.authorMissing,
         publisher: book.publisher?.name || CATALOG_I18N.publisherMissing,
-        year: book.publicationYear || '—',
+        year: book.publicationYear || CATALOG_I18N.yearMissing,
         language: book.language?.raw || book.language?.code || CATALOG_I18N.languageMissing,
-        format: book.copies?.available > 0 ? CATALOG_I18N.formatHybrid : CATALOG_I18N.formatDigital,
         available: book.copies?.available || 0,
         total: book.copies?.total || 0,
-        isbn: book.isbn?.raw || '',
-        udc: book.udc?.raw || subject?.label || '',
+        isbn: book.isbn?.raw || CATALOG_I18N.isbnMissing,
+        udc: book.udc?.raw || subject?.label || CATALOG_I18N.udcMissing,
+        location: locationName,
         id: book.id || '',
         specialization: specialization ? specialization.label : '',
         department: department ? department.label : '',
@@ -1793,7 +1804,7 @@
 
       const isShortlisted = shortlistState[identifier] || false;
 
-      const trackValue = data.specialization || data.department || '—';
+      const trackValue = data.specialization || data.department || CATALOG_I18N.trackMissing;
       const previewSummary = isAvailable
         ? CATALOG_I18N.previewAvailable.replace('{available}', data.available).replace('{total}', data.total)
         : CATALOG_I18N.previewUnavailable;
@@ -1810,11 +1821,11 @@
                 <div style="display: grid; gap: 7px; align-content: start;">
                   <div class="book-body-meta-row"><span>${CATALOG_I18N.publisherLabel}</span><strong>${escapeHtml(data.publisher.substring(0, 40))}</strong></div>
                   <div class="book-body-meta-row"><span>${CATALOG_I18N.copiesLabel}</span><strong>${isAvailable ? `${data.available}/${data.total}` : CATALOG_I18N.unavailable}</strong></div>
-                  <div class="book-body-meta-row"><span>${CATALOG_I18N.isbnLabel}</span><strong>${escapeHtml(isbnValue)}</strong></div>
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.locationLabel}</span><strong>${escapeHtml(String(data.location).substring(0, 40))}</strong></div>
                   <div class="book-body-meta-row"><span>${CATALOG_I18N.trackLabel}</span><strong>${escapeHtml(String(trackValue).substring(0, 34))}</strong></div>
                 </div>
               </div>
-              <span style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 2px; background: rgba(0,30,64,.05); color: var(--blue); font-size: 11px; font-weight: 800; white-space: normal;">${escapeHtml(data.format)} · ${escapeHtml(data.language)} · ${escapeHtml(String(data.year))}</span>
+              <span style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 2px; background: rgba(0,30,64,.05); color: var(--blue); font-size: 11px; font-weight: 800; white-space: normal;">${escapeHtml(data.location)} · ${escapeHtml(data.language)} · ${escapeHtml(String(data.year))}</span>
             </div>
             <div class="book-cover ${tone}">
               <div class="cover-top">
@@ -1843,7 +1854,7 @@
             <div class="book-info">
               <div><span>${CATALOG_I18N.author}</span><span>${escapeHtml(data.author.substring(0, 40))}</span></div>
               <div><span>${CATALOG_I18N.language}</span><span>${escapeHtml(data.language)}</span></div>
-              <div><span>${CATALOG_I18N.formatLabel}</span><span>${escapeHtml(data.format)}</span></div>
+              <div><span>${CATALOG_I18N.locationLabel}</span><span>${escapeHtml(data.location)}</span></div>
             </div>
           </div>
           <div class="book-actions">

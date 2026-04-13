@@ -127,11 +127,20 @@ class CatalogReadService
             ->limit($limit)
             ->get();
 
-        $data = $rows->map(function (object $row): array {
+        $documentIds = $rows
+            ->map(static fn (object $row): string => (string) ($row->document_id ?? ''))
+            ->filter(static fn (string $id): bool => $id !== '')
+            ->values()
+            ->all();
+
+        $locationsByDocument = $this->loadLocationsByDocument($documentIds);
+
+        $data = $rows->map(function (object $row) use ($locationsByDocument): array {
             $authors = $this->decodeJsonValue($row->authors_json);
             $copySummary = $this->decodeJsonValue($row->copy_summary_json);
             $subjects = $this->decodeJsonValue($row->subjects_json);
             $primaryAuthor = is_array($authors) && isset($authors[0]['name']) ? (string) $authors[0]['name'] : null;
+            $documentId = (string) ($row->document_id ?? '');
 
             $available = is_array($copySummary) ? (int) ($copySummary['availableCopies'] ?? 0) : 0;
             $totalCopies = is_array($copySummary) ? (int) ($copySummary['totalCopies'] ?? 0) : 0;
@@ -167,6 +176,9 @@ class CatalogReadService
                 'copies' => [
                     'available' => $available,
                     'total' => $totalCopies,
+                ],
+                'availability' => [
+                    'locations' => $locationsByDocument[$documentId] ?? [],
                 ],
                 'classification' => $classification,
                 'udc' => $this->extractUdcData($row->raw_marc ?? null, $classification),
@@ -267,5 +279,63 @@ class CatalogReadService
         $decoded = json_decode($value, true);
 
         return is_array($decoded) ? $decoded : null;
+    }
+
+    /**
+     * @param array<int,string> $documentIds
+     * @return array<string,array<int,array<string,mixed>>>
+     */
+    private function loadLocationsByDocument(array $documentIds): array
+    {
+        if ($documentIds === []) {
+            return [];
+        }
+
+        $rows = DB::table('app.document_availability_by_location_v')
+            ->select([
+                'document_id',
+                'institution_unit_name',
+                'institution_unit_code',
+                'campus_name',
+                'campus_code',
+                'service_point_name',
+                'service_point_code',
+                'total_copy_count',
+                'available_copy_count',
+            ])
+            ->whereIn('document_id', $documentIds)
+            ->orderByDesc('available_copy_count')
+            ->orderByDesc('total_copy_count')
+            ->get();
+
+        $result = [];
+
+        foreach ($rows as $row) {
+            $documentId = (string) ($row->document_id ?? '');
+            if ($documentId === '') {
+                continue;
+            }
+
+            $result[$documentId][] = [
+                'institutionUnit' => [
+                    'code' => (string) ($row->institution_unit_code ?? ''),
+                    'name' => (string) ($row->institution_unit_name ?? ''),
+                ],
+                'campus' => [
+                    'code' => (string) ($row->campus_code ?? ''),
+                    'name' => (string) ($row->campus_name ?? ''),
+                ],
+                'servicePoint' => [
+                    'code' => (string) ($row->service_point_code ?? ''),
+                    'name' => (string) ($row->service_point_name ?? ''),
+                ],
+                'copies' => [
+                    'total' => (int) ($row->total_copy_count ?? 0),
+                    'available' => (int) ($row->available_copy_count ?? 0),
+                ],
+            ];
+        }
+
+        return $result;
     }
 }
