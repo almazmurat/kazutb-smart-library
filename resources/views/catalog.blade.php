@@ -148,7 +148,7 @@
       border-radius: var(--radius-xl);
       padding: 30px;
       margin-bottom: 22px;
-      overflow: hidden;
+      overflow: visible;
       position: relative;
       color: var(--text);
       transition: box-shadow .2s ease, border-color .16s ease;
@@ -1819,6 +1819,7 @@
           <div class="filter-group filter-group--institution">
             <span class="filter-label">{{ ['ru' => 'Институциональная коллекция', 'kk' => 'Институционалдық жинақ', 'en' => 'Institutional collection'][$lang] }}</span>
             <select class="institution-select" id="institution-select" onchange="applyFilters()">
+              <option value="">{{ ['ru' => 'Все коллекции', 'kk' => 'Барлық жинақтар', 'en' => 'All collections'][$lang] }}</option>
               <option value="college_library">{{ ['ru' => 'Библиотека Колледжа', 'kk' => 'Колледж кітапханасы', 'en' => 'College Library'][$lang] }}</option>
               <option value="economic_library">{{ ['ru' => 'Экономическая библиотека', 'kk' => 'Экономикалық кітапхана', 'en' => 'Economic Library'][$lang] }}</option>
               <option value="technology_library">{{ ['ru' => 'Технологическая библиотека', 'kk' => 'Технологиялық кітапхана', 'en' => 'Technology Library'][$lang] }}</option>
