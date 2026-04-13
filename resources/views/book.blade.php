@@ -1354,16 +1354,27 @@
             margin: 6px 0 0;
             color: #f2d79b;
             font-family: 'Newsreader', Georgia, serif;
-            font-size: 52px;
-            line-height: .9;
+            font-size: clamp(30px, 3.1vw, 44px);
+            line-height: .92;
             letter-spacing: -.8px;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            hyphens: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .catalog-cover-subline {
             margin-top: 6px;
             color: rgba(255,255,255,.84);
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .catalog-cover-isbn {
@@ -1379,9 +1390,10 @@
             margin-top: 3px;
             color: #fff;
             letter-spacing: .02em;
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             line-height: 1.1;
+            overflow-wrap: anywhere;
         }
 
         .catalog-meta-row {
@@ -1410,10 +1422,11 @@
 
         .catalog-copy h3 {
             margin: 0 0 8px;
-            font-size: 42px;
+            font-size: clamp(24px, 2.6vw, 36px);
             font-family: 'Newsreader', Georgia, serif;
             line-height: .95;
             color: #0b2a55;
+            overflow-wrap: anywhere;
         }
 
         .catalog-copy p {
@@ -1432,7 +1445,8 @@
         }
 
         .catalog-book-card--mini .catalog-cover-title {
-            font-size: 28px;
+            font-size: 20px;
+            -webkit-line-clamp: 2;
         }
 
         .catalog-book-card--mini .catalog-cover-subline {
@@ -1444,7 +1458,32 @@
         }
 
         .catalog-book-card--mini .catalog-copy h3 {
-            font-size: 18px;
+            font-size: 16px;
+            line-height: 1.2;
+        }
+
+        .desc-text strong {
+            color: #0b2a55;
+            font-weight: 700;
+        }
+
+        .meta-aux {
+            margin-top: 12px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: rgba(11,42,85,.06);
+            color: #0b2a55;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 6px;
+            margin-bottom: 6px;
         }
 
         @media (max-width: 1120px) {
@@ -1693,6 +1732,15 @@
             const classification = Array.isArray(book?.classification) ? book.classification : [];
 
             const isAvailable = available > 0;
+            const servicePointsText = locations.length > 0
+                ? locations.slice(0, 4).map(loc => loc.servicePoint?.name || loc.campus?.name || '').filter(Boolean).join(' · ')
+                : BOOK_I18N.locationsUnavailable;
+            const descriptionText = subtitle
+                ? escapeHtml(subtitle)
+                : `<strong>${escapeHtml(title)}</strong> — ${escapeHtml(publisher)}. ${isAvailable
+                    ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total)
+                    : BOOK_I18N.allCheckedOutBody.replace('{total}', total)
+                }`;
 
             document.title = `${title} - Digital Library`;
 
@@ -1798,7 +1846,7 @@
                         <div class="dual-grid">
                             <div>
                                 <h3 class="section-head">${BOOK_I18N.description}</h3>
-                                <p class="desc-text">${subtitle ? escapeHtml(subtitle) : `${escapeHtml(title)} — ${escapeHtml(publisher)}. ${isAvailable ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total) : BOOK_I18N.allCheckedOutBody.replace('{total}', total)}`}</p>
+                                <p class="desc-text">${descriptionText}</p>
 
                                 ${reviewHtml}
 
@@ -1810,6 +1858,10 @@
                                         ${classificationHtml}
                                     </div>
                                 </div>
+
+                                <div class="meta-aux">
+                                    ${classification.length > 0 ? classification.slice(0, 4).map(c => `<span class="meta-pill">${escapeHtml(c.label)}</span>`).join('') : `<span class="meta-pill">${BOOK_I18N.allCollections}</span>`}
+                                </div>
                             </div>
 
                             <div>
@@ -1817,9 +1869,14 @@
                                 <div class="meta-list">
                                     <div class="meta-line"><span>ISBN-13</span><span>${escapeHtml(isbn)}</span></div>
                                     <div class="meta-line"><span>UDC</span><span>${escapeHtml(book?.udc?.raw || '—')}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.publicationYear}</span><span>${escapeHtml(year)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.language}</span><span>${escapeHtml(language)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.publisher}</span><span>${escapeHtml(publisher)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.author}</span><span>${authorsText}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.totalCopies}</span><span>${total}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.availableNowLabel}</span><span>${available}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.availabilityByPoint}</span><span>${escapeHtml(servicePointsText)}</span></div>
+                                    <div class="meta-line"><span>ID</span><span>${escapeHtml(String(book?.id || '—'))}</span></div>
                                 </div>
                             </div>
                         </div>
