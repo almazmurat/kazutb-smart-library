@@ -671,10 +671,23 @@
     }
 
     .filter-title-icon {
-      font-size: 15px;
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      background: transparent;
       color: #667282;
-      cursor: default;
+      cursor: pointer;
       margin-left: 4px;
+      padding: 0;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .filter-title-icon:hover {
+      color: #0b2a55;
     }
 
     #filters-body {
@@ -732,6 +745,79 @@
 
     .institution-select {
       width: 100%;
+      font-family: inherit;
+      color: #0b2a55;
+    }
+
+    .advanced-filters {
+      margin-top: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .advanced-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid #cfd7e2;
+      background: #fff;
+      color: #0b2a55;
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 0;
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .advanced-panel {
+      display: none;
+      gap: 8px;
+      border: 1px solid #d7dee8;
+      border-radius: 0;
+      background: #fff;
+      padding: 8px;
+      position: static;
+      box-shadow: none;
+      max-height: none;
+      overflow: visible;
+    }
+
+    .advanced-panel.open {
+      display: grid;
+    }
+
+    .advanced-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .advanced-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .advanced-field span {
+      font-size: 10px;
+      color: #6f7b89;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .advanced-input {
+      width: 100%;
+      min-height: 34px;
+      padding: 8px 10px;
+      border: 1px solid #cfd7e2;
+      border-radius: 0;
+      background: #fff;
+      font-size: 12px;
       font-family: inherit;
       color: #0b2a55;
     }
@@ -831,11 +917,11 @@
       min-width: 0;
       width: fit-content;
       border-radius: 0;
-      padding: 6px 8px;
-      border: 1px solid #d4dbe5;
-      box-shadow: none;
-      background: #fff;
-      grid-template-columns: auto minmax(200px, 240px);
+      padding: 8px 10px;
+      border: 1px solid #ccd5e2;
+      box-shadow: 0 4px 10px rgba(11, 42, 85, .06);
+      background: #fdfefe;
+      grid-template-columns: auto minmax(210px, 250px);
     }
 
     .sort-label {
@@ -845,12 +931,14 @@
     }
 
     .sort-select {
-      min-width: 200px;
+      min-width: 210px;
       border-radius: 0;
-      padding: 7px 30px 7px 10px;
+      padding: 8px 34px 8px 10px;
       font-size: 13px;
-      border: 1px solid #d4dbe5;
-      box-shadow: none;
+      border: 1px solid #c6d1e0;
+      background: #fff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+      font-weight: 700;
     }
 
     .active-filters {
@@ -1568,7 +1656,8 @@
           <div class="filter-header">
             <div class="filter-header-left">
               <span class="filter-title">{{ ['ru' => 'Расширенные фильтры', 'kk' => 'Кеңейтілген сүзгілер', 'en' => 'Advanced Filters'][$lang] }}</span>
-              <span class="filter-title-icon">⚙</span>
+              <button type="button" class="filter-title-icon" onclick="toggleAdvancedFilters()" aria-controls="advanced-filters-panel" aria-expanded="false">⚙</button>
+              <span id="advanced-toggle-state" style="display:none">⚙</span>
               <span id="filter-count-badge" class="filter-badge" style="display:none;"></span>
             </div>
             <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ {{ ['ru' => 'Сбросить', 'kk' => 'Тазарту', 'en' => 'Reset'][$lang] }}</button>
@@ -1600,7 +1689,6 @@
               <button type="button" class="chip" data-lang="en">ENGLISH</button>
               <button type="button" class="chip" data-lang="kk">KAZAKH</button>
               <button type="button" class="chip" data-lang="ru">RUSSIAN</button>
-              <button type="button" class="chip" data-lang="de">GERMAN</button>
             </div>
           </div>
 
@@ -1614,10 +1702,45 @@
           <div class="filter-group filter-group--institution">
             <span class="filter-label">{{ ['ru' => 'Институциональная коллекция', 'kk' => 'Институционалдық жинақ', 'en' => 'Institutional collection'][$lang] }}</span>
             <select class="institution-select" id="institution-select">
-              <option value="">{{ ['ru' => 'Центральная библиотека', 'kk' => 'Орталық кітапхана', 'en' => 'Central Library'][$lang] }}</option>
-              <option value="engineering">{{ ['ru' => 'Инженерный архив', 'kk' => 'Инженерлік архив', 'en' => 'Engineering Archive'][$lang] }}</option>
-              <option value="law">{{ ['ru' => 'Факультет права', 'kk' => 'Құқық факультеті', 'en' => 'Faculty of Law'][$lang] }}</option>
+              <option value="college_library">{{ ['ru' => 'Библиотека Колледжа', 'kk' => 'Колледж кітапханасы', 'en' => 'College Library'][$lang] }}</option>
+              <option value="economic_library">{{ ['ru' => 'Экономическая библиотека', 'kk' => 'Экономикалық кітапхана', 'en' => 'Economic Library'][$lang] }}</option>
+              <option value="technology_library">{{ ['ru' => 'Технологическая библиотека', 'kk' => 'Технологиялық кітапхана', 'en' => 'Technology Library'][$lang] }}</option>
+              <option value="ktslib">KTSLIB</option>
             </select>
+          </div>
+
+          <div class="filter-group filter-group--advanced">
+            <span class="filter-label">{{ ['ru' => 'Уточнить поиск', 'kk' => 'Іздеуді нақтылау', 'en' => 'Refine search'][$lang] }}</span>
+            <div class="advanced-filters">
+              <button type="button" class="advanced-toggle" onclick="toggleAdvancedFilters()" aria-controls="advanced-filters-panel" aria-expanded="false">
+                <span>{{ ['ru' => 'Открыть дополнительные параметры', 'kk' => 'Қосымша параметрлерді ашу', 'en' => 'Open additional parameters'][$lang] }}</span>
+                <span>▾</span>
+              </button>
+              <div class="advanced-panel" id="advanced-filters-panel">
+                <div class="advanced-grid">
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'Название', 'kk' => 'Атауы', 'en' => 'Title'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-title" type="text" placeholder="{{ ['ru' => 'Например: Статистика', 'kk' => 'Мысалы: Статистика', 'en' => 'Example: Statistics'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'Автор', 'kk' => 'Автор', 'en' => 'Author'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-author" type="text" placeholder="{{ ['ru' => 'ФИО автора', 'kk' => 'Автор аты-жөні', 'en' => 'Author name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'Издатель', 'kk' => 'Баспа', 'en' => 'Publisher'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-publisher" type="text" placeholder="{{ ['ru' => 'Название издателя', 'kk' => 'Баспа атауы', 'en' => 'Publisher name'][$lang] }}" onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>ISBN</span>
+                    <input class="advanced-input" id="adv-isbn" type="text" placeholder="978..." onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                  <label class="advanced-field">
+                    <span>{{ ['ru' => 'УДК', 'kk' => 'ӘОЖ', 'en' => 'UDC'][$lang] }}</span>
+                    <input class="advanced-input" id="adv-udc" type="text" placeholder="5, 004, ..." onkeydown="if(event.key==='Enter'){applyFilters()}">
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
 
           </div>{{-- /filters-body --}}
@@ -1754,14 +1877,14 @@
     function toggleAdvancedFilters(forceOpen = null) {
       const panel = document.getElementById('advanced-filters-panel');
       const state = document.getElementById('advanced-toggle-state');
-      const toggleBtn = document.querySelector('.advanced-toggle');
+      const toggleButtons = document.querySelectorAll('.advanced-toggle, .filter-title-icon');
+      const chevron = document.querySelector('.advanced-toggle span:last-child');
       if (!panel || !state) return;
       const open = forceOpen === null ? !panel.classList.contains('open') : Boolean(forceOpen);
       panel.classList.toggle('open', open);
       state.textContent = open ? '▴' : '⚙';
-      if (toggleBtn) {
-        toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
+      toggleButtons.forEach((btn) => btn.setAttribute('aria-expanded', open ? 'true' : 'false'));
+      if (chevron) chevron.textContent = open ? '▴' : '▾';
     }
 
     function setChipValue(selector, dataKey, value = '') {
@@ -2285,12 +2408,13 @@
 
     document.addEventListener('click', (event) => {
       const panel = document.getElementById('advanced-filters-panel');
-      const toggle = document.querySelector('.advanced-toggle');
-      if (!panel || !toggle) return;
+      const toggles = Array.from(document.querySelectorAll('.advanced-toggle, .filter-title-icon'));
+      if (!panel || !toggles.length) return;
       const target = event.target;
       if (!(target instanceof Element)) return;
       if (!panel.classList.contains('open')) return;
-      if (panel.contains(target) || toggle.contains(target)) return;
+      const clickedToggle = toggles.some((toggle) => toggle.contains(target));
+      if (panel.contains(target) || clickedToggle) return;
       toggleAdvancedFilters(false);
     });
 
