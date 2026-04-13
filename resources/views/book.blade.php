@@ -18,26 +18,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/shell.css">
     <style>
+            --type-display: clamp(40px, 4.6vw, 54px);
+            --type-title: clamp(24px, 2.6vw, 36px);
+            --type-body: 15px;
+            --type-meta: 12px;
+            --space-1: 8px;
+            --space-2: 12px;
+            --space-3: 16px;
+            --space-4: 24px;
         :root {
             --bg: #f8f9fa;
             --surface: #ffffff;
             --surface-soft: #f3f4f5;
+            align-content: start;
             --border: rgba(195, 198, 209, .55);
             --text: #191c1d;
             --muted: #43474f;
             --blue: #001e40;
-            --cyan: #14696d;
+            font-size: var(--type-display);
             --violet: #453000;
             --pink: #2a1c00;
             --gold: #e9c176;
             --success: #14696d;
+            text-wrap: balance;
             --warning: #5d4201;
             --shadow: 0 12px 32px rgba(25, 28, 29, .04);
             --shadow-soft: 0 6px 16px rgba(25, 28, 29, .03);
             --radius-xl: 8px;
-            --radius-lg: 6px;
+            color: #425164;
             --radius-md: 4px;
             --container: 1280px;
+            text-wrap: balance;
         }
 
         * { box-sizing: border-box; }
@@ -68,11 +79,11 @@
             backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border);
         }
-
+            padding: 12px;
         .nav {
             min-height: 84px;
             display: flex;
-            align-items: center;
+            gap: 6px;
             justify-content: space-between;
             gap: 18px;
         }
@@ -80,10 +91,12 @@
         .brand {
             display: flex;
             align-items: center;
+            font-variant-numeric: tabular-nums;
             gap: 14px;
             font-weight: 900;
             letter-spacing: -.3px;
             cursor: pointer;
+            font-variant-numeric: tabular-nums;
         }
 
         .brand small {
@@ -114,12 +127,13 @@
             cursor: pointer;
             font: inherit;
             border-radius: var(--radius-lg);
-            padding: 14px 22px;
+            padding: 14px 16px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+            font-size: var(--type-body);
             font-weight: 700;
         }
 
@@ -1530,6 +1544,11 @@
             height: 268px;
         }
 
+        .catalog-book-card--mini {
+            height: 100%;
+            min-height: 430px;
+        }
+
         .catalog-book-card--mini .catalog-cover-title {
             font-size: 24px;
             -webkit-line-clamp: 2;
@@ -1546,26 +1565,50 @@
         .catalog-book-card--mini .catalog-copy h3 {
             font-size: 20px;
             line-height: 1.28;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .catalog-book-card--mini .catalog-copy p {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .content-panels {
+            display: grid;
+            gap: var(--space-4);
+        }
+
+        .content-panel {
+            border: 1px solid #d8dde3;
+            background: #fff;
+            padding: 14px 16px;
         }
 
         .description-card {
             border: 1px solid #d8dde3;
             background: #fdfefe;
-            padding: 14px;
+            padding: 14px 16px;
         }
 
         .description-text {
             margin: 0;
             color: #334155;
-            font-size: 16px;
+            font-size: var(--type-body);
             line-height: 1.7;
             white-space: pre-line;
+            max-width: 68ch;
         }
 
         .similar-link {
             display: block;
             color: inherit;
             text-decoration: none;
+            height: 100%;
         }
 
         .similar-link:focus-visible .catalog-book-card {
@@ -1611,6 +1654,10 @@
             .detail-shell,
             .dual-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .content-panels {
+                gap: var(--space-3);
             }
 
             .catalog-book-stage {
@@ -1700,6 +1747,20 @@
 
             .similar-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .meta-line {
+                display: grid;
+                gap: 4px;
+            }
+
+            .meta-line span:first-child {
+                min-width: 0;
+            }
+
+            .meta-line span:last-child {
+                text-align: left;
+                max-width: 100%;
             }
 
             .container { width: min(100% - 20px, var(--container)); }
@@ -1869,6 +1930,7 @@
             const rawIsbn = normalizeText(book?.isbn?.raw || BOOK_I18N.isbnMissing);
             const rawYear = normalizeText(book?.publicationYear || BOOK_I18N.yearMissing);
             const rawLanguage = normalizeText(book?.language?.raw || BOOK_I18N.languageMissing);
+            const rawDescription = normalizeText(book?.description || book?.summary || book?.abstract || book?.title?.subtitle || '');
 
             const title = escapeHtml(rawTitle);
             const author = escapeHtml(rawAuthor);
@@ -1888,11 +1950,8 @@
             const primaryLocation = locations[0]?.servicePoint?.name || locations[0]?.campus?.name || BOOK_I18N.allCollections;
             const copySummaryText = BOOK_I18N.copySummary.replace('{available}', String(available)).replace('{total}', String(total));
             const yearForText = rawYear && rawYear !== BOOK_I18N.yearMissing ? rawYear : '—';
-            const generatedDescription = rawIsbn === '9965174695'
-                ? `Русско-казахский словарь — справочное издание издательства ${rawPublisher}.
-Язык: ${rawLanguage}. УДК: ${book?.udc?.raw || '—'}. ISBN: ${rawIsbn}.
-Автор: ${rawAuthor}. В фонде: ${available} из ${total} экземпляров.
-Основная локация: ${primaryLocation}.`
+            const generatedDescription = rawDescription
+                ? rawDescription
                 : `${rawTitle} — издание издательства ${rawPublisher}. Язык: ${rawLanguage}. УДК: ${book?.udc?.raw || '—'}. Автор: ${rawAuthor}. В фонде: ${available} из ${total} экземпляров.`;
             const missingParts = [];
             if (!book?.udc?.raw) missingParts.push('УДК');
@@ -2032,15 +2091,15 @@
                             </article>
                         </div>
 
-                        <div class="dual-grid">
-                            <div>
+                        <div class="dual-grid content-panels">
+                            <div class="content-panel">
                                 <h3 class="section-head">${BOOK_I18N.description}</h3>
                                 <div class="description-card">
                                     <p class="description-text">${escapeHtml(generatedDescription)}</p>
                                 </div>
                             </div>
 
-                            <div>
+                            <div class="content-panel">
                                 <h3 class="section-head">${BOOK_I18N.metadata}</h3>
                                 <div class="meta-list">
                                     <div class="meta-line"><span>ISBN-13</span><span>${escapeHtml(isbn)}</span></div>
