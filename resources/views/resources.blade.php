@@ -353,56 +353,54 @@
     }
 
     .ext-resource-card {
-      border: 1px solid var(--res-border);
-      border-radius: 18px;
-      background: linear-gradient(180deg, #ffffff, #f8fafc 92%);
-      padding: 22px;
-      min-height: 380px;
+      border: 1px solid rgba(171, 184, 201, .72);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #ffffff, #fafbfd 92%);
+      padding: 20px;
+      min-height: 388px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 14px;
       transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+      box-shadow: 0 10px 24px rgba(15,23,42,.035);
     }
 
     .ext-resource-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(11,35,71,.22);
-      box-shadow: 0 18px 38px rgba(15,23,42,.07);
-      background: linear-gradient(180deg, #ffffff, #f6f9fb 100%);
+      border-color: rgba(11,35,71,.26);
+      box-shadow: 0 18px 34px rgba(15,23,42,.07);
+      background: linear-gradient(180deg, #ffffff, #f7fafc 100%);
     }
 
-    .ext-resource-card__meta {
+    .ext-resource-card__availability {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
+      min-height: 30px;
     }
 
-    .ext-resource-card__category {
-      display: inline-flex;
-      align-items: center;
-      min-height: 28px;
-      padding: 0 10px;
-      border-radius: 999px;
-      background: rgba(20, 105, 109, .08);
-      color: var(--res-accent);
-      font-size: 10px;
-      letter-spacing: .08em;
+    .ext-resource-card__provider {
+      color: #6f8094;
+      font-size: 11px;
+      letter-spacing: .09em;
       text-transform: uppercase;
-      font-weight: 800;
+      font-weight: 700;
+      line-height: 1.35;
     }
 
     .ext-resource-card__header {
-      display: flex;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      align-items: start;
       gap: 14px;
     }
 
     .ext-resource-card__icon {
       width: 44px;
       height: 44px;
-      border-radius: 14px;
+      border-radius: 10px;
       display: grid;
       place-items: center;
       color: #fff;
@@ -420,57 +418,64 @@
       margin: 0;
       color: var(--res-ink);
       font-family: 'Newsreader', Georgia, serif;
-      font-size: 28px;
-      line-height: 1.02;
-      letter-spacing: -.24px;
+      font-size: 25px;
+      line-height: 1.08;
+      letter-spacing: -.18px;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      min-height: 3.1em;
-    }
-
-    .ext-resource-card__provider {
-      color: #6f8094;
-      font-size: 11px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-weight: 700;
+      min-height: 3.3em;
+      text-wrap: balance;
     }
 
     .ext-resource-card__desc {
       margin: 0;
       color: var(--res-muted);
       font-size: 14px;
-      line-height: 1.72;
+      line-height: 1.78;
       display: -webkit-box;
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      min-height: 8.6em;
+      min-height: 8.9em;
     }
 
     .ext-resource-card__footer {
-      margin-top: auto;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
-      padding-top: 4px;
+      gap: 8px;
+      padding-top: 2px;
+      margin-top: auto;
     }
 
     .ext-resource-card__badge {
       display: inline-flex;
       align-items: center;
       min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      background: #edf2f7;
-      color: #334155;
+      padding: 0 11px;
+      border-radius: 8px;
+      background: #eef3f6;
+      color: #314255;
       font-size: 10px;
-      letter-spacing: .07em;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 800;
+    }
+
+    .ext-resource-card__category {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: rgba(20, 105, 109, .08);
+      color: var(--res-accent);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 800;
     }
 
     .access-badge--campus {
@@ -489,7 +494,6 @@
     }
 
     .ext-resource-card__expiry {
-      margin-left: auto;
       color: #6b7280;
       font-size: 11px;
       font-weight: 600;
@@ -498,38 +502,42 @@
 
     .ext-resource-card__actions {
       margin-top: 2px;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(128px, .95fr);
       align-items: center;
-      justify-content: space-between;
       gap: 10px;
     }
 
     .ext-resource-card__actions a,
     .ext-resource-card__actions button {
-      min-height: 40px;
-      padding: 0 14px;
-      border: 1px solid var(--res-border);
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid rgba(167, 181, 200, .75);
       background: #fff;
       color: var(--res-text);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: .01em;
       text-decoration: none;
       cursor: pointer;
-      border-radius: 999px;
+      border-radius: 10px;
       transition: border-color .18s ease, background-color .18s ease, color .18s ease, transform .18s ease;
     }
 
     .ext-resource-card__actions--single {
-      justify-content: flex-end;
+      grid-template-columns: minmax(148px, .95fr);
+      justify-content: end;
     }
 
     .ext-resource-card__actions .ext-link-btn {
       background: var(--res-ink);
       color: #fff;
       border-color: var(--res-ink);
-      flex: 1 1 auto;
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
       text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
     }
 
     .ext-resource-card__actions .ext-link-btn:hover {
@@ -538,19 +546,19 @@
     }
 
     .ext-resource-card__actions .ext-shortlist-btn {
-      flex: 0 0 auto;
       background: #fff;
     }
 
     .ext-resource-card__actions .ext-shortlist-btn:hover {
-      border-color: rgba(20,105,109,.32);
-      color: var(--res-accent);
+      border-color: rgba(11,35,71,.26);
+      background: #f8fafc;
+      color: var(--res-ink);
       transform: translateY(-1px);
     }
 
     .ext-resource-card__actions .ext-shortlist-btn--added {
       border-color: rgba(20,105,109,.4);
-      background: rgba(20,105,109,.08);
+      background: rgba(20,105,109,.1);
       color: var(--res-accent);
       pointer-events: none;
     }
@@ -779,14 +787,17 @@
         padding: 18px;
       }
 
+      .ext-resource-card__availability {
+        gap: 8px;
+      }
+
       .ext-resource-card__desc,
       .ext-resource-card__title {
         min-height: 0;
       }
 
       .ext-resource-card__actions {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr;
       }
 
       .ext-resource-card__actions .ext-shortlist-btn,
@@ -1088,10 +1099,11 @@
 
       return `
         <div class="ext-resource-card" data-slug="${escapeHtml(r.slug)}">
-          <div class="ext-resource-card__meta">
-            <span class="ext-resource-card__category">${escapeHtml(catInfo.label || r.category)}</span>
-            <div class="ext-resource-card__provider">${escapeHtml(r.provider)}</div>
+          <div class="ext-resource-card__availability">
+            <span class="ext-resource-card__badge ${badgeClass}">${escapeHtml(accInfo.label || r.access_type)}</span>
+            ${r.expiry_date ? `<span class="ext-resource-card__expiry">${RES_I18N.validUntil} ${formatExpiry(r.expiry_date)}</span>` : ''}
           </div>
+          <div class="ext-resource-card__provider">${escapeHtml(r.provider)}</div>
           <div class="ext-resource-card__header">
             <div class="ext-resource-card__icon ext-resource-card__icon--${color}">${escapeHtml(catInfo.icon || '📄')}</div>
             <div>
@@ -1100,8 +1112,7 @@
           </div>
           <p class="ext-resource-card__desc">${escapeHtml(r.description)}</p>
           <div class="ext-resource-card__footer">
-            <span class="ext-resource-card__badge ${badgeClass}">${escapeHtml(accInfo.label || r.access_type)}</span>
-            ${r.expiry_date ? `<span class="ext-resource-card__expiry">${RES_I18N.validUntil} ${formatExpiry(r.expiry_date)}</span>` : ''}
+            <span class="ext-resource-card__category">${escapeHtml(catInfo.label || r.category)}</span>
           </div>
           <div class="ext-resource-card__actions${hasPrimaryLink ? '' : ' ext-resource-card__actions--single'}">
             ${r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="ext-link-btn">${RES_I18N.open}</a>` : ''}
