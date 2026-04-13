@@ -842,8 +842,9 @@ main {
 .footer-brand .logo-img {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-md);
+  border-radius: 50%;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .footer-brand-name {

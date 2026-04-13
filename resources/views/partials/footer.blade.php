@@ -20,7 +20,9 @@
   <div class="container footer-grid">
     <div class="footer-col">
       <div class="footer-brand">
-        <span class="brand-mark">DL</span>
+        <span class="brand-mark brand-mark--logo">
+          <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="logo-img logo-img--brand" loading="lazy" decoding="async">
+        </span>
         <div class="footer-brand-name">
           {{ __('ui.brand.title') }}
           <small>{{ __('ui.brand.subtitle') }}</small>
