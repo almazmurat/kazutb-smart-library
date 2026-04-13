@@ -1088,7 +1088,6 @@
 
     .sort-select-wrap {
       position: relative;
-      display: block;
     }
 
     .sort-select-wrap::after {
@@ -1100,17 +1099,14 @@
       color: #4b5563;
       font-size: 13px;
       pointer-events: none;
-      transition: transform .16s ease;
     }
 
-    .sort-select-wrap.open::after {
-      transform: translateY(-50%) rotate(180deg);
-    }
-
-    .sort-select-trigger {
+    .sort-select {
       width: 100%;
       min-width: 240px;
-      text-align: left;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
       border: 1px solid rgba(169,178,194,.84);
       background: linear-gradient(180deg, #ffffff, #f9fbfc);
       color: var(--text);
@@ -1119,77 +1115,18 @@
       font: inherit;
       font-weight: 800;
       line-height: 1.3;
-      cursor: pointer;
       transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
     }
 
-    .sort-select-trigger:hover {
+    .sort-select:hover {
       border-color: rgba(0,30,64,.25);
       background: rgba(255,255,255,.99);
     }
 
-    .sort-select-trigger:focus {
+    .sort-select:focus {
       outline: none;
       border-color: rgba(0,30,64,.35);
       box-shadow: 0 0 0 3px rgba(0,30,64,.08);
-    }
-
-    .sort-menu {
-      position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      right: 0;
-      z-index: 20;
-      display: none;
-      border: 1px solid rgba(169,178,194,.84);
-      border-radius: var(--radius-md);
-      background: #ffffff;
-      box-shadow: 0 14px 30px rgba(25,28,29,.10);
-      overflow: hidden;
-    }
-
-    .sort-select-wrap.open .sort-menu {
-      display: block;
-    }
-
-    .sort-menu-option {
-      width: 100%;
-      border: 0;
-      border-bottom: 1px solid rgba(223,228,236,.9);
-      background: #ffffff;
-      color: #1f2e40;
-      text-align: left;
-      padding: 10px 12px;
-      font: inherit;
-      font-size: 15px;
-      line-height: 1.25;
-      cursor: pointer;
-      transition: background-color .14s ease, color .14s ease;
-    }
-
-    .sort-menu-option:last-child {
-      border-bottom: 0;
-    }
-
-    .sort-menu-option:hover,
-    .sort-menu-option:focus-visible {
-      background: #eef4fb;
-      color: #0d2c57;
-      outline: none;
-    }
-
-    .sort-menu-option.active {
-      background: #0d2c57;
-      color: #ffffff;
-      font-weight: 700;
-    }
-
-    .sort-select-native {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
     }
 
     .grid {
@@ -1843,15 +1780,8 @@
             </div>
             <div class="sort-box">
               <span class="sort-label">{{ ['ru' => 'Сортировка', 'kk' => 'Сұрыптау', 'en' => 'Sort by'][$lang] }}</span>
-              <span class="sort-select-wrap" id="sort-select-wrap">
-              <button type="button" class="sort-select-trigger" id="sort-select-trigger" aria-haspopup="listbox" aria-expanded="false"></button>
-              <div class="sort-menu" id="sort-menu" role="listbox" aria-label="{{ ['ru' => 'Сортировка', 'kk' => 'Сұрыптау', 'en' => 'Sort by'][$lang] }}">
-                <button type="button" class="sort-menu-option" data-sort-value="popular" role="option">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</button>
-                <button type="button" class="sort-menu-option" data-sort-value="newest" role="option">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</button>
-                <button type="button" class="sort-menu-option" data-sort-value="title" role="option">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</button>
-                <button type="button" class="sort-menu-option" data-sort-value="author" role="option">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</button>
-              </div>
-              <select class="sort-select-native" id="sort-select" onchange="applyFilters()">
+              <span class="sort-select-wrap">
+              <select class="sort-select" id="sort-select" onchange="applyFilters()">
                 <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
                 <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
                 <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
@@ -2026,75 +1956,6 @@
       }
 
       history.replaceState(null, '', `${url.pathname}${url.search}`);
-    }
-
-    function updateSortDropdownUI() {
-      const select = document.getElementById('sort-select');
-      const trigger = document.getElementById('sort-select-trigger');
-      if (!select || !trigger) return;
-      const selectedOption = select.options[select.selectedIndex];
-      trigger.textContent = selectedOption ? selectedOption.textContent : '';
-
-      document.querySelectorAll('#sort-menu .sort-menu-option').forEach((option) => {
-        const isActive = option.dataset.sortValue === select.value;
-        option.classList.toggle('active', isActive);
-        option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-    }
-
-    function toggleSortMenu(forceOpen = null) {
-      const wrap = document.getElementById('sort-select-wrap');
-      const trigger = document.getElementById('sort-select-trigger');
-      if (!wrap || !trigger) return;
-      const isOpen = forceOpen === null ? !wrap.classList.contains('open') : Boolean(forceOpen);
-      wrap.classList.toggle('open', isOpen);
-      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    }
-
-    function initSortDropdown() {
-      const select = document.getElementById('sort-select');
-      const trigger = document.getElementById('sort-select-trigger');
-      const wrap = document.getElementById('sort-select-wrap');
-      if (!select || !trigger || !wrap) return;
-
-      updateSortDropdownUI();
-
-      trigger.addEventListener('click', () => {
-        toggleSortMenu();
-      });
-
-      trigger.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          toggleSortMenu();
-        }
-        if (event.key === 'Escape') {
-          toggleSortMenu(false);
-        }
-      });
-
-      document.querySelectorAll('#sort-menu .sort-menu-option').forEach((option) => {
-        option.addEventListener('click', () => {
-          const value = option.dataset.sortValue || '';
-          if (!value || select.value === value) {
-            toggleSortMenu(false);
-            return;
-          }
-          select.value = value;
-          updateSortDropdownUI();
-          toggleSortMenu(false);
-          applyFilters();
-        });
-      });
-
-      select.addEventListener('change', updateSortDropdownUI);
-
-      document.addEventListener('click', (event) => {
-        const target = event.target;
-        if (!(target instanceof Element)) return;
-        if (wrap.contains(target)) return;
-        toggleSortMenu(false);
-      });
     }
 
     function resolveCatalogLocation(locations) {
@@ -2713,7 +2574,6 @@
       if (urlSort && document.getElementById('sort-select')) {
         document.getElementById('sort-select').value = urlSort;
       }
-      updateSortDropdownUI();
       if (urlLanguage) {
         setChipValue('#language-chips .chip', 'lang', urlLanguage);
       }
@@ -2823,7 +2683,6 @@
     });
 
     // Initial load
-    initSortDropdown();
     loadSubjects();
     loadCatalog();
     updateFilterBadge();
