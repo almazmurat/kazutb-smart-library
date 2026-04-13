@@ -555,20 +555,12 @@
       background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
       border: 1px solid rgba(195,198,209,.7);
       box-shadow: 0 10px 24px rgba(25,28,29,.03);
-      transition: border-color .22s ease, background-color .22s ease, box-shadow .28s ease, transform .28s ease;
       cursor: pointer;
       overflow: hidden;
     }
 
     .book-card::before {
       content: none;
-    }
-
-    .book-card:hover {
-      transform: none;
-      box-shadow: 0 10px 24px rgba(25,28,29,.03);
-      border-color: rgba(195,198,209,.7);
-      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
     }
 
     .book-stage {
