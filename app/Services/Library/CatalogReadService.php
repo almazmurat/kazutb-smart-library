@@ -24,6 +24,7 @@ class CatalogReadService
         ?int $yearTo = null,
         bool $availableOnly = false,
         ?string $subjectId = null,
+        ?string $institution = null,
     ): array {
         $page = max($page, 1);
         $limit = min(max($limit, 1), 100);
@@ -105,6 +106,37 @@ class CatalogReadService
                     ->from('app.document_subjects as ds')
                     ->whereColumn('ds.document_id', 'd.document_id')
                     ->where('ds.subject_id', $subjectId);
+            });
+        }
+
+        if ($institution !== null && $institution !== '') {
+            $builder->whereExists(function ($sub) use ($institution): void {
+                $sub->select(DB::raw(1))
+                    ->from('app.document_availability_by_location_v as loc')
+                    ->whereColumn('loc.document_id', 'd.document_id');
+
+                if ($institution === 'college_library') {
+                    $sub->where(function ($q): void {
+                        $q->whereRaw("LOWER(COALESCE(loc.campus_code, '')) = ?", ['college_main'])
+                            ->orWhereRaw("LOWER(COALESCE(loc.institution_unit_code, '')) = ?", ['college'])
+                            ->orWhereRaw("LOWER(COALESCE(loc.service_point_code, '')) = ?", ['3']);
+                    });
+                } elseif ($institution === 'economic_library') {
+                    $sub->where(function ($q): void {
+                        $q->whereRaw("LOWER(COALESCE(loc.campus_code, '')) = ?", ['university_economic'])
+                            ->orWhereRaw("LOWER(COALESCE(loc.service_point_code, '')) = ?", ['1']);
+                    });
+                } elseif ($institution === 'technology_library') {
+                    $sub->where(function ($q): void {
+                        $q->whereRaw("LOWER(COALESCE(loc.campus_code, '')) = ?", ['university_technological'])
+                            ->orWhereRaw("LOWER(COALESCE(loc.service_point_code, '')) = ?", ['2']);
+                    });
+                } elseif ($institution === 'ktslib') {
+                    $sub->where(function ($q): void {
+                        $q->whereRaw("LOWER(COALESCE(loc.service_point_code, '')) = ?", ['kstlib'])
+                            ->orWhereRaw("LOWER(COALESCE(loc.campus_code, '')) = ?", ['university_central']);
+                    });
+                }
             });
         }
 

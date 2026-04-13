@@ -1040,9 +1040,9 @@
 
     .results-top {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 14px;
+      gap: 18px;
       margin-bottom: 18px;
       padding-bottom: 14px;
       border-bottom: 1px solid rgba(195,198,209,.55);
@@ -1052,26 +1052,46 @@
     .results-top strong { font-size: 22px; }
     .results-top p { margin: 6px 0 0; color: var(--muted); }
 
+    .results-toolbar {
+      display: grid;
+      gap: 10px;
+      min-width: min(100%, 560px);
+      justify-items: end;
+      margin-left: auto;
+    }
+
     .sort-box {
+      position: relative;
       display: grid;
       grid-template-columns: auto minmax(240px, 1fr);
       align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
+      gap: 14px;
+      width: 100%;
+      padding: 12px 14px;
       border-radius: var(--radius-md);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(246,248,250,.95));
-      border: 1px solid rgba(182,189,203,.65);
-      box-shadow: 0 8px 20px rgba(25,28,29,.05);
+      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(244,247,250,.96));
+      border: 1px solid rgba(182,189,203,.72);
+      box-shadow: 0 10px 24px rgba(25,28,29,.06);
       min-width: 360px;
+      overflow: hidden;
+    }
+
+    .sort-box::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: linear-gradient(180deg, #0d2c57, #14696d);
     }
 
     .sort-label {
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: .04em;
+      color: #506072;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: .08em;
       text-transform: uppercase;
       white-space: nowrap;
+      padding-left: 4px;
     }
 
     .sort-select-wrap {
@@ -1081,7 +1101,7 @@
     .sort-select-wrap::after {
       content: '▾';
       position: absolute;
-      right: 12px;
+      right: 14px;
       top: 50%;
       transform: translateY(-50%);
       color: #4b5563;
@@ -1095,13 +1115,13 @@
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      border: 1px solid rgba(177,185,199,.78);
-      background: #fff;
+      border: 1px solid rgba(169,178,194,.84);
+      background: linear-gradient(180deg, #ffffff, #f9fbfc);
       color: var(--text);
       border-radius: var(--radius-md);
-      padding: 10px 34px 10px 12px;
+      padding: 12px 38px 12px 14px;
       font: inherit;
-      font-weight: 700;
+      font-weight: 800;
       line-height: 1.3;
       transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
     }
@@ -1115,6 +1135,79 @@
       outline: none;
       border-color: rgba(0,30,64,.35);
       box-shadow: 0 0 0 3px rgba(0,30,64,.08);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .toolbar-btn {
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid rgba(182,189,203,.78);
+      background: rgba(255,255,255,.92);
+      color: #203246;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color .18s ease, background-color .18s ease, color .18s ease, box-shadow .18s ease;
+      box-shadow: 0 4px 10px rgba(25,28,29,.04);
+    }
+
+    .toolbar-btn:hover {
+      border-color: rgba(0,30,64,.28);
+      background: #fff;
+    }
+
+    .toolbar-btn:focus-visible {
+      outline: none;
+      border-color: rgba(0,30,64,.38);
+      box-shadow: 0 0 0 3px rgba(0,30,64,.08);
+    }
+
+    .toolbar-segment {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid rgba(182,189,203,.72);
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(244,247,250,.96));
+      box-shadow: 0 6px 16px rgba(25,28,29,.05);
+    }
+
+    .view-mode-btn {
+      min-height: 34px;
+      padding: 0 12px;
+      border: 0;
+      background: transparent;
+      color: #5b6775;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color .16s ease, color .16s ease;
+    }
+
+    .view-mode-btn.active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .results.results--compact .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .results.results--compact .book-card {
+      min-height: 660px;
+    }
+
+    .results.results--compact .book-stage {
+      height: 320px;
+      margin-bottom: 12px;
     }
 
     .grid {
@@ -1625,9 +1718,29 @@
       }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
+      .results-toolbar {
+        width: 100%;
+        justify-items: stretch;
+      }
       .sort-box {
         width: 100%;
         min-width: 0;
+        grid-template-columns: 1fr;
+      }
+      .toolbar-actions {
+        justify-content: stretch;
+      }
+      .toolbar-btn,
+      .toolbar-segment {
+        flex: 1 1 auto;
+      }
+      .toolbar-segment {
+        justify-content: stretch;
+      }
+      .view-mode-btn {
+        flex: 1 1 50%;
+      }
+      .results.results--compact .grid {
         grid-template-columns: 1fr;
       }
       .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
@@ -1643,6 +1756,10 @@
       .book-actions { grid-template-columns: 1fr; }
       .icon-btn { width: 100%; height: 50px; min-height: 44px; }
       .search-wrap { grid-template-columns: 1fr; }
+      .toolbar-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
       .nav { min-height: 64px; }
       .brand-text { font-size: 13px; }
       .brand-text small { font-size: 10.5px; }
@@ -1743,7 +1860,7 @@
 
           <div class="filter-group filter-group--institution">
             <span class="filter-label">{{ ['ru' => 'Институциональная коллекция', 'kk' => 'Институционалдық жинақ', 'en' => 'Institutional collection'][$lang] }}</span>
-            <select class="institution-select" id="institution-select">
+            <select class="institution-select" id="institution-select" onchange="applyFilters()">
               <option value="college_library">{{ ['ru' => 'Библиотека Колледжа', 'kk' => 'Колледж кітапханасы', 'en' => 'College Library'][$lang] }}</option>
               <option value="economic_library">{{ ['ru' => 'Экономическая библиотека', 'kk' => 'Экономикалық кітапхана', 'en' => 'Economic Library'][$lang] }}</option>
               <option value="technology_library">{{ ['ru' => 'Технологическая библиотека', 'kk' => 'Технологиялық кітапхана', 'en' => 'Technology Library'][$lang] }}</option>
@@ -1765,16 +1882,26 @@
               <strong id="results-count">{{ ['ru' => 'Найдено 0 книг', 'kk' => '0 кітап табылды', 'en' => 'Found 0 books'][$lang] }}</strong>
               <p>{{ ['ru' => 'Подборка учебной и научной литературы по выбранным параметрам.', 'kk' => 'Таңдалған параметрлер бойынша оқу және ғылыми әдебиеттер топтамасы.', 'en' => 'A filtered selection of course and research literature.'][$lang] }}</p>
             </div>
-            <div class="sort-box">
-              <span class="sort-label">{{ ['ru' => 'Сортировка', 'kk' => 'Сұрыптау', 'en' => 'Sort by'][$lang] }}</span>
-              <span class="sort-select-wrap">
-              <select class="sort-select" id="sort-select" onchange="applyFilters()">
-                <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
-                <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
-                <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
-                <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
-              </select>
-              </span>
+            <div class="results-toolbar">
+              <div class="sort-box">
+                <span class="sort-label">{{ ['ru' => 'Сортировка', 'kk' => 'Сұрыптау', 'en' => 'Sort by'][$lang] }}</span>
+                <span class="sort-select-wrap">
+                <select class="sort-select" id="sort-select" onchange="applyFilters()">
+                  <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
+                  <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
+                  <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
+                  <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
+                </select>
+                </span>
+              </div>
+              <div class="toolbar-actions">
+                <button class="toolbar-btn" type="button" id="share-view-btn" onclick="shareCatalogView()">{{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
+                <button class="toolbar-btn" type="button" onclick="clearAllFilters()">{{ ['ru' => 'Сбросить все', 'kk' => 'Барлығын тазарту', 'en' => 'Reset all'][$lang] }}</button>
+                <div class="toolbar-segment" role="group" aria-label="{{ ['ru' => 'Режим отображения', 'kk' => 'Көрсету режимі', 'en' => 'View mode'][$lang] }}">
+                  <button class="view-mode-btn active" type="button" data-view-mode="comfortable" onclick="setViewMode('comfortable')">{{ ['ru' => 'Карточки', 'kk' => 'Карточкалар', 'en' => 'Cards'][$lang] }}</button>
+                  <button class="view-mode-btn" type="button" data-view-mode="compact" onclick="setViewMode('compact')">{{ ['ru' => 'Компактно', 'kk' => 'Ықшам', 'en' => 'Compact'][$lang] }}</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1801,7 +1928,7 @@
         addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
         foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
         yearLabel: 'Год', availableOnly: 'В наличии', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
-        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри книги', previewAvailable: 'Доступно {available} из {total}. При открытии записи можно проверить экземпляры, ISBN и тематическую привязку.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить библиографию и расположение.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', isbnLabel: 'ISBN', udcLabel: 'УДК', publisherLabel: 'Издатель', copiesLabel: 'Экземпляры', trackLabel: 'Направление', locationLabel: 'Локация', coverHint: 'Открыть превью', missingMetaLabel: 'Отсутствует'
+        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', viewComfortable: 'Карточки', viewCompact: 'Компактно', insideRecord: 'Внутри книги', previewAvailable: 'Доступно {available} из {total}. При открытии записи можно проверить экземпляры, ISBN и тематическую привязку.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить библиографию и расположение.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', isbnLabel: 'ISBN', udcLabel: 'УДК', publisherLabel: 'Издатель', copiesLabel: 'Экземпляры', trackLabel: 'Направление', locationLabel: 'Локация', coverHint: 'Открыть превью', missingMetaLabel: 'Отсутствует'
       },
       kk: {
         untitled: 'Атауы жоқ', authorMissing: 'Автор жоқ', publisherMissing: 'Баспа жоқ', languageMissing: 'Тіл жоқ',
@@ -1810,7 +1937,7 @@
         addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
         foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
         yearLabel: 'Жыл', availableOnly: 'Қолда бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
-        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Кітап ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Жазбаны ашқанда даналар, ISBN және тақырыптық байланыс көрінеді.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Жазбаны ашып библиография мен орналасуды тексеріңіз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ', publisherLabel: 'Баспа', copiesLabel: 'Даналар', trackLabel: 'Бағыт', locationLabel: 'Орналасуы', coverHint: 'Превью ашу', missingMetaLabel: 'Жетпейді'
+        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', viewComfortable: 'Карточкалар', viewCompact: 'Ықшам', insideRecord: 'Кітап ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Жазбаны ашқанда даналар, ISBN және тақырыптық байланыс көрінеді.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Жазбаны ашып библиография мен орналасуды тексеріңіз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ', publisherLabel: 'Баспа', copiesLabel: 'Даналар', trackLabel: 'Бағыт', locationLabel: 'Орналасуы', coverHint: 'Превью ашу', missingMetaLabel: 'Жетпейді'
       },
       en: {
         untitled: 'Missed title', authorMissing: 'Missed author', publisherMissing: 'Missed publisher', languageMissing: 'Missed language',
@@ -1819,7 +1946,7 @@
         addShortlist: 'Add to shortlist', removeShortlist: 'Remove from shortlist', updateCatalog: 'Refreshing catalog', noResultBadge: 'No result', noBooks: 'No books found', tryChange: 'Try adjusting the search parameters.',
         foundZero: 'Found 0 books', foundMany: 'Found {count} books', retry: 'Retry', loadError: 'Catalog load error', refreshPage: 'Try refreshing the page.',
         yearLabel: 'Year', availableOnly: 'Available', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
-        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the book', previewAvailable: '{available} of {total} copies are ready now. Open the record for copies, ISBN, and subject placement.', previewUnavailable: 'Copies are currently unavailable. Open the record to review bibliography and location.', loadingBody: 'Refining the catalog view around your active filters.', isbnLabel: 'ISBN', udcLabel: 'UDC', publisherLabel: 'Publisher', copiesLabel: 'Copies', trackLabel: 'Track', locationLabel: 'Location', coverHint: 'Open preview', missingMetaLabel: 'Missing'
+        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', viewComfortable: 'Cards', viewCompact: 'Compact', insideRecord: 'Inside the book', previewAvailable: '{available} of {total} copies are ready now. Open the record for copies, ISBN, and subject placement.', previewUnavailable: 'Copies are currently unavailable. Open the record to review bibliography and location.', loadingBody: 'Refining the catalog view around your active filters.', isbnLabel: 'ISBN', udcLabel: 'UDC', publisherLabel: 'Publisher', copiesLabel: 'Copies', trackLabel: 'Track', locationLabel: 'Location', coverHint: 'Open preview', missingMetaLabel: 'Missing'
       }
     };
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
@@ -1841,6 +1968,7 @@
     }
     let currentPage = 1;
     let totalPages = 1;
+    let currentViewMode = 'comfortable';
     let activeSubjectId = '';
     let activeSubjectLabel = '';
     let subjectsData = null;
@@ -1923,11 +2051,11 @@
 
     function syncCatalogUrl(params) {
       const url = new URL(window.location.href);
-      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label', 'title', 'author', 'publisher', 'isbn', 'udc'].forEach((key) => {
+      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution', 'view'].forEach((key) => {
         url.searchParams.delete(key);
       });
 
-      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'title', 'author', 'publisher', 'isbn', 'udc'].forEach((key) => {
+      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution', 'view'].forEach((key) => {
         const value = params.get(key);
         if (value) {
           url.searchParams.set(key, value);
@@ -1945,9 +2073,70 @@
       history.replaceState(null, '', `${url.pathname}${url.search}`);
     }
 
+    function setViewMode(mode, persist = true) {
+      currentViewMode = mode === 'compact' ? 'compact' : 'comfortable';
+      const results = document.querySelector('.results');
+      results?.classList.toggle('results--compact', currentViewMode === 'compact');
+      document.querySelectorAll('.view-mode-btn').forEach((button) => {
+        button.classList.toggle('active', button.dataset.viewMode === currentViewMode);
+      });
+
+      if (persist) {
+        localStorage.setItem('catalog.viewMode', currentViewMode);
+        const url = new URL(window.location.href);
+        if (currentViewMode === 'compact') {
+          url.searchParams.set('view', 'compact');
+        } else {
+          url.searchParams.delete('view');
+        }
+        history.replaceState(null, '', `${url.pathname}${url.search}`);
+      }
+    }
+
+    async function copyTextToClipboard(text) {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+
+      const input = document.createElement('textarea');
+      input.value = text;
+      input.setAttribute('readonly', 'readonly');
+      input.style.position = 'absolute';
+      input.style.left = '-9999px';
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    }
+
+    async function shareCatalogView() {
+      const button = document.getElementById('share-view-btn');
+      const url = new URL(window.location.href);
+      if (currentViewMode === 'compact') {
+        url.searchParams.set('view', 'compact');
+      } else {
+        url.searchParams.delete('view');
+      }
+
+      try {
+        await copyTextToClipboard(url.toString());
+        if (button) {
+          const previousLabel = button.textContent;
+          button.textContent = CATALOG_I18N.shareCopied;
+          window.setTimeout(() => {
+            button.textContent = previousLabel;
+          }, 1600);
+        }
+      } catch (error) {
+        console.warn('Share view failed:', error);
+      }
+    }
+
     function resolveCatalogLocation(locations) {
       const rows = Array.isArray(locations) ? locations : [];
       if (!rows.length) return CATALOG_I18N.locationMissing;
+      const selectedInstitution = String(document.getElementById('institution-select')?.value || '').trim().toLowerCase();
 
       const normalizeText = (value) => String(value || '').trim();
       const normalizeKey = (value) => normalizeText(value).toLowerCase();
@@ -1993,6 +2182,10 @@
         if (campusCode === 'university_economic') value += 40;
         if (campusCode === 'university_technological') value += 40;
         if (campusCode === 'college_main') value += 40;
+        if (selectedInstitution === 'ktslib' && servicePointCode === 'kstlib') value += 500;
+        if (selectedInstitution === 'economic_library' && campusCode === 'university_economic') value += 500;
+        if (selectedInstitution === 'technology_library' && campusCode === 'university_technological') value += 500;
+        if (selectedInstitution === 'college_library' && (campusCode === 'college_main' || normalizeKey(location?.institutionUnit?.code) === 'college')) value += 500;
         value += Number(location?.copies?.available || 0) * 2;
         value += Number(location?.copies?.total || 0);
         return value;
@@ -2171,6 +2364,10 @@
         const availableOnly = document.getElementById('filter-available-only');
         if (availableOnly && availableOnly.checked) params.set('available_only', '1');
 
+        const institutionSelect = document.getElementById('institution-select');
+        if (institutionSelect && institutionSelect.value) params.set('institution', institutionSelect.value);
+        if (currentViewMode === 'compact') params.set('view', 'compact');
+
         if (activeSubjectId) params.set('subject_id', activeSubjectId);
         syncCatalogUrl(params);
 
@@ -2235,6 +2432,11 @@
 
       const avail = document.getElementById('filter-available-only');
       if (avail?.checked) chips.push({ label: CATALOG_I18N.availableOnly, clear: () => { avail.checked = false; } });
+      const institutionSelect = document.getElementById('institution-select');
+      if (institutionSelect?.value) {
+        const selectedOption = institutionSelect.options[institutionSelect.selectedIndex];
+        chips.push({ label: selectedOption?.text || institutionSelect.value, clear: () => { institutionSelect.value = ''; } });
+      }
       if (activeSubjectLabel) chips.push({ label: activeSubjectLabel, clear: () => { activeSubjectId = ''; activeSubjectLabel = ''; } });
 
       const advanced = getAdvancedFilters();
@@ -2266,6 +2468,7 @@
       const yearToInput = document.getElementById('year-to-input');
       const subjectSearch = document.getElementById('subject-search');
       const subjectSelect = document.getElementById('subject-select');
+      const institutionSelect = document.getElementById('institution-select');
       const sortSelect = document.getElementById('sort-select');
       const avail = document.getElementById('filter-available-only');
       const advTitle = document.getElementById('adv-title');
@@ -2279,6 +2482,7 @@
       if (yearToInput) yearToInput.value = '';
       if (subjectSearch) subjectSearch.value = '';
       if (subjectSelect) subjectSelect.value = '';
+      if (institutionSelect) institutionSelect.value = '';
       if (sortSelect) sortSelect.value = 'popular';
       if (avail) avail.checked = false;
       if (advTitle) advTitle.value = '';
@@ -2426,6 +2630,7 @@
       let count = 0;
       if (document.getElementById('filter-available-only')?.checked) count++;
       if (getActiveLanguage()) count++;
+      if (document.getElementById('institution-select')?.value) count++;
       const yearParams = getYearParams();
       if (yearParams.year_from || yearParams.year_to) count++;
       if (activeSubjectId || document.getElementById('subject-select')?.value) count++;
@@ -2544,6 +2749,8 @@
       const urlYearFrom = urlParams.get('year_from');
       const urlYearTo = urlParams.get('year_to');
       const urlAvailableOnly = urlParams.get('available_only');
+      const urlInstitution = urlParams.get('institution');
+      const urlView = urlParams.get('view');
       const urlSubjectId = urlParams.get('subject_id');
       const urlSubjectLabel = urlParams.get('subject_label');
       const urlTitle = urlParams.get('title');
@@ -2565,6 +2772,10 @@
       if (urlAvailableOnly === '1' && document.getElementById('filter-available-only')) {
         document.getElementById('filter-available-only').checked = true;
       }
+      if (urlInstitution && document.getElementById('institution-select')) {
+        document.getElementById('institution-select').value = urlInstitution;
+      }
+      setViewMode(urlView || localStorage.getItem('catalog.viewMode') || 'comfortable', false);
       if (urlYearFrom || urlYearTo) {
         const yearFromInput = document.getElementById('year-from-input');
         const yearToInput = document.getElementById('year-to-input');

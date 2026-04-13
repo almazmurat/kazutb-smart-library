@@ -27,6 +27,7 @@ class CatalogController extends Controller
             'year_to' => ['nullable', 'integer', 'min:1900', 'max:2100'],
             'available_only' => ['nullable', 'string', 'in:0,1,true,false'],
             'subject_id' => ['nullable', 'string', 'uuid'],
+            'institution' => ['nullable', 'string', 'in:college_library,economic_library,technology_library,ktslib'],
         ]);
 
         $result = $service->search(
@@ -44,6 +45,7 @@ class CatalogController extends Controller
             yearTo: isset($validated['year_to']) ? (int) $validated['year_to'] : null,
             availableOnly: in_array($validated['available_only'] ?? '0', ['1', 'true'], true),
             subjectId: isset($validated['subject_id']) ? (string) $validated['subject_id'] : null,
+            institution: isset($validated['institution']) ? (string) $validated['institution'] : null,
         );
 
         return response()->json($result);
