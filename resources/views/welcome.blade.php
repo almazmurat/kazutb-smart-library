@@ -410,6 +410,9 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
+    object-position: center;
+    transform: scale(1.18);
+    transform-origin: center;
   }
 
   .landing-campus-note {
