@@ -585,14 +585,14 @@
       justify-content: space-between;
       gap: 12px;
       color: #4c4435;
-      transition: transform .72s cubic-bezier(0.2, 0.8, 0.2, 1), opacity .24s ease;
+      transition: opacity .24s ease;
       background-image: none;
-      transform: translateX(4px) scale(.985);
+      transform: none;
       opacity: 0;
     }
 
     .book-card:hover .book-body {
-      transform: translateX(10px) scale(1);
+      transform: none;
       opacity: 1;
     }
 
