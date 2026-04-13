@@ -221,10 +221,7 @@
     }
 
     .layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 24px;
-      align-items: start;
+      display: block;
     }
 
     .card {
@@ -235,17 +232,20 @@
     }
 
     .filters {
-      padding: 24px;
-      position: sticky;
-      top: var(--shell-sticky-offset);
-      background: #ffffff;
+      margin-bottom: 18px;
+      padding: 22px;
+      position: static;
+      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(247,248,249,.96));
+      overflow: hidden;
     }
 
     .filter-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 14px;
       margin-bottom: 16px;
+      flex-wrap: wrap;
     }
 
     .filter-title {
@@ -291,17 +291,13 @@
 
     .mobile-filter-toggle {
       display: none;
-      width: 100%;
-      padding: 14px 16px;
-      font-size: 15px;
-      font-weight: 800;
-      background: rgba(255,255,255,.88);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      cursor: pointer;
-      text-align: center;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-soft);
+    }
+
+    #filters-body {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
     }
 
     .filter-toolbar {
@@ -360,15 +356,18 @@
     }
 
     .filter-group {
-      margin-bottom: 22px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(195,198,209,.45);
+      margin: 0;
+      padding: 16px;
+      border: 1px solid rgba(195,198,209,.6);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.82);
     }
-    .filter-group:last-child {
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: 0;
-    }
+
+    .filter-group--availability { grid-column: span 2; }
+    .filter-group--language { grid-column: span 3; }
+    .filter-group--year { grid-column: span 4; }
+    .filter-group--subject { grid-column: span 3; }
 
     .filter-label {
       display: flex;
@@ -503,9 +502,19 @@
     }
 
     .filter-footer {
-      display: grid;
-      gap: 10px;
-      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-footer-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .active-filters {
@@ -572,7 +581,7 @@
 
     .results-top {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 14px;
       margin-bottom: 18px;
@@ -597,7 +606,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 22px;
       align-items: stretch;
     }
@@ -612,7 +621,7 @@
       background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(245,247,248,.96));
       border: 1px solid rgba(195,198,209,.7);
       box-shadow: 0 10px 24px rgba(25,28,29,.03);
-      transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+      transition: border-color .22s ease, background-color .22s ease, box-shadow .28s ease, transform .28s ease;
       cursor: pointer;
       overflow: hidden;
     }
@@ -627,7 +636,7 @@
     }
 
     .book-card:hover {
-      transform: none;
+      transform: translate3d(0, -2px, 0);
       box-shadow: 0 14px 28px rgba(25,28,29,.05);
       border-color: rgba(0,30,64,.12);
       background: rgba(248,249,250,.99);
@@ -635,30 +644,33 @@
 
     .book-stage {
       position: relative;
-      height: 310px;
+      height: 330px;
       margin-bottom: 16px;
-      perspective: none;
+      perspective: 2200px;
+      transform-style: preserve-3d;
     }
 
     .book-body {
       position: absolute;
-      inset: 10px 10px 6px 12px;
+      inset: 10px 14px 8px 16px;
       border-radius: 6px 14px 14px 6px;
       background: linear-gradient(180deg, #f2e7cb 0%, #e6d4ad 100%);
       border: 1px solid rgba(161,134,83,.34);
       box-shadow: inset 10px 0 18px rgba(75, 57, 29, .07), 0 18px 30px rgba(25,28,29,.10);
-      padding: 16px 18px 18px;
+      padding: 18px 18px 18px 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 12px;
       color: #4c4435;
-      transition: none;
+      transition: transform .72s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .72s cubic-bezier(0.2, 0.8, 0.2, 1);
       background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 2px, rgba(93,74,38,.05) 3px);
+      transform: translateX(4px) scale(.985);
     }
 
     .book-card:hover .book-body {
-      transform: none;
+      transform: translateX(10px) scale(1);
+      box-shadow: inset 10px 0 18px rgba(75, 57, 29, .07), 0 24px 36px rgba(25,28,29,.14);
     }
 
     .book-body-copy {
@@ -680,11 +692,12 @@
       line-height: 1.65;
       color: #625740;
       max-width: 92%;
+      min-height: 58px;
     }
 
     .book-body-meta {
       display: grid;
-      gap: 8px;
+      gap: 7px;
     }
 
     .book-body-meta-row {
@@ -731,10 +744,10 @@
       border-radius: 6px 16px 16px 6px;
       padding: 18px 18px 20px 24px;
       transform-origin: left center;
-      transform-style: flat;
+      transform-style: preserve-3d;
       backface-visibility: hidden;
-      will-change: auto;
-      transition: box-shadow .2s ease;
+      will-change: transform;
+      transition: transform .88s cubic-bezier(0.34, 1.2, 0.2, 1), box-shadow .32s ease;
       border-left: 10px solid rgba(0,0,0,.18);
       display: flex;
       flex-direction: column;
@@ -744,24 +757,16 @@
     }
 
     .book-cover::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.03), transparent 45%, rgba(0,0,0,.08) 100%);
-      pointer-events: none;
+      content: none;
     }
 
     .book-cover::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,0));
-      pointer-events: none;
+      content: none;
     }
 
     .book-card:hover .book-cover {
-      transform: none;
-      box-shadow: 6px 18px 28px rgba(25,28,29,.14);
+      transform: rotateY(-108deg);
+      box-shadow: 24px 18px 40px rgba(25,28,29,.16);
     }
 
     .tone-navy { background: linear-gradient(180deg, #263d63 0%, #172943 100%); }
@@ -806,6 +811,15 @@
       font-size: 12px;
       font-weight: 600;
       letter-spacing: .06em;
+    }
+
+    .cover-hint {
+      margin-top: 10px;
+      color: rgba(255,255,255,.42);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
     }
 
     .meta-row {
@@ -1019,17 +1033,16 @@
     }
 
     @media (max-width: 1200px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .grid .book-card:nth-child(3n + 2) { transform: none; }
+      #filters-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-group--availability,
+      .filter-group--language,
+      .filter-group--year,
+      .filter-group--subject {
+        grid-column: span 1;
+      }
     }
 
     @media (max-width: 920px) {
-      .layout { grid-template-columns: 1fr; }
-      .filters { position: static; top: auto; }
-      .filter-header { display: none; }
-      .mobile-filter-toggle { display: block; }
-      #filters-body { display: none; }
-      #filters-body.open { display: block; }
       .grid { grid-template-columns: 1fr; }
       .search-wrap { grid-template-columns: 1fr auto !important; }
       .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
@@ -1039,6 +1052,7 @@
       .container { width: min(100% - 20px, var(--container)); }
       .hero, .filters, .results { padding: 18px; }
       .grid { grid-template-columns: 1fr; }
+      #filters-body { grid-template-columns: 1fr; }
       .range-row { grid-template-columns: 1fr; }
       .book-stage { height: 280px; }
       .book-actions { grid-template-columns: 1fr; }
@@ -1074,31 +1088,9 @@
             <h2 class="filter-title">{{ ['ru' => 'Фильтры', 'kk' => 'Сүзгілер', 'en' => 'Filters'][$lang] }} <span id="filter-count-badge" class="filter-badge" style="display:none;"></span></h2>
             <button type="button" class="btn-clear-filters" id="clear-filters-btn" style="display:none;" onclick="clearAllFilters()">✕ {{ ['ru' => 'Сбросить', 'kk' => 'Тазарту', 'en' => 'Reset'][$lang] }}</button>
           </div>
-          <button type="button" class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleFilters()">
-            🔎 {{ ['ru' => 'Фильтры', 'kk' => 'Сүзгілер', 'en' => 'Filters'][$lang] }} <span id="mobile-filter-count"></span>
-          </button>
-          <div class="filter-toolbar">
-            <div class="filter-lead">
-              <strong>{{ ['ru' => 'Премиальные сценарии поиска', 'kk' => 'Премиум іздеу сценарийлері', 'en' => 'Premium search modes'][$lang] }}</strong>
-              <p>{{ ['ru' => 'Комбинируйте быстрые режимы, точный диапазон лет и тематический поиск без перегрузки интерфейса.', 'kk' => 'Жылдам режимдерді, нақты жыл ауқымын және тақырыптық іздеуді интерфейсті ауырлатпай біріктіріңіз.', 'en' => 'Blend quick modes, precise year ranges, and subject search without overloading the interface.'][$lang] }}</p>
-            </div>
-            <div class="filter-toolbar-actions">
-              <button type="button" class="filter-action-pill" id="share-catalog-view" onclick="copyCatalogLink()">🔗 {{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
-            </div>
-          </div>
           <div id="filters-body">
 
-          <div class="filter-group">
-            <span class="filter-label">{{ ['ru' => 'Готовые режимы', 'kk' => 'Дайын режимдер', 'en' => 'Quick modes'][$lang] }}</span>
-            <div class="preset-grid" id="preset-chips">
-              <button type="button" class="preset-chip" data-preset="available_recent"><span>⚡ {{ ['ru' => 'Свежие и доступные', 'kk' => 'Жаңа әрі қолжетімді', 'en' => 'Recent & available'][$lang] }}</span><span>{{ ['ru' => 'сейчас', 'kk' => 'қазір', 'en' => 'now'][$lang] }}</span></button>
-              <button type="button" class="preset-chip" data-preset="english_research"><span>🌐 {{ ['ru' => 'Исследования на English', 'kk' => 'English зерттеулері', 'en' => 'English research'][$lang] }}</span><span>{{ ['ru' => 'глобально', 'kk' => 'ғаламдық', 'en' => 'global'][$lang] }}</span></button>
-              <button type="button" class="preset-chip" data-preset="syllabus"><span>🎓 {{ ['ru' => 'Для силлабуса', 'kk' => 'Силлабус үшін', 'en' => 'Syllabus set'][$lang] }}</span><span>{{ ['ru' => 'курс', 'kk' => 'курс', 'en' => 'course'][$lang] }}</span></button>
-            </div>
-            <div class="filter-meta">{{ ['ru' => 'Один клик применяет сбалансированную комбинацию фильтров и сортировки.', 'kk' => 'Бір басу сүзгілер мен сұрыптаудың теңгерімді комбинациясын қолданады.', 'en' => 'One click applies a balanced combination of filters and sorting.'][$lang] }}</div>
-          </div>
-
-          <div class="filter-group">
+          <div class="filter-group filter-group--availability">
             <span class="filter-label">{{ ['ru' => 'Доступность', 'kk' => 'Қолжетімділік', 'en' => 'Availability'][$lang] }}</span>
             <div class="check-list">
               <label class="check-item">
@@ -1107,7 +1099,7 @@
             </div>
           </div>
 
-          <div class="filter-group">
+          <div class="filter-group filter-group--language">
             <span class="filter-label">{{ ['ru' => 'Язык', 'kk' => 'Тіл', 'en' => 'Language'][$lang] }}</span>
             <div class="chips" id="language-chips">
               <button type="button" class="chip active" data-lang="">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
@@ -1117,7 +1109,7 @@
             </div>
           </div>
 
-          <div class="filter-group">
+          <div class="filter-group filter-group--year">
             <span class="filter-label">{{ ['ru' => 'Год издания', 'kk' => 'Басылым жылы', 'en' => 'Publication year'][$lang] }}</span>
             <div class="chips" id="year-chips">
               <button type="button" class="chip active" data-year="">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
@@ -1137,10 +1129,9 @@
                 <input type="number" id="year-to-input" class="range-input" min="1900" max="2100" placeholder="2026">
               </label>
             </div>
-            <div class="filter-meta">{{ ['ru' => 'Для точной выборки задайте собственный диапазон лет — он имеет приоритет над быстрыми чипами.', 'kk' => 'Нақты іріктеу үшін өз жыл ауқымыңызды орнатыңыз — ол жылдам чиптерден басым болады.', 'en' => 'Set a custom year range for precise discovery — it overrides the quick chips above.'][$lang] }}</div>
           </div>
 
-          <div class="filter-group" id="subject-filter-group">
+          <div class="filter-group filter-group--subject" id="subject-filter-group">
             <span class="filter-label">{{ ['ru' => 'Направление / Специальность', 'kk' => 'Бағыт / Мамандану', 'en' => 'Track / specialization'][$lang] }}</span>
             <input type="search" class="subject-search" id="subject-search" placeholder="{{ ['ru' => 'Быстрый поиск по направлениям', 'kk' => 'Бағыттар бойынша жылдам іздеу', 'en' => 'Quick subject search'][$lang] }}" oninput="filterSubjectOptions(this.value)">
             <select class="subject-select" id="subject-select" onchange="applyFilters()">
@@ -1151,7 +1142,19 @@
           </div>{{-- /filters-body --}}
 
           <div class="filter-footer">
-            <button class="btn btn-primary" style="width:100%;" onclick="applyFilters()">{{ ['ru' => 'Применить фильтры', 'kk' => 'Сүзгілерді қолдану', 'en' => 'Apply filters'][$lang] }}</button>
+            <div class="filter-footer-actions">
+              <div class="sort-box">
+                <span style="color:var(--muted); font-weight:600;">{{ ['ru' => 'Сортировка:', 'kk' => 'Сұрыптау:', 'en' => 'Sort by:'][$lang] }}</span>
+                <select class="select" id="sort-select" style="min-width:220px;" onchange="applyFilters()">
+                  <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
+                  <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
+                  <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
+                  <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
+                </select>
+              </div>
+              <button type="button" class="filter-action-pill" id="share-catalog-view" onclick="copyCatalogLink()">🔗 {{ ['ru' => 'Поделиться видом', 'kk' => 'Көріністі бөлісу', 'en' => 'Share view'][$lang] }}</button>
+            </div>
+            <button class="btn btn-primary" onclick="applyFilters()">{{ ['ru' => 'Применить фильтры', 'kk' => 'Сүзгілерді қолдану', 'en' => 'Apply filters'][$lang] }}</button>
           </div>
         </aside>
 
@@ -1161,15 +1164,6 @@
             <div>
               <strong id="results-count">{{ ['ru' => 'Найдено 0 книг', 'kk' => '0 кітап табылды', 'en' => 'Found 0 books'][$lang] }}</strong>
               <p>{{ ['ru' => 'Подборка учебной и научной литературы по выбранным параметрам.', 'kk' => 'Таңдалған параметрлер бойынша оқу және ғылыми әдебиеттер топтамасы.', 'en' => 'A filtered selection of course and research literature.'][$lang] }}</p>
-            </div>
-            <div class="sort-box">
-              <span style="color:var(--muted); font-weight:600;">{{ ['ru' => 'Сортировка:', 'kk' => 'Сұрыптау:', 'en' => 'Sort by:'][$lang] }}</span>
-              <select class="select" id="sort-select" style="min-width:220px;" onchange="applyFilters()">
-                <option value="popular">{{ ['ru' => 'Сначала популярные', 'kk' => 'Алдымен танымалдары', 'en' => 'Most relevant first'][$lang] }}</option>
-                <option value="newest">{{ ['ru' => 'Сначала новые', 'kk' => 'Алдымен жаңалары', 'en' => 'Newest first'][$lang] }}</option>
-                <option value="title">{{ ['ru' => 'По названию', 'kk' => 'Атауы бойынша', 'en' => 'By title'][$lang] }}</option>
-                <option value="author">{{ ['ru' => 'По автору', 'kk' => 'Автор бойынша', 'en' => 'By author'][$lang] }}</option>
-              </select>
             </div>
           </div>
 
@@ -1195,7 +1189,7 @@
         addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
         foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
         yearLabel: 'Год', availableOnly: 'В наличии', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
-        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри записи', previewAvailable: 'Доступно {available} из {total}. Откройте запись для полной библиографии и действий.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить цифровой доступ.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', formatHybrid: 'Печатная + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'УДК'
+        faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', insideRecord: 'Внутри книги', previewAvailable: 'Доступно {available} из {total}. При открытии записи можно проверить экземпляры, ISBN и тематическую привязку.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить цифровой доступ и библиографию.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', formatHybrid: 'Печатная + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'УДК', publisherLabel: 'Издатель', copiesLabel: 'Экземпляры', trackLabel: 'Направление', coverHint: 'Открыть превью'
       },
       kk: {
         untitled: 'Атауы жоқ', authorMissing: 'Автор көрсетілмеген', publisherMissing: 'Баспа көрсетілмеген', languageMissing: 'Көрсетілмеген',
@@ -1203,7 +1197,7 @@
         addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
         foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
         yearLabel: 'Жыл', availableOnly: 'Қолда бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
-        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Жазба ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Толық библиография мен әрекеттер үшін жазбаны ашыңыз.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Цифрлық қолжетімділікті тексеру үшін жазбаны ашыңыз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', formatHybrid: 'Баспа + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ'
+        faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', insideRecord: 'Кітап ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Жазбаны ашқанда даналар, ISBN және тақырыптық байланыс көрінеді.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Цифрлық қолжетімділік пен библиографияны тексеру үшін жазбаны ашыңыз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', formatHybrid: 'Баспа + PDF', formatDigital: 'PDF', formatLabel: 'Формат', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ', publisherLabel: 'Баспа', copiesLabel: 'Даналар', trackLabel: 'Бағыт', coverHint: 'Превью ашу'
       },
       en: {
         untitled: 'Untitled', authorMissing: 'Author not specified', publisherMissing: 'Publisher not specified', languageMissing: 'Not specified',
@@ -1211,7 +1205,7 @@
         addShortlist: 'Add to shortlist', removeShortlist: 'Remove from shortlist', updateCatalog: 'Refreshing catalog', noResultBadge: 'No result', noBooks: 'No books found', tryChange: 'Try adjusting the search parameters.',
         foundZero: 'Found 0 books', foundMany: 'Found {count} books', retry: 'Retry', loadError: 'Catalog load error', refreshPage: 'Try refreshing the page.',
         yearLabel: 'Year', availableOnly: 'Available', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
-        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the record', previewAvailable: '{available} of {total} copies are ready now. Open the record for full bibliography and actions.', previewUnavailable: 'Copies are currently unavailable. Open the record to review digital access options.', loadingBody: 'Refining the catalog view around your active filters.', formatHybrid: 'Print + PDF', formatDigital: 'PDF', formatLabel: 'Format', isbnLabel: 'ISBN', udcLabel: 'UDC'
+        faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', insideRecord: 'Inside the book', previewAvailable: '{available} of {total} copies are ready now. Open the record for copies, ISBN, and subject placement.', previewUnavailable: 'Copies are currently unavailable. Open the record to review digital access and bibliography.', loadingBody: 'Refining the catalog view around your active filters.', formatHybrid: 'Print + PDF', formatDigital: 'PDF', formatLabel: 'Format', isbnLabel: 'ISBN', udcLabel: 'UDC', publisherLabel: 'Publisher', copiesLabel: 'Copies', trackLabel: 'Track', coverHint: 'Open preview'
       }
     };
     const CATALOG_I18N = CATALOG_I18N_MAP[CATALOG_LANG] || CATALOG_I18N_MAP.ru;
@@ -1270,49 +1264,9 @@
       });
     }
 
-    function updatePresetButtons() {
-      document.querySelectorAll('#preset-chips .preset-chip').forEach((button) => {
-        button.classList.toggle('active', button.dataset.preset === activePreset);
-      });
-    }
+    function updatePresetButtons() {}
 
-    function applyPreset(preset) {
-      activePreset = preset;
-      updatePresetButtons();
-
-      const availableOnly = document.getElementById('filter-available-only');
-      const yearFromInput = document.getElementById('year-from-input');
-      const yearToInput = document.getElementById('year-to-input');
-      const sortSelect = document.getElementById('sort-select');
-
-      if (availableOnly) availableOnly.checked = false;
-      if (yearFromInput) yearFromInput.value = '';
-      if (yearToInput) yearToInput.value = '';
-      setChipValue('#language-chips .chip', 'lang', '');
-      setChipValue('#year-chips .chip', 'year', '');
-      if (sortSelect) sortSelect.value = 'popular';
-
-      if (preset === 'available_recent') {
-        if (availableOnly) availableOnly.checked = true;
-        setChipValue('#year-chips .chip', 'year', '2024');
-        if (sortSelect) sortSelect.value = 'newest';
-      }
-
-      if (preset === 'english_research') {
-        setChipValue('#language-chips .chip', 'lang', 'en');
-        setChipValue('#year-chips .chip', 'year', '2020-2022');
-        if (sortSelect) sortSelect.value = 'author';
-      }
-
-      if (preset === 'syllabus') {
-        if (availableOnly) availableOnly.checked = true;
-        if (yearFromInput) yearFromInput.value = '2018';
-        if (yearToInput) yearToInput.value = String(new Date().getFullYear());
-        if (sortSelect) sortSelect.value = 'title';
-      }
-
-      applyFilters();
-    }
+    function applyPreset() {}
 
     async function copyCatalogLink() {
       const button = document.getElementById('share-catalog-view');
@@ -1402,6 +1356,7 @@
       const isAvailable = data.available > 0;
       const identifier = data.isbn || data.id;
       const tone = ['tone-navy', 'tone-wine', 'tone-forest', 'tone-wood'][index % 4];
+      const trackValue = data.specialization || data.department || '—';
       const subjectBadge = data.specialization
         ? `<span class="tag subject" title="${escapeHtml(data.specialization)}">${escapeHtml(data.specialization.length > 25 ? data.specialization.substring(0, 25) + '…' : data.specialization)}</span>`
         : (data.department ? `<span class="tag subject" title="${escapeHtml(data.department)}">${escapeHtml(data.department.length > 25 ? data.department.substring(0, 25) + '…' : data.department)}</span>` : '');
@@ -1423,11 +1378,13 @@
                   <div class="book-body-preview">${escapeHtml(previewSummary)}</div>
                 </div>
                 <div class="book-body-meta">
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.publisherLabel}</span><strong>${escapeHtml(data.publisher.substring(0, 40))}</strong></div>
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.copiesLabel}</span><strong>${isAvailable ? `${data.available}/${data.total}` : CATALOG_I18N.unavailable}</strong></div>
                   <div class="book-body-meta-row"><span>${CATALOG_I18N.isbnLabel}</span><strong>${escapeHtml(isbnValue)}</strong></div>
-                  <div class="book-body-meta-row"><span>${CATALOG_I18N.udcLabel}</span><strong>${escapeHtml(udcValue)}</strong></div>
+                  <div class="book-body-meta-row"><span>${CATALOG_I18N.trackLabel}</span><strong>${escapeHtml(String(trackValue).substring(0, 34))}</strong></div>
                 </div>
               </div>
-              <span class="book-body-stat">${escapeHtml(data.format)} · ${escapeHtml(data.language)}</span>
+              <span class="book-body-stat">${escapeHtml(data.format)} · ${escapeHtml(data.language)} · ${escapeHtml(String(data.year))}</span>
             </div>
             <div class="book-cover ${tone}">
               <span class="cover-year">${escapeHtml(String(data.year))}</span>
@@ -1435,6 +1392,7 @@
                 <div class="cover-kicker">${escapeHtml(data.publisher.substring(0, 24))}</div>
                 <h3 class="cover-title">${escapeHtml(data.title.substring(0, 42))}</h3>
                 <div class="cover-subline">${escapeHtml(data.author.substring(0, 36))}</div>
+                <div class="cover-hint">${CATALOG_I18N.coverHint}</div>
               </div>
             </div>
           </div>
@@ -1816,10 +1774,6 @@
         this.classList.add('active');
         applyFilters();
       });
-    });
-
-    document.querySelectorAll('#preset-chips .preset-chip').forEach((chip) => {
-      chip.addEventListener('click', () => applyPreset(chip.dataset.preset || ''));
     });
 
     ['year-from-input', 'year-to-input'].forEach((id) => {
