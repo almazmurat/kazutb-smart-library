@@ -76,6 +76,12 @@
         "dev:catalog-paths": [
             "bash scripts/dev/check-public-catalog-paths.sh"
         ],
+        "dev:memory-fragment": [
+            "python3 obsidian_brain_sync.py --fragments-only"
+        ],
+        "dev:memory-capture": [
+            "bash scripts/dev/obsidian-memory-capture.sh"
+        ],
         "test:catalog-paths": [
             "@dev:catalog-paths"
         ],
