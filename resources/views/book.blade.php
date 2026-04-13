@@ -47,6 +47,9 @@
             font-family: 'Manrope', system-ui, sans-serif;
             color: var(--text);
             background: #f8f9fa;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
 
         a { color: inherit; text-decoration: none; }
@@ -924,7 +927,7 @@
             width: 100%;
             border-radius: 0;
             min-height: 48px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
         }
 
@@ -950,7 +953,7 @@
             margin: 0 0 8px;
             color: #293344;
             font-size: 12px;
-            letter-spacing: .12em;
+            letter-spacing: .09em;
             text-transform: uppercase;
             font-weight: 800;
         }
@@ -984,9 +987,9 @@
         }
 
         .crumb-line {
-            font-size: 10px;
-            letter-spacing: .08em;
-            color: #7f8a98;
+            font-size: 11px;
+            letter-spacing: .06em;
+            color: #667384;
             text-transform: uppercase;
             font-weight: 700;
         }
@@ -994,26 +997,26 @@
         .detail-title {
             margin: 4px 0 0;
             font-family: 'Newsreader', Georgia, serif;
-            font-size: clamp(42px, 5vw, 58px);
-            line-height: .95;
+            font-size: clamp(40px, 4.6vw, 54px);
+            line-height: 1.02;
             color: #0a2247;
-            letter-spacing: -.8px;
+            letter-spacing: -.35px;
             max-width: 900px;
         }
 
         .detail-subline {
             margin: 0;
-            font-size: 32px;
+            font-size: clamp(24px, 2.9vw, 30px);
             color: #334155;
             font-style: italic;
-            line-height: 1.12;
+            line-height: 1.28;
         }
 
         .detail-subline .edition {
             font-style: normal;
             color: #16717d;
             margin-left: 8px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
         }
 
@@ -1053,7 +1056,8 @@
         .access-banner p {
             margin: 0;
             color: rgba(230, 236, 243, .92);
-            font-size: 12px;
+            font-size: 13px;
+            line-height: 1.45;
             max-width: 430px;
         }
 
@@ -1070,8 +1074,8 @@
             min-height: 40px;
             border-radius: 0;
             padding: 0 14px;
-            font-size: 11px;
-            letter-spacing: .07em;
+            font-size: 12px;
+            letter-spacing: .04em;
             text-transform: uppercase;
             font-weight: 800;
         }
@@ -1101,8 +1105,8 @@
 
         .section-head {
             margin: 0 0 12px;
-            font-size: 12px;
-            letter-spacing: .1em;
+            font-size: 13px;
+            letter-spacing: .07em;
             text-transform: uppercase;
             color: #334155;
             font-weight: 800;
@@ -1127,15 +1131,15 @@
             display: flex;
             justify-content: space-between;
             gap: 14px;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #e7ebf0;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .meta-line span:first-child {
             color: #64748b;
-            font-size: 10px;
-            letter-spacing: .08em;
+            font-size: 11px;
+            letter-spacing: .05em;
             text-transform: uppercase;
             font-weight: 800;
             flex: 0 0 auto;
@@ -1159,7 +1163,7 @@
             border: 1px solid #d8dde3;
             background: #f8fafc;
             padding: 10px;
-            min-height: 86px;
+            min-height: 96px;
             display: grid;
             align-content: start;
             gap: 4px;
@@ -1167,15 +1171,15 @@
 
         .fact-card span {
             color: #64748b;
-            font-size: 10px;
-            letter-spacing: .08em;
+            font-size: 11px;
+            letter-spacing: .05em;
             text-transform: uppercase;
             font-weight: 800;
         }
 
         .fact-card strong {
             color: #0b2a55;
-            font-size: 24px;
+            font-size: 28px;
             line-height: 1;
             font-family: 'Newsreader', Georgia, serif;
             overflow-wrap: anywhere;
@@ -1183,7 +1187,7 @@
 
         .fact-card small {
             color: #5a6673;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             line-height: 1.3;
         }
@@ -1222,8 +1226,9 @@
             margin: 0;
             font-family: 'Newsreader', Georgia, serif;
             color: #0a2247;
-            font-size: 46px;
-            letter-spacing: -.6px;
+            font-size: clamp(34px, 4.2vw, 42px);
+            letter-spacing: -.3px;
+            line-height: 1.05;
         }
 
         .similar-head a {
@@ -1319,19 +1324,19 @@
             gap: 8px;
             padding-top: 6px;
             border-top: 1px solid rgba(124, 110, 84, .14);
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .catalog-book-body-row span {
             color: #7c6e54;
             font-weight: 800;
-            letter-spacing: .08em;
+            letter-spacing: .04em;
             text-transform: uppercase;
         }
 
         .catalog-book-body-row strong {
             color: #403623;
-            font-size: 10px;
+            font-size: 11px;
             text-align: right;
             max-width: 58%;
             word-break: break-word;
@@ -1375,9 +1380,9 @@
             border-radius: 999px;
             background: rgba(255,255,255,.09);
             color: rgba(255,255,255,.88);
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 800;
-            letter-spacing: .08em;
+            letter-spacing: .04em;
             text-transform: uppercase;
         }
 
@@ -1386,16 +1391,16 @@
             border-radius: 999px;
             background: rgba(255,255,255,.09);
             color: rgba(255,255,255,.88);
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 800;
-            letter-spacing: .06em;
+            letter-spacing: .03em;
             text-transform: uppercase;
         }
 
         .catalog-cover-kicker {
             color: rgba(255,255,255,.64);
-            font-size: 11px;
-            letter-spacing: .08em;
+            font-size: 12px;
+            letter-spacing: .04em;
             text-transform: uppercase;
             font-weight: 700;
         }
@@ -1404,9 +1409,9 @@
             margin: 6px 0 0;
             color: #f2d79b;
             font-family: 'Newsreader', Georgia, serif;
-            font-size: clamp(30px, 3.1vw, 44px);
-            line-height: .92;
-            letter-spacing: -.8px;
+            font-size: clamp(30px, 3vw, 42px);
+            line-height: 1;
+            letter-spacing: -.45px;
             max-width: 100%;
             overflow-wrap: anywhere;
             word-break: break-word;
@@ -1420,7 +1425,7 @@
         .catalog-cover-subline {
             margin-top: 6px;
             color: rgba(255,255,255,.84);
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1429,9 +1434,9 @@
 
         .catalog-cover-isbn {
             color: rgba(255,255,255,.68);
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: .12em;
+            letter-spacing: .07em;
             text-transform: uppercase;
         }
 
@@ -1440,7 +1445,7 @@
             margin-top: 3px;
             color: #fff;
             letter-spacing: .02em;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             line-height: 1.1;
             overflow-wrap: anywhere;
@@ -1458,7 +1463,7 @@
             align-items: center;
             padding: 4px 9px;
             border-radius: 2px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 800;
             color: #1f3552;
             background: #eef2f7;
@@ -1472,18 +1477,18 @@
 
         .catalog-copy h3 {
             margin: 0 0 8px;
-            font-size: clamp(30px, 3vw, 44px);
+            font-size: clamp(28px, 2.8vw, 40px);
             font-family: 'Newsreader', Georgia, serif;
-            line-height: .95;
+            line-height: 1.03;
             color: #0b2a55;
             overflow-wrap: anywhere;
         }
 
         .catalog-copy p {
             margin: 0;
-            color: #5a6673;
-            line-height: 1.4;
-            font-size: 12px;
+            color: #4f5f71;
+            line-height: 1.5;
+            font-size: 13px;
         }
 
         .catalog-book-info {
@@ -1497,13 +1502,13 @@
             align-items: baseline;
             justify-content: space-between;
             gap: 12px;
-            padding: 8px 0;
+            padding: 9px 0;
             border-bottom: 1px solid #e7ebf0;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .catalog-book-info-row span:first-child {
-            color: #6b7280;
+            color: #5f6d7d;
         }
 
         .catalog-book-info-row span:last-child {
@@ -1517,7 +1522,7 @@
         .catalog-missing {
             margin-top: 8px;
             color: #9f1239;
-            font-size: 12px;
+            font-size: 13px;
             line-height: 1.5;
         }
 
@@ -1534,7 +1539,7 @@
         }
 
         .catalog-book-card--mini .catalog-cover-title {
-            font-size: 20px;
+            font-size: 21px;
             -webkit-line-clamp: 2;
         }
 
@@ -1547,8 +1552,8 @@
         }
 
         .catalog-book-card--mini .catalog-copy h3 {
-            font-size: 16px;
-            line-height: 1.2;
+            font-size: 17px;
+            line-height: 1.28;
         }
 
         .similar-link {
@@ -1656,6 +1661,16 @@
         }
 
         @media (max-width: 560px) {
+            .detail-title {
+                font-size: 36px;
+                line-height: 1.05;
+            }
+
+            .detail-subline {
+                font-size: 22px;
+                line-height: 1.35;
+            }
+
             .access-banner {
                 flex-direction: column;
                 align-items: flex-start;
