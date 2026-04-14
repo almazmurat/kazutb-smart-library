@@ -990,10 +990,9 @@
 
     .workspace-main {
       min-width: 0;
-      display: flex;
-      flex-direction: column;
+      display: grid;
       gap: 28px;
-      min-height: 100%;
+      align-content: start;
     }
 
     .metric-grid {
@@ -1081,9 +1080,8 @@
 
     .workspace-panel--activity {
       min-height: 300px;
-      display: flex;
-      flex: 1 1 auto;
-      flex-direction: column;
+      display: grid;
+      align-content: start;
     }
 
     .rail-panel--waitlist {
@@ -1148,7 +1146,6 @@
 
     #activity-list {
       min-height: 214px;
-      flex: 1 1 auto;
     }
 
     #reservations-grid {
