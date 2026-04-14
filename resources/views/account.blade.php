@@ -985,15 +985,15 @@
       display: grid;
       grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
       gap: 28px;
-      align-items: start;
+      align-items: stretch;
     }
 
     .workspace-main {
       min-width: 0;
       display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
       gap: 28px;
       align-content: start;
-      align-self: start;
     }
 
     .metric-grid {
@@ -1080,9 +1080,10 @@
     }
 
     .workspace-panel--activity {
-      min-height: 300px;
+      min-height: 0;
+      height: 100%;
       display: grid;
-      align-content: start;
+      grid-template-rows: auto minmax(0, 1fr) auto;
     }
 
     .rail-panel--waitlist {
@@ -1412,7 +1413,6 @@
       display: grid;
       gap: 22px;
       align-content: start;
-      align-self: start;
     }
 
     .rail-panel h4,
