@@ -499,6 +499,132 @@
           ['label' => 'Support', 'title' => 'Need library hours, policies, or a contact route', 'body' => 'Open the contacts page and use the real service channels instead of generic promo blocks.', 'href' => '/contacts', 'action' => 'Contacts'],
       ],
   ][$lang];
+
+      $normalizeInternalAction = function (string $label, string $href, array $query = []) use ($withLang): array {
+        return [
+          'label' => $label,
+          'href' => $withLang($href, $query),
+          'external' => false,
+        ];
+      };
+
+      $normalizeExternalAction = function (string $label, string $href): array {
+        return [
+          'label' => $label,
+          'href' => $href,
+          'external' => true,
+        ];
+      };
+
+      $normalizeHoursLocations = function (array $items): array {
+        return array_map(static function (array $item): array {
+          return [
+            'title' => (string) ($item['title'] ?? $item['label'] ?? ''),
+            'schedule' => (string) ($item['schedule'] ?? $item['hours'] ?? ''),
+            'location' => (string) ($item['location'] ?? $item['meta'] ?? ''),
+            'note' => (string) ($item['note'] ?? ''),
+            'action' => $item['action'] ?? null,
+          ];
+        }, $items);
+      };
+
+      $normalizeEvents = function (array $items): array {
+        return array_map(static function (array $item): array {
+          return [
+            'title' => (string) ($item['title'] ?? ''),
+            'date' => (string) ($item['date'] ?? ''),
+            'time' => (string) ($item['time'] ?? ''),
+            'category' => (string) ($item['category'] ?? $item['type'] ?? ''),
+            'link' => $item['link'] ?? null,
+          ];
+        }, $items);
+      };
+
+      $normalizeTrustStats = function (array $items): array {
+        return array_map(static function (array $item): array {
+          return [
+            'value' => (string) ($item['value'] ?? ''),
+            'label' => (string) ($item['label'] ?? ''),
+          ];
+        }, $items);
+      };
+
+      $subjectSection = [
+        'eyebrow' => $copy['subject_eyebrow'],
+        'title' => $copy['subject_title'],
+        'catalog_action' => $normalizeInternalAction($copy['subject_link'], '/discover'),
+        'items' => $subjectCards,
+      ];
+
+        $heroIdentitySection = [
+          'eyebrow' => $copy['eyebrow'],
+          'brand' => __('ui.brand.title'),
+          'badge' => $copy['identity_badge'],
+          'title' => $copy['hero'],
+          'body' => $copy['lead'],
+          'logo_alt' => $copy['logo_alt'],
+          'note' => [
+            'title' => $copy['identity_badge'],
+            'body' => $copy['identity_note'],
+          ],
+          'search' => [
+            'placeholder' => $copy['search_placeholder'],
+            'cta' => $copy['search_cta'],
+          ],
+        ];
+
+      $hoursSection = [
+        'eyebrow' => $copy['hours_eyebrow'],
+        'title' => $copy['hours_title'],
+        'body' => $copy['hours_body'],
+        'today_line' => $todayLine,
+        'action' => $normalizeInternalAction($copy['hours_cta'], '/contacts'),
+        'locations' => $normalizeHoursLocations($copy['hours_rows']),
+        'visual' => [
+          'eyebrow' => $copy['hours_visual_eyebrow'],
+          'title' => $copy['hours_visual_title'],
+          'body' => $copy['hours_visual_body'],
+          'markers' => $copy['hours_markers'],
+        ],
+      ];
+
+      $trustSection = [
+        'eyebrow' => $copy['summary_kicker'],
+        'quote_eyebrow' => $copy['quote_panel_eyebrow'],
+        'quote' => $copy['quote'],
+        'title' => $copy['trust_title'],
+        'body' => $copy['trust_body'],
+        'stats' => $normalizeTrustStats($copy['trust_stats']),
+        'actions' => [
+          $normalizeInternalAction($copy['trust_actions']['catalog'], '/catalog'),
+          $normalizeInternalAction($copy['trust_actions']['resources'], '/resources'),
+        ],
+      ];
+
+      $newsSection = [
+        'eyebrow' => $copy['news_eyebrow'],
+        'title' => $copy['news_title'],
+        'title_accent' => $copy['news_title_accent'],
+        'body' => $copy['news_body'],
+        'instagram_action' => $normalizeExternalAction($copy['news_cta'], $instagramUrl),
+        'items' => array_map(static function (array $item): array {
+          return [
+            'title' => (string) ($item['title'] ?? ''),
+            'date' => (string) ($item['date'] ?? ''),
+            'category' => (string) ($item['tag'] ?? ''),
+            'summary' => (string) ($item['summary'] ?? $item['body'] ?? ''),
+            'image' => (string) ($item['resolved_image'] ?? ''),
+            'image_position' => (string) ($item['resolved_image_position'] ?? 'center center'),
+            'link' => $item['link'] ?? null,
+            'category_slug' => (string) ($item['category_slug'] ?? ''),
+          ];
+        }, $newsItems),
+      ];
+
+      $eventsSection = [
+        'title' => $copy['workshops_title'],
+        'items' => $normalizeEvents($copy['workshops_items']),
+      ];
 @endphp
 
 @section('title', $copy['title'])
@@ -1790,24 +1916,24 @@
       <div class="landing-shell">
         <div class="landing-hero-grid">
           <div class="landing-intro">
-            <div class="landing-kicker">{{ $copy['eyebrow'] }}</div>
-            <div class="landing-curator">{{ __('ui.brand.title') }}</div>
-            <div class="landing-identity-chip">{{ $copy['identity_badge'] }}</div>
-            <h1 class="landing-title">{{ $copy['hero'] }}</h1>
-            <p class="landing-copy">{{ $copy['lead'] }}</p>
+            <div class="landing-kicker">{{ $heroIdentitySection['eyebrow'] }}</div>
+            <div class="landing-curator">{{ $heroIdentitySection['brand'] }}</div>
+            <div class="landing-identity-chip">{{ $heroIdentitySection['badge'] }}</div>
+            <h1 class="landing-title">{{ $heroIdentitySection['title'] }}</h1>
+            <p class="landing-copy">{{ $heroIdentitySection['body'] }}</p>
           </div>
 
-          <aside class="landing-campus-panel" aria-label="{{ $copy['identity_badge'] }}">
+          <aside class="landing-campus-panel" aria-label="{{ $heroIdentitySection['badge'] }}">
             <div class="hero-campus-mark">
               <div class="campus-mark__inner">
                 <div class="campus-mark__logo-shell">
-                  <img src="{{ asset('logo.png') }}" alt="{{ $copy['logo_alt'] }}" class="campus-mark__logo" loading="eager" decoding="async">
+                  <img src="{{ asset('logo.png') }}" alt="{{ $heroIdentitySection['logo_alt'] }}" class="campus-mark__logo" loading="eager" decoding="async">
                 </div>
               </div>
             </div>
             <div class="landing-campus-note">
-              <strong>{{ $copy['identity_badge'] }}</strong>
-              <p>{{ $copy['identity_note'] }}</p>
+              <strong>{{ $heroIdentitySection['note']['title'] }}</strong>
+              <p>{{ $heroIdentitySection['note']['body'] }}</p>
             </div>
           </aside>
         </div>
@@ -1816,8 +1942,8 @@
           @if($lang !== 'ru')
             <input type="hidden" name="lang" value="{{ $lang }}">
           @endif
-          <input type="search" name="q" placeholder="{{ $copy['search_placeholder'] }}" aria-label="{{ $copy['search_placeholder'] }}">
-          <button type="submit" class="btn btn-primary">{{ $copy['search_cta'] }}</button>
+          <input type="search" name="q" placeholder="{{ $heroIdentitySection['search']['placeholder'] }}" aria-label="{{ $heroIdentitySection['search']['placeholder'] }}">
+          <button type="submit" class="btn btn-primary">{{ $heroIdentitySection['search']['cta'] }}</button>
         </form>
 
         <div class="hero-quick-links" aria-label="Quick routes">
@@ -1857,14 +1983,14 @@
       <div class="subject-block">
         <div class="subject-head">
           <div>
-            <div class="eyebrow eyebrow--cyan">{{ $copy['subject_eyebrow'] }}</div>
-            <h2>{{ $copy['subject_title'] }}</h2>
+            <div class="eyebrow eyebrow--cyan">{{ $subjectSection['eyebrow'] }}</div>
+            <h2>{{ $subjectSection['title'] }}</h2>
           </div>
-          <a href="{{ $withLang('/discover') }}" class="subject-link">{{ $copy['subject_link'] }}</a>
+          <a href="{{ $subjectSection['catalog_action']['href'] }}" class="subject-link">{{ $subjectSection['catalog_action']['label'] }}</a>
         </div>
 
         <div class="subject-grid" data-homepage-subjects>
-          @foreach($subjectCards as $subject)
+          @foreach($subjectSection['items'] as $subject)
             <a href="{{ $subject['href'] }}" class="subject-card"><strong>{{ $subject['title'] }}</strong><span>{{ $subject['udc'] }}</span></a>
           @endforeach
         </div>
@@ -1876,38 +2002,38 @@
     <div class="container homepage-band hours-section">
       <div class="hours-copy">
         <div class="hours-head">
-          <div class="eyebrow eyebrow--cyan">{{ $copy['hours_eyebrow'] }}</div>
-          <h2>{{ $copy['hours_title'] }}</h2>
-          <p>{{ $copy['hours_body'] }}</p>
+          <div class="eyebrow eyebrow--cyan">{{ $hoursSection['eyebrow'] }}</div>
+          <h2>{{ $hoursSection['title'] }}</h2>
+          <p>{{ $hoursSection['body'] }}</p>
         </div>
 
-        <div class="hours-date-line">{{ $todayLine }}</div>
+        <div class="hours-date-line">{{ $hoursSection['today_line'] }}</div>
 
         <div class="hours-list">
-          @foreach($copy['hours_rows'] as $row)
+          @foreach($hoursSection['locations'] as $row)
             <article class="hours-row">
               <div>
-                <strong>{{ $row['label'] }}</strong>
-                <p>{{ $row['meta'] }}</p>
+                <strong>{{ $row['title'] }}</strong>
+                <p>{{ $row['location'] }}@if($row['note'] !== '') · {{ $row['note'] }}@endif</p>
               </div>
-              <div class="hours-time">{{ $row['hours'] }}</div>
+              <div class="hours-time">{{ $row['schedule'] }}</div>
             </article>
           @endforeach
         </div>
 
-        <a href="{{ $withLang('/contacts') }}" class="hours-link">{{ $copy['hours_cta'] }}</a>
+        <a href="{{ $hoursSection['action']['href'] }}" class="hours-link">{{ $hoursSection['action']['label'] }}</a>
       </div>
 
-      <aside class="hours-visual" aria-label="{{ $copy['hours_title'] }}">
+      <aside class="hours-visual" aria-label="{{ $hoursSection['title'] }}">
         <div class="hours-visual-inner">
           <div class="hours-visual-copy">
-            <div class="eyebrow eyebrow--green">{{ $copy['hours_visual_eyebrow'] }}</div>
-            <h3>{{ $copy['hours_visual_title'] }}</h3>
-            <p>{{ $copy['hours_visual_body'] }}</p>
+            <div class="eyebrow eyebrow--green">{{ $hoursSection['visual']['eyebrow'] }}</div>
+            <h3>{{ $hoursSection['visual']['title'] }}</h3>
+            <p>{{ $hoursSection['visual']['body'] }}</p>
           </div>
 
           <div class="hours-markers">
-            @foreach($copy['hours_markers'] as $marker)
+            @foreach($hoursSection['visual']['markers'] as $marker)
               <div class="hours-marker">
                 <span>{{ $marker['label'] }}</span>
                 <strong>{{ $marker['value'] }}</strong>
@@ -1923,25 +2049,26 @@
     <div class="container homepage-band trust-section">
       <div class="quote-panel">
         <div class="quote-panel__inner">
-          <p class="quote-panel__eyebrow">{{ $copy['quote_panel_eyebrow'] }}</p>
-          <p class="quote-panel__quote">{{ $copy['quote'] }}</p>
+          <p class="quote-panel__eyebrow">{{ $trustSection['quote_eyebrow'] }}</p>
+          <p class="quote-panel__quote">{{ $trustSection['quote'] }}</p>
         </div>
       </div>
 
       <div class="trust-copy">
-        <div class="eyebrow eyebrow--green">{{ $copy['summary_kicker'] }}</div>
-        <h2>{{ $copy['trust_title'] }}</h2>
-        <p>{{ $copy['trust_body'] }}</p>
+        <div class="eyebrow eyebrow--green">{{ $trustSection['eyebrow'] }}</div>
+        <h2>{{ $trustSection['title'] }}</h2>
+        <p>{{ $trustSection['body'] }}</p>
 
         <div class="trust-stats">
-          @foreach($copy['trust_stats'] as $stat)
+          @foreach($trustSection['stats'] as $stat)
             <div class="trust-stat"><strong>{{ $stat['value'] }}</strong><span>{{ $stat['label'] }}</span></div>
           @endforeach
         </div>
 
         <div class="trust-actions">
-          <a href="{{ $withLang('/catalog') }}" class="btn btn-primary">{{ $copy['trust_actions']['catalog'] }}</a>
-          <a href="{{ $withLang('/resources') }}" class="btn btn-ghost">{{ $copy['trust_actions']['resources'] }}</a>
+          @foreach($trustSection['actions'] as $index => $action)
+            <a href="{{ $action['href'] }}" class="btn {{ $index === 0 ? 'btn-primary' : 'btn-ghost' }}">{{ $action['label'] }}</a>
+          @endforeach
         </div>
       </div>
     </div>
@@ -1952,40 +2079,40 @@
       <div class="news-stack">
         <div class="news-head">
           <div class="news-head-main">
-            <div class="eyebrow eyebrow--cyan">{{ $copy['news_eyebrow'] }}</div>
-            <h2>{{ $copy['news_title'] }} <span>{{ $copy['news_title_accent'] }}</span></h2>
-            <p>{{ $copy['news_body'] }}</p>
+            <div class="eyebrow eyebrow--cyan">{{ $newsSection['eyebrow'] }}</div>
+            <h2>{{ $newsSection['title'] }} <span>{{ $newsSection['title_accent'] }}</span></h2>
+            <p>{{ $newsSection['body'] }}</p>
           </div>
 
-          <a href="{{ $instagramUrl }}" class="news-link" target="_blank" rel="noreferrer">
+          <a href="{{ $newsSection['instagram_action']['href'] }}" class="news-link" target="_blank" rel="noreferrer">
             <span class="news-link__label">Instagram</span>
             <span class="news-link__value">@library_kazutb</span>
           </a>
         </div>
 
         <div class="news-grid">
-          @foreach($newsItems as $item)
+          @foreach($newsSection['items'] as $item)
             <article class="news-card">
-              <div class="news-card-media" style="--news-image: url('{{ asset(ltrim($item['resolved_image'], '/')) }}'); --news-image-position: {{ $item['resolved_image_position'] }};">
-                <span class="news-card-badge">{{ $item['tag'] }}</span>
+              <div class="news-card-media" style="--news-image: url('{{ asset(ltrim($item['image'], '/')) }}'); --news-image-position: {{ $item['image_position'] }};">
+                <span class="news-card-badge">{{ $item['category'] }}</span>
               </div>
               <div class="news-card-copy">
                 <span class="news-card-date">{{ $item['date'] }}</span>
                 <h3>{{ $item['title'] }}</h3>
-                <p>{{ $item['body'] }}</p>
+                <p>{{ $item['summary'] }}</p>
               </div>
             </article>
           @endforeach
         </div>
       </div>
 
-      <aside class="events-rail" aria-label="{{ $copy['workshops_title'] }}">
+      <aside class="events-rail" aria-label="{{ $eventsSection['title'] }}">
         <div class="events-rail-head">
-          <h3>{{ $copy['workshops_title'] }}</h3>
+          <h3>{{ $eventsSection['title'] }}</h3>
         </div>
 
         <div class="events-list">
-          @foreach($copy['workshops_items'] as $item)
+          @foreach($eventsSection['items'] as $item)
             <article class="event-item">
               <strong>{{ $item['title'] }}</strong>
               <span>{{ $item['time'] }} · {{ $item['date'] }}</span>
