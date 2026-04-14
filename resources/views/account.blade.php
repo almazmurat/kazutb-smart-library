@@ -985,7 +985,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
       gap: 28px;
-      align-items: start;
+      align-items: stretch;
     }
 
     .workspace-main {
@@ -993,6 +993,7 @@
       display: flex;
       flex-direction: column;
       gap: 28px;
+      min-height: 100%;
     }
 
     .metric-grid {
@@ -1080,8 +1081,9 @@
 
     .workspace-panel--activity {
       min-height: 300px;
-      display: grid;
-      align-content: start;
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
     }
 
     .rail-panel--waitlist {
@@ -1146,6 +1148,7 @@
 
     #activity-list {
       min-height: 214px;
+      flex: 1 1 auto;
     }
 
     #reservations-grid {
