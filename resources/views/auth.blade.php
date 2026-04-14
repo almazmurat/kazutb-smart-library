@@ -122,10 +122,11 @@
       --tertiary: #f7bd48;
       --danger: #ba1a1a;
       --success: #13696d;
-      --shadow: 0 8px 24px rgba(25, 28, 29, 0.04);
+      --shadow: 0 14px 32px rgba(25, 28, 29, 0.05);
+      --shadow-soft: 0 8px 20px rgba(25, 28, 29, 0.04);
       --radius-lg: 4px;
       --radius-xl: 8px;
-      --container: 1280px;
+      --container: 720px;
     }
 
     * {
@@ -138,18 +139,9 @@
       font-family: 'Manrope', system-ui, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(19, 105, 109, 0.05), transparent 28%),
-        radial-gradient(circle at right 14%, rgba(0, 30, 64, 0.05), transparent 24%),
+        radial-gradient(circle at top left, rgba(19, 105, 109, 0.04), transparent 26%),
+        radial-gradient(circle at right 12%, rgba(0, 30, 64, 0.04), transparent 20%),
         linear-gradient(180deg, #fcfcfc 0%, var(--surface) 100%);
-      position: relative;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(196, 198, 207, 0.1), transparent 22%, transparent 78%, rgba(196, 198, 207, 0.08));
-      pointer-events: none;
     }
 
     a {
@@ -168,33 +160,9 @@
       flex-direction: column;
     }
 
-    .accent-line {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--tertiary));
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    .watermark {
-      position: fixed;
-      left: 24px;
-      bottom: 46px;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(68px, 12vw, 102px);
-      line-height: .82;
-      letter-spacing: -0.06em;
-      color: rgba(0, 5, 17, 0.05);
-      pointer-events: none;
-      user-select: none;
-    }
-
     .header {
       width: 100%;
-      padding: 28px 24px 12px;
+      padding: 34px 24px 10px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -204,25 +172,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-align: center;
     }
 
     .brand {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(2rem, 4vw, 2.75rem);
-      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 600;
       letter-spacing: -0.04em;
-      color: var(--primary);
+      color: var(--primary-deep);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 5px 12px;
+      padding: 6px 12px;
       border-radius: 4px;
-      background: rgba(225, 227, 228, 0.84);
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(196, 198, 207, 0.35);
       color: var(--secondary);
       font-size: 10px;
       font-weight: 800;
@@ -244,65 +213,107 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 28px 24px 64px;
+      padding: 22px 24px 56px;
     }
 
     .auth-shell {
-      width: min(100%, 440px);
+      width: min(100%, var(--container));
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 18px;
+    }
+
+    .page-copy {
+      text-align: center;
+      display: grid;
+      gap: 10px;
+      padding: 4px 18px 0;
+    }
+
+    .page-kicker {
+      margin: 0;
+      color: var(--primary-deep);
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 500;
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+    }
+
+    .page-lead {
+      margin: 0 auto;
+      max-width: 580px;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.7;
     }
 
     .auth-card {
-      background: rgba(255, 255, 255, 0.94);
-      border: 1px solid rgba(196, 198, 207, 0.12);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(196, 198, 207, 0.2);
       box-shadow: var(--shadow);
       border-radius: var(--radius-xl);
-      padding: 36px 30px 30px;
+      padding: 28px 28px 24px;
     }
 
     .intro {
-      margin-bottom: 28px;
-      text-align: center;
+      margin-bottom: 22px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .access-frame {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(243, 244, 245, 0.92);
+      border: 1px solid rgba(196, 198, 207, 0.3);
+      color: var(--primary-deep);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .access-frame svg {
+      color: var(--secondary);
     }
 
     .intro h1 {
-      margin: 0 0 10px;
+      margin: 0;
       font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(2rem, 3vw, 2.5rem);
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
       font-weight: 500;
       letter-spacing: -0.05em;
-      color: var(--primary);
+      color: var(--primary-deep);
     }
 
     .intro p {
       margin: 0;
       color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
-    }
-
-    .hero-copy {
-      display: none;
+      font-size: 0.93rem;
+      line-height: 1.7;
     }
 
     .sso-banner {
       width: 100%;
-      border: 0;
+      border: 1px solid rgba(196, 198, 207, 0.22);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 12px;
-      padding: 17px 18px;
+      padding: 14px 16px;
       border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, var(--primary), var(--primary-deep));
-      color: #ffffff;
-      font-size: 0.82rem;
+      background: linear-gradient(180deg, rgba(243, 244, 245, 0.96), rgba(255, 255, 255, 0.96));
+      color: var(--primary-deep);
+      font-size: 0.8rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      box-shadow: 0 10px 20px rgba(0, 30, 64, 0.12);
+      letter-spacing: 0.06em;
+      box-shadow: none;
     }
 
     .sso-icon {
@@ -318,7 +329,7 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      margin: 18px 0 24px;
+      margin: 16px 0 22px;
     }
 
     .divider::before,
@@ -339,7 +350,7 @@
     }
 
     .field {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .label {
@@ -363,7 +374,7 @@
       outline: none;
       font-size: 0.94rem;
       box-shadow: none;
-      transition: border-color 0.18s ease;
+      transition: border-color 0.18s ease, background 0.18s ease;
     }
 
     .input::placeholder {
@@ -373,31 +384,32 @@
     .input:focus {
       border-color: var(--secondary);
       box-shadow: none;
-      background: transparent;
+      background: rgba(255, 255, 255, 0.4);
     }
 
     .submit-wrap {
-      padding-top: 10px;
+      padding-top: 8px;
     }
 
     .submit {
       width: 100%;
-      border: 1px solid rgba(196, 198, 207, 0.2);
-      background: transparent;
-      color: var(--primary);
+      border: 1px solid rgba(0, 30, 64, 0.18);
+      background: linear-gradient(135deg, var(--primary-deep), #173c68);
+      color: #ffffff;
       border-radius: var(--radius-lg);
-      padding: 16px 18px;
+      padding: 15px 18px;
       font-size: 0.83rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       cursor: pointer;
-      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: var(--shadow-soft);
     }
 
     .submit:hover:not(:disabled) {
-      background: var(--surface-low);
-      border-color: rgba(116, 119, 127, 0.34);
+      background: linear-gradient(135deg, #052751, #1d497a);
+      border-color: rgba(0, 30, 64, 0.3);
       transform: translateY(-1px);
     }
 
@@ -479,8 +491,10 @@
 
     .demo-block {
       margin-top: 18px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(196, 198, 207, 0.22);
+      padding: 18px;
+      border: 1px solid rgba(196, 198, 207, 0.24);
+      border-radius: var(--radius-lg);
+      background: rgba(243, 244, 245, 0.72);
     }
 
     .demo-env-badge {
@@ -571,9 +585,9 @@
 
     .footer {
       width: 100%;
-      border-top: 1px solid rgba(196, 198, 207, 0.16);
-      background: rgba(243, 244, 245, 0.78);
-      padding: 28px 24px 34px;
+      border-top: 1px solid rgba(196, 198, 207, 0.18);
+      background: rgba(248, 249, 250, 0.88);
+      padding: 24px 24px 28px;
     }
 
     .footer-inner {
@@ -622,12 +636,63 @@
     }
 
     .footer-links a:hover {
-      color: var(--primary);
+      color: var(--primary-deep);
+    }
+
+    .support-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .support-card {
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(196, 198, 207, 0.24);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 10px;
+    }
+
+    .support-card strong {
+      color: var(--primary-deep);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .support-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .support-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(19, 105, 109, 0.08);
+      color: var(--secondary);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .support-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--secondary);
     }
 
     @media (max-width: 768px) {
       .header {
-        padding-top: 24px;
+        padding-top: 26px;
       }
 
       .main {
@@ -635,13 +700,11 @@
       }
 
       .auth-card {
-        padding: 28px 20px 22px;
+        padding: 24px 20px 20px;
       }
 
-      .status-grid {
+      .support-panel {
         grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 0 4px;
       }
 
       .footer-inner {
@@ -656,11 +719,6 @@
     }
 
     @media (max-width: 640px) {
-      .watermark {
-        left: 12px;
-        bottom: 96px;
-      }
-
       .demo-cards {
         grid-template-columns: 1fr;
       }
@@ -672,13 +730,14 @@
       .divider span {
         font-size: 9px;
       }
+
+      .page-copy {
+        padding-inline: 4px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="accent-line" aria-hidden="true"></div>
-  <div class="watermark" aria-hidden="true">ARCHIVE</div>
-
   <div class="page">
     <header class="header">
       <div class="header-inner">
@@ -692,13 +751,22 @@
 
     <main class="main">
       <div class="auth-shell">
+        <section class="page-copy" aria-label="Access introduction">
+          <p class="page-kicker">{{ $copy['hero'] }}</p>
+          <p class="page-lead">{{ $copy['lead'] }}</p>
+        </section>
+
         <section class="auth-card">
           <div class="intro">
+            <div class="access-frame">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                <path d="M12 2a5 5 0 0 0-5 5v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 7V7a3 3 0 1 1 6 0v2H9Z"/>
+              </svg>
+              <span>{{ $copy['eyebrow'] }}</span>
+            </div>
             <h1>{{ $copy['formTitle'] }}</h1>
             <p>{{ $copy['formSub'] }}</p>
           </div>
-
-          <div class="hero-copy" aria-hidden="true">{{ $copy['hero'] }} · {{ $copy['lead'] }}</div>
 
           <div class="sso-banner" aria-hidden="true">
             <span class="sso-icon">
@@ -750,19 +818,17 @@
           @endif
         </section>
 
-        <section class="status-grid" aria-label="Access context">
-          <div class="status-card status-card--accent">
-            <span class="status-label">{{ $copy['statusLabel'] }}</span>
-            <div class="status-line">
-              <span class="status-dot" aria-hidden="true"></span>
+        <section class="support-panel" aria-label="Access context">
+          <div class="support-card">
+            <strong>{{ $copy['statusLabel'] }}</strong>
+            <span class="support-status">
+              <span class="support-status-dot" aria-hidden="true"></span>
               <span>{{ $copy['statusValue'] }}</span>
-            </div>
+            </span>
           </div>
-          <div class="status-card">
-            <span class="status-label">{{ $copy['accessLabel'] }}</span>
-            <div class="status-line">
-              <span>{{ $copy['accessValue'] }}</span>
-            </div>
+          <div class="support-card">
+            <strong>{{ $copy['accessLabel'] }}</strong>
+            <p>{{ $copy['accessValue'] }}</p>
           </div>
         </section>
       </div>

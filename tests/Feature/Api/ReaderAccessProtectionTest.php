@@ -110,7 +110,9 @@ class ReaderAccessProtectionTest extends TestCase
     {
         $response = $this->get('/login?lang=ru&redirect=%2Faccount');
         $response->assertOk();
-        $response->assertSee('Авторизация', false);
+        $response
+            ->assertSee('Вход в библиотечную систему', false)
+            ->assertSee('id="login-form"', false);
     }
 
     // ──────────────────────────────────────────────────
