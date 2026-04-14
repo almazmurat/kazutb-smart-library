@@ -39,6 +39,7 @@
   --container: 1280px;
   --shell-nav-height: 72px;
   --shell-sticky-offset: 92px;
+  --shell-first-section-gap: 56px;
   --shell-footer-gap: 72px;
   --footer-bg: #f3f4f5;
   --footer-surface: rgba(255, 255, 255, 0.84);
@@ -1158,6 +1159,10 @@ main {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --shell-first-section-gap: 48px;
+  }
+
   .nav {
     position: relative;
     flex-wrap: wrap;

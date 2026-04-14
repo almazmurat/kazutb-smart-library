@@ -139,7 +139,7 @@
     .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), #003366); box-shadow: var(--shadow-soft); border-radius: 999px; }
     .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
 
-    .page { padding: 34px 0 70px; }
+    .page { padding: var(--shell-first-section-gap) 0 70px; }
 
     .hero {
       background: #ffffff;
@@ -557,7 +557,7 @@
     }
 
     /* Stitch-like refinement overrides */
-    .page { padding: 20px 0 48px; }
+    .page { padding: var(--shell-first-section-gap) 0 48px; }
     .hero {
       border: 0;
       border-bottom: 1px solid #d9dee6;

@@ -632,7 +632,7 @@
 @section('head')
 <style>
   .landing-hero {
-    padding: clamp(34px, 4vw, 52px) 0 14px;
+    padding: var(--shell-first-section-gap) 0 14px;
   }
 
   .homepage-band {

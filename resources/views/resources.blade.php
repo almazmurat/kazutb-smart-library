@@ -78,7 +78,7 @@
 
     .resources-shell {
       background: var(--res-bg);
-      padding: 40px 0 72px;
+      padding: var(--shell-first-section-gap) 0 72px;
     }
 
     .resources-layout {
@@ -754,7 +754,7 @@
 
     @media (max-width: 820px) {
       .resources-shell {
-        padding: 20px 0 40px;
+        padding: var(--shell-first-section-gap) 0 40px;
       }
 
       .hero-card,
