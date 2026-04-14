@@ -45,7 +45,7 @@ class AccountPageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('Мои книги')
-            ->assertSee('Текущие выдачи из библиотечного фонда');
+            ->assertSee('Текущие и недавние выдачи из библиотечного фонда');
     }
 
     public function test_account_page_redirects_unauthenticated(): void
@@ -63,7 +63,7 @@ class AccountPageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('workbench-section', false)
-            ->assertSee('Подборка литературы', false)
+            ->assertSee('Подборка и сохранённые действия', false)
             ->assertSee('loadWorkbench', false);
     }
 

@@ -127,7 +127,7 @@ class ConsolidationTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('workbench-section', false);
-        $response->assertSee('Подборка литературы');
+        $response->assertSee('Подборка и сохранённые действия');
         $response->assertSee('📚 Преподаватель');
     }
 
@@ -137,10 +137,9 @@ class ConsolidationTest extends TestCase
             ->get('/account');
 
         $response->assertOk();
-        $response->assertSee('Быстрые действия');
+        $response->assertSee('Куда перейти дальше');
         $response->assertSee('🎓 Студент');
-        // Workbench section HTML element must not be rendered
-        $response->assertDontSee('id="workbench-section"', false);
+        $response->assertSee('id="workbench-section"', false);
     }
 
     public function test_librarian_account_renders(): void
@@ -167,9 +166,8 @@ class ConsolidationTest extends TestCase
             ->get('/account');
 
         $response->assertOk();
-        $response->assertSee('Быстрые действия');
-        // Workbench section HTML element must not be rendered for non-teacher
-        $response->assertDontSee('id="workbench-section"', false);
+        $response->assertSee('Куда перейти дальше');
+        $response->assertSee('id="workbench-section"', false);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -387,7 +385,7 @@ class ConsolidationTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('href="/shortlist"', false);
-        $response->assertSee('Подборка литературы');
+        $response->assertSee('Подборка и сохранённые действия');
         $response->assertDontSee('href="/for-teachers"', false);
     }
 

@@ -213,7 +213,6 @@ class ReaderAccountCompletionTest extends TestCase
             ->get('/account');
 
         $response->assertOk();
-        // Verify JS logout redirects to /login, not /
-        $response->assertSee("window.location.href = '/login'", false);
+        $response->assertSee("window.location.href = withLang('/login')", false);
     }
 }
