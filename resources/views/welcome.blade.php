@@ -1114,9 +1114,9 @@
     background:
       linear-gradient(180deg, rgba(5,14,24,.08), rgba(5,14,24,.24)),
       linear-gradient(180deg, rgba(7, 26, 47, 0.02), rgba(7, 26, 47, 0.12)),
-      url('/trust-panel-reading-room.jpg');
+      url('/images/news/campus-library.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center 42%;
     box-shadow: 0 10px 24px rgba(25, 28, 29, 0.032);
     display: grid;
     align-items: end;
@@ -1442,7 +1442,8 @@
     background-position: center 34%;
     color: #fff;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
     min-height: 318px;
     position: relative;
     overflow: hidden;
@@ -1484,9 +1485,9 @@
   .quote-panel__inner {
     position: relative;
     z-index: 1;
-    width: min(100% - 24px, 28rem);
-    margin: 12px;
-    max-width: 28rem;
+    width: min(100% - 28px, 25rem);
+    margin: 0;
+    max-width: 25rem;
     padding: 18px 20px 16px;
     display: grid;
     gap: 10px;
@@ -1726,7 +1727,8 @@
     }
 
     .quote-panel__inner {
-      padding: 24px;
+      width: min(100% - 20px, 24rem);
+      padding: 20px;
     }
 
     .quote-panel__quote {
