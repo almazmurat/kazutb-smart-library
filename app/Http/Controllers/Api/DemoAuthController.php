@@ -44,6 +44,8 @@ class DemoAuthController extends Controller
             'login' => (string) ($identity['login'] ?? ''),
             'ad_login' => (string) ($identity['ad_login'] ?? ''),
             'role' => (string) ($identity['role'] ?? 'reader'),
+            'title' => (string) ($identity['title'] ?? ''),
+            'phone_extension' => (string) ($identity['phone_extension'] ?? ''),
         ];
 
         $request->session()->regenerate();

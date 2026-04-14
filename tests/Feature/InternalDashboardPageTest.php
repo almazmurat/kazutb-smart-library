@@ -28,14 +28,19 @@ class InternalDashboardPageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('Состояние библиотечной базы')
+            ->assertSee('data-librarian-workspace', false)
+            ->assertSee('Операционная панель библиотеки')
             ->assertSee('/internal/review', false)
-            ->assertSee('Открыть список quality issues')
-            ->assertSee('Data Stewardship')
+            ->assertSee('Review Queue')
             ->assertSee('/internal/stewardship', false)
             ->assertSee('Circulation Desk')
             ->assertSee('/internal/circulation', false)
-            ->assertSee('/api/v1/library/health-summary', false)
-            ->assertSee('/api/v1/review/issues-summary?top_limit=5', false);
+            ->assertSee('/internal/ai-chat', false)
+            ->assertSee('/api/v1/internal/review/triage-summary?top_limit=6', false)
+            ->assertSee('/api/v1/internal/review/readers-summary?top_limit=5', false)
+            ->assertSee('/api/v1/internal/reader-contacts/stats', false)
+            ->assertSee('/api/v1/internal/review/stewardship-metrics', false)
+            ->assertSee('/api/v1/internal/enrichment/stats', false)
+            ->assertSee('Операционные заметки');
     }
 }

@@ -78,7 +78,11 @@ class DemoAuthTest extends TestCase
             ->assertOk()
             ->assertJsonPath('success', true)
             ->assertJsonPath('user.role', 'librarian')
-            ->assertJsonPath('user.login', 'demo_librarian');
+            ->assertJsonPath('user.login', 'zh.pankey')
+            ->assertJsonPath('user.name', 'Панкей Ж.')
+            ->assertJsonPath('user.email', 'zh.pankey@kaztbu.edu.kz')
+            ->assertJsonPath('user.title', 'Директор')
+            ->assertJsonPath('user.phone_extension', '112');
     }
 
     public function test_demo_login_succeeds_for_admin(): void
@@ -193,7 +197,7 @@ class DemoAuthTest extends TestCase
             ->assertOk()
             ->assertDontSee('id="demo-login-block"', false)
             ->assertDontSee('data-demo-slug', false)
-            ->assertSee('Авторизация');
+            ->assertSee('Вход в библиотечную систему');
     }
 
     public function test_login_page_form_still_works_with_demo_enabled(): void
