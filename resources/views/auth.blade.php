@@ -126,7 +126,7 @@
       --shadow-soft: 0 8px 20px rgba(25, 28, 29, 0.04);
       --radius-lg: 4px;
       --radius-xl: 8px;
-      --container: 720px;
+      --container: 560px;
     }
 
     * {
@@ -162,7 +162,7 @@
 
     .header {
       width: 100%;
-      padding: 34px 24px 10px;
+      padding: 28px 24px 8px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -172,13 +172,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       text-align: center;
     }
 
     .brand {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-size: clamp(1.85rem, 3.4vw, 2.3rem);
       font-weight: 600;
       letter-spacing: -0.04em;
       color: var(--primary-deep);
@@ -193,7 +193,7 @@
       background: rgba(255, 255, 255, 0.88);
       border: 1px solid rgba(196, 198, 207, 0.35);
       color: var(--secondary);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.16em;
@@ -213,39 +213,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 22px 24px 56px;
+      padding: 10px 24px 40px;
     }
 
     .auth-shell {
       width: min(100%, var(--container));
       display: flex;
       flex-direction: column;
-      gap: 18px;
-    }
-
-    .page-copy {
-      text-align: center;
-      display: grid;
-      gap: 10px;
-      padding: 4px 18px 0;
-    }
-
-    .page-kicker {
-      margin: 0;
-      color: var(--primary-deep);
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      font-weight: 500;
-      line-height: 0.96;
-      letter-spacing: -0.05em;
-    }
-
-    .page-lead {
-      margin: 0 auto;
-      max-width: 580px;
-      color: var(--muted);
-      font-size: 0.96rem;
-      line-height: 1.7;
+      gap: 0;
     }
 
     .auth-card {
@@ -253,39 +228,20 @@
       border: 1px solid rgba(196, 198, 207, 0.2);
       box-shadow: var(--shadow);
       border-radius: var(--radius-xl);
-      padding: 28px 28px 24px;
+      padding: 32px 34px 24px;
     }
 
     .intro {
       margin-bottom: 22px;
       display: grid;
-      gap: 12px;
-    }
-
-    .access-frame {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(243, 244, 245, 0.92);
-      border: 1px solid rgba(196, 198, 207, 0.3);
-      color: var(--primary-deep);
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .access-frame svg {
-      color: var(--secondary);
+      gap: 10px;
+      text-align: center;
     }
 
     .intro h1 {
       margin: 0;
       font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(1.8rem, 3vw, 2.2rem);
+      font-size: clamp(2rem, 3.2vw, 2.4rem);
       font-weight: 500;
       letter-spacing: -0.05em;
       color: var(--primary-deep);
@@ -294,8 +250,8 @@
     .intro p {
       margin: 0;
       color: var(--muted);
-      font-size: 0.93rem;
-      line-height: 1.7;
+      font-size: 0.95rem;
+      line-height: 1.65;
     }
 
     .sso-banner {
@@ -305,11 +261,11 @@
       align-items: center;
       justify-content: flex-start;
       gap: 12px;
-      padding: 14px 16px;
+      padding: 13px 14px;
       border-radius: var(--radius-lg);
       background: linear-gradient(180deg, rgba(243, 244, 245, 0.96), rgba(255, 255, 255, 0.96));
       color: var(--primary-deep);
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -329,7 +285,7 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      margin: 16px 0 22px;
+      margin: 14px 0 20px;
     }
 
     .divider::before,
@@ -490,8 +446,8 @@
     }
 
     .demo-block {
-      margin-top: 18px;
-      padding: 18px;
+      margin-top: 16px;
+      padding: 16px;
       border: 1px solid rgba(196, 198, 207, 0.24);
       border-radius: var(--radius-lg);
       background: rgba(243, 244, 245, 0.72);
@@ -583,11 +539,54 @@
       margin-top: 2px;
     }
 
+    .support-note {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(196, 198, 207, 0.22);
+      display: grid;
+      gap: 6px;
+    }
+
+    .support-note strong {
+      color: var(--primary-deep);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .support-note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .support-note-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(19, 105, 109, 0.08);
+      color: var(--secondary);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .support-note-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--secondary);
+    }
+
     .footer {
       width: 100%;
       border-top: 1px solid rgba(196, 198, 207, 0.18);
       background: rgba(248, 249, 250, 0.88);
-      padding: 24px 24px 28px;
+      padding: 20px 24px 24px;
     }
 
     .footer-inner {
@@ -639,72 +638,17 @@
       color: var(--primary-deep);
     }
 
-    .support-panel {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .support-card {
-      border-radius: var(--radius-lg);
-      background: rgba(255, 255, 255, 0.84);
-      border: 1px solid rgba(196, 198, 207, 0.24);
-      padding: 16px 18px;
-      box-shadow: var(--shadow-soft);
-      display: grid;
-      gap: 10px;
-    }
-
-    .support-card strong {
-      color: var(--primary-deep);
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    .support-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .support-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(19, 105, 109, 0.08);
-      color: var(--secondary);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .support-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--secondary);
-    }
-
     @media (max-width: 768px) {
       .header {
-        padding-top: 26px;
+        padding-top: 24px;
       }
 
       .main {
-        padding: 18px 16px 44px;
+        padding: 8px 16px 34px;
       }
 
       .auth-card {
         padding: 24px 20px 20px;
-      }
-
-      .support-panel {
-        grid-template-columns: 1fr;
       }
 
       .footer-inner {
@@ -730,10 +674,6 @@
       .divider span {
         font-size: 9px;
       }
-
-      .page-copy {
-        padding-inline: 4px;
-      }
     }
   </style>
 </head>
@@ -751,21 +691,10 @@
 
     <main class="main">
       <div class="auth-shell">
-        <section class="page-copy" aria-label="Access introduction">
-          <p class="page-kicker">{{ $copy['hero'] }}</p>
-          <p class="page-lead">{{ $copy['lead'] }}</p>
-        </section>
-
         <section class="auth-card">
           <div class="intro">
-            <div class="access-frame">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                <path d="M12 2a5 5 0 0 0-5 5v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 7V7a3 3 0 1 1 6 0v2H9Z"/>
-              </svg>
-              <span>{{ $copy['eyebrow'] }}</span>
-            </div>
-            <h1>{{ $copy['formTitle'] }}</h1>
-            <p>{{ $copy['formSub'] }}</p>
+            <h1>{{ $copy['hero'] }}</h1>
+            <p>{{ $copy['lead'] }}</p>
           </div>
 
           <div class="sso-banner" aria-hidden="true">
@@ -816,18 +745,13 @@
             </div>
           </div>
           @endif
-        </section>
 
-        <section class="support-panel" aria-label="Access context">
-          <div class="support-card">
-            <strong>{{ $copy['statusLabel'] }}</strong>
-            <span class="support-status">
-              <span class="support-status-dot" aria-hidden="true"></span>
+          <div class="support-note" aria-label="Access context">
+            <strong>{{ $copy['accessLabel'] }}</strong>
+            <span class="support-note-status">
+              <span class="support-note-status-dot" aria-hidden="true"></span>
               <span>{{ $copy['statusValue'] }}</span>
             </span>
-          </div>
-          <div class="support-card">
-            <strong>{{ $copy['accessLabel'] }}</strong>
             <p>{{ $copy['accessValue'] }}</p>
           </div>
         </section>
