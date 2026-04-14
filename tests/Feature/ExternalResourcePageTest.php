@@ -115,10 +115,13 @@ class ExternalResourcePageTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_about_page_redirects_to_contacts(): void
+    public function test_about_page_renders_from_public_shell(): void
     {
         $response = $this->get('/about');
 
-        $response->assertRedirect('/contacts');
+        $response
+            ->assertOk()
+            ->assertSee('class="site-shell"', false)
+            ->assertSee('Библиотека как связанная цифровая среда');
     }
 }

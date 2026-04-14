@@ -48,7 +48,8 @@ class PublicShellTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('<html lang="en">', false)
-            ->assertSee('About the library and contacts');
+            ->assertSee('One public entry point into the library ecosystem')
+            ->assertSee('How to reach the library');
     }
 
     public function test_public_shell_localizes_navbar_actions_in_all_supported_languages(): void

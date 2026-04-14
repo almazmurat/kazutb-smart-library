@@ -43,11 +43,12 @@ class ConsolidationTest extends TestCase
         $response->assertStatus(301);
     }
 
-    public function test_about_redirects_to_contacts(): void
+    public function test_about_renders_directly(): void
     {
         $response = $this->get('/about');
-        $response->assertRedirect('/contacts');
-        $response->assertStatus(301);
+        $response->assertOk();
+        $response->assertSee('КазТБУ Digital Library');
+        $response->assertSee('Библиотека как связанная цифровая среда');
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -71,9 +72,9 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/contacts');
         $response->assertOk();
-        $response->assertSee('О библиотеке и контакты');
-        $response->assertSee('Миссия');
-        $response->assertSee('Более 50 000');
+        $response->assertSee('Единая точка входа в библиотечную экосистему');
+        $response->assertSee('Новая цифровая основа университетской библиотеки');
+        $response->assertSee('Как собирается новая библиотечная система');
         $response->assertSee('library@digital-library.demo');
     }
 
@@ -106,7 +107,7 @@ class ConsolidationTest extends TestCase
         $response->assertOk();
         $response->assertDontSee('href="/services"', false);
         $response->assertDontSee('href="/news"', false);
-        $response->assertDontSee('href="/about"', false);
+        $response->assertSee('href="/about"', false);
     }
 
     public function test_navbar_no_longer_has_for_teachers_link(): void

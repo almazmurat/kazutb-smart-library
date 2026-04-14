@@ -21,9 +21,20 @@
           'hero_body' => 'Публичная страница о библиотеке и о новой цифровой платформе: что это за система, как она помогает читателям и как ориентироваться по ключевым сервисам.',
           'hero_primary' => 'Открыть каталог',
           'hero_secondary' => 'Научные ресурсы',
+            'hero_surfaces' => [
+              'Каталог и карточки книг',
+              'Читательский кабинет и бронирования',
+              'Shortlist и учебная работа',
+              'Цифровые материалы и внешние ресурсы',
+            ],
           'highlight_label' => 'Справка и ориентация',
           'highlight_title' => 'Единая точка входа в библиотечную экосистему',
           'highlight_body' => 'Платформа объединяет каталог, личный кабинет, shortlist, цифровые материалы, внешние лицензированные ресурсы и будущие рабочие поверхности библиотекаря и администратора.',
+            'highlight_points' => [
+              'единый public layer без ложных экранов',
+              'академическая навигация и реальные маршруты поиска',
+              'доступ к фонду, цифровым материалам и research support в одной системе',
+            ],
           'mission_eyebrow' => 'Миссия и роль',
           'mission_title' => 'Новая цифровая основа университетской библиотеки',
           'mission_body' => 'KazUTB Digital Library создаётся не как витринный сайт, а как реальная библиотечная система: с каталогом, данными фонда, управляемым цифровым доступом, reader-facing сервисами и рабочими модулями для библиотечных процессов.',
@@ -40,6 +51,14 @@
               ['title' => 'Черновик списка литературы', 'body' => 'Рабочая зона для сбора книг и внешних ресурсов перед подготовкой учебного или исследовательского списка.'],
               ['title' => 'Безопасный доступ', 'body' => 'Вход выполняется внутри библиотеки, а CRM остаётся соседней auth/API-плоскостью, а не владельцем продукта.'],
           ],
+            'story_eyebrow' => 'Фонд, доступ и поддержка',
+            'story_title' => 'Библиотека как связанная цифровая среда',
+            'story_body' => 'Страница должна объяснять не только кто мы, но и как устроен вход в библиотечную среду: от поиска и маршрутов по УДК до controlled access, shortlist и дальнейшей работы с источниками.',
+            'story_cards' => [
+              ['kicker' => 'Коллекции', 'title' => 'Печатный, цифровой и лицензируемый фонд', 'body' => 'Платформа не смешивает все источники в один абстрактный список: она различает реальные экземпляры, локальные цифровые материалы и внешние исследовательские платформы.'],
+              ['kicker' => 'Доступ', 'title' => 'Честный маршрут от sign-in до чтения', 'body' => 'Личный кабинет, controlled viewer и reader-facing сервисы работают внутри библиотечной системы, а не уводят пользователя в чужую оболочку.'],
+              ['kicker' => 'Поддержка', 'title' => 'Ориентация для читателя, преподавателя и staff', 'body' => 'Публичный слой даёт понятный вход, а дальше маршрутизирует пользователя к каталогу, shortlist, ресурсам и следующим operational surfaces.'],
+            ],
           'project_eyebrow' => 'Проект и развитие',
           'project_title' => 'Что означает цифровая библиотечная платформа',
           'project_body' => 'Проект постепенно заменяет старую инфраструктуру и закладывает основу для качества данных, аналитики, библиотечных операций, контролируемого цифрового доступа и будущих AI-слоёв.',
@@ -48,6 +67,14 @@
               ['title' => 'Внешние и лицензионные ресурсы', 'body' => 'Платформа различает собственный фонд, локальные цифровые материалы и лицензионные платформы вроде IPR SMART с ограничениями по доступу.'],
               ['title' => 'Следующие модули', 'body' => 'Далее развиваются member dashboard, secure access flows, librarian panel, admin panel и более глубокий advanced catalog / book details слой.'],
           ],
+            'progress_eyebrow' => 'Траектория платформы',
+            'progress_title' => 'Как собирается новая библиотечная система',
+            'progress_steps' => [
+              ['label' => '01', 'title' => 'Каталог и discovery foundation', 'body' => 'Новый public layer начинает с поиска, библиографии, УДК-навигации и реальных маршрутов к фонду.'],
+              ['label' => '02', 'title' => 'Reader-facing доступ', 'body' => 'Личный кабинет, controlled access и короткие пользовательские сценарии собираются как часть одной библиотечной системы.'],
+              ['label' => '03', 'title' => 'Рабочие академические потоки', 'body' => 'Shortlist, research support и ориентирование по ресурсам становятся честными рабочими поверхностями, а не декоративными страницами.'],
+              ['label' => '04', 'title' => 'Внутренние библиотечные зоны', 'body' => 'Следом развиваются librarian и admin surfaces, quality workflows, circulation и deeper operational layers.'],
+            ],
           'orientation_eyebrow' => 'Ориентация по сервисам',
           'orientation_title' => 'Куда идти с конкретной задачей',
           'orientation' => [
@@ -76,6 +103,15 @@
               ['label' => 'Суббота', 'value' => '10:00 – 14:00'],
               ['label' => 'Воскресенье', 'value' => 'Выходной'],
           ],
+            'cta_eyebrow' => 'Начать работу',
+            'cta_title' => 'Переходите сразу к реальному рабочему маршруту',
+            'cta_body' => 'Если вам не нужна справка о библиотеке, переходите прямо к нужной поверхности: в каталог, academic navigation, shortlist или внешние ресурсы.',
+            'cta_links' => [
+              ['label' => 'Каталог', 'href' => '/catalog'],
+              ['label' => 'Навигация по УДК', 'href' => '/discover'],
+              ['label' => 'Shortlist', 'href' => '/shortlist'],
+              ['label' => 'Ресурсы', 'href' => '/resources'],
+            ],
       ],
       'kk' => [
           'title' => 'Кітапхана туралы — Digital Library',
@@ -84,9 +120,20 @@
           'hero_body' => 'Кітапхана мен жаңа цифрлық платформа туралы ашық бет: бұл қандай жүйе, ол оқырманға қалай көмектеседі және негізгі сервистер бойынша қалай бағдарлануға болады.',
           'hero_primary' => 'Каталогты ашу',
           'hero_secondary' => 'Ғылыми ресурстар',
+            'hero_surfaces' => [
+              'Каталог және кітап карточкалары',
+              'Оқырман кабинеті және броньдар',
+              'Shortlist және оқу жұмысы',
+              'Цифрлық материалдар мен сыртқы ресурстар',
+            ],
           'highlight_label' => 'Анықтама және бағдар',
           'highlight_title' => 'Кітапхана экожүйесіне бірыңғай кіру нүктесі',
           'highlight_body' => 'Платформа каталогты, жеке кабинетті, shortlist-ті, цифрлық материалдарды, сыртқы лицензиялық ресурстарды және болашақ кітапханашы мен әкімші модульдерін біріктіреді.',
+            'highlight_points' => [
+              'жалған экрандарсыз бірыңғай public layer',
+              'академиялық навигация және нақты іздеу маршруттары',
+              'қор, цифрлық материалдар және research support бір жүйеде',
+            ],
           'mission_eyebrow' => 'Миссия және рөл',
           'mission_title' => 'Университет кітапханасының жаңа цифрлық негізі',
           'mission_body' => 'KazUTB Digital Library витриналық сайт ретінде емес, нақты кітапханалық жүйе ретінде жасалып жатыр: каталогпен, қор деректерімен, басқарылатын цифрлық қолжетімділікпен, оқырман сервистерімен және кітапханалық процестерге арналған жұмыс модульдерімен.',
@@ -103,6 +150,14 @@
               ['title' => 'Әдебиет тізімінің жұмыс нұсқасы', 'body' => 'Оқу не зерттеу тізімін дайындамас бұрын кітаптар мен сыртқы ресурстарды жинауға арналған жұмыс аймағы.'],
               ['title' => 'Қауіпсіз қолжетімділік', 'body' => 'Кіру кітапхана ішінде жүреді, ал CRM өнім иесі емес, тек көршілес auth/API қабаты болып қалады.'],
           ],
+            'story_eyebrow' => 'Қор, қолжетімділік және қолдау',
+            'story_title' => 'Кітапхана байланысқан цифрлық орта ретінде',
+            'story_body' => 'Бұл бет тек “кімбіз” деген сұраққа жауап бермейді, сонымен қатар іздеу, ӘОЖ навигациясы, controlled access және shortlist арасындағы нақты кітапханалық маршрутты түсіндіреді.',
+            'story_cards' => [
+              ['kicker' => 'Жинақ', 'title' => 'Баспа, цифрлық және лицензиялық қор', 'body' => 'Платформа барлық дереккөздерді бір абстрактілі тізімге қоспайды: нақты даналар, жергілікті цифрлық материалдар және сыртқы ғылыми платформалар бөлек көрсетіледі.'],
+              ['kicker' => 'Қолжетімділік', 'title' => 'Sign-in-нан оқуға дейінгі шынайы маршрут', 'body' => 'Жеке кабинет, controlled viewer және оқырман сервистері кітапхана жүйесінің ішінде қалады және пайдаланушыны бөтен қабыққа жібермейді.'],
+              ['kicker' => 'Қолдау', 'title' => 'Оқырман, оқытушы және staff үшін бағдар', 'body' => 'Қоғамдық қабат түсінікті кіреберіс береді де, ары қарай пайдаланушыны каталогқа, shortlist-ке, ресурстарға және operational surfaces-ке жібереді.'],
+            ],
           'project_eyebrow' => 'Жоба және даму',
           'project_title' => 'Цифрлық кітапхана платформасы нені білдіреді',
           'project_body' => 'Жоба ескі инфрақұрылымды кезең-кезеңімен алмастырып, дерек сапасы, аналитика, кітапхана операциялары, басқарылатын цифрлық қолжетімділік және болашақ AI-қабаттары үшін негіз құрады.',
@@ -111,6 +166,14 @@
               ['title' => 'Сыртқы және лицензиялық ресурстар', 'body' => 'Платформа жеке қорды, жергілікті цифрлық материалдарды және IPR SMART секілді лицензиялық платформаларды бөлек көрсетеді.'],
               ['title' => 'Келесі модульдер', 'body' => 'Келесі кезекте member dashboard, secure access flows, librarian panel, admin panel және тереңірек advanced catalog / book details қабаты дамиды.'],
           ],
+            'progress_eyebrow' => 'Платформа траекториясы',
+            'progress_title' => 'Жаңа кітапхана жүйесі қалай жиналып жатыр',
+            'progress_steps' => [
+              ['label' => '01', 'title' => 'Каталог және discovery foundation', 'body' => 'Жаңа public layer іздеу, библиография, ӘОЖ навигациясы және нақты қор маршруттарынан басталады.'],
+              ['label' => '02', 'title' => 'Reader-facing қолжетімділік', 'body' => 'Жеке кабинет, controlled access және қысқа пайдаланушы сценарийлері бір кітапхана жүйесінің бөлігі ретінде құрылады.'],
+              ['label' => '03', 'title' => 'Академиялық жұмыс ағындары', 'body' => 'Shortlist, research support және ресурстар бойынша бағдар сәндік бет емес, нақты жұмыс қабатына айналады.'],
+              ['label' => '04', 'title' => 'Ішкі кітапхана аймақтары', 'body' => 'Келесі кезеңде librarian және admin surfaces, quality workflows, circulation және deeper operational layers дамиды.'],
+            ],
           'orientation_eyebrow' => 'Сервистер бойынша бағдар',
           'orientation_title' => 'Нақты міндетпен қайда бару керек',
           'orientation' => [
@@ -139,6 +202,15 @@
               ['label' => 'Сенбі', 'value' => '10:00 – 14:00'],
               ['label' => 'Жексенбі', 'value' => 'Демалыс'],
           ],
+            'cta_eyebrow' => 'Жұмысты бастау',
+            'cta_title' => 'Бірден нақты маршрутқа өтіңіз',
+            'cta_body' => 'Егер кітапхана туралы анықтама жеткілікті болса, келесі қадамға өтіңіз: каталогқа, ӘОЖ навигациясына, shortlist-ке немесе ресурстарға.',
+            'cta_links' => [
+              ['label' => 'Каталог', 'href' => '/catalog'],
+              ['label' => 'ӘОЖ навигациясы', 'href' => '/discover'],
+              ['label' => 'Shortlist', 'href' => '/shortlist'],
+              ['label' => 'Ресурстар', 'href' => '/resources'],
+            ],
       ],
       'en' => [
           'title' => 'About Library — Digital Library',
@@ -147,9 +219,20 @@
           'hero_body' => 'A public page about the library and the new digital platform: what the system is, how it helps readers, and where to go across the key services.',
           'hero_primary' => 'Open catalog',
           'hero_secondary' => 'Research resources',
+            'hero_surfaces' => [
+              'Catalog and book records',
+              'Member account and reservations',
+              'Shortlist and course work',
+              'Digital materials and external resources',
+            ],
           'highlight_label' => 'Orientation and support',
           'highlight_title' => 'One public entry point into the library ecosystem',
           'highlight_body' => 'The platform brings together the catalog, member account, shortlist, digital materials, external licensed resources, and future librarian/admin work areas.',
+            'highlight_points' => [
+              'one public layer without fake surfaces',
+              'academic navigation and real discovery routes',
+              'collection access, digital materials, and research support in one system',
+            ],
           'mission_eyebrow' => 'Mission and role',
           'mission_title' => 'The new digital foundation of the university library',
           'mission_body' => 'KazUTB Digital Library is being built not as a brochure website but as a real library system with catalog data, controlled digital access, reader services, and operational modules for library workflows.',
@@ -166,6 +249,14 @@
               ['title' => 'Draft reading list', 'body' => 'A working area for gathering books and external resources before building a teaching or research list.'],
               ['title' => 'Secure access', 'body' => 'Authentication stays inside the library while CRM remains a neighboring auth/API layer, not the product owner.'],
           ],
+            'story_eyebrow' => 'Collections, access, and support',
+            'story_title' => 'The library as a connected digital environment',
+            'story_body' => 'The page should explain not only who the library is, but how the digital environment works: from search and UDC routes to controlled access, shortlist, and research support.',
+            'story_cards' => [
+              ['kicker' => 'Collections', 'title' => 'Print, digital, and licensed holdings', 'body' => 'The platform does not flatten everything into one abstract repository: it distinguishes physical copies, local digital materials, and external scholarly platforms.'],
+              ['kicker' => 'Access', 'title' => 'An honest route from sign-in to reading', 'body' => 'Member access, the controlled viewer, and reader-facing services stay inside the library product instead of handing people off to a different shell.'],
+              ['kicker' => 'Support', 'title' => 'Orientation for readers, faculty, and staff', 'body' => 'The public layer gives a clear entry point, then routes users into catalog, shortlist, resources, and the broader library platform.'],
+            ],
           'project_eyebrow' => 'Project and growth',
           'project_title' => 'What the digital library platform means',
           'project_body' => 'The project is gradually replacing legacy infrastructure and building the base for data quality, analytics, operational workflows, controlled digital access, and future AI-assisted layers.',
@@ -174,6 +265,14 @@
               ['title' => 'External and licensed resources', 'body' => 'The platform distinguishes owned holdings, local digital materials, and licensed platforms such as IPR SMART.'],
               ['title' => 'Next modules', 'body' => 'The next major areas include member dashboard flows, secure access, librarian panel, admin panel, and deeper advanced catalog / book detail work.'],
           ],
+            'progress_eyebrow' => 'Platform progression',
+            'progress_title' => 'How the new library system is being assembled',
+            'progress_steps' => [
+              ['label' => '01', 'title' => 'Catalog and discovery foundation', 'body' => 'The public layer starts from search, bibliography, UDC routes, and real entry points into the holdings.'],
+              ['label' => '02', 'title' => 'Reader-facing access', 'body' => 'Member account, controlled access, and short reader journeys are built as part of one coherent library product.'],
+              ['label' => '03', 'title' => 'Academic working flows', 'body' => 'Shortlist, research support, and resource orientation become honest working surfaces rather than decorative pages.'],
+              ['label' => '04', 'title' => 'Internal library zones', 'body' => 'Next come librarian and admin surfaces, quality workflows, circulation, and deeper operational modules.'],
+            ],
           'orientation_eyebrow' => 'Service orientation',
           'orientation_title' => 'Where to go for a concrete task',
           'orientation' => [
@@ -202,6 +301,15 @@
               ['label' => 'Saturday', 'value' => '10:00 – 14:00'],
               ['label' => 'Sunday', 'value' => 'Closed'],
           ],
+            'cta_eyebrow' => 'Start working',
+            'cta_title' => 'Move directly into a real library route',
+            'cta_body' => 'If the orientation is enough, continue straight into the route you need: catalog, UDC navigation, shortlist, or external resources.',
+            'cta_links' => [
+              ['label' => 'Catalog', 'href' => '/catalog'],
+              ['label' => 'UDC navigation', 'href' => '/discover'],
+              ['label' => 'Shortlist', 'href' => '/shortlist'],
+              ['label' => 'Resources', 'href' => '/resources'],
+            ],
       ],
   ][$lang];
 @endphp
@@ -219,13 +327,42 @@
           <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-primary">{{ $copy['hero_primary'] }}</a>
           <a href="{{ $routeWithLang('/resources') }}" class="btn btn-ghost">{{ $copy['hero_secondary'] }}</a>
         </div>
+        <div class="about-surface-list">
+          @foreach($copy['hero_surfaces'] as $surface)
+            <span>{{ $surface }}</span>
+          @endforeach
+        </div>
       </div>
 
-      <aside class="about-highlight">
-        <span>{{ $copy['highlight_label'] }}</span>
-        <strong>{{ $copy['highlight_title'] }}</strong>
-        <p>{{ $copy['highlight_body'] }}</p>
-      </aside>
+      <div class="about-hero-side">
+        <aside class="about-highlight">
+          <span>{{ $copy['highlight_label'] }}</span>
+          <strong>{{ $copy['highlight_title'] }}</strong>
+          <p>{{ $copy['highlight_body'] }}</p>
+          <ul class="about-highlight-points">
+            @foreach($copy['highlight_points'] as $item)
+              <li>{{ $item }}</li>
+            @endforeach
+          </ul>
+        </aside>
+
+        <div class="about-hero-visual" aria-hidden="true">
+          <div class="about-hero-visual__panel about-hero-visual__panel--primary">
+            <span>Digital Library</span>
+            <strong>KazTBU</strong>
+          </div>
+          <div class="about-hero-visual__row">
+            <div class="about-hero-visual__panel">
+              <span>Catalog</span>
+              <strong>UDC-first</strong>
+            </div>
+            <div class="about-hero-visual__panel">
+              <span>Access</span>
+              <strong>Reader routes</strong>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -273,6 +410,28 @@
     <div class="container">
       <div class="section-head">
         <div>
+          <div class="eyebrow eyebrow--cyan">{{ $copy['story_eyebrow'] }}</div>
+          <h2>{{ $copy['story_title'] }}</h2>
+          <p>{{ $copy['story_body'] }}</p>
+        </div>
+      </div>
+
+      <div class="about-story-grid">
+        @foreach($copy['story_cards'] as $card)
+          <article class="about-story-card">
+            <span>{{ $card['kicker'] }}</span>
+            <h3>{{ $card['title'] }}</h3>
+            <p>{{ $card['body'] }}</p>
+          </article>
+        @endforeach
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section page-section--tone">
+    <div class="container">
+      <div class="section-head">
+        <div>
           <div class="eyebrow eyebrow--green">{{ $copy['project_eyebrow'] }}</div>
           <h2>{{ $copy['project_title'] }}</h2>
           <p>{{ $copy['project_body'] }}</p>
@@ -284,6 +443,27 @@
           <article class="about-card about-card--project">
             <h3>{{ $card['title'] }}</h3>
             <p>{{ $card['body'] }}</p>
+          </article>
+        @endforeach
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow eyebrow--violet">{{ $copy['progress_eyebrow'] }}</div>
+          <h2>{{ $copy['progress_title'] }}</h2>
+        </div>
+      </div>
+
+      <div class="progress-grid">
+        @foreach($copy['progress_steps'] as $step)
+          <article class="progress-card">
+            <span>{{ $step['label'] }}</span>
+            <h3>{{ $step['title'] }}</h3>
+            <p>{{ $step['body'] }}</p>
           </article>
         @endforeach
       </div>
@@ -364,6 +544,23 @@
       </div>
     </div>
   </section>
+
+  <section class="page-section">
+    <div class="container">
+      <div class="about-cta-band">
+        <div>
+          <div class="eyebrow eyebrow--green">{{ $copy['cta_eyebrow'] }}</div>
+          <h2>{{ $copy['cta_title'] }}</h2>
+          <p>{{ $copy['cta_body'] }}</p>
+        </div>
+        <div class="about-cta-links">
+          @foreach($copy['cta_links'] as $link)
+            <a href="{{ $routeWithLang($link['href']) }}">{{ $link['label'] }}</a>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </section>
 @endsection
 
 @section('head')
@@ -384,8 +581,35 @@
     margin-top: 18px;
   }
 
+  .about-surface-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .about-surface-list span,
+  .about-cta-links a {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(195,198,209,.55);
+    background: rgba(255,255,255,.84);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .about-hero-side {
+    display: grid;
+    gap: 16px;
+  }
+
   .about-highlight,
   .about-card,
+  .about-story-card,
+  .progress-card,
   .orientation-card,
   .update-card,
   .contact-card,
@@ -412,6 +636,63 @@
     display: grid;
     align-content: start;
     gap: 10px;
+  }
+
+  .about-highlight-points {
+    margin: 4px 0 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .about-hero-visual {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    background:
+      radial-gradient(circle at top right, rgba(20,105,109,.12), transparent 36%),
+      linear-gradient(145deg, rgba(0,30,64,.96), rgba(12,52,88,.92));
+    color: #fff;
+    display: grid;
+    gap: 12px;
+    min-height: 220px;
+  }
+
+  .about-hero-visual__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .about-hero-visual__panel {
+    min-height: 88px;
+    border-radius: var(--radius-md);
+    padding: 14px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.14);
+    display: grid;
+    align-content: end;
+    gap: 6px;
+  }
+
+  .about-hero-visual__panel--primary {
+    min-height: 110px;
+  }
+
+  .about-hero-visual__panel span {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.72);
+  }
+
+  .about-hero-visual__panel strong {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.45rem;
+    line-height: 1.08;
   }
 
   .about-highlight span,
@@ -480,17 +761,46 @@
     gap: 16px;
   }
 
+  .about-story-grid,
+  .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
   .about-card {
     padding: 20px;
   }
 
+  .about-story-card,
+  .progress-card {
+    padding: 20px;
+  }
+
+  .about-story-card span,
+  .progress-card span {
+    display: inline-flex;
+    margin-bottom: 10px;
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
   .about-card h3,
+  .about-story-card h3,
+  .progress-card h3,
   .update-card h3 {
     margin: 0 0 8px;
     font-family: 'Newsreader', Georgia, serif;
     font-size: 1.4rem;
     color: var(--blue);
     line-height: 1.15;
+  }
+
+  .page-section--tone {
+    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(20,105,109,.03));
   }
 
   .orientation-stack,
@@ -555,6 +865,46 @@
     color: var(--blue);
   }
 
+  .about-cta-band {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(0,30,64,.98), rgba(14,54,87,.94));
+    color: #fff;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .about-cta-band h2 {
+    margin: 10px 0 8px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 2rem;
+    line-height: 1.02;
+    color: #fff;
+  }
+
+  .about-cta-band p {
+    margin: 0;
+    color: rgba(255,255,255,.76);
+    line-height: 1.7;
+  }
+
+  .about-cta-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .about-cta-links a {
+    background: rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.16);
+    color: #fff;
+    text-decoration: none;
+  }
+
   @keyframes aboutReveal {
     from {
       opacity: 0;
@@ -570,12 +920,19 @@
     .about-hero-shell,
     .about-grid,
     .about-two-col,
-    .about-card-grid {
+    .about-card-grid,
+    .about-story-grid,
+    .progress-grid,
+    .about-cta-band {
       grid-template-columns: 1fr;
     }
 
     .about-facts {
       grid-template-columns: 1fr;
+    }
+
+    .about-cta-links {
+      justify-content: flex-start;
     }
   }
 </style>
