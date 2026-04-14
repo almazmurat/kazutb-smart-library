@@ -23,6 +23,7 @@ class CatalogReadService
         ?int $yearFrom = null,
         ?int $yearTo = null,
         bool $availableOnly = false,
+        bool $physicalOnly = false,
         ?string $subjectId = null,
         ?string $institution = null,
     ): array {
@@ -98,6 +99,10 @@ class CatalogReadService
 
         if ($availableOnly) {
             $builder->whereRaw("COALESCE((d.copy_summary_json->>'availableCopies')::int, 0) > 0");
+        }
+
+        if ($physicalOnly) {
+            $builder->whereRaw("COALESCE((d.copy_summary_json->>'totalCopies')::int, 0) > 0");
         }
 
         if ($subjectId !== null && $subjectId !== '') {

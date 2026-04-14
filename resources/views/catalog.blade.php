@@ -764,10 +764,22 @@
     .institution-select {
       border-radius: 0;
       min-height: 34px;
-      padding: 8px 10px;
+      padding: 8px 34px 8px 10px;
       font-size: 12px;
       border: 1px solid #cfd7e2;
-      background: #fff;
+      background-color: #fff;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #5c6876 50%),
+        linear-gradient(135deg, #5c6876 50%, transparent 50%);
+      background-position:
+        calc(100% - 16px) calc(50% - 2px),
+        calc(100% - 11px) calc(50% - 2px);
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      box-shadow: none;
     }
 
     .subject-search { display: none; }
@@ -776,6 +788,14 @@
       width: 100%;
       font-family: inherit;
       color: #0b2a55;
+    }
+
+    .range-input:focus,
+    .subject-select:focus,
+    .institution-select:focus {
+      outline: none;
+      border-color: rgba(0,30,64,.24);
+      box-shadow: 0 0 0 3px rgba(0,30,64,.06);
     }
 
     .advanced-filters {
@@ -1729,10 +1749,10 @@
           </div>
 
           <div class="filter-group filter-group--availability">
-            <span class="filter-label">{{ ['ru' => 'Тип ресурса', 'kk' => 'Ресурс түрі', 'en' => 'Resource type'][$lang] }}</span>
+            <span class="filter-label">{{ ['ru' => 'Доступность фонда', 'kk' => 'Қор қолжетімділігі', 'en' => 'Holding availability'][$lang] }}</span>
             <div class="check-list">
-              <label class="check-item"><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> <span>{{ ['ru' => 'Электронные (E-Book/PDF)', 'kk' => 'Электронды (E-Book/PDF)', 'en' => 'Digital (E-Book/PDF)'][$lang] }}</span></label>
-              <label class="check-item"><input type="checkbox" id="filter-physical-only" onchange="applyFilters()"> <span>{{ ['ru' => 'Физический фонд', 'kk' => 'Физикалық қор', 'en' => 'Physical Collection'][$lang] }}</span></label>
+              <label class="check-item"><input type="checkbox" id="filter-available-only" onchange="applyFilters()"> <span>{{ ['ru' => 'Только доступные экземпляры', 'kk' => 'Тек қолжетімді даналар', 'en' => 'Only available copies'][$lang] }}</span></label>
+              <label class="check-item"><input type="checkbox" id="filter-physical-only" onchange="applyFilters()"> <span>{{ ['ru' => 'Только с физическим фондом', 'kk' => 'Тек физикалық қоры бар', 'en' => 'Only with physical holdings'][$lang] }}</span></label>
             </div>
           </div>
 
@@ -1810,7 +1830,7 @@
         copies: 'экз.', unavailable: 'Нет в наличии', author: 'Автор', year: 'Год', language: 'Язык', viewBook: 'Смотреть книгу',
         addShortlist: 'В подборку', removeShortlist: 'Убрать из подборки', updateCatalog: 'Обновляем каталог', noResultBadge: 'Нет результата', noBooks: 'Книги не найдены', tryChange: 'Попробуйте изменить параметры поиска.',
         foundZero: 'Найдено 0 книг', foundMany: 'Найдено {count} книг', retry: 'Повтор', loadError: 'Ошибка загрузки каталога', refreshPage: 'Попробуйте обновить страницу.',
-        yearLabel: 'Год', availableOnly: 'В наличии', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
+        yearLabel: 'Год', availableOnly: 'Только доступные экземпляры', physicalOnly: 'Только с физическим фондом', resetAll: 'Сбросить все', subjectFilter: 'Фильтр по направлению', clear: 'Сбросить',
         faculties: 'Факультеты', departments: 'Кафедры', specializations: 'Специальности', login: 'Войти', shareCopied: 'Ссылка скопирована', shareView: 'Поделиться видом', viewComfortable: 'Карточки', viewCompact: 'Компактно', insideRecord: 'Внутри книги', previewAvailable: 'Доступно {available} из {total}. При открытии записи можно проверить экземпляры, ISBN и тематическую привязку.', previewUnavailable: 'Экземпляры временно недоступны. Откройте запись, чтобы проверить библиографию и расположение.', loadingBody: 'Подбираем более точную выдачу по активным фильтрам.', isbnLabel: 'ISBN', udcLabel: 'УДК', publisherLabel: 'Издатель', copiesLabel: 'Экземпляры', trackLabel: 'Направление', locationLabel: 'Локация', coverHint: 'Открыть превью', missingMetaLabel: 'Отсутствует'
       },
       kk: {
@@ -1819,7 +1839,7 @@
         copies: 'дана', unavailable: 'Қолжетімсіз', author: 'Автор', year: 'Жыл', language: 'Тіл', viewBook: 'Кітапты ашу',
         addShortlist: 'Топтамаға қосу', removeShortlist: 'Топтамадан алу', updateCatalog: 'Каталог жаңартылуда', noResultBadge: 'Нәтиже жоқ', noBooks: 'Кітаптар табылмады', tryChange: 'Іздеу параметрлерін өзгертіп көріңіз.',
         foundZero: '0 кітап табылды', foundMany: '{count} кітап табылды', retry: 'Қайталау', loadError: 'Каталогты жүктеу қатесі', refreshPage: 'Бетті жаңартып көріңіз.',
-        yearLabel: 'Жыл', availableOnly: 'Қолда бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
+        yearLabel: 'Жыл', availableOnly: 'Тек қолжетімді даналар', physicalOnly: 'Тек физикалық қоры бар', resetAll: 'Барлығын тазарту', subjectFilter: 'Бағыт бойынша сүзгі', clear: 'Тазарту',
         faculties: 'Факультеттер', departments: 'Кафедралар', specializations: 'Мамандандырулар', login: 'Кіру', shareCopied: 'Сілтеме көшірілді', shareView: 'Көріністі бөлісу', viewComfortable: 'Карточкалар', viewCompact: 'Ықшам', insideRecord: 'Кітап ішінде', previewAvailable: '{total} дананың {available}-і қолжетімді. Жазбаны ашқанда даналар, ISBN және тақырыптық байланыс көрінеді.', previewUnavailable: 'Даналар уақытша қолжетімсіз. Жазбаны ашып библиография мен орналасуды тексеріңіз.', loadingBody: 'Белсенді сүзгілер бойынша дәлірек нәтижелер жиналуда.', isbnLabel: 'ISBN', udcLabel: 'ӘОЖ', publisherLabel: 'Баспа', copiesLabel: 'Даналар', trackLabel: 'Бағыт', locationLabel: 'Орналасуы', coverHint: 'Превью ашу', missingMetaLabel: 'Жетпейді'
       },
       en: {
@@ -1828,7 +1848,7 @@
         copies: 'copies', unavailable: 'Unavailable', author: 'Author', year: 'Year', language: 'Language', viewBook: 'Open book',
         addShortlist: 'Add to shortlist', removeShortlist: 'Remove from shortlist', updateCatalog: 'Refreshing catalog', noResultBadge: 'No result', noBooks: 'No books found', tryChange: 'Try adjusting the search parameters.',
         foundZero: 'Found 0 books', foundMany: 'Found {count} books', retry: 'Retry', loadError: 'Catalog load error', refreshPage: 'Try refreshing the page.',
-        yearLabel: 'Year', availableOnly: 'Available', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
+        yearLabel: 'Year', availableOnly: 'Only available copies', physicalOnly: 'Only with physical holdings', resetAll: 'Reset all', subjectFilter: 'Subject filter', clear: 'Clear',
         faculties: 'Faculties', departments: 'Departments', specializations: 'Specializations', login: 'Sign in', shareCopied: 'Link copied', shareView: 'Share view', viewComfortable: 'Cards', viewCompact: 'Compact', insideRecord: 'Inside the book', previewAvailable: '{available} of {total} copies are ready now. Open the record for copies, ISBN, and subject placement.', previewUnavailable: 'Copies are currently unavailable. Open the record to review bibliography and location.', loadingBody: 'Refining the catalog view around your active filters.', isbnLabel: 'ISBN', udcLabel: 'UDC', publisherLabel: 'Publisher', copiesLabel: 'Copies', trackLabel: 'Track', locationLabel: 'Location', coverHint: 'Open preview', missingMetaLabel: 'Missing'
       }
     };
@@ -1934,11 +1954,11 @@
 
     function syncCatalogUrl(params) {
       const url = new URL(window.location.href);
-      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'subject_label', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution'].forEach((key) => {
+      ['q', 'page', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'physical_only', 'subject_id', 'subject_label', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution'].forEach((key) => {
         url.searchParams.delete(key);
       });
 
-      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'subject_id', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution'].forEach((key) => {
+      ['q', 'sort', 'language', 'year_from', 'year_to', 'available_only', 'physical_only', 'subject_id', 'title', 'author', 'publisher', 'isbn', 'udc', 'institution'].forEach((key) => {
         const value = params.get(key);
         if (value) {
           url.searchParams.set(key, value);
@@ -2187,6 +2207,9 @@
         const availableOnly = document.getElementById('filter-available-only');
         if (availableOnly && availableOnly.checked) params.set('available_only', '1');
 
+        const physicalOnly = document.getElementById('filter-physical-only');
+        if (physicalOnly && physicalOnly.checked) params.set('physical_only', '1');
+
         const institutionSelect = document.getElementById('institution-select');
         if (institutionSelect && institutionSelect.value) params.set('institution', institutionSelect.value);
 
@@ -2254,6 +2277,8 @@
 
       const avail = document.getElementById('filter-available-only');
       if (avail?.checked) chips.push({ label: CATALOG_I18N.availableOnly, clear: () => { avail.checked = false; } });
+      const physicalOnly = document.getElementById('filter-physical-only');
+      if (physicalOnly?.checked) chips.push({ label: CATALOG_I18N.physicalOnly, clear: () => { physicalOnly.checked = false; } });
       const institutionSelect = document.getElementById('institution-select');
       if (institutionSelect?.value) {
         const selectedOption = institutionSelect.options[institutionSelect.selectedIndex];
@@ -2293,6 +2318,7 @@
       const institutionSelect = document.getElementById('institution-select');
       const sortSelect = document.getElementById('sort-select');
       const avail = document.getElementById('filter-available-only');
+      const physicalOnly = document.getElementById('filter-physical-only');
       const advTitle = document.getElementById('adv-title');
       const advAuthor = document.getElementById('adv-author');
       const advPublisher = document.getElementById('adv-publisher');
@@ -2307,6 +2333,7 @@
       if (institutionSelect) institutionSelect.value = '';
       if (sortSelect) sortSelect.value = 'popular';
       if (avail) avail.checked = false;
+      if (physicalOnly) physicalOnly.checked = false;
       if (advTitle) advTitle.value = '';
       if (advAuthor) advAuthor.value = '';
       if (advPublisher) advPublisher.value = '';
@@ -2460,6 +2487,7 @@
     function countActiveFilters() {
       let count = 0;
       if (document.getElementById('filter-available-only')?.checked) count++;
+      if (document.getElementById('filter-physical-only')?.checked) count++;
       if (getActiveLanguage()) count++;
       if (document.getElementById('institution-select')?.value) count++;
       const yearParams = getYearParams();
@@ -2571,6 +2599,7 @@
       const urlYearFrom = urlParams.get('year_from');
       const urlYearTo = urlParams.get('year_to');
       const urlAvailableOnly = urlParams.get('available_only');
+      const urlPhysicalOnly = urlParams.get('physical_only');
       const urlInstitution = urlParams.get('institution');
       const urlSubjectId = urlParams.get('subject_id');
       const urlSubjectLabel = urlParams.get('subject_label');
@@ -2592,6 +2621,9 @@
       }
       if (urlAvailableOnly === '1' && document.getElementById('filter-available-only')) {
         document.getElementById('filter-available-only').checked = true;
+      }
+      if (urlPhysicalOnly === '1' && document.getElementById('filter-physical-only')) {
+        document.getElementById('filter-physical-only').checked = true;
       }
       if (urlInstitution && document.getElementById('institution-select')) {
         document.getElementById('institution-select').value = urlInstitution;

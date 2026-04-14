@@ -26,6 +26,7 @@ class CatalogController extends Controller
             'year_from' => ['nullable', 'integer', 'min:1900', 'max:2100'],
             'year_to' => ['nullable', 'integer', 'min:1900', 'max:2100'],
             'available_only' => ['nullable', 'string', 'in:0,1,true,false'],
+            'physical_only' => ['nullable', 'string', 'in:0,1,true,false'],
             'subject_id' => ['nullable', 'string', 'uuid'],
             'institution' => ['nullable', 'string', 'in:college_library,economic_library,technology_library,ktslib'],
         ]);
@@ -44,6 +45,7 @@ class CatalogController extends Controller
             yearFrom: isset($validated['year_from']) ? (int) $validated['year_from'] : null,
             yearTo: isset($validated['year_to']) ? (int) $validated['year_to'] : null,
             availableOnly: in_array($validated['available_only'] ?? '0', ['1', 'true'], true),
+            physicalOnly: in_array($validated['physical_only'] ?? '0', ['1', 'true'], true),
             subjectId: isset($validated['subject_id']) ? (string) $validated['subject_id'] : null,
             institution: isset($validated['institution']) ? (string) $validated['institution'] : null,
         );

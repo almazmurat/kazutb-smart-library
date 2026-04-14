@@ -81,6 +81,32 @@ class CatalogDbSearchTest extends TestCase
         }
     }
 
+    public function test_catalog_db_physical_only_filter(): void
+    {
+        if (! $this->canUseLivePgsql()) {
+            $this->markTestSkipped('Live PostgreSQL not available.');
+        }
+
+        $response = $this->getJson('/api/v1/catalog-db?physical_only=1&limit=5');
+        $response->assertOk();
+
+        foreach ($response->json('data') as $item) {
+            $this->assertGreaterThan(0, $item['copies']['total']);
+        }
+    }
+
+    public function test_catalog_db_institution_filter(): void
+    {
+        if (! $this->canUseLivePgsql()) {
+            $this->markTestSkipped('Live PostgreSQL not available.');
+        }
+
+        $response = $this->getJson('/api/v1/catalog-db?institution=technology_library&limit=5');
+
+        $response->assertOk();
+        $this->assertIsArray($response->json('data'));
+    }
+
     public function test_catalog_db_sort_options(): void
     {
         if (! $this->canUseLivePgsql()) {
@@ -136,6 +162,8 @@ class CatalogDbSearchTest extends TestCase
         $this->getJson('/api/v1/catalog-db?sort=invalid')->assertUnprocessable();
         $this->getJson('/api/v1/catalog-db?limit=999')->assertUnprocessable();
         $this->getJson('/api/v1/catalog-db?year_from=abc')->assertUnprocessable();
+        $this->getJson('/api/v1/catalog-db?physical_only=maybe')->assertUnprocessable();
+        $this->getJson('/api/v1/catalog-db?institution=unknown')->assertUnprocessable();
     }
 
     private function canUseLivePgsql(): bool

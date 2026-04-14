@@ -15,8 +15,10 @@ class CatalogPageTest extends TestCase
             ->assertSee('Каталог книг', false)
             ->assertSee('/api/v1/catalog-db', false)
             ->assertSee('id="language-chips"', false)
-            ->assertSee('id="year-chips"', false)
+            ->assertSee('id="year-from-input"', false)
+            ->assertSee('id="year-to-input"', false)
             ->assertSee('id="filter-available-only"', false)
+            ->assertSee('id="filter-physical-only"', false)
             ->assertSee('id="sort-select"', false)
             ->assertSee('ISBN', false)
             ->assertSee('УДК', false);
@@ -31,9 +33,9 @@ class CatalogPageTest extends TestCase
             ->assertSee('data-lang="ru"', false)
             ->assertSee('data-lang="kk"', false)
             ->assertSee('data-lang="en"', false)
-            ->assertSee('data-year="2025"', false)
-            ->assertSee('data-year="2024"', false)
-            ->assertSee('data-year="older"', false);
+            ->assertSee('id="year-from-input"', false)
+            ->assertSee('id="year-to-input"', false)
+            ->assertSee('id="institution-select"', false);
     }
 
     public function test_catalog_page_sends_filters_to_api(): void
@@ -46,7 +48,20 @@ class CatalogPageTest extends TestCase
             ->assertSee('params.set(\'sort\'', false)
             ->assertSee('year_from', false)
             ->assertSee('year_to', false)
-            ->assertSee('available_only', false);
+            ->assertSee('available_only', false)
+            ->assertSee('physical_only', false)
+            ->assertSee('institution', false);
+    }
+
+    public function test_catalog_page_has_institution_filter_and_honest_holding_filters(): void
+    {
+        $response = $this->get('/catalog?institution=technology_library');
+
+        $response
+            ->assertOk()
+            ->assertSee('id="institution-select"', false)
+            ->assertSee('Только доступные экземпляры')
+            ->assertSee('Только с физическим фондом');
     }
 
     public function test_catalog_page_uses_canonical_catalog_db_endpoint_only(): void

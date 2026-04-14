@@ -28,6 +28,17 @@ class SpaCatalogWiringTest extends TestCase
         $this->assertStringContainsString("params.set('year_to'", $source);
     }
 
+    public function test_catalog_blade_wires_institution_and_physical_filters_into_query_params(): void
+    {
+        $source = file_get_contents(base_path('resources/views/catalog.blade.php'));
+
+        $this->assertIsString($source);
+        $this->assertStringContainsString("params.set('institution'", $source);
+        $this->assertStringContainsString("params.set('physical_only'", $source);
+        $this->assertStringContainsString("urlParams.get('institution')", $source);
+        $this->assertStringContainsString("urlParams.get('physical_only')", $source);
+    }
+
     public function test_spa_catalog_component_resets_pagination_when_filters_change(): void
     {
         $source = file_get_contents(base_path('resources/js/spa/pages/CatalogPage.jsx'));
