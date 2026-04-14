@@ -23,6 +23,65 @@ function readPositiveInt(value, fallback = 1) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
+function normalizeText(value, fallback = '') {
+  if (typeof value !== 'string') return fallback;
+  const normalized = value.trim();
+  return normalized || fallback;
+}
+
+function firstMeaningfulClassification(classification) {
+  if (!Array.isArray(classification)) return '';
+  const item = classification.find((entry) => normalizeText(entry?.label));
+  return normalizeText(item?.label);
+}
+
+function primaryLocationLabel(locations) {
+  if (!Array.isArray(locations) || locations.length === 0) return '';
+  return normalizeText(locations[0]?.servicePoint?.name)
+    || normalizeText(locations[0]?.campus?.name)
+    || '';
+}
+
+function availabilityCopy(doc) {
+  const availableCopies = Number(doc?.copies?.available ?? NaN);
+  const totalCopies = Number(doc?.copies?.total ?? NaN);
+
+  if (Number.isFinite(totalCopies) && totalCopies > 0 && Number.isFinite(availableCopies)) {
+    if (availableCopies > 0 && availableCopies < totalCopies) {
+      return t('catalog.availabilityPartial', { available: availableCopies, total: totalCopies });
+    }
+
+    if (availableCopies <= 0) {
+      return t('catalog.availabilityCheckedOut', { total: totalCopies });
+    }
+
+    return t('catalog.copiesAvailable', { count: availableCopies });
+  }
+
+  return t('catalog.availabilityUnknown');
+}
+
+function accessCopy(doc) {
+  const availableCopies = Number(doc?.copies?.available ?? NaN);
+  const totalCopies = Number(doc?.copies?.total ?? NaN);
+  const hasPhysicalHoldings = (Number.isFinite(totalCopies) && totalCopies > 0)
+    || (Array.isArray(doc?.availability?.locations) && doc.availability.locations.length > 0);
+
+  if (!hasPhysicalHoldings) {
+    return t('catalog.accessPending');
+  }
+
+  if (Number.isFinite(availableCopies) && availableCopies > 0) {
+    return t('catalog.accessPhysicalAvailable');
+  }
+
+  if (Number.isFinite(totalCopies) && totalCopies > 0) {
+    return t('catalog.accessPhysicalUnavailable');
+  }
+
+  return t('catalog.accessPhysicalOnly');
+}
+
 export function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') ?? '';
@@ -264,7 +323,7 @@ export function CatalogPage() {
         <div className="toolbar-actions">
           <div className="search-summary">
             {query ? t('catalog.querySummary', { query }) : t('catalog.summaryAll')}
-            {udc ? ` · UDC ${udc}` : ''}
+            {udc ? ` · ${t('catalog.summaryUdc', { udc })}` : ''}
             {language ? ` · ${t('catalog.summaryLanguage', { language: language.toUpperCase() })}` : ''}
             {yearSummary ? ` · ${t('catalog.summaryYears', { years: yearSummary })}` : ''}
             {availableOnly ? ` · ${t('catalog.summaryAvailable')}` : ''}
@@ -299,10 +358,19 @@ export function CatalogPage() {
             const identifier = doc?.isbn?.raw || doc?.id;
             const title = doc?.title?.display || doc?.title?.raw || t('catalog.untitled');
             const subtitle = doc?.title?.subtitle;
+            const primaryAuthor = normalizeText(doc?.primaryAuthor, t('catalog.unknownAuthor'));
+            const publisherName = normalizeText(doc?.publisher?.name);
             const publicationYear = doc?.publicationYear;
             const languageCode = doc?.language?.code;
+            const languageRaw = normalizeText(doc?.language?.raw);
             const rawIsbn = doc?.isbn?.raw;
             const availableCopies = Number(doc?.copies?.available ?? NaN);
+            const totalCopies = Number(doc?.copies?.total ?? NaN);
+            const locations = Array.isArray(doc?.availability?.locations) ? doc.availability.locations : [];
+            const primaryLocation = primaryLocationLabel(locations);
+            const profileLabel = firstMeaningfulClassification(doc?.classification);
+            const udcLabel = normalizeText(doc?.udc?.raw, '');
+            const holdingLabel = totalCopies > 0 || locations.length > 0 ? t('catalog.physicalHolding') : t('catalog.holdingDataPending');
 
             return (
               <a
@@ -312,23 +380,34 @@ export function CatalogPage() {
               >
                 <div className="card-topline">
                   <span className={`card-badge ${availableCopies > 0 ? 'card-badge--available' : 'card-badge--muted'}`}>
-                    {availableCopies > 0 ? t('catalog.available') : t('catalog.checkAvailability')}
+                    {availableCopies > 0 ? t('catalog.available') : holdingLabel}
                   </span>
                   {languageCode && <span className="card-badge card-badge--muted">{languageCode.toUpperCase()}</span>}
                 </div>
                 <div className="card-title">{title}</div>
                 {subtitle && <div className="card-subtitle">{subtitle}</div>}
+                <div className="card-author">{primaryAuthor}</div>
                 <div className="card-meta">
                   {publicationYear && <span className="meta-year">{publicationYear}</span>}
+                  {publisherName && <span>{publisherName}</span>}
+                  {languageRaw && !languageCode && <span>{languageRaw}</span>}
                   {rawIsbn && <span className="meta-isbn">ISBN: {rawIsbn}</span>}
                 </div>
-                {!Number.isNaN(availableCopies) && (
-                  <div className={`card-availability ${availableCopies > 0 ? 'available' : 'unavailable'}`}>
-                    {availableCopies > 0
-                      ? t('catalog.copiesAvailable', { count: availableCopies })
-                      : t('catalog.unavailable')}
-                  </div>
-                )}
+                <div className="card-detail-row">
+                  <span className={`card-udc ${udcLabel ? '' : 'card-udc--missing'}`}>
+                    {udcLabel ? `UDC ${udcLabel}` : t('catalog.udcPending')}
+                  </span>
+                  <span className="card-note">
+                    {profileLabel ? t('catalog.subjectLabel', { label: profileLabel }) : t('catalog.subjectPending')}
+                  </span>
+                </div>
+                <div className="card-note card-note--location">
+                  {primaryLocation ? t('catalog.locationLabel', { location: primaryLocation }) : t('catalog.locationPending')}
+                </div>
+                <div className={`card-availability ${availableCopies > 0 ? 'available' : 'unavailable'}`}>
+                  {availabilityCopy(doc)}
+                </div>
+                <div className="card-access-copy">{accessCopy(doc)}</div>
                 <div className="card-link-hint">{t('catalog.openCard')}</div>
               </a>
             );

@@ -1806,9 +1806,9 @@
                 availableShort: 'Доступно', copySummary: '{available} из {total}', copyAvailable: 'Экземпляр доступен для выдачи', copyAvailableBody: 'В фонде {available} доступных экземпляров из {total}.',
                 allCheckedOut: 'Все экземпляры выданы', allCheckedOutBody: 'Все {total} экземпляров в данный момент выданы.', inStock: 'В наличии', unavailable: 'Недоступно',
                 reserve: 'Забронировать книгу', signInToReserve: 'Войдите для бронирования', shortlistAdd: '☆ В подборку', shortlistAdded: '★ В подборке', characteristics: 'Характеристики',
-                publisher: 'Издательство', publicationLanguage: 'Язык издания', totalCopies: 'Всего экземпляров', availableNowLabel: 'Доступно сейчас', availabilityByPoint: 'Наличие по пунктам выдачи',
+                publisher: 'Издательство', publicationLanguage: 'Язык издания', totalCopies: 'Всего экземпляров', availableNowLabel: 'Доступно сейчас', availabilityByPoint: 'Наличие по пунктам выдачи', locationLabel: 'Локация', accessAndFormat: 'Доступ и формат',
                 digitalMaterials: '💻 Электронные материалы', open: 'Открыть', login: 'Войти', checking: '⏳ Проверка...', reservedReady: '✓ Уже забронировано', reserving: '⏳ Бронирование...', noCopies: 'Нет экземпляров', reservationUnavailable: 'Бронирование недоступно',
-                reservedState: '✓ Забронировано ({status})', readyForPickup: 'готово к выдаче', waiting: 'ожидание', reserveSuccess: 'Книга успешно забронирована!', validUntil: 'Действует до {date}.', followStatus: 'Следите за статусом в кабинете.', description: 'Описание', metadata: 'Метаданные', licensedResources: 'Лицензированные ссылки и ресурсы', similarResources: 'Похожие академические ресурсы', browseMore: 'Смотреть ещё', readOnline: 'Читать онлайн', requestAccess: 'Запросить доступ', statusInStorage: 'Статус в фонде', allCollections: 'Основная коллекция',
+                reservedState: '✓ Забронировано ({status})', readyForPickup: 'готово к выдаче', waiting: 'ожидание', reserveSuccess: 'Книга успешно забронирована!', validUntil: 'Действует до {date}.', followStatus: 'Следите за статусом в кабинете.', description: 'Описание', metadata: 'Метаданные', licensedResources: 'Лицензированные ссылки и ресурсы', similarResources: 'Похожие академические ресурсы', browseMore: 'Смотреть ещё', readOnline: 'Читать онлайн', requestAccess: 'Запросить доступ', statusInStorage: 'Статус в фонде', allCollections: 'Основная коллекция', generatedSummary: '{title} — издание {publisher}. Язык: {language}. УДК: {udc}. Автор: {author}. Физический фонд: {available} из {total} экземпляров доступны.', udcPending: 'УДК уточняется', metadataPending: 'Метаданные уточняются: {items}', classificationPending: 'Академический профиль уточняется', locationPending: 'Локация уточняется', physicalAvailable: 'Физический экземпляр доступен для выдачи', physicalUnavailable: 'Физический фонд есть, но свободных экземпляров сейчас нет', physicalPending: 'Сведения о физическом фонде ещё уточняются', digitalOpen: 'Цифровой просмотр открыт', digitalRestricted: 'Цифровой доступ ограничен', digitalCampus: 'Только из сети университета', digitalAuthenticated: 'После входа в кабинет', udcSourceLabel: 'Источник УДК', profileLabel: 'Профиль',
                 reserveFailed: 'Не удалось создать бронирование.', networkError: 'Ошибка сети. Попробуйте ещё раз.'
             },
             kk: {
@@ -1820,9 +1820,9 @@
                 availableShort: 'Қолжетімді', copySummary: '{available} / {total}', copyAvailable: 'Данасы берілуге қолжетімді', copyAvailableBody: 'Қорда {total}-ның {available} данасы қолжетімді.',
                 allCheckedOut: 'Барлық даналар берілген', allCheckedOutBody: '{total} дананың барлығы қазір пайдалануда.', inStock: 'Қолда бар', unavailable: 'Қолжетімсіз',
                 reserve: 'Кітапты брондау', signInToReserve: 'Брондау үшін кіріңіз', shortlistAdd: '☆ Топтамаға', shortlistAdded: '★ Топтамада', characteristics: 'Сипаттамалар',
-                publisher: 'Баспа', publicationLanguage: 'Басылым тілі', totalCopies: 'Жалпы дана', availableNowLabel: 'Қазір қолжетімді', availabilityByPoint: 'Берілім нүктелері бойынша қолжетімділік',
+                publisher: 'Баспа', publicationLanguage: 'Басылым тілі', totalCopies: 'Жалпы дана', availableNowLabel: 'Қазір қолжетімді', availabilityByPoint: 'Берілім нүктелері бойынша қолжетімділік', locationLabel: 'Локация', accessAndFormat: 'Қолжетімділік пен формат',
                 digitalMaterials: '💻 Электрондық материалдар', open: 'Ашу', login: 'Кіру', checking: '⏳ Тексеру...', reservedReady: '✓ Бұрыннан брондалған', reserving: '⏳ Брондау...', noCopies: 'Дана жоқ', reservationUnavailable: 'Брондау қолжетімсіз',
-                reservedState: '✓ Брондалған ({status})', readyForPickup: 'беруге дайын', waiting: 'күту', reserveSuccess: 'Кітап сәтті брондалды!', validUntil: '{date} дейін жарамды.', followStatus: 'Күйін кабинеттен бақылаңыз.', description: 'Сипаттама', metadata: 'Метадеректер', licensedResources: 'Лицензиялық сілтемелер мен ресурстар', similarResources: 'Ұқсас академиялық ресурстар', browseMore: 'Тағы көру', readOnline: 'Онлайн оқу', requestAccess: 'Қол жеткізуді сұрау', statusInStorage: 'Қордағы мәртебе', allCollections: 'Негізгі қор',
+                reservedState: '✓ Брондалған ({status})', readyForPickup: 'беруге дайын', waiting: 'күту', reserveSuccess: 'Кітап сәтті брондалды!', validUntil: '{date} дейін жарамды.', followStatus: 'Күйін кабинеттен бақылаңыз.', description: 'Сипаттама', metadata: 'Метадеректер', licensedResources: 'Лицензиялық сілтемелер мен ресурстар', similarResources: 'Ұқсас академиялық ресурстар', browseMore: 'Тағы көру', readOnline: 'Онлайн оқу', requestAccess: 'Қол жеткізуді сұрау', statusInStorage: 'Қордағы мәртебе', allCollections: 'Негізгі қор', generatedSummary: '{title} — {publisher} басылымы. Тілі: {language}. ӘОЖ: {udc}. Автор: {author}. Физикалық қор: {total}-ның {available} данасы қолжетімді.', udcPending: 'ӘОЖ нақтылануда', metadataPending: 'Метадеректер нақтылануда: {items}', classificationPending: 'Академиялық профиль нақтылануда', locationPending: 'Локация нақтылануда', physicalAvailable: 'Физикалық дана берілуге қолжетімді', physicalUnavailable: 'Физикалық қор бар, бірақ бос дана жоқ', physicalPending: 'Физикалық қор туралы дерек нақтылануда', digitalOpen: 'Цифрлық қарау ашық', digitalRestricted: 'Цифрлық қолжетімділік шектеулі', digitalCampus: 'Тек университет желісінде', digitalAuthenticated: 'Кабинетке кіргеннен кейін', udcSourceLabel: 'ӘОЖ көзі', profileLabel: 'Профиль',
                 reserveFailed: 'Брондауды жасау мүмкін болмады.', networkError: 'Желі қатесі. Қайта көріңіз.'
             },
             en: {
@@ -1834,9 +1834,9 @@
                 availableShort: 'Available', copySummary: '{available} of {total}', copyAvailable: 'A copy is available for checkout', copyAvailableBody: '{available} of {total} copies are currently available.',
                 allCheckedOut: 'All copies are checked out', allCheckedOutBody: 'All {total} copies are currently in use.', inStock: 'In stock', unavailable: 'Unavailable',
                 reserve: 'Reserve book', signInToReserve: 'Sign in to reserve', shortlistAdd: '☆ Add to shortlist', shortlistAdded: '★ In shortlist', characteristics: 'Details',
-                publisher: 'Publisher', publicationLanguage: 'Publication language', totalCopies: 'Total copies', availableNowLabel: 'Available now', availabilityByPoint: 'Availability by service point',
+                publisher: 'Publisher', publicationLanguage: 'Publication language', totalCopies: 'Total copies', availableNowLabel: 'Available now', availabilityByPoint: 'Availability by service point', locationLabel: 'Location', accessAndFormat: 'Access and format',
                 digitalMaterials: '💻 Digital materials', open: 'Open', login: 'Sign in', checking: '⏳ Checking...', reservedReady: '✓ Already reserved', reserving: '⏳ Reserving...', noCopies: 'No copies', reservationUnavailable: 'Reservation unavailable',
-                reservedState: '✓ Reserved ({status})', readyForPickup: 'ready for pickup', waiting: 'waiting', reserveSuccess: 'The book has been reserved successfully!', validUntil: 'Valid until {date}.', followStatus: 'Track the status in your account.', description: 'Description', metadata: 'Metadata', licensedResources: 'Licensed references & resources', similarResources: 'Similar Academic Resources', browseMore: 'Browse More', readOnline: 'Read online', requestAccess: 'Request access', statusInStorage: 'Status in Storage', allCollections: 'Main Collection',
+                reservedState: '✓ Reserved ({status})', readyForPickup: 'ready for pickup', waiting: 'waiting', reserveSuccess: 'The book has been reserved successfully!', validUntil: 'Valid until {date}.', followStatus: 'Track the status in your account.', description: 'Description', metadata: 'Metadata', licensedResources: 'Licensed references & resources', similarResources: 'Similar Academic Resources', browseMore: 'Browse More', readOnline: 'Read online', requestAccess: 'Request access', statusInStorage: 'Status in Storage', allCollections: 'Main Collection', generatedSummary: '{title} — published by {publisher}. Language: {language}. UDC: {udc}. Author: {author}. Physical holding: {available} of {total} copies currently available.', udcPending: 'UDC pending', metadataPending: 'Metadata pending: {items}', classificationPending: 'Academic profile pending', locationPending: 'Location pending', physicalAvailable: 'A physical copy is available for checkout', physicalUnavailable: 'Physical holding exists, but no copy is free right now', physicalPending: 'Physical holding data is still being clarified', digitalOpen: 'Digital viewer available', digitalRestricted: 'Digital access restricted', digitalCampus: 'Campus network only', digitalAuthenticated: 'After sign-in', udcSourceLabel: 'UDC source', profileLabel: 'Profile',
                 reserveFailed: 'Unable to create the reservation.', networkError: 'Network error. Please try again.'
             }
         };
@@ -1942,8 +1942,14 @@
             const total = book?.copies?.total || 0;
             const authors = Array.isArray(book?.authors) ? book.authors : [];
             const locations = Array.isArray(book?.availability?.locations) ? book.availability.locations : [];
+            const udcRaw = normalizeText(book?.udc?.raw, '');
+            const udcText = udcRaw || BOOK_I18N.udcPending;
+            const classificationText = Array.isArray(book?.classification)
+                ? normalizeText(book.classification.find((item) => normalizeText(item?.label))?.label, '')
+                : '';
 
             const isAvailable = available > 0;
+            const hasPhysicalHolding = total > 0 || locations.length > 0;
             const servicePointsText = locations.length > 0
                 ? locations.slice(0, 4).map(loc => loc.servicePoint?.name || loc.campus?.name || '').filter(Boolean).join(' · ')
                 : BOOK_I18N.locationsUnavailable;
@@ -1952,12 +1958,22 @@
             const yearForText = rawYear && rawYear !== BOOK_I18N.yearMissing ? rawYear : '—';
             const generatedDescription = rawDescription
                 ? rawDescription
-                : `${rawTitle} — издание издательства ${rawPublisher}. Язык: ${rawLanguage}. УДК: ${book?.udc?.raw || '—'}. Автор: ${rawAuthor}. В фонде: ${available} из ${total} экземпляров.`;
+                : BOOK_I18N.generatedSummary
+                    .replace('{title}', rawTitle)
+                    .replace('{publisher}', rawPublisher)
+                    .replace('{language}', rawLanguage)
+                    .replace('{udc}', udcText)
+                    .replace('{author}', rawAuthor)
+                    .replace('{available}', String(available))
+                    .replace('{total}', String(total));
             const missingParts = [];
-            if (!book?.udc?.raw) missingParts.push('УДК');
-            if (!locations.length) missingParts.push('локация');
-            if (!book?.classification?.length) missingParts.push('направление');
-            const missingMetaText = missingParts.length ? `Отсутствует: ${missingParts.join(' · ')}` : '';
+            if (!udcRaw) missingParts.push(BOOK_I18N.udcPending);
+            if (!locations.length) missingParts.push(BOOK_I18N.locationPending);
+            if (!classificationText) missingParts.push(BOOK_I18N.classificationPending);
+            const missingMetaText = missingParts.length ? BOOK_I18N.metadataPending.replace('{items}', missingParts.join(' · ')) : '';
+            const accessSummaryText = hasPhysicalHolding
+                ? (isAvailable ? BOOK_I18N.physicalAvailable : BOOK_I18N.physicalUnavailable)
+                : BOOK_I18N.physicalPending;
 
             document.title = `${title} - Digital Library`;
 
@@ -2012,7 +2028,7 @@
                                 <div class="catalog-book-cover catalog-tone-navy">
                                     <div class="catalog-cover-top">
                                         <span class="catalog-cover-year">${escapeHtml(year)}</span>
-                                        <span class="catalog-cover-code">УДК: ${escapeHtml(book?.udc?.raw || '—')}</span>
+                                        <span class="catalog-cover-code">UDC: ${escapeHtml(udcText)}</span>
                                     </div>
                                     <div>
                                         <div class="catalog-cover-kicker">${escapeHtml(publisher.substring(0, 20))}</div>
@@ -2024,6 +2040,7 @@
                             </div>
                             <div class="catalog-meta-row">
                                 <span class="catalog-tag">${escapeHtml(year)}</span>
+                                <span class="catalog-tag">${escapeHtml(udcText)}</span>
                                 <span class="catalog-tag ${isAvailable ? 'green' : ''}">${isAvailable ? `${available} ${BOOK_I18N.availableShort}` : BOOK_I18N.unavailable}</span>
                             </div>
                             <div class="catalog-copy">
@@ -2032,7 +2049,9 @@
                                 <div class="catalog-book-info">
                                     <div class="catalog-book-info-row"><span>${BOOK_I18N.author}</span><span>${escapeHtml(author.substring(0, 40))}</span></div>
                                     <div class="catalog-book-info-row"><span>${BOOK_I18N.language}</span><span>${escapeHtml(language)}</span></div>
-                                    <div class="catalog-book-info-row"><span>Локация</span><span>${escapeHtml(primaryLocation)}</span></div>
+                                    <div class="catalog-book-info-row"><span>UDC</span><span>${escapeHtml(udcText)}</span></div>
+                                    <div class="catalog-book-info-row"><span>${BOOK_I18N.locationLabel}</span><span>${escapeHtml(primaryLocation)}</span></div>
+                                    <div class="catalog-book-info-row"><span>${BOOK_I18N.accessAndFormat}</span><span>${escapeHtml(accessSummaryText)}</span></div>
                                 </div>
                                 ${missingMetaText ? `<p class="catalog-missing">${escapeHtml(missingMetaText)}</p>` : ''}
                             </div>
@@ -2059,8 +2078,8 @@
 
                         <div class="access-banner">
                             <div>
-                                <h4>Digital Library Materials</h4>
-                                <p>${isAvailable ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total) : BOOK_I18N.allCheckedOutBody.replace('{total}', total)}</p>
+                                <h4>${BOOK_I18N.accessAndFormat}</h4>
+                                <p>${accessSummaryText}${hasPhysicalHolding ? ` · ${isAvailable ? BOOK_I18N.copyAvailableBody.replace('{available}', available).replace('{total}', total) : BOOK_I18N.allCheckedOutBody.replace('{total}', total)}` : ''}</p>
                             </div>
                             <div class="access-actions" id="digital-materials-slot">
                                 <button class="btn btn-primary" type="button">${BOOK_I18N.readOnline}</button>
@@ -2103,13 +2122,16 @@
                                 <h3 class="section-head">${BOOK_I18N.metadata}</h3>
                                 <div class="meta-list">
                                     <div class="meta-line"><span>ISBN-13</span><span>${escapeHtml(isbn)}</span></div>
-                                    <div class="meta-line"><span>UDC</span><span>${escapeHtml(book?.udc?.raw || '—')}</span></div>
+                                    <div class="meta-line"><span>UDC</span><span>${escapeHtml(udcText)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.publicationYear}</span><span>${escapeHtml(yearForText)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.language}</span><span>${escapeHtml(language)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.publisher}</span><span>${escapeHtml(publisher)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.author}</span><span>${authorsText}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.accessAndFormat}</span><span>${escapeHtml(accessSummaryText)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.totalCopies}</span><span>${total}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.availableNowLabel}</span><span>${available}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.udcSourceLabel}</span><span>${escapeHtml(normalizeText(book?.udc?.source, '—'))}</span></div>
+                                    <div class="meta-line"><span>${BOOK_I18N.profileLabel}</span><span>${escapeHtml(classificationText || BOOK_I18N.classificationPending)}</span></div>
                                     <div class="meta-line"><span>${BOOK_I18N.availabilityByPoint}</span><span>${escapeHtml(servicePointsText)}</span></div>
                                     <div class="meta-line"><span>ID</span><span>${escapeHtml(String(book?.id || '—'))}</span></div>
                                 </div>
@@ -2169,14 +2191,25 @@
 
                 const readable = materials.find((m) => m.canAccess);
                 const restricted = materials.find((m) => !m.canAccess);
+                const accessChips = Array.from(new Set(materials.map((material) => {
+                    if (material?.canAccess) return BOOK_I18N.digitalOpen;
+                    if (material?.accessLevel === 'campus') return BOOK_I18N.digitalCampus;
+                    if (material?.accessLevel === 'authenticated') return BOOK_I18N.digitalAuthenticated;
+                    return BOOK_I18N.digitalRestricted;
+                }).filter(Boolean)));
 
                 slot.innerHTML = `
-                    ${readable
-                        ? `<a href="${escapeHtml(readable.viewerUrl)}" class="btn btn-primary">${BOOK_I18N.readOnline}</a>`
-                        : `<button class="btn btn-primary" type="button" disabled>${BOOK_I18N.readOnline}</button>`}
-                    ${restricted
-                        ? `<button class="btn btn-secondary" type="button" title="${escapeHtml(restricted.accessDeniedReason || '')}">${BOOK_I18N.requestAccess}</button>`
-                        : `<button class="btn btn-secondary" type="button">${BOOK_I18N.requestAccess}</button>`}
+                    <div style="display:grid; gap:10px; justify-items:end;">
+                        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
+                            ${readable
+                                ? `<a href="${escapeHtml(readable.viewerUrl)}" class="btn btn-primary">${BOOK_I18N.readOnline}</a>`
+                                : `<button class="btn btn-primary" type="button" disabled>${BOOK_I18N.readOnline}</button>`}
+                            ${restricted
+                                ? `<button class="btn btn-secondary" type="button" title="${escapeHtml(restricted.accessDeniedReason || '')}">${BOOK_I18N.requestAccess}</button>`
+                                : `<button class="btn btn-secondary" type="button">${BOOK_I18N.requestAccess}</button>`}
+                        </div>
+                        ${accessChips.length > 0 ? `<div class="licensed-items">${accessChips.map((label) => `<span class="licensed-chip">${escapeHtml(label)}</span>`).join('')}</div>` : ''}
+                    </div>
                 `;
             } catch (_) {
                 // silent — digital materials are supplementary
