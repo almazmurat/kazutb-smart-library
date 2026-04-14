@@ -1368,6 +1368,64 @@
       color: #8e9098;
     }
 
+    .guidance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .guidance-card {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      min-height: 188px;
+      padding: 18px;
+      border-radius: 8px;
+      background: rgba(247,248,249,.82);
+      border: 1px solid rgba(195,198,209,.42);
+    }
+
+    .guidance-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: rgba(20,105,109,.1);
+      border: 1px solid rgba(20,105,109,.16);
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .guidance-card h3 {
+      margin: 0;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 24px;
+      line-height: 1.02;
+      letter-spacing: -.04em;
+      color: var(--blue);
+    }
+
+    .guidance-card p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .guidance-card a {
+      margin-top: auto;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
     .workspace-rail {
       min-width: 0;
       display: grid;
@@ -1511,6 +1569,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .guidance-grid {
+        grid-template-columns: 1fr;
+      }
+
       .rail-note,
       #workbench-section {
         grid-column: 1 / -1;
@@ -1564,7 +1626,8 @@
     @media (max-width: 820px) {
       .sidebar-nav,
       .workspace-rail,
-      .rail-shortlist-stats {
+      .rail-shortlist-stats,
+      .guidance-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1719,6 +1782,38 @@
                 </div>
                 <div id="activity-list" class="activity-list">
                   <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
+                </div>
+              </section>
+
+              <section class="workspace-panel">
+                <div class="panel-head">
+                  <div>
+                    <h2>{{ ['ru' => 'Как продолжить работу', 'kk' => 'Жұмысты қалай жалғастыруға болады', 'en' => 'How to continue working'][$lang] }}</h2>
+                    <p>{{ ['ru' => 'Три честных маршрута внутри кабинета: поиск книги, навигация по академическим направлениям и возврат к сохранённым материалам.', 'kk' => 'Кабинет ішіндегі үш нақты маршрут: кітап іздеу, академиялық бағыттар бойынша навигация және сақталған материалдарға оралу.', 'en' => 'Three honest routes inside the dashboard: find a title, move through academic subject paths, or return to saved materials.'][$lang] }}</p>
+                  </div>
+                </div>
+
+                <div class="guidance-grid">
+                  <article class="guidance-card">
+                    <span class="guidance-step">01</span>
+                    <h3>{{ ['ru' => 'Начать с каталога', 'kk' => 'Каталогтан бастау', 'en' => 'Start with the catalog'][$lang] }}</h3>
+                    <p>{{ ['ru' => 'Откройте поиск, проверьте наличие экземпляров и перейдите к карточке книги, если нужен заказ или уточнение по фонду.', 'kk' => 'Іздеуді ашып, даналардың қолжетімділігін тексеріңіз және тапсырыс не қор туралы нақтылау керек болса, кітап карточкасына өтіңіз.', 'en' => 'Open search, check copy availability, and continue to the book record when you need a reservation or a fuller holdings view.'][$lang] }}</p>
+                    <a href="{{ $routeWithLang('/catalog') }}">{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}</a>
+                  </article>
+
+                  <article class="guidance-card">
+                    <span class="guidance-step">02</span>
+                    <h3>{{ ['ru' => 'Идти через УДК-навигацию', 'kk' => 'ӘОЖ навигациясымен өту', 'en' => 'Use subject navigation'][$lang] }}</h3>
+                    <p>{{ ['ru' => 'Если тема ещё не уточнена, откройте discover и соберите маршрут через академические направления и рубрики.', 'kk' => 'Егер тақырып әлі нақтыланбаған болса, discover бетін ашып, академиялық бағыттар мен айдарлар арқылы маршрут жинаңыз.', 'en' => 'If the topic is still broad, open discover and build your route through academic subject directions and classifications.'][$lang] }}</p>
+                    <a href="{{ $routeWithLang('/discover') }}">{{ ['ru' => 'Открыть навигацию', 'kk' => 'Навигацияны ашу', 'en' => 'Open discover'][$lang] }}</a>
+                  </article>
+
+                  <article class="guidance-card">
+                    <span class="guidance-step">03</span>
+                    <h3>{{ ['ru' => 'Вернуться к подборке', 'kk' => 'Топтамаға оралу', 'en' => 'Return to shortlist'][$lang] }}</h3>
+                    <p>{{ ['ru' => 'Когда список книг уже собран, используйте shortlist для сохранённых названий, рабочих draft-списков и дальнейшего экспорта.', 'kk' => 'Кітаптар тізімі жиналған кезде, shortlist-ті сақталған атаулар, жұмыс draft-тізімдері және кейінгі экспорт үшін пайдаланыңыз.', 'en' => 'Once your working list is forming, use the shortlist for saved titles, draft reading sets, and later export.'][$lang] }}</p>
+                    <a href="{{ $routeWithLang('/shortlist') }}">{{ ['ru' => 'Открыть подборку', 'kk' => 'Топтаманы ашу', 'en' => 'Open shortlist'][$lang] }}</a>
+                  </article>
                 </div>
               </section>
             </div>
