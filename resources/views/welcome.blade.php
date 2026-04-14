@@ -38,19 +38,18 @@
             'hours_cta' => 'Контакты библиотеки',
             'hours_visual_eyebrow' => 'На кампусе',
             'hours_visual_title' => 'Короткий маршрут по библиотечным точкам КазТБУ',
-            'hours_visual_body' => 'Құрметті оқырман! КазТБУ ғылыми кітапханасы дүйсенбі–жұма 9:00–18:00 аралығында қызмет көрсетеді. Кітапхана әрдайым оқырмандарын күтеді.',
+            'hours_visual_body' => 'Научная библиотека КазТБУ работает по будням с 09:00 до 18:00 и держит маршрут по трём точкам простым и понятным.',
             'hours_instagram_label' => 'Instagram',
             'hours_instagram_value' => '@library_kazutb',
             'hours_markers' => [
               ['label' => 'График', 'value' => 'пн-пт · 09:00-18:00'],
               ['label' => 'Instagram', 'value' => '@library_kazutb'],
               ['label' => 'Маршрут', 'value' => 'Колледж · Технологическая · Экономическая'],
-              ['label' => 'Формат', 'value' => 'Фонд, консультации, навигация'],
             ],
               'news_eyebrow' => 'Библиотечная жизнь',
               'news_title' => 'Новости библиотеки',
               'news_title_accent' => 'и академические события',
-              'news_body' => 'Карточки готовы для реальных материалов: дата, категория, краткое описание и изображение с fallback по типу события.',
+              'news_body' => 'Короткие карточки с датой, категорией и живым визуальным fallback вместо декоративных заглушек.',
               'news_cta' => 'Instagram @library_kazutb',
               'workshops_title' => 'Семинары и события',
               'news_items' => [
@@ -135,12 +134,11 @@
               ['label' => 'Кесте', 'value' => 'дүйсенбі–жұма · 09:00-18:00'],
               ['label' => 'Instagram', 'value' => '@library_kazutb'],
               ['label' => 'Маршрут', 'value' => 'Колледж · Технологиялық · Экономикалық'],
-              ['label' => 'Формат', 'value' => 'Қор, кеңес, навигация'],
             ],
               'news_eyebrow' => 'Кітапхана өмірі',
               'news_title' => 'Кітапхана жаңалықтары',
               'news_title_accent' => 'және академиялық оқиғалар',
-              'news_body' => 'Карточкалар нақты материалға дайын: күн, санат, қысқаша сипаттама және санат бойынша fallback сурет.',
+              'news_body' => 'Қысқа карточкалар: күн, санат және ортақ placeholder орнына нақты visual fallback.',
               'news_cta' => 'Instagram @library_kazutb',
               'workshops_title' => 'Семинарлар мен оқиғалар',
               'news_items' => [
@@ -225,12 +223,11 @@
               ['label' => 'Schedule', 'value' => 'Monday-Friday · 09:00-18:00'],
               ['label' => 'Instagram', 'value' => '@library_kazutb'],
               ['label' => 'Route', 'value' => 'College · Technology · Economics'],
-              ['label' => 'Service', 'value' => 'Holdings, guidance, navigation'],
             ],
               'news_eyebrow' => 'Library life',
               'news_title' => 'Library news',
               'news_title_accent' => 'and workshops',
-              'news_body' => 'The cards are structured for real content: date, category, summary, and an image with fallback logic by topic.',
+              'news_body' => 'Short cards with date, category, and a real visual fallback instead of a shared placeholder.',
               'news_cta' => 'Instagram @library_kazutb',
               'workshops_title' => 'Workshops and events',
               'news_items' => [
@@ -535,31 +532,6 @@
     animation: landingReveal .55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 
-  .landing-shell::before,
-  .landing-shell::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: .8;
-  }
-
-  .landing-shell::before {
-    top: -34px;
-    right: -18px;
-    width: 146px;
-    height: 146px;
-    background: radial-gradient(circle, rgba(20,105,109,.08), transparent 70%);
-  }
-
-  .landing-shell::after {
-    left: -22px;
-    bottom: -36px;
-    width: 128px;
-    height: 128px;
-    background: radial-gradient(circle, rgba(0,30,64,.055), transparent 70%);
-  }
-
   .landing-shell > * {
     position: relative;
     z-index: 1;
@@ -604,7 +576,7 @@
     width: fit-content;
     margin-bottom: 10px;
     padding: 6px 10px;
-    border-radius: 999px;
+    border-radius: 6px;
     background: rgba(0, 30, 64, 0.06);
     border: 1px solid rgba(0, 30, 64, 0.08);
     color: var(--blue);
@@ -847,7 +819,7 @@
     align-items: center;
     gap: 8px;
     padding: 7px 11px;
-    border-radius: 8px;
+    border-radius: 6px;
     background: rgba(255,255,255,.68);
     border: 1px solid rgba(203,209,219,.5);
     box-shadow: 0 6px 16px rgba(25,28,29,.026);
@@ -857,51 +829,29 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr) minmax(0, 1fr);
     gap: 26px;
-    perspective: 1400px;
-  }
-
-  .landing-feature-grid .feature-entry:nth-child(2) {
-    transform: translate3d(0, 8px, 0);
-  }
-
-  .landing-feature-grid .feature-entry:nth-child(2):hover {
-    transform: translate3d(0, 4px, 0) rotateX(0.8deg);
   }
 
   .feature-entry {
     min-height: 214px;
-    padding: 22px 22px 20px;
-    border-radius: 12px;
+    padding: 20px 20px 18px;
+    border-radius: 8px;
     border: 1px solid rgba(205, 211, 220, 0.58);
     background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,251,.94));
     text-align: left;
-    box-shadow: 0 10px 22px rgba(25, 28, 29, 0.03);
+    box-shadow: 0 8px 18px rgba(25, 28, 29, 0.028);
     position: relative;
     overflow: hidden;
-    transform-style: preserve-3d;
     transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .feature-entry::after {
-    transform: translate3d(0, -3px, 0) rotateX(0.6deg);
-    box-shadow: 0 16px 30px rgba(25, 28, 29, 0.05);
-    inset: -35% 48% 50% -8%;
-    background: radial-gradient(circle, rgba(255,255,255,.52), transparent 72%);
-    opacity: 0;
-    transform: translate3d(-12px, 12px, 0);
-    background: linear-gradient(165deg, #08264a 0%, #0a3765 56%, #165b8f 100%);
-    pointer-events: none;
+    content: none;
   }
 
   .feature-entry:hover {
-    transform: translate3d(0, -4px, 0) rotateX(0.8deg);
-    box-shadow: 0 18px 38px rgba(25, 28, 29, 0.06);
+    transform: translate3d(0, -3px, 0);
+    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
     border-color: rgba(0, 30, 64, 0.12);
-  }
-
-  .feature-entry:hover::after {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
   }
 
   .feature-entry--primary {
@@ -1005,7 +955,7 @@
     display: grid;
     gap: 6px;
     padding: 18px 14px 16px;
-    border-radius: 10px;
+    border-radius: 8px;
     background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(249,251,252,.9));
     border: 1px solid rgba(205, 211, 220, 0.52);
     text-align: center;
@@ -1046,7 +996,7 @@
 
   .hours-copy {
     border: 1px solid rgba(205, 211, 220, 0.52);
-    border-radius: 12px;
+    border-radius: 8px;
     background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(249,250,251,.94));
     padding: 24px 26px;
     box-shadow: 0 10px 24px rgba(25, 28, 29, 0.032);
@@ -1082,7 +1032,7 @@
     width: fit-content;
     min-height: 34px;
     padding: 0 11px;
-    border-radius: 8px;
+    border-radius: 6px;
     background: rgba(20, 105, 109, 0.06);
     color: var(--cyan);
     font-size: 10px;
@@ -1159,11 +1109,11 @@
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(195, 198, 209, 0.6);
-    border-radius: 12px;
+    border-radius: 8px;
     min-height: 292px;
     background:
-      linear-gradient(180deg, rgba(5,14,24,.14), rgba(5,14,24,.38)),
-      linear-gradient(180deg, rgba(7, 26, 47, 0.04), rgba(7, 26, 47, 0.18)),
+      linear-gradient(180deg, rgba(5,14,24,.08), rgba(5,14,24,.24)),
+      linear-gradient(180deg, rgba(7, 26, 47, 0.02), rgba(7, 26, 47, 0.12)),
       url('/trust-panel-reading-room.jpg');
     background-size: cover;
     background-position: center;
@@ -1173,43 +1123,36 @@
   }
 
   .hours-visual::before {
-    content: '';
-    position: absolute;
-    inset: 20px 22px auto auto;
-    width: 126px;
-    height: 126px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,.16), rgba(255,255,255,0) 68%);
-    pointer-events: none;
+    content: none;
   }
 
   .hours-visual::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(245,249,250,.02), rgba(11, 29, 48, .16) 62%, rgba(11, 29, 48, .28) 100%);
+    background: linear-gradient(180deg, rgba(245,249,250,0), rgba(11, 29, 48, .1) 60%, rgba(11, 29, 48, .18) 100%);
     pointer-events: none;
   }
 
   .hours-visual-inner {
     position: relative;
     z-index: 1;
-    padding: 22px;
+    padding: 18px;
     display: grid;
-    gap: 12px;
+    gap: 10px;
   }
 
   .hours-visual-copy {
     display: grid;
-    gap: 8px;
-    max-width: 22rem;
+    gap: 6px;
+    max-width: 19rem;
   }
 
   .hours-visual-copy p {
     margin: 0;
-    color: rgba(238,244,247,.88);
-    font-size: 14px;
-    line-height: 1.62;
+    color: rgba(238,244,247,.9);
+    font-size: 13px;
+    line-height: 1.56;
   }
 
   .hours-visual-copy h3 {
@@ -1222,19 +1165,19 @@
 
   .hours-markers {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    max-width: 26rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    max-width: 28rem;
   }
 
   .hours-marker {
     display: grid;
-    gap: 4px;
-    padding: 11px 11px 10px;
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(12px);
-    border-radius: 8px;
+    gap: 3px;
+    padding: 9px 10px 8px;
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border-radius: 6px;
   }
 
   .hours-marker span {
@@ -1247,8 +1190,8 @@
 
   .hours-marker strong {
     color: #ffffff;
-    font-size: 13px;
-    line-height: 1.35;
+    font-size: 12px;
+    line-height: 1.3;
   }
 
   .news-section {
@@ -1260,20 +1203,20 @@
 
   .news-stack {
     display: grid;
-    gap: 18px;
+    gap: 16px;
   }
 
   .news-head {
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    align-items: start;
     gap: 18px;
   }
 
   .news-head-main {
     display: grid;
-    gap: 8px;
-    max-width: 44rem;
+    gap: 6px;
+    max-width: 35rem;
   }
 
   .news-head-main h2 {
@@ -1293,27 +1236,27 @@
   .news-head-main p {
     margin: 0;
     color: var(--muted);
-    font-size: 14px;
-    line-height: 1.66;
-    max-width: 38rem;
+    font-size: 13px;
+    line-height: 1.58;
+    max-width: 34rem;
   }
 
   .news-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    gap: 16px;
   }
 
   .news-card {
     display: grid;
-    gap: 14px;
+    gap: 12px;
     align-content: start;
   }
 
   .news-card-media {
     position: relative;
     min-height: 228px;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     border: 1px solid rgba(205, 211, 220, 0.52);
     background-image:
@@ -1323,29 +1266,29 @@
       var(--news-image, url('/trust-panel-reading-room.jpg'));
     background-size: cover;
     background-position: center, center, center, var(--news-image-position, center center);
-    box-shadow: 0 14px 30px rgba(25, 28, 29, 0.04);
+    box-shadow: 0 10px 20px rgba(25, 28, 29, 0.035);
   }
 
   .news-card-media::after {
     content: '';
     position: absolute;
     inset: auto 0 0 0;
-    height: 44%;
-    background: linear-gradient(180deg, rgba(8,18,32,0), rgba(8,18,32,.12) 28%, rgba(8,18,32,.42) 100%);
+    height: 38%;
+    background: linear-gradient(180deg, rgba(8,18,32,0), rgba(8,18,32,.08) 28%, rgba(8,18,32,.28) 100%);
   }
 
   .news-card-badge {
     position: absolute;
-    left: 16px;
-    bottom: 16px;
+    left: 14px;
+    bottom: 14px;
     z-index: 1;
     display: inline-flex;
     align-items: center;
-    min-height: 28px;
-    padding: 0 10px;
-    border-radius: 8px;
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.16);
+    min-height: 24px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.12);
     color: #fff;
     backdrop-filter: blur(10px);
     font-size: 10px;
@@ -1356,14 +1299,14 @@
 
   .news-card-copy {
     display: grid;
-    gap: 8px;
+    gap: 6px;
   }
 
   .news-card-date {
     color: #7b8897;
     font-size: 10px;
     font-weight: 800;
-    letter-spacing: .14em;
+    letter-spacing: .11em;
     text-transform: uppercase;
   }
 
@@ -1371,16 +1314,16 @@
     margin: 0;
     color: var(--blue);
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(1.5rem, 2vw, 1.9rem);
-    line-height: 1.14;
+    font-size: clamp(1.38rem, 1.8vw, 1.7rem);
+    line-height: 1.12;
     text-wrap: balance;
   }
 
   .news-card p {
     margin: 0;
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.65;
+    font-size: 12.5px;
+    line-height: 1.56;
   }
 
   .news-link {
@@ -1402,10 +1345,10 @@
 
   .events-rail {
     border: 1px solid rgba(205, 211, 220, 0.54);
-    border-radius: 12px;
+    border-radius: 8px;
     background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,251,.93));
     box-shadow: 0 14px 30px rgba(25,28,29,.035);
-    padding: 22px 20px 20px;
+    padding: 18px;
     display: grid;
     gap: 16px;
     align-content: start;
@@ -1445,8 +1388,8 @@
 
   .event-item strong {
     color: #1a6e78;
-    font-size: 15px;
-    line-height: 1.36;
+    font-size: 14px;
+    line-height: 1.32;
   }
 
   .event-item span {
@@ -1492,7 +1435,7 @@
 
   .quote-panel {
     padding: 0;
-    border-radius: var(--radius-xl);
+    border-radius: 8px;
     background-color: #101c28;
     background-image: url('/trust-panel-reading-room.jpg');
     background-size: cover;
@@ -1505,7 +1448,7 @@
     overflow: hidden;
     isolation: isolate;
     border: 1px solid rgba(211, 221, 228, 0.2);
-    box-shadow: 0 16px 32px rgba(18, 24, 29, 0.1);
+    box-shadow: 0 12px 24px rgba(18, 24, 29, 0.09);
     transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -1513,7 +1456,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(7, 15, 24, 0.24) 0%, rgba(7, 15, 24, 0.34) 34%, rgba(7, 16, 25, 0.52) 72%, rgba(6, 14, 23, 0.68) 100%);
+    background: linear-gradient(180deg, rgba(7, 15, 24, 0.16) 0%, rgba(7, 15, 24, 0.24) 34%, rgba(7, 16, 25, 0.4) 72%, rgba(6, 14, 23, 0.52) 100%);
     z-index: 0;
   }
 
@@ -1522,15 +1465,15 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at 82% 18%, rgba(255, 244, 214, 0.12), transparent 28%),
-      linear-gradient(180deg, rgba(5, 12, 20, 0.04) 0%, rgba(5, 12, 20, 0.12) 24%, rgba(5, 12, 20, 0.42) 100%);
+      radial-gradient(circle at 82% 18%, rgba(255, 244, 214, 0.08), transparent 26%),
+      linear-gradient(180deg, rgba(5, 12, 20, 0.02) 0%, rgba(5, 12, 20, 0.08) 24%, rgba(5, 12, 20, 0.24) 100%);
     transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 0;
   }
 
   .quote-panel:hover {
     transform: translate3d(0, -2px, 0);
-    box-shadow: 0 24px 48px rgba(18, 24, 29, 0.16);
+    box-shadow: 0 18px 34px rgba(18, 24, 29, 0.14);
     border-color: rgba(211, 221, 228, 0.26);
   }
 
@@ -1541,17 +1484,17 @@
   .quote-panel__inner {
     position: relative;
     z-index: 1;
-    width: min(100% - 28px, 31rem);
-    margin: 18px;
-    max-width: 31rem;
-    padding: 22px 24px 20px;
+    width: min(100% - 24px, 28rem);
+    margin: 12px;
+    max-width: 28rem;
+    padding: 18px 20px 16px;
     display: grid;
-    gap: 12px;
+    gap: 10px;
     border: 1px solid rgba(255,255,255,.12);
-    background: linear-gradient(180deg, rgba(7, 15, 24, 0.46), rgba(7, 15, 24, 0.62));
-    backdrop-filter: blur(3px);
-    box-shadow: 0 14px 30px rgba(8, 14, 21, 0.16);
-    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(7, 15, 24, 0.34), rgba(7, 15, 24, 0.48));
+    backdrop-filter: blur(2px);
+    box-shadow: 0 10px 20px rgba(8, 14, 21, 0.14);
+    border-radius: 8px;
   }
 
   .quote-panel__eyebrow {
@@ -1563,18 +1506,11 @@
     text-transform: uppercase;
   }
 
-  .quote-panel__inner::before {
-    content: '';
-    width: 52px;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(229, 237, 240, 0.76), rgba(229, 237, 240, 0));
-  }
-
   .quote-panel__quote {
     margin: 0;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(1.28rem, 1.9vw, 1.66rem);
-    line-height: 1.38;
+    font-size: clamp(1.22rem, 1.75vw, 1.54rem);
+    line-height: 1.34;
     font-style: normal;
     letter-spacing: -.016em;
     max-width: 20ch;
@@ -1612,7 +1548,7 @@
 
   .trust-stat {
     padding: 14px;
-    border-radius: 10px;
+    border-radius: 8px;
     background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,251,.92));
     border: 1px solid rgba(205, 211, 220, 0.56);
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -1648,6 +1584,7 @@
   .trust-actions .btn {
     min-height: 46px;
     padding-inline: 20px;
+    border-radius: 6px;
   }
 
   @keyframes landingReveal {
@@ -1733,10 +1670,6 @@
 
     .news-grid {
       grid-template-columns: 1fr;
-    }
-
-    .landing-feature-grid .feature-entry:nth-child(2) {
-      transform: none;
     }
 
     .quote-panel {
