@@ -1329,18 +1329,53 @@
   .news-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     width: fit-content;
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(20, 105, 109, 0.16);
+    background: rgba(20, 105, 109, 0.06);
     color: var(--cyan);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: none;
+    white-space: nowrap;
+    transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 180ms cubic-bezier(0.2, 0.8, 0.2, 1), background 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .news-link::before {
+    content: '◎';
+    font-size: 13px;
+    line-height: 1;
+    opacity: .85;
   }
 
   .news-link::after {
     content: '↗';
     line-height: 1;
+  }
+
+  .news-link:hover {
+    transform: translate3d(0, -1px, 0);
+    border-color: rgba(20, 105, 109, 0.24);
+    background: rgba(20, 105, 109, 0.09);
+  }
+
+  .news-link__label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #58708a;
+  }
+
+  .news-link__value {
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .02em;
   }
 
   .events-rail {
@@ -1352,6 +1387,7 @@
     display: grid;
     gap: 16px;
     align-content: start;
+    align-self: center;
   }
 
   .events-rail-head {
@@ -1721,6 +1757,15 @@
       flex-direction: column;
     }
 
+    .news-link {
+      min-height: 38px;
+      padding: 0 12px;
+    }
+
+    .events-rail {
+      align-self: stretch;
+    }
+
     .quote-panel {
       min-height: 264px;
       background-position: center top;
@@ -1912,7 +1957,10 @@
             <p>{{ $copy['news_body'] }}</p>
           </div>
 
-          <a href="{{ $instagramUrl }}" class="news-link" target="_blank" rel="noreferrer">{{ $copy['news_cta'] }}</a>
+          <a href="{{ $instagramUrl }}" class="news-link" target="_blank" rel="noreferrer">
+            <span class="news-link__label">Instagram</span>
+            <span class="news-link__value">@library_kazutb</span>
+          </a>
         </div>
 
         <div class="news-grid">
