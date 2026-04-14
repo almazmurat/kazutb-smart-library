@@ -295,19 +295,132 @@
       ];
     }, $copy['subject_cards']);
 
-    $newsImageFallbacks = [
-      'announcements' => ['image' => '/trust-panel-reading-room.jpg', 'position' => 'center 28%'],
-      'events' => ['image' => '/trust-panel-reading-room.jpg', 'position' => 'center 52%'],
-      'default' => ['image' => '/trust-panel-reading-room.jpg', 'position' => 'center center'],
+    $newsImageFamilies = [
+      'author' => [
+        'image' => '/images/news/author-visit.jpg',
+        'position' => 'center 34%',
+        'alternates' => [
+          ['image' => '/images/news/campus-library.jpg', 'position' => 'center 42%'],
+        ],
+      ],
+      'classics' => [
+        'image' => '/images/news/classics-event.jpg',
+        'position' => 'center 50%',
+        'alternates' => [
+          ['image' => '/images/news/default-library.jpg', 'position' => 'center 46%'],
+        ],
+      ],
+      'digital' => [
+        'image' => '/images/news/ai-workshop.jpg',
+        'position' => 'center 34%',
+        'alternates' => [
+          ['image' => '/images/news/campus-library.jpg', 'position' => 'center 40%'],
+        ],
+      ],
+      'institutional' => [
+        'image' => '/images/news/campus-library.jpg',
+        'position' => 'center 44%',
+        'alternates' => [
+          ['image' => '/images/news/default-library.jpg', 'position' => 'center 44%'],
+        ],
+      ],
+      'default' => [
+        'image' => '/images/news/default-library.jpg',
+        'position' => 'center 44%',
+        'alternates' => [],
+      ],
     ];
 
-    $newsItems = array_map(function (array $item) use ($newsImageFallbacks): array {
-      $category = (string) ($item['category_slug'] ?? 'default');
-      $fallback = $newsImageFallbacks[$category] ?? $newsImageFallbacks['default'];
+    $newsCategoryFamilyMap = [
+      'announcements' => 'author',
+      'lecture' => 'author',
+      'author-visit' => 'author',
+      'meeting' => 'author',
+      'events' => 'classics',
+      'event' => 'classics',
+      'exhibition' => 'classics',
+      'reading-week' => 'classics',
+      'workshops' => 'digital',
+      'workshop' => 'digital',
+      'research' => 'digital',
+      'digital-tools' => 'digital',
+      'library' => 'institutional',
+      'campus' => 'institutional',
+      'institutional' => 'institutional',
+    ];
+
+    $newsTopicFamilyKeywords = [
+      'author' => ['author', 'автор', 'жазушы', 'lecture', 'lecturer', 'встреч', 'visit', 'сапары', 'meeting'],
+      'classics' => ['classics', 'classical', 'классик', 'exhibition', 'reading week', 'оқу апталығы', 'caravan'],
+      'digital' => ['ai', 'digital', 'research', 'zotero', 'acm', 'workshop', 'tools', 'цифр', 'зерттеу'],
+      'institutional' => ['library', 'библиотек', 'кітапхана', 'campus', 'university', 'университет', 'campus'],
+    ];
+
+    $resolveNewsFamily = function (array $item) use ($newsCategoryFamilyMap, $newsTopicFamilyKeywords): string {
+      $category = strtolower(trim((string) ($item['category_slug'] ?? '')));
+      if ($category !== '' && array_key_exists($category, $newsCategoryFamilyMap)) {
+        return $newsCategoryFamilyMap[$category];
+      }
+
+      $haystack = strtolower(trim(implode(' ', array_filter([
+        (string) ($item['tag'] ?? ''),
+        (string) ($item['title'] ?? ''),
+        (string) ($item['body'] ?? ''),
+        (string) ($item['topic_slug'] ?? ''),
+      ]))));
+
+      foreach ($newsTopicFamilyKeywords as $family => $keywords) {
+        foreach ($keywords as $keyword) {
+          if ($keyword !== '' && str_contains($haystack, strtolower($keyword))) {
+            return $family;
+          }
+        }
+      }
+
+      return 'default';
+    };
+
+    $lastResolvedNewsImage = null;
+    $newsItems = array_map(function (array $item) use ($newsImageFamilies, $resolveNewsFamily, &$lastResolvedNewsImage): array {
+      $explicitImage = trim((string) ($item['image'] ?? ''));
+      $explicitPosition = trim((string) ($item['image_position'] ?? ''));
+
+      if ($explicitImage !== '') {
+        $lastResolvedNewsImage = $explicitImage;
+
+        return $item + [
+          'resolved_family' => 'explicit',
+          'resolved_image' => $explicitImage,
+          'resolved_image_position' => $explicitPosition !== '' ? $explicitPosition : 'center center',
+        ];
+      }
+
+      $family = $resolveNewsFamily($item);
+      $fallback = $newsImageFamilies[$family] ?? $newsImageFamilies['default'];
+      $resolvedImage = $fallback['image'];
+      $resolvedPosition = $fallback['position'];
+
+      if ($resolvedImage === $lastResolvedNewsImage) {
+        foreach ($fallback['alternates'] as $alternate) {
+          if (($alternate['image'] ?? '') !== $lastResolvedNewsImage) {
+            $resolvedImage = $alternate['image'];
+            $resolvedPosition = $alternate['position'] ?? $resolvedPosition;
+            break;
+          }
+        }
+
+        if ($resolvedImage === $lastResolvedNewsImage && $family !== 'default') {
+          $resolvedImage = $newsImageFamilies['default']['image'];
+          $resolvedPosition = $newsImageFamilies['default']['position'];
+        }
+      }
+
+      $lastResolvedNewsImage = $resolvedImage;
 
       return $item + [
-        'image' => $item['image'] ?? $fallback['image'],
-        'image_position' => $item['image_position'] ?? $fallback['position'],
+        'resolved_family' => $family,
+        'resolved_image' => $resolvedImage,
+        'resolved_image_position' => $resolvedPosition,
       ];
     }, $copy['news_items']);
 
@@ -1870,7 +1983,7 @@
         <div class="news-grid">
           @foreach($newsItems as $item)
             <article class="news-card">
-              <div class="news-card-media" style="--news-image: url('{{ asset(ltrim($item['image'], '/')) }}'); --news-image-position: {{ $item['image_position'] }};">
+              <div class="news-card-media" style="--news-image: url('{{ asset(ltrim($item['resolved_image'], '/')) }}'); --news-image-position: {{ $item['resolved_image_position'] }};">
                 <span class="news-card-badge">{{ $item['tag'] }}</span>
               </div>
               <div class="news-card-copy">
