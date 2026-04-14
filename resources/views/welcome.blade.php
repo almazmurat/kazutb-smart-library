@@ -28,6 +28,39 @@
           'search_placeholder' => 'Искать книги, авторов, ISBN, УДК или ключевые слова',
           'search_cta' => 'Открыть каталог',
           'summary_kicker' => 'Платформа',
+          'subject_eyebrow' => 'Система классификации',
+          'subject_title' => 'Просмотр по темам',
+            'hours_eyebrow' => 'Практическая информация',
+            'hours_title' => 'Часы работы и локации',
+            'hours_body' => 'Проверяйте ключевые библиотечные точки на сегодня: когда открыт основной сервис, где работает читальный маршрут и когда доступно бронирование.',
+            'hours_today_label' => 'Сегодня',
+            'hours_cta' => 'Смотреть все часы',
+            'hours_visual_eyebrow' => 'На кампусе',
+            'hours_visual_title' => 'Спокойная навигация по библиотечным точкам КазТБУ',
+            'hours_visual_body' => 'Основные сервисы сгруппированы так, чтобы студент и преподаватель быстро понимали, куда идти за фондом, консультацией или бронированием.',
+              'news_eyebrow' => 'Библиотечная жизнь',
+              'news_title' => 'Новости библиотеки',
+              'news_title_accent' => 'и академические события',
+              'news_body' => 'Подборка заметных обновлений, открытых встреч и исследовательских маршрутов, которые делают библиотеку живой частью кампуса.',
+              'news_cta' => 'Все новости',
+              'workshops_title' => 'Семинары и события',
+              'workshops_cta' => 'Все события',
+              'news_filters' => ['Все', 'Анонсы', 'События'],
+              'news_items' => [
+                ['tag' => 'Анонсы', 'date' => '09.04.2026', 'title' => 'Визит автора Сырыма Бактыгереулы в библиотеку КазТБУ', 'body' => 'Открытая встреча с обсуждением современной казахской публицистики, университетского чтения и библиотечных маршрутов для студентов.'],
+                ['tag' => 'События', 'date' => '08.04.2026', 'title' => 'Classics Caravan: curated week of classical literature', 'body' => 'Небольшой цикл чтений и выставок, объединяющий фонд классической литературы, рекомендательные списки и навигацию по каталогу.'],
+              ],
+              'workshops_items' => [
+                ['title' => 'Research skills for first-year students', 'time' => '11:00-11:40', 'date' => '15 Apr 2026'],
+                ['title' => 'Engineering research and learning with ACM', 'time' => '15:00-16:00', 'date' => '15 Apr 2026'],
+                ['title' => 'Exploring AI tools for literature search', 'time' => '17:00-18:00', 'date' => '16 Apr 2026'],
+                ['title' => 'Zotero: efficient reference management', 'time' => '12:00-13:00', 'date' => '16 Apr 2026'],
+              ],
+            'hours_rows' => [
+              ['label' => 'Главная библиотека', 'hours' => '09:00-18:00', 'meta' => 'Основной читальный маршрут и выдача'],
+              ['label' => 'Технологическая библиотека', 'hours' => '09:00-17:30', 'meta' => 'Профильный фонд и предметные консультации'],
+              ['label' => 'Часы бронирования', 'hours' => '10:00-17:00', 'meta' => 'Подтверждение заявок и работа с подборками'],
+            ],
           'summary_title' => 'Что доступно уже сейчас',
           'summary_points' => [
               'поиск по каталогу с доступностью и фильтрами',
@@ -79,6 +112,39 @@
           'search_placeholder' => 'Кітап, автор, ISBN, ӘОЖ немесе кілт сөз бойынша іздеу',
           'search_cta' => 'Каталогты ашу',
           'summary_kicker' => 'Платформа',
+          'subject_eyebrow' => 'Классификация жүйесі',
+          'subject_title' => 'Тақырыптар бойынша шолу',
+            'hours_eyebrow' => 'Практикалық ақпарат',
+            'hours_title' => 'Жұмыс уақыты мен локациялар',
+            'hours_body' => 'Бүгінгі негізгі кітапханалық нүктелерді жылдам тексеріңіз: басты сервис қашан ашық, оқу маршруты қайда жұмыс істейді және броньдау уақыты қандай.',
+            'hours_today_label' => 'Бүгін',
+            'hours_cta' => 'Барлық уақытты көру',
+            'hours_visual_eyebrow' => 'Кампус ішінде',
+            'hours_visual_title' => 'КазТБУ кітапханалық нүктелері бойынша жинақы навигация',
+            'hours_visual_body' => 'Негізгі сервистер студент пен оқытушы қор, кеңес немесе бронь үшін қайда бару керегін бірден түсінетіндей етіп топтастырылған.',
+              'news_eyebrow' => 'Кітапхана өмірі',
+              'news_title' => 'Кітапхана жаңалықтары',
+              'news_title_accent' => 'және академиялық оқиғалар',
+              'news_body' => 'Кітапхананы кампус өмірінің тірі бөлігіне айналдыратын маңызды жаңалықтар, ашық кездесулер және зерттеу маршруттары бір жерде жиналған.',
+              'news_cta' => 'Барлық жаңалықтар',
+              'workshops_title' => 'Семинарлар мен оқиғалар',
+              'workshops_cta' => 'Барлық оқиғалар',
+              'news_filters' => ['Барлығы', 'Анонстар', 'Оқиғалар'],
+              'news_items' => [
+                ['tag' => 'Анонстар', 'date' => '09.04.2026', 'title' => 'Сырым Бактыгереулының КазТБУ кітапханасына сапары', 'body' => 'Қазіргі қазақ публицистикасы, университеттік оқу және студенттерге арналған кітапхана маршруттары туралы ашық кездесу.'],
+                ['tag' => 'Оқиғалар', 'date' => '08.04.2026', 'title' => 'Classics Caravan: classical literature week', 'body' => 'Классикалық әдебиет қоры, ұсыныс тізімдері және каталог навигациясын біріктіретін шағын оқу және көрме циклі.'],
+              ],
+              'workshops_items' => [
+                ['title' => 'First-year students research skills', 'time' => '11:00-11:40', 'date' => '15 Apr 2026'],
+                ['title' => 'Engineering research with ACM', 'time' => '15:00-16:00', 'date' => '15 Apr 2026'],
+                ['title' => 'AI tools for literature search', 'time' => '17:00-18:00', 'date' => '16 Apr 2026'],
+                ['title' => 'Zotero: reference management', 'time' => '12:00-13:00', 'date' => '16 Apr 2026'],
+              ],
+            'hours_rows' => [
+              ['label' => 'Негізгі кітапхана', 'hours' => '09:00-18:00', 'meta' => 'Негізгі оқу маршруты және кітап беру'],
+              ['label' => 'Технологиялық кітапхана', 'hours' => '09:00-17:30', 'meta' => 'Бейіндік қор және пәндік кеңестер'],
+              ['label' => 'Броньдау уақыты', 'hours' => '10:00-17:00', 'meta' => 'Өтінімдерді растау және іріктемемен жұмыс'],
+            ],
           'summary_title' => 'Қазірдің өзінде не қолжетімді',
           'summary_points' => [
               'қолжетімділік пен сүзгілері бар каталог іздеуі',
@@ -130,6 +196,39 @@
           'search_placeholder' => 'Search books, authors, ISBN, UDC, or keywords',
           'search_cta' => 'Open catalog',
           'summary_kicker' => 'Platform',
+          'subject_eyebrow' => 'Classification system',
+          'subject_title' => 'Browse by subject',
+            'hours_eyebrow' => 'Practical information',
+            'hours_title' => 'See hours and locations',
+            'hours_body' => 'Check the main library touchpoints for today: when the core service is open, where the reading route is active, and when booking support is available.',
+            'hours_today_label' => 'Today',
+            'hours_cta' => 'View all hours',
+            'hours_visual_eyebrow' => 'Across campus',
+            'hours_visual_title' => 'A calmer way to read the KazTBU library footprint',
+            'hours_visual_body' => 'Core service points are grouped so students and faculty can quickly understand where to go for holdings, guidance, or booking support.',
+              'news_eyebrow' => 'Library life',
+              'news_title' => 'Library news',
+              'news_title_accent' => 'and workshops',
+              'news_body' => 'A curated stream of updates, open sessions, and research-facing activity that makes the library feel active rather than static.',
+              'news_cta' => 'All news',
+              'workshops_title' => 'Workshops and events',
+              'workshops_cta' => 'All events',
+              'news_filters' => ['All', 'Announcements', 'Events'],
+              'news_items' => [
+                ['tag' => 'Announcements', 'date' => '09 Apr 2026', 'title' => 'Author Syrym Baktygereuly visits the KazTBU Library', 'body' => 'An open conversation on contemporary Kazakh writing, campus reading culture, and how the library can support student discovery.'],
+                ['tag' => 'Events', 'date' => '08 Apr 2026', 'title' => 'Classics Caravan: a celebration of classical literature', 'body' => 'A compact program of readings and themed displays connecting classical holdings, recommendation lists, and the catalog route.'],
+              ],
+              'workshops_items' => [
+                ['title' => 'Research skills for first-year students', 'time' => '11:00-11:40', 'date' => '15 Apr 2026'],
+                ['title' => 'Engineering research and learning with ACM', 'time' => '15:00-16:00', 'date' => '15 Apr 2026'],
+                ['title' => 'Exploring AI tools for literature search', 'time' => '17:00-18:00', 'date' => '16 Apr 2026'],
+                ['title' => 'Zotero: efficient reference management', 'time' => '12:00-13:00', 'date' => '16 Apr 2026'],
+              ],
+            'hours_rows' => [
+              ['label' => 'Main Library', 'hours' => '09:00-18:00', 'meta' => 'Primary reading route and circulation support'],
+              ['label' => 'Technology Library', 'hours' => '09:00-17:30', 'meta' => 'Discipline-focused holdings and guidance'],
+              ['label' => 'Booking Hours', 'hours' => '10:00-17:00', 'meta' => 'Reservation confirmation and shortlist support'],
+            ],
           'summary_title' => 'What is already available',
           'summary_points' => [
               'catalog search with live availability and filters',
@@ -168,6 +267,25 @@
           'trust_actions' => ['catalog' => 'Catalog', 'resources' => 'Resources', 'shortlist' => 'Shortlist'],
       ],
   ][$lang];
+
+    $today = now();
+    $weekdayMap = [
+      'ru' => ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'],
+      'kk' => ['дүйсенбі', 'сейсенбі', 'сәрсенбі', 'бейсенбі', 'жұма', 'сенбі', 'жексенбі'],
+      'en' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    ];
+    $monthMap = [
+      'ru' => [1 => 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+      'kk' => [1 => 'қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым', 'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'],
+      'en' => [1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    ];
+    $weekday = $weekdayMap[$lang][$today->dayOfWeekIso - 1] ?? $weekdayMap['en'][$today->dayOfWeekIso - 1];
+    $month = $monthMap[$lang][$today->month] ?? $monthMap['en'][$today->month];
+    $todayLine = match ($lang) {
+      'ru' => $copy['hours_today_label'] . ' · ' . $weekday . ', ' . $today->day . ' ' . $month,
+      'kk' => $copy['hours_today_label'] . ' · ' . $weekday . ', ' . $today->day . ' ' . $month,
+      default => $copy['hours_today_label'] . ' · ' . $weekday . ', ' . $today->day . ' ' . $month,
+    };
 
   $pathCards = [
       'ru' => [
@@ -235,7 +353,7 @@
 @section('head')
 <style>
   .landing-hero {
-    padding: clamp(72px, 8vw, 118px) 0 28px;
+    padding: clamp(18px, 2.4vw, 28px) 0 14px;
   }
 
   .homepage-band {
@@ -250,14 +368,14 @@
   .landing-shell {
     max-width: none;
     margin: 0 auto;
-    padding: clamp(28px, 3.6vw, 48px);
+    padding: clamp(22px, 2.6vw, 34px);
     text-align: left;
     position: relative;
     overflow: hidden;
-    border-radius: 28px;
-    border: 1px solid rgba(195, 198, 209, 0.5);
-    background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(244,246,247,.9));
-    box-shadow: 0 22px 54px rgba(25, 28, 29, 0.06);
+    border-radius: 26px;
+    border: 1px solid rgba(204, 211, 221, 0.45);
+    background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(247,249,250,.9));
+    box-shadow: 0 18px 42px rgba(25, 28, 29, 0.045);
     animation: landingReveal .55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 
@@ -271,19 +389,19 @@
   }
 
   .landing-shell::before {
-    top: -36px;
-    right: -22px;
-    width: 170px;
-    height: 170px;
-    background: radial-gradient(circle, rgba(20,105,109,.10), transparent 70%);
+    top: -34px;
+    right: -18px;
+    width: 146px;
+    height: 146px;
+    background: radial-gradient(circle, rgba(20,105,109,.08), transparent 70%);
   }
 
   .landing-shell::after {
-    left: -28px;
-    bottom: -42px;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(0,30,64,.08), transparent 70%);
+    left: -22px;
+    bottom: -36px;
+    width: 128px;
+    height: 128px;
+    background: radial-gradient(circle, rgba(0,30,64,.055), transparent 70%);
   }
 
   .landing-shell > * {
@@ -293,8 +411,8 @@
 
   .landing-hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.18fr) minmax(360px, 520px);
-    gap: clamp(48px, 6vw, 92px);
+    grid-template-columns: minmax(0, 1.08fr) minmax(250px, 330px);
+    gap: clamp(18px, 2.8vw, 32px);
     align-items: start;
     text-align: left;
   }
@@ -302,12 +420,12 @@
   .landing-intro {
     min-width: 0;
     max-width: 760px;
-    padding-right: clamp(10px, 1.4vw, 28px);
+    padding-right: clamp(2px, .45vw, 8px);
   }
 
   .landing-kicker {
     display: inline-block;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     color: var(--cyan);
     font-size: 11px;
     font-weight: 800;
@@ -316,11 +434,11 @@
   }
 
   .landing-curator {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     color: var(--blue);
     font-family: 'Newsreader', Georgia, serif;
     font-style: italic;
-    font-size: 1.2rem;
+    font-size: 1.08rem;
   }
 
   .landing-identity-chip {
@@ -328,8 +446,8 @@
     align-items: center;
     gap: 8px;
     width: fit-content;
-    margin-bottom: 14px;
-    padding: 8px 12px;
+    margin-bottom: 10px;
+    padding: 6px 10px;
     border-radius: 999px;
     background: rgba(0, 30, 64, 0.06);
     border: 1px solid rgba(0, 30, 64, 0.08);
@@ -341,41 +459,41 @@
   }
 
   .landing-title {
-    max-width: 11ch;
-    margin: 0 0 22px;
+    max-width: 16ch;
+    margin: 0 0 12px;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(4rem, 6.8vw, 6.3rem);
-    line-height: .9;
-    letter-spacing: -.055em;
+    font-size: clamp(2.85rem, 4.35vw, 4.35rem);
+    line-height: .98;
+    letter-spacing: -.032em;
     text-wrap: balance;
     color: var(--blue);
   }
 
   .landing-copy {
     margin: 0;
-    max-width: 760px;
+    max-width: 640px;
     color: var(--muted);
-    font-size: clamp(18px, 1.45vw, 22px);
-    line-height: 1.68;
+    font-size: clamp(15.5px, 1vw, 18px);
+    line-height: 1.66;
   }
 
   .landing-campus-panel {
     display: grid;
-    gap: 18px;
+    gap: 10px;
     justify-items: center;
     align-content: start;
-    padding-top: 18px;
+    padding-top: 10px;
   }
 
   .hero-campus-mark {
     position: relative;
-    width: min(420px, 100%);
+    width: min(248px, 100%);
     aspect-ratio: 1;
     border-radius: 50%;
-    padding: 18px;
+    padding: 12px;
     overflow: hidden;
-    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.94) 0%, rgba(190,221,224,.92) 34%, rgba(0,51,102,.95) 100%);
-    box-shadow: 0 24px 54px rgba(0, 30, 64, 0.14);
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95) 0%, rgba(204,229,231,.84) 34%, rgba(10,63,108,.84) 100%);
+    box-shadow: 0 12px 28px rgba(0, 30, 64, 0.08);
   }
 
   .hero-campus-mark::before,
@@ -428,18 +546,18 @@
     border-radius: 50%;
     object-fit: contain;
     object-position: center;
-    transform: scale(1.08);
+    transform: scale(1.03);
     transform-origin: center;
   }
 
   .landing-campus-note {
-    width: min(100%, 390px);
+    width: min(100%, 288px);
     margin-top: 2px;
-    padding: 16px 18px;
-    border-radius: 20px;
-    background: rgba(255,255,255,.82);
-    border: 1px solid rgba(195,198,209,.55);
-    box-shadow: 0 10px 24px rgba(25,28,29,.04);
+    padding: 10px 12px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(204,211,221,.48);
+    box-shadow: 0 6px 14px rgba(25,28,29,.028);
     text-align: left;
   }
 
@@ -447,27 +565,27 @@
     display: block;
     margin-bottom: 4px;
     color: var(--blue);
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .landing-campus-note p {
     margin: 0;
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 12px;
+    line-height: 1.56;
   }
 
   .landing-search {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 12px;
-    max-width: 980px;
-    margin: 40px 0 0;
+    gap: 10px;
+    max-width: 760px;
+    margin: 18px auto 0;
     padding: 8px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(195, 198, 209, 0.55);
-    box-shadow: 0 12px 32px rgba(25, 28, 29, 0.04);
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(195, 198, 209, 0.62);
+    box-shadow: 0 16px 36px rgba(25, 28, 29, 0.055);
     backdrop-filter: blur(18px);
     position: relative;
     overflow: hidden;
@@ -488,8 +606,8 @@
 
   .landing-search:focus-within {
     transform: translate3d(0, -2px, 0);
-    box-shadow: 0 18px 40px rgba(25, 28, 29, 0.06);
-    border-color: rgba(0, 30, 64, 0.12);
+    box-shadow: 0 20px 44px rgba(25, 28, 29, 0.08);
+    border-color: rgba(0, 30, 64, 0.16);
   }
 
   .landing-search:focus-within::after {
@@ -502,35 +620,35 @@
     border: 0;
     background: transparent;
     color: var(--text);
-    padding: 18px 22px;
+    padding: 15px 22px;
     font: inherit;
-    font-size: 16px;
+    font-size: 15px;
     outline: none;
   }
 
   .landing-search .btn {
     border-radius: 999px;
-    min-height: 58px;
-    padding-inline: 32px;
+    min-height: 52px;
+    padding-inline: 26px;
   }
 
   .hero-quick-links {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    margin-top: 24px;
+    gap: 12px;
+    margin-top: 14px;
   }
 
   .hero-quick-link {
     display: grid;
-    gap: 8px;
-    min-height: 110px;
-    padding: 18px 20px;
+    gap: 6px;
+    min-height: 84px;
+    padding: 14px 16px;
     text-align: left;
-    border-radius: 20px;
-    background: rgba(255,255,255,.78);
-    border: 1px solid rgba(195,198,209,.55);
-    box-shadow: 0 10px 24px rgba(25,28,29,.035);
+    border-radius: 18px;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(203,209,219,.48);
+    box-shadow: 0 8px 18px rgba(25,28,29,.028);
     transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .16s cubic-bezier(0.2, 0.8, 0.2, 1), background .16s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -551,8 +669,8 @@
 
   .hero-quick-link strong {
     color: var(--blue);
-    font-size: 18px;
-    line-height: 1.25;
+    font-size: 16px;
+    line-height: 1.22;
   }
 
   .landing-stats {
@@ -560,7 +678,7 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 10px 12px;
-    margin-top: 24px;
+    margin-top: 12px;
     color: var(--muted);
     font-size: 12px;
     font-weight: 800;
@@ -572,22 +690,22 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 7px 11px;
     border-radius: 999px;
-    background: rgba(255,255,255,.76);
-    border: 1px solid rgba(195,198,209,.55);
-    box-shadow: 0 8px 20px rgba(25,28,29,.03);
+    background: rgba(255,255,255,.68);
+    border: 1px solid rgba(203,209,219,.5);
+    box-shadow: 0 6px 16px rgba(25,28,29,.026);
   }
 
   .landing-feature-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
-    gap: 22px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr) minmax(0, 1fr);
+    gap: 16px;
     perspective: 1400px;
   }
 
   .landing-feature-grid .feature-entry:nth-child(2) {
-    transform: translate3d(0, 12px, 0);
+    transform: translate3d(0, 8px, 0);
   }
 
   .landing-feature-grid .feature-entry:nth-child(2):hover {
@@ -595,13 +713,13 @@
   }
 
   .feature-entry {
-    min-height: 300px;
-    padding: 30px;
+    min-height: 214px;
+    padding: 22px 22px 20px;
     border-radius: var(--radius-xl);
-    border: 1px solid var(--border);
-    background: #fff;
+    border: 1px solid rgba(205, 211, 220, 0.58);
+    background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,251,.94));
     text-align: left;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 10px 22px rgba(25, 28, 29, 0.03);
     position: relative;
     overflow: hidden;
     transform-style: preserve-3d;
@@ -609,13 +727,13 @@
   }
 
   .feature-entry::after {
-    content: '';
-    position: absolute;
+    transform: translate3d(0, -3px, 0) rotateX(0.6deg);
+    box-shadow: 0 16px 30px rgba(25, 28, 29, 0.05);
     inset: -35% 48% 50% -8%;
     background: radial-gradient(circle, rgba(255,255,255,.52), transparent 72%);
     opacity: 0;
     transform: translate3d(-12px, 12px, 0);
-    transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: linear-gradient(165deg, #08264a 0%, #0a3765 56%, #165b8f 100%);
     pointer-events: none;
   }
 
@@ -639,15 +757,15 @@
   .feature-entry--primary::before {
     content: '';
     position: absolute;
-    right: -24px;
-    bottom: -22px;
-    width: 180px;
-    height: 180px;
+    right: -16px;
+    bottom: -18px;
+    width: 132px;
+    height: 132px;
     border-radius: 50%;
     background-image: url('/logo.png');
     background-size: cover;
     background-position: center;
-    opacity: .12;
+    opacity: .08;
     filter: grayscale(1) brightness(1.9);
     pointer-events: none;
   }
@@ -656,8 +774,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 54px;
-    font-size: 11px;
+    margin-bottom: 22px;
+    font-size: 10px;
     font-weight: 800;
     letter-spacing: .12em;
     text-transform: uppercase;
@@ -667,15 +785,17 @@
   .feature-entry h3 {
     margin: 0 0 8px;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2rem, 3.4vw, 2.7rem);
+    font-size: clamp(1.7rem, 2.4vw, 2.15rem);
     color: var(--blue);
+    line-height: 1.06;
   }
 
   .feature-entry p {
     margin: 0;
     color: var(--muted);
-    line-height: 1.78;
-    font-size: 15px;
+    line-height: 1.7;
+    font-size: 14px;
+    max-width: 24rem;
   }
 
   .feature-entry.feature-entry--primary .feature-meta {
@@ -691,29 +811,29 @@
   }
 
   .subject-block {
-    background: var(--bg-soft);
-    border-radius: var(--radius-xl);
-    padding: clamp(34px, 4.6vw, 54px);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
   }
 
   .subject-head {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 24px;
-    margin-bottom: 28px;
+    gap: 18px;
+    margin-bottom: 18px;
   }
 
   .subject-head h2 {
     margin: 0;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2.3rem, 4.4vw, 3.4rem);
+    font-size: clamp(2rem, 3.6vw, 2.9rem);
     color: var(--blue);
   }
 
   .subject-link {
     color: var(--cyan);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: .12em;
@@ -721,16 +841,17 @@
 
   .subject-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
   }
 
   .subject-card {
-    padding: 24px 22px;
-    border-radius: var(--radius-lg);
-    background: #fff;
-    border: 1px solid var(--border);
-    text-align: left;
+    padding: 18px 14px 16px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(249,251,252,.9));
+    border: 1px solid rgba(205, 211, 220, 0.52);
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(25,28,29,.024);
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -743,46 +864,527 @@
 
   .subject-card strong {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: var(--blue);
-    font-size: 18px;
-    line-height: 1.28;
+    font-size: 15px;
+    line-height: 1.24;
   }
 
   .subject-card span {
     color: var(--muted);
-    font-size: 12px;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: .08em;
+    letter-spacing: .12em;
     font-weight: 700;
+  }
+
+  .hours-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr);
+    gap: 22px;
+    align-items: stretch;
+  }
+
+  .hours-copy {
+    border: 1px solid rgba(205, 211, 220, 0.52);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(249,250,251,.94));
+    padding: 24px 26px;
+    box-shadow: 0 10px 24px rgba(25, 28, 29, 0.032);
+    display: grid;
+    gap: 14px;
+  }
+
+  .hours-head {
+    display: grid;
+    gap: 10px;
+    max-width: 44rem;
+  }
+
+  .hours-head h2 {
+    margin: 0;
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(2rem, 3.6vw, 2.9rem);
+    line-height: 1.02;
+    color: var(--blue);
+  }
+
+  .hours-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.66;
+    max-width: 36rem;
+  }
+
+  .hours-date-line {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 34px;
+    padding: 0 11px;
+    border-radius: 999px;
+    background: rgba(20, 105, 109, 0.06);
+    color: var(--cyan);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .hours-list {
+    display: grid;
+    gap: 0;
+  }
+
+  .hours-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: start;
+    padding: 13px 0;
+    border-top: 1px solid rgba(195, 198, 209, 0.55);
+  }
+
+  .hours-row:first-child {
+    border-top: 0;
+    padding-top: 2px;
+  }
+
+  .hours-row strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--blue);
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .hours-row p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.56;
+    max-width: 28rem;
+  }
+
+  .hours-time {
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  .hours-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin-top: 4px;
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .hours-link::after {
+    content: '↗';
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  .hours-visual {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(195, 198, 209, 0.6);
+    border-radius: var(--radius-xl);
+    min-height: 292px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.52), rgba(243,247,249,.72)),
+      linear-gradient(180deg, rgba(7, 26, 47, 0.06), rgba(7, 26, 47, 0.18)),
+      url('/trust-panel-library.svg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 10px 24px rgba(25, 28, 29, 0.032);
+    display: grid;
+    align-items: end;
+  }
+
+  .hours-visual::before {
+    content: '';
+    position: absolute;
+    inset: 20px 22px auto auto;
+    width: 126px;
+    height: 126px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.16), rgba(255,255,255,0) 68%);
+    pointer-events: none;
+  }
+
+  .hours-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(245,249,250,.02), rgba(11, 29, 48, .16) 62%, rgba(11, 29, 48, .28) 100%);
+    pointer-events: none;
+  }
+
+  .hours-visual-inner {
+    position: relative;
+    z-index: 1;
+    padding: 22px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .hours-visual-copy {
+    display: grid;
+    gap: 8px;
+    max-width: 22rem;
+  }
+
+  .hours-visual-copy p {
+    margin: 0;
+    color: rgba(238,244,247,.88);
+    font-size: 14px;
+    line-height: 1.62;
+  }
+
+  .hours-visual-copy h3 {
+    margin: 0;
+    color: #ffffff;
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(1.6rem, 2.6vw, 2.05rem);
+    line-height: 1.04;
+  }
+
+  .hours-markers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 26rem;
+  }
+
+  .hours-marker {
+    display: grid;
+    gap: 4px;
+    padding: 11px 11px 10px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(12px);
+  }
+
+  .hours-marker span {
+    color: rgba(233,240,244,.78);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+
+  .hours-marker strong {
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .news-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(280px, .72fr);
+    gap: 22px;
+    align-items: start;
+  }
+
+  .news-stack {
+    display: grid;
+    gap: 18px;
+  }
+
+  .news-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 18px;
+  }
+
+  .news-head-main {
+    display: grid;
+    gap: 8px;
+    max-width: 44rem;
+  }
+
+  .news-head-main h2 {
+    margin: 0;
+    color: var(--blue);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(2.05rem, 3.8vw, 2.95rem);
+    line-height: 1.04;
+  }
+
+  .news-head-main h2 span {
+    color: #58708a;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .news-head-main p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.66;
+    max-width: 38rem;
+  }
+
+  .news-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .news-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(205, 211, 220, 0.52);
+    background: rgba(255,255,255,.78);
+    color: #617182;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .news-filter-chip.is-active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .news-card {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+  }
+
+  .news-card-media {
+    position: relative;
+    min-height: 228px;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(205, 211, 220, 0.52);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.08), rgba(11,29,48,.16)),
+      radial-gradient(circle at top left, rgba(255,255,255,.22), transparent 36%),
+      linear-gradient(135deg, rgba(20,105,109,.18), rgba(11,29,48,.28)),
+      url('/trust-panel-library.svg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 14px 30px rgba(25, 28, 29, 0.04);
+  }
+
+  .news-card-media::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 44%;
+    background: linear-gradient(180deg, rgba(8,18,32,0), rgba(8,18,32,.12) 28%, rgba(8,18,32,.42) 100%);
+  }
+
+  .news-card-media--alt {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.06), rgba(11,29,48,.12)),
+      radial-gradient(circle at top right, rgba(255,255,255,.2), transparent 34%),
+      linear-gradient(135deg, rgba(180,143,82,.16), rgba(11,29,48,.28)),
+      url('/trust-panel-library.svg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .news-card-badge {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.16);
+    color: #fff;
+    backdrop-filter: blur(10px);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .news-card-copy {
+    display: grid;
+    gap: 8px;
+  }
+
+  .news-card-date {
+    color: #7b8897;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .news-card h3 {
+    margin: 0;
+    color: var(--blue);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(1.5rem, 2vw, 1.9rem);
+    line-height: 1.14;
+    text-wrap: balance;
+  }
+
+  .news-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .news-link::after {
+    content: '↗';
+    line-height: 1;
+  }
+
+  .events-rail {
+    border: 1px solid rgba(205, 211, 220, 0.54);
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,251,.93));
+    box-shadow: 0 14px 30px rgba(25,28,29,.035);
+    padding: 22px 20px 20px;
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+
+  .events-rail-head {
+    display: grid;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(205, 211, 220, 0.42);
+  }
+
+  .events-rail-head h3 {
+    margin: 0;
+    color: var(--blue);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(1.9rem, 3vw, 2.45rem);
+    line-height: 1.02;
+  }
+
+  .events-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .event-item {
+    display: grid;
+    gap: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(205, 211, 220, 0.38);
+  }
+
+  .event-item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .event-item strong {
+    color: #1a6e78;
+    font-size: 15px;
+    line-height: 1.36;
+  }
+
+  .event-item span {
+    color: #7b8897;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .event-item p {
+    margin: 0;
+    color: #627283;
+    font-size: 12px;
+    line-height: 1.54;
+  }
+
+  .events-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    justify-self: end;
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .events-link::after {
+    content: '→';
+    line-height: 1;
   }
 
   .trust-section {
     display: grid;
-    grid-template-columns: minmax(0, .97fr) minmax(0, 1.03fr);
-    gap: 32px;
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    gap: 20px;
     align-items: stretch;
   }
 
   .quote-panel {
     padding: 0;
     border-radius: var(--radius-xl);
-    background:
-      linear-gradient(180deg, rgba(16, 31, 46, 0.08) 0%, rgba(18, 35, 51, 0.14) 26%, rgba(18, 34, 49, 0.34) 62%, rgba(17, 31, 45, 0.52) 100%),
-      linear-gradient(90deg, rgba(243, 237, 225, 0.08) 0%, rgba(239, 245, 247, 0.03) 44%, rgba(13, 28, 42, 0.1) 100%),
-      radial-gradient(circle at 24% 18%, rgba(239, 246, 247, 0.26), transparent 36%),
-      url('/trust-panel-library.svg');
+      background-color: #101c28;
+      background-image: url('/trust-panel-reading-room.jpg');
     background-size: cover;
-    background-position: center center;
+      background-position: center 34%;
     color: #fff;
     display: flex;
     align-items: flex-end;
-    min-height: 408px;
+    min-height: 318px;
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    border: 1px solid rgba(214, 224, 230, 0.22);
-    box-shadow: 0 20px 42px rgba(25, 28, 29, 0.08);
+    border: 1px solid rgba(211, 221, 228, 0.2);
+    box-shadow: 0 16px 32px rgba(18, 24, 29, 0.1);
     transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -790,38 +1392,44 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(246, 249, 249, 0.06), rgba(29, 44, 58, 0.02) 32%, rgba(10, 21, 34, 0.36) 78%, rgba(9, 19, 31, 0.5) 100%);
+    background: linear-gradient(180deg, rgba(7, 15, 24, 0.24) 0%, rgba(7, 15, 24, 0.34) 34%, rgba(7, 16, 25, 0.52) 72%, rgba(6, 14, 23, 0.68) 100%);
     z-index: 0;
   }
 
   .quote-panel::after {
     content: '';
     position: absolute;
-    inset: auto 0 0 0;
-    height: 48%;
-    background: linear-gradient(180deg, rgba(3, 11, 20, 0) 0%, rgba(5, 15, 26, 0.12) 26%, rgba(6, 17, 28, 0.55) 100%);
+    inset: 0;
+    background:
+      radial-gradient(circle at 82% 18%, rgba(255, 244, 214, 0.12), transparent 28%),
+      linear-gradient(180deg, rgba(5, 12, 20, 0.04) 0%, rgba(5, 12, 20, 0.12) 24%, rgba(5, 12, 20, 0.42) 100%);
     transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 0;
   }
 
   .quote-panel:hover {
     transform: translate3d(0, -2px, 0);
-    box-shadow: 0 24px 48px rgba(25, 28, 29, 0.1);
-    border-color: rgba(214, 224, 230, 0.28);
+    box-shadow: 0 24px 48px rgba(18, 24, 29, 0.16);
+    border-color: rgba(211, 221, 228, 0.26);
   }
 
   .quote-panel:hover::after {
-    transform: translate3d(0, -6px, 0);
+    transform: translate3d(0, -4px, 0);
   }
 
   .quote-panel__inner {
     position: relative;
     z-index: 1;
-    width: 100%;
-    max-width: 36rem;
-    padding: 42px 44px 38px;
+    width: min(100% - 28px, 31rem);
+    margin: 18px;
+    max-width: 31rem;
+    padding: 22px 24px 20px;
     display: grid;
-    gap: 16px;
+    gap: 12px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: linear-gradient(180deg, rgba(7, 15, 24, 0.46), rgba(7, 15, 24, 0.62));
+    backdrop-filter: blur(3px);
+    box-shadow: 0 14px 30px rgba(8, 14, 21, 0.16);
   }
 
   .quote-panel__eyebrow {
@@ -843,47 +1451,48 @@
   .quote-panel__quote {
     margin: 0;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(1.62rem, 2.45vw, 2.18rem);
-    line-height: 1.28;
+    font-size: clamp(1.28rem, 1.9vw, 1.66rem);
+    line-height: 1.38;
     font-style: normal;
-    letter-spacing: -.022em;
-    max-width: 16ch;
+    letter-spacing: -.016em;
+    max-width: 20ch;
     text-wrap: balance;
-    text-shadow: 0 2px 12px rgba(6, 14, 22, 0.14);
+    text-shadow: 0 2px 12px rgba(3, 8, 13, 0.32);
   }
 
   .trust-copy {
-    padding: 20px 0 18px;
+    padding: 8px 0 10px;
     align-self: center;
   }
 
   .trust-copy h2 {
-    margin: 0 0 16px;
+    margin: 0 0 14px;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2.4rem, 4.6vw, 3.5rem);
+    font-size: clamp(2.1rem, 3.8vw, 3rem);
     color: var(--blue);
+    line-height: 1.02;
   }
 
   .trust-copy p {
-    margin: 0 0 24px;
+    margin: 0 0 18px;
     color: var(--muted);
-    line-height: 1.78;
-    font-size: 17px;
-    max-width: 33rem;
+    line-height: 1.72;
+    font-size: 15px;
+    max-width: 31rem;
   }
 
   .trust-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 12px;
+    margin-bottom: 16px;
   }
 
   .trust-stat {
-    padding: 20px;
+    padding: 14px;
     border-radius: var(--radius-lg);
-    background: #fff;
-    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,251,.92));
+    border: 1px solid rgba(205, 211, 220, 0.56);
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -897,7 +1506,7 @@
     display: block;
     margin-bottom: 6px;
     color: var(--blue);
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .trust-stat span {
@@ -911,7 +1520,12 @@
   .trust-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .trust-actions .btn {
+    min-height: 46px;
+    padding-inline: 20px;
   }
 
   @keyframes landingReveal {
@@ -928,7 +1542,7 @@
 
   .page-section {
     position: relative;
-    padding: clamp(74px, 8vw, 116px) 0;
+    padding: clamp(54px, 5.8vw, 82px) 0;
     animation: fadeInUp 0.45s var(--ease-premium) both;
   }
 
@@ -940,12 +1554,12 @@
 
     .landing-hero-grid {
       grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
-      gap: 38px;
+      gap: 24px;
     }
 
     .hero-quick-links,
     .subject-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
@@ -954,6 +1568,8 @@
     .landing-feature-grid,
     .subject-grid,
     .trust-section,
+    .hours-section,
+    .news-section,
     .hero-quick-links {
       grid-template-columns: 1fr;
     }
@@ -976,6 +1592,10 @@
       margin-inline: auto;
     }
 
+    .landing-campus-panel {
+      padding-top: 8px;
+    }
+
     .landing-stats {
       justify-content: center;
     }
@@ -985,17 +1605,26 @@
       text-align: center;
     }
 
+    .hours-visual {
+      min-height: 260px;
+    }
+
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+
     .landing-feature-grid .feature-entry:nth-child(2) {
       transform: none;
     }
 
     .quote-panel {
-      min-height: 344px;
+      min-height: 308px;
     }
 
     .quote-panel__inner {
       max-width: 38rem;
-      padding: 30px;
+      width: min(100% - 24px, 38rem);
+      padding: 24px;
     }
   }
 
@@ -1007,16 +1636,37 @@
       text-align: left;
     }
 
+    .hours-row,
+    .hours-markers {
+      grid-template-columns: 1fr;
+    }
+
+    .hours-copy,
+    .hours-visual-inner,
+    .events-rail {
+      padding: 18px;
+    }
+
     .landing-search {
       border-radius: 8px;
+      margin-top: 20px;
     }
 
     .hero-quick-link {
       padding: 11px 12px;
     }
 
+    .subject-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .news-head {
+      align-items: start;
+      flex-direction: column;
+    }
+
     .quote-panel {
-      min-height: 286px;
+      min-height: 264px;
       background-position: center top;
     }
 
@@ -1105,8 +1755,8 @@
       <div class="subject-block">
         <div class="subject-head">
           <div>
-            <div class="eyebrow eyebrow--cyan">Система классификации</div>
-            <h2>Просмотр по темам</h2>
+            <div class="eyebrow eyebrow--cyan">{{ $copy['subject_eyebrow'] }}</div>
+            <h2>{{ $copy['subject_title'] }}</h2>
           </div>
           <a href="{{ $withLang('/discover') }}" class="subject-link">{{ $copy['subject_link'] }}</a>
         </div>
@@ -1117,6 +1767,63 @@
           @endforeach
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container homepage-band hours-section">
+      <div class="hours-copy">
+        <div class="hours-head">
+          <div class="eyebrow eyebrow--cyan">{{ $copy['hours_eyebrow'] }}</div>
+          <h2>{{ $copy['hours_title'] }}</h2>
+          <p>{{ $copy['hours_body'] }}</p>
+        </div>
+
+        <div class="hours-date-line">{{ $todayLine }}</div>
+
+        <div class="hours-list">
+          @foreach($copy['hours_rows'] as $row)
+            <article class="hours-row">
+              <div>
+                <strong>{{ $row['label'] }}</strong>
+                <p>{{ $row['meta'] }}</p>
+              </div>
+              <div class="hours-time">{{ $row['hours'] }}</div>
+            </article>
+          @endforeach
+        </div>
+
+        <a href="{{ $withLang('/contacts') }}" class="hours-link">{{ $copy['hours_cta'] }}</a>
+      </div>
+
+      <aside class="hours-visual" aria-label="{{ $copy['hours_title'] }}">
+        <div class="hours-visual-inner">
+          <div class="hours-visual-copy">
+            <div class="eyebrow eyebrow--green">{{ $copy['hours_visual_eyebrow'] }}</div>
+            <h3>{{ $copy['hours_visual_title'] }}</h3>
+            <p>{{ $copy['hours_visual_body'] }}</p>
+          </div>
+
+          <div class="hours-markers">
+            <div class="hours-marker">
+              <span>{{ ['ru' => 'Локация', 'kk' => 'Локация', 'en' => 'Location'][$lang] }}</span>
+              <strong>{{ ['ru' => 'Главный кампус', 'kk' => 'Негізгі кампус', 'en' => 'Main campus'][$lang] }}</strong>
+            </div>
+            <div class="hours-marker">
+              <span>{{ ['ru' => 'Сервис', 'kk' => 'Сервис', 'en' => 'Service'][$lang] }}</span>
+              <strong>{{ ['ru' => 'Каталог и консультации', 'kk' => 'Каталог және кеңес', 'en' => 'Catalog and guidance'][$lang] }}</strong>
+            </div>
+            <div class="hours-marker">
+              <span>{{ ['ru' => 'Маршрут', 'kk' => 'Маршрут', 'en' => 'Route'][$lang] }}</span>
+              <strong>{{ ['ru' => 'Фонд, читальный зал, бронирование', 'kk' => 'Қор, оқу залы, бронь', 'en' => 'Holdings, reading room, booking'][$lang] }}</strong>
+            </div>
+            <div class="hours-marker">
+              <span>{{ ['ru' => 'Контакт', 'kk' => 'Байланыс', 'en' => 'Contact'][$lang] }}</span>
+              <strong>{{ ['ru' => 'Через страницу контактов', 'kk' => 'Байланыс беті арқылы', 'en' => 'Via the contacts page'][$lang] }}</strong>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -1146,6 +1853,60 @@
           <a href="{{ $withLang('/shortlist') }}" class="btn btn-ghost">{{ $copy['trust_actions']['shortlist'] }}</a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container homepage-band news-section">
+      <div class="news-stack">
+        <div class="news-head">
+          <div class="news-head-main">
+            <div class="eyebrow eyebrow--cyan">{{ $copy['news_eyebrow'] }}</div>
+            <h2>{{ $copy['news_title'] }} <span>{{ $copy['news_title_accent'] }}</span></h2>
+            <p>{{ $copy['news_body'] }}</p>
+          </div>
+
+          <div class="news-filters" aria-label="{{ $copy['news_title'] }}">
+            @foreach($copy['news_filters'] as $index => $filter)
+              <span class="news-filter-chip{{ $index === 0 ? ' is-active' : '' }}">{{ $filter }}</span>
+            @endforeach
+          </div>
+        </div>
+
+        <div class="news-grid">
+          @foreach($copy['news_items'] as $index => $item)
+            <article class="news-card">
+              <div class="news-card-media{{ $index === 1 ? ' news-card-media--alt' : '' }}">
+                <span class="news-card-badge">{{ $item['tag'] }}</span>
+              </div>
+              <div class="news-card-copy">
+                <span class="news-card-date">{{ $item['date'] }}</span>
+                <h3>{{ $item['title'] }}</h3>
+                <p>{{ $item['body'] }}</p>
+              </div>
+            </article>
+          @endforeach
+        </div>
+
+        <a href="{{ $withLang('/resources') }}" class="news-link">{{ $copy['news_cta'] }}</a>
+      </div>
+
+      <aside class="events-rail" aria-label="{{ $copy['workshops_title'] }}">
+        <div class="events-rail-head">
+          <h3>{{ $copy['workshops_title'] }}</h3>
+        </div>
+
+        <div class="events-list">
+          @foreach($copy['workshops_items'] as $item)
+            <article class="event-item">
+              <strong>{{ $item['title'] }}</strong>
+              <span>{{ $item['time'] }} · {{ $item['date'] }}</span>
+            </article>
+          @endforeach
+        </div>
+
+        <a href="{{ $withLang('/contacts') }}" class="events-link">{{ $copy['workshops_cta'] }}</a>
+      </aside>
     </div>
   </section>
 @endsection
