@@ -534,6 +534,81 @@
       overflow: hidden;
     }
 
+    .empty-state {
+      min-height: 240px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      gap: 14px;
+      padding: 30px 26px;
+      border-radius: 12px;
+      border: 1px dashed rgba(195,198,209,.66);
+      background: linear-gradient(180deg, rgba(255,255,255,.985), rgba(244,245,246,.92));
+      box-shadow: var(--shadow-soft);
+    }
+
+    .empty-state--compact {
+      min-height: 208px;
+      padding: 24px 20px;
+    }
+
+    .empty-state-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      background: rgba(243,244,245,.92);
+      border: 1px solid rgba(195,198,209,.44);
+      color: var(--blue);
+      font-size: 24px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+    }
+
+    .empty-state-title {
+      margin: 0;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: var(--blue);
+    }
+
+    .empty-state-body {
+      margin: 0;
+      max-width: 520px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .empty-state-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .empty-state-actions a,
+    .empty-state-actions button {
+      min-height: 40px;
+    }
+
+    .workspace-balance-note {
+      padding: 16px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(195,198,209,.42);
+      background: rgba(243,244,245,.58);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .workspace-balance-note strong {
+      color: var(--blue);
+    }
+
     .loading::after {
       content: '';
       position: absolute;
@@ -910,13 +985,14 @@
       display: grid;
       grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
       gap: 28px;
-      align-items: start;
+      align-items: stretch;
     }
 
     .workspace-main {
       min-width: 0;
       display: grid;
       gap: 28px;
+      align-content: start;
     }
 
     .metric-grid {
@@ -996,6 +1072,30 @@
       padding: 28px;
     }
 
+    .workspace-panel--loans {
+      min-height: 460px;
+      display: grid;
+      align-content: start;
+    }
+
+    .workspace-panel--activity {
+      min-height: 300px;
+      display: grid;
+      align-content: start;
+    }
+
+    .rail-panel--waitlist {
+      min-height: 320px;
+      display: grid;
+      align-content: start;
+    }
+
+    .rail-panel--shortlist {
+      min-height: 290px;
+      display: grid;
+      align-content: start;
+    }
+
     .panel-head {
       display: flex;
       align-items: baseline;
@@ -1037,6 +1137,19 @@
     .rail-stat-list {
       display: grid;
       gap: 12px;
+      align-content: start;
+    }
+
+    #book-grid {
+      min-height: 356px;
+    }
+
+    #activity-list {
+      min-height: 214px;
+    }
+
+    #reservations-grid {
+      min-height: 236px;
     }
 
     .loan-row {
@@ -1473,6 +1586,18 @@
         grid-template-columns: 64px minmax(0, 1fr);
       }
 
+      .workspace-panel--loans,
+      .workspace-panel--activity,
+      .rail-panel--waitlist,
+      .rail-panel--shortlist,
+      #book-grid,
+      #activity-list,
+      #reservations-grid,
+      .empty-state,
+      .empty-state--compact {
+        min-height: 0;
+      }
+
       .loan-due,
       .loan-actions {
         grid-column: 2;
@@ -1502,6 +1627,10 @@
       .loan-row,
       .reservation-row {
         padding: 16px;
+      }
+
+      .empty-state-actions {
+        flex-direction: column;
       }
     }
   </style>
@@ -1608,10 +1737,10 @@
                 </article>
               </section>
 
-              <section class="workspace-panel">
+              <section class="workspace-panel workspace-panel--loans">
                 <div class="panel-head">
                   <div>
-                    <h2>📚 {{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h2>
+                    <h2>{{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h2>
                     <p>{{ ['ru' => 'Текущие и недавние выдачи из библиотечного фонда в Stitch-подобной рабочей ленте.', 'kk' => 'Кітапхана қорынан алынған ағымдағы және соңғы берілімдер Stitch-ке жақын жұмыс лентасында.', 'en' => 'Current and recent loans from the library collection in a Stitch-like working stream.'][$lang] }}</p>
                   </div>
                   <div id="loan-tabs" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
@@ -1626,7 +1755,7 @@
                 </div>
               </section>
 
-              <section class="workspace-panel">
+              <section class="workspace-panel workspace-panel--activity">
                 <div class="panel-head">
                   <div>
                     <h2>{{ ['ru' => 'Недавняя активность', 'kk' => 'Соңғы әрекеттер', 'en' => 'Recent activity'][$lang] }}</h2>
@@ -1636,11 +1765,15 @@
                 <div id="activity-list" class="activity-list">
                   <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
                 </div>
+                <div class="workspace-balance-note">
+                  <strong>{{ ['ru' => 'Следующий шаг:', 'kk' => 'Келесі қадам:', 'en' => 'Next step:'][$lang] }}</strong>
+                  {{ ['ru' => 'если текущая активность ещё небольшая, используйте каталог, waitlist и подборку как основные рабочие маршруты кабинета.', 'kk' => 'егер ағымдағы белсенділік әлі аз болса, каталог, waitlist және топтаманы кабинеттегі негізгі жұмыс маршруттары ретінде пайдаланыңыз.', 'en' => 'if current activity is still light, use the catalog, waitlist, and shortlist as the main working routes inside the dashboard.'][$lang] }}
+                </div>
               </section>
             </div>
 
             <aside class="workspace-rail">
-              <section class="rail-panel">
+              <section class="rail-panel rail-panel--waitlist">
                 <h4>{{ ['ru' => 'Quick Actions', 'kk' => 'Quick Actions', 'en' => 'Quick Actions'][$lang] }}</h4>
                 <div class="quick-action-list">
                   <a href="{{ $routeWithLang('/catalog') }}" class="quick-action">
@@ -1681,10 +1814,10 @@
                 </div>
               </section>
 
-              <section id="workbench-section" class="rail-panel">
+              <section id="workbench-section" class="rail-panel rail-panel--shortlist">
                 <div class="panel-head" style="margin-bottom:14px;">
                   <div>
-                    <h3 style="font-size:28px;">📋 {{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h3>
+                    <h3 style="font-size:28px;"> {{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h3>
                     <p>{{ $profileType === 'teacher'
                         ? ['ru' => 'Рабочая подборка для силлабуса, курса и академической навигации.', 'kk' => 'Силлабус, курс және академиялық навигацияға арналған жұмыс топтамасы.', 'en' => 'Working shortlist for syllabus, course, and academic navigation.'][$lang]
                         : ['ru' => 'Сохранённые книги и ресурсы, к которым удобно вернуться позже.', 'kk' => 'Кейін қайта оралуға ыңғайлы сақталған кітаптар мен ресурстар.', 'en' => 'Saved books and resources you can return to later.'][$lang] }}</p>
@@ -2035,10 +2168,14 @@
     function renderNoLoansMessage(hasReaderProfile = true, tab = 'active') {
       if (!hasReaderProfile) {
         return `
-          <div class="loading" style="text-align: center; border-color: rgba(234,179,8,.4); background: #fffbeb;">
-            <span style="font-size: 28px;">📋</span>
-            <p style="margin: 8px 0 0; font-weight: 600; color: #92400e;">${ACCOUNT_I18N.profileMissingTitle}</p>
-            <p style="margin: 4px 0 0; color: #a16207; font-size:13px;">${ACCOUNT_I18N.profileMissingBody}</p>
+          <div class="empty-state">
+            <span class="empty-state-icon">📋</span>
+            <p class="empty-state-title" style="color:#92400e;">${ACCOUNT_I18N.profileMissingTitle}</p>
+            <p class="empty-state-body" style="color:#a16207; max-width: 560px;">${ACCOUNT_I18N.profileMissingBody}</p>
+            <div class="empty-state-actions">
+              <a href="${withLang('/contacts')}" class="btn btn-ghost">${ACCOUNT_LANG === 'kk' ? 'Кітапханамен байланысу' : ACCOUNT_LANG === 'en' ? 'Contact library' : 'Связаться с библиотекой'}</a>
+              <a href="${withLang('/catalog')}" class="btn btn-primary">${ACCOUNT_I18N.openCatalog.replace(' →', '')}</a>
+            </div>
           </div>
         `;
       }
@@ -2049,11 +2186,14 @@
       };
       const m = messages[tab] || messages.active;
       return `
-        <div class="loading" style="text-align: center;">
-          <span style="font-size: 28px;">${m.icon}</span>
-          <p style="margin: 8px 0 0; font-weight: 600;">${m.title}</p>
-          <p style="margin: 4px 0 0; font-size:13px; color:var(--muted);">${m.sub}</p>
-          <p style="margin: 8px 0 0;"><a href="${withLang('/catalog')}" style="color: var(--blue); text-decoration: underline; font-size:14px;">${ACCOUNT_I18N.openCatalog}</a></p>
+        <div class="empty-state">
+          <span class="empty-state-icon">${m.icon}</span>
+          <p class="empty-state-title">${m.title}</p>
+          <p class="empty-state-body">${m.sub}</p>
+          <div class="empty-state-actions">
+            <a href="${withLang('/catalog')}" class="btn btn-primary">${ACCOUNT_I18N.openCatalog.replace(' →', '')}</a>
+            <a href="${withLang('/discover')}" class="btn btn-ghost">${ACCOUNT_LANG === 'kk' ? 'ӘОЖ навигациясы' : ACCOUNT_LANG === 'en' ? 'Browse subjects' : 'Навигация по УДК'}</a>
+          </div>
         </div>
       `;
     }
@@ -2330,7 +2470,7 @@
       const items = events.slice(0, 5);
 
       if (items.length === 0) {
-        container.innerHTML = `<div class="loading" style="text-align:center;"><p style="margin:0 0 8px;font-weight:700;color:var(--blue);">${ACCOUNT_I18N.activityEmptyTitle}</p><p style="margin:0;font-size:13px;color:var(--muted);">${ACCOUNT_I18N.activityEmptyBody}</p></div>`;
+        container.innerHTML = `<div class="empty-state empty-state--compact"><span class="empty-state-icon">◌</span><p class="empty-state-title">${ACCOUNT_I18N.activityEmptyTitle}</p><p class="empty-state-body">${ACCOUNT_I18N.activityEmptyBody}</p><div class="empty-state-actions"><a href="${withLang('/shortlist')}" class="btn btn-ghost">${ACCOUNT_LANG === 'kk' ? 'Топтаманы ашу' : ACCOUNT_LANG === 'en' ? 'Open shortlist' : 'Открыть подборку'}</a></div></div>`;
         return;
       }
 
@@ -2610,7 +2750,7 @@
         renderActivity();
 
         if (!reservations.length) {
-          grid.innerHTML = `<div class="loading" style="text-align:center;background:#fff;border-style:solid;"><p style="margin:0 0 8px;font-weight:700;color:var(--blue);">${ACCOUNT_I18N.noReservationsTitle}</p><p style="margin:0 0 10px;font-size:13px;color:#5d6972;">${ACCOUNT_I18N.noReservationsBody}</p><a href="${withLang('/catalog')}" style="color:#001e40;text-decoration:underline;font-size:14px;">${ACCOUNT_I18N.openCatalogPlain}</a></div>`;
+          grid.innerHTML = `<div class="empty-state empty-state--compact"><span class="empty-state-icon">◔</span><p class="empty-state-title">${ACCOUNT_I18N.noReservationsTitle}</p><p class="empty-state-body">${ACCOUNT_I18N.noReservationsBody}</p><div class="empty-state-actions"><a href="${withLang('/catalog')}" class="btn btn-primary">${ACCOUNT_I18N.openCatalogPlain.replace(' →', '')}</a></div></div>`;
           return;
         }
 
