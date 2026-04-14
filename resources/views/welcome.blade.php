@@ -1372,10 +1372,11 @@
   .quote-panel {
     padding: 0;
     border-radius: var(--radius-xl);
-      background-color: #101c28;
-      background-image: url('/trust-panel-reading-room.jpg');
+    background-color: #18222c;
+    background-image: url('/images/trust-library.jpg');
     background-size: cover;
-      background-position: center 34%;
+    background-position: center center;
+    background-repeat: no-repeat;
     color: #fff;
     display: flex;
     align-items: flex-end;
@@ -1392,17 +1393,16 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(7, 15, 24, 0.24) 0%, rgba(7, 15, 24, 0.34) 34%, rgba(7, 16, 25, 0.52) 72%, rgba(6, 14, 23, 0.68) 100%);
+    background: linear-gradient(180deg, rgba(11, 18, 26, 0.18) 0%, rgba(11, 18, 26, 0.28) 30%, rgba(11, 18, 26, 0.5) 70%, rgba(11, 18, 26, 0.66) 100%);
     z-index: 0;
   }
 
   .quote-panel::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at 82% 18%, rgba(255, 244, 214, 0.12), transparent 28%),
-      linear-gradient(180deg, rgba(5, 12, 20, 0.04) 0%, rgba(5, 12, 20, 0.12) 24%, rgba(5, 12, 20, 0.42) 100%);
+    inset: auto 0 0 0;
+    height: 46%;
+    background: linear-gradient(180deg, rgba(7, 13, 20, 0) 0%, rgba(7, 13, 20, 0.16) 34%, rgba(7, 13, 20, 0.38) 100%);
     transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 0;
   }
@@ -1427,8 +1427,8 @@
     display: grid;
     gap: 12px;
     border: 1px solid rgba(255,255,255,.12);
-    background: linear-gradient(180deg, rgba(7, 15, 24, 0.46), rgba(7, 15, 24, 0.62));
-    backdrop-filter: blur(3px);
+    background: linear-gradient(180deg, rgba(9, 16, 24, 0.34), rgba(9, 16, 24, 0.5));
+    backdrop-filter: blur(1.5px);
     box-shadow: 0 14px 30px rgba(8, 14, 21, 0.16);
   }
 
