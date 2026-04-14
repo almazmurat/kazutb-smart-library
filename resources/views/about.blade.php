@@ -145,6 +145,13 @@
           <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-primary">{{ $copy['hero_primary'] }}</a>
           <a href="{{ $routeWithLang('/resources') }}" class="btn btn-ghost">{{ $copy['hero_secondary'] }}</a>
         </div>
+        <div class="about-hero-media" aria-hidden="true">
+          <div class="about-hero-media__chips">
+            <span>Catalog</span>
+            <span>Resources</span>
+            <span>Shortlist</span>
+          </div>
+        </div>
       </div>
 
       <aside class="about-contact-card">
@@ -250,6 +257,55 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 18px;
+  }
+
+  .about-hero-media {
+    position: relative;
+    min-height: 196px;
+    margin-top: 24px;
+    border: 1px solid rgba(195,198,209,.5);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)),
+      linear-gradient(135deg, rgba(0,30,64,.06), rgba(20,105,109,.03)),
+      url('{{ asset('trust-panel-library.svg') }}') center/cover no-repeat;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.42);
+  }
+
+  .about-hero-media::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 58%;
+    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(248,249,250,.94));
+  }
+
+  .about-hero-media__chips {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .about-hero-media__chips span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.84);
+    border: 1px solid rgba(195,198,209,.58);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 18px rgba(25,28,29,.04);
   }
 
   .about-cta-links a {
