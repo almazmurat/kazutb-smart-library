@@ -1443,34 +1443,63 @@
       color: var(--cyan);
     }
 
-    .quick-action {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
+    .context-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .context-item {
+      display: grid;
+      gap: 8px;
       padding: 16px 17px;
       border-radius: 8px;
       background: rgba(255,255,255,.9);
       border: 1px solid rgba(195,198,209,.4);
-      transition: background .2s ease, border-color .2s ease, transform .18s ease;
     }
 
-    .quick-action strong {
+    .context-kicker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: rgba(20,105,109,.08);
+      border: 1px solid rgba(20,105,109,.14);
+      color: var(--cyan);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .context-item strong {
       display: block;
       font-size: 13px;
       color: var(--blue);
-      margin-bottom: 5px;
     }
 
-    .quick-action span {
+    .context-item p {
+      margin: 0;
       font-size: 11px;
       color: var(--muted);
       line-height: 1.7;
     }
 
-    .quick-action-arrow {
-      font-size: 16px;
-      color: #8e9098;
+    .context-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .context-actions a {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--cyan);
     }
 
     .rail-note {
@@ -1820,36 +1849,29 @@
 
             <aside class="workspace-rail">
               <section class="rail-panel">
-                <h4>{{ ['ru' => 'Quick Actions', 'kk' => 'Quick Actions', 'en' => 'Quick Actions'][$lang] }}</h4>
-                <div class="quick-action-list">
-                  <a href="{{ $routeWithLang('/catalog') }}" class="quick-action">
-                    <div>
-                      <strong>{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}</strong>
-                      <span>{{ ['ru' => 'Искать книги, открыть карточку и продолжить к бронированию.', 'kk' => 'Кітаптарды іздеу, карточканы ашу және броньға өту.', 'en' => 'Search titles, open records, and continue to reservation flows.'][$lang] }}</span>
+                <h4>{{ ['ru' => 'Что важно сейчас', 'kk' => 'Қазір не маңызды', 'en' => 'What matters now'][$lang] }}</h4>
+                <div class="context-list">
+                  <article class="context-item">
+                    <span class="context-kicker">{{ ['ru' => 'Профиль', 'kk' => 'Профиль', 'en' => 'Profile'][$lang] }}</span>
+                    <strong>{{ ['ru' => 'Привязка читателя и доступ', 'kk' => 'Оқырманды байланыстыру және қолжетімділік', 'en' => 'Reader linking and access'][$lang] }}</strong>
+                    <p>{{ ['ru' => 'Статус привязки, код читателя и основной email показаны в блоке Access note ниже. Если профиль ещё не совпал с библиотечной записью, лучше сразу связаться с библиотекой.', 'kk' => 'Байланыстыру күйі, оқырман коды және негізгі email төмендегі Access note блогында көрсетіледі. Егер профиль әлі кітапхана жазбасымен сәйкес келмесе, кітапханамен бірден байланысқан дұрыс.', 'en' => 'Link status, reader code, and primary email appear in the Access note block below. If the profile is still not matched to a library record, it is best to contact the library directly.'][$lang] }}</p>
+                  </article>
+
+                  <article class="context-item">
+                    <span class="context-kicker">{{ ['ru' => 'Ожидание', 'kk' => 'Күту', 'en' => 'Pending'][$lang] }}</span>
+                    <strong>{{ ['ru' => 'Бронирования и готовность к выдаче', 'kk' => 'Броньдар және беруге дайындық', 'en' => 'Reservations and pickup readiness'][$lang] }}</strong>
+                    <p>{{ ['ru' => 'Активные бронирования, сроки и текущий статус готовности остаются в секции Waitlist прямо под этим блоком. Это рабочий контекст, а не отдельная навигация.', 'kk' => 'Белсенді броньдар, мерзімдер және дайындық статусы дәл осы блоктың астындағы Waitlist секциясында қалады. Бұл бөлек навигация емес, жұмыс контексті.', 'en' => 'Active reservations, deadlines, and pickup readiness stay in the Waitlist section directly below this block. This is working context, not duplicate navigation.'][$lang] }}</p>
+                  </article>
+
+                  <article class="context-item">
+                    <span class="context-kicker">{{ ['ru' => 'Поддержка', 'kk' => 'Қолдау', 'en' => 'Support'][$lang] }}</span>
+                    <strong>{{ ['ru' => 'Нужна помощь библиотекаря', 'kk' => 'Кітапханашы көмегі керек пе', 'en' => 'Need librarian help'][$lang] }}</strong>
+                    <p>{{ ['ru' => 'Если не хватает reader code, нужно уточнить цифровой доступ или понять, как продолжить работу с подборкой, используйте прямой контакт с библиотекой.', 'kk' => 'Егер reader code жетіспесе, цифрлық қолжетімділікті нақтылау керек болса немесе топтамамен жұмысты қалай жалғастыруды түсіну қажет болса, кітапханамен тікелей байланысыңыз.', 'en' => 'If you are missing a reader code, need to clarify digital access, or want help continuing with the shortlist, use direct library contact.'][$lang] }}</p>
+                    <div class="context-actions">
+                      <a href="{{ $routeWithLang('/contacts') }}">{{ ['ru' => 'Связаться с библиотекой', 'kk' => 'Кітапханамен байланысу', 'en' => 'Contact library'][$lang] }}</a>
+                      <a href="{{ $routeWithLang('/about') }}">{{ ['ru' => 'Правила доступа', 'kk' => 'Қолжетімділік ережелері', 'en' => 'Access guidance'][$lang] }}</a>
                     </div>
-                    <span class="quick-action-arrow">›</span>
-                  </a>
-                  <a href="{{ $routeWithLang('/shortlist') }}" class="quick-action">
-                    <div>
-                      <strong>{{ ['ru' => 'Открыть подборку', 'kk' => 'Топтаманы ашу', 'en' => 'Open shortlist'][$lang] }}</strong>
-                      <span>{{ ['ru' => 'Вернуться к сохранённым книгам и рабочему draft-списку.', 'kk' => 'Сақталған кітаптар мен жұмыс draft-тізіміне оралу.', 'en' => 'Return to saved books and the working draft list.'][$lang] }}</span>
-                    </div>
-                    <span class="quick-action-arrow">›</span>
-                  </a>
-                  <a href="{{ $routeWithLang('/discover') }}" class="quick-action">
-                    <div>
-                      <strong>{{ ['ru' => 'УДК-навигация', 'kk' => 'ӘОЖ навигациясы', 'en' => 'UDC navigation'][$lang] }}</strong>
-                      <span>{{ ['ru' => 'Переход в каталог через академические направления.', 'kk' => 'Каталогқа академиялық бағыттар арқылы өту.', 'en' => 'Move into the catalog through academic subject routes.'][$lang] }}</span>
-                    </div>
-                    <span class="quick-action-arrow">›</span>
-                  </a>
-                  <a href="{{ $routeWithLang('/resources') }}" class="quick-action">
-                    <div>
-                      <strong>{{ ['ru' => 'Электронные ресурсы', 'kk' => 'Электрондық ресурстар', 'en' => 'Resources'][$lang] }}</strong>
-                      <span>{{ ['ru' => 'Открыть лицензионные базы и цифровые материалы.', 'kk' => 'Лицензиялық базалар мен цифрлық материалдарды ашу.', 'en' => 'Open licensed databases and digital materials.'][$lang] }}</span>
-                    </div>
-                    <span class="quick-action-arrow">›</span>
-                  </a>
+                  </article>
                 </div>
               </section>
 

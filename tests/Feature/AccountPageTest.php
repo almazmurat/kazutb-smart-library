@@ -75,7 +75,7 @@ class AccountPageTest extends TestCase
             ->assertOk()
             ->assertSee('data-account-dashboard-shell', false)
             ->assertSee('Member Dashboard')
-            ->assertSee('Quick Actions')
+            ->assertSee('What matters now')
             ->assertSee('Waitlist')
             ->assertDontSee('Room Booking')
             ->assertDontSee('Research Request')
