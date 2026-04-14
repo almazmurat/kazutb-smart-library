@@ -59,6 +59,7 @@
               ['title' => 'Справочные издания', 'udc' => 'UDC 030'],
           ],
           'quote' => '«Библиотека — сердце университета; наша задача — направлять знание к каждому студенту и исследователю.»',
+          'quote_panel_eyebrow' => 'Институциональная память',
           'trust_title' => 'Казахский университет технологии и бизнеса',
           'trust_body' => 'Мы соединяем классическое каталогизирование и современную навигацию, чтобы студенты и исследователи свободно переходили между печатным фондом, цифровыми коллекциями и лицензируемыми ресурсами.',
           'trust_stats' => [['value' => '2003', 'label' => 'система Digital Library'], ['value' => '24/7', 'label' => 'доступ к электронным ресурсам']],
@@ -109,6 +110,7 @@
               ['title' => 'Анықтамалық қор', 'udc' => 'UDC 030'],
           ],
           'quote' => '«Кітапхана — университеттің жүрегі; біздің міндетіміз — білімді әр студент пен зерттеушіге жеткізу.»',
+          'quote_panel_eyebrow' => 'Институционалдық жад',
           'trust_title' => 'Қазақ технология және бизнес университеті',
           'trust_body' => 'Біз классикалық каталогтауды заманауи навигациямен біріктіріп, студенттер мен зерттеушілердің баспа қор, цифрлық коллекциялар және лицензиялық ресурстар арасында еркін қозғалуына жағдай жасаймыз.',
           'trust_stats' => [['value' => '2003', 'label' => 'Digital Library жүйесі'], ['value' => '24/7', 'label' => 'электрондық ресурстарға қолжетімділік']],
@@ -159,6 +161,7 @@
               ['title' => 'Reference Works', 'udc' => 'UDC 030'],
           ],
           'quote' => '“The library is the heart of the university; our role is to move knowledge toward every student and researcher.”',
+          'quote_panel_eyebrow' => 'Institutional memory',
           'trust_title' => 'Kazakh University of Technology and Business',
           'trust_body' => 'We connect classical cataloging with modern discovery so students and researchers can move naturally between print holdings, digital collections, and licensed resources.',
           'trust_stats' => [['value' => '2003', 'label' => 'Digital Library system'], ['value' => '24/7', 'label' => 'access to e-resources']],
@@ -762,49 +765,95 @@
   }
 
   .quote-panel {
-    padding: 42px;
+    padding: 0;
     border-radius: var(--radius-xl);
-    background: linear-gradient(180deg, rgba(0, 30, 64, 0.92), rgba(0, 51, 102, 0.9));
+    background:
+      linear-gradient(180deg, rgba(6, 18, 31, 0.28) 0%, rgba(6, 20, 34, 0.44) 24%, rgba(7, 22, 37, 0.72) 58%, rgba(8, 21, 34, 0.9) 100%),
+      radial-gradient(circle at 24% 18%, rgba(223, 236, 241, 0.18), transparent 32%),
+      url('/trust-panel-library.svg');
+    background-size: cover;
+    background-position: center;
     color: #fff;
-    display: grid;
-    align-items: center;
-    min-height: 380px;
+    display: flex;
+    align-items: flex-end;
+    min-height: 440px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 18px 38px rgba(25, 28, 29, 0.08);
-    transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    isolation: isolate;
+    border: 1px solid rgba(214, 224, 230, 0.18);
+    box-shadow: 0 24px 48px rgba(25, 28, 29, 0.1);
+    transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .quote-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 23, 38, 0.02), rgba(10, 23, 38, 0.16) 28%, rgba(10, 23, 38, 0.76) 100%);
+    z-index: 0;
   }
 
   .quote-panel::after {
     content: '';
     position: absolute;
-    inset: -30% auto auto -10%;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,.14), transparent 70%);
+    inset: auto 0 0 0;
+    height: 54%;
+    background: linear-gradient(180deg, rgba(3, 11, 20, 0) 0%, rgba(4, 14, 25, 0.3) 20%, rgba(4, 14, 25, 0.9) 100%);
     transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 0;
   }
 
   .quote-panel:hover {
     transform: translate3d(0, -2px, 0);
-    box-shadow: 0 22px 42px rgba(25, 28, 29, 0.10);
+    box-shadow: 0 28px 56px rgba(25, 28, 29, 0.13);
+    border-color: rgba(214, 224, 230, 0.26);
   }
 
   .quote-panel:hover::after {
-    transform: translate3d(12px, 10px, 0);
+    transform: translate3d(0, -6px, 0);
   }
 
-  .quote-panel p {
+  .quote-panel__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 32rem;
+    padding: 38px 40px 40px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .quote-panel__eyebrow {
+    margin: 0;
+    color: rgba(222, 236, 242, 0.82);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  .quote-panel__inner::before {
+    content: '';
+    width: 58px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(224, 237, 242, 0.82), rgba(224, 237, 242, 0));
+  }
+
+  .quote-panel__quote {
     margin: 0;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2rem, 3.2vw, 2.8rem);
-    line-height: 1.22;
-    font-style: italic;
+    font-size: clamp(2.1rem, 3.2vw, 2.95rem);
+    line-height: 1.18;
+    font-style: normal;
+    letter-spacing: -.03em;
+    max-width: 13ch;
+    text-wrap: balance;
+    text-shadow: 0 2px 18px rgba(5, 15, 26, 0.24);
   }
 
   .trust-copy {
-    padding: 18px 0;
+    padding: 24px 0 18px;
+    align-self: center;
   }
 
   .trust-copy h2 {
@@ -937,6 +986,15 @@
     .landing-feature-grid .feature-entry:nth-child(2) {
       transform: none;
     }
+
+    .quote-panel {
+      min-height: 360px;
+    }
+
+    .quote-panel__inner {
+      max-width: 36rem;
+      padding: 32px;
+    }
   }
 
   @media (max-width: 720px) {
@@ -953,6 +1011,20 @@
 
     .hero-quick-link {
       padding: 11px 12px;
+    }
+
+    .quote-panel {
+      min-height: 300px;
+      background-position: center top;
+    }
+
+    .quote-panel__inner {
+      padding: 24px;
+    }
+
+    .quote-panel__quote {
+      max-width: none;
+      font-size: clamp(1.7rem, 8vw, 2.2rem);
     }
   }
 </style>
@@ -1049,7 +1121,10 @@
   <section class="page-section">
     <div class="container homepage-band trust-section">
       <div class="quote-panel">
-        <p>{{ $copy['quote'] }}</p>
+        <div class="quote-panel__inner">
+          <p class="quote-panel__eyebrow">{{ $copy['quote_panel_eyebrow'] }}</p>
+          <p class="quote-panel__quote">{{ $copy['quote'] }}</p>
+        </div>
       </div>
 
       <div class="trust-copy">
