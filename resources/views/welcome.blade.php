@@ -232,16 +232,29 @@
 @section('head')
 <style>
   .landing-hero {
-    padding: 56px 0 20px;
+    padding: clamp(72px, 8vw, 118px) 0 28px;
+  }
+
+  .homepage-band {
+    width: min(100% - 40px, 1460px);
+    margin: 0 auto;
+  }
+
+  .homepage-band--hero {
+    width: min(100% - 40px, 1520px);
   }
 
   .landing-shell {
-    max-width: 1080px;
+    max-width: none;
     margin: 0 auto;
-    padding: clamp(18px, 3vw, 26px);
-    text-align: center;
+    padding: clamp(28px, 3.6vw, 48px);
+    text-align: left;
     position: relative;
     overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid rgba(195, 198, 209, 0.5);
+    background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(244,246,247,.9));
+    box-shadow: 0 22px 54px rgba(25, 28, 29, 0.06);
     animation: landingReveal .55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 
@@ -277,16 +290,16 @@
 
   .landing-hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
-    gap: clamp(36px, 4vw, 64px);
+    grid-template-columns: minmax(0, 1.18fr) minmax(360px, 520px);
+    gap: clamp(48px, 6vw, 92px);
     align-items: start;
     text-align: left;
   }
 
   .landing-intro {
     min-width: 0;
-    max-width: 560px;
-    padding-right: clamp(4px, 1vw, 16px);
+    max-width: 760px;
+    padding-right: clamp(10px, 1.4vw, 28px);
   }
 
   .landing-kicker {
@@ -325,11 +338,11 @@
   }
 
   .landing-title {
-    max-width: 10ch;
-    margin: 0 0 18px;
+    max-width: 11ch;
+    margin: 0 0 22px;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2.8rem, 5.3vw, 4.5rem);
-    line-height: .94;
+    font-size: clamp(4rem, 6.8vw, 6.3rem);
+    line-height: .9;
     letter-spacing: -.055em;
     text-wrap: balance;
     color: var(--blue);
@@ -337,10 +350,10 @@
 
   .landing-copy {
     margin: 0;
-    max-width: 680px;
+    max-width: 760px;
     color: var(--muted);
-    font-size: 17px;
-    line-height: 1.75;
+    font-size: clamp(18px, 1.45vw, 22px);
+    line-height: 1.68;
   }
 
   .landing-campus-panel {
@@ -348,12 +361,12 @@
     gap: 18px;
     justify-items: center;
     align-content: start;
-    padding-top: 10px;
+    padding-top: 18px;
   }
 
   .hero-campus-mark {
     position: relative;
-    width: min(320px, 100%);
+    width: min(420px, 100%);
     aspect-ratio: 1;
     border-radius: 50%;
     padding: 18px;
@@ -417,9 +430,9 @@
   }
 
   .landing-campus-note {
-    width: min(100%, 340px);
+    width: min(100%, 390px);
     margin-top: 2px;
-    padding: 14px 16px;
+    padding: 16px 18px;
     border-radius: 20px;
     background: rgba(255,255,255,.82);
     border: 1px solid rgba(195,198,209,.55);
@@ -444,10 +457,10 @@
   .landing-search {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 10px;
-    max-width: 760px;
-    margin: 28px auto 0;
-    padding: 6px;
+    gap: 12px;
+    max-width: 980px;
+    margin: 40px 0 0;
+    padding: 8px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(195, 198, 209, 0.55);
@@ -486,29 +499,32 @@
     border: 0;
     background: transparent;
     color: var(--text);
-    padding: 14px 18px;
+    padding: 18px 22px;
     font: inherit;
+    font-size: 16px;
     outline: none;
   }
 
   .landing-search .btn {
     border-radius: 999px;
-    padding-inline: 24px;
+    min-height: 58px;
+    padding-inline: 32px;
   }
 
   .hero-quick-links {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 16px;
+    gap: 16px;
+    margin-top: 24px;
   }
 
   .hero-quick-link {
     display: grid;
-    gap: 4px;
-    padding: 12px 14px;
+    gap: 8px;
+    min-height: 110px;
+    padding: 18px 20px;
     text-align: left;
-    border-radius: 16px;
+    border-radius: 20px;
     background: rgba(255,255,255,.78);
     border: 1px solid rgba(195,198,209,.55);
     box-shadow: 0 10px 24px rgba(25,28,29,.035);
@@ -532,16 +548,16 @@
 
   .hero-quick-link strong {
     color: var(--blue);
-    font-size: 14px;
-    line-height: 1.3;
+    font-size: 18px;
+    line-height: 1.25;
   }
 
   .landing-stats {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 10px 12px;
-    margin-top: 18px;
+    margin-top: 24px;
     color: var(--muted);
     font-size: 12px;
     font-weight: 800;
@@ -562,8 +578,8 @@
 
   .landing-feature-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+    gap: 22px;
     perspective: 1400px;
   }
 
@@ -576,7 +592,8 @@
   }
 
   .feature-entry {
-    padding: 24px;
+    min-height: 300px;
+    padding: 30px;
     border-radius: var(--radius-xl);
     border: 1px solid var(--border);
     background: #fff;
@@ -636,7 +653,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 42px;
+    margin-bottom: 54px;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: .12em;
@@ -647,15 +664,15 @@
   .feature-entry h3 {
     margin: 0 0 8px;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(1.7rem, 3vw, 2.25rem);
+    font-size: clamp(2rem, 3.4vw, 2.7rem);
     color: var(--blue);
   }
 
   .feature-entry p {
     margin: 0;
     color: var(--muted);
-    line-height: 1.7;
-    font-size: 14px;
+    line-height: 1.78;
+    font-size: 15px;
   }
 
   .feature-entry.feature-entry--primary .feature-meta {
@@ -673,21 +690,21 @@
   .subject-block {
     background: var(--bg-soft);
     border-radius: var(--radius-xl);
-    padding: clamp(24px, 4vw, 36px);
+    padding: clamp(34px, 4.6vw, 54px);
   }
 
   .subject-head {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 24px;
+    margin-bottom: 28px;
   }
 
   .subject-head h2 {
     margin: 0;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2.3rem, 4.4vw, 3.4rem);
     color: var(--blue);
   }
 
@@ -701,16 +718,16 @@
 
   .subject-grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
   }
 
   .subject-card {
-    padding: 18px 14px;
+    padding: 24px 22px;
     border-radius: var(--radius-lg);
     background: #fff;
     border: 1px solid var(--border);
-    text-align: center;
+    text-align: left;
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -723,14 +740,15 @@
 
   .subject-card strong {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     color: var(--blue);
-    font-size: 13px;
+    font-size: 18px;
+    line-height: 1.28;
   }
 
   .subject-card span {
     color: var(--muted);
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: .08em;
     font-weight: 700;
@@ -738,19 +756,19 @@
 
   .trust-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+    gap: 36px;
     align-items: stretch;
   }
 
   .quote-panel {
-    padding: 28px;
+    padding: 42px;
     border-radius: var(--radius-xl);
     background: linear-gradient(180deg, rgba(0, 30, 64, 0.92), rgba(0, 51, 102, 0.9));
     color: #fff;
     display: grid;
     align-items: center;
-    min-height: 300px;
+    min-height: 380px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 18px 38px rgba(25, 28, 29, 0.08);
@@ -780,38 +798,38 @@
   .quote-panel p {
     margin: 0;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(1.5rem, 3vw, 2.1rem);
-    line-height: 1.3;
+    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    line-height: 1.22;
     font-style: italic;
   }
 
   .trust-copy {
-    padding: 8px 0;
+    padding: 18px 0;
   }
 
   .trust-copy h2 {
-    margin: 0 0 12px;
+    margin: 0 0 16px;
     font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2.4rem, 4.6vw, 3.5rem);
     color: var(--blue);
   }
 
   .trust-copy p {
-    margin: 0 0 18px;
+    margin: 0 0 24px;
     color: var(--muted);
-    line-height: 1.75;
-    font-size: 15px;
+    line-height: 1.78;
+    font-size: 17px;
   }
 
   .trust-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 18px;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
   .trust-stat {
-    padding: 14px;
+    padding: 20px;
     border-radius: var(--radius-lg);
     background: #fff;
     border: 1px solid var(--border);
@@ -826,9 +844,9 @@
 
   .trust-stat strong {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     color: var(--blue);
-    font-size: 22px;
+    font-size: 28px;
   }
 
   .trust-stat span {
@@ -857,6 +875,29 @@
     }
   }
 
+  .page-section {
+    position: relative;
+    padding: clamp(74px, 8vw, 116px) 0;
+    animation: fadeInUp 0.45s var(--ease-premium) both;
+  }
+
+  @media (max-width: 1200px) {
+    .homepage-band,
+    .homepage-band--hero {
+      width: min(100% - 32px, 1280px);
+    }
+
+    .landing-hero-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+      gap: 38px;
+    }
+
+    .hero-quick-links,
+    .subject-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   @media (max-width: 980px) {
     .landing-hero-grid,
     .landing-feature-grid,
@@ -878,6 +919,14 @@
     .landing-title,
     .landing-copy {
       margin-inline: auto;
+    }
+
+    .landing-search {
+      margin-inline: auto;
+    }
+
+    .landing-stats {
+      justify-content: center;
     }
 
     .landing-campus-note {
@@ -911,7 +960,7 @@
 
 @section('content')
   <section class="landing-hero" data-homepage-stitch-reset>
-    <div class="container">
+    <div class="container homepage-band homepage-band--hero">
       <div class="landing-shell">
         <div class="landing-hero-grid">
           <div class="landing-intro">
@@ -964,7 +1013,7 @@
   </section>
 
   <section class="page-section">
-    <div class="container">
+    <div class="container homepage-band">
       <div class="landing-feature-grid">
         @foreach($copy['feature_cards'] as $index => $feature)
           <article class="feature-entry{{ $index === 1 ? ' feature-entry--primary' : '' }}">
@@ -978,7 +1027,7 @@
   </section>
 
   <section class="page-section">
-    <div class="container">
+    <div class="container homepage-band">
       <div class="subject-block">
         <div class="subject-head">
           <div>
@@ -998,7 +1047,7 @@
   </section>
 
   <section class="page-section">
-    <div class="container trust-section">
+    <div class="container homepage-band trust-section">
       <div class="quote-panel">
         <p>{{ $copy['quote'] }}</p>
       </div>
