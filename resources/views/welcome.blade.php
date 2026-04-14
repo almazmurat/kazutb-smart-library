@@ -3,6 +3,7 @@
 @php
   $lang = app()->getLocale();
   $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+  $instagramUrl = 'https://www.instagram.com/library_kazutb/';
 
   $withLang = function (string $path, array $query = []) use ($lang): string {
       if ($lang !== 'ru' && ! array_key_exists('lang', $query)) {
@@ -31,24 +32,30 @@
           'subject_eyebrow' => 'Система классификации',
           'subject_title' => 'Просмотр по темам',
             'hours_eyebrow' => 'Практическая информация',
-            'hours_title' => 'Часы работы и локации',
-            'hours_body' => 'Проверяйте ключевые библиотечные точки на сегодня: когда открыт основной сервис, где работает читальный маршрут и когда доступно бронирование.',
+            'hours_title' => 'Библиотеки и часы работы',
+            'hours_body' => 'Три реальные библиотечные точки КазТБУ работают по единому графику. Для быстрых обновлений используйте Instagram библиотеки, для маршрута по фонду — страницу контактов.',
             'hours_today_label' => 'Сегодня',
-            'hours_cta' => 'Смотреть все часы',
+            'hours_cta' => 'Контакты библиотеки',
             'hours_visual_eyebrow' => 'На кампусе',
-            'hours_visual_title' => 'Спокойная навигация по библиотечным точкам КазТБУ',
-            'hours_visual_body' => 'Основные сервисы сгруппированы так, чтобы студент и преподаватель быстро понимали, куда идти за фондом, консультацией или бронированием.',
+            'hours_visual_title' => 'Короткий маршрут по библиотечным точкам КазТБУ',
+            'hours_visual_body' => 'Құрметті оқырман! КазТБУ ғылыми кітапханасы дүйсенбі–жұма 9:00–18:00 аралығында қызмет көрсетеді. Кітапхана әрдайым оқырмандарын күтеді.',
+            'hours_instagram_label' => 'Instagram',
+            'hours_instagram_value' => '@library_kazutb',
+            'hours_markers' => [
+              ['label' => 'График', 'value' => 'пн-пт · 09:00-18:00'],
+              ['label' => 'Instagram', 'value' => '@library_kazutb'],
+              ['label' => 'Маршрут', 'value' => 'Колледж · Технологическая · Экономическая'],
+              ['label' => 'Формат', 'value' => 'Фонд, консультации, навигация'],
+            ],
               'news_eyebrow' => 'Библиотечная жизнь',
               'news_title' => 'Новости библиотеки',
               'news_title_accent' => 'и академические события',
-              'news_body' => 'Подборка заметных обновлений, открытых встреч и исследовательских маршрутов, которые делают библиотеку живой частью кампуса.',
-              'news_cta' => 'Все новости',
+              'news_body' => 'Карточки готовы для реальных материалов: дата, категория, краткое описание и изображение с fallback по типу события.',
+              'news_cta' => 'Instagram @library_kazutb',
               'workshops_title' => 'Семинары и события',
-              'workshops_cta' => 'Все события',
-              'news_filters' => ['Все', 'Анонсы', 'События'],
               'news_items' => [
-                ['tag' => 'Анонсы', 'date' => '09.04.2026', 'title' => 'Визит автора Сырыма Бактыгереулы в библиотеку КазТБУ', 'body' => 'Открытая встреча с обсуждением современной казахской публицистики, университетского чтения и библиотечных маршрутов для студентов.'],
-                ['tag' => 'События', 'date' => '08.04.2026', 'title' => 'Classics Caravan: curated week of classical literature', 'body' => 'Небольшой цикл чтений и выставок, объединяющий фонд классической литературы, рекомендательные списки и навигацию по каталогу.'],
+                ['category_slug' => 'announcements', 'tag' => 'Анонс', 'date' => '09.04.2026', 'title' => 'Визит автора Сырыма Бактыгереулы в библиотеку КазТБУ', 'body' => 'Открытая встреча о современной казахской публицистике, университетском чтении и библиотечных маршрутах для студентов.'],
+                ['category_slug' => 'events', 'tag' => 'Событие', 'date' => '08.04.2026', 'title' => 'Classics Caravan: week of classical literature', 'body' => 'Небольшой цикл чтений и выставок, который связывает классический фонд, рекомендательные списки и каталог.'],
               ],
               'workshops_items' => [
                 ['title' => 'Research skills for first-year students', 'time' => '11:00-11:40', 'date' => '15 Apr 2026'],
@@ -57,9 +64,9 @@
                 ['title' => 'Zotero: efficient reference management', 'time' => '12:00-13:00', 'date' => '16 Apr 2026'],
               ],
             'hours_rows' => [
-              ['label' => 'Главная библиотека', 'hours' => '09:00-18:00', 'meta' => 'Основной читальный маршрут и выдача'],
-              ['label' => 'Технологическая библиотека', 'hours' => '09:00-17:30', 'meta' => 'Профильный фонд и предметные консультации'],
-              ['label' => 'Часы бронирования', 'hours' => '10:00-17:00', 'meta' => 'Подтверждение заявок и работа с подборками'],
+              ['label' => 'Библиотека колледжа', 'hours' => '09:00-18:00', 'meta' => '1/202 · пн-пт'],
+              ['label' => 'Технологическая библиотека', 'hours' => '09:00-18:00', 'meta' => '1/200 · пн-пт'],
+              ['label' => 'Экономическая библиотека', 'hours' => '09:00-18:00', 'meta' => '1/203 · пн-пт'],
             ],
           'summary_title' => 'Что доступно уже сейчас',
           'summary_points' => [
@@ -78,18 +85,18 @@
           'cta_copy' => 'Для поиска по фонду откройте каталог. Для платформ и баз данных — раздел ресурсов. Для учебных подборок — раздел подборки.',
           'stats' => ['✓ единый каталог и цифровые коллекции', '✓ личный кабинет, бронирования и продления', '✓ безопасный институциональный вход'],
           'feature_cards' => [
-              ['meta_left' => 'Университетские архивы', 'meta_right' => 'Внутренняя сеть', 'title' => 'Университетские архивы', 'body' => 'Доступ к диссертациям, локальным изданиям и специализированным академическим материалам.'],
-              ['meta_left' => 'Цифровая коллекция', 'meta_right' => 'Удалённый доступ', 'title' => 'Цифровая коллекция', 'body' => 'Книги, журналы и исследовательские материалы доступны круглосуточно из единого библиотечного интерфейса.'],
-              ['meta_left' => 'Глобальная сеть', 'meta_right' => 'Лицензия', 'title' => 'Глобальная сеть', 'body' => 'Подключение к подписным платформам, базам данных и проверенным внешним научным источникам.'],
+              ['meta_left' => 'Университетские архивы', 'meta_right' => 'Внутренняя сеть', 'title' => 'Университетские архивы', 'body' => 'Диссертации, локальные издания и внутренние академические материалы без витринного шума.'],
+              ['meta_left' => 'Цифровая коллекция', 'meta_right' => 'Удалённый доступ', 'title' => 'Цифровая коллекция', 'body' => 'Книги, журналы и учебные материалы из единого библиотечного интерфейса.'],
+              ['meta_left' => 'Глобальная сеть', 'meta_right' => 'Лицензия', 'title' => 'Глобальная сеть', 'body' => 'Подписные платформы и проверенные внешние исследовательские источники.'],
           ],
           'subject_link' => 'Открыть полный каталог УДК',
           'subject_cards' => [
-              ['title' => 'Технические науки', 'udc' => 'UDC 62'],
-              ['title' => 'Право и политика', 'udc' => 'UDC 34'],
-              ['title' => 'Естественные науки', 'udc' => 'UDC 5'],
-              ['title' => 'Гуманитарные науки', 'udc' => 'UDC 008'],
-              ['title' => 'Экономика', 'udc' => 'UDC 33'],
-              ['title' => 'Справочные издания', 'udc' => 'UDC 030'],
+              ['title' => 'Технические науки', 'udc' => 'UDC 62', 'filter' => '62'],
+              ['title' => 'Право и политика', 'udc' => 'UDC 34', 'filter' => '34'],
+              ['title' => 'Естественные науки', 'udc' => 'UDC 5', 'filter' => '5'],
+              ['title' => 'Гуманитарные науки', 'udc' => 'UDC 008', 'filter' => '008'],
+              ['title' => 'Экономика', 'udc' => 'UDC 33', 'filter' => '33'],
+              ['title' => 'Справочные издания', 'udc' => 'UDC 030', 'filter' => '030'],
           ],
           'quote' => '«Библиотека — сердце университета; наша задача — направлять знание к каждому студенту и исследователю.»',
           'quote_panel_eyebrow' => 'Институциональная память',
@@ -115,24 +122,30 @@
           'subject_eyebrow' => 'Классификация жүйесі',
           'subject_title' => 'Тақырыптар бойынша шолу',
             'hours_eyebrow' => 'Практикалық ақпарат',
-            'hours_title' => 'Жұмыс уақыты мен локациялар',
-            'hours_body' => 'Бүгінгі негізгі кітапханалық нүктелерді жылдам тексеріңіз: басты сервис қашан ашық, оқу маршруты қайда жұмыс істейді және броньдау уақыты қандай.',
+            'hours_title' => 'Кітапханалар мен жұмыс уақыты',
+            'hours_body' => 'КазТБУ-дың үш нақты кітапханалық нүктесі бірдей кестемен жұмыс істейді. Жедел жаңарту үшін Instagram-ды, ал қор бойынша маршрут үшін байланыс бетін пайдаланыңыз.',
             'hours_today_label' => 'Бүгін',
-            'hours_cta' => 'Барлық уақытты көру',
+            'hours_cta' => 'Кітапхана контактілері',
             'hours_visual_eyebrow' => 'Кампус ішінде',
-            'hours_visual_title' => 'КазТБУ кітапханалық нүктелері бойынша жинақы навигация',
-            'hours_visual_body' => 'Негізгі сервистер студент пен оқытушы қор, кеңес немесе бронь үшін қайда бару керегін бірден түсінетіндей етіп топтастырылған.',
+            'hours_visual_title' => 'КазТБУ кітапханалық нүктелері бойынша қысқа маршрут',
+            'hours_visual_body' => 'Құрметті оқырман! КазТБУ ғылыми кітапханасы дүйсенбі–жұма 9:00–18:00 аралығында қызмет көрсетеді. Кітапхана әрдайым оқырмандарын күтеді.',
+            'hours_instagram_label' => 'Instagram',
+            'hours_instagram_value' => '@library_kazutb',
+            'hours_markers' => [
+              ['label' => 'Кесте', 'value' => 'дүйсенбі–жұма · 09:00-18:00'],
+              ['label' => 'Instagram', 'value' => '@library_kazutb'],
+              ['label' => 'Маршрут', 'value' => 'Колледж · Технологиялық · Экономикалық'],
+              ['label' => 'Формат', 'value' => 'Қор, кеңес, навигация'],
+            ],
               'news_eyebrow' => 'Кітапхана өмірі',
               'news_title' => 'Кітапхана жаңалықтары',
               'news_title_accent' => 'және академиялық оқиғалар',
-              'news_body' => 'Кітапхананы кампус өмірінің тірі бөлігіне айналдыратын маңызды жаңалықтар, ашық кездесулер және зерттеу маршруттары бір жерде жиналған.',
-              'news_cta' => 'Барлық жаңалықтар',
+              'news_body' => 'Карточкалар нақты материалға дайын: күн, санат, қысқаша сипаттама және санат бойынша fallback сурет.',
+              'news_cta' => 'Instagram @library_kazutb',
               'workshops_title' => 'Семинарлар мен оқиғалар',
-              'workshops_cta' => 'Барлық оқиғалар',
-              'news_filters' => ['Барлығы', 'Анонстар', 'Оқиғалар'],
               'news_items' => [
-                ['tag' => 'Анонстар', 'date' => '09.04.2026', 'title' => 'Сырым Бактыгереулының КазТБУ кітапханасына сапары', 'body' => 'Қазіргі қазақ публицистикасы, университеттік оқу және студенттерге арналған кітапхана маршруттары туралы ашық кездесу.'],
-                ['tag' => 'Оқиғалар', 'date' => '08.04.2026', 'title' => 'Classics Caravan: classical literature week', 'body' => 'Классикалық әдебиет қоры, ұсыныс тізімдері және каталог навигациясын біріктіретін шағын оқу және көрме циклі.'],
+                ['category_slug' => 'announcements', 'tag' => 'Анонс', 'date' => '09.04.2026', 'title' => 'Сырым Бактыгереулының КазТБУ кітапханасына сапары', 'body' => 'Қазіргі қазақ публицистикасы, университеттік оқу және студенттерге арналған кітапхана маршруттары туралы ашық кездесу.'],
+                ['category_slug' => 'events', 'tag' => 'Оқиға', 'date' => '08.04.2026', 'title' => 'Classics Caravan: classical literature week', 'body' => 'Классикалық қорды, ұсыныс тізімдерін және каталог навигациясын біріктіретін шағын оқу апталығы.'],
               ],
               'workshops_items' => [
                 ['title' => 'First-year students research skills', 'time' => '11:00-11:40', 'date' => '15 Apr 2026'],
@@ -141,9 +154,9 @@
                 ['title' => 'Zotero: reference management', 'time' => '12:00-13:00', 'date' => '16 Apr 2026'],
               ],
             'hours_rows' => [
-              ['label' => 'Негізгі кітапхана', 'hours' => '09:00-18:00', 'meta' => 'Негізгі оқу маршруты және кітап беру'],
-              ['label' => 'Технологиялық кітапхана', 'hours' => '09:00-17:30', 'meta' => 'Бейіндік қор және пәндік кеңестер'],
-              ['label' => 'Броньдау уақыты', 'hours' => '10:00-17:00', 'meta' => 'Өтінімдерді растау және іріктемемен жұмыс'],
+              ['label' => 'Колледж кітапханасы', 'hours' => '09:00-18:00', 'meta' => '1/202 · дүйсенбі–жұма'],
+              ['label' => 'Технологиялық кітапхана', 'hours' => '09:00-18:00', 'meta' => '1/200 · дүйсенбі–жұма'],
+              ['label' => 'Экономикалық кітапхана', 'hours' => '09:00-18:00', 'meta' => '1/203 · дүйсенбі–жұма'],
             ],
           'summary_title' => 'Қазірдің өзінде не қолжетімді',
           'summary_points' => [
@@ -162,18 +175,18 @@
           'cta_copy' => 'Қор бойынша іздеу үшін каталогты ашыңыз. Платформалар мен базалар үшін — ресурстар бөлімі. Оқу іріктемелері үшін — іріктеме бөлімі.',
           'stats' => ['✓ бірыңғай каталог және цифрлық коллекциялар', '✓ оқырман кабинеті, бронь және ұзарту', '✓ қауіпсіз институционалдық кіру'],
           'feature_cards' => [
-              ['meta_left' => 'Университет архиві', 'meta_right' => 'Ішкі желі', 'title' => 'Университет архиві', 'body' => 'Диссертацияларға, жергілікті басылымдарға және арнайы академиялық материалдарға қолжетімділік.'],
-              ['meta_left' => 'Цифрлық коллекция', 'meta_right' => 'Қашықтан қолжетімділік', 'title' => 'Цифрлық коллекция', 'body' => 'Кітаптар, журналдар және зерттеу материалдары бірыңғай кітапханалық интерфейсте тәулік бойы қолжетімді.'],
-              ['meta_left' => 'Ғаламдық желі', 'meta_right' => 'Лицензия', 'title' => 'Ғаламдық желі', 'body' => 'Жазылым платформаларына, дерекқорларға және сенімді сыртқы ғылыми көздерге қосылу.'],
+                ['meta_left' => 'Университет архиві', 'meta_right' => 'Ішкі желі', 'title' => 'Университет архиві', 'body' => 'Диссертациялар, жергілікті басылымдар және ішкі академиялық материалдар.'],
+                ['meta_left' => 'Цифрлық коллекция', 'meta_right' => 'Қашықтан қолжетімділік', 'title' => 'Цифрлық коллекция', 'body' => 'Кітаптар, журналдар және оқу материалдары бірыңғай кітапханалық интерфейсте.'],
+                ['meta_left' => 'Ғаламдық желі', 'meta_right' => 'Лицензия', 'title' => 'Ғаламдық желі', 'body' => 'Жазылым платформалары мен сенімді сыртқы ғылыми көздер.'],
           ],
           'subject_link' => 'ӘОЖ толық каталогын ашу',
           'subject_cards' => [
-              ['title' => 'Техникалық ғылымдар', 'udc' => 'UDC 62'],
-              ['title' => 'Құқық және саясат', 'udc' => 'UDC 34'],
-              ['title' => 'Жаратылыстану ғылымдары', 'udc' => 'UDC 5'],
-              ['title' => 'Гуманитарлық ғылымдар', 'udc' => 'UDC 008'],
-              ['title' => 'Экономика', 'udc' => 'UDC 33'],
-              ['title' => 'Анықтамалық қор', 'udc' => 'UDC 030'],
+                ['title' => 'Техникалық ғылымдар', 'udc' => 'UDC 62', 'filter' => '62'],
+                ['title' => 'Құқық және саясат', 'udc' => 'UDC 34', 'filter' => '34'],
+                ['title' => 'Жаратылыстану ғылымдары', 'udc' => 'UDC 5', 'filter' => '5'],
+                ['title' => 'Гуманитарлық ғылымдар', 'udc' => 'UDC 008', 'filter' => '008'],
+                ['title' => 'Экономика', 'udc' => 'UDC 33', 'filter' => '33'],
+                ['title' => 'Анықтамалық қор', 'udc' => 'UDC 030', 'filter' => '030'],
           ],
           'quote' => '«Кітапхана — университеттің жүрегі; біздің міндетіміз — білімді әр студент пен зерттеушіге жеткізу.»',
           'quote_panel_eyebrow' => 'Институционалдық жад',
@@ -199,24 +212,30 @@
           'subject_eyebrow' => 'Classification system',
           'subject_title' => 'Browse by subject',
             'hours_eyebrow' => 'Practical information',
-            'hours_title' => 'See hours and locations',
-            'hours_body' => 'Check the main library touchpoints for today: when the core service is open, where the reading route is active, and when booking support is available.',
+            'hours_title' => 'Library points and opening hours',
+            'hours_body' => 'KazTBU operates three real library points on one weekday schedule. Use Instagram for quick updates and the contacts page for the exact route.',
             'hours_today_label' => 'Today',
-            'hours_cta' => 'View all hours',
+            'hours_cta' => 'Library contacts',
             'hours_visual_eyebrow' => 'Across campus',
-            'hours_visual_title' => 'A calmer way to read the KazTBU library footprint',
-            'hours_visual_body' => 'Core service points are grouped so students and faculty can quickly understand where to go for holdings, guidance, or booking support.',
+            'hours_visual_title' => 'A short route across the KazTBU library footprint',
+            'hours_visual_body' => 'KazTBU Scientific Library serves readers Monday through Friday from 09:00 to 18:00 and keeps the main access points easy to read at a glance.',
+            'hours_instagram_label' => 'Instagram',
+            'hours_instagram_value' => '@library_kazutb',
+            'hours_markers' => [
+              ['label' => 'Schedule', 'value' => 'Monday-Friday · 09:00-18:00'],
+              ['label' => 'Instagram', 'value' => '@library_kazutb'],
+              ['label' => 'Route', 'value' => 'College · Technology · Economics'],
+              ['label' => 'Service', 'value' => 'Holdings, guidance, navigation'],
+            ],
               'news_eyebrow' => 'Library life',
               'news_title' => 'Library news',
               'news_title_accent' => 'and workshops',
-              'news_body' => 'A curated stream of updates, open sessions, and research-facing activity that makes the library feel active rather than static.',
-              'news_cta' => 'All news',
+              'news_body' => 'The cards are structured for real content: date, category, summary, and an image with fallback logic by topic.',
+              'news_cta' => 'Instagram @library_kazutb',
               'workshops_title' => 'Workshops and events',
-              'workshops_cta' => 'All events',
-              'news_filters' => ['All', 'Announcements', 'Events'],
               'news_items' => [
-                ['tag' => 'Announcements', 'date' => '09 Apr 2026', 'title' => 'Author Syrym Baktygereuly visits the KazTBU Library', 'body' => 'An open conversation on contemporary Kazakh writing, campus reading culture, and how the library can support student discovery.'],
-                ['tag' => 'Events', 'date' => '08 Apr 2026', 'title' => 'Classics Caravan: a celebration of classical literature', 'body' => 'A compact program of readings and themed displays connecting classical holdings, recommendation lists, and the catalog route.'],
+                ['category_slug' => 'announcements', 'tag' => 'Announcement', 'date' => '09 Apr 2026', 'title' => 'Author Syrym Baktygereuly visits the KazTBU Library', 'body' => 'An open conversation on contemporary Kazakh writing, campus reading culture, and library discovery for students.'],
+                ['category_slug' => 'events', 'tag' => 'Event', 'date' => '08 Apr 2026', 'title' => 'Classics Caravan: a celebration of classical literature', 'body' => 'A compact week of readings and themed displays that connects classical holdings with the catalog route.'],
               ],
               'workshops_items' => [
                 ['title' => 'Research skills for first-year students', 'time' => '11:00-11:40', 'date' => '15 Apr 2026'],
@@ -225,9 +244,9 @@
                 ['title' => 'Zotero: efficient reference management', 'time' => '12:00-13:00', 'date' => '16 Apr 2026'],
               ],
             'hours_rows' => [
-              ['label' => 'Main Library', 'hours' => '09:00-18:00', 'meta' => 'Primary reading route and circulation support'],
-              ['label' => 'Technology Library', 'hours' => '09:00-17:30', 'meta' => 'Discipline-focused holdings and guidance'],
-              ['label' => 'Booking Hours', 'hours' => '10:00-17:00', 'meta' => 'Reservation confirmation and shortlist support'],
+              ['label' => 'College Library', 'hours' => '09:00-18:00', 'meta' => '1/202 · Monday-Friday'],
+              ['label' => 'Technology Library', 'hours' => '09:00-18:00', 'meta' => '1/200 · Monday-Friday'],
+              ['label' => 'Economics Library', 'hours' => '09:00-18:00', 'meta' => '1/203 · Monday-Friday'],
             ],
           'summary_title' => 'What is already available',
           'summary_points' => [
@@ -246,18 +265,18 @@
           'cta_copy' => 'Open the catalog for holdings search, resources for research platforms, or shortlist for course-support work.',
           'stats' => ['✓ unified catalog and digital collections', '✓ reader account, reservations, and renewals', '✓ secure institutional sign-in'],
           'feature_cards' => [
-              ['meta_left' => 'University Archives', 'meta_right' => 'Internal Network', 'title' => 'University Archives', 'body' => 'Access to theses, local publications, and specialized academic materials.'],
-              ['meta_left' => 'Digital Collection', 'meta_right' => 'Remote Access', 'title' => 'Digital Collection', 'body' => 'Books, journals, and research materials remain available around the clock in one library surface.'],
-              ['meta_left' => 'Global Network', 'meta_right' => 'Licensed', 'title' => 'Global Network', 'body' => 'Connection to subscribed platforms, research databases, and trusted external scholarly sources.'],
+                ['meta_left' => 'University Archives', 'meta_right' => 'Internal Network', 'title' => 'University Archives', 'body' => 'Theses, local publications, and internal academic materials without brochure filler.'],
+                ['meta_left' => 'Digital Collection', 'meta_right' => 'Remote Access', 'title' => 'Digital Collection', 'body' => 'Books, journals, and teaching materials from one library surface.'],
+                ['meta_left' => 'Global Network', 'meta_right' => 'Licensed', 'title' => 'Global Network', 'body' => 'Subscribed platforms and trusted external research sources.'],
           ],
           'subject_link' => 'Open the full UDC catalog',
           'subject_cards' => [
-              ['title' => 'Technical Sciences', 'udc' => 'UDC 62'],
-              ['title' => 'Law & Politics', 'udc' => 'UDC 34'],
-              ['title' => 'Natural Sciences', 'udc' => 'UDC 5'],
-              ['title' => 'Humanities', 'udc' => 'UDC 008'],
-              ['title' => 'Economics', 'udc' => 'UDC 33'],
-              ['title' => 'Reference Works', 'udc' => 'UDC 030'],
+                ['title' => 'Technical Sciences', 'udc' => 'UDC 62', 'filter' => '62'],
+                ['title' => 'Law & Politics', 'udc' => 'UDC 34', 'filter' => '34'],
+                ['title' => 'Natural Sciences', 'udc' => 'UDC 5', 'filter' => '5'],
+                ['title' => 'Humanities', 'udc' => 'UDC 008', 'filter' => '008'],
+                ['title' => 'Economics', 'udc' => 'UDC 33', 'filter' => '33'],
+                ['title' => 'Reference Works', 'udc' => 'UDC 030', 'filter' => '030'],
           ],
           'quote' => '“The library is the heart of the university; our role is to move knowledge toward every student and researcher.”',
           'quote_panel_eyebrow' => 'Institutional memory',
@@ -267,6 +286,30 @@
           'trust_actions' => ['catalog' => 'Catalog', 'resources' => 'Resources', 'shortlist' => 'Shortlist'],
       ],
   ][$lang];
+
+    $subjectCards = array_map(function (array $subject) use ($withLang): array {
+      $filter = (string) ($subject['filter'] ?? preg_replace('/[^0-9.]/', '', (string) ($subject['udc'] ?? '')));
+
+      return $subject + [
+        'href' => $withLang('/catalog', ['udc' => $filter, 'sort' => 'title']),
+      ];
+    }, $copy['subject_cards']);
+
+    $newsImageFallbacks = [
+      'announcements' => ['image' => '/trust-panel-reading-room.jpg', 'position' => 'center 28%'],
+      'events' => ['image' => '/trust-panel-reading-room.jpg', 'position' => 'center 52%'],
+      'default' => ['image' => '/trust-panel-reading-room.jpg', 'position' => 'center center'],
+    ];
+
+    $newsItems = array_map(function (array $item) use ($newsImageFallbacks): array {
+      $category = (string) ($item['category_slug'] ?? 'default');
+      $fallback = $newsImageFallbacks[$category] ?? $newsImageFallbacks['default'];
+
+      return $item + [
+        'image' => $item['image'] ?? $fallback['image'],
+        'image_position' => $item['image_position'] ?? $fallback['position'],
+      ];
+    }, $copy['news_items']);
 
     $today = now();
     $weekdayMap = [
@@ -372,7 +415,7 @@
     text-align: left;
     position: relative;
     overflow: hidden;
-    border-radius: 26px;
+    border-radius: 14px;
     border: 1px solid rgba(204, 211, 221, 0.45);
     background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(247,249,250,.9));
     box-shadow: 0 18px 42px rgba(25, 28, 29, 0.045);
@@ -554,7 +597,7 @@
     width: min(100%, 288px);
     margin-top: 2px;
     padding: 10px 12px;
-    border-radius: 18px;
+    border-radius: 12px;
     background: rgba(255,255,255,.72);
     border: 1px solid rgba(204,211,221,.48);
     box-shadow: 0 6px 14px rgba(25,28,29,.028);
@@ -582,7 +625,7 @@
     max-width: 760px;
     margin: 18px auto 0;
     padding: 8px;
-    border-radius: 999px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.94);
     border: 1px solid rgba(195, 198, 209, 0.62);
     box-shadow: 0 16px 36px rgba(25, 28, 29, 0.055);
@@ -627,7 +670,7 @@
   }
 
   .landing-search .btn {
-    border-radius: 999px;
+    border-radius: 8px;
     min-height: 52px;
     padding-inline: 26px;
   }
@@ -645,7 +688,7 @@
     min-height: 84px;
     padding: 14px 16px;
     text-align: left;
-    border-radius: 18px;
+    border-radius: 10px;
     background: rgba(255,255,255,.72);
     border: 1px solid rgba(203,209,219,.48);
     box-shadow: 0 8px 18px rgba(25,28,29,.028);
@@ -691,7 +734,7 @@
     align-items: center;
     gap: 8px;
     padding: 7px 11px;
-    border-radius: 999px;
+    border-radius: 8px;
     background: rgba(255,255,255,.68);
     border: 1px solid rgba(203,209,219,.5);
     box-shadow: 0 6px 16px rgba(25,28,29,.026);
@@ -700,7 +743,7 @@
   .landing-feature-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr) minmax(0, 1fr);
-    gap: 16px;
+    gap: 26px;
     perspective: 1400px;
   }
 
@@ -715,7 +758,7 @@
   .feature-entry {
     min-height: 214px;
     padding: 22px 22px 20px;
-    border-radius: var(--radius-xl);
+    border-radius: 12px;
     border: 1px solid rgba(205, 211, 220, 0.58);
     background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,251,.94));
     text-align: left;
@@ -842,17 +885,20 @@
   .subject-grid {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 12px;
+    gap: 16px;
   }
 
   .subject-card {
+    display: grid;
+    gap: 6px;
     padding: 18px 14px 16px;
-    border-radius: 18px;
+    border-radius: 10px;
     background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(249,251,252,.9));
     border: 1px solid rgba(205, 211, 220, 0.52);
     text-align: center;
     box-shadow: 0 8px 20px rgba(25,28,29,.024);
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-decoration: none;
   }
 
   .subject-card:hover {
@@ -887,7 +933,7 @@
 
   .hours-copy {
     border: 1px solid rgba(205, 211, 220, 0.52);
-    border-radius: var(--radius-xl);
+    border-radius: 12px;
     background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(249,250,251,.94));
     padding: 24px 26px;
     box-shadow: 0 10px 24px rgba(25, 28, 29, 0.032);
@@ -923,7 +969,7 @@
     width: fit-content;
     min-height: 34px;
     padding: 0 11px;
-    border-radius: 999px;
+    border-radius: 8px;
     background: rgba(20, 105, 109, 0.06);
     color: var(--cyan);
     font-size: 10px;
@@ -1000,12 +1046,12 @@
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(195, 198, 209, 0.6);
-    border-radius: var(--radius-xl);
+    border-radius: 12px;
     min-height: 292px;
     background:
-      linear-gradient(180deg, rgba(255,255,255,.52), rgba(243,247,249,.72)),
-      linear-gradient(180deg, rgba(7, 26, 47, 0.06), rgba(7, 26, 47, 0.18)),
-      url('/trust-panel-library.svg');
+      linear-gradient(180deg, rgba(5,14,24,.14), rgba(5,14,24,.38)),
+      linear-gradient(180deg, rgba(7, 26, 47, 0.04), rgba(7, 26, 47, 0.18)),
+      url('/trust-panel-reading-room.jpg');
     background-size: cover;
     background-position: center;
     box-shadow: 0 10px 24px rgba(25, 28, 29, 0.032);
@@ -1075,6 +1121,7 @@
     background: rgba(255,255,255,.12);
     border: 1px solid rgba(255, 255, 255, 0.16);
     backdrop-filter: blur(12px);
+    border-radius: 8px;
   }
 
   .hours-marker span {
@@ -1138,35 +1185,6 @@
     max-width: 38rem;
   }
 
-  .news-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    align-items: center;
-  }
-
-  .news-filter-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 30px;
-    padding: 0 12px;
-    border-radius: 999px;
-    border: 1px solid rgba(205, 211, 220, 0.52);
-    background: rgba(255,255,255,.78);
-    color: #617182;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  .news-filter-chip.is-active {
-    background: var(--blue);
-    border-color: var(--blue);
-    color: #fff;
-  }
-
   .news-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1182,16 +1200,16 @@
   .news-card-media {
     position: relative;
     min-height: 228px;
-    border-radius: 24px;
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid rgba(205, 211, 220, 0.52);
-    background:
+    background-image:
       linear-gradient(180deg, rgba(255,255,255,.08), rgba(11,29,48,.16)),
       radial-gradient(circle at top left, rgba(255,255,255,.22), transparent 36%),
       linear-gradient(135deg, rgba(20,105,109,.18), rgba(11,29,48,.28)),
-      url('/trust-panel-library.svg');
+      var(--news-image, url('/trust-panel-reading-room.jpg'));
     background-size: cover;
-    background-position: center;
+    background-position: center, center, center, var(--news-image-position, center center);
     box-shadow: 0 14px 30px rgba(25, 28, 29, 0.04);
   }
 
@@ -1203,16 +1221,6 @@
     background: linear-gradient(180deg, rgba(8,18,32,0), rgba(8,18,32,.12) 28%, rgba(8,18,32,.42) 100%);
   }
 
-  .news-card-media--alt {
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.06), rgba(11,29,48,.12)),
-      radial-gradient(circle at top right, rgba(255,255,255,.2), transparent 34%),
-      linear-gradient(135deg, rgba(180,143,82,.16), rgba(11,29,48,.28)),
-      url('/trust-panel-library.svg');
-    background-size: cover;
-    background-position: center;
-  }
-
   .news-card-badge {
     position: absolute;
     left: 16px;
@@ -1222,7 +1230,7 @@
     align-items: center;
     min-height: 28px;
     padding: 0 10px;
-    border-radius: 999px;
+    border-radius: 8px;
     background: rgba(255,255,255,.14);
     border: 1px solid rgba(255,255,255,.16);
     color: #fff;
@@ -1281,7 +1289,7 @@
 
   .events-rail {
     border: 1px solid rgba(205, 211, 220, 0.54);
-    border-radius: 24px;
+    border-radius: 12px;
     background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,251,.93));
     box-shadow: 0 14px 30px rgba(25,28,29,.035);
     padding: 22px 20px 20px;
@@ -1430,6 +1438,7 @@
     background: linear-gradient(180deg, rgba(7, 15, 24, 0.46), rgba(7, 15, 24, 0.62));
     backdrop-filter: blur(3px);
     box-shadow: 0 14px 30px rgba(8, 14, 21, 0.16);
+    border-radius: 10px;
   }
 
   .quote-panel__eyebrow {
@@ -1490,7 +1499,7 @@
 
   .trust-stat {
     padding: 14px;
-    border-radius: var(--radius-lg);
+    border-radius: 10px;
     background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,251,.92));
     border: 1px solid rgba(205, 211, 220, 0.56);
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -1762,8 +1771,8 @@
         </div>
 
         <div class="subject-grid" data-homepage-subjects>
-          @foreach($copy['subject_cards'] as $subject)
-            <article class="subject-card"><strong>{{ $subject['title'] }}</strong><span>{{ $subject['udc'] }}</span></article>
+          @foreach($subjectCards as $subject)
+            <a href="{{ $subject['href'] }}" class="subject-card"><strong>{{ $subject['title'] }}</strong><span>{{ $subject['udc'] }}</span></a>
           @endforeach
         </div>
       </div>
@@ -1805,22 +1814,12 @@
           </div>
 
           <div class="hours-markers">
-            <div class="hours-marker">
-              <span>{{ ['ru' => 'Локация', 'kk' => 'Локация', 'en' => 'Location'][$lang] }}</span>
-              <strong>{{ ['ru' => 'Главный кампус', 'kk' => 'Негізгі кампус', 'en' => 'Main campus'][$lang] }}</strong>
-            </div>
-            <div class="hours-marker">
-              <span>{{ ['ru' => 'Сервис', 'kk' => 'Сервис', 'en' => 'Service'][$lang] }}</span>
-              <strong>{{ ['ru' => 'Каталог и консультации', 'kk' => 'Каталог және кеңес', 'en' => 'Catalog and guidance'][$lang] }}</strong>
-            </div>
-            <div class="hours-marker">
-              <span>{{ ['ru' => 'Маршрут', 'kk' => 'Маршрут', 'en' => 'Route'][$lang] }}</span>
-              <strong>{{ ['ru' => 'Фонд, читальный зал, бронирование', 'kk' => 'Қор, оқу залы, бронь', 'en' => 'Holdings, reading room, booking'][$lang] }}</strong>
-            </div>
-            <div class="hours-marker">
-              <span>{{ ['ru' => 'Контакт', 'kk' => 'Байланыс', 'en' => 'Contact'][$lang] }}</span>
-              <strong>{{ ['ru' => 'Через страницу контактов', 'kk' => 'Байланыс беті арқылы', 'en' => 'Via the contacts page'][$lang] }}</strong>
-            </div>
+            @foreach($copy['hours_markers'] as $marker)
+              <div class="hours-marker">
+                <span>{{ $marker['label'] }}</span>
+                <strong>{{ $marker['value'] }}</strong>
+              </div>
+            @endforeach
           </div>
         </div>
       </aside>
@@ -1850,7 +1849,6 @@
         <div class="trust-actions">
           <a href="{{ $withLang('/catalog') }}" class="btn btn-primary">{{ $copy['trust_actions']['catalog'] }}</a>
           <a href="{{ $withLang('/resources') }}" class="btn btn-ghost">{{ $copy['trust_actions']['resources'] }}</a>
-          <a href="{{ $withLang('/shortlist') }}" class="btn btn-ghost">{{ $copy['trust_actions']['shortlist'] }}</a>
         </div>
       </div>
     </div>
@@ -1866,17 +1864,13 @@
             <p>{{ $copy['news_body'] }}</p>
           </div>
 
-          <div class="news-filters" aria-label="{{ $copy['news_title'] }}">
-            @foreach($copy['news_filters'] as $index => $filter)
-              <span class="news-filter-chip{{ $index === 0 ? ' is-active' : '' }}">{{ $filter }}</span>
-            @endforeach
-          </div>
+          <a href="{{ $instagramUrl }}" class="news-link" target="_blank" rel="noreferrer">{{ $copy['news_cta'] }}</a>
         </div>
 
         <div class="news-grid">
-          @foreach($copy['news_items'] as $index => $item)
+          @foreach($newsItems as $item)
             <article class="news-card">
-              <div class="news-card-media{{ $index === 1 ? ' news-card-media--alt' : '' }}">
+              <div class="news-card-media" style="--news-image: url('{{ asset(ltrim($item['image'], '/')) }}'); --news-image-position: {{ $item['image_position'] }};">
                 <span class="news-card-badge">{{ $item['tag'] }}</span>
               </div>
               <div class="news-card-copy">
@@ -1887,8 +1881,6 @@
             </article>
           @endforeach
         </div>
-
-        <a href="{{ $withLang('/resources') }}" class="news-link">{{ $copy['news_cta'] }}</a>
       </div>
 
       <aside class="events-rail" aria-label="{{ $copy['workshops_title'] }}">
@@ -1904,8 +1896,6 @@
             </article>
           @endforeach
         </div>
-
-        <a href="{{ $withLang('/contacts') }}" class="events-link">{{ $copy['workshops_cta'] }}</a>
       </aside>
     </div>
   </section>

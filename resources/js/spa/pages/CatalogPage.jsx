@@ -29,6 +29,7 @@ export function CatalogPage() {
   const sort = searchParams.get('sort') ?? DEFAULT_SORT;
   const page = readPositiveInt(searchParams.get('page'), 1);
   const availableOnly = searchParams.get('available_only') === '1';
+  const udc = searchParams.get('udc') ?? '';
   const language = searchParams.get('language') ?? '';
   const yearFrom = searchParams.get('year_from') ?? '';
   const yearTo = searchParams.get('year_to') ?? '';
@@ -57,10 +58,10 @@ export function CatalogPage() {
 
     return '';
   }, [yearFrom, yearTo]);
-  const hasActiveFilters = query || sort !== DEFAULT_SORT || availableOnly || language || yearFrom || yearTo || page > 1;
+  const hasActiveFilters = query || sort !== DEFAULT_SORT || availableOnly || udc || language || yearFrom || yearTo || page > 1;
   const activeFilterCount = useMemo(
-    () => [query, sort !== DEFAULT_SORT, availableOnly, language, yearFrom || yearTo].filter(Boolean).length,
-    [availableOnly, language, query, sort, yearFrom, yearTo],
+    () => [query, sort !== DEFAULT_SORT, availableOnly, udc, language, yearFrom || yearTo].filter(Boolean).length,
+    [availableOnly, language, query, sort, udc, yearFrom, yearTo],
   );
   const loadingSkeletons = useMemo(() => Array.from({ length: 6 }, (_, index) => index), []);
 
@@ -85,7 +86,7 @@ export function CatalogPage() {
     setSearchParams(next);
   }, [searchParams, setSearchParams]);
 
-  const search = useCallback(async ({ q, currentPage, currentSort, onlyAvailable, currentLanguage, currentYearFrom, currentYearTo }) => {
+  const search = useCallback(async ({ q, currentPage, currentSort, onlyAvailable, currentUdc, currentLanguage, currentYearFrom, currentYearTo }) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -94,6 +95,7 @@ export function CatalogPage() {
       params.set('limit', String(PAGE_SIZE));
       if (currentSort) params.set('sort', currentSort);
       if (onlyAvailable) params.set('available_only', '1');
+      if (currentUdc) params.set('udc', currentUdc);
       if (currentLanguage) params.set('language', currentLanguage);
       if (currentYearFrom) params.set('year_from', currentYearFrom);
       if (currentYearTo) params.set('year_to', currentYearTo);
@@ -117,11 +119,12 @@ export function CatalogPage() {
       currentPage: page,
       currentSort: sort,
       onlyAvailable: availableOnly,
+      currentUdc: udc,
       currentLanguage: language,
       currentYearFrom: yearFrom,
       currentYearTo: yearTo,
     });
-  }, [availableOnly, language, page, query, search, sort, yearFrom, yearTo]);
+  }, [availableOnly, language, page, query, search, sort, udc, yearFrom, yearTo]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -261,6 +264,7 @@ export function CatalogPage() {
         <div className="toolbar-actions">
           <div className="search-summary">
             {query ? t('catalog.querySummary', { query }) : t('catalog.summaryAll')}
+            {udc ? ` · UDC ${udc}` : ''}
             {language ? ` · ${t('catalog.summaryLanguage', { language: language.toUpperCase() })}` : ''}
             {yearSummary ? ` · ${t('catalog.summaryYears', { years: yearSummary })}` : ''}
             {availableOnly ? ` · ${t('catalog.summaryAvailable')}` : ''}
