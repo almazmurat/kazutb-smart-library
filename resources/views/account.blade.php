@@ -985,14 +985,13 @@
       display: grid;
       grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
       gap: 28px;
-      align-items: stretch;
+      align-items: start;
     }
 
     .workspace-main {
       min-width: 0;
       display: grid;
       gap: 28px;
-      align-content: start;
     }
 
     .metric-grid {
@@ -1072,30 +1071,6 @@
       padding: 28px;
     }
 
-    .workspace-panel--loans {
-      min-height: 460px;
-      display: grid;
-      align-content: start;
-    }
-
-    .workspace-panel--activity {
-      min-height: 300px;
-      display: grid;
-      align-content: start;
-    }
-
-    .rail-panel--waitlist {
-      min-height: 320px;
-      display: grid;
-      align-content: start;
-    }
-
-    .rail-panel--shortlist {
-      min-height: 290px;
-      display: grid;
-      align-content: start;
-    }
-
     .panel-head {
       display: flex;
       align-items: baseline;
@@ -1137,19 +1112,6 @@
     .rail-stat-list {
       display: grid;
       gap: 12px;
-      align-content: start;
-    }
-
-    #book-grid {
-      min-height: 356px;
-    }
-
-    #activity-list {
-      min-height: 214px;
-    }
-
-    #reservations-grid {
-      min-height: 236px;
     }
 
     .loan-row {
@@ -1586,13 +1548,6 @@
         grid-template-columns: 64px minmax(0, 1fr);
       }
 
-      .workspace-panel--loans,
-      .workspace-panel--activity,
-      .rail-panel--waitlist,
-      .rail-panel--shortlist,
-      #book-grid,
-      #activity-list,
-      #reservations-grid,
       .empty-state,
       .empty-state--compact {
         min-height: 0;
@@ -1737,7 +1692,7 @@
                 </article>
               </section>
 
-              <section class="workspace-panel workspace-panel--loans">
+              <section class="workspace-panel">
                 <div class="panel-head">
                   <div>
                     <h2>{{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h2>
@@ -1755,7 +1710,7 @@
                 </div>
               </section>
 
-              <section class="workspace-panel workspace-panel--activity">
+              <section class="workspace-panel">
                 <div class="panel-head">
                   <div>
                     <h2>{{ ['ru' => 'Недавняя активность', 'kk' => 'Соңғы әрекеттер', 'en' => 'Recent activity'][$lang] }}</h2>
@@ -1765,15 +1720,11 @@
                 <div id="activity-list" class="activity-list">
                   <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
                 </div>
-                <div class="workspace-balance-note">
-                  <strong>{{ ['ru' => 'Следующий шаг:', 'kk' => 'Келесі қадам:', 'en' => 'Next step:'][$lang] }}</strong>
-                  {{ ['ru' => 'если текущая активность ещё небольшая, используйте каталог, waitlist и подборку как основные рабочие маршруты кабинета.', 'kk' => 'егер ағымдағы белсенділік әлі аз болса, каталог, waitlist және топтаманы кабинеттегі негізгі жұмыс маршруттары ретінде пайдаланыңыз.', 'en' => 'if current activity is still light, use the catalog, waitlist, and shortlist as the main working routes inside the dashboard.'][$lang] }}
-                </div>
               </section>
             </div>
 
             <aside class="workspace-rail">
-              <section class="rail-panel rail-panel--waitlist">
+              <section class="rail-panel">
                 <h4>{{ ['ru' => 'Quick Actions', 'kk' => 'Quick Actions', 'en' => 'Quick Actions'][$lang] }}</h4>
                 <div class="quick-action-list">
                   <a href="{{ $routeWithLang('/catalog') }}" class="quick-action">
@@ -1814,7 +1765,7 @@
                 </div>
               </section>
 
-              <section id="workbench-section" class="rail-panel rail-panel--shortlist">
+              <section id="workbench-section" class="rail-panel">
                 <div class="panel-head" style="margin-bottom:14px;">
                   <div>
                     <h3 style="font-size:28px;"> {{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h3>
