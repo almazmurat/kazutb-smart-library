@@ -48,7 +48,7 @@ class ConsolidationTest extends TestCase
         $response = $this->get('/about');
         $response->assertOk();
         $response->assertSee('КазТБУ Digital Library');
-        $response->assertSee('Библиотека как связанная цифровая среда');
+        $response->assertSee('Каталог и навигация');
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -72,9 +72,8 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/contacts');
         $response->assertOk();
-        $response->assertSee('Единая точка входа в библиотечную экосистему');
-        $response->assertSee('Новая цифровая основа университетской библиотеки');
-        $response->assertSee('Как собирается новая библиотечная система');
+        $response->assertSee('Как связаться с библиотекой');
+        $response->assertSee('Режим работы');
         $response->assertSee('library@digital-library.demo');
     }
 

@@ -122,6 +122,6 @@ class ExternalResourcePageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('class="site-shell"', false)
-            ->assertSee('Библиотека как связанная цифровая среда');
+            ->assertSee('КазТБУ Digital Library');
     }
 }

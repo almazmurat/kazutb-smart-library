@@ -48,7 +48,7 @@ class PublicShellTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('<html lang="en">', false)
-            ->assertSee('One public entry point into the library ecosystem')
+            ->assertSee('KazTBU Digital Library')
             ->assertSee('How to reach the library');
     }
 
