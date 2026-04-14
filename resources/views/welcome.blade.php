@@ -506,7 +506,7 @@
 @section('head')
 <style>
   .landing-hero {
-    padding: clamp(18px, 2.4vw, 28px) 0 14px;
+    padding: clamp(28px, 3.4vw, 42px) 0 14px;
   }
 
   .homepage-band {
