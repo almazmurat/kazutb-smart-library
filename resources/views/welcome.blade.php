@@ -967,17 +967,11 @@
     box-shadow: 0 8px 18px rgba(25, 28, 29, 0.028);
     position: relative;
     overflow: hidden;
-    transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .feature-entry::after {
     content: none;
-  }
-
-  .feature-entry:hover {
-    transform: translate3d(0, -3px, 0);
-    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
-    border-color: rgba(0, 30, 64, 0.12);
   }
 
   .feature-entry--primary {
