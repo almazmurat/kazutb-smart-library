@@ -985,15 +985,14 @@
       display: grid;
       grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
       gap: 28px;
-      align-items: stretch;
+      align-items: start;
     }
 
     .workspace-main {
       min-width: 0;
-      display: grid;
-      grid-template-rows: auto auto minmax(0, 1fr);
+      display: flex;
+      flex-direction: column;
       gap: 28px;
-      align-content: start;
     }
 
     .metric-grid {
@@ -1080,10 +1079,9 @@
     }
 
     .workspace-panel--activity {
-      min-height: 0;
-      height: 100%;
+      min-height: 300px;
       display: grid;
-      grid-template-rows: auto minmax(0, 1fr) auto;
+      align-content: start;
     }
 
     .rail-panel--waitlist {
