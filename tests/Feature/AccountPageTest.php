@@ -67,6 +67,21 @@ class AccountPageTest extends TestCase
             ->assertSee('loadWorkbench', false);
     }
 
+    public function test_account_page_uses_dashboard_body_shell_with_sidebar_and_real_rails(): void
+    {
+        $response = $this->withSession($this->authenticatedSession())->get('/account?lang=en');
+
+        $response
+            ->assertOk()
+            ->assertSee('data-account-dashboard-shell', false)
+            ->assertSee('Member Dashboard')
+            ->assertSee('Quick Actions')
+            ->assertSee('Waitlist')
+            ->assertDontSee('Room Booking')
+            ->assertDontSee('Research Request')
+            ->assertDontSee('Pay Overdue Fees');
+    }
+
     public function test_account_page_workbench_calls_summary_api(): void
     {
         $response = $this->withSession($this->authenticatedSession([

@@ -647,6 +647,836 @@
       .brand-text { font-size: 13px; }
       .brand-text small { font-size: 10.5px; }
     }
+
+    .page {
+      padding: 28px 0 70px;
+    }
+
+    .account-workspace {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .account-sidebar {
+      position: sticky;
+      top: 108px;
+      align-self: start;
+      display: grid;
+      gap: 18px;
+      padding: 24px 18px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(243,244,245,.98), rgba(237,238,239,.92));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      min-height: calc(100vh - 160px);
+    }
+
+    .sidebar-branding {
+      display: grid;
+      gap: 6px;
+      padding: 2px 8px 14px;
+      border-bottom: 1px solid rgba(195,198,209,.55);
+    }
+
+    .sidebar-branding strong {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--blue);
+      letter-spacing: -.03em;
+    }
+
+    .sidebar-branding span,
+    .sidebar-branding small {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .sidebar-member-card {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(195,198,209,.6);
+    }
+
+    .sidebar-member-card .avatar {
+      width: 56px;
+      height: 56px;
+      font-size: 21px;
+      box-shadow: none;
+    }
+
+    .sidebar-member-card p {
+      margin: 0;
+    }
+
+    .sidebar-member-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .sidebar-profile-name {
+      margin: 4px 0 0;
+      font-size: 22px;
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      font-family: 'Newsreader', Georgia, serif;
+      color: var(--blue);
+    }
+
+    .sidebar-profile-sub {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .sidebar-nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    .sidebar-nav a,
+    .sidebar-nav button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      text-align: left;
+      transition: background .2s ease, border-color .2s ease, color .2s ease, transform .18s ease;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav button:hover {
+      transform: translate3d(2px, 0, 0);
+      background: rgba(255,255,255,.84);
+      border-color: rgba(195,198,209,.7);
+      color: var(--blue);
+    }
+
+    .sidebar-nav a.active {
+      color: var(--cyan);
+      background: rgba(255,255,255,.92);
+      border-color: rgba(20,105,109,.18);
+      box-shadow: inset -3px 0 0 var(--cyan);
+    }
+
+    .sidebar-nav-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      background: rgba(0,30,64,.06);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .sidebar-meta {
+      margin-top: auto;
+      display: grid;
+      gap: 12px;
+      padding: 16px 8px 0;
+      border-top: 1px solid rgba(195,198,209,.55);
+    }
+
+    .sidebar-meta p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .workspace-canvas {
+      min-width: 0;
+      display: grid;
+      gap: 20px;
+    }
+
+    .workspace-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 6px 2px 10px;
+    }
+
+    .workspace-kicker {
+      display: inline-block;
+      margin-bottom: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .workspace-title {
+      margin: 0;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 46px;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: var(--blue);
+    }
+
+    .workspace-subtitle {
+      margin: 10px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 720px;
+    }
+
+    .workspace-header-tools {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .workspace-icon-btn {
+      display: inline-grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.9);
+      color: var(--blue);
+      font-size: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .workspace-profile-chip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+      padding: 8px 14px 8px 10px;
+      border-radius: 999px;
+      background: rgba(243,244,245,.98);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .workspace-profile-chip .avatar,
+    .profile-chip-avatar {
+      width: 38px;
+      height: 38px;
+      font-size: 16px;
+      border-radius: 999px;
+      box-shadow: none;
+    }
+
+    .workspace-profile-chip strong {
+      display: block;
+      font-size: 14px;
+      color: var(--blue);
+    }
+
+    .workspace-profile-chip span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .workspace-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .workspace-main {
+      min-width: 0;
+      display: grid;
+      gap: 24px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .metric-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(243,244,245,.96), rgba(237,238,239,.88));
+      box-shadow: var(--shadow-soft);
+    }
+
+    .metric-card::after {
+      content: attr(data-icon);
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      font-size: 46px;
+      line-height: 1;
+      opacity: .08;
+    }
+
+    .metric-card--accent {
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(250,246,237,.94));
+    }
+
+    .metric-label {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .metric-value {
+      margin: 0;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 44px;
+      line-height: .95;
+      letter-spacing: -.05em;
+      color: var(--blue);
+    }
+
+    .metric-caption {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .metric-footnote {
+      margin-top: 18px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .metric-footnote.warn { color: #a16207; }
+    .metric-footnote.good { color: var(--success); }
+
+    .workspace-panel,
+    .rail-panel,
+    .rail-note {
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,248,249,.96));
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h2,
+    .panel-head h3 {
+      margin: 0;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: var(--blue);
+    }
+
+    .panel-head p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .panel-link {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      white-space: nowrap;
+    }
+
+    .loan-list,
+    .reservation-list,
+    .activity-list,
+    .quick-action-list,
+    .rail-stat-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .loan-row {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) auto auto;
+      gap: 16px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(195,198,209,.56);
+      transition: background .2s ease, border-color .2s ease, transform .18s ease;
+    }
+
+    .loan-row:hover,
+    .reservation-row:hover,
+    .quick-action:hover {
+      transform: translate3d(0, -2px, 0);
+      border-color: rgba(20,105,109,.2);
+      background: #fff;
+    }
+
+    .loan-cover,
+    .reservation-cover {
+      position: relative;
+      width: 56px;
+      height: 82px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #003366 0%, #001e40 100%);
+      color: #f1d08e;
+      padding: 10px;
+      display: flex;
+      align-items: flex-end;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .loan-cover::before,
+    .reservation-cover::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: rgba(255,255,255,.12);
+    }
+
+    .loan-cover small,
+    .reservation-cover small {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+    }
+
+    .loan-cover span,
+    .reservation-cover span {
+      position: relative;
+      z-index: 1;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 13px;
+      line-height: 1.05;
+      font-weight: 700;
+    }
+
+    .loan-meta,
+    .reservation-meta {
+      min-width: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .loan-kicker,
+    .reservation-kicker {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #8e9098;
+    }
+
+    .loan-title,
+    .reservation-title {
+      margin: 0;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: -.03em;
+      color: var(--blue);
+    }
+
+    .loan-author,
+    .reservation-copy {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .loan-facts,
+    .reservation-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .loan-facts span,
+    .reservation-facts span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(243,244,245,.96);
+      border: 1px solid rgba(195,198,209,.5);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .loan-due,
+    .reservation-status {
+      min-width: 138px;
+      text-align: right;
+      display: grid;
+      gap: 6px;
+    }
+
+    .loan-due-label,
+    .reservation-status-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .loan-due-label.warn { color: #ba1a1a; }
+    .loan-due-label.soon { color: #a16207; }
+
+    .loan-due-date,
+    .reservation-status-date {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .loan-actions {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+      min-width: 170px;
+    }
+
+    .loan-actions .btn,
+    .reservation-row .btn {
+      min-height: 42px;
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+
+    .reservation-row {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(195,198,209,.56);
+      transition: background .2s ease, border-color .2s ease, transform .18s ease;
+    }
+
+    .reservation-cover {
+      width: 52px;
+      height: 76px;
+    }
+
+    .reservation-topline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .reservation-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .activity-item {
+      position: relative;
+      display: grid;
+      gap: 6px;
+      padding: 16px 18px 16px 22px;
+      border-radius: 8px;
+      border: 1px solid rgba(195,198,209,.56);
+      background: rgba(243,244,245,.72);
+    }
+
+    .activity-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 8px 0 0 8px;
+      background: rgba(20,105,109,.35);
+    }
+
+    .activity-item strong {
+      font-size: 15px;
+      color: var(--blue);
+    }
+
+    .activity-body {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .activity-date {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #8e9098;
+    }
+
+    .workspace-rail {
+      min-width: 0;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .rail-panel h4,
+    .rail-note h4 {
+      margin: 0 0 14px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .quick-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 16px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(195,198,209,.56);
+      transition: background .2s ease, border-color .2s ease, transform .18s ease;
+    }
+
+    .quick-action strong {
+      display: block;
+      font-size: 14px;
+      color: var(--blue);
+      margin-bottom: 4px;
+    }
+
+    .quick-action span {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .quick-action-arrow {
+      font-size: 18px;
+      color: #8e9098;
+    }
+
+    .rail-note {
+      background: linear-gradient(180deg, rgba(0,30,64,.96), rgba(13,44,76,.94));
+      border-color: rgba(0,30,64,.18);
+      color: #eff6ff;
+    }
+
+    .rail-note h4 {
+      color: rgba(247,189,72,.92);
+    }
+
+    .rail-note .alert {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.9);
+    }
+
+    .rail-note .detail-list {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .rail-note .detail-item {
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.08);
+    }
+
+    .rail-note .detail-item strong {
+      color: rgba(255,255,255,.58);
+    }
+
+    .rail-note .detail-item span {
+      color: rgba(255,255,255,.96);
+    }
+
+    .rail-shortlist-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .rail-stat {
+      padding: 14px 12px;
+      border-radius: 6px;
+      background: rgba(243,244,245,.8);
+      border: 1px solid rgba(195,198,209,.52);
+    }
+
+    .rail-stat strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1;
+      color: var(--blue);
+      margin-bottom: 5px;
+      font-family: 'Newsreader', Georgia, serif;
+    }
+
+    .rail-stat span {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .workspace-footer-note {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 4px 2px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .workspace-footer-note strong {
+      color: var(--blue);
+    }
+
+    @media (max-width: 1260px) {
+      .account-workspace {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+
+      .workspace-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .workspace-rail {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .rail-note,
+      #workbench-section {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .account-workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .account-sidebar {
+        position: static;
+        min-height: 0;
+      }
+
+      .sidebar-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workspace-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .workspace-profile-chip {
+        min-width: 0;
+      }
+
+      .loan-row {
+        grid-template-columns: 64px minmax(0, 1fr);
+      }
+
+      .loan-due,
+      .loan-actions {
+        grid-column: 2;
+        text-align: left;
+        justify-items: start;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .sidebar-nav,
+      .workspace-rail,
+      .rail-shortlist-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .workspace-title {
+        font-size: 34px;
+      }
+
+      .panel-head h2,
+      .panel-head h3,
+      .loan-title,
+      .reservation-title {
+        font-size: 24px;
+      }
+
+      .loan-row,
+      .reservation-row {
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 <body class="site-shell">
@@ -654,235 +1484,268 @@
 
   <main class="page">
     <div class="container">
-      <section class="profile-grid">
-        <article class="card">
-          <div class="profile-head">
+      <section class="account-workspace" data-account-dashboard-shell>
+        <aside class="account-sidebar">
+          <div class="sidebar-branding">
+            <small>{{ ['ru' => 'Academic Resource Center', 'kk' => 'Academic Resource Center', 'en' => 'Academic Resource Center'][$lang] }}</small>
+            <strong>{{ ['ru' => 'КазТБУ Library', 'kk' => 'КазТБУ Library', 'en' => 'KazUTB Library'][$lang] }}</strong>
+            <span>{{ ['ru' => 'Reader Workspace', 'kk' => 'Reader Workspace', 'en' => 'Reader Workspace'][$lang] }}</span>
+          </div>
+
+          @php
+            $profileType = $sessionUser['profile_type'] ?? null;
+            $role = $sessionUser['role'] ?? 'reader';
+            $roleLabel = match(true) {
+              $profileType === 'teacher' => ['ru' => 'Преподаватель', 'kk' => 'Оқытушы', 'en' => 'Faculty'][$lang],
+              $profileType === 'student' => ['ru' => 'Студент', 'kk' => 'Студент', 'en' => 'Student'][$lang],
+              $role === 'librarian' => ['ru' => 'Библиотекарь', 'kk' => 'Кітапханашы', 'en' => 'Librarian'][$lang],
+              $role === 'admin' => ['ru' => 'Администратор', 'kk' => 'Әкімші', 'en' => 'Administrator'][$lang],
+              default => ['ru' => 'Читатель', 'kk' => 'Оқырман', 'en' => 'Reader'][$lang],
+            };
+          @endphp
+
+          <div class="sidebar-member-card">
             <div id="profile-avatar" class="avatar">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
             <div>
-              <h1 id="profile-name" class="profile-name">{{ $sessionUser['name'] ?? ['ru' => 'Гость библиотеки', 'kk' => 'Кітапхана қонағы', 'en' => 'Library guest'][$lang] }}</h1>
-              <p id="profile-sub" class="profile-sub">
-                @php
-                  $profileType = $sessionUser['profile_type'] ?? null;
-                  $role = $sessionUser['role'] ?? 'reader';
-                  $roleLabel = match(true) {
-                    $profileType === 'teacher' => ['ru' => '📚 Преподаватель', 'kk' => '📚 Оқытушы', 'en' => '📚 Faculty'][$lang],
-                    $profileType === 'student' => ['ru' => '🎓 Студент', 'kk' => '🎓 Студент', 'en' => '🎓 Student'][$lang],
-                    $role === 'librarian' => ['ru' => '📖 Библиотекарь', 'kk' => '📖 Кітапханашы', 'en' => '📖 Librarian'][$lang],
-                    $role === 'admin' => ['ru' => '🛡️ Администратор', 'kk' => '🛡️ Әкімші', 'en' => '🛡️ Administrator'][$lang],
-                    default => ['ru' => '👤 Читатель', 'kk' => '👤 Оқырман', 'en' => '👤 Reader'][$lang],
-                  };
-                @endphp
-                {{ $sessionUser['ad_login'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }}
-                · {{ $roleLabel }}
-              </p>
+              <p class="sidebar-member-label">{{ ['ru' => 'Member access', 'kk' => 'Member access', 'en' => 'Member access'][$lang] }}</p>
+              <h1 id="profile-name" class="sidebar-profile-name">{{ $sessionUser['name'] ?? ['ru' => 'Гость библиотеки', 'kk' => 'Кітапхана қонағы', 'en' => 'Library guest'][$lang] }}</h1>
+              <p id="profile-sub" class="sidebar-profile-sub">{{ $sessionUser['ad_login'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }} · {{ $roleLabel }}</p>
             </div>
           </div>
 
-          <div class="stats">
-            <div class="stat">
-              <strong id="active-loans-count">—</strong>
-              <span>{{ ['ru' => 'Активных выдач', 'kk' => 'Белсенді берілімдер', 'en' => 'Active loans'][$lang] }}</span>
-            </div>
-            <div class="stat">
-              <strong id="overdue-loans-count" style="color:inherit;">—</strong>
-              <span>{{ ['ru' => 'Просрочено', 'kk' => 'Мерзімі өткен', 'en' => 'Overdue'][$lang] }}</span>
-            </div>
-            <div class="stat">
-              <strong id="due-soon-loans-count" style="color:inherit;">—</strong>
-              <span>{{ ['ru' => 'Скоро сдавать', 'kk' => 'Жақында тапсыру', 'en' => 'Due soon'][$lang] }}</span>
-            </div>
-            <div class="stat">
-              <strong id="returned-loans-count">—</strong>
-              <span>{{ ['ru' => 'Возвращено', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</span>
-            </div>
-          </div>
+          <nav class="sidebar-nav" aria-label="Account workspace navigation">
+            <a href="{{ $routeWithLang('/account') }}" class="active">
+              <span class="sidebar-nav-label"><span class="sidebar-icon">▣</span>{{ ['ru' => 'Кабинет', 'kk' => 'Кабинет', 'en' => 'Dashboard'][$lang] }}</span>
+            </a>
+            <a href="{{ $routeWithLang('/catalog') }}">
+              <span class="sidebar-nav-label"><span class="sidebar-icon">⌕</span>{{ ['ru' => 'Каталог', 'kk' => 'Каталог', 'en' => 'Catalog'][$lang] }}</span>
+            </a>
+            <a href="{{ $routeWithLang('/resources') }}">
+              <span class="sidebar-nav-label"><span class="sidebar-icon">▤</span>{{ ['ru' => 'Ресурсы', 'kk' => 'Ресурстар', 'en' => 'Resources'][$lang] }}</span>
+            </a>
+            <a href="{{ $routeWithLang('/discover') }}">
+              <span class="sidebar-nav-label"><span class="sidebar-icon">↗</span>{{ ['ru' => 'Навигация', 'kk' => 'Навигация', 'en' => 'Discover'][$lang] }}</span>
+            </a>
+            <a href="{{ $routeWithLang('/shortlist') }}">
+              <span class="sidebar-nav-label"><span class="sidebar-icon">☰</span>{{ ['ru' => 'Подборка', 'kk' => 'Топтама', 'en' => 'Shortlist'][$lang] }}</span>
+            </a>
+          </nav>
 
-          <div class="identity-actions">
-            <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-primary">{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}</a>
-            <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-ghost">{{ ['ru' => 'Моя подборка', 'kk' => 'Менің топтамам', 'en' => 'My shortlist'][$lang] }}</a>
-            <a href="{{ $routeWithLang('/discover') }}" class="btn btn-ghost">{{ ['ru' => 'Навигация по УДК', 'kk' => 'ӘОЖ бойынша навигация', 'en' => 'Browse UDC subjects'][$lang] }}</a>
+          <div class="sidebar-meta">
+            <p>{{ ['ru' => 'Рабочая зона читателя использует реальные account, loans, reservations и shortlist данные библиотеки.', 'kk' => 'Оқырманның жұмыс аймағы кітапхананың нақты account, loans, reservations және shortlist деректерін қолданады.', 'en' => 'The reader workspace uses live library account, loans, reservations, and shortlist data.'][$lang] }}</p>
+            <button id="logout-btn" class="btn btn-primary" type="button">{{ ['ru' => 'Выйти из сессии', 'kk' => 'Сессиядан шығу', 'en' => 'Sign out'][$lang] }}</button>
           </div>
-        </article>
+        </aside>
 
-        <article class="card status-stack">
-          <div class="section-head" style="margin-bottom:0;">
+        <div class="workspace-canvas">
+          <header class="workspace-header">
             <div>
-              <h2>{{ ['ru' => 'Статус доступа', 'kk' => 'Қолжетімділік мәртебесі', 'en' => 'Access status'][$lang] }}</h2>
-              <p>{{ ['ru' => 'Текущее состояние читательского профиля, сессии и цифрового доступа.', 'kk' => 'Оқырман профилі, сессия және цифрлық қолжетімділіктің ағымдағы күйі.', 'en' => 'Current state of the reader profile, session, and digital access.'][$lang] }}</p>
+              <span class="workspace-kicker">{{ ['ru' => 'Member Access', 'kk' => 'Member Access', 'en' => 'Member Access'][$lang] }}</span>
+              <h1 class="workspace-title">{{ ['ru' => 'Member Dashboard', 'kk' => 'Member Dashboard', 'en' => 'Member Dashboard'][$lang] }}</h1>
+              <p class="workspace-subtitle">{{ ['ru' => 'Кабинет читателя в формате dashboard workspace: реальные выдачи, бронирования, подборка и текущий статус доступа внутри библиотечной платформы.', 'kk' => 'Dashboard workspace форматындағы оқырман кабинеті: нақты берілімдер, броньдар, топтама және кітапхана платформасындағы ағымдағы қолжетімділік күйі.', 'en' => 'Reader account as a dashboard workspace with live loans, reservations, shortlist context, and the current access state inside the library platform.'][$lang] }}</p>
             </div>
-          </div>
-
-          <div id="account-status-alert" class="alert warning">
-            {{ ['ru' => 'Профиль читателя синхронизируется с реальными библиотечными данными.', 'kk' => 'Оқырман профилі нақты кітапхана деректерімен синхрондалуда.', 'en' => 'The reader profile is syncing with live library data.'][$lang] }}
-          </div>
-
-          <div class="status-grid">
-            <div class="status-tile">
-              <span class="status-label">{{ ['ru' => 'Профиль', 'kk' => 'Профиль', 'en' => 'Profile'][$lang] }}</span>
-              <div id="reader-link-chip" class="status-value">{{ ['ru' => 'Проверяется', 'kk' => 'Тексерілуде', 'en' => 'Checking'][$lang] }}</div>
-            </div>
-            <div class="status-tile">
-              <span class="status-label">{{ ['ru' => 'Сессия', 'kk' => 'Сессия', 'en' => 'Session'][$lang] }}</span>
-              <div class="status-value">{{ ['ru' => 'Secure Access активен', 'kk' => 'Secure Access белсенді', 'en' => 'Secure Access active'][$lang] }}</div>
-            </div>
-            <div class="status-tile">
-              <span class="status-label">{{ ['ru' => 'Цифровой доступ', 'kk' => 'Цифрлық қолжетімділік', 'en' => 'Digital access'][$lang] }}</span>
-              <div class="status-value">{{ ['ru' => 'Ресурсы 24/7', 'kk' => 'Ресурстар 24/7', 'en' => 'Resources 24/7'][$lang] }}</div>
-            </div>
-          </div>
-
-          <div class="detail-list">
-            <div class="detail-item">
-              <strong>{{ ['ru' => 'Код читателя', 'kk' => 'Оқырман коды', 'en' => 'Reader code'][$lang] }}</strong>
-              <span id="reader-legacy-code">{{ ['ru' => 'Уточняется', 'kk' => 'Нақтылануда', 'en' => 'Pending'][$lang] }}</span>
-            </div>
-            <div class="detail-item">
-              <strong>{{ ['ru' => 'Основной email', 'kk' => 'Негізгі email', 'en' => 'Primary email'][$lang] }}</strong>
-              <span id="reader-primary-email">{{ $sessionUser['email'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }}</span>
-            </div>
-            <div class="detail-item">
-              <strong>{{ ['ru' => 'Регистрация', 'kk' => 'Тіркелу', 'en' => 'Registration'][$lang] }}</strong>
-              <span id="reader-registration">{{ ['ru' => 'Появится после связи профиля', 'kk' => 'Профиль байланысқаннан кейін көрінеді', 'en' => 'Will appear after profile matching'][$lang] }}</span>
-            </div>
-            <div class="detail-item">
-              <strong>{{ ['ru' => 'Проверки профиля', 'kk' => 'Профиль тексерістері', 'en' => 'Profile review tasks'][$lang] }}</strong>
-              <span id="reader-review-tasks">{{ ['ru' => 'Загрузка…', 'kk' => 'Жүктелуде…', 'en' => 'Loading…'][$lang] }}</span>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="dashboard-main">
-        <section class="showcase">
-          <div class="section-head">
-            <div>
-              <h2>📚 {{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h2>
-              <p>{{ ['ru' => 'Текущие и недавние выдачи из библиотечного фонда.', 'kk' => 'Кітапхана қорынан алынған ағымдағы және соңғы берілімдер.', 'en' => 'Current and recent loans from the library collection.'][$lang] }}</p>
-            </div>
-            <div id="loan-tabs" style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button class="btn btn-ghost loan-tab active" data-status="active" onclick="switchLoanTab('active')" style="font-size:13px; padding:8px 16px;">{{ ['ru' => 'Активные', 'kk' => 'Белсенді', 'en' => 'Active'][$lang] }}</button>
-              <button class="btn btn-ghost loan-tab" data-status="returned" onclick="switchLoanTab('returned')" style="font-size:13px; padding:8px 16px;">{{ ['ru' => 'Возвращённые', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</button>
-              <button class="btn btn-ghost loan-tab" data-status="all" onclick="switchLoanTab('all')" style="font-size:13px; padding:8px 16px;">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
-            </div>
-          </div>
-
-          <div id="book-grid" class="book-grid">
-            <div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка выдач...', 'kk' => 'Берілімдер жүктелуде...', 'en' => 'Loading loans...'][$lang] }}</p></div>
-          </div>
-        </section>
-
-        <div class="side-stack">
-          <section class="showcase">
-            <div class="section-head">
-              <div>
-                <h2>{{ ['ru' => 'Мои бронирования', 'kk' => 'Менің броньдарым', 'en' => 'My reservations'][$lang] }}</h2>
-                <p>{{ ['ru' => 'Текущие запросы на выдачу и их статус.', 'kk' => 'Ағымдағы бронь сұраулары және олардың күйі.', 'en' => 'Current hold requests and their status.'][$lang] }}</p>
+            <div class="workspace-header-tools">
+              <a class="workspace-icon-btn" href="{{ $routeWithLang('/catalog') }}" aria-label="{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}">⌕</a>
+              <div class="workspace-profile-chip">
+                <div id="profile-chip-avatar" class="profile-chip-avatar avatar">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
+                <div>
+                  <strong id="profile-chip-name">{{ $sessionUser['name'] ?? ['ru' => 'Гость библиотеки', 'kk' => 'Кітапхана қонағы', 'en' => 'Library guest'][$lang] }}</strong>
+                  <span id="profile-chip-sub">{{ $roleLabel }}</span>
+                </div>
               </div>
             </div>
+          </header>
 
-            <div id="reservations-grid" class="book-grid" style="grid-template-columns: 1fr;">
-              <div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка бронирований...', 'kk' => 'Броньдар жүктелуде...', 'en' => 'Loading reservations...'][$lang] }}</p></div>
-            </div>
-          </section>
+          <div class="workspace-shell">
+            <div class="workspace-main">
+              <section class="metric-grid" aria-label="Dashboard status cards">
+                <article class="metric-card" data-icon="▣">
+                  <span class="metric-label">{{ ['ru' => 'Active status', 'kk' => 'Active status', 'en' => 'Active status'][$lang] }}</span>
+                  <p id="active-loans-count" class="metric-value">—</p>
+                  <p class="metric-caption">{{ ['ru' => 'Текущие выдачи', 'kk' => 'Ағымдағы берілімдер', 'en' => 'Current loans'][$lang] }}</p>
+                  <div id="metric-loans-note" class="metric-footnote">{{ ['ru' => 'Сводка по срокам загружается', 'kk' => 'Мерзімдер сводкасы жүктелуде', 'en' => 'Due-date snapshot loading'][$lang] }}</div>
+                </article>
 
-          <section class="showcase">
-            <div class="section-head">
-              <div>
-                <h2>{{ ['ru' => 'Недавняя активность', 'kk' => 'Соңғы әрекеттер', 'en' => 'Recent activity'][$lang] }}</h2>
-                <p>{{ ['ru' => 'Короткая история по выдачам, бронированиям и подборке.', 'kk' => 'Берілімдер, броньдар және топтама бойынша қысқа тарих.', 'en' => 'A short history across loans, reservations, and shortlist work.'][$lang] }}</p>
-              </div>
-            </div>
-            <div id="activity-list" class="activity-list">
-              <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
-            </div>
-          </section>
-        </div>
-      </section>
+                <article class="metric-card" data-icon="◔">
+                  <span class="metric-label">{{ ['ru' => 'Waitlist', 'kk' => 'Waitlist', 'en' => 'Waitlist'][$lang] }}</span>
+                  <p id="reservations-count" class="metric-value">—</p>
+                  <p class="metric-caption">{{ ['ru' => 'Активные бронирования', 'kk' => 'Белсенді броньдар', 'en' => 'Active reservations'][$lang] }}</p>
+                  <div id="reservations-note" class="metric-footnote">{{ ['ru' => 'Проверяем готовность к выдаче', 'kk' => 'Беруге дайын статусын тексереміз', 'en' => 'Checking pickup readiness'][$lang] }}</div>
+                </article>
 
-      <section id="workbench-section" class="showcase" style="margin-top: 36px;">
-        <div class="section-head">
-          <div>
-            <h2>📋 {{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h2>
-            <p>
-              {{ $profileType === 'teacher'
-                  ? ['ru' => 'Рабочая подборка для силлабуса, курса и академической навигации.', 'kk' => 'Силлабус, курс және академиялық навигацияға арналған жұмыс топтамасы.', 'en' => 'Working shortlist for syllabus, course, and academic navigation.'][$lang]
-                  : ['ru' => 'Сохранённые книги и ресурсы, к которым удобно вернуться позже.', 'kk' => 'Кейін қайта оралуға ыңғайлы сақталған кітаптар мен ресурстар.', 'en' => 'Saved books and resources you can return to later.'][$lang] }}
-            </p>
+                <article class="metric-card metric-card--accent" data-icon="◈">
+                  <span class="metric-label">{{ ['ru' => 'Standing', 'kk' => 'Standing', 'en' => 'Standing'][$lang] }}</span>
+                  <p id="standing-title" class="metric-value" style="font-size:38px;">{{ ['ru' => 'Проверка', 'kk' => 'Тексеру', 'en' => 'Checking'][$lang] }}</p>
+                  <p class="metric-caption">{{ ['ru' => 'Профиль и цифровой доступ', 'kk' => 'Профиль және цифрлық қолжетімділік', 'en' => 'Profile and digital access'][$lang] }}</p>
+                  <div id="standing-note" class="metric-footnote">{{ ['ru' => 'Синхронизация статуса читателя', 'kk' => 'Оқырман мәртебесін синхрондау', 'en' => 'Syncing reader standing'][$lang] }}</div>
+                </article>
+              </section>
+
+              <section class="workspace-panel">
+                <div class="panel-head">
+                  <div>
+                    <h2>📚 {{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h2>
+                    <p>{{ ['ru' => 'Текущие и недавние выдачи из библиотечного фонда в Stitch-подобной рабочей ленте.', 'kk' => 'Кітапхана қорынан алынған ағымдағы және соңғы берілімдер Stitch-ке жақын жұмыс лентасында.', 'en' => 'Current and recent loans from the library collection in a Stitch-like working stream.'][$lang] }}</p>
+                  </div>
+                  <div id="loan-tabs" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+                    <button class="btn btn-ghost loan-tab active" data-status="active" onclick="switchLoanTab('active')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Активные', 'kk' => 'Белсенді', 'en' => 'Active'][$lang] }}</button>
+                    <button class="btn btn-ghost loan-tab" data-status="returned" onclick="switchLoanTab('returned')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Возвращённые', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</button>
+                    <button class="btn btn-ghost loan-tab" data-status="all" onclick="switchLoanTab('all')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
+                  </div>
+                </div>
+
+                <div id="book-grid" class="loan-list">
+                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка выдач...', 'kk' => 'Берілімдер жүктелуде...', 'en' => 'Loading loans...'][$lang] }}</p></div>
+                </div>
+              </section>
+
+              <section class="workspace-panel">
+                <div class="panel-head">
+                  <div>
+                    <h2>{{ ['ru' => 'Недавняя активность', 'kk' => 'Соңғы әрекеттер', 'en' => 'Recent activity'][$lang] }}</h2>
+                    <p>{{ ['ru' => 'Реальные события по выдачам, бронированиям, профилю и подборке.', 'kk' => 'Берілімдер, броньдар, профиль және топтама бойынша нақты оқиғалар.', 'en' => 'Live events across loans, reservations, profile linkage, and shortlist work.'][$lang] }}</p>
+                  </div>
+                </div>
+                <div id="activity-list" class="activity-list">
+                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="workspace-rail">
+              <section class="rail-panel">
+                <h4>{{ ['ru' => 'Quick Actions', 'kk' => 'Quick Actions', 'en' => 'Quick Actions'][$lang] }}</h4>
+                <div class="quick-action-list">
+                  <a href="{{ $routeWithLang('/catalog') }}" class="quick-action">
+                    <div>
+                      <strong>{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}</strong>
+                      <span>{{ ['ru' => 'Искать книги, открыть карточку и продолжить к бронированию.', 'kk' => 'Кітаптарды іздеу, карточканы ашу және броньға өту.', 'en' => 'Search titles, open records, and continue to reservation flows.'][$lang] }}</span>
+                    </div>
+                    <span class="quick-action-arrow">›</span>
+                  </a>
+                  <a href="{{ $routeWithLang('/shortlist') }}" class="quick-action">
+                    <div>
+                      <strong>{{ ['ru' => 'Открыть подборку', 'kk' => 'Топтаманы ашу', 'en' => 'Open shortlist'][$lang] }}</strong>
+                      <span>{{ ['ru' => 'Вернуться к сохранённым книгам и рабочему draft-списку.', 'kk' => 'Сақталған кітаптар мен жұмыс draft-тізіміне оралу.', 'en' => 'Return to saved books and the working draft list.'][$lang] }}</span>
+                    </div>
+                    <span class="quick-action-arrow">›</span>
+                  </a>
+                  <a href="{{ $routeWithLang('/discover') }}" class="quick-action">
+                    <div>
+                      <strong>{{ ['ru' => 'УДК-навигация', 'kk' => 'ӘОЖ навигациясы', 'en' => 'UDC navigation'][$lang] }}</strong>
+                      <span>{{ ['ru' => 'Переход в каталог через академические направления.', 'kk' => 'Каталогқа академиялық бағыттар арқылы өту.', 'en' => 'Move into the catalog through academic subject routes.'][$lang] }}</span>
+                    </div>
+                    <span class="quick-action-arrow">›</span>
+                  </a>
+                  <a href="{{ $routeWithLang('/resources') }}" class="quick-action">
+                    <div>
+                      <strong>{{ ['ru' => 'Электронные ресурсы', 'kk' => 'Электрондық ресурстар', 'en' => 'Resources'][$lang] }}</strong>
+                      <span>{{ ['ru' => 'Открыть лицензионные базы и цифровые материалы.', 'kk' => 'Лицензиялық базалар мен цифрлық материалдарды ашу.', 'en' => 'Open licensed databases and digital materials.'][$lang] }}</span>
+                    </div>
+                    <span class="quick-action-arrow">›</span>
+                  </a>
+                </div>
+              </section>
+
+              <section class="rail-panel">
+                <h4>{{ ['ru' => 'Waitlist', 'kk' => 'Waitlist', 'en' => 'Waitlist'][$lang] }}</h4>
+                <div id="reservations-grid" class="reservation-list">
+                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка бронирований...', 'kk' => 'Броньдар жүктелуде...', 'en' => 'Loading reservations...'][$lang] }}</p></div>
+                </div>
+              </section>
+
+              <section id="workbench-section" class="rail-panel">
+                <div class="panel-head" style="margin-bottom:14px;">
+                  <div>
+                    <h3 style="font-size:28px;">📋 {{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h3>
+                    <p>{{ $profileType === 'teacher'
+                        ? ['ru' => 'Рабочая подборка для силлабуса, курса и академической навигации.', 'kk' => 'Силлабус, курс және академиялық навигацияға арналған жұмыс топтамасы.', 'en' => 'Working shortlist for syllabus, course, and academic navigation.'][$lang]
+                        : ['ru' => 'Сохранённые книги и ресурсы, к которым удобно вернуться позже.', 'kk' => 'Кейін қайта оралуға ыңғайлы сақталған кітаптар мен ресурстар.', 'en' => 'Saved books and resources you can return to later.'][$lang] }}</p>
+                  </div>
+                  <a href="{{ $routeWithLang('/shortlist') }}" class="panel-link">{{ ['ru' => 'Открыть', 'kk' => 'Ашу', 'en' => 'Open'][$lang] }}</a>
+                </div>
+
+                <div id="workbench-loading" style="text-align:center; padding:18px 0;">
+                  <div class="spinner"></div>
+                  <p style="margin:8px 0 0; color:var(--muted); font-size:13px;">{{ ['ru' => 'Загрузка подборки...', 'kk' => 'Топтама жүктелуде...', 'en' => 'Loading shortlist...'][$lang] }}</p>
+                </div>
+
+                <div id="workbench-empty" style="display:none;">
+                  <div class="loading" style="text-align:center; border-style:dashed;">
+                    <span style="font-size:28px;">📚</span>
+                    <p style="margin:8px 0 0; font-weight:600;">{{ ['ru' => 'Подборка пока пуста', 'kk' => 'Топтама әзірге бос', 'en' => 'The shortlist is empty for now'][$lang] }}</p>
+                    <p style="margin:6px 0 0; color:var(--muted); font-size:13px;">{{ $profileType === 'teacher'
+                      ? ['ru' => 'Добавляйте книги из каталога и электронные ресурсы для подготовки силлабуса.', 'kk' => 'Силлабус дайындау үшін каталогтан кітаптар мен электрондық ресурстарды қосыңыз.', 'en' => 'Add catalog titles and electronic resources to assemble the syllabus list.'][$lang]
+                      : ['ru' => 'Сохраняйте книги и цифровые ресурсы, чтобы быстро вернуться к ним позже.', 'kk' => 'Кейін жылдам оралу үшін кітаптар мен цифрлық ресурстарды сақтаңыз.', 'en' => 'Save books and digital resources so you can return to them quickly later.'][$lang] }}</p>
+                    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
+                      <a href="{{ $routeWithLang('/catalog') }}" style="color:var(--blue); font-weight:700; font-size:13px;">{{ ['ru' => 'Каталог →', 'kk' => 'Каталог →', 'en' => 'Catalog →'][$lang] }}</a>
+                      <a href="{{ $routeWithLang('/resources') }}" style="color:var(--blue); font-weight:700; font-size:13px;">{{ ['ru' => 'Ресурсы →', 'kk' => 'Ресурстар →', 'en' => 'Resources →'][$lang] }}</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="workbench-content" style="display:none;">
+                  <div id="workbench-draft-info" style="margin-bottom:14px;"></div>
+                  <div class="rail-shortlist-stats">
+                    <div class="rail-stat">
+                      <strong id="wb-total">0</strong>
+                      <span>{{ ['ru' => 'Всего источников', 'kk' => 'Барлық дереккөз', 'en' => 'Total sources'][$lang] }}</span>
+                    </div>
+                    <div class="rail-stat">
+                      <strong id="wb-books">0</strong>
+                      <span>{{ ['ru' => 'Книги', 'kk' => 'Кітаптар', 'en' => 'Books'][$lang] }}</span>
+                    </div>
+                    <div class="rail-stat">
+                      <strong id="wb-external">0</strong>
+                      <span>{{ ['ru' => 'E-resources', 'kk' => 'E-resources', 'en' => 'E-resources'][$lang] }}</span>
+                    </div>
+                  </div>
+                  <div style="display:grid; gap:10px;">
+                    <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-primary" style="width:100%; font-size:13px; padding:12px 18px;">{{ ['ru' => 'Редактировать и экспортировать', 'kk' => 'Өңдеу және экспорттау', 'en' => 'Edit and export'][$lang] }}</a>
+                    <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-ghost" style="width:100%; font-size:13px; padding:12px 18px;">{{ ['ru' => 'Добавить из каталога', 'kk' => 'Каталогтан қосу', 'en' => 'Add from catalog'][$lang] }}</a>
+                  </div>
+                </div>
+              </section>
+
+              <section class="rail-note">
+                <h4>{{ ['ru' => 'Access note', 'kk' => 'Access note', 'en' => 'Access note'][$lang] }}</h4>
+                <div id="account-status-alert" class="alert warning">
+                  {{ ['ru' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.', 'kk' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.', 'en' => 'The session stays inside the library interface while credentials are verified through the CRM API.'][$lang] }}
+                </div>
+
+                <div class="detail-list">
+                  <div class="detail-item">
+                    <strong>{{ ['ru' => 'Профиль', 'kk' => 'Профиль', 'en' => 'Profile'][$lang] }}</strong>
+                    <span id="reader-link-chip">{{ ['ru' => 'Проверяется', 'kk' => 'Тексерілуде', 'en' => 'Checking'][$lang] }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <strong>{{ ['ru' => 'Код читателя', 'kk' => 'Оқырман коды', 'en' => 'Reader code'][$lang] }}</strong>
+                    <span id="reader-legacy-code">{{ ['ru' => 'Уточняется', 'kk' => 'Нақтылануда', 'en' => 'Pending'][$lang] }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <strong>{{ ['ru' => 'Основной email', 'kk' => 'Негізгі email', 'en' => 'Primary email'][$lang] }}</strong>
+                    <span id="reader-primary-email">{{ $sessionUser['email'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <strong>{{ ['ru' => 'Регистрация', 'kk' => 'Тіркелу', 'en' => 'Registration'][$lang] }}</strong>
+                    <span id="reader-registration">{{ ['ru' => 'Появится после связи профиля', 'kk' => 'Профиль байланысқаннан кейін көрінеді', 'en' => 'Will appear after profile matching'][$lang] }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <strong>{{ ['ru' => 'Проверки профиля', 'kk' => 'Профиль тексерістері', 'en' => 'Profile review tasks'][$lang] }}</strong>
+                    <span id="reader-review-tasks">{{ ['ru' => 'Загрузка…', 'kk' => 'Жүктелуде…', 'en' => 'Loading…'][$lang] }}</span>
+                  </div>
+                </div>
+              </section>
+            </aside>
           </div>
-          <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-ghost" style="font-size:14px; padding:10px 18px;">{{ ['ru' => 'Открыть подборку →', 'kk' => 'Топтаманы ашу →', 'en' => 'Open shortlist →'][$lang] }}</a>
-        </div>
 
-        <div id="workbench-loading" style="text-align:center; padding:24px;">
-          <div class="spinner"></div>
-          <p style="margin:8px 0 0; color:var(--muted); font-size:13px;">{{ ['ru' => 'Загрузка подборки...', 'kk' => 'Топтама жүктелуде...', 'en' => 'Loading shortlist...'][$lang] }}</p>
-        </div>
-
-        <div id="workbench-empty" style="display:none;">
-          <div class="loading" style="text-align:center; border-style:dashed;">
-            <span style="font-size:32px;">📚</span>
-            <p style="margin:8px 0 0; font-weight:600;">{{ ['ru' => 'Подборка пока пуста', 'kk' => 'Топтама әзірге бос', 'en' => 'The shortlist is empty for now'][$lang] }}</p>
-            <p style="margin:6px 0 0; color:var(--muted); font-size:13px;">{{ $profileType === 'teacher'
-                ? ['ru' => 'Добавляйте книги из каталога и электронные ресурсы в подборку для подготовки силлабуса.', 'kk' => 'Силлабус дайындау үшін каталогтан кітаптар мен электрондық ресурстарды топтамаға қосыңыз.', 'en' => 'Add catalog titles and electronic resources to build the syllabus list.'][$lang]
-                : ['ru' => 'Сохраняйте книги из каталога и цифровые ресурсы, чтобы быстро вернуться к ним позже.', 'kk' => 'Кейін тез оралу үшін каталогтағы кітаптар мен цифрлық ресурстарды сақтаңыз.', 'en' => 'Save catalog books and digital resources so you can return to them quickly later.'][$lang] }}</p>
-            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
-              <a href="{{ $routeWithLang('/catalog') }}" style="color:var(--blue); font-weight:600; font-size:14px;">{{ ['ru' => 'Открыть каталог →', 'kk' => 'Каталогты ашу →', 'en' => 'Open catalog →'][$lang] }}</a>
-              <a href="{{ $routeWithLang('/resources') }}" style="color:var(--blue); font-weight:600; font-size:14px;">{{ ['ru' => 'Электронные ресурсы →', 'kk' => 'Электрондық ресурстар →', 'en' => 'Resources →'][$lang] }}</a>
-              <a href="{{ $routeWithLang('/discover') }}" style="color:var(--blue); font-weight:600; font-size:14px;">{{ ['ru' => 'Поиск по направлениям →', 'kk' => 'Бағыттар бойынша іздеу →', 'en' => 'Browse subjects →'][$lang] }}</a>
+          <div class="workspace-footer-note">
+            <div>
+              <strong>{{ ['ru' => 'Reader workspace', 'kk' => 'Reader workspace', 'en' => 'Reader workspace'][$lang] }}</strong>
+              {{ ['ru' => 'сохраняет реальные renew, reservations, shortlist и session flows без mock-данных.', 'kk' => 'нақты renew, reservations, shortlist және session flow-ларды mock-дерексіз сақтайды.', 'en' => 'keeps real renew, reservations, shortlist, and session flows with no mock data.'][$lang] }}
             </div>
+            <div>{{ ['ru' => 'Связанные зоны: каталог, discover, resources, shortlist.', 'kk' => 'Байланысқан аймақтар: каталог, discover, resources, shortlist.', 'en' => 'Connected zones: catalog, discover, resources, shortlist.'][$lang] }}</div>
           </div>
-        </div>
-
-        <div id="workbench-content" style="display:none;">
-          <div id="workbench-draft-info" style="margin-bottom:18px;"></div>
-
-          <div class="stats" style="grid-template-columns: repeat(3, 1fr); margin-bottom:18px;">
-            <div class="stat">
-              <strong id="wb-total">0</strong>
-              <span>{{ ['ru' => 'Всего источников', 'kk' => 'Барлық дереккөз', 'en' => 'Total sources'][$lang] }}</span>
-            </div>
-            <div class="stat">
-              <strong id="wb-books">0</strong>
-              <span>{{ ['ru' => 'Книги из каталога', 'kk' => 'Каталог кітаптары', 'en' => 'Catalog books'][$lang] }}</span>
-            </div>
-            <div class="stat">
-              <strong id="wb-external">0</strong>
-              <span>{{ ['ru' => 'Электронные ресурсы', 'kk' => 'Электрондық ресурстар', 'en' => 'E-resources'][$lang] }}</span>
-            </div>
-          </div>
-
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-primary" style="font-size:14px; padding:12px 20px;">{{ ['ru' => '📄 Редактировать и экспортировать', 'kk' => '📄 Өңдеу және экспорттау', 'en' => '📄 Edit and export'][$lang] }}</a>
-            <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">{{ ['ru' => 'Добавить из каталога', 'kk' => 'Каталогтан қосу', 'en' => 'Add from catalog'][$lang] }}</a>
-            <a href="{{ $routeWithLang('/resources') }}" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">{{ ['ru' => 'Электронные ресурсы', 'kk' => 'Электрондық ресурстар', 'en' => 'Resources'][$lang] }}</a>
-            <a href="{{ $routeWithLang('/discover') }}" class="btn btn-ghost" style="font-size:14px; padding:12px 20px;">{{ ['ru' => 'Поиск по направлениям', 'kk' => 'Бағыттар бойынша іздеу', 'en' => 'Browse subjects'][$lang] }}</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="showcase" style="margin-top: 36px;">
-        <div class="section-head">
-          <div>
-            <h2>📚 {{ ['ru' => 'Куда перейти дальше', 'kk' => 'Келесі қайда өтуге болады', 'en' => 'Where to go next'][$lang] }}</h2>
-            <p>{{ ['ru' => 'Основные reader-facing зоны, уже доступные из личного кабинета.', 'kk' => 'Жеке кабинеттен қолжетімді reader-facing аймақтар.', 'en' => 'Core reader-facing areas already available from the member dashboard.'][$lang] }}</p>
-          </div>
-        </div>
-        <div class="quick-grid">
-          <a href="{{ $routeWithLang('/catalog') }}" class="quick-card">
-            <strong>🔎 {{ ['ru' => 'Каталог', 'kk' => 'Каталог', 'en' => 'Catalog'][$lang] }}</strong>
-            <span>{{ ['ru' => 'Искать книги, открыть карточку издания и перейти к бронированию.', 'kk' => 'Кітаптарды іздеу, басылым карточкасын ашу және броньға өту.', 'en' => 'Search books, open a title record, and continue to reservation flows.'][$lang] }}</span>
-          </a>
-          <a href="{{ $routeWithLang('/shortlist') }}" class="quick-card">
-            <strong>📋 {{ ['ru' => 'Подборка', 'kk' => 'Топтама', 'en' => 'Shortlist'][$lang] }}</strong>
-            <span>{{ ['ru' => 'Вернуться к сохранённым книгам и экспортировать список литературы.', 'kk' => 'Сақталған кітаптарға оралып, әдебиеттер тізімін экспорттау.', 'en' => 'Return to saved titles and export a reading list.'][$lang] }}</span>
-          </a>
-          <a href="{{ $routeWithLang('/discover') }}" class="quick-card">
-            <strong>🧭 {{ ['ru' => 'Discover', 'kk' => 'Discover', 'en' => 'Discover'][$lang] }}</strong>
-            <span>{{ ['ru' => 'Идти в каталог через УДК-навигацию и академические направления.', 'kk' => 'Каталогқа ӘОЖ навигациясы және академиялық бағыттар арқылы өту.', 'en' => 'Enter the catalog through UDC navigation and academic subject routes.'][$lang] }}</span>
-          </a>
-          <a href="{{ $routeWithLang('/resources') }}" class="quick-card">
-            <strong>🌐 {{ ['ru' => 'Ресурсы', 'kk' => 'Ресурстар', 'en' => 'Resources'][$lang] }}</strong>
-            <span>{{ ['ru' => 'Открыть лицензионные базы и цифровые материалы в рамках доступа.', 'kk' => 'Қолжетімділік шеңберінде лицензиялық базалар мен цифрлық материалдарды ашу.', 'en' => 'Open licensed databases and digital materials within your access context.'][$lang] }}</span>
-          </a>
         </div>
       </section>
     </div>
@@ -1004,10 +1867,16 @@
       const avatar = document.getElementById('profile-avatar');
       const profileName = document.getElementById('profile-name');
       const profileSub = document.getElementById('profile-sub');
+      const chipAvatar = document.getElementById('profile-chip-avatar');
+      const chipName = document.getElementById('profile-chip-name');
+      const chipSub = document.getElementById('profile-chip-sub');
 
       if (avatar) avatar.textContent = name.charAt(0).toUpperCase();
       if (profileName) profileName.textContent = name;
       if (profileSub) profileSub.textContent = ACCOUNT_I18N.loginRole.replace('{login}', login).replace('{role}', role);
+      if (chipAvatar) chipAvatar.textContent = name.charAt(0).toUpperCase();
+      if (chipName) chipName.textContent = name;
+      if (chipSub) chipSub.textContent = ACCOUNT_I18N.loginRole.replace('{login}', login).replace('{role}', role);
     }
 
     function redirectToLogin() {
@@ -1091,32 +1960,47 @@
         : `#${escapeHtml(data.id.substring(0, 8))}`;
 
       const renewProgress = data.status === 'active'
-        ? `<div class="book-meta" style="font-size:12px; color:var(--muted);">${ACCOUNT_I18N.renewals.replace('{count}', data.renewCount).replace('{max}', maxRenewals)}</div>`
+        ? `<span>${ACCOUNT_I18N.renewals.replace('{count}', data.renewCount).replace('{max}', maxRenewals)}</span>`
         : '';
 
       let renewSection = '';
       if (canRenew) {
-        renewSection = `<button id="renew-btn-${escapeHtml(data.id)}" onclick="readerRenew('${escapeHtml(data.id)}')" style="margin-top:8px;padding:10px 14px;background:linear-gradient(135deg,#001e40,#003366);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;width:100%;transition:opacity .2s;">${ACCOUNT_I18N.renew14}</button>`;
+        renewSection = `<button id="renew-btn-${escapeHtml(data.id)}" class="btn btn-primary" onclick="readerRenew('${escapeHtml(data.id)}')">${ACCOUNT_I18N.renew14}</button>`;
       } else if (data.status === 'active' && renewBlockReason) {
-        renewSection = `<div style="margin-top:8px;padding:8px 12px;background:rgba(186,26,26,.06);border:1px solid rgba(186,26,26,.16);border-radius:6px;font-size:12px;color:#ba1a1a;text-align:center;">${escapeHtml(renewBlockReason)}</div>`;
+        renewSection = `<div style="padding:10px 12px;background:rgba(186,26,26,.06);border:1px solid rgba(186,26,26,.16);border-radius:6px;font-size:12px;color:#ba1a1a;text-align:center;line-height:1.5;">${escapeHtml(renewBlockReason)}</div>`;
       }
 
+      const dueLabelClass = data.isOverdue ? 'warn' : (data.isDueSoon ? 'soon' : '');
+      const dueLabel = data.status === 'returned' ? ACCOUNT_I18N.returnedOn : ACCOUNT_I18N.due;
+      const dueValue = data.status === 'returned' ? (data.returnedAt || '—') : data.dueDate;
+      const kicker = bookAuthor ? escapeHtml(bookAuthor.substring(0, 30)) : ACCOUNT_I18N.book;
+      const facts = [
+        loanStatusBadge(data),
+        bookIsbn ? `<span>ISBN: ${escapeHtml(bookIsbn)}</span>` : '',
+        invNumber ? `<span>${ACCOUNT_I18N.inventory}: ${escapeHtml(invNumber)}</span>` : '',
+        `<span>${ACCOUNT_I18N.issued}: ${data.issuedDate}</span>`,
+        renewProgress,
+      ].filter(Boolean).join('');
+
       return `
-        <article class="book-card">
-          <div class="book-preview" style="${gradientColor}">
-            <small>${bookAuthor ? escapeHtml(bookAuthor.substring(0, 25)) : ACCOUNT_I18N.book}</small>
-            <h3 style="font-size: 14px;">${previewTitle}</h3>
+        <article class="loan-row">
+          <div class="loan-cover" style="${gradientColor}">
+            <small>${kicker}</small>
+            <span>${previewTitle}</span>
           </div>
-          <h3 class="book-title" style="font-size: 15px;">${displayTitle}</h3>
-          <div class="book-meta">${loanStatusBadge(data)}</div>
-          ${bookAuthor ? `<div class="book-meta" style="font-style:italic;">${escapeHtml(bookAuthor)}</div>` : ''}
-          ${bookIsbn ? `<div class="book-meta">ISBN: ${escapeHtml(bookIsbn)}</div>` : ''}
-          ${invNumber ? `<div class="book-meta">${ACCOUNT_I18N.inventory}: ${escapeHtml(invNumber)}</div>` : ''}
-          <div class="book-meta">${ACCOUNT_I18N.issued}: ${data.issuedDate}</div>
-          <div class="book-meta" style="${data.isOverdue ? 'color:#991b1b; font-weight:600;' : (data.isDueSoon ? 'color:#92400e; font-weight:600;' : '')}">${ACCOUNT_I18N.due}: ${data.dueDate}</div>
-          ${renewProgress}
-          ${data.returnedAt ? `<div class="book-meta" style="color:#065f46;">${ACCOUNT_I18N.returnedOn}: ${data.returnedAt}</div>` : ''}
-          ${renewSection}
+          <div class="loan-meta">
+            <div class="loan-kicker">${data.copyId ? escapeHtml(data.copyId) : ACCOUNT_I18N.book}</div>
+            <h3 class="loan-title">${displayTitle}</h3>
+            ${bookAuthor ? `<div class="loan-author">${escapeHtml(bookAuthor)}</div>` : ''}
+            <div class="loan-facts">${facts}</div>
+          </div>
+          <div class="loan-due">
+            <span class="loan-due-label ${dueLabelClass}">${escapeHtml(dueLabel)}</span>
+            <span class="loan-due-date">${escapeHtml(dueValue)}</span>
+          </div>
+          <div class="loan-actions">
+            ${renewSection}
+          </div>
         </article>
       `;
     }
@@ -1124,7 +2008,7 @@
     function renderNoLoansMessage(hasReaderProfile = true, tab = 'active') {
       if (!hasReaderProfile) {
         return `
-          <div class="loading" style="grid-column: 1 / -1; text-align: center; border-color: rgba(234,179,8,.4); background: #fffbeb;">
+          <div class="loading" style="text-align: center; border-color: rgba(234,179,8,.4); background: #fffbeb;">
             <span style="font-size: 28px;">📋</span>
             <p style="margin: 8px 0 0; font-weight: 600; color: #92400e;">${ACCOUNT_I18N.profileMissingTitle}</p>
             <p style="margin: 4px 0 0; color: #a16207; font-size:13px;">${ACCOUNT_I18N.profileMissingBody}</p>
@@ -1138,7 +2022,7 @@
       };
       const m = messages[tab] || messages.active;
       return `
-        <div class="loading" style="grid-column: 1 / -1; text-align: center;">
+        <div class="loading" style="text-align: center;">
           <span style="font-size: 28px;">${m.icon}</span>
           <p style="margin: 8px 0 0; font-weight: 600;">${m.title}</p>
           <p style="margin: 4px 0 0; font-size:13px; color:var(--muted);">${m.sub}</p>
@@ -1247,19 +2131,41 @@
       const overdueEl = document.getElementById('overdue-loans-count');
       const dueSoonEl = document.getElementById('due-soon-loans-count');
       const returnedEl = document.getElementById('returned-loans-count');
+      const metricNote = document.getElementById('metric-loans-note');
 
-      if (activeEl) activeEl.textContent = String(loanSummary?.activeLoans ?? 0);
+      const activeLoans = Number(loanSummary?.activeLoans ?? 0);
+      const overdueLoans = Number(loanSummary?.overdueLoans ?? 0);
+      const dueSoonLoans = Number(loanSummary?.dueSoonLoans ?? 0);
+      const returnedLoans = Number(loanSummary?.returnedLoans ?? 0);
+
+      if (activeEl) activeEl.textContent = String(activeLoans);
       if (overdueEl) {
-        const overdue = loanSummary?.overdueLoans ?? 0;
+        const overdue = overdueLoans;
         overdueEl.textContent = String(overdue);
         overdueEl.style.color = overdue > 0 ? '#991b1b' : 'inherit';
       }
       if (dueSoonEl) {
-        const dueSoon = loanSummary?.dueSoonLoans ?? 0;
+        const dueSoon = dueSoonLoans;
         dueSoonEl.textContent = String(dueSoon);
         dueSoonEl.style.color = dueSoon > 0 ? '#92400e' : 'inherit';
       }
-      if (returnedEl) returnedEl.textContent = String(loanSummary?.returnedLoans ?? 0);
+      if (returnedEl) returnedEl.textContent = String(returnedLoans);
+
+      if (metricNote) {
+        if (overdueLoans > 0) {
+          metricNote.textContent = `${overdueLoans} ${ACCOUNT_I18N.overdue}`;
+          metricNote.className = 'metric-footnote warn';
+        } else if (dueSoonLoans > 0) {
+          metricNote.textContent = `${dueSoonLoans} ${ACCOUNT_I18N.dueSoon}`;
+          metricNote.className = 'metric-footnote warn';
+        } else if (activeLoans > 0) {
+          metricNote.textContent = `${returnedLoans} ${ACCOUNT_I18N.returned.toLowerCase ? ACCOUNT_I18N.returned.toLowerCase() : ACCOUNT_I18N.returned}`;
+          metricNote.className = 'metric-footnote good';
+        } else {
+          metricNote.textContent = ACCOUNT_LANG === 'kk' ? 'Қолда белсенді берілім жоқ' : ACCOUNT_LANG === 'en' ? 'No active loans on hand' : 'Активных выдач на руках нет';
+          metricNote.className = 'metric-footnote';
+        }
+      }
     }
 
     function updateStatusAlert(summary) {
@@ -1301,6 +2207,9 @@
       const email = document.getElementById('reader-primary-email');
       const registration = document.getElementById('reader-registration');
       const reviewTasks = document.getElementById('reader-review-tasks');
+      const standingTitle = document.getElementById('standing-title');
+      const standingNote = document.getElementById('standing-note');
+      const openTasks = Number(stats?.openReaderReviewTasks || 0);
 
       if (linkChip) {
         linkChip.textContent = linked ? ACCOUNT_I18N.statusLinked : ACCOUNT_I18N.statusPending;
@@ -1321,10 +2230,18 @@
         }
       }
       if (reviewTasks) {
-        const count = Number(stats?.openReaderReviewTasks || 0);
-        reviewTasks.textContent = count > 0
-          ? ACCOUNT_I18N.reviewTasksSome.replace('{count}', String(count))
+        reviewTasks.textContent = openTasks > 0
+          ? ACCOUNT_I18N.reviewTasksSome.replace('{count}', String(openTasks))
           : ACCOUNT_I18N.reviewTasksNone;
+      }
+      if (standingTitle) {
+        standingTitle.textContent = linked ? ACCOUNT_I18N.statusLinked : ACCOUNT_I18N.statusPending;
+      }
+      if (standingNote) {
+        standingNote.textContent = linked
+          ? (openTasks > 0 ? ACCOUNT_I18N.reviewTasksSome.replace('{count}', String(openTasks)) : ACCOUNT_I18N.reviewTasksNone)
+          : ACCOUNT_I18N.profileMissingBody;
+        standingNote.className = linked ? 'metric-footnote good' : 'metric-footnote warn';
       }
     }
 
@@ -1388,8 +2305,8 @@
       container.innerHTML = items.map((item) => `
         <article class="activity-item">
           <strong>${escapeHtml(item.title)}</strong>
-          <span>${escapeHtml(item.body)}</span>
-          <span>${escapeHtml(formatDate(item.date))}</span>
+          <span class="activity-body">${escapeHtml(item.body)}</span>
+          <span class="activity-date">${escapeHtml(formatDate(item.date))}</span>
         </article>
       `).join('');
     }
@@ -1482,7 +2399,7 @@
     async function loadBooks(tab) {
       tab = tab || currentLoanTab;
       const grid = document.getElementById('book-grid');
-      grid.innerHTML = `<div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p style="margin:8px 0 0;">${({ ru: 'Загрузка выдач...', kk: 'Берілімдер жүктелуде...', en: 'Loading loans...' })[ACCOUNT_LANG]}</p></div>`;
+      grid.innerHTML = `<div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">${({ ru: 'Загрузка выдач...', kk: 'Берілімдер жүктелуде...', en: 'Loading loans...' })[ACCOUNT_LANG]}</p></div>`;
 
       try {
         const [activeResult, returnedResult] = await Promise.all([
@@ -1500,7 +2417,43 @@
         renderActivity();
       } catch (error) {
         console.error(error);
-        grid.innerHTML = `<div class="loading" style="grid-column: 1 / -1;">${ACCOUNT_I18N.loadLoansError}</div>`;
+        grid.innerHTML = `<div class="loading">${ACCOUNT_I18N.loadLoansError}</div>`;
+      }
+    }
+
+    function updateReservationsMetric(reservations) {
+      const totalEl = document.getElementById('reservations-count');
+      const noteEl = document.getElementById('reservations-note');
+      const readyCount = reservations.filter((reservation) => reservation?.status === 'READY').length;
+      const pendingCount = reservations.filter((reservation) => reservation?.status === 'PENDING').length;
+
+      if (totalEl) {
+        totalEl.textContent = String(reservations.length);
+      }
+
+      if (noteEl) {
+        if (readyCount > 0) {
+          noteEl.textContent = ACCOUNT_LANG === 'kk'
+            ? `${readyCount} беруге дайын`
+            : ACCOUNT_LANG === 'en'
+              ? `${readyCount} ready for pickup`
+              : `${readyCount} готово к выдаче`;
+          noteEl.className = 'metric-footnote good';
+        } else if (pendingCount > 0) {
+          noteEl.textContent = ACCOUNT_LANG === 'kk'
+            ? `${pendingCount} сұрау күтілуде`
+            : ACCOUNT_LANG === 'en'
+              ? `${pendingCount} requests pending`
+              : `${pendingCount} запросов в ожидании`;
+          noteEl.className = 'metric-footnote';
+        } else {
+          noteEl.textContent = ACCOUNT_LANG === 'kk'
+            ? 'Белсенді waitlist жоқ'
+            : ACCOUNT_LANG === 'en'
+              ? 'No active waitlist items'
+              : 'Активных waitlist-элементов нет';
+          noteEl.className = 'metric-footnote';
+        }
       }
     }
 
@@ -1545,19 +2498,27 @@
       const canCancel = isActive;
 
       return `
-        <article class="book-card" data-reservation-id="${escapeHtml(res.id)}">
-          <div class="book-preview" style="${isActive ? 'background: linear-gradient(180deg, #0369a1 0%, #0284c7 100%);' : 'background: linear-gradient(180deg, #475569 0%, #64748b 100%); opacity: 0.85;'}">
+        <article class="reservation-row" data-reservation-id="${escapeHtml(res.id)}">
+          <div class="reservation-cover" style="${isActive ? 'background: linear-gradient(180deg, #0369a1 0%, #0284c7 100%);' : 'background: linear-gradient(180deg, #475569 0%, #64748b 100%); opacity: 0.85;'}">
             <small>${ACCOUNT_I18N.reservationLabel}</small>
-            <h3 style="font-size: 14px;">${escapeHtml(bookTitle.substring(0, 40))}${bookTitle.length > 40 ? '…' : ''}</h3>
+            <span>${escapeHtml(bookTitle.substring(0, 28))}${bookTitle.length > 28 ? '…' : ''}</span>
           </div>
-          <h3 class="book-title" style="font-size: 15px;">${escapeHtml(bookTitle.substring(0, 60))}${bookTitle.length > 60 ? '…' : ''}</h3>
-          <div class="book-meta">${reservationStatusBadge(res.status)}</div>
-          ${isbn ? `<div class="book-meta">ISBN: ${escapeHtml(isbn)}</div>` : ''}
-          ${year ? `<div class="book-meta">${ACCOUNT_I18N.year}: ${year}</div>` : ''}
-          <div class="book-meta">${ACCOUNT_I18N.reservedAt}: ${reservedAt}</div>
-          <div class="book-meta">${ACCOUNT_I18N.validUntil}: ${expiresAt}</div>
-          ${res.cancelReasonCode ? `<div class="book-meta" style="color:#991b1b;">${ACCOUNT_I18N.reason}: ${escapeHtml(res.cancelReasonCode)}</div>` : ''}
-          ${canCancel ? `<button class="btn btn-ghost" onclick="cancelReservation('${escapeHtml(res.id)}')" style="margin-top:10px; font-size:13px; padding:8px 16px; color:#991b1b; border-color:#fecaca; width:100%;">${ACCOUNT_LANG === 'kk' ? '✕ Броньды тоқтату' : ACCOUNT_LANG === 'en' ? '✕ Cancel reservation' : '✕ Отменить бронь'}</button>` : ''}
+          <div class="reservation-meta">
+            <div class="reservation-topline">
+              <div>
+                <div class="reservation-kicker">${ACCOUNT_I18N.reservationLabel}</div>
+                <h3 class="reservation-title">${escapeHtml(bookTitle.substring(0, 42))}${bookTitle.length > 42 ? '…' : ''}</h3>
+              </div>
+              <div class="reservation-status">${reservationStatusBadge(res.status)}</div>
+            </div>
+            <div class="reservation-copy">${isbn ? `ISBN: ${escapeHtml(isbn)} · ` : ''}${year ? `${ACCOUNT_I18N.year}: ${escapeHtml(String(year))}` : ''}</div>
+            <div class="reservation-facts">
+              <span>${ACCOUNT_I18N.reservedAt}: ${reservedAt}</span>
+              <span>${ACCOUNT_I18N.validUntil}: ${expiresAt}</span>
+            </div>
+            ${res.cancelReasonCode ? `<div class="reservation-copy" style="color:#991b1b;">${ACCOUNT_I18N.reason}: ${escapeHtml(res.cancelReasonCode)}</div>` : ''}
+            ${canCancel ? `<div class="reservation-actions"><button class="btn btn-ghost" onclick="cancelReservation('${escapeHtml(res.id)}')" style="color:#991b1b; border-color:#fecaca;">${ACCOUNT_LANG === 'kk' ? 'Броньды тоқтату' : ACCOUNT_LANG === 'en' ? 'Cancel reservation' : 'Отменить бронь'}</button></div>` : ''}
+          </div>
         </article>
       `;
     }
@@ -1601,17 +2562,18 @@
         const payload = await response.json();
         const reservations = Array.isArray(payload?.data) ? payload.data : [];
         dashboardState.reservations = reservations;
+        updateReservationsMetric(reservations);
         renderActivity();
 
         if (!reservations.length) {
-          grid.innerHTML = `<div class="loading" style="grid-column:1 / -1;text-align:center;background:#fff;border-style:solid;"><p style="margin:0 0 8px;font-weight:700;color:var(--blue);">${ACCOUNT_I18N.noReservationsTitle}</p><p style="margin:0 0 10px;font-size:13px;color:#5d6972;">${ACCOUNT_I18N.noReservationsBody}</p><a href="${withLang('/catalog')}" style="color:#001e40;text-decoration:underline;font-size:14px;">${ACCOUNT_I18N.openCatalogPlain}</a></div>`;
+          grid.innerHTML = `<div class="loading" style="text-align:center;background:#fff;border-style:solid;"><p style="margin:0 0 8px;font-weight:700;color:var(--blue);">${ACCOUNT_I18N.noReservationsTitle}</p><p style="margin:0 0 10px;font-size:13px;color:#5d6972;">${ACCOUNT_I18N.noReservationsBody}</p><a href="${withLang('/catalog')}" style="color:#001e40;text-decoration:underline;font-size:14px;">${ACCOUNT_I18N.openCatalogPlain}</a></div>`;
           return;
         }
 
         grid.innerHTML = reservations.map(renderReservationCard).join('');
       } catch (error) {
         console.error(error);
-        grid.innerHTML = `<div class="loading" style="grid-column: 1 / -1;">${ACCOUNT_I18N.loadReservationsError}</div>`;
+        grid.innerHTML = `<div class="loading">${ACCOUNT_I18N.loadReservationsError}</div>`;
       }
     }
 
