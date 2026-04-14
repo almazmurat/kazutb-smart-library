@@ -15,169 +15,172 @@
 
   $copy = [
       'ru' => [
-          'title' => 'Навигация по темам — Digital Library',
+        'title' => 'Академическая навигация — Digital Library',
           'hero_eyebrow' => 'Академическая навигация',
           'hero_title' => 'Ищите по теме, дисциплине и исследовательской задаче',
-          'hero_lead' => 'Начните с актуальной структуры направлений и сразу переходите в каталог с реальной доступностью, фильтрами и библиографической детализацией.',
+        'hero_lead' => 'Начните с UDC-направления, затем переходите в реальный каталог с доступностью, библиографией, копиями и дальнейшими фильтрами.',
           'hero_catalog' => 'Открыть каталог',
           'hero_resources' => 'Научные ресурсы',
           'aside_eyebrow' => 'Как пользоваться',
-          'aside_title' => 'От общего направления к точной записи',
-          'aside_body' => 'Эта страница работает как спокойный Stitch-подобный слой навигации: структурно, без декоративного шума и с прямым выходом в поиск.',
+        'aside_title' => 'Начинайте с UDC, а не с витринной таксономии',
+        'aside_body' => 'Эта страница не подменяет каталог. Она помогает быстро выбрать академическое направление, перейти в каталог по UDC и затем уточнить поиск по реальным библиотечным данным.',
           'aside_steps' => [
-              'Выберите факультет, кафедру или специализацию.',
-              'Откройте связанные результаты каталога.',
-              'Уточните выдачу по году, языку и доступности.',
-              'Сохраните нужные позиции в подборку для курса или силлабуса.',
+          'Выберите UDC-маршрут, который ближе всего к вашей теме или дисциплине.',
+          'Откройте каталог уже с применённым UDC-фильтром и сортировкой.',
+          'Уточните выдачу по доступности, языку, году и библиографическим признакам.',
+          'Сохраните нужные позиции в черновик списка литературы или перейдите к внешним ресурсам.',
           ],
-          'panel_eyebrow' => 'Структурированные входы',
-          'panel_title' => 'Живая тематическая навигация',
-          'panel_body' => 'Группы загружаются из реального subject API, поэтому навигация остаётся привязанной к библиотечному каталогу, а не к искусственной промо-таксономии.',
+        'panel_eyebrow' => 'Вторичный слой метаданных',
+        'panel_title' => 'Академические термины, уже присутствующие в каталоге',
+        'panel_body' => 'Ниже показаны реальные факультетные, кафедральные и специализационные термины из библиотечных записей. Они помогают уточнять поиск, но основной backbone discovery остаётся UDC.',
           'loading' => 'Загрузка направлений...',
-          'pathways_eyebrow' => 'Тематические маршруты',
-          'pathways_title' => 'Типовые академические направления',
-          'pathways_body' => 'Используйте эти спокойные точки входа, когда тема шире одной специализации.',
-          'workflow_eyebrow' => 'Учебный сценарий',
-          'workflow_title' => 'Используйте навигацию для подготовки силлабуса',
-          'workflow_body' => 'Держите маршрут внутри реального библиотечного процесса, а не внутри отдельной рекламной воронки.',
-          'banner_title' => 'Реальная структура каталога, а не синтетическая витрина',
-          'banner_body' => 'Тематический слой связан с библиотечными метаданными и обновляется по мере улучшения классификации фонда.',
+        'pathways_eyebrow' => 'UDC-маршруты',
+        'pathways_title' => 'Академические направления с прямым входом в каталог',
+        'pathways_body' => 'Каждый маршрут сразу ведёт в живой каталог с UDC-фильтром. Ключевые слова ниже помогают сузить поиск внутри этого же направления.',
+        'workflow_eyebrow' => 'Рабочий маршрут',
+        'workflow_title' => 'От академической темы к реальному списку литературы',
+        'workflow_body' => 'Используйте UDC как первую точку входа, затем переходите к уточнению, проверке доступности и сборке чернового списка литературы.',
+        'banner_title' => 'UDC задаёт основной каркас академического discovery',
+        'banner_body' => 'Факультеты, кафедры и специализации полезны как поддерживающие термины, но навигация платформы строится вокруг UDC, библиографии, наличия и типа ресурса.',
           'cta_title' => 'Нужен более широкий маршрут поиска?',
-          'cta_body' => 'Перейдите в основной каталог для полного поиска по фонду или откройте подборку преподавателя, если собираете список литературы для курса.',
-          'cta_shortlist' => 'Открыть подборку',
+        'cta_body' => 'Откройте основной каталог для полного поиска по фонду или перейдите в черновик списка литературы, если уже собираете материалы для курса, темы или исследования.',
+        'cta_shortlist' => 'Открыть черновик списка',
+        'card_cta' => 'Открыть маршрут в каталоге',
           'groups' => [
-              'faculties' => 'Факультеты',
-              'departments' => 'Кафедры',
-              'specializations' => 'Специальности',
-              'items' => 'изданий',
-              'error' => 'Не удалось загрузить направления. Используйте поиск по ключевым словам ниже.',
+          'faculties' => 'Факультетные термины',
+          'departments' => 'Кафедральные термины',
+          'specializations' => 'Термины специализаций',
+          'items' => 'записей',
+          'error' => 'Не удалось загрузить терминологическую карту. Используйте UDC-маршруты и ключевые слова ниже.',
           ],
       ],
       'kk' => [
-          'title' => 'Тақырыптық навигация — Digital Library',
+        'title' => 'Академиялық навигация — Digital Library',
           'hero_eyebrow' => 'Академиялық навигация',
           'hero_title' => 'Тақырып, пән және зерттеу сұранысы бойынша іздеңіз',
-          'hero_lead' => 'Бағыттардың өзекті құрылымынан бастап, нақты қолжетімділік, сүзгілер және библиографиялық мәліметтер бар каталогқа бірден өтіңіз.',
+        'hero_lead' => 'ӘОЖ бағытымен бастап, қолжетімділігі, библиографиясы, даналары және қосымша сүзгілері бар нақты каталогқа өтіңіз.',
           'hero_catalog' => 'Каталогты ашу',
           'hero_resources' => 'Ғылыми ресурстар',
           'aside_eyebrow' => 'Қолдану жолы',
-          'aside_title' => 'Жалпы бағыттан нақты жазбаға дейін',
-          'aside_body' => 'Бұл бет Stitch стиліндегі тыныш навигациялық қабат ретінде жұмыс істейді: құрылымды, артық безендірусіз және іздеуге тікелей шығумен.',
+        'aside_title' => 'Витриналық таксономиядан емес, ӘОЖ-дан бастаңыз',
+        'aside_body' => 'Бұл бет каталогты алмастырмайды. Ол академиялық бағытты тез таңдап, каталогқа ӘОЖ бойынша өтіп, іздеуді нақты кітапханалық деректермен дәлдеуге көмектеседі.',
           'aside_steps' => [
-              'Факультетті, кафедраны немесе мамандандыруды таңдаңыз.',
-              'Каталогтағы сәйкес нәтижелерді ашыңыз.',
-              'Нәтижені жыл, тіл және қолжетімділік бойынша нақтылаңыз.',
-              'Қажетті позицияларды курс немесе силлабус үшін іріктемеге сақтаңыз.',
+          'Тақырыпқа немесе пәнге сәйкес келетін ӘОЖ-маршрутты таңдаңыз.',
+          'Каталогты ӘОЖ сүзгісі мен сұрыптауы бірге қолданылған күйде ашыңыз.',
+          'Нәтижені қолжетімділік, тіл, жыл және библиографиялық белгілер бойынша нақтылаңыз.',
+          'Қажетті позицияларды әдебиет тізімінің жұмыс нұсқасына сақтаңыз не сыртқы ресурстарға өтіңіз.',
           ],
-          'panel_eyebrow' => 'Құрылымды кіру нүктелері',
-          'panel_title' => 'Тірі тақырыптық навигация',
-          'panel_body' => 'Топтар нақты subject API-дан жүктеледі, сондықтан бұл навигация жарнамалық қабырғаға емес, кітапхана каталогына сүйенеді.',
+        'panel_eyebrow' => 'Метадеректің қосымша қабаты',
+        'panel_title' => 'Каталогта қазірдің өзінде бар академиялық терминдер',
+        'panel_body' => 'Төменде кітапхана жазбаларынан алынған нақты факультет, кафедра және мамандандыру терминдері көрсетіледі. Олар іздеуді нақтылайды, бірақ discovery-дің негізгі қаңқасы ӘОЖ болып қалады.',
           'loading' => 'Бағыттар жүктелуде...',
-          'pathways_eyebrow' => 'Тақырыптық бағыттар',
-          'pathways_title' => 'Жиі қолданылатын академиялық маршруттар',
-          'pathways_body' => 'Тақырып бір ғана мамандандырудан кең болғанда осы тыныш кіру нүктелерін пайдаланыңыз.',
-          'workflow_eyebrow' => 'Оқу сценарийі',
-          'workflow_title' => 'Силлабус дайындау үшін навигацияны пайдаланыңыз',
-          'workflow_body' => 'Маршрутты жеке промо-воронкада емес, нақты кітапханалық процесте ұстаңыз.',
-          'banner_title' => 'Синтетикалық витрина емес, нақты каталог құрылымы',
-          'banner_body' => 'Тақырыптық қабат кітапхана метадеректерімен байланысты және қордың жіктелуі жақсарған сайын жаңарып отырады.',
+        'pathways_eyebrow' => 'ӘОЖ-маршруттар',
+        'pathways_title' => 'Каталогқа тікелей апаратын академиялық бағыттар',
+        'pathways_body' => 'Әр маршрут бірден ӘОЖ сүзгісімен тірі каталогқа апарады. Төмендегі кілт сөздер сол бағыттың ішінде іздеуді тарылтады.',
+        'workflow_eyebrow' => 'Жұмыс маршруты',
+        'workflow_title' => 'Академиялық тақырыптан нақты әдебиет тізіміне дейін',
+        'workflow_body' => 'Алдымен ӘОЖ-ды таңдаңыз, содан кейін қолжетімділікті тексеріп, іздеуді нақтылап, әдебиет тізімінің жұмыс нұсқасын жинаңыз.',
+        'banner_title' => 'Академиялық discovery-дің негізгі қаңқасын ӘОЖ береді',
+        'banner_body' => 'Факультет, кафедра және мамандандыру терминдері пайдалы, бірақ платформа навигациясы ӘОЖ, библиография, қолжетімділік және ресурс түрі төңірегінде құрылады.',
           'cta_title' => 'Іздеудің кеңірек жолы керек пе?',
-          'cta_body' => 'Қор бойынша толық іздеу үшін негізгі каталогқа өтіңіз немесе курс үшін әдебиет тізімін жинап жатсаңыз, іріктемені ашыңыз.',
-          'cta_shortlist' => 'Іріктемені ашу',
+        'cta_body' => 'Қор бойынша толық іздеу үшін негізгі каталогқа өтіңіз немесе курс, тақырып не зерттеу үшін материал жинап жатсаңыз, әдебиет тізімінің жұмыс нұсқасын ашыңыз.',
+        'cta_shortlist' => 'Жұмыс нұсқасын ашу',
+        'card_cta' => 'Маршрутты каталогта ашу',
           'groups' => [
-              'faculties' => 'Факультеттер',
-              'departments' => 'Кафедралар',
-              'specializations' => 'Мамандандырулар',
-              'items' => 'басылым',
-              'error' => 'Бағыттарды жүктеу мүмкін болмады. Төмендегі кілт сөздер арқылы іздеуді пайдаланыңыз.',
+          'faculties' => 'Факультет терминдері',
+          'departments' => 'Кафедра терминдері',
+          'specializations' => 'Мамандандыру терминдері',
+          'items' => 'жазба',
+          'error' => 'Терминологиялық картаны жүктеу мүмкін болмады. Төмендегі ӘОЖ-маршруттар мен кілт сөздерді қолданыңыз.',
           ],
       ],
       'en' => [
-          'title' => 'Subject navigation — Digital Library',
-          'hero_eyebrow' => 'Academic discovery',
+        'title' => 'Academic navigation — Digital Library',
+        'hero_eyebrow' => 'Academic navigation',
           'hero_title' => 'Browse by subject, teaching area, and research need',
-          'hero_lead' => 'Start from the live subject structure, then move directly into the catalog with real availability, filters, and bibliographic detail.',
+        'hero_lead' => 'Start from a UDC direction, then move into the live catalog with real availability, bibliographic detail, copies, and follow-up filters.',
           'hero_catalog' => 'Open catalog',
           'hero_resources' => 'Research resources',
           'aside_eyebrow' => 'How to use it',
-          'aside_title' => 'Move from a broad topic to the exact record',
-          'aside_body' => 'This page works like a calm Stitch-derived subject layer: structured, search-first, and free from brochure-style noise.',
+        'aside_title' => 'Start with UDC, not a brochure taxonomy',
+        'aside_body' => 'This page does not replace the catalog. It helps readers choose an academic direction quickly, enter the catalog with a UDC filter, and then refine the search around real library data.',
           'aside_steps' => [
-              'Choose a faculty, department, or specialization.',
-              'Open the related catalog results.',
-              'Refine the result set by year, language, and availability.',
-              'Save selected items into shortlist for course support.',
+          'Choose the UDC route closest to the topic, discipline, or research task.',
+          'Open the catalog with the UDC filter and sort already applied.',
+          'Refine the result set by availability, language, year, and bibliographic cues.',
+          'Save selected items into the draft reading list or continue into external resources.',
           ],
-          'panel_eyebrow' => 'Structured entry points',
-          'panel_title' => 'Live subject navigation',
-          'panel_body' => 'These groups are loaded from the real subject API, so the discovery surface stays tied to the actual catalog instead of a synthetic marketing taxonomy.',
+        'panel_eyebrow' => 'Secondary metadata layer',
+        'panel_title' => 'Academic terms already present in the catalog',
+        'panel_body' => 'These faculty, department, and specialization terms are pulled from real library records. They help narrow the search, but UDC remains the main discovery backbone.',
           'loading' => 'Loading subject groups...',
-          'pathways_eyebrow' => 'Subject pathways',
-          'pathways_title' => 'Common academic routes',
-          'pathways_body' => 'Use these quiet starting points when the topic is broader than one formal specialization.',
-          'workflow_eyebrow' => 'Teaching workflow',
-          'workflow_title' => 'Use discovery for syllabus support',
-          'workflow_body' => 'Keep the path close to the real library workflow instead of a separate promotional funnel.',
-          'banner_title' => 'Real catalog structure, not a synthetic browse wall',
-          'banner_body' => 'The subject surface is connected to real library metadata and refreshes as classification coverage improves across the collection.',
+        'pathways_eyebrow' => 'UDC routes',
+        'pathways_title' => 'Academic lanes with a direct catalog entry point',
+        'pathways_body' => 'Each route opens the live catalog with a UDC filter. The keyword chips narrow the search inside the same direction.',
+        'workflow_eyebrow' => 'Working route',
+        'workflow_title' => 'From an academic topic to a usable reading list',
+        'workflow_body' => 'Use UDC as the first step, then refine by real holdings and availability before collecting materials into a draft bibliography.',
+        'banner_title' => 'UDC provides the primary discovery structure',
+        'banner_body' => 'Faculty and specialization labels are useful support terms, but the platform is designed around UDC, bibliography, availability, and resource type.',
           'cta_title' => 'Need a broader search path?',
-          'cta_body' => 'Move into the main catalog for full discovery or open the teaching shortlist when you are building a reading list for a course.',
-          'cta_shortlist' => 'Open shortlist',
+        'cta_body' => 'Move into the main catalog for full collection discovery or open the draft reading list when you are already gathering sources for a course, topic, or research task.',
+        'cta_shortlist' => 'Open draft list',
+        'card_cta' => 'Open route in catalog',
           'groups' => [
-              'faculties' => 'Faculties',
-              'departments' => 'Departments',
-              'specializations' => 'Specializations',
+          'faculties' => 'Faculty terms',
+          'departments' => 'Department terms',
+          'specializations' => 'Specialization terms',
               'items' => 'records',
-              'error' => 'Unable to load the subject map. Use the keyword routes below instead.',
+          'error' => 'Unable to load the terminology map. Use the UDC routes and keyword chips below instead.',
           ],
       ],
   ][$lang];
 
   $cards = [
       'ru' => [
-          ['meta' => 'Технические науки', 'udc' => 'UDC 004', 'title' => 'Информатика и цифровые системы', 'body' => 'Программирование, базы данных, сети, информационные системы, кибербезопасность и ИИ.', 'keywords' => [['q' => 'программирование', 'label' => 'Программирование'], ['q' => 'информационные системы', 'label' => 'Информационные системы'], ['q' => 'базы данных', 'label' => 'Базы данных']]],
-          ['meta' => 'Экономика', 'udc' => 'UDC 33', 'title' => 'Экономика, финансы и менеджмент', 'body' => 'Микро- и макроэкономика, бухгалтерский учёт, финансы, маркетинг и бизнес-планирование.', 'keywords' => [['q' => 'экономика', 'label' => 'Экономика'], ['q' => 'менеджмент', 'label' => 'Менеджмент'], ['q' => 'финансы', 'label' => 'Финансы']]],
-          ['meta' => 'Право и политика', 'udc' => 'UDC 34', 'title' => 'Право и юриспруденция', 'body' => 'Гражданское, уголовное, административное, трудовое и международное право в едином маршруте.', 'keywords' => [['q' => 'право', 'label' => 'Право'], ['q' => 'юриспруденция', 'label' => 'Юриспруденция'], ['q' => 'гражданское право', 'label' => 'Гражданское право']]],
-          ['meta' => 'Образование', 'udc' => 'UDC 37', 'title' => 'Педагогика и методика преподавания', 'body' => 'Дидактика, instructional design, психология обучения и академическая методология.', 'keywords' => [['q' => 'педагогика', 'label' => 'Педагогика'], ['q' => 'методика преподавания', 'label' => 'Методика преподавания'], ['q' => 'образование', 'label' => 'Образование']]],
-          ['meta' => 'Инженерия', 'udc' => 'UDC 62', 'title' => 'Инженерные и производственные технологии', 'body' => 'Автоматизация, электрические системы, транспорт, машиностроение и промышленные процессы.', 'keywords' => [['q' => 'инженерия', 'label' => 'Инженерия'], ['q' => 'автоматизация', 'label' => 'Автоматизация'], ['q' => 'машиностроение', 'label' => 'Машиностроение']]],
-          ['meta' => 'Естественные науки', 'udc' => 'UDC 5', 'title' => 'Наука, химия и экология', 'body' => 'Маршруты по математике, физике, химии, биологии, экологии и пищевым технологиям.', 'keywords' => [['q' => 'математика', 'label' => 'Математика'], ['q' => 'химия', 'label' => 'Химия'], ['q' => 'экология', 'label' => 'Экология']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Информатика и цифровые системы', 'body' => 'Программирование, базы данных, сети, информационные системы, кибербезопасность и цифровая инфраструктура.', 'keywords' => [['q' => 'программирование', 'label' => 'Программирование'], ['q' => 'информационные системы', 'label' => 'Информационные системы'], ['q' => 'базы данных', 'label' => 'Базы данных']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Экономика, финансы и менеджмент', 'body' => 'Экономическая теория, управленческие дисциплины, финансы, маркетинг и прикладная аналитика.', 'keywords' => [['q' => 'экономика', 'label' => 'Экономика'], ['q' => 'менеджмент', 'label' => 'Менеджмент'], ['q' => 'финансы', 'label' => 'Финансы']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Право и нормативная среда', 'body' => 'Гражданское, уголовное, административное, трудовое и международное право с выходом к живым записям фонда.', 'keywords' => [['q' => 'право', 'label' => 'Право'], ['q' => 'юриспруденция', 'label' => 'Юриспруденция'], ['q' => 'гражданское право', 'label' => 'Гражданское право']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '37', 'udc' => 'UDC 37', 'title' => 'Педагогика и методика преподавания', 'body' => 'Дидактика, instructional design, психология обучения, силлабусы и методические материалы.', 'keywords' => [['q' => 'педагогика', 'label' => 'Педагогика'], ['q' => 'методика преподавания', 'label' => 'Методика преподавания'], ['q' => 'образование', 'label' => 'Образование']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Инженерия и производственные технологии', 'body' => 'Автоматизация, электрические системы, транспорт, машиностроение, материалы и прикладные технологии.', 'keywords' => [['q' => 'инженерия', 'label' => 'Инженерия'], ['q' => 'автоматизация', 'label' => 'Автоматизация'], ['q' => 'машиностроение', 'label' => 'Машиностроение']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '5', 'udc' => 'UDC 5', 'title' => 'Естественные науки, химия и экология', 'body' => 'Математика, физика, химия, биология, экология и смежные дисциплины для базовой академической подготовки.', 'keywords' => [['q' => 'математика', 'label' => 'Математика'], ['q' => 'химия', 'label' => 'Химия'], ['q' => 'экология', 'label' => 'Экология']]],
       ],
       'kk' => [
-          ['meta' => 'Техникалық ғылымдар', 'udc' => 'UDC 004', 'title' => 'Информатика және цифрлық жүйелер', 'body' => 'Бағдарламалау, дерекқорлар, желілер, ақпараттық жүйелер, киберқауіпсіздік және ЖИ.', 'keywords' => [['q' => 'программирование', 'label' => 'Бағдарламалау'], ['q' => 'информационные системы', 'label' => 'Ақпараттық жүйелер'], ['q' => 'базы данных', 'label' => 'Дерекқорлар']]],
-          ['meta' => 'Экономика', 'udc' => 'UDC 33', 'title' => 'Экономика, қаржы және менеджмент', 'body' => 'Микро және макроэкономика, бухгалтерлік есеп, қаржы, маркетинг және бизнес-жоспарлау.', 'keywords' => [['q' => 'экономика', 'label' => 'Экономика'], ['q' => 'менеджмент', 'label' => 'Менеджмент'], ['q' => 'финансы', 'label' => 'Қаржы']]],
-          ['meta' => 'Құқық және саясат', 'udc' => 'UDC 34', 'title' => 'Құқық және юриспруденция', 'body' => 'Азаматтық, қылмыстық, әкімшілік, еңбек және халықаралық құқық бір бағытта ұсынылады.', 'keywords' => [['q' => 'право', 'label' => 'Құқық'], ['q' => 'юриспруденция', 'label' => 'Юриспруденция'], ['q' => 'гражданское право', 'label' => 'Азаматтық құқық']]],
-          ['meta' => 'Білім беру', 'udc' => 'UDC 37', 'title' => 'Педагогика және оқыту әдістемесі', 'body' => 'Дидактика, оқыту дизайны, оқу психологиясы және академиялық әдістеме.', 'keywords' => [['q' => 'педагогика', 'label' => 'Педагогика'], ['q' => 'методика преподавания', 'label' => 'Оқыту әдістемесі'], ['q' => 'образование', 'label' => 'Білім беру']]],
-          ['meta' => 'Инженерия', 'udc' => 'UDC 62', 'title' => 'Инженерлік және өндірістік технологиялар', 'body' => 'Автоматтандыру, электр жүйелері, көлік, машина жасау және өндірістік процестер.', 'keywords' => [['q' => 'инженерия', 'label' => 'Инженерия'], ['q' => 'автоматизация', 'label' => 'Автоматтандыру'], ['q' => 'машиностроение', 'label' => 'Машина жасау']]],
-          ['meta' => 'Жаратылыстану ғылымдары', 'udc' => 'UDC 5', 'title' => 'Ғылым, химия және экология', 'body' => 'Математика, физика, химия, биология, экология және тағам технологиялары бағыттары.', 'keywords' => [['q' => 'математика', 'label' => 'Математика'], ['q' => 'химия', 'label' => 'Химия'], ['q' => 'экология', 'label' => 'Экология']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Информатика және цифрлық жүйелер', 'body' => 'Бағдарламалау, дерекқорлар, желілер, ақпараттық жүйелер, киберқауіпсіздік және цифрлық инфрақұрылым.', 'keywords' => [['q' => 'программирование', 'label' => 'Бағдарламалау'], ['q' => 'информационные системы', 'label' => 'Ақпараттық жүйелер'], ['q' => 'базы данных', 'label' => 'Дерекқорлар']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Экономика, қаржы және менеджмент', 'body' => 'Экономикалық теория, басқару пәндері, қаржы, маркетинг және қолданбалы талдау.', 'keywords' => [['q' => 'экономика', 'label' => 'Экономика'], ['q' => 'менеджмент', 'label' => 'Менеджмент'], ['q' => 'финансы', 'label' => 'Қаржы']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Құқық және нормативтік орта', 'body' => 'Азаматтық, қылмыстық, әкімшілік, еңбек және халықаралық құқық бағыттары қордағы нақты жазбаларға апарады.', 'keywords' => [['q' => 'право', 'label' => 'Құқық'], ['q' => 'юриспруденция', 'label' => 'Юриспруденция'], ['q' => 'гражданское право', 'label' => 'Азаматтық құқық']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '37', 'udc' => 'UDC 37', 'title' => 'Педагогика және оқыту әдістемесі', 'body' => 'Дидактика, instructional design, оқу психологиясы, силлабус және әдістемелік материалдар.', 'keywords' => [['q' => 'педагогика', 'label' => 'Педагогика'], ['q' => 'методика преподавания', 'label' => 'Оқыту әдістемесі'], ['q' => 'образование', 'label' => 'Білім беру']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Инженерлік және өндірістік технологиялар', 'body' => 'Автоматтандыру, электр жүйелері, көлік, машина жасау, материалдар және қолданбалы технологиялар.', 'keywords' => [['q' => 'инженерия', 'label' => 'Инженерия'], ['q' => 'автоматизация', 'label' => 'Автоматтандыру'], ['q' => 'машиностроение', 'label' => 'Машина жасау']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '5', 'udc' => 'UDC 5', 'title' => 'Жаратылыстану ғылымдары, химия және экология', 'body' => 'Математика, физика, химия, биология, экология және базалық академиялық дайындыққа қажет аралас пәндер.', 'keywords' => [['q' => 'математика', 'label' => 'Математика'], ['q' => 'химия', 'label' => 'Химия'], ['q' => 'экология', 'label' => 'Экология']]],
       ],
       'en' => [
-          ['meta' => 'Technical Sciences', 'udc' => 'UDC 004', 'title' => 'Computer science and digital systems', 'body' => 'Programming, databases, networking, information systems, cybersecurity, and AI.', 'keywords' => [['q' => 'программирование', 'label' => 'Programming'], ['q' => 'информационные системы', 'label' => 'Information systems'], ['q' => 'базы данных', 'label' => 'Databases']]],
-          ['meta' => 'Economics', 'udc' => 'UDC 33', 'title' => 'Economics, finance, and management', 'body' => 'Micro and macroeconomics, accounting, finance, marketing, and business planning.', 'keywords' => [['q' => 'экономика', 'label' => 'Economics'], ['q' => 'менеджмент', 'label' => 'Management'], ['q' => 'финансы', 'label' => 'Finance']]],
-          ['meta' => 'Law & Policy', 'udc' => 'UDC 34', 'title' => 'Law and jurisprudence', 'body' => 'Civil, criminal, administrative, labor, and international law in one discovery lane.', 'keywords' => [['q' => 'право', 'label' => 'Law'], ['q' => 'юриспруденция', 'label' => 'Jurisprudence'], ['q' => 'гражданское право', 'label' => 'Civil law']]],
-          ['meta' => 'Education', 'udc' => 'UDC 37', 'title' => 'Pedagogy and teaching method', 'body' => 'Didactics, instructional design, learning psychology, and academic methodology.', 'keywords' => [['q' => 'педагогика', 'label' => 'Pedagogy'], ['q' => 'методика преподавания', 'label' => 'Teaching method'], ['q' => 'образование', 'label' => 'Education']]],
-          ['meta' => 'Engineering', 'udc' => 'UDC 62', 'title' => 'Engineering and industrial technologies', 'body' => 'Automation, electrical systems, transport, machinery, and industrial processes.', 'keywords' => [['q' => 'инженерия', 'label' => 'Engineering'], ['q' => 'автоматизация', 'label' => 'Automation'], ['q' => 'машиностроение', 'label' => 'Machinery']]],
-          ['meta' => 'Natural Sciences', 'udc' => 'UDC 5', 'title' => 'Science, chemistry, and the environment', 'body' => 'Mathematics, physics, chemistry, biology, ecology, and food technology routes.', 'keywords' => [['q' => 'математика', 'label' => 'Mathematics'], ['q' => 'химия', 'label' => 'Chemistry'], ['q' => 'экология', 'label' => 'Ecology']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Computer science and digital systems', 'body' => 'Programming, databases, networking, information systems, cybersecurity, and digital infrastructure.', 'keywords' => [['q' => 'программирование', 'label' => 'Programming'], ['q' => 'информационные системы', 'label' => 'Information systems'], ['q' => 'базы данных', 'label' => 'Databases']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Economics, finance, and management', 'body' => 'Economic theory, management disciplines, finance, marketing, and applied analytics.', 'keywords' => [['q' => 'экономика', 'label' => 'Economics'], ['q' => 'менеджмент', 'label' => 'Management'], ['q' => 'финансы', 'label' => 'Finance']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Law and the regulatory environment', 'body' => 'Civil, criminal, administrative, labor, and international law with a direct path to live records.', 'keywords' => [['q' => 'право', 'label' => 'Law'], ['q' => 'юриспруденция', 'label' => 'Jurisprudence'], ['q' => 'гражданское право', 'label' => 'Civil law']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '37', 'udc' => 'UDC 37', 'title' => 'Pedagogy and teaching method', 'body' => 'Didactics, instructional design, learning psychology, syllabi, and teaching-method resources.', 'keywords' => [['q' => 'педагогика', 'label' => 'Pedagogy'], ['q' => 'методика преподавания', 'label' => 'Teaching method'], ['q' => 'образование', 'label' => 'Education']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Engineering and industrial technologies', 'body' => 'Automation, electrical systems, transport, machinery, materials, and applied industrial processes.', 'keywords' => [['q' => 'инженерия', 'label' => 'Engineering'], ['q' => 'автоматизация', 'label' => 'Automation'], ['q' => 'машиностроение', 'label' => 'Machinery']]],
+        ['meta' => 'UDC backbone', 'udc_code' => '5', 'udc' => 'UDC 5', 'title' => 'Natural sciences, chemistry, and environment', 'body' => 'Mathematics, physics, chemistry, biology, ecology, and adjacent foundations for academic study.', 'keywords' => [['q' => 'математика', 'label' => 'Mathematics'], ['q' => 'химия', 'label' => 'Chemistry'], ['q' => 'экология', 'label' => 'Ecology']]],
       ],
   ][$lang];
 
   $workflow = [
       'ru' => [
-          ['title' => 'Выберите нужное направление', 'body' => 'Начните с живой группы факультета или специализации, чтобы поиск шёл от академической структуры, которой уже пользуется библиотека.'],
-          ['title' => 'Уточните результаты каталога', 'body' => 'В каталоге сузьте выдачу по языку, году и доступности под конкретный курс или исследовательскую задачу.'],
-          ['title' => 'Проверьте доступ к электронным ресурсам', 'body' => 'Через раздел ресурсов проверьте, находится ли материал в локальной коллекции, лицензионной платформе или в контролируемом цифровом канале.'],
-          ['title' => 'Сохраните итог в подборку', 'body' => 'Перенесите выбранные позиции в подборку, чтобы экспортировать или согласовать список литературы для курса.'],
+        ['title' => 'Выберите UDC-направление', 'body' => 'Начните с маршрута, который отражает реальную академическую тему: вычисления, экономика, право, педагогика, инженерия или естественные науки.'],
+        ['title' => 'Откройте каталог уже в нужной зоне', 'body' => 'Каждый маршрут ведёт в каталог с UDC-фильтром, поэтому вы не начинаете поиск с пустого экрана.'],
+        ['title' => 'Уточните по доступности и типу ресурса', 'body' => 'Проверьте наличие экземпляров, язык, год, ISBN, а при необходимости перейдите в лицензионные и внешние ресурсы.'],
+        ['title' => 'Соберите рабочий список литературы', 'body' => 'Добавьте подходящие записи в shortlist, чтобы получить черновой список для курса, темы или исследовательской задачи.'],
       ],
       'kk' => [
-          ['title' => 'Қажетті бағытты таңдаңыз', 'body' => 'Іздеу кітапхана қазірдің өзінде қолданатын академиялық құрылымнан басталуы үшін факультет не мамандандыру тобынан бастаңыз.'],
-          ['title' => 'Каталог нәтижесін нақтылаңыз', 'body' => 'Каталогта нақты курс немесе зерттеу міндеті үшін нәтижені тіл, жыл және қолжетімділік бойынша тарылтыңыз.'],
-          ['title' => 'Электрондық қолжетімділікті тексеріңіз', 'body' => 'Ресурстар бөлімі арқылы материалдың жергілікті қорда, лицензиялық платформада немесе бақыланатын цифрлық арнада тұрғанын тексеріңіз.'],
-          ['title' => 'Қорытындыны іріктемеге сақтаңыз', 'body' => 'Таңдалған позицияларды іріктемеге өткізіп, курсқа арналған әдебиет тізімін экспорттаңыз немесе келісіңіз.'],
+        ['title' => 'ӘОЖ бағытын таңдаңыз', 'body' => 'Есептеу, экономика, құқық, педагогика, инженерия немесе жаратылыстану секілді нақты академиялық тақырыптан бастаңыз.'],
+        ['title' => 'Каталогты бірден дұрыс аймақта ашыңыз', 'body' => 'Әр маршрут каталогты ӘОЖ сүзгісімен ашады, сондықтан іздеу бос экраннан басталмайды.'],
+        ['title' => 'Қолжетімділік пен ресурс түрін нақтылаңыз', 'body' => 'Даналардың бар-жоғын, тілді, жылды, ISBN-ды тексеріп, қажет болса сыртқы және лицензиялық ресурстарға өтіңіз.'],
+        ['title' => 'Әдебиет тізімінің жұмыс нұсқасын жинаңыз', 'body' => 'Курс, тақырып немесе зерттеу үшін керек жазбаларды shortlist-ке сақтаңыз.'],
       ],
       'en' => [
-          ['title' => 'Choose the right subject lane', 'body' => 'Start with the live faculty or specialization group so the search begins from the academic structure already used by the library.'],
-          ['title' => 'Refine the catalog results', 'body' => 'In the catalog, narrow the result set by language, year, and availability for the exact course or research need.'],
-          ['title' => 'Check digital access and databases', 'body' => 'Use the resources area to verify whether the material lives in the local collection, a licensed platform, or a controlled digital channel.'],
-          ['title' => 'Save the final set into shortlist', 'body' => 'Move the chosen items into shortlist so the reading list can be exported or shared as part of course preparation.'],
+        ['title' => 'Choose the UDC direction', 'body' => 'Start from a real academic lane such as computing, economics, law, pedagogy, engineering, or natural sciences.'],
+        ['title' => 'Open the catalog in the right zone', 'body' => 'Each route opens the catalog with a UDC filter so the search does not begin from an empty state.'],
+        ['title' => 'Refine by availability and resource type', 'body' => 'Check copies, language, year, ISBN, and move into licensed or external resources when the topic requires it.'],
+        ['title' => 'Build a working draft bibliography', 'body' => 'Save the right records into shortlist so the material set can support a course, topic, or research task.'],
       ],
   ][$lang];
 @endphp
@@ -247,9 +250,10 @@
             <p>{{ $card['body'] }}</p>
             <div class="discover-keywords">
               @foreach($card['keywords'] as $keyword)
-                <a href="{{ $withLang('/catalog', ['q' => $keyword['q']]) }}" class="keyword-chip">{{ $keyword['label'] }}</a>
+                <a href="{{ $withLang('/catalog', ['udc' => $card['udc_code'], 'q' => $keyword['q'], 'sort' => 'title']) }}" class="keyword-chip">{{ $keyword['label'] }}</a>
               @endforeach
             </div>
+            <a href="{{ $withLang('/catalog', ['udc' => $card['udc_code'], 'sort' => 'title']) }}" class="discover-card-cta">{{ $copy['card_cta'] }}</a>
           </article>
         @endforeach
       </div>
@@ -479,6 +483,31 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+  }
+
+  .discover-card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    padding: 11px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(195, 198, 209, 0.55);
+    background: rgba(0, 30, 64, 0.03);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s ease, border-color .18s ease, color .18s ease;
+  }
+
+  .discover-card-cta:hover {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+    transform: translate3d(0, -1px, 0);
   }
 
   .keyword-chip {

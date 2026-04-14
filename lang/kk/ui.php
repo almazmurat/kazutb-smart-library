@@ -3,8 +3,8 @@
 return [
     'skip_to_main' => 'Негізгі мазмұнға өту',
     'brand' => [
-        'title' => 'Академиялық навигатор',
-        'subtitle' => 'Digital Library',
+        'title' => 'KazTBU Digital Library',
+        'subtitle' => 'Since 2003',
         'home_aria' => 'Digital Library басты бетіне өту',
     ],
     'nav' => [
@@ -13,6 +13,7 @@ return [
         'resources' => 'Ресурстар',
         'discover' => 'Бағыттар',
         'shortlist' => 'Іріктеме',
+        'about' => 'Кітапхана туралы',
         'account' => 'Кабинет',
     ],
     'actions' => [

@@ -15,17 +15,25 @@
   $copy = [
       'ru' => [
           'title' => 'Подборка литературы — Digital Library',
-          'hero_eyebrow' => 'Подборка литературы',
+          'hero_eyebrow' => 'Черновик списка литературы',
           'hero_title' => 'Черновик списка литературы',
-          'hero_body' => 'Собирайте книги из каталога и электронные ресурсы для подготовки силлабуса. Выберите формат — скопируйте или распечатайте готовый список.',
+          'hero_body' => 'Сохраняйте сюда книги из каталога и подходящие электронные ресурсы. Эта страница помогает собрать рабочий список для курса, темы или исследовательской задачи без фальшивых сценариев.',
+          'workspace_label' => 'Как это работает',
+          'workspace_title' => 'Рабочая зона для подбора и экспорта литературы',
+          'workspace_body' => 'Shortlist уже работает как реальный промежуточный слой: записи попадают сюда из каталога и ресурсных карточек, а затем собираются в печатный или копируемый черновик.',
+          'workspace_cards' => [
+            ['title' => 'Добавляйте записи из каталога', 'body' => 'Открывайте книги, проверяйте доступность и сохраняйте подходящие позиции в shortlist.'],
+            ['title' => 'Смешивайте печатные и электронные источники', 'body' => 'В одном черновике можно держать локальные книги и внешние лицензированные ресурсы.'],
+            ['title' => 'Готовьте черновой список без лишней ручной сборки', 'body' => 'Когда список сформирован, его можно скопировать, распечатать или доработать как рабочий библиографический черновик.'],
+          ],
           'loading' => 'Загрузка подборки...',
           'empty_icon' => 'Подборка',
           'empty_title' => 'Подборка пока пуста',
-          'empty_body' => 'Добавляйте издания из каталога или прикрепляйте записи из электронных ресурсов. Сохранённый набор появится здесь для экспорта.',
+          'empty_body' => 'Записи появятся здесь после добавления из карточек каталога, страниц книг и подключённых электронных ресурсов. Как только появится первый набор, вы сможете собрать и экспортировать черновик списка литературы.',
           'open_catalog' => 'Открыть каталог',
           'resources' => 'Ресурсы',
           'browse_subjects' => 'Поиск по направлениям',
-          'back_to_account' => '← Вернуться в кабинет',
+          'back_to_account' => '← Вернуться в читательский кабинет',
           'draft_title_label' => 'Название черновика',
           'draft_title_placeholder' => 'Например: Литература для дисциплины «Информатика»',
           'draft_notes_label' => 'Заметки',
@@ -46,17 +54,25 @@
       ],
       'kk' => [
           'title' => 'Әдебиет іріктемесі — Digital Library',
-          'hero_eyebrow' => 'Әдебиет іріктемесі',
+          'hero_eyebrow' => 'Әдебиет тізімінің жұмыс нұсқасы',
           'hero_title' => 'Әдебиет тізімінің жұмыс нұсқасы',
-          'hero_body' => 'Силлабус дайындау үшін каталогтағы кітаптарды және электрондық ресурстарды жинаңыз. Қажетті форматты таңдап, дайын тізімді көшіріп не басып шығарыңыз.',
+          'hero_body' => 'Каталогтағы кітаптар мен лайықты электрондық ресурстарды осында сақтаңыз. Бұл бет артық уәделерсіз курс, тақырып немесе зерттеу үшін жұмыс тізімін жинауға көмектеседі.',
+          'workspace_label' => 'Қалай жұмыс істейді',
+          'workspace_title' => 'Әдебиетті іріктеу мен экспорттауға арналған жұмыс аймағы',
+          'workspace_body' => 'Shortlist қазірдің өзінде нақты аралық қабат ретінде жұмыс істейді: жазбалар каталогтан және ресурс карталарынан түседі, содан кейін басып шығаруға не көшіруге болатын жұмыс нұсқасына жиналады.',
+          'workspace_cards' => [
+            ['title' => 'Жазбаларды каталогтан қосыңыз', 'body' => 'Кітап карточкаларын ашып, қолжетімділікті тексеріп, керек позицияларды shortlist-ке сақтаңыз.'],
+            ['title' => 'Баспа және электрондық көздерді бірге ұстаңыз', 'body' => 'Бір жұмыс нұсқасында жергілікті кітаптар мен лицензиялық сыртқы ресурстар қатар тұра алады.'],
+            ['title' => 'Тізімді қолмен жинамай-ақ дайындаңыз', 'body' => 'Жиын қалыптасқаннан кейін оны көшіруге, басып шығаруға немесе жұмыс библиографиясы ретінде жетілдіруге болады.'],
+          ],
           'loading' => 'Іріктеме жүктелуде...',
           'empty_icon' => 'Іріктеме',
           'empty_title' => 'Іріктеме әзірге бос',
-          'empty_body' => 'Каталогтан басылымдарды қосыңыз немесе электрондық ресурстардан қажетті материалдарды тіркеңіз. Сақталған жиынтық экспорт үшін осында көрсетіледі.',
+          'empty_body' => 'Жазбалар каталог карточкаларынан, кітап беттерінен және қосылған электрондық ресурстардан қосылғаннан кейін осында көрінеді. Бірінші жиын пайда болғанда, оны әдебиет тізімінің жұмыс нұсқасы ретінде экспорттай аласыз.',
           'open_catalog' => 'Каталогты ашу',
           'resources' => 'Ресурстар',
           'browse_subjects' => 'Тақырыптарды қарау',
-          'back_to_account' => '← Кабинетке оралу',
+          'back_to_account' => '← Оқырман кабинетіне оралу',
           'draft_title_label' => 'Жұмыс нұсқасының атауы',
           'draft_title_placeholder' => 'Мысалы: «Информатика» пәніне арналған әдебиет',
           'draft_notes_label' => 'Ескертпелер',
@@ -77,17 +93,25 @@
       ],
       'en' => [
           'title' => 'Shortlist — Digital Library',
-          'hero_eyebrow' => 'Teaching shortlist',
+          'hero_eyebrow' => 'Draft reading list',
           'hero_title' => 'Draft reading list',
-          'hero_body' => 'Collect catalog titles and electronic resources for syllabus preparation. Choose the output format, then copy or print the final list.',
+          'hero_body' => 'Save catalog titles and relevant electronic resources here. This page is a real working draft for a course, topic, or research task rather than a fake placeholder workspace.',
+          'workspace_label' => 'How it works',
+          'workspace_title' => 'A working layer for gathering and exporting sources',
+          'workspace_body' => 'The shortlist already behaves like a usable intermediate workspace: records arrive from catalog and resource pages, then become a printable or copyable draft bibliography.',
+          'workspace_cards' => [
+            ['title' => 'Add records from the catalog', 'body' => 'Open book records, review availability, and save the right items into shortlist.'],
+            ['title' => 'Mix print and electronic sources', 'body' => 'One draft can hold local books and licensed external resources side by side.'],
+            ['title' => 'Export a usable draft quickly', 'body' => 'Once the set is ready, copy it, print it, or continue refining it as a working bibliography.'],
+          ],
           'loading' => 'Loading shortlist...',
           'empty_icon' => 'Shortlist',
           'empty_title' => 'The shortlist is empty',
-          'empty_body' => 'Add titles from the catalog or attach relevant entries from research resources. The saved set will appear here for export.',
+          'empty_body' => 'Records will appear here after they are added from catalog cards, book pages, and connected electronic resources. Once the first set exists, you can export it as a real draft reading list.',
           'open_catalog' => 'Open catalog',
           'resources' => 'Resources',
           'browse_subjects' => 'Browse subjects',
-          'back_to_account' => '← Return to account',
+          'back_to_account' => '← Return to member account',
           'draft_title_label' => 'Draft title',
           'draft_title_placeholder' => 'For example: Reading list for “Computer Science”',
           'draft_notes_label' => 'Notes',
@@ -122,6 +146,25 @@
 
   <section class="page-section">
     <div class="container">
+      <div class="shortlist-guide-block">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--green">{{ $copy['workspace_label'] }}</div>
+            <h2>{{ $copy['workspace_title'] }}</h2>
+            <p>{{ $copy['workspace_body'] }}</p>
+          </div>
+        </div>
+
+        <div class="shortlist-guide-grid">
+          @foreach($copy['workspace_cards'] as $card)
+            <article class="shortlist-guide-card">
+              <h3>{{ $card['title'] }}</h3>
+              <p>{{ $card['body'] }}</p>
+            </article>
+          @endforeach
+        </div>
+      </div>
+
       <div id="shortlist-loading" class="shortlist-state shortlist-state--loading">
         <div class="shortlist-spinner"></div>
         <p>{{ $copy['loading'] }}</p>
@@ -228,6 +271,45 @@
 @section('head')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
+  .shortlist-guide-block {
+    margin-bottom: 28px;
+  }
+
+  .shortlist-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .shortlist-guide-card {
+    padding: 18px;
+    border-radius: var(--radius-lg, 6px);
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .shortlist-guide-card:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
+    border-color: rgba(20,105,109,.18);
+  }
+
+  .shortlist-guide-card h3 {
+    margin: 0 0 8px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.28rem;
+    color: var(--blue);
+  }
+
+  .shortlist-guide-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
   .draft-meta-block {
     margin-bottom: 24px;
     padding: 20px 22px;
@@ -619,6 +701,10 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   @media (max-width: 680px) {
+    .shortlist-guide-grid {
+      grid-template-columns: 1fr;
+    }
+
     .shortlist-item {
       grid-template-columns: 1fr;
     }

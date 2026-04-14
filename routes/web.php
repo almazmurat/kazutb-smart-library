@@ -101,13 +101,15 @@ Route::get('/login', function (Request $request) {
     ]);
 });
 
-// Consolidated pages: /services, /about, /news removed — redirects to prevent 404s.
+// Consolidated pages: /services and /news removed — redirects to prevent 404s.
 Route::get('/services', fn () => redirect('/', 301));
 Route::get('/news', fn () => redirect('/', 301));
-Route::get('/about', fn () => redirect('/contacts', 301));
+Route::get('/about', function () {
+    return view('about', ['activePage' => 'about']);
+});
 
 Route::get('/contacts', function () {
-    return view('contacts', ['activePage' => 'contacts']);
+    return view('about', ['activePage' => 'about']);
 });
 
 Route::get('/resources', function () {
@@ -121,7 +123,7 @@ Route::get('/discover', function () {
 });
 
 Route::get('/shortlist', function () {
-    return view('shortlist', ['activePage' => '']);
+    return view('shortlist', ['activePage' => 'shortlist']);
 });
 
 // WS1 convergence freeze:

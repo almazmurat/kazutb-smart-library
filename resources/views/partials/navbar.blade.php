@@ -43,7 +43,7 @@
       <a href="{{ $routeWithLang('/resources') }}" class="nav-link-pill @if(($activePage ?? '') === 'resources') active @endif">{{ __('ui.nav.resources') }}</a>
       <a href="{{ $routeWithLang('/discover') }}" class="nav-link-pill @if(($activePage ?? '') === 'discover') active @endif">{{ __('ui.nav.discover') }}</a>
       <a href="{{ $routeWithLang('/shortlist') }}" class="nav-link-pill @if(($activePage ?? '') === 'shortlist') active @endif">{{ __('ui.nav.shortlist') }}</a>
-      <a href="{{ $routeWithLang('/account') }}" class="nav-link-pill @if(($activePage ?? '') === 'account') active @endif">{{ __('ui.nav.account') }}</a>
+      <a href="{{ $routeWithLang('/about') }}" class="nav-link-pill @if(($activePage ?? '') === 'about') active @endif">{{ __('ui.nav.about') }}</a>
     </nav>
 
     <div class="nav-actions">

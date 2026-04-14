@@ -3,8 +3,8 @@
 return [
     'skip_to_main' => 'Skip to main content',
     'brand' => [
-        'title' => 'The Academic Curator',
-        'subtitle' => 'Digital Library',
+        'title' => 'KazTBU Digital Library',
+        'subtitle' => 'Since 2003',
         'home_aria' => 'Go to the Digital Library home page',
     ],
     'nav' => [
@@ -13,6 +13,7 @@ return [
         'resources' => 'Resources',
         'discover' => 'Discover',
         'shortlist' => 'Shortlist',
+        'about' => 'About the Library',
         'account' => 'Account',
     ],
     'actions' => [
