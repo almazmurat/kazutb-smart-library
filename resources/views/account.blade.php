@@ -985,7 +985,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
       gap: 28px;
-      align-items: stretch;
+      align-items: start;
     }
 
     .workspace-main {
@@ -993,6 +993,7 @@
       display: grid;
       gap: 28px;
       align-content: start;
+      align-self: start;
     }
 
     .metric-grid {
@@ -1411,6 +1412,7 @@
       display: grid;
       gap: 22px;
       align-content: start;
+      align-self: start;
     }
 
     .rail-panel h4,
