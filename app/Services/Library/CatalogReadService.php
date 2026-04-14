@@ -86,7 +86,15 @@ class CatalogReadService
         }
 
         if (!empty($language)) {
-            $builder->whereRaw("LOWER(COALESCE(d.language_code, '')) = ?", [mb_strtolower($language)]);
+            $aliases = $this->resolveLanguageAliases($language);
+
+            $builder->where(function ($query) use ($aliases): void {
+                $query->whereIn(DB::raw("LOWER(COALESCE(d.language_code, ''))"), $aliases);
+
+                foreach ($aliases as $alias) {
+                    $query->orWhereRaw("LOWER(COALESCE(d.language_raw, '')) ~ ?", ['(^|[^[:alpha:]])' . preg_quote($alias, '/') . '([^[:alpha:]]|$)']);
+                }
+            });
         }
 
         if ($yearFrom !== null) {
@@ -178,6 +186,8 @@ class CatalogReadService
             $subjects = $this->decodeJsonValue($row->subjects_json);
             $primaryAuthor = is_array($authors) && isset($authors[0]['name']) ? (string) $authors[0]['name'] : null;
             $documentId = (string) ($row->document_id ?? '');
+            $languageCode = (string) ($row->language_code ?: '');
+            $languageRaw = (string) ($row->language_raw ?: $languageCode ?: '');
 
             $available = is_array($copySummary) ? (int) ($copySummary['availableCopies'] ?? 0) : 0;
             $totalCopies = is_array($copySummary) ? (int) ($copySummary['totalCopies'] ?? 0) : 0;
@@ -204,8 +214,8 @@ class CatalogReadService
                 ],
                 'publicationYear' => $row->publication_year,
                 'language' => [
-                    'code' => (string) ($row->language_code ?: ''),
-                    'raw' => (string) ($row->language_raw ?: $row->language_code ?: ''),
+                    'code' => $this->normalizeLanguageCode($languageCode, $languageRaw),
+                    'raw' => $languageRaw,
                 ],
                 'isbn' => [
                     'raw' => (string) ($row->isbn_normalized ?: $row->isbn_raw ?: ''),
@@ -298,6 +308,42 @@ class CatalogReadService
         $normalized = preg_replace('/[\x1F\\]+/u', ' ', $fieldData);
 
         return trim(preg_replace('/\s+/u', ' ', $normalized ?: '') ?: '');
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function resolveLanguageAliases(string $language): array
+    {
+        $normalized = mb_strtolower(trim($language));
+
+        return match ($normalized) {
+            'ru', 'rus', 'russian' => ['ru', 'rus', 'russian'],
+            'kk', 'kaz', 'kz', 'kazakh', 'қазақ' => ['kk', 'kaz', 'kz', 'kazakh', 'қазақ'],
+            'en', 'eng', 'english' => ['en', 'eng', 'english'],
+            default => [$normalized],
+        };
+    }
+
+    private function normalizeLanguageCode(string $languageCode, string $languageRaw = ''): string
+    {
+        $candidates = [mb_strtolower(trim($languageCode)), mb_strtolower(trim($languageRaw))];
+
+        foreach ($candidates as $candidate) {
+            if (in_array($candidate, ['ru', 'rus', 'russian'], true)) {
+                return 'ru';
+            }
+
+            if (in_array($candidate, ['kk', 'kaz', 'kz', 'kazakh', 'қазақ'], true)) {
+                return 'kk';
+            }
+
+            if (in_array($candidate, ['en', 'eng', 'english'], true)) {
+                return 'en';
+            }
+        }
+
+        return $candidates[0] ?? '';
     }
 
     /**
