@@ -1,53 +1,98 @@
 @php
   $lang = app()->getLocale();
+  $withLang = static function (string $path) use ($lang): string {
+    return $lang === 'ru' ? $path : $path.(str_contains($path, '?') ? '&' : '?').'lang='.$lang;
+  };
   $copy = [
     'ru' => [
       'title' => 'Безопасный вход — Digital Library',
-      'eyebrow' => 'Безопасный вход',
-      'hero' => 'Вход в портал читателя',
+      'brand' => 'KazUTB Digital Library',
+      'eyebrow' => 'Защищённый институциональный доступ',
+      'hero' => 'Вход в библиотечную систему',
       'lead' => 'Авторизуйтесь, чтобы открыть личный кабинет, проверить выдачи, управлять бронированиями и переходить к контролируемым цифровым материалам.',
-      'badges' => ['Единый вход через API', 'Доступ к каталогу 24/7', 'Личный профиль читателя'],
-      'formTitle' => 'Авторизация',
-      'formSub' => 'Введите логин или email и пароль. После успешного входа вы будете перенаправлены в кабинет читателя.',
+      'ssoBanner' => 'Университетский шлюз единого входа',
+      'divider' => 'или используйте учётные данные',
+      'formTitle' => 'Войти',
+      'formSub' => 'Используйте действующий университетский логин или email и пароль. После успешного входа вы будете перенаправлены в кабинет читателя.',
       'loginLabel' => 'Логин или Email',
       'loginPlaceholder' => 'Например: student01 или mail@example.com',
       'passwordLabel' => 'Пароль',
       'passwordPlaceholder' => 'Введите пароль',
-      'submit' => 'Войти',
+      'submit' => 'Продолжить',
+      'statusLabel' => 'Статус системы',
+      'statusValue' => 'Контур CRM-аутентификации: онлайн',
+      'accessLabel' => 'Контур доступа',
+      'accessValue' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.',
+      'footerLegal' => '© 2024 КазТБУ Digital Library. Все права защищены.',
+      'footerMeta' => 'Institutional Resource Center v4.2.0',
+      'footerLinks' => [
+        ['label' => 'Контакты', 'href' => '/contacts'],
+        ['label' => 'Ресурсы', 'href' => '/resources'],
+        ['label' => 'Каталог', 'href' => '/catalog'],
+      ],
       'demoTitle' => 'Быстрый вход',
       'demoSub' => 'Нажмите на карточку для мгновенного входа под выбранной ролью.',
+      'demoEnv' => 'Dev / Demo',
     ],
     'kk' => [
       'title' => 'Қауіпсіз кіру — Digital Library',
-      'eyebrow' => 'Қауіпсіз кіру',
-      'hero' => 'Оқырман порталына кіру',
+      'brand' => 'KazUTB Digital Library',
+      'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
+      'hero' => 'Кітапхана жүйесіне кіру',
       'lead' => 'Жеке кабинетке кіру, берілімдерді тексеру, броньдарды басқару және бақыланатын цифрлық материалдарға өту үшін авторизациядан өтіңіз.',
-      'badges' => ['API арқылы бірыңғай кіру', 'Каталогқа 24/7 қолжетімділік', 'Оқырманның жеке профилі'],
+      'ssoBanner' => 'Университеттің бірыңғай кіру шлюзі',
+      'divider' => 'немесе есептік деректерді қолданыңыз',
       'formTitle' => 'Кіру',
-      'formSub' => 'Логин немесе email мен құпиясөзді енгізіңіз. Сәтті кіргеннен кейін оқырман кабинетіне өтесіз.',
+      'formSub' => 'Қолданыстағы университет логинін немесе email мен құпиясөзді енгізіңіз. Сәтті кіргеннен кейін оқырман кабинетіне өтесіз.',
       'loginLabel' => 'Логин немесе Email',
       'loginPlaceholder' => 'Мысалы: student01 немесе mail@example.com',
       'passwordLabel' => 'Құпиясөз',
       'passwordPlaceholder' => 'Құпиясөзді енгізіңіз',
-      'submit' => 'Кіру',
+      'submit' => 'Жалғастыру',
+      'statusLabel' => 'Жүйе күйі',
+      'statusValue' => 'CRM аутентификация контуры: онлайн',
+      'accessLabel' => 'Қолжетімділік контуры',
+      'accessValue' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.',
+      'footerLegal' => '© 2024 КазТБУ Digital Library. Барлық құқықтар қорғалған.',
+      'footerMeta' => 'Institutional Resource Center v4.2.0',
+      'footerLinks' => [
+        ['label' => 'Байланыс', 'href' => '/contacts'],
+        ['label' => 'Ресурстар', 'href' => '/resources'],
+        ['label' => 'Каталог', 'href' => '/catalog'],
+      ],
       'demoTitle' => 'Жедел кіру',
       'demoSub' => 'Таңдалған рөлмен бірден кіру үшін карточканы басыңыз.',
+      'demoEnv' => 'Dev / Demo',
     ],
     'en' => [
       'title' => 'Secure access — Digital Library',
-      'eyebrow' => 'Secure access',
-      'hero' => 'Sign in to the member portal',
+      'brand' => 'KazUTB Digital Library',
+      'eyebrow' => 'Secure institutional access',
+      'hero' => 'Sign in to the library system',
       'lead' => 'Authenticate to open your account, review loans, manage reservations, and move into controlled digital materials.',
-      'badges' => ['Single sign-on via API', '24/7 catalog access', 'Personal reader profile'],
+      'ssoBanner' => 'University single sign-on gateway',
+      'divider' => 'or use credentials',
       'formTitle' => 'Sign in',
-      'formSub' => 'Enter your login or email and password. After a successful sign-in you will be redirected to the reader account.',
+      'formSub' => 'Use your current university login or email and password. After a successful sign-in you will be redirected to the member account.',
       'loginLabel' => 'Login or email',
       'loginPlaceholder' => 'Example: student01 or mail@example.com',
       'passwordLabel' => 'Password',
       'passwordPlaceholder' => 'Enter your password',
-      'submit' => 'Sign in',
+      'submit' => 'Continue',
+      'statusLabel' => 'System status',
+      'statusValue' => 'CRM identity gateway: online',
+      'accessLabel' => 'Access layer',
+      'accessValue' => 'The session stays inside the library interface while credentials are verified through the CRM API.',
+      'footerLegal' => '© 2024 KazUTB Digital Library. All rights reserved.',
+      'footerMeta' => 'Institutional Resource Center v4.2.0',
+      'footerLinks' => [
+        ['label' => 'Contacts', 'href' => '/contacts'],
+        ['label' => 'Resources', 'href' => '/resources'],
+        ['label' => 'Catalog', 'href' => '/catalog'],
+      ],
       'demoTitle' => 'Quick sign-in',
       'demoSub' => 'Choose a card to sign in instantly with the selected role.',
+      'demoEnv' => 'Dev / Demo',
     ],
   ][$lang];
 @endphp
@@ -61,265 +106,311 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/shell.css">
   <style>
     :root {
-      --border: rgba(195, 198, 209, .55);
+      --surface: #f8f9fa;
+      --surface-low: #f3f4f5;
+      --surface-lowest: #ffffff;
+      --surface-high: #e7e8e9;
+      --outline: #74777f;
+      --outline-variant: #c4c6cf;
       --text: #191c1d;
-      --muted: #43474f;
-      --blue: #001e40;
-      --cyan: #14696d;
+      --muted: #44474e;
+      --primary: #000511;
+      --primary-deep: #001e40;
+      --secondary: #13696d;
+      --tertiary: #f7bd48;
       --danger: #ba1a1a;
-      --success: #14696d;
-      --shadow: 0 12px 32px rgba(25, 28, 29, .04);
-      --shadow-soft: 0 6px 16px rgba(25, 28, 29, .03);
+      --success: #13696d;
+      --shadow: 0 8px 24px rgba(25, 28, 29, 0.04);
+      --radius-lg: 4px;
       --radius-xl: 8px;
-      --radius-lg: 6px;
       --container: 1280px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
       font-family: 'Manrope', system-ui, sans-serif;
       color: var(--text);
-      background: #f8f9fa;
-      background-attachment: fixed;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    .container { width: min(100% - 32px, var(--container)); margin: 0 auto; }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      min-height: 84px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-weight: 900;
-      letter-spacing: -.3px;
-    }
-
-    .brand small {
-      display: block;
-      color: var(--muted);
-      margin-top: 3px;
-      font-weight: 500;
-    }
-
-    .btn {
-      border: 0;
-      cursor: pointer;
-      font: inherit;
-      border-radius: var(--radius-lg);
-      padding: 12px 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-      font-weight: 700;
-    }
-
-    .btn:hover { transform: translate3d(0, -1px, 0); }
-    .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), #003366); box-shadow: var(--shadow-soft); }
-    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
-
-    .page {
-      min-height: calc(100vh - var(--shell-nav-height));
-      display: grid;
-      place-items: center;
-      padding: 38px 0;
-    }
-
-    .layout {
-      width: min(100%, 1100px);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .panel {
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-      box-shadow: var(--shadow);
-      padding: 30px;
+      background:
+        radial-gradient(circle at top left, rgba(19, 105, 109, 0.05), transparent 28%),
+        radial-gradient(circle at right 14%, rgba(0, 30, 64, 0.05), transparent 24%),
+        linear-gradient(180deg, #fcfcfc 0%, var(--surface) 100%);
       position: relative;
-      overflow: hidden;
-      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    .panel::before {
+    body::before {
       content: '';
-      position: absolute;
+      position: fixed;
       inset: 0;
-      background: linear-gradient(120deg, rgba(255,255,255,.10), transparent 34%);
+      background: linear-gradient(90deg, rgba(196, 198, 207, 0.1), transparent 22%, transparent 78%, rgba(196, 198, 207, 0.08));
       pointer-events: none;
     }
 
-    .panel:hover {
-      transform: translate3d(0, -2px, 0);
-      box-shadow: 0 18px 38px rgba(25, 28, 29, .06);
-      border-color: rgba(0,30,64,.12);
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .promo {
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      color: var(--text);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-      border-color: var(--border);
     }
 
-    .promo::after {
-      content: '';
-      position: absolute;
-      right: -60px;
-      top: -60px;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(20,105,109,.10), transparent 70%);
-      transition: transform .42s cubic-bezier(0.2, 0.8, 0.2, 1);
+    .accent-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--tertiary));
+      opacity: 0.4;
+      pointer-events: none;
     }
 
-    .promo:hover::after {
-      transform: translate3d(-10px, 10px, 0);
+    .watermark {
+      position: fixed;
+      left: 24px;
+      bottom: 46px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(68px, 12vw, 102px);
+      line-height: .82;
+      letter-spacing: -0.06em;
+      color: rgba(0, 5, 17, 0.05);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .header {
+      width: 100%;
+      padding: 28px 24px 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .header-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .brand {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--primary);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 0;
-      border-radius: 0;
-      width: fit-content;
-      font-size: 11px;
+      padding: 5px 12px;
+      border-radius: 4px;
+      background: rgba(225, 227, 228, 0.84);
+      color: var(--secondary);
+      font-size: 10px;
       font-weight: 800;
-      letter-spacing: .14em;
       text-transform: uppercase;
-      color: var(--cyan);
-      background: transparent;
-      border: 0;
+      letter-spacing: 0.16em;
     }
 
-    .promo h1 {
-      margin: 16px 0 12px;
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(19, 105, 109, 0.12);
+    }
+
+    .main {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 24px 64px;
+    }
+
+    .auth-shell {
+      width: min(100%, 440px);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .auth-card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(196, 198, 207, 0.12);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      padding: 36px 30px 30px;
+    }
+
+    .intro {
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .intro h1 {
+      margin: 0 0 10px;
       font-family: 'Newsreader', Georgia, serif;
-      font-size: 38px;
-      letter-spacing: -1px;
-      line-height: 1.08;
-      color: var(--blue);
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      font-weight: 500;
+      letter-spacing: -0.05em;
+      color: var(--primary);
     }
 
-    .promo p {
+    .intro p {
       margin: 0;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-      max-width: 470px;
+      font-size: 0.92rem;
+      line-height: 1.65;
     }
 
-    .badge-row {
+    .hero-copy {
+      display: none;
+    }
+
+    .sso-banner {
+      width: 100%;
+      border: 0;
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 22px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 17px 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+      color: #ffffff;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 10px 20px rgba(0, 30, 64, 0.12);
     }
 
-    .badge {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.86);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
+    .sso-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    .form-title {
-      margin: 0 0 10px;
-      font-size: 30px;
-      letter-spacing: -.8px;
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 18px 0 24px;
     }
 
-    .form-sub {
-      margin: 0 0 22px;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(196, 198, 207, 0.35);
     }
 
-    .field { margin-bottom: 14px; }
+    .divider span {
+      color: var(--outline);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      white-space: nowrap;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
 
     .label {
       display: block;
-      margin-bottom: 7px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #334155;
+      margin: 0 0 8px 1px;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
     }
 
     .input {
       width: 100%;
       border: 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--outline);
       background: transparent;
       color: var(--text);
       border-radius: 0;
-      padding: 13px 0;
+      padding: 13px 1px;
       outline: none;
-      font: inherit;
+      font-size: 0.94rem;
       box-shadow: none;
-      transition: border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: border-color 0.18s ease;
+    }
+
+    .input::placeholder {
+      color: rgba(116, 119, 127, 0.58);
     }
 
     .input:focus {
-      border-color: var(--blue);
+      border-color: var(--secondary);
       box-shadow: none;
-      background: rgba(255,255,255,.42);
+      background: transparent;
+    }
+
+    .submit-wrap {
+      padding-top: 10px;
     }
 
     .submit {
       width: 100%;
-      margin-top: 10px;
-      padding: 14px 18px;
-      font-size: 15px;
+      border: 1px solid rgba(196, 198, 207, 0.2);
+      background: transparent;
+      color: var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      font-size: 0.83rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
     }
 
-    .note {
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--muted);
-      text-align: center;
+    .submit:hover:not(:disabled) {
+      background: var(--surface-low);
+      border-color: rgba(116, 119, 127, 0.34);
+      transform: translateY(-1px);
+    }
+
+    .submit:disabled {
+      opacity: 0.65;
+      cursor: wait;
     }
 
     .message {
-      margin-top: 14px;
+      margin-top: 16px;
       padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 13px;
+      border-radius: var(--radius-lg);
+      font-size: 12px;
       line-height: 1.45;
       display: none;
     }
@@ -338,40 +429,83 @@
       background: rgba(22,163,74,.08);
     }
 
-    @media (max-width: 980px) {
-      .layout { grid-template-columns: 1fr; }
-      .promo h1 { font-size: 32px; }
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 0 12px;
     }
 
-    @media (max-width: 640px) {
-      .container { width: min(100% - 20px, var(--container)); }
-      .panel { padding: 20px; }
-      .promo h1 { font-size: 26px; }
-      .promo p { font-size: 15px; }
-      .input { padding: 14px 16px; min-height: 44px; }
-      .btn { min-height: 44px; }
+    .status-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 76px;
     }
 
-    @media (max-width: 480px) {
-      .container { width: min(100% - 16px, var(--container)); }
-      .panel { padding: 16px; }
-      .promo h1 { font-size: 22px; }
+    .status-card--accent {
+      padding-left: 12px;
+      border-left: 1px solid rgba(247, 189, 72, 0.8);
     }
 
-    /* Demo quick-login cards */
+    .status-label {
+      color: rgba(174, 126, 0, 0.95);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .status-card:not(.status-card--accent) .status-label {
+      color: var(--muted);
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--secondary);
+      flex-shrink: 0;
+    }
+
     .demo-block {
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px dashed var(--border);
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(196, 198, 207, 0.22);
+    }
+
+    .demo-env-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: rgba(245, 158, 11, 0.1);
+      color: #b45309;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      margin-bottom: 12px;
     }
 
     .demo-block-title {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: .06em;
-      margin: 0 0 4px;
+      letter-spacing: .16em;
+      margin: 0 0 5px;
     }
 
     .demo-block-subtitle {
@@ -384,29 +518,28 @@
     .demo-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
     }
 
     .demo-card {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+      padding: 12px 13px;
+      border: 1px solid rgba(196, 198, 207, 0.3);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.9);
       cursor: pointer;
-      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
       text-align: left;
-      font: inherit;
       color: var(--text);
     }
 
     .demo-card:hover {
-      border-color: rgba(0,30,64,.16);
-      background: rgba(0,30,64,.03);
-      transform: translate3d(0, -2px, 0);
-      box-shadow: 0 12px 26px rgba(25,28,29,.04);
+      border-color: rgba(0,30,64,.18);
+      background: rgba(243, 244, 245, 0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(25, 28, 29, .04);
     }
 
     .demo-card:disabled {
@@ -436,88 +569,219 @@
       margin-top: 2px;
     }
 
-    .demo-env-badge {
-      display: inline-flex;
+    .footer {
+      width: 100%;
+      border-top: 1px solid rgba(196, 198, 207, 0.16);
+      background: rgba(243, 244, 245, 0.78);
+      padding: 28px 24px 34px;
+    }
+
+    .footer-inner {
+      width: min(100%, var(--container));
+      margin: 0 auto;
+      display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 5px 10px;
-      border-radius: 999px;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: rgba(68, 71, 78, 0.82);
+    }
+
+    .footer-copy strong {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .footer-copy span {
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .05em;
+      font-weight: 800;
       text-transform: uppercase;
-      background: rgba(245,158,11,.10);
-      color: #b45309;
-      border: 1px solid rgba(245,158,11,.18);
-      margin-bottom: 10px;
+      letter-spacing: 0.16em;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      color: rgba(68, 71, 78, 0.8);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      transition: color 0.18s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding-top: 24px;
+      }
+
+      .main {
+        padding: 18px 16px 44px;
+      }
+
+      .auth-card {
+        padding: 28px 20px 22px;
+      }
+
+      .status-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 4px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-links {
+        justify-content: flex-start;
+        gap: 18px;
+      }
     }
 
     @media (max-width: 640px) {
-      .demo-cards { grid-template-columns: 1fr; }
+      .watermark {
+        left: 12px;
+        bottom: 96px;
+      }
+
+      .demo-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .divider {
+        gap: 10px;
+      }
+
+      .divider span {
+        font-size: 9px;
+      }
     }
   </style>
 </head>
-<body class="site-shell">
-  @include('partials.navbar', ['activePage' => ''])
+<body>
+  <div class="accent-line" aria-hidden="true"></div>
+  <div class="watermark" aria-hidden="true">ARCHIVE</div>
 
-  <main class="page">
-    <div class="container layout">
-      <section class="panel promo">
-        <div>
-          <span class="eyebrow">{{ $copy['eyebrow'] }}</span>
-          <h1>{{ $copy['hero'] }}</h1>
-          <p>{{ $copy['lead'] }}</p>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">{{ $copy['brand'] }}</div>
+        <div class="eyebrow">
+          <span class="eyebrow-dot" aria-hidden="true"></span>
+          <span>{{ $copy['eyebrow'] }}</span>
         </div>
+      </div>
+    </header>
 
-        <div class="badge-row">
-          @foreach($copy['badges'] as $badge)
-            <span class="badge">{{ $badge }}</span>
+    <main class="main">
+      <div class="auth-shell">
+        <section class="auth-card">
+          <div class="intro">
+            <h1>{{ $copy['formTitle'] }}</h1>
+            <p>{{ $copy['formSub'] }}</p>
+          </div>
+
+          <div class="hero-copy" aria-hidden="true">{{ $copy['hero'] }} · {{ $copy['lead'] }}</div>
+
+          <div class="sso-banner" aria-hidden="true">
+            <span class="sso-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path d="M12 3 3 7v2h18V7l-9-4Zm-7 8v6H3v2h18v-2h-2v-6h-2v6h-3v-6h-2v6H9v-6H7Z"/>
+              </svg>
+            </span>
+            <span>{{ $copy['ssoBanner'] }}</span>
+          </div>
+
+          <div class="divider">
+            <span>{{ $copy['divider'] }}</span>
+          </div>
+
+          <form id="login-form" novalidate>
+            <div class="field">
+              <label class="label" for="login">{{ $copy['loginLabel'] }}</label>
+              <input class="input" id="login" name="login" type="text" placeholder="{{ $copy['loginPlaceholder'] }}" autocomplete="username" required />
+            </div>
+
+            <div class="field">
+              <label class="label" for="password">{{ $copy['passwordLabel'] }}</label>
+              <input class="input" id="password" name="password" type="password" placeholder="{{ $copy['passwordPlaceholder'] }}" autocomplete="current-password" required />
+            </div>
+
+            <div class="submit-wrap">
+              <button id="submit-btn" type="submit" class="submit">{{ $copy['submit'] }}</button>
+            </div>
+            <div id="form-message" class="message" aria-live="polite"></div>
+          </form>
+
+          @if(!empty($demoEnabled) && !empty($demoIdentities))
+          <div class="demo-block" id="demo-login-block">
+            <span class="demo-env-badge">{{ $copy['demoEnv'] }}</span>
+            <p class="demo-block-title">{{ $copy['demoTitle'] }}</p>
+            <p class="demo-block-subtitle">{{ $copy['demoSub'] }}</p>
+            <div class="demo-cards">
+              @foreach($demoIdentities as $identity)
+              <button type="button" class="demo-card" data-demo-slug="{{ $identity['slug'] }}" onclick="demoLogin('{{ $identity['slug'] }}', this)">
+                <span class="demo-card-icon">{{ $identity['icon'] }}</span>
+                <span class="demo-card-info">
+                  <span class="demo-card-label">{{ $identity['label'] }}</span>
+                  <span class="demo-card-desc">{{ $identity['description'] }}</span>
+                </span>
+              </button>
+              @endforeach
+            </div>
+          </div>
+          @endif
+        </section>
+
+        <section class="status-grid" aria-label="Access context">
+          <div class="status-card status-card--accent">
+            <span class="status-label">{{ $copy['statusLabel'] }}</span>
+            <div class="status-line">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span>{{ $copy['statusValue'] }}</span>
+            </div>
+          </div>
+          <div class="status-card">
+            <span class="status-label">{{ $copy['accessLabel'] }}</span>
+            <div class="status-line">
+              <span>{{ $copy['accessValue'] }}</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-copy">
+          <strong>{{ $copy['footerLegal'] }}</strong>
+          <span>{{ $copy['footerMeta'] }}</span>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          @foreach($copy['footerLinks'] as $link)
+            <a href="{{ $withLang($link['href']) }}">{{ $link['label'] }}</a>
           @endforeach
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2 class="form-title">{{ $copy['formTitle'] }}</h2>
-        <p class="form-sub">{{ $copy['formSub'] }}</p>
-
-        <form id="login-form" novalidate>
-          <div class="field">
-            <label class="label" for="login">{{ $copy['loginLabel'] }}</label>
-            <input class="input" id="login" name="login" type="text" placeholder="{{ $copy['loginPlaceholder'] }}" autocomplete="username" required />
-          </div>
-
-          <div class="field">
-            <label class="label" for="password">{{ $copy['passwordLabel'] }}</label>
-            <input class="input" id="password" name="password" type="password" placeholder="{{ $copy['passwordPlaceholder'] }}" autocomplete="current-password" required />
-          </div>
-
-          <button id="submit-btn" type="submit" class="btn btn-primary submit">{{ $copy['submit'] }}</button>
-          <div id="form-message" class="message"></div>
-        </form>
-
-        @if(!empty($demoEnabled) && !empty($demoIdentities))
-        <div class="demo-block" id="demo-login-block">
-          <span class="demo-env-badge">⚠ Dev / Demo</span>
-          <p class="demo-block-title">{{ $copy['demoTitle'] }}</p>
-          <p class="demo-block-subtitle">{{ $copy['demoSub'] }}</p>
-          <div class="demo-cards">
-            @foreach($demoIdentities as $identity)
-            <button class="demo-card" data-demo-slug="{{ $identity['slug'] }}" onclick="demoLogin('{{ $identity['slug'] }}', this)">
-              <span class="demo-card-icon">{{ $identity['icon'] }}</span>
-              <span class="demo-card-info">
-                <span class="demo-card-label">{{ $identity['label'] }}</span>
-                <span class="demo-card-desc">{{ $identity['description'] }}</span>
-              </span>
-            </button>
-            @endforeach
-          </div>
-        </div>
-        @endif
-      </section>
-    </div>
-  </main>
-
-  @include('partials.footer')
+        </nav>
+      </div>
+    </footer>
+  </div>
 
   <script>
     const AUTH_USER_KEY = 'library.auth.user';
@@ -529,7 +793,7 @@
         'submitting' => 'Входим...',
         'success' => 'Вход выполнен успешно. Перенаправление...',
         'submitError' => 'Не удалось выполнить вход',
-        'submitDefault' => 'Войти',
+        'submitDefault' => 'Продолжить',
         'demoSuccess' => 'Быстрый вход выполнен. Перенаправление...',
         'demoError' => 'Ошибка быстрого входа',
       ],
@@ -539,7 +803,7 @@
         'submitting' => 'Кіріп жатырмыз...',
         'success' => 'Кіру сәтті өтті. Қайта бағытталуда...',
         'submitError' => 'Кіру мүмкін болмады',
-        'submitDefault' => 'Кіру',
+        'submitDefault' => 'Жалғастыру',
         'demoSuccess' => 'Жедел кіру орындалды. Қайта бағытталуда...',
         'demoError' => 'Жедел кіру қатесі',
       ],
@@ -549,7 +813,7 @@
         'submitting' => 'Signing in...',
         'success' => 'Sign-in successful. Redirecting...',
         'submitError' => 'Unable to sign in',
-        'submitDefault' => 'Sign in',
+        'submitDefault' => 'Continue',
         'demoSuccess' => 'Quick sign-in completed. Redirecting...',
         'demoError' => 'Quick sign-in failed',
       ],
