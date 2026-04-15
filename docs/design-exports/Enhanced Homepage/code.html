@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -81,6 +80,21 @@
         body { font-family: 'Manrope', sans-serif; }
         .serif-italic { font-family: 'Newsreader', serif; font-style: italic; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .stats-card {
+            background: linear-gradient(135deg, #001F3F 0%, #000613 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 106, 106, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-surface text-on-surface antialiased">
@@ -188,6 +202,144 @@
 </div>
 </div>
 </section>
+<!-- 1. Library Schedule & News Section -->
+<section class="max-w-screen-2xl mx-auto px-8 pb-32">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Schedule Column -->
+<div class="lg:col-span-5 space-y-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="schedule">schedule</span>
+<h2 class="font-headline text-3xl text-primary">Operational Hours</h2>
+</div>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/30">
+<div class="divide-y divide-outline-variant/20">
+<div class="p-6 flex justify-between items-center bg-surface-container-low/50">
+<div>
+<h4 class="font-body font-bold text-primary">Main Reading Room</h4>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Quiet Study &amp; General Collection</p>
+</div>
+<div class="text-right">
+<p class="font-body text-secondary font-semibold">08:00 — 21:00</p>
+<p class="text-[10px] text-outline">MON — SAT</p>
+</div>
+</div>
+<div class="p-6 flex justify-between items-center">
+<div>
+<h4 class="font-body font-bold text-primary">Institutional Archive</h4>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Restricted Access &amp; Special Collections</p>
+</div>
+<div class="text-right">
+<p class="font-body text-secondary font-semibold">09:00 — 17:00</p>
+<p class="text-[10px] text-outline">MON — FRI</p>
+</div>
+</div>
+<div class="p-6 flex justify-between items-center">
+<div>
+<h4 class="font-body font-bold text-primary">Digital Innovation Lab</h4>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Technical Support &amp; Terminals</p>
+</div>
+<div class="text-right">
+<p class="font-body text-secondary font-semibold">08:00 — 20:00</p>
+<p class="text-[10px] text-outline">DAILY</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-primary/5 text-center">
+<p class="text-xs font-body italic text-primary/70">Summer hours may vary. Please check institutional calendar for public holidays.</p>
+</div>
+</div>
+</div>
+<!-- News Feed Column -->
+<div class="lg:col-span-7 space-y-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="newspaper">newspaper</span>
+<h2 class="font-headline text-3xl text-primary">News &amp; Announcements</h2>
+</div>
+<a class="text-sm font-label text-secondary hover:underline" href="#">View all updates</a>
+</div>
+<div class="space-y-6">
+<!-- News Item 1 -->
+<article class="flex gap-6 group cursor-pointer">
+<div class="flex-shrink-0 w-24 h-24 rounded-lg bg-surface-container-high overflow-hidden">
+<img alt="Journal conference" class="w-full h-full object-cover transition-transform group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaQhv9x5D0VlEmtcJOEyuROghcFQhaH9S69QWbrWHUgxm3eZ4YmoYDm7jWHjSec6YNDsu7weUm2Xq5wm0jRuD608Xw-OPrZJsiEqv6AtNHl4NTFVeoI6ONkyxrN0gN5ONy64BIRuCxM9DDQqMmJhcm9jjh3tIn-7f5YGSO-i_NCs6t_9QpAhF1Ys8yJiQyB8F6gIZVuxE9rVM-Tekyr4I2ic52bYXSaiJFyiy1fuPxm4qzvO1vMhTsqJpzjczBwg-w5BP0gH9cP2-Y"/>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<span class="px-2 py-0.5 bg-secondary/10 text-secondary text-[10px] font-bold rounded uppercase">Event</span>
+<span class="text-xs text-outline">March 12, 2024</span>
+</div>
+<h3 class="font-headline text-xl text-primary group-hover:text-secondary transition-colors">2024 International Symposium on Sustainable Industrial Design</h3>
+<p class="font-body text-sm text-on-surface-variant line-clamp-2">KazUTB hosts global experts to discuss the future of circular economy in manufacturing sectors across Central Asia.</p>
+</div>
+</article>
+<!-- News Item 2 -->
+<article class="flex gap-6 group cursor-pointer">
+<div class="flex-shrink-0 w-24 h-24 rounded-lg bg-surface-container-high overflow-hidden">
+<img alt="Digital archive" class="w-full h-full object-cover transition-transform group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvsJXhO4BT3nErsYmpmBCD4S9P9h08mCe8T-G4dNBq60-KgKjappYMsdTHGnXpBXEeq1MVZKtTDm_Be56Sz2HfVnT0ZxqmjYVWJda98E5s11Gyi9Sk4fnCWqUC6e9JaaEd1dL4W2iK6VCLf_pJ27cp7FqshDX0j-Ij3gbnwR6oJw8fc5Kc-AdXIvgrU-o0A5vwfbIQUXzBnYuylUio-yctLx1xJiksfYMgCOUusb-co_tFNJ8nBXMTK1gJQrO9AC5XaPHTUnKUSBqv"/>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">System Update</span>
+<span class="text-xs text-outline">March 08, 2024</span>
+</div>
+<h3 class="font-headline text-xl text-primary group-hover:text-secondary transition-colors">Expanded Access to Scopus &amp; Web of Science Collections</h3>
+<p class="font-body text-sm text-on-surface-variant line-clamp-2">New subscription tiers allow undergraduate researchers full access to international citation databases via the portal.</p>
+</div>
+</article>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Library Statistics Visualization Section -->
+<section class="max-w-screen-2xl mx-auto px-8 pb-32">
+<div class="stats-card rounded-2xl p-12 text-on-primary">
+<div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+<div class="space-y-4">
+<h2 class="font-headline text-4xl text-white">The Pulse of <br/><span class="serif-italic text-secondary-fixed">Innovation</span></h2>
+<p class="font-body text-white/60 leading-relaxed">Real-time metrics from our growing institutional repository and research network.</p>
+<div class="pt-4">
+<button class="px-6 py-2 border border-white/20 hover:bg-white/10 rounded-full text-xs font-label transition-all">Download Annual Report</button>
+</div>
+</div>
+<div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-8">
+<!-- Metric 1 -->
+<div class="flex flex-col gap-2">
+<div class="text-5xl font-headline font-bold text-white tabular-nums tracking-tighter">42.8k</div>
+<div class="flex items-center gap-2">
+<div class="h-[2px] w-8 bg-secondary-fixed"></div>
+<span class="text-xs font-label uppercase tracking-widest text-white/50">Digital Resources</span>
+</div>
+<p class="text-[11px] text-white/40 mt-1">Growth: +14% YoY</p>
+</div>
+<!-- Metric 2 -->
+<div class="flex flex-col gap-2">
+<div class="text-5xl font-headline font-bold text-white tabular-nums tracking-tighter">1.2M</div>
+<div class="flex items-center gap-2">
+<div class="h-[2px] w-8 bg-secondary-fixed"></div>
+<span class="text-xs font-label uppercase tracking-widest text-white/50">Annual Downloads</span>
+</div>
+<p class="text-[11px] text-white/40 mt-1">Active impact globally</p>
+</div>
+<!-- Metric 3 -->
+<div class="flex flex-col gap-2">
+<div class="text-5xl font-headline font-bold text-white tabular-nums tracking-tighter">650+</div>
+<div class="flex items-center gap-2">
+<div class="h-[2px] w-8 bg-secondary-fixed"></div>
+<span class="text-xs font-label uppercase tracking-widest text-white/50">Faculty Patents</span>
+</div>
+<p class="text-[11px] text-white/40 mt-1">Registered technological works</p>
+</div>
+</div>
+</div>
+<!-- Subtle Abstract Graphic Overlay (Simulated High-Fi) -->
+<div class="absolute bottom-0 right-0 w-1/3 h-full opacity-20 pointer-events-none">
+<svg class="w-full h-full" viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<path d="M44.7,-76.4C58.1,-69.2,69.2,-58.1,76.4,-44.7C83.5,-31.4,86.7,-15.7,85.6,-0.6C84.5,14.5,79.1,28.9,71.2,42.1C63.2,55.3,52.7,67.3,39.6,74.9C26.5,82.5,10.8,85.7,-4.1,82.8C-19,79.9,-33.1,70.9,-45.1,60.8C-57.1,50.7,-67,39.6,-73.4,26.5C-79.8,13.4,-82.7,-1.8,-79.8,-15.7C-76.9,-29.6,-68.2,-42.2,-57,-51C-45.7,-59.8,-31.9,-64.8,-18.2,-69.9C-4.5,-75,9.1,-80.2,24.1,-81.4C39.1,-82.6,55.5,-79.8,44.7,-76.4Z" fill="white" transform="translate(100 100)"></path>
+</svg>
+</div>
+</div>
+</section>
 <!-- Informational Section (Asymmetric) -->
 <section class="max-w-screen-2xl mx-auto px-8 pb-32 flex flex-col md:flex-row items-center gap-20">
 <div class="w-full md:w-1/2">
@@ -215,6 +367,43 @@
 <h4 class="font-bold text-primary font-body">Global Integration</h4>
 <p class="text-sm text-on-surface-variant">Seamlessly connected to international research networks and DOI registries.</p>
 </div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Additional Information (Quick Guides & Help) -->
+<section class="max-w-screen-2xl mx-auto px-8 pb-32 border-t border-outline-variant/20 pt-16">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="space-y-4">
+<h5 class="font-label text-xs uppercase tracking-widest font-bold text-primary">Getting Started</h5>
+<ul class="space-y-2">
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Library Card Registration</a></li>
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">VPN for Remote Access</a></li>
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Searching the OPAC</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="font-label text-xs uppercase tracking-widest font-bold text-primary">Research Tools</h5>
+<ul class="space-y-2">
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Citation Style Guides</a></li>
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Anti-Plagiarism Checks</a></li>
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Data Management Plans</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="font-label text-xs uppercase tracking-widest font-bold text-primary">Support</h5>
+<ul class="space-y-2">
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Interlibrary Loans</a></li>
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Submit a Thesis</a></li>
+<li><a class="text-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Technical Support Desk</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="font-label text-xs uppercase tracking-widest font-bold text-primary">Direct Contact</h5>
+<div class="p-4 bg-surface-container-low rounded-lg border border-outline-variant/10">
+<p class="text-sm font-bold text-primary">Librarian-on-Duty</p>
+<p class="text-xs text-on-surface-variant mt-1 mb-3">Live chat available during main reading room hours.</p>
+<button class="w-full py-2 bg-secondary text-white text-xs font-bold rounded hover:opacity-90 transition-all">Start Chat</button>
 </div>
 </div>
 </div>
