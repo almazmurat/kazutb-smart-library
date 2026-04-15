@@ -188,6 +188,7 @@
 @section('title', $copy['title'])
 
 @section('content')
+  <div id="discover-page">
   <section class="page-hero discover-hero">
     <div class="container discover-hero-shell">
       <div>
@@ -232,7 +233,7 @@
     </div>
   </section>
 
-  <section class="page-section">
+  <section id="discover-pathways" class="page-section">
     <div class="container">
       <div class="section-head">
         <div>
@@ -260,7 +261,7 @@
     </div>
   </section>
 
-  <section class="page-section">
+  <section id="discover-workflow" class="page-section">
     <div class="container">
       <div class="section-head section-head-centered">
         <div>
@@ -296,7 +297,7 @@
     </div>
   </section>
 
-  <section class="cta-section">
+  <section id="discover-cta" class="cta-section">
     <div class="container">
       <h2>{{ $copy['cta_title'] }}</h2>
       <p>{{ $copy['cta_body'] }}</p>
@@ -306,6 +307,7 @@
       </div>
     </div>
   </section>
+  </div>
 @endsection
 
 @section('head')
