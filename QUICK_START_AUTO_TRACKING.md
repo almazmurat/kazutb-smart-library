@@ -29,8 +29,11 @@ cat AGENT_TRACKING_INSTRUCTIONS.md  # Patterns (10 min read)
 
 ### End of Session
 ```bash
-# One command does everything
+# Option 1: From project root
 bash scripts/dev/auto-sync.sh
+
+# Option 2: From ANY subdirectory (using wrapper)
+/path/to/project/auto-sync
 
 # Automatically:
 # ✓ Commits all changes with memory references
@@ -140,10 +143,11 @@ Auto-tracker creates these fragments:
 
 ## Troubleshooting
 
-**Q: Auto-sync script failed**
-- Check you're in project root
-- Run from: `/home/admlibrary/kazutb-smart-library-main`
-- Command: `bash scripts/dev/auto-sync.sh`
+**Q: "bash: scripts/dev/auto-sync.sh: No such file or directory"**
+- You're likely in a subdirectory (like `docs/design-exports/`)
+- Solution 1: Change to project root: `cd /home/admlibrary/kazutb-smart-library-main && bash scripts/dev/auto-sync.sh`
+- Solution 2 (easier): Use wrapper from anywhere: `/home/admlibrary/kazutb-smart-library-main/auto-sync`
+- Solution 3: Add wrapper to PATH for ultimate convenience
 
 **Q: Memory fragment not created**
 - Check memory file exists in: `artifacts/obsidian/memory-fragments/`
