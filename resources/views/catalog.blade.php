@@ -27,6 +27,12 @@
   $physicalOnly = request()->boolean('physical_only');
   $institution = (string) request()->query('institution', '');
   $sort = (string) request()->query('sort', 'relevance');
+  $imagePool = [
+      '/images/news/default-library.jpg',
+      '/images/news/classics-event.jpg',
+      '/images/news/campus-library.jpg',
+      '/images/news/author-visit.jpg',
+  ];
 
   $copy = [
       'ru' => [
@@ -113,6 +119,8 @@
               'permission' => 'Требуется специальный доступ',
               'empty' => 'По выбранным фильтрам материалы не найдены.',
               'results_for' => 'результатов по запросу',
+              'copies' => 'Экземпляры',
+              'fallback_loaded' => 'Каталог загружен с сохранённой выдачей.',
           ],
       ],
       'kk' => [
@@ -199,6 +207,8 @@
               'permission' => 'Арнайы рұқсат қажет',
               'empty' => 'Таңдалған сүзгілер бойынша материал табылмады.',
               'results_for' => 'нәтиже',
+              'copies' => 'Даналар',
+              'fallback_loaded' => 'Каталог сақталған нәтижелермен жүктелді.',
           ],
       ],
       'en' => [
@@ -285,11 +295,22 @@
               'permission' => 'Special Permission Required',
               'empty' => 'No items match the selected filters.',
               'results_for' => 'results for',
+              'copies' => 'Copies',
+              'fallback_loaded' => 'Catalog loaded using the preserved result set.',
           ],
       ],
   ][$lang];
 
   $langSuffix = $lang === 'ru' ? '' : ('?lang=' . $lang);
+  $initialCatalog = is_array($catalogBootstrap ?? null) ? $catalogBootstrap : ['data' => [], 'meta' => []];
+  $initialResults = is_array($initialCatalog['data'] ?? null) ? $initialCatalog['data'] : [];
+  $initialMeta = is_array($initialCatalog['meta'] ?? null) ? $initialCatalog['meta'] : [];
+  $initialTotal = (int) ($initialMeta['total'] ?? count($initialResults));
+  $initialPage = max((int) ($initialMeta['page'] ?? 1), 1);
+  $initialPerPage = max((int) ($initialMeta['per_page'] ?? max(count($initialResults), 10)), 1);
+  $initialFrom = $initialTotal > 0 ? (($initialPage - 1) * $initialPerPage) + 1 : 0;
+  $initialTo = $initialTotal > 0 ? min($initialPage * $initialPerPage, $initialTotal) : 0;
+  $initialQueryLabel = $q !== '' ? $q : strtoupper($language === '' ? 'all' : $language);
 @endphp
 
 @section('title', $copy['title'])
@@ -424,7 +445,7 @@
 
     <div class="flex-grow">
       <div class="flex flex-col md:flex-row justify-between md:items-baseline gap-4 mb-12 border-b border-outline-variant/10 pb-4">
-        <div id="catalog-results-count" class="text-on-surface-variant text-sm font-label">{{ $copy['showing'] }} <span class="text-on-surface font-bold">1-10</span> {{ $copy['of'] }} <span class="font-bold">4,203</span> {{ $copy['results_for'] }} <span class="font-medium">“{{ $copy['types'][1] }}”</span></div>
+        <div id="catalog-results-count" class="text-on-surface-variant text-sm font-label">{{ $copy['showing'] }} <span class="text-on-surface font-bold">{{ $initialFrom }}-{{ $initialTo }}</span> {{ $copy['of'] }} <span class="font-bold">{{ $initialTotal }}</span> {{ $copy['results_for'] }} <span class="font-medium">“{{ $initialQueryLabel }}”</span></div>
         <div class="flex items-center gap-6">
           <span class="text-xs font-bold uppercase tracking-tighter text-on-surface-variant">{{ $copy['sort_by'] }}</span>
           <select id="sort-select" class="bg-transparent border-none text-sm font-bold text-on-surface focus:ring-0 py-0 pr-8 cursor-pointer">
@@ -436,42 +457,65 @@
       </div>
 
       <div id="catalog-results-list" class="space-y-16">
-        @foreach($copy['sample_items'] as $index => $item)
+        @forelse($initialResults as $index => $record)
+          @php
+            $title = $record['title']['display'] ?? 'Untitled';
+            $author = $record['primaryAuthor'] ?? 'KazTBU Digital Library';
+            $year = $record['publicationYear'] ?? '—';
+            $publisher = $record['publisher']['name'] ?? 'Digital Library';
+            $isbn = $record['isbn']['raw'] ?? '—';
+            $udc = $record['udc']['raw'] ?? '—';
+            $subtitle = $record['title']['subtitle'] ?? ($record['source'] ?? $title);
+            $availableCopies = (int) ($record['copies']['available'] ?? 0);
+            $totalCopies = (int) ($record['copies']['total'] ?? 0);
+            $kind = $totalCopies > 0 ? ($availableCopies > 0 ? 'physical' : 'archive') : 'electronic';
+            $badgeStyle = $kind === 'physical' ? 'bg-surface-container-highest text-on-surface-variant' : 'bg-secondary-container text-on-secondary-container';
+            $badgeLabel = $kind === 'physical' ? $copy['ui']['physical'] : ($kind === 'archive' ? $copy['ui']['archive'] : $copy['ui']['electronic']);
+            $primaryLabel = $kind === 'physical' ? $copy['ui']['locate'] : ($kind === 'archive' ? $copy['ui']['request'] : $copy['ui']['read']);
+            $icon = $kind === 'physical' ? 'library_books' : ($kind === 'archive' ? 'history_edu' : 'visibility');
+            $servicePoint = $record['availability']['locations'][0]['servicePoint']['name'] ?? null;
+            $statusStyle = $kind === 'archive' ? 'text-error' : ($kind === 'electronic' ? 'text-secondary' : 'text-on-surface-variant');
+            $status = $kind === 'archive' ? $copy['ui']['permission'] : ($servicePoint ?: $copy['ui']['available']);
+            $detailHref = $isbn !== '—' ? $withLang('/book/' . rawurlencode($isbn)) : $withLang('/catalog');
+          @endphp
           <article class="flex flex-col sm:flex-row gap-8 group catalog-item">
             <div class="w-full sm:w-32 h-44 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
-              <img class="w-full h-full object-cover" src="{{ $item['image'] }}" alt="{{ $item['title'] }}" />
+              <img class="w-full h-full object-cover" src="{{ $imagePool[$index % count($imagePool)] }}" alt="{{ $title }}" />
             </div>
             <div class="flex-grow">
               <div class="flex justify-between items-start gap-4">
                 <div>
-                  <span class="inline-block px-2 py-0.5 {{ $item['badge_style'] }} text-[10px] font-bold uppercase tracking-wider rounded mb-2">{{ $item['badge'] }}</span>
-                  <h2 class="text-2xl font-newsreader font-semibold text-primary mb-1 group-hover:text-secondary transition-colors cursor-pointer">{{ $item['title'] }}</h2>
-                  <p class="text-on-surface-variant font-medium mb-3">{{ $item['meta'] }}</p>
+                  <span class="inline-block px-2 py-0.5 {{ $badgeStyle }} text-[10px] font-bold uppercase tracking-wider rounded mb-2">{{ $badgeLabel }}</span>
+                  <a href="{{ $detailHref }}" class="block text-2xl font-newsreader font-semibold text-primary mb-1 group-hover:text-secondary transition-colors cursor-pointer">{{ $title }}</a>
+                  <p class="text-on-surface-variant font-medium mb-3">{{ $author }} · {{ $year }} · {{ $publisher }}</p>
                 </div>
                 <button type="button" class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer">bookmark</button>
               </div>
-              <p class="text-on-surface-variant text-sm line-clamp-2 mb-4 max-w-2xl leading-relaxed">{{ $item['body'] }}</p>
+              <p class="text-on-surface-variant text-sm line-clamp-2 mb-4 max-w-2xl leading-relaxed">{{ $subtitle }}</p>
               <div class="flex flex-wrap gap-3 text-xs text-on-surface-variant mb-6">
-                <span><strong>{{ $copy['ui']['isbn'] }}:</strong> 9965174695</span>
-                <span><strong>{{ $copy['ui']['udc'] }}:</strong> 62</span>
+                <span><strong>{{ $copy['ui']['isbn'] }}:</strong> {{ $isbn }}</span>
+                <span><strong>{{ $copy['ui']['udc'] }}:</strong> {{ $udc !== '' ? $udc : '—' }}</span>
+                <span><strong>{{ $copy['ui']['copies'] }}:</strong> {{ $availableCopies }} / {{ $totalCopies }}</span>
               </div>
               <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                <a href="{{ $withLang('/catalog') }}" class="text-sm font-bold text-secondary flex items-center gap-2 group/btn">
-                  <span class="material-symbols-outlined text-lg">{{ $item['icon'] }}</span>
-                  <span>{{ $item['primary_cta'] }}</span>
+                <a href="{{ $detailHref }}" class="text-sm font-bold text-secondary flex items-center gap-2 group/btn">
+                  <span class="material-symbols-outlined text-lg">{{ $icon }}</span>
+                  <span>{{ $primaryLabel }}</span>
                 </a>
-                <button type="button" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" onclick="copyCitation('{{ addslashes($item['title']) }}')">
+                <button type="button" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" onclick="copyCitation(@js($title))">
                   <span class="material-symbols-outlined text-lg">description</span>
                   <span>{{ $copy['ui']['cite'] }}</span>
                 </button>
-                <div class="sm:ml-auto text-xs {{ $item['status_style'] }} font-bold flex items-center gap-1">
-                  <span class="w-2 h-2 rounded-full {{ $item['status_style'] === 'text-secondary' ? 'bg-secondary' : ($item['status_style'] === 'text-error' ? 'bg-error' : 'bg-outline') }}"></span>
-                  {{ $item['status'] }}
+                <div class="sm:ml-auto text-xs {{ $statusStyle }} font-bold flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full {{ $statusStyle === 'text-secondary' ? 'bg-secondary' : ($statusStyle === 'text-error' ? 'bg-error' : 'bg-outline') }}"></span>
+                  {{ $status }}
                 </div>
               </div>
             </div>
           </article>
-        @endforeach
+        @empty
+          <p class="text-on-surface-variant text-sm">{{ $copy['ui']['empty'] }}</p>
+        @endforelse
       </div>
 
       <div class="mt-24 pt-12 border-t border-outline-variant/10 flex justify-center">
@@ -499,6 +543,15 @@
   const API_ENDPOINT = '/api/v1/catalog-db';
   const LANG_SUFFIX = @json($langSuffix);
   const uiCopy = @json($copy['ui']);
+  const SORT_API_MAP = {
+    relevance: 'popular',
+    title: 'title',
+    year_desc: 'newest',
+    year_asc: 'newest',
+    popular: 'popular',
+    newest: 'newest',
+    author: 'author'
+  };
 
   function toggleFilters() {
     const panel = document.getElementById('catalog-filters');
@@ -623,7 +676,7 @@
           <div class="flex flex-wrap gap-3 text-xs text-on-surface-variant mb-6">
             <span><strong>${uiCopy.isbn}:</strong> ${escapeHtml(isbn)}</span>
             <span><strong>${uiCopy.udc}:</strong> ${escapeHtml(udc)}</span>
-            <span><strong>Copies:</strong> ${escapeHtml(copies)} / ${escapeHtml(total)}</span>
+            <span><strong>${escapeHtml(uiCopy.copies)}:</strong> ${escapeHtml(copies)} / ${escapeHtml(total)}</span>
           </div>
           <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <a href="${detailHref(isbn)}" class="text-sm font-bold text-secondary flex items-center gap-2 group/btn">
@@ -663,40 +716,59 @@
     const params = new URLSearchParams();
     if (window.catalogState.q) params.set('q', window.catalogState.q);
     if (window.catalogState.language && window.catalogState.language !== 'all') params.set('language', window.catalogState.language);
-    if (window.catalogState.sort) params.set('sort', window.catalogState.sort);
     if (window.catalogState.yearFrom) params.set('year_from', window.catalogState.yearFrom);
     if (window.catalogState.yearTo) params.set('year_to', window.catalogState.yearTo);
     if (window.catalogState.availableOnly) params.set('available_only', '1');
     if (window.catalogState.physicalOnly) params.set('physical_only', '1');
     if (window.catalogState.institution) params.set('institution', window.catalogState.institution);
     if (@json($lang) !== 'ru') params.set('lang', @json($lang));
+    params.set('sort', SORT_API_MAP[window.catalogState.sort] || 'popular');
     params.set('limit', '10');
 
-    const response = await fetch(`${API_ENDPOINT}?${params.toString()}`, { headers: { Accept: 'application/json' } });
-    const payload = await response.json();
-    const data = payload?.data || [];
-    const meta = payload?.meta || {};
-
     const container = document.getElementById('catalog-results-list');
-    if (container) {
-      container.innerHTML = data.length
-        ? data.map((item, index) => buildCard(item, index)).join('')
-        : `<p class="text-on-surface-variant text-sm">${escapeHtml(uiCopy.empty)}</p>`;
-    }
-
-    const total = meta.total || data.length || 0;
-    const perPage = meta.per_page || data.length || 0;
-    const toValue = total > 0 ? Math.min(perPage, total) : 0;
-    const queryLabel = window.catalogState.q || (document.querySelector('#language-chips button.bg-primary')?.textContent || 'Catalog');
     const count = document.getElementById('catalog-results-count');
     const summary = document.getElementById('catalog-summary-text');
 
-    if (count) {
-      count.innerHTML = `${@json($copy['showing'])} <span class="text-on-surface font-bold">1-${toValue}</span> ${@json($copy['of'])} <span class="font-bold">${total}</span> ${uiCopy.results_for} <span class="font-medium">“${escapeHtml(queryLabel)}”</span>`;
-    }
+    try {
+      const response = await fetch(`${API_ENDPOINT}?${params.toString()}`, { headers: { Accept: 'application/json' } });
+      const payload = await response.json();
 
-    if (summary) {
-      summary.textContent = `${total.toLocaleString()} ${uiCopy.results_for}.`;
+      if (!response.ok) {
+        throw new Error(payload?.message || 'Catalog request failed');
+      }
+
+      const data = Array.isArray(payload?.data) ? payload.data : [];
+      const meta = payload?.meta || {};
+
+      if (window.catalogState.sort === 'year_asc') {
+        data.sort((left, right) => (Number(left?.publicationYear || 0) - Number(right?.publicationYear || 0)));
+      }
+
+      if (container) {
+        container.innerHTML = data.length
+          ? data.map((item, index) => buildCard(item, index)).join('')
+          : `<p class="text-on-surface-variant text-sm">${escapeHtml(uiCopy.empty)}</p>`;
+      }
+
+      const total = Number(meta.total || data.length || 0);
+      const perPage = Number(meta.per_page || data.length || 0);
+      const currentPage = Number(meta.page || 1);
+      const fromValue = total > 0 ? ((currentPage - 1) * perPage) + 1 : 0;
+      const toValue = total > 0 ? Math.min(currentPage * perPage, total) : 0;
+      const queryLabel = window.catalogState.q || (document.querySelector('#language-chips button.bg-primary')?.textContent || 'Catalog');
+
+      if (count) {
+        count.innerHTML = `${@json($copy['showing'])} <span class="text-on-surface font-bold">${fromValue}-${toValue}</span> ${@json($copy['of'])} <span class="font-bold">${total}</span> ${uiCopy.results_for} <span class="font-medium">“${escapeHtml(queryLabel)}”</span>`;
+      }
+
+      if (summary) {
+        summary.textContent = `${total.toLocaleString()} ${uiCopy.results_for}.`;
+      }
+    } catch (error) {
+      console.error('Catalog load failed:', error);
+      if (summary) {
+        summary.textContent = uiCopy.fallback_loaded;
+      }
     }
 
     updateFilterBadge();

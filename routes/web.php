@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Library\CatalogReadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,36 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/catalog', function () {
-    return view('catalog');
+Route::get('/catalog', function (Request $request, CatalogReadService $catalogReadService) {
+    $uiSort = (string) $request->query('sort', 'relevance');
+    $apiSortMap = [
+        'relevance' => 'popular',
+        'title' => 'title',
+        'year_desc' => 'newest',
+        'year_asc' => 'newest',
+        'popular' => 'popular',
+        'newest' => 'newest',
+        'author' => 'author',
+    ];
+
+    $catalogBootstrap = $catalogReadService->search(
+        query: trim((string) $request->query('q', '')),
+        language: $request->filled('language') ? (string) $request->query('language') : null,
+        page: max((int) $request->query('page', 1), 1),
+        limit: 10,
+        sort: $apiSortMap[$uiSort] ?? 'popular',
+        yearFrom: $request->filled('year_from') && is_numeric((string) $request->query('year_from')) ? (int) $request->query('year_from') : null,
+        yearTo: $request->filled('year_to') && is_numeric((string) $request->query('year_to')) ? (int) $request->query('year_to') : null,
+        availableOnly: $request->boolean('available_only'),
+        physicalOnly: $request->boolean('physical_only'),
+        institution: $request->filled('institution') ? (string) $request->query('institution') : null,
+    );
+
+    if ($uiSort === 'year_asc' && is_array($catalogBootstrap['data'] ?? null)) {
+        usort($catalogBootstrap['data'], static fn (array $left, array $right): int => ((int) ($left['publicationYear'] ?? 0)) <=> ((int) ($right['publicationYear'] ?? 0)));
+    }
+
+    return view('catalog', ['catalogBootstrap' => $catalogBootstrap]);
 });
 
 Route::get('/book/{isbn}', function () {
