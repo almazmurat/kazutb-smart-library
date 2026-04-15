@@ -10,8 +10,8 @@ All automatic tracking is now operational. This is your quick reference.
 
 ### Start of Session
 ```bash
-# 1. Read memory from yesterday
-cat artifacts/obsidian/memory-fragments/WORK_LOG_$(date -u +'%Y%m%d').md
+# 1. REQUIRED: Load context from Obsidian second brain
+bash scripts/dev/obsidian-bootstrap.sh
 
 # 2. Understand what auto-tracking means
 cat .instructions.md          # Rules (5 min read)
@@ -50,6 +50,7 @@ bash scripts/dev/auto-sync.sh
 |------|---------|-------|
 | `.instructions.md` | High-level rules | Read once, understand principles |
 | `AGENT_TRACKING_INSTRUCTIONS.md` | How-to patterns | Reference per task type |
+| `scripts/dev/obsidian-bootstrap.sh` | Mandatory session bootstrap | Run before any task |
 | `scripts/dev/auto-sync.sh` | Session-end automation | Run at end of work |
 | `artifacts/obsidian/memory-fragments/WORK_LOG_*.md` | Daily task tracker | Read at session start |
 | `artifacts/obsidian/memory-fragments/CENTRAL_HUB_MIN.md` | Memory router | Daily navigation hub |
@@ -61,7 +62,7 @@ bash scripts/dev/auto-sync.sh
 
 ## 3-Minute Daily Checklist
 
-- [ ] Start session: `cat artifacts/obsidian/memory-fragments/WORK_LOG_$(date -u +'%Y%m%d').md`
+- [ ] Start session: `bash scripts/dev/obsidian-bootstrap.sh`
 - [ ] Understand rules: Skim `.instructions.md` (first time only)
 - [ ] Work: Make code changes + auto-capture memory
 - [ ] End session: `bash scripts/dev/auto-sync.sh`
@@ -94,7 +95,7 @@ Auto-tracker creates these fragments:
 **What it does** (auto):
 1. ✓ Checks for changes
 2. ✓ Generates memory from chat logs
-3. ✓ Creates session-boundary-*.md
+3. ✓ Creates heartbeat note even for no-change runs
 4. ✓ Stages all files
 5. ✓ Creates smart commits (with memory references)
 6. ✓ Pushes to origin/main

@@ -11,11 +11,24 @@ tags: [agent-instructions, auto-tracking, continuous-sync]
 
 ## Quick Rules (TL;DR)
 
-1. **After every code change**: Write `memory/<category>-<timestamp>.md` with what/why/impact
-2. **Before every commit**: Ensure memory entry exists referencing the commit
-3. **At session end**: Run `bash scripts/dev/auto-sync.sh` to capture everything
-4. **Always use frontmatter**: YAML with project/date/tags/links for Obsidian
-5. **Cross-link everything**: Use `[[memory-fragment-name]]` to connect ideas
+1. **Before any task**: Run `bash scripts/dev/obsidian-bootstrap.sh` (MANDATORY)
+2. **After every code change**: Write `memory/<category>-<timestamp>.md` with what/why/impact
+3. **Before every commit**: Ensure memory entry exists referencing the commit
+4. **At session end**: Run `bash scripts/dev/auto-sync.sh` to capture everything
+5. **Always use frontmatter**: YAML with project/date/tags/links for Obsidian
+6. **Cross-link everything**: Use `[[memory-fragment-name]]` to connect ideas
+7. **Even no-change sessions**: Persist heartbeat notes to Obsidian via auto-sync
+
+## Session Start Procedure (MANDATORY)
+
+```bash
+# Always load second-brain context first
+bash scripts/dev/obsidian-bootstrap.sh
+
+# Then start implementation
+```
+
+If bootstrap fails, fix/bootstrap the memory path first and only then continue.
 
 ## Detailed Instructions by Task Type
 
