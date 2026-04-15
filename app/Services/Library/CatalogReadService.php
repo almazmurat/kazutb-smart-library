@@ -248,6 +248,27 @@ class CatalogReadService
     }
 
     /**
+     * @return array{min:int,max:int}
+     */
+    public function yearBounds(): array
+    {
+        $row = DB::table('app.document_detail_v')
+            ->whereNotNull('publication_year')
+            ->whereBetween('publication_year', [1900, 2100])
+            ->selectRaw('MIN(publication_year) as min_year, MAX(publication_year) as max_year')
+            ->first();
+
+        $min = (int) ($row->min_year ?? 1950);
+        $max = (int) ($row->max_year ?? (int) date('Y'));
+
+        if ($min <= 0 || $max <= 0 || $min > $max) {
+            return ['min' => 1950, 'max' => (int) date('Y')];
+        }
+
+        return ['min' => $min, 'max' => $max];
+    }
+
+    /**
      * @param array<int, array<string, string>> $classification
      * @return array{raw: string, source: string}
      */

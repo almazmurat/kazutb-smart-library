@@ -21,13 +21,18 @@
 
   $q = (string) request()->query('q', '');
   $language = (string) request()->query('language', 'all');
-  $yearFrom = (string) request()->query('year_from', '1950');
-  $yearTo = (string) request()->query('year_to', '2024');
+  $yearFrom = (string) request()->query('year_from', '');
+  $yearTo = (string) request()->query('year_to', '');
   $availableOnly = request()->boolean('available_only');
   $physicalOnly = request()->boolean('physical_only');
   $institution = (string) request()->query('institution', '');
   $sort = (string) request()->query('sort', 'relevance');
   $materialType = (string) request()->query('material_type', '');
+  $titleFilter = (string) request()->query('title', '');
+  $authorFilter = (string) request()->query('author', '');
+  $publisherFilter = (string) request()->query('publisher', '');
+  $isbnFilter = (string) request()->query('isbn', '');
+  $udcFilter = (string) request()->query('udc', '');
   $imagePool = [
       '/images/news/default-library.jpg',
       '/images/news/classics-event.jpg',
@@ -60,8 +65,23 @@
               'year_desc' => 'Сначала новые',
               'year_asc' => 'Сначала старые',
           ],
+          'advanced_search' => 'Расширенный поиск',
+          'advanced_apply' => 'Применить',
+          'advanced_reset' => 'Очистить поля',
+          'field_title' => 'Название',
+          'field_author' => 'Автор',
+          'field_publisher' => 'Издатель',
+          'field_isbn' => 'ISBN',
+          'field_udc' => 'УДК',
+          'field_subject' => 'Тема / аннотация',
+          'field_subject_help' => 'Поле готово для будущей библиографической аннотации.',
           'types' => ['Книги и e-books', 'Научные журналы', 'Диссертации и работы'],
-          'collections' => ['Инженерия и технологии (1,204)', 'Бизнес и экономика (892)', 'Гуманитарный фонд (432)', '+ Показать ещё 12'],
+          'collections' => [
+              ['label' => 'Инженерия и технологии (1,204)', 'value' => 'technology_library'],
+              ['label' => 'Бизнес и экономика (892)', 'value' => 'economic_library'],
+              ['label' => 'Гуманитарный фонд (432)', 'value' => 'college_library'],
+              ['label' => '+ Показать ещё 12', 'value' => 'ktslib'],
+          ],
           'institution_options' => [
               '' => 'Все подразделения',
               'technology_library' => 'Технологическая библиотека',
@@ -162,8 +182,23 @@
               'year_desc' => 'Жаңа алдымен',
               'year_asc' => 'Ескі алдымен',
           ],
+          'advanced_search' => 'Кеңейтілген іздеу',
+          'advanced_apply' => 'Қолдану',
+          'advanced_reset' => 'Өрістерді тазарту',
+          'field_title' => 'Атауы',
+          'field_author' => 'Автор',
+          'field_publisher' => 'Баспасы',
+          'field_isbn' => 'ISBN',
+          'field_udc' => 'ӘОЖ',
+          'field_subject' => 'Тақырып / аннотация',
+          'field_subject_help' => 'Өріс болашақ библиографиялық аннотация үшін дайын тұр.',
           'types' => ['Кітаптар мен e-books', 'Ғылыми журналдар', 'Диссертациялар мен жұмыстар'],
-          'collections' => ['Инженерия және технология (1,204)', 'Бизнес және экономика (892)', 'Гуманитарлық қор (432)', '+ Тағы 12 бөлім'],
+          'collections' => [
+              ['label' => 'Инженерия және технология (1,204)', 'value' => 'technology_library'],
+              ['label' => 'Бизнес және экономика (892)', 'value' => 'economic_library'],
+              ['label' => 'Гуманитарлық қор (432)', 'value' => 'college_library'],
+              ['label' => '+ Тағы 12 бөлім', 'value' => 'ktslib'],
+          ],
           'institution_options' => [
               '' => 'Барлық бөлімдер',
               'technology_library' => 'Технологиялық кітапхана',
@@ -264,8 +299,23 @@
               'year_desc' => 'Newest First',
               'year_asc' => 'Oldest First',
           ],
+          'advanced_search' => 'Advanced search',
+          'advanced_apply' => 'Apply',
+          'advanced_reset' => 'Clear fields',
+          'field_title' => 'Title',
+          'field_author' => 'Author',
+          'field_publisher' => 'Publisher',
+          'field_isbn' => 'ISBN',
+          'field_udc' => 'UDC',
+          'field_subject' => 'Subject / annotation',
+          'field_subject_help' => 'This field is prepared for future bibliographic annotations.',
           'types' => ['Books & E-books', 'Academic Journals', 'Theses & Dissertations'],
-          'collections' => ['Engineering & Tech (1,204)', 'Business & Economics (892)', 'Humanities (432)', '+ View 12 more'],
+          'collections' => [
+              ['label' => 'Engineering & Tech (1,204)', 'value' => 'technology_library'],
+              ['label' => 'Business & Economics (892)', 'value' => 'economic_library'],
+              ['label' => 'Humanities (432)', 'value' => 'college_library'],
+              ['label' => '+ View 12 more', 'value' => 'ktslib'],
+          ],
           'institution_options' => [
               '' => 'All divisions',
               'technology_library' => 'Technology Library',
@@ -345,6 +395,10 @@
   ][$lang];
 
   $langSuffix = $lang === 'ru' ? '' : ('?lang=' . $lang);
+  $yearMin = max((int) ($catalogYearBounds['min'] ?? 1950), 1900);
+  $yearMax = max((int) ($catalogYearBounds['max'] ?? (int) date('Y')), $yearMin);
+  $yearFrom = (string) max($yearMin, min((int) ($yearFrom !== '' ? $yearFrom : $yearMin), $yearMax));
+  $yearTo = (string) max((int) $yearFrom, min((int) ($yearTo !== '' ? $yearTo : $yearMax), $yearMax));
   $initialCatalog = is_array($catalogBootstrap ?? null) ? $catalogBootstrap : ['data' => [], 'meta' => []];
   $initialResults = is_array($initialCatalog['data'] ?? null) ? $initialCatalog['data'] : [];
   $initialMeta = is_array($initialCatalog['meta'] ?? null) ? $initialCatalog['meta'] : [];
@@ -354,6 +408,7 @@
   $initialFrom = $initialTotal > 0 ? (($initialPage - 1) * $initialPerPage) + 1 : 0;
   $initialTo = $initialTotal > 0 ? min($initialPage * $initialPerPage, $initialTotal) : 0;
   $initialQueryLabel = $q !== '' ? $q : strtoupper($language === '' ? 'all' : $language);
+  $hasAdvancedFilters = $titleFilter !== '' || $authorFilter !== '' || $publisherFilter !== '' || $isbnFilter !== '' || $udcFilter !== '';
   $formatLocationLabel = static function (array $location) use ($copy): string {
       $serviceCode = strtolower(trim((string) data_get($location, 'servicePoint.code', '')));
       $serviceName = trim((string) data_get($location, 'servicePoint.name', ''));
@@ -402,6 +457,57 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
   }
+  .catalog-export .catalog-item {
+    align-items: stretch;
+  }
+  .catalog-export .catalog-card-media {
+    min-height: 17rem;
+    align-self: stretch;
+  }
+  .catalog-export .catalog-range {
+    position: absolute;
+    inset-inline: 0;
+    top: -0.55rem;
+    width: 100%;
+    appearance: none;
+    background: transparent;
+    pointer-events: none;
+  }
+  .catalog-export .catalog-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 2px solid rgb(13 148 136);
+    box-shadow: 0 1px 4px rgba(0,0,0,.16);
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .catalog-export .catalog-range::-moz-range-thumb {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 2px solid rgb(13 148 136);
+    box-shadow: 0 1px 4px rgba(0,0,0,.16);
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .catalog-export .catalog-range::-webkit-slider-runnable-track,
+  .catalog-export .catalog-range::-moz-range-track {
+    height: 0.25rem;
+    background: transparent;
+  }
+  .catalog-export .sort-menu-panel[hidden],
+  .catalog-export .advanced-search-panel[hidden] {
+    display: none !important;
+  }
+  .catalog-export .advanced-field[disabled] {
+    opacity: 0.62;
+    cursor: not-allowed;
+    background: rgba(245,245,245,0.85);
+  }
   @media (max-width: 767px) {
     #catalog-filters {
       display: none;
@@ -424,10 +530,46 @@
         </div>
         <input id="catalog-search-input" value="{{ $q }}" class="w-full pl-14 pr-6 py-5 bg-surface-container-highest border-b border-outline-variant/20 focus:border-secondary focus:ring-0 text-lg font-body placeholder:text-on-surface-variant/50 transition-all" placeholder="{{ $copy['search_placeholder'] }}" type="text" />
         <div class="absolute inset-y-0 right-4 flex items-center gap-2">
-          <button type="button" onclick="toggleFilters()" class="px-4 py-2 text-secondary font-semibold hover:bg-secondary-container rounded-lg transition-colors">{{ $copy['advanced'] }}</button>
+          <button type="button" onclick="toggleAdvancedSearch()" class="px-4 py-2 text-secondary font-semibold hover:bg-secondary-container rounded-lg transition-colors">{{ $copy['advanced'] }}</button>
         </div>
       </div>
       <p id="catalog-summary-text" class="mt-4 text-on-surface-variant text-sm font-label italic">{{ $copy['seed_summary'] }}</p>
+
+      <div id="advanced-search-panel" class="advanced-search-panel mt-6 rounded-2xl border border-outline-variant/20 bg-white/90 p-4 md:p-5" @if(! $hasAdvancedFilters) hidden @endif>
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <h2 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant">{{ $copy['advanced_search'] }}</h2>
+          <button type="button" onclick="resetAdvancedFields()" class="text-xs font-semibold text-secondary">{{ $copy['advanced_reset'] }}</button>
+        </div>
+        <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          <label class="block">
+            <span class="block text-xs font-semibold text-on-surface-variant mb-1">{{ $copy['field_title'] }}</span>
+            <input id="advanced-title-input" value="{{ $titleFilter }}" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-white text-sm" type="text" placeholder="{{ $copy['field_title'] }}" />
+          </label>
+          <label class="block">
+            <span class="block text-xs font-semibold text-on-surface-variant mb-1">{{ $copy['field_author'] }}</span>
+            <input id="advanced-author-input" value="{{ $authorFilter }}" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-white text-sm" type="text" placeholder="{{ $copy['field_author'] }}" />
+          </label>
+          <label class="block">
+            <span class="block text-xs font-semibold text-on-surface-variant mb-1">{{ $copy['field_publisher'] }}</span>
+            <input id="advanced-publisher-input" value="{{ $publisherFilter }}" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-white text-sm" type="text" placeholder="{{ $copy['field_publisher'] }}" />
+          </label>
+          <label class="block">
+            <span class="block text-xs font-semibold text-on-surface-variant mb-1">{{ $copy['field_isbn'] }}</span>
+            <input id="advanced-isbn-input" value="{{ $isbnFilter }}" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-white text-sm" type="text" placeholder="978..." />
+          </label>
+          <label class="block">
+            <span class="block text-xs font-semibold text-on-surface-variant mb-1">{{ $copy['field_udc'] }}</span>
+            <input id="advanced-udc-input" value="{{ $udcFilter }}" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-white text-sm" type="text" placeholder="{{ $copy['field_udc'] }}" />
+          </label>
+          <label class="block">
+            <span class="block text-xs font-semibold text-on-surface-variant mb-1">{{ $copy['field_subject'] }}</span>
+            <input class="advanced-field w-full px-3 py-2 rounded-lg border border-outline-variant/20 text-sm" type="text" placeholder="{{ $copy['field_subject_help'] }}" disabled />
+          </label>
+        </div>
+        <div class="mt-4 flex justify-end">
+          <button type="button" onclick="applyAdvancedSearch()" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold">{{ $copy['advanced_apply'] }}</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -467,18 +609,19 @@
       <div>
         <h3 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">{{ $copy['publication_date'] }}</h3>
         <div class="space-y-4">
-          <div class="h-1 bg-surface-container-high relative rounded-full">
-            <div class="absolute inset-y-0 left-1/4 right-0 bg-secondary rounded-full"></div>
-            <div class="absolute left-1/4 -top-1.5 w-4 h-4 bg-white border-2 border-secondary rounded-full shadow-sm"></div>
-            <div class="absolute right-0 -top-1.5 w-4 h-4 bg-white border-2 border-secondary rounded-full shadow-sm"></div>
+          <div class="relative pt-3">
+            <div class="h-1 bg-surface-container-high relative rounded-full"></div>
+            <div id="year-range-fill" class="absolute top-3 h-1 bg-secondary rounded-full" style="left: 0%; right: 0%;"></div>
+            <input id="year-from-range" class="catalog-range" type="range" min="{{ $yearMin }}" max="{{ $yearMax }}" value="{{ $yearFrom }}" />
+            <input id="year-to-range" class="catalog-range" type="range" min="{{ $yearMin }}" max="{{ $yearMax }}" value="{{ $yearTo }}" />
           </div>
           <div class="flex justify-between text-xs font-label text-on-surface-variant">
-            <span>1950</span>
-            <span class="font-bold text-on-surface">2024</span>
+            <span id="year-min-label">{{ $yearMin }}</span>
+            <span id="year-max-label" class="font-bold text-on-surface">{{ $yearMax }}</span>
           </div>
           <div class="grid grid-cols-2 gap-2">
-            <input id="year-from-input" class="w-full bg-white border border-outline-variant/30 px-3 py-2 text-sm rounded-lg" value="{{ $yearFrom }}" placeholder="1950" type="number" />
-            <input id="year-to-input" class="w-full bg-white border border-outline-variant/30 px-3 py-2 text-sm rounded-lg" value="{{ $yearTo }}" placeholder="2024" type="number" />
+            <input id="year-from-input" class="w-full bg-white border border-outline-variant/30 px-3 py-2 text-sm rounded-lg" value="{{ $yearFrom }}" placeholder="{{ $yearMin }}" type="number" min="{{ $yearMin }}" max="{{ $yearMax }}" />
+            <input id="year-to-input" class="w-full bg-white border border-outline-variant/30 px-3 py-2 text-sm rounded-lg" value="{{ $yearTo }}" placeholder="{{ $yearMax }}" type="number" min="{{ $yearMin }}" max="{{ $yearMax }}" />
           </div>
         </div>
       </div>
@@ -502,7 +645,9 @@
         </select>
         <ul class="space-y-3 mt-4">
           @foreach($copy['collections'] as $collection)
-            <li class="text-sm text-on-surface-variant hover:text-secondary cursor-pointer {{ str_contains($collection, '+') ? 'font-bold' : '' }}">{{ $collection }}</li>
+            <li>
+              <button type="button" data-collection-filter="{{ $collection['value'] }}" class="w-full text-left text-sm text-on-surface-variant hover:text-secondary cursor-pointer {{ str_contains($collection['label'], '+') ? 'font-bold' : '' }} {{ $institution === $collection['value'] ? 'text-secondary font-bold' : '' }}">{{ $collection['label'] }}</button>
+            </li>
           @endforeach
         </ul>
       </div>
@@ -527,11 +672,22 @@
         <div id="catalog-results-count" class="text-on-surface-variant text-sm font-label">{{ $copy['showing'] }} <span class="text-on-surface font-bold">{{ $initialFrom }}-{{ $initialTo }}</span> {{ $copy['of'] }} <span class="font-bold">{{ $initialTotal }}</span> {{ $copy['results_for'] }} <span class="font-medium">“{{ $initialQueryLabel }}”</span></div>
         <div class="flex items-center gap-6">
           <span class="text-xs font-bold uppercase tracking-tighter text-on-surface-variant">{{ $copy['sort_by'] }}</span>
-          <select id="sort-select" class="bg-transparent border-none text-sm font-bold text-on-surface focus:ring-0 py-0 pr-8 cursor-pointer">
-            @foreach($copy['sort_options'] as $value => $label)
-              <option value="{{ $value }}" @selected($sort === $value)>{{ $label }}</option>
-            @endforeach
-          </select>
+          <div class="relative" data-sort-menu>
+            <button id="sort-menu-button" type="button" onclick="toggleSortMenu()" class="inline-flex items-center gap-2 rounded-xl border border-outline-variant/30 bg-white px-4 py-2 text-sm font-bold text-on-surface shadow-sm hover:border-secondary/40">
+              <span id="sort-menu-current">{{ $copy['sort_options'][$sort] ?? reset($copy['sort_options']) }}</span>
+              <span class="material-symbols-outlined text-base">expand_more</span>
+            </button>
+            <div id="sort-menu-panel" class="sort-menu-panel absolute right-0 mt-2 min-w-52 rounded-xl border border-outline-variant/20 bg-white p-1 shadow-lg z-20" hidden>
+              @foreach($copy['sort_options'] as $value => $label)
+                <button type="button" data-sort-option="{{ $value }}" class="sort-option w-full text-left px-3 py-2 rounded-lg text-sm {{ $sort === $value ? 'bg-surface-container-high text-primary font-bold' : 'text-on-surface hover:bg-surface-container-low' }}">{{ $label }}</button>
+              @endforeach
+            </div>
+            <select id="sort-select" class="sr-only">
+              @foreach($copy['sort_options'] as $value => $label)
+                <option value="{{ $value }}" @selected($sort === $value)>{{ $label }}</option>
+              @endforeach
+            </select>
+          </div>
         </div>
       </div>
 
@@ -571,7 +727,7 @@
             $metaParts = array_values(array_filter([$author, $year, $publisher], static fn ($value) => (string) $value !== '' && (string) $value !== '—'));
           @endphp
           <article class="flex flex-col sm:flex-row gap-8 group catalog-item">
-            <div class="w-full sm:w-32 h-44 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
+            <div class="catalog-card-media w-full sm:w-36 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
               <img class="w-full h-full object-cover" src="{{ $imagePool[$index % count($imagePool)] }}" alt="{{ $title }}" />
             </div>
             <div class="flex-grow">
@@ -653,6 +809,8 @@
     newest: 'newest',
     author: 'author'
   };
+  const SORT_LABELS = @json($copy['sort_options']);
+  const YEAR_BOUNDS = { min: @json($yearMin), max: @json($yearMax) };
 
   let searchDebounceId = null;
 
@@ -674,11 +832,16 @@
     let active = 0;
     if ((window.catalogState?.q || '') !== '') active++;
     if ((window.catalogState?.materialType || 'all') !== 'all') active++;
+    if ((window.catalogState?.title || '') !== '') active++;
+    if ((window.catalogState?.author || '') !== '') active++;
+    if ((window.catalogState?.publisher || '') !== '') active++;
+    if ((window.catalogState?.isbn || '') !== '') active++;
+    if ((window.catalogState?.udc || '') !== '') active++;
     if (document.getElementById('filter-available-only')?.checked) active++;
     if (document.getElementById('filter-physical-only')?.checked) active++;
     if ((document.getElementById('institution-select')?.value || '') !== '') active++;
-    if ((document.getElementById('year-from-input')?.value || '') !== '1950') active++;
-    if ((document.getElementById('year-to-input')?.value || '') !== '2024') active++;
+    if ((document.getElementById('year-from-input')?.value || '') !== String(YEAR_BOUNDS.min)) active++;
+    if ((document.getElementById('year-to-input')?.value || '') !== String(YEAR_BOUNDS.max)) active++;
     if ((window.catalogState?.language || 'all') !== 'all') active++;
 
     const badge = document.getElementById('filter-count-badge');
@@ -688,28 +851,45 @@
   function clearAllFilters() {
     window.catalogState = {
       q: '',
+      title: '',
+      author: '',
+      publisher: '',
+      isbn: '',
+      udc: '',
       language: 'all',
       sort: 'relevance',
-      yearFrom: '1950',
-      yearTo: '2024',
+      yearFrom: String(YEAR_BOUNDS.min),
+      yearTo: String(YEAR_BOUNDS.max),
       availableOnly: false,
       physicalOnly: false,
       institution: '',
       materialType: 'all',
       page: 1,
+      advancedOpen: false,
     };
 
     document.getElementById('catalog-search-input').value = '';
-    document.getElementById('year-from-input').value = '1950';
-    document.getElementById('year-to-input').value = '2024';
+    document.getElementById('year-from-input').value = String(YEAR_BOUNDS.min);
+    document.getElementById('year-to-input').value = String(YEAR_BOUNDS.max);
+    document.getElementById('year-from-range').value = String(YEAR_BOUNDS.min);
+    document.getElementById('year-to-range').value = String(YEAR_BOUNDS.max);
     document.getElementById('filter-available-only').checked = false;
     document.getElementById('filter-physical-only').checked = false;
     document.getElementById('institution-select').value = '';
     document.getElementById('sort-select').value = 'relevance';
+    document.getElementById('advanced-title-input').value = '';
+    document.getElementById('advanced-author-input').value = '';
+    document.getElementById('advanced-publisher-input').value = '';
+    document.getElementById('advanced-isbn-input').value = '';
+    document.getElementById('advanced-udc-input').value = '';
+    document.getElementById('advanced-search-panel')?.setAttribute('hidden', 'hidden');
 
+    updateYearRangeVisual();
     updateFilterBadge();
     syncLanguageButtons();
     syncMaterialButtons();
+    syncCollectionButtons();
+    syncSortMenu();
     loadCatalog();
   }
 
@@ -760,6 +940,108 @@
     }
 
     return formatValue(serviceName, uiCopy.no_location);
+  }
+
+  function toggleAdvancedSearch() {
+    const panel = document.getElementById('advanced-search-panel');
+    if (!panel) return;
+    const isHidden = panel.hasAttribute('hidden');
+    if (isHidden) {
+      panel.removeAttribute('hidden');
+      document.getElementById('advanced-title-input')?.focus();
+    } else {
+      panel.setAttribute('hidden', 'hidden');
+    }
+    window.catalogState.advancedOpen = isHidden;
+  }
+
+  function resetAdvancedFields() {
+    document.getElementById('advanced-title-input').value = '';
+    document.getElementById('advanced-author-input').value = '';
+    document.getElementById('advanced-publisher-input').value = '';
+    document.getElementById('advanced-isbn-input').value = '';
+    document.getElementById('advanced-udc-input').value = '';
+    window.catalogState.title = '';
+    window.catalogState.author = '';
+    window.catalogState.publisher = '';
+    window.catalogState.isbn = '';
+    window.catalogState.udc = '';
+    updateFilterBadge();
+  }
+
+  function applyAdvancedSearch() {
+    window.catalogState.title = document.getElementById('advanced-title-input')?.value.trim() || '';
+    window.catalogState.author = document.getElementById('advanced-author-input')?.value.trim() || '';
+    window.catalogState.publisher = document.getElementById('advanced-publisher-input')?.value.trim() || '';
+    window.catalogState.isbn = document.getElementById('advanced-isbn-input')?.value.trim() || '';
+    window.catalogState.udc = document.getElementById('advanced-udc-input')?.value.trim() || '';
+    window.catalogState.page = 1;
+    loadCatalog();
+  }
+
+  function clampYearState() {
+    let from = Number(window.catalogState.yearFrom || YEAR_BOUNDS.min);
+    let to = Number(window.catalogState.yearTo || YEAR_BOUNDS.max);
+
+    from = Math.max(YEAR_BOUNDS.min, Math.min(from, YEAR_BOUNDS.max));
+    to = Math.max(YEAR_BOUNDS.min, Math.min(to, YEAR_BOUNDS.max));
+
+    if (from > to) {
+      if (document.activeElement?.id === 'year-from-range' || document.activeElement?.id === 'year-from-input') {
+        to = from;
+      } else {
+        from = to;
+      }
+    }
+
+    window.catalogState.yearFrom = String(from);
+    window.catalogState.yearTo = String(to);
+  }
+
+  function updateYearRangeVisual() {
+    clampYearState();
+    const from = Number(window.catalogState.yearFrom);
+    const to = Number(window.catalogState.yearTo);
+    const span = Math.max(YEAR_BOUNDS.max - YEAR_BOUNDS.min, 1);
+    const startPct = ((from - YEAR_BOUNDS.min) / span) * 100;
+    const endPct = ((to - YEAR_BOUNDS.min) / span) * 100;
+    const fill = document.getElementById('year-range-fill');
+
+    document.getElementById('year-from-input').value = String(from);
+    document.getElementById('year-to-input').value = String(to);
+    document.getElementById('year-from-range').value = String(from);
+    document.getElementById('year-to-range').value = String(to);
+
+    if (fill) {
+      fill.style.left = `${startPct}%`;
+      fill.style.right = `${100 - endPct}%`;
+    }
+  }
+
+  function toggleSortMenu() {
+    const panel = document.getElementById('sort-menu-panel');
+    if (!panel) return;
+    panel.hidden = !panel.hidden;
+  }
+
+  function syncSortMenu() {
+    const current = document.getElementById('sort-menu-current');
+    const currentValue = window.catalogState.sort || 'relevance';
+    if (current) {
+      current.textContent = SORT_LABELS[currentValue] || SORT_LABELS.relevance || 'Relevance';
+    }
+
+    document.querySelectorAll('[data-sort-option]').forEach((button) => {
+      const active = button.dataset.sortOption === currentValue;
+      button.className = `sort-option w-full text-left px-3 py-2 rounded-lg text-sm ${active ? 'bg-surface-container-high text-primary font-bold' : 'text-on-surface hover:bg-surface-container-low'}`;
+    });
+  }
+
+  function syncCollectionButtons() {
+    document.querySelectorAll('[data-collection-filter]').forEach((button) => {
+      const active = button.dataset.collectionFilter === (window.catalogState.institution || '');
+      button.className = `w-full text-left text-sm hover:text-secondary cursor-pointer ${button.textContent.includes('+') ? 'font-bold' : ''} ${active ? 'text-secondary font-bold' : 'text-on-surface-variant'}`;
+    });
   }
 
   function detailHref(isbn) {
@@ -869,7 +1151,7 @@
 
     return `
       <article class="flex flex-col sm:flex-row gap-8 group catalog-item">
-        <div class="w-full sm:w-32 h-44 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
+        <div class="catalog-card-media w-full sm:w-36 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
           <img class="w-full h-full object-cover" src="${imagePool[index % imagePool.length]}" alt="${escapeHtml(record.title)}" />
         </div>
         <div class="flex-grow">
@@ -943,10 +1225,15 @@
   function buildUiParams() {
     const params = new URLSearchParams();
     if (window.catalogState.q) params.set('q', window.catalogState.q);
+    if (window.catalogState.title) params.set('title', window.catalogState.title);
+    if (window.catalogState.author) params.set('author', window.catalogState.author);
+    if (window.catalogState.publisher) params.set('publisher', window.catalogState.publisher);
+    if (window.catalogState.isbn) params.set('isbn', window.catalogState.isbn);
+    if (window.catalogState.udc) params.set('udc', window.catalogState.udc);
     if (window.catalogState.language && window.catalogState.language !== 'all') params.set('language', window.catalogState.language);
     if (window.catalogState.sort && window.catalogState.sort !== 'relevance') params.set('sort', window.catalogState.sort);
-    if (window.catalogState.yearFrom && window.catalogState.yearFrom !== '1950') params.set('year_from', window.catalogState.yearFrom);
-    if (window.catalogState.yearTo && window.catalogState.yearTo !== '2024') params.set('year_to', window.catalogState.yearTo);
+    if (window.catalogState.yearFrom && Number(window.catalogState.yearFrom) !== YEAR_BOUNDS.min) params.set('year_from', window.catalogState.yearFrom);
+    if (window.catalogState.yearTo && Number(window.catalogState.yearTo) !== YEAR_BOUNDS.max) params.set('year_to', window.catalogState.yearTo);
     if (window.catalogState.availableOnly) params.set('available_only', '1');
     if (window.catalogState.physicalOnly) params.set('physical_only', '1');
     if (window.catalogState.institution) params.set('institution', window.catalogState.institution);
@@ -1006,8 +1293,14 @@
   }
 
   async function loadCatalog() {
+    clampYearState();
     const apiParams = new URLSearchParams();
     if (window.catalogState.q) apiParams.set('q', window.catalogState.q);
+    if (window.catalogState.title) apiParams.set('title', window.catalogState.title);
+    if (window.catalogState.author) apiParams.set('author', window.catalogState.author);
+    if (window.catalogState.publisher) apiParams.set('publisher', window.catalogState.publisher);
+    if (window.catalogState.isbn) apiParams.set('isbn', window.catalogState.isbn);
+    if (window.catalogState.udc) apiParams.set('udc', window.catalogState.udc);
     if (window.catalogState.language && window.catalogState.language !== 'all') apiParams.set('language', window.catalogState.language);
     if (window.catalogState.yearFrom) apiParams.set('year_from', window.catalogState.yearFrom);
     if (window.catalogState.yearTo) apiParams.set('year_to', window.catalogState.yearTo);
@@ -1071,13 +1364,21 @@
     }
 
     updateFilterBadge();
+    updateYearRangeVisual();
     syncLanguageButtons();
     syncMaterialButtons();
+    syncSortMenu();
+    syncCollectionButtons();
     syncUrl();
   }
 
   window.catalogState = {
     q: @json($q),
+    title: @json($titleFilter),
+    author: @json($authorFilter),
+    publisher: @json($publisherFilter),
+    isbn: @json($isbnFilter),
+    udc: @json($udcFilter),
     language: @json($language),
     sort: @json($sort),
     yearFrom: @json($yearFrom),
@@ -1087,6 +1388,7 @@
     institution: @json($institution),
     materialType: @json($materialType !== '' ? $materialType : 'all'),
     page: @json($initialPage),
+    advancedOpen: @json($hasAdvancedFilters),
   };
 
   document.getElementById('catalog-search-input')?.addEventListener('input', (event) => {
@@ -1108,13 +1410,35 @@
   });
 
   document.getElementById('year-from-input')?.addEventListener('change', (event) => {
-    window.catalogState.yearFrom = event.target.value.trim() || '1950';
+    window.catalogState.yearFrom = event.target.value.trim() || String(YEAR_BOUNDS.min);
     window.catalogState.page = 1;
+    updateYearRangeVisual();
     loadCatalog();
   });
 
   document.getElementById('year-to-input')?.addEventListener('change', (event) => {
-    window.catalogState.yearTo = event.target.value.trim() || '2024';
+    window.catalogState.yearTo = event.target.value.trim() || String(YEAR_BOUNDS.max);
+    window.catalogState.page = 1;
+    updateYearRangeVisual();
+    loadCatalog();
+  });
+
+  document.getElementById('year-from-range')?.addEventListener('input', (event) => {
+    window.catalogState.yearFrom = event.target.value;
+    updateYearRangeVisual();
+  });
+
+  document.getElementById('year-to-range')?.addEventListener('input', (event) => {
+    window.catalogState.yearTo = event.target.value;
+    updateYearRangeVisual();
+  });
+
+  document.getElementById('year-from-range')?.addEventListener('change', () => {
+    window.catalogState.page = 1;
+    loadCatalog();
+  });
+
+  document.getElementById('year-to-range')?.addEventListener('change', () => {
     window.catalogState.page = 1;
     loadCatalog();
   });
@@ -1140,7 +1464,21 @@
   document.getElementById('sort-select')?.addEventListener('change', (event) => {
     window.catalogState.sort = event.target.value;
     window.catalogState.page = 1;
+    syncSortMenu();
     loadCatalog();
+  });
+
+  document.querySelectorAll('[data-sort-option]').forEach((button) => {
+    button.addEventListener('click', () => {
+      window.catalogState.sort = button.dataset.sortOption || 'relevance';
+      const select = document.getElementById('sort-select');
+      if (select) select.value = window.catalogState.sort;
+      document.getElementById('sort-menu-panel')?.setAttribute('hidden', 'hidden');
+      document.getElementById('sort-menu-panel').hidden = true;
+      window.catalogState.page = 1;
+      syncSortMenu();
+      loadCatalog();
+    });
   });
 
   document.querySelectorAll('#language-chips button').forEach((button) => {
@@ -1159,9 +1497,41 @@
     });
   });
 
+  document.querySelectorAll('[data-collection-filter]').forEach((button) => {
+    button.addEventListener('click', () => {
+      window.catalogState.institution = button.dataset.collectionFilter || '';
+      const select = document.getElementById('institution-select');
+      if (select) select.value = window.catalogState.institution;
+      window.catalogState.page = 1;
+      syncCollectionButtons();
+      loadCatalog();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    const panel = document.getElementById('sort-menu-panel');
+    const wrapper = event.target.closest('[data-sort-menu]');
+    if (panel && !wrapper) {
+      panel.hidden = true;
+      panel.setAttribute('hidden', 'hidden');
+    }
+  });
+
+  ['advanced-title-input', 'advanced-author-input', 'advanced-publisher-input', 'advanced-isbn-input', 'advanced-udc-input'].forEach((id) => {
+    document.getElementById(id)?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        applyAdvancedSearch();
+      }
+    });
+  });
+
   updateFilterBadge();
+  updateYearRangeVisual();
   syncLanguageButtons();
   syncMaterialButtons();
+  syncSortMenu();
+  syncCollectionButtons();
   renderPagination({ page: @json($initialPage), total_pages: @json((int) ($initialMeta['total_pages'] ?? $initialMeta['totalPages'] ?? 1)) });
   loadCatalog();
 </script>

@@ -95,4 +95,20 @@ class CatalogPageTest extends TestCase
             ->assertOk()
             ->assertSee('Библиотека колледжа · каб. 3');
     }
+
+    public function test_catalog_page_has_enhanced_sort_year_and_advanced_controls(): void
+    {
+        $response = $this->get('/catalog');
+
+        $response
+            ->assertOk()
+            ->assertSee('data-sort-menu', false)
+            ->assertSee('id="year-from-range"', false)
+            ->assertSee('id="year-to-range"', false)
+            ->assertSee('id="advanced-search-panel"', false)
+            ->assertSee('params.set(\'title\'', false)
+            ->assertSee('params.set(\'author\'', false)
+            ->assertSee('params.set(\'isbn\'', false)
+            ->assertSee('params.set(\'udc\'', false);
+    }
 }

@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::get('/catalog', function (Request $request, CatalogReadService $catalogReadService) {
     $uiSort = (string) $request->query('sort', 'relevance');
     $materialType = (string) $request->query('material_type', 'all');
+    $yearBounds = $catalogReadService->yearBounds();
     $apiSortMap = [
         'relevance' => 'popular',
         'title' => 'title',
@@ -34,12 +35,17 @@ Route::get('/catalog', function (Request $request, CatalogReadService $catalogRe
 
     $catalogBootstrap = $catalogReadService->search(
         query: trim((string) $request->query('q', '')),
+        title: $request->filled('title') ? trim((string) $request->query('title')) : null,
+        author: $request->filled('author') ? trim((string) $request->query('author')) : null,
+        publisher: $request->filled('publisher') ? trim((string) $request->query('publisher')) : null,
+        isbn: $request->filled('isbn') ? trim((string) $request->query('isbn')) : null,
+        udc: $request->filled('udc') ? trim((string) $request->query('udc')) : null,
         language: $request->filled('language') ? (string) $request->query('language') : null,
         page: max((int) $request->query('page', 1), 1),
         limit: 10,
         sort: $apiSortMap[$uiSort] ?? 'popular',
-        yearFrom: $request->filled('year_from') && is_numeric((string) $request->query('year_from')) ? (int) $request->query('year_from') : null,
-        yearTo: $request->filled('year_to') && is_numeric((string) $request->query('year_to')) ? (int) $request->query('year_to') : null,
+        yearFrom: $request->filled('year_from') && is_numeric((string) $request->query('year_from')) ? (int) $request->query('year_from') : $yearBounds['min'],
+        yearTo: $request->filled('year_to') && is_numeric((string) $request->query('year_to')) ? (int) $request->query('year_to') : $yearBounds['max'],
         availableOnly: $request->boolean('available_only'),
         physicalOnly: $request->boolean('physical_only'),
         institution: $request->filled('institution') ? (string) $request->query('institution') : null,
@@ -73,7 +79,10 @@ Route::get('/catalog', function (Request $request, CatalogReadService $catalogRe
         $catalogBootstrap['meta']['page'] = 1;
     }
 
-    return view('catalog', ['catalogBootstrap' => $catalogBootstrap]);
+    return view('catalog', [
+        'catalogBootstrap' => $catalogBootstrap,
+        'catalogYearBounds' => $yearBounds,
+    ]);
 });
 
 Route::get('/book/{isbn}', function () {
