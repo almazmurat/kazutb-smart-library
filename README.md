@@ -4,6 +4,8 @@ A production-oriented digital library platform built with **Laravel**, **Postgre
 
 Digital Library is not just a landing site or a catalog skin. It is the library application layer for public discovery, reader accounts, staff operations, digital materials, and future reporting/analytics workflows.
 
+> **NEW (Apr 15, 2026)**: Automatic agent tracking system is active. All development work is auto-tracked in `artifacts/obsidian/memory-fragments/`. See `.instructions.md` for details.
+
 ---
 
 ## Project overview

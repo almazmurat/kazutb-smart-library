@@ -24,10 +24,19 @@ It keeps only active knowledge paths, not full transcript summaries.
 - **Auto-Sync System**: New `.instructions.md` + `AGENT_TRACKING_INSTRUCTIONS.md`
 - **Session Script**: `scripts/dev/auto-sync.sh` for hands-free memory capture
 - **Automation**: Agent will auto-track decisions, code changes, tests, gotchas
-- **Status**: Setup complete, first test run pending
+- **System Status**: ✅ PRODUCTION READY (tested & verified)
+- **System Summary**: [[SYSTEM_SETUP_SUMMARY_2026-04-15]]
+- **Decision**: [[decision-auto-tracking-framework-2026-04-15]]
 
 ## How to Use
 1. **Agent starts task**: Read this hub + `WORK_LOG_20260415.md` for context
-2. **During work**: Auto-capture memory fragments (see `AGENT_TRACKING_INSTRUCTIONS.md`)
-3. **At session end**: Run `bash scripts/dev/auto-sync.sh` for automatic sync
-4. **Next session**: Resume from `WORK_LOG_YYYYMMDD.md` — zero context loss
+2. **During work**: Follow `.instructions.md` for rules, `AGENT_TRACKING_INSTRUCTIONS.md` for patterns
+3. **Auto-create memory**: Agent writes fragments during work (no manual intervention)
+4. **At session end**: Run `bash scripts/dev/auto-sync.sh` ← does everything automatically
+5. **Next session**: Resume from `WORK_LOG_YYYYMMDD.md` — zero context loss
+
+## Key Files for Agent
+- `.instructions.md` — MUST READ: High-level rules agent must follow
+- `AGENT_TRACKING_INSTRUCTIONS.md` — Specific patterns for each task type
+- `scripts/dev/auto-sync.sh` — Run at session end for automatic sync
+- `artifacts/obsidian/memory-fragments/WORK_LOG_YYYYMMDD.md` — Daily task tracker
