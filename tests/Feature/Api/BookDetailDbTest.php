@@ -39,6 +39,7 @@ class BookDetailDbTest extends TestCase
                     'copies' => ['available', 'total'],
                     'availability' => ['isAvailable', 'availableCopies', 'totalCopies', 'locations'],
                     'quality' => ['needsReview', 'reviewReasonCodes'],
+                    'udc' => ['raw', 'source'],
                     'source',
                 ],
             ]);

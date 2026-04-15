@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9fa",
+                        "inverse-primary": "#afc8f0",
+                        "on-surface-variant": "#43474e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f8f9fa",
+                        "surface-container-low": "#f3f4f5",
+                        "primary-fixed-dim": "#afc8f0",
+                        "on-secondary-fixed": "#002020",
+                        "tertiary-fixed": "#d1e4fb",
+                        "primary-fixed": "#d4e3ff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#36485b",
+                        "surface-tint": "#476083",
+                        "secondary": "#006a6a",
+                        "tertiary": "#000610",
+                        "outline": "#74777f",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#76889d",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "error": "#ba1a1a",
+                        "on-surface": "#191c1d",
+                        "primary": "#000613",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2e3132",
+                        "secondary-fixed-dim": "#76d6d5",
+                        "primary-container": "#001f3f",
+                        "outline-variant": "#c4c6cf",
+                        "on-primary-fixed": "#001c3a",
+                        "surface-container": "#edeeef",
+                        "on-tertiary-fixed": "#091d2e",
+                        "on-background": "#191c1d",
+                        "on-primary-container": "#6f88ad",
+                        "tertiary-fixed-dim": "#b5c8df",
+                        "on-secondary-container": "#006e6e",
+                        "secondary-fixed": "#93f2f2",
+                        "secondary-container": "#90efef",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "surface-dim": "#d9dadb",
+                        "tertiary-container": "#0d2031"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+            font-family: 'Manrope', sans-serif;
+        }
+        .serif-text {
+            font-family: 'Newsreader', serif;
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-secondary/30">
+<!-- TopNavBar -->
+<nav class="bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="text-xl font-['Newsreader'] tracking-tight text-blue-950 dark:text-white font-medium">
+                KazUTB Digital Library
+            </div>
+<div class="hidden md:flex items-center gap-10">
+<a class="text-teal-700 dark:text-teal-400 font-bold border-b-2 border-teal-700 pb-1 font-['Newsreader'] italic transition-all active:opacity-80 active:scale-95" href="#">Catalog</a>
+<a class="text-slate-600 dark:text-slate-400 font-['Manrope'] hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300" href="#">Resources</a>
+<a class="text-slate-600 dark:text-slate-400 font-['Manrope'] hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300" href="#">Archive</a>
+<a class="text-slate-600 dark:text-slate-400 font-['Manrope'] hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300" href="#">Scholarly Works</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-600 hover:text-teal-600 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all">
+                    Sign In
+                </button>
+</div>
+</div>
+</nav>
+<main class="max-w-screen-2xl mx-auto px-8 py-16 md:py-24 min-h-screen">
+<!-- Breadcrumb / Back Link -->
+<div class="mb-12">
+<a class="flex items-center gap-2 text-secondary font-medium group" href="#">
+<span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+<span class="text-sm font-label tracking-wide">Back to Catalog</span>
+</a>
+</div>
+<!-- Book Record Header & Summary -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+<!-- Book Cover Thumbnail -->
+<div class="lg:col-span-4 xl:col-span-3">
+<div class="bg-surface-container-low p-4 rounded-xl">
+<div class="relative aspect-[2/3] w-full bg-surface shadow-2xl rounded overflow-hidden">
+<img alt="Academic book cover" class="w-full h-full object-cover" data-alt="Close-up of a vintage academic book with gold embossed title on a dark blue leather cover, soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2jUe-PAXNC9_LKks8EyeKk2qenU9RiDrJwrhgFA9mJvrZ9JyAx9FoFsPCHEA-exFUmDuOsIJj7jHU0UkVTmWq5eyhJgC4DrtFB4S3eZcKJsw5xGODlZM2EtEesGa149tWS8lvlnylIt15rtCrIE9vMUAO1SrYvS3NsXmsFSaNmK7Dzf2E1f0S5xWpDQ9O8ujfm8Vs2K_YZGliDL9C5dLivsU8t5-5EmMM7VZc37rcSLRyrAbhF9mi0akeDnAM6Q8Aux7fZSQoLTIK"/>
+</div>
+</div>
+<!-- Status & Location Card -->
+<div class="mt-8 bg-surface-container-lowest p-6 rounded-xl border-l-4 border-secondary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-secondary font-bold text-sm tracking-wide uppercase">Available</span>
+</div>
+<div class="space-y-4">
+<div>
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Location</p>
+<p class="text-on-surface font-semibold text-sm">Central Library, 3rd Floor, Section B-14</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Call Number</p>
+<p class="text-on-surface font-semibold text-sm">QA76.73.P98 C43 2023</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Core Bibliographic Area -->
+<div class="lg:col-span-8 xl:col-span-9">
+<div class="max-w-3xl">
+<h1 class="text-5xl md:text-6xl text-primary font-headline font-bold leading-tight mb-4 italic">
+                        Sustainable Infrastructure in Modern Urban Planning: A Global Perspective
+                    </h1>
+<div class="flex flex-wrap items-center gap-x-8 gap-y-4 mb-12">
+<div>
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Author</p>
+<p class="text-lg text-primary font-semibold">Dr. Elena K. Sokolova</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Published</p>
+<p class="text-lg text-primary font-semibold">2023</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Edition</p>
+<p class="text-lg text-primary font-semibold">2nd Revised Ed.</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">ISBN</p>
+<p class="text-lg text-primary font-semibold">978-0-12-345678-9</p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-wrap gap-4 mb-16">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-8 py-4 rounded-lg flex items-center gap-3 hover:opacity-95 transition-all shadow-lg">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-bold tracking-tight">View Digital Access</span>
+</button>
+<button class="border border-outline-variant text-secondary px-8 py-4 rounded-lg flex items-center gap-3 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">bookmark_add</span>
+<span class="font-bold tracking-tight">Shortlist</span>
+</button>
+<button class="border border-outline-variant text-on-surface px-8 py-4 rounded-lg flex items-center gap-3 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">format_quote</span>
+<span class="font-bold tracking-tight">Cite</span>
+</button>
+</div>
+<!-- Description / Abstract -->
+<div class="space-y-8">
+<h2 class="text-2xl text-primary font-headline font-bold">Abstract</h2>
+<div class="text-lg leading-relaxed text-on-surface-variant space-y-6 max-w-2xl">
+<p>
+                                This seminal work explores the intersection of engineering excellence and environmental stewardship within the context of rapidly expanding 21st-century metropolises. Dr. Sokolova provides a comprehensive framework for analyzing urban density through the lens of ecological sustainability, offering case studies from Almaty to Oslo.
+                            </p>
+<p>
+                                The text delves into advanced materials science, renewable energy integration at the district level, and the psychological impact of green-space architecture on urban populations. It serves as both a theoretical anchor and a practical guide for scholars of urban design and technology.
+                            </p>
+</div>
+</div>
+<!-- Metadata Grid -->
+<div class="mt-16 pt-16 border-t border-surface-container-high grid grid-cols-1 md:grid-cols-2 gap-12">
+<div>
+<h3 class="text-xs text-secondary font-label font-bold uppercase tracking-widest mb-6">Subject Terms</h3>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-high px-4 py-2 rounded-full text-xs font-medium">Urban Development</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-full text-xs font-medium">Architecture</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-full text-xs font-medium">Sustainability</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-full text-xs font-medium">Environmental Engineering</span>
+</div>
+</div>
+<div>
+<h3 class="text-xs text-secondary font-label font-bold uppercase tracking-widest mb-6">Language &amp; Media</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                                Language: English (Original)<br/>
+                                Includes 42 high-resolution architectural plates and 12 digital appendices available via QR link in the physical copy.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-100 dark:bg-slate-900 full-width py-12 px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-2xl mx-auto border-t border-slate-200/20 pt-8">
+<div class="space-y-6">
+<div class="font-['Newsreader'] font-bold text-blue-950 text-2xl">KazUTB Digital Library</div>
+<p class="font-['Manrope'] text-sm tracking-wide text-slate-500 dark:text-slate-400 max-w-sm">
+                    Empowering the next generation of scholars through centralized access to global knowledge and institutional heritage.
+                </p>
+<div class="text-xs text-slate-400">
+                    © 2024 Kazakh University of Technology and Business. Digital Curator Initiative.
+                </div>
+</div>
+<div class="flex flex-col md:items-end justify-between">
+<div class="flex flex-wrap gap-8">
+<a class="text-slate-500 dark:text-slate-400 font-['Manrope'] text-sm hover:text-teal-600 dark:hover:text-teal-400 transition-colors underline decoration-teal-500" href="#">Institutional Repository</a>
+<a class="text-slate-500 dark:text-slate-400 font-['Manrope'] text-sm hover:text-teal-600 dark:hover:text-teal-400 transition-colors" href="#">Library Rules</a>
+<a class="text-slate-500 dark:text-slate-400 font-['Manrope'] text-sm hover:text-teal-600 dark:hover:text-teal-400 transition-colors" href="#">Contact Librarian</a>
+<a class="text-slate-500 dark:text-slate-400 font-['Manrope'] text-sm hover:text-teal-600 dark:hover:text-teal-400 transition-colors" href="#">Privacy Policy</a>
+</div>
+<div class="mt-12 flex gap-4">
+<span class="material-symbols-outlined text-slate-400">public</span>
+<span class="material-symbols-outlined text-slate-400">menu_book</span>
+<span class="material-symbols-outlined text-slate-400">school</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

@@ -36,6 +36,7 @@ class BookDetailReadService
                 'd.faculty_raw',
                 'd.department_raw',
                 'd.specialization_raw',
+                'd.raw_marc',
             ])
             ->whereRaw(
                 "d.isbn_normalized = ? or d.isbn_raw = ? or d.document_id::text = ? or d.legacy_doc_id::text = ?",
@@ -152,8 +153,72 @@ class BookDetailReadService
                 'reviewReasonCodes' => $reviewReasonCodes,
             ],
             'classification' => $classification,
+            'udc' => $this->extractUdcData($document->raw_marc ?? null, $classification),
             'source' => 'app.document_detail_v',
         ];
+    }
+
+    /**
+     * @param array<int, array<string, string>> $classification
+     * @return array{raw: string, source: string}
+     */
+    private function extractUdcData(mixed $rawMarc, array $classification = []): array
+    {
+        if (is_string($rawMarc) && $rawMarc !== '') {
+            foreach (['080', '084'] as $tag) {
+                $value = $this->extractMarcFieldValue($rawMarc, $tag);
+                if ($value !== '') {
+                    return ['raw' => $value, 'source' => $tag];
+                }
+            }
+        }
+
+        foreach ($classification as $item) {
+            $kind = (string) ($item['sourceKind'] ?? '');
+            $label = trim((string) ($item['label'] ?? ''));
+            if ($label !== '' && in_array($kind, ['subject', 'specialization'], true)) {
+                return ['raw' => $label, 'source' => $kind];
+            }
+        }
+
+        return ['raw' => '', 'source' => ''];
+    }
+
+    private function extractMarcFieldValue(string $rawMarc, string $tag): string
+    {
+        $pattern = sprintf('/(?:^|\x1E)%s\s{0,2}([^\x1E]+)/u', preg_quote($tag, '/'));
+        if (! preg_match($pattern, $rawMarc, $matches)) {
+            return '';
+        }
+
+        $fieldData = (string) ($matches[1] ?? '');
+        $subfields = preg_split('/\x1F/u', $fieldData) ?: [];
+        $values = [];
+
+        foreach ($subfields as $subfield) {
+            $subfield = trim($subfield);
+            if ($subfield === '') {
+                continue;
+            }
+
+            $code = mb_substr($subfield, 0, 1);
+            $value = trim(mb_substr($subfield, 1));
+            if ($value === '') {
+                continue;
+            }
+
+            if (in_array($code, ['a', 'x'], true)) {
+                $values[] = preg_replace('/\s+/u', ' ', $value) ?: $value;
+            }
+        }
+
+        if ($values !== []) {
+            return trim(implode(' · ', array_unique($values)));
+        }
+
+        $normalized = preg_replace('/[\x1F\\]+/u', ' ', $fieldData);
+
+        return trim(preg_replace('/\s+/u', ' ', $normalized ?: '') ?: '');
     }
 
     /**

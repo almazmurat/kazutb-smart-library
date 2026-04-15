@@ -13,5 +13,11 @@ It keeps only active knowledge paths, not full transcript summaries.
 ## Source Chats
 - [[chat.md]]
 
-## Generated Fragments
+## Generated Fragments & Session Summaries
 - [[chat-fragment.md]]
+- [[session-2026-04-15.md]] ← **Latest session** (Apr 15, 07:43 UTC)
+
+## Latest Session Context (Apr 15)
+- Uncommitted changes: BookDetailReadService, CatalogDbSearchTest, design-exports/
+- Obsidian sync: last executed Apr 13
+- Next action: commit pending changes + run memory sync

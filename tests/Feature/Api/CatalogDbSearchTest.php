@@ -27,7 +27,17 @@ class CatalogDbSearchTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonStructure([
-                'data' => [['id', 'title' => ['display', 'raw'], 'primaryAuthor', 'publisher', 'publicationYear', 'language', 'isbn', 'copies']],
+                'data' => [[
+                    'id',
+                    'title' => ['display', 'raw'],
+                    'primaryAuthor',
+                    'publisher',
+                    'publicationYear',
+                    'language',
+                    'isbn',
+                    'copies',
+                    'udc' => ['raw', 'source'],
+                ]],
                 'meta' => ['page', 'per_page', 'total', 'totalPages'],
             ]);
 
