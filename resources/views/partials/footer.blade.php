@@ -16,69 +16,85 @@
       return $normalizedPath . ($query ? ('?' . http_build_query($query)) : '');
   };
 
-  $isAuthenticated = (bool) session('library.user');
+  $copy = [
+      'ru' => [
+          'brand' => 'КазТБУ',
+          'desc' => 'Цифровая библиотека с каталогом, научными ресурсами и единым маршрутом академического доступа.',
+          'navigation' => 'Навигация',
+          'support' => 'Поддержка',
+          'nav_links' => [
+              ['label' => 'Главная', 'href' => $routeWithLang('/')],
+              ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
+          ],
+          'support_links' => [
+              ['label' => 'Подборка', 'href' => $routeWithLang('/shortlist')],
+              ['label' => 'Открыть кабинет', 'href' => $routeWithLang('/account')],
+          ],
+          'contact_link' => 'Связаться с библиотекарем',
+          'contact_href' => $routeWithLang('/contacts'),
+          'copyright' => 'Институциональный библиотечный интерфейс.',
+      ],
+      'kk' => [
+          'brand' => 'КазТБУ',
+          'desc' => 'Каталог, ғылыми ресурстар және академиялық қолжетімділікке арналған бірыңғай цифрлық кітапхана беті.',
+          'navigation' => 'Навигация',
+          'support' => 'Қолдау',
+          'nav_links' => [
+              ['label' => 'Басты бет', 'href' => $routeWithLang('/')],
+              ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
+          ],
+          'support_links' => [
+              ['label' => 'Іріктеме', 'href' => $routeWithLang('/shortlist')],
+              ['label' => 'Кабинетті ашу', 'href' => $routeWithLang('/account')],
+          ],
+          'contact_link' => 'Кітапханашымен байланысу',
+          'contact_href' => $routeWithLang('/contacts'),
+          'copyright' => 'Институционалдық кітапхана интерфейсі.',
+      ],
+      'en' => [
+          'brand' => 'KazUTB',
+          'desc' => 'A digital library surface for catalog search, research resources, and practical academic access.',
+          'navigation' => 'Navigation',
+          'support' => 'Support',
+          'nav_links' => [
+              ['label' => 'Home', 'href' => $routeWithLang('/')],
+              ['label' => 'Catalog', 'href' => $routeWithLang('/catalog')],
+          ],
+          'support_links' => [
+              ['label' => 'Shortlist', 'href' => $routeWithLang('/shortlist')],
+              ['label' => 'Open portal', 'href' => $routeWithLang('/account')],
+          ],
+          'contact_link' => 'Contact Librarian',
+          'contact_href' => $routeWithLang('/contacts'),
+          'copyright' => 'Institutional library interface.',
+      ],
+  ][$pageLang];
 @endphp
-<footer class="site-footer">
-  <div class="container footer-prelude">
-    <div class="footer-prelude__intro">
-      <div class="footer-kicker">{{ __('ui.brand.title') }}</div>
-      <p>{{ __('ui.footer.description') }}</p>
-    </div>
-    <div class="footer-badge-row" aria-label="{{ __('ui.aria.platform_features') }}">
-      <span class="footer-badge">{{ __('ui.footer.badge_catalog') }}</span>
-      <span class="footer-badge">{{ __('ui.footer.badge_resources') }}</span>
-      <span class="footer-badge">{{ __('ui.footer.badge_portal') }}</span>
-    </div>
-  </div>
-
-  <div class="container footer-grid">
-    <div class="footer-col footer-col--brand">
-      <div class="footer-brand">
-        <span class="brand-mark brand-mark--logo">
-          <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="logo-img logo-img--brand" loading="lazy" decoding="async">
-        </span>
-        <div class="footer-brand-name">
-          {{ __('ui.brand.title') }}
-          <small>{{ __('ui.brand.subtitle') }}</small>
-        </div>
+<footer class="site-footer bg-slate-100 text-blue-950 full-width py-12 px-8 border-t border-slate-200/20">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-2xl mx-auto">
+    <div class="space-y-6">
+      <div class="font-['Newsreader'] font-bold text-blue-950 text-2xl">{{ $copy['brand'] }}</div>
+      <p class="font-['Manrope'] text-sm tracking-wide max-w-sm opacity-80">
+        {{ $copy['desc'] }}
+      </p>
+      <div class="text-slate-500 text-xs">
+        © {{ date('Y') }} {{ __('ui.brand.title') }}. {{ $copy['copyright'] }}
       </div>
-      <p>{{ __('ui.footer.description') }}</p>
     </div>
-
-    <div class="footer-col">
-      <div class="footer-title">{{ __('ui.footer.explore') }}</div>
-      <a href="{{ $routeWithLang('/catalog') }}">{{ __('ui.nav.catalog') }}</a>
-      <a href="{{ $routeWithLang('/resources') }}">{{ __('ui.nav.resources') }}</a>
-      <a href="{{ $routeWithLang('/discover') }}">{{ __('ui.footer.subjects') }}</a>
-      <a href="{{ $routeWithLang('/about') }}">{{ __('ui.nav.about') }}</a>
-    </div>
-
-    <div class="footer-col">
-      <div class="footer-title">{{ __('ui.footer.portal') }}</div>
-      <a href="{{ $routeWithLang('/shortlist') }}">{{ __('ui.footer.shortlist') }}</a>
-      @if($isAuthenticated)
-        <a href="{{ $routeWithLang('/account') }}">{{ __('ui.nav.account') }}</a>
-      @else
-        <a href="{{ $routeWithLang('/login') }}">{{ __('ui.footer.secure_access') }}</a>
-      @endif
-      <a href="{{ $routeWithLang('/account') }}">{{ __('ui.actions.open_portal') }}</a>
-    </div>
-
-    <div class="footer-col footer-col--support">
-      <div class="footer-title">{{ __('ui.footer.support') }}</div>
-      <p>{{ __('ui.footer.support_copy') }}</p>
-      <a href="{{ $routeWithLang('/contacts') }}">{{ __('ui.footer.contact_librarian') }}</a>
-      <a href="tel:+77172645858">+7 (7172) 64-58-58</a>
-      <p class="footer-note">{{ __('ui.footer.hours') }}</p>
-    </div>
-  </div>
-
-  <div class="container footer-bottom">
-    <p>© {{ date('Y') }} {{ __('ui.brand.title') }}. {{ __('ui.footer.copyright') }}</p>
-    <div class="footer-bottom-links">
-      <a href="{{ $routeWithLang('/') }}">{{ __('ui.nav.home') }}</a>
-      <a href="{{ $routeWithLang('/catalog') }}">{{ __('ui.nav.catalog') }}</a>
-      <a href="{{ $routeWithLang('/contacts') }}">{{ __('ui.footer.contact_librarian') }}</a>
+    <div class="grid grid-cols-2 gap-8">
+      <div class="flex flex-col space-y-4">
+        <h5 class="text-primary font-bold text-sm font-body uppercase tracking-wider">{{ $copy['navigation'] }}</h5>
+        @foreach($copy['nav_links'] as $item)
+          <a class="text-slate-500 hover:text-teal-600 transition-colors text-sm" href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+        @endforeach
+      </div>
+      <div class="flex flex-col space-y-4">
+        <h5 class="text-primary font-bold text-sm font-body uppercase tracking-wider">{{ $copy['support'] }}</h5>
+        @foreach($copy['support_links'] as $item)
+          <a class="text-slate-500 hover:text-teal-600 transition-colors text-sm" href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+        @endforeach
+        <a class="text-slate-500 hover:text-teal-600 transition-colors text-sm" href="{{ $copy['contact_href'] }}">{{ $copy['contact_link'] }}</a>
+      </div>
     </div>
   </div>
 </footer>

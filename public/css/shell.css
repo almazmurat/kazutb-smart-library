@@ -70,12 +70,7 @@ body {
   flex-direction: column;
   font-family: 'Manrope', 'Inter', system-ui, sans-serif;
   color: var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(0, 30, 64, 0.06), transparent 18%),
-    radial-gradient(circle at 78% 8%, rgba(20, 105, 109, 0.07), transparent 18%),
-    radial-gradient(circle at bottom right, rgba(69, 48, 0, 0.035), transparent 16%),
-    linear-gradient(180deg, #fbfcfc 0%, #f7f8f9 48%, #f3f4f5 100%);
-  background-attachment: fixed;
+  background: #f8f9fa;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -86,30 +81,7 @@ body {
 
 .site-shell::before,
 .site-shell::after {
-  content: '';
-  position: fixed;
-  inset: auto;
-  border-radius: 999px;
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(10px);
-  opacity: 0.7;
-}
-
-.site-shell::before {
-  top: 96px;
-  left: -80px;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(0, 30, 64, 0.06), transparent 72%);
-}
-
-.site-shell::after {
-  right: -90px;
-  bottom: 12vh;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(20, 105, 109, 0.08), transparent 72%);
+  content: none;
 }
 
 a {
