@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Wrapper for auto-sync script — can be called from ANY directory
+# This script finds the project root and runs the real auto-sync
+
+# Find the project root by looking for .git directory
+find_project_root() {
+    local dir="${1:-.}"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -d "$dir/.git" ]]; then
+            echo "$dir"
+            return 0
+        fi
+        dir="$(cd "$dir/.." && pwd)"
+    done
+    echo "Error: Could not find project root (.git directory)" >&2
+    return 1
+}
+
+PROJECT_ROOT=$(find_project_root)
+cd "$PROJECT_ROOT"
+
+# Now run the actual auto-sync script
+bash "$PROJECT_ROOT/scripts/dev/auto-sync.sh"
