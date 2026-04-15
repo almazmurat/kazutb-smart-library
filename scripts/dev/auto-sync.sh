@@ -5,7 +5,8 @@ set -euo pipefail
 # Runs automatic memory capture, git commitment, and Obsidian sync
 # Called by agent at session end or during long work sessions
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Find root directory (go up 2 levels from scripts/dev)
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT_DIR"
 
 TODAY=$(date -u +'%Y%m%d')
