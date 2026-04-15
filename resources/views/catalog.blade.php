@@ -130,6 +130,12 @@
               'no_location' => 'Локация уточняется',
               'page_prev' => 'Назад',
               'page_next' => 'Вперёд',
+              'central_library' => 'Центральная библиотека КазТБУ',
+              'technology_library' => 'Технологическая библиотека',
+              'economic_library' => 'Экономическая библиотека',
+              'college_library' => 'Библиотека колледжа',
+              'cabinet_short' => 'каб.',
+              'main_cabinet' => 'главный кабинет выдачи',
           ],
       ],
       'kk' => [
@@ -226,6 +232,12 @@
               'no_location' => 'Орналасуы нақтылануда',
               'page_prev' => 'Артқа',
               'page_next' => 'Алға',
+              'central_library' => 'ҚазТБУ орталық кітапханасы',
+              'technology_library' => 'Технологиялық кітапхана',
+              'economic_library' => 'Экономикалық кітапхана',
+              'college_library' => 'Колледж кітапханасы',
+              'cabinet_short' => 'каб.',
+              'main_cabinet' => 'негізгі беру кабинеті',
           ],
       ],
       'en' => [
@@ -322,6 +334,12 @@
               'no_location' => 'Location pending',
               'page_prev' => 'Previous',
               'page_next' => 'Next',
+              'central_library' => 'KazTBU Central Library',
+              'technology_library' => 'Technology Library',
+              'economic_library' => 'Economics Library',
+              'college_library' => 'College Library',
+              'cabinet_short' => 'room',
+              'main_cabinet' => 'main circulation desk',
           ],
       ],
   ][$lang];
@@ -336,6 +354,36 @@
   $initialFrom = $initialTotal > 0 ? (($initialPage - 1) * $initialPerPage) + 1 : 0;
   $initialTo = $initialTotal > 0 ? min($initialPage * $initialPerPage, $initialTotal) : 0;
   $initialQueryLabel = $q !== '' ? $q : strtoupper($language === '' ? 'all' : $language);
+  $formatLocationLabel = static function (array $location) use ($copy): string {
+      $serviceCode = strtolower(trim((string) data_get($location, 'servicePoint.code', '')));
+      $serviceName = trim((string) data_get($location, 'servicePoint.name', ''));
+      $campusCode = strtolower(trim((string) data_get($location, 'campus.code', '')));
+      $unitCode = strtolower(trim((string) data_get($location, 'institutionUnit.code', '')));
+
+      $libraryLabel = match (true) {
+          $serviceCode === '1', $campusCode === 'university_economic' => $copy['ui']['economic_library'],
+          $serviceCode === '2', $campusCode === 'university_technological' => $copy['ui']['technology_library'],
+          $serviceCode === '3', $campusCode === 'college_main', $unitCode === 'college' => $copy['ui']['college_library'],
+          $serviceCode === 'kstlib', $campusCode === 'university_central' => $copy['ui']['central_library'],
+          default => '',
+      };
+
+      if (in_array($serviceCode, ['1', '2', '3'], true)) {
+          return trim($libraryLabel . ' · ' . $copy['ui']['cabinet_short'] . ' ' . $serviceCode);
+      }
+
+      if ($serviceCode === 'kstlib') {
+          return trim($libraryLabel . ' · ' . $copy['ui']['main_cabinet']);
+      }
+
+      if ($libraryLabel !== '') {
+          return $libraryLabel;
+      }
+
+      return $serviceName !== '' && ! str_starts_with(strtolower($serviceName), 'app.')
+          ? $serviceName
+          : $copy['ui']['no_location'];
+  };
 @endphp
 
 @section('title', $copy['title'])
@@ -514,10 +562,11 @@
             $badgeLabel = $kind === 'physical' ? $copy['ui']['physical'] : ($kind === 'archive' ? $copy['ui']['archive'] : $copy['ui']['electronic']);
             $primaryLabel = $kind === 'physical' ? $copy['ui']['locate'] : ($kind === 'archive' ? $copy['ui']['request'] : $copy['ui']['read']);
             $icon = $kind === 'physical' ? 'library_books' : ($kind === 'archive' ? 'history_edu' : 'visibility');
-            $servicePoint = trim((string) ($record['availability']['locations'][0]['servicePoint']['name'] ?? ''));
+            $primaryLocation = is_array($record['availability']['locations'][0] ?? null) ? $record['availability']['locations'][0] : [];
+            $locationLabel = $formatLocationLabel($primaryLocation);
             $languageLabel = strtoupper(trim((string) ($record['language']['code'] ?? '')));
             $statusStyle = $kind === 'archive' ? 'text-error' : ($kind === 'electronic' ? 'text-secondary' : 'text-on-surface-variant');
-            $status = $kind === 'archive' ? $copy['ui']['permission'] : ($servicePoint ?: $copy['ui']['available']);
+            $status = $kind === 'archive' ? $copy['ui']['permission'] : ($locationLabel ?: $copy['ui']['available']);
             $detailHref = $isbn !== '—' ? $withLang('/book/' . rawurlencode($isbn)) : $withLang('/catalog');
             $metaParts = array_values(array_filter([$author, $year, $publisher], static fn ($value) => (string) $value !== '' && (string) $value !== '—'));
           @endphp
@@ -547,7 +596,7 @@
                 <span><strong>{{ $copy['ui']['udc'] }}:</strong> {{ $udc }}</span>
                 <span><strong>{{ $copy['ui']['copies'] }}:</strong> {{ $availableCopies }} / {{ $totalCopies }}</span>
                 <span><strong>{{ $copy['ui']['language_label'] }}:</strong> {{ $languageLabel !== '' ? $languageLabel : '—' }}</span>
-                <span><strong>{{ $copy['ui']['institution_label'] }}:</strong> {{ $servicePoint !== '' ? $servicePoint : $copy['ui']['no_location'] }}</span>
+                <span><strong>{{ $copy['ui']['institution_label'] }}:</strong> {{ $locationLabel }}</span>
               </div>
               <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                 <a href="{{ $detailHref }}" class="text-sm font-bold text-secondary flex items-center gap-2 group/btn">
@@ -681,6 +730,38 @@
     return isMeaningfulText(value) ? String(value).trim() : fallback;
   }
 
+  function formatLocationLabel(location) {
+    const serviceCode = String(location?.servicePoint?.code || '').trim().toLowerCase();
+    const serviceName = String(location?.servicePoint?.name || '').trim();
+    const campusCode = String(location?.campus?.code || '').trim().toLowerCase();
+    const unitCode = String(location?.institutionUnit?.code || '').trim().toLowerCase();
+
+    let libraryLabel = '';
+    if (serviceCode === '1' || campusCode === 'university_economic') {
+      libraryLabel = uiCopy.economic_library;
+    } else if (serviceCode === '2' || campusCode === 'university_technological') {
+      libraryLabel = uiCopy.technology_library;
+    } else if (serviceCode === '3' || campusCode === 'college_main' || unitCode === 'college') {
+      libraryLabel = uiCopy.college_library;
+    } else if (serviceCode === 'kstlib' || campusCode === 'university_central') {
+      libraryLabel = uiCopy.central_library;
+    }
+
+    if (['1', '2', '3'].includes(serviceCode)) {
+      return `${libraryLabel} · ${uiCopy.cabinet_short} ${serviceCode}`;
+    }
+
+    if (serviceCode === 'kstlib') {
+      return `${libraryLabel} · ${uiCopy.main_cabinet}`;
+    }
+
+    if (libraryLabel) {
+      return libraryLabel;
+    }
+
+    return formatValue(serviceName, uiCopy.no_location);
+  }
+
   function detailHref(isbn) {
     if (!isbn || isbn === '—') {
       return '/catalog' + LANG_SUFFIX;
@@ -742,7 +823,7 @@
     const publisher = formatValue(item?.publisher?.name, '');
     const isbn = formatValue(item?.isbn?.raw);
     const udc = formatValue(item?.udc?.raw);
-    const location = formatValue(item?.availability?.locations?.[0]?.servicePoint?.name, uiCopy.no_location);
+    const location = formatLocationLabel(item?.availability?.locations?.[0] || {});
     const language = formatValue((item?.language?.code || item?.language?.raw || '').toUpperCase(), '—');
     const copies = Number(item?.copies?.available ?? 0);
     const total = Number(item?.copies?.total ?? 0);

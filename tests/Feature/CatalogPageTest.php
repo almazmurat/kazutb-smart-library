@@ -86,4 +86,13 @@ class CatalogPageTest extends TestCase
             ->assertSee("params.set('page'", false)
             ->assertDontSee('app.document_detail_v');
     }
+
+    public function test_catalog_page_shows_human_friendly_library_locations(): void
+    {
+        $response = $this->get('/catalog?institution=college_library');
+
+        $response
+            ->assertOk()
+            ->assertSee('Библиотека колледжа · каб. 3');
+    }
 }
