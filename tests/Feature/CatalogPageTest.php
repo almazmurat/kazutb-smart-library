@@ -74,4 +74,16 @@ class CatalogPageTest extends TestCase
             ->assertDontSee('/api/v1/catalog?', false)
             ->assertDontSee('/api/v1/catalog-external', false);
     }
+
+    public function test_catalog_page_is_ready_for_description_and_pagination_behavior(): void
+    {
+        $response = $this->get('/catalog?sort=relevance');
+
+        $response
+            ->assertOk()
+            ->assertSee('data-catalog-description', false)
+            ->assertSee('id="catalog-pagination"', false)
+            ->assertSee("params.set('page'", false)
+            ->assertDontSee('app.document_detail_v');
+    }
 }

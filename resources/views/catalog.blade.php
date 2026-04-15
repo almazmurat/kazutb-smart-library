@@ -27,6 +27,7 @@
   $physicalOnly = request()->boolean('physical_only');
   $institution = (string) request()->query('institution', '');
   $sort = (string) request()->query('sort', 'relevance');
+  $materialType = (string) request()->query('material_type', '');
   $imagePool = [
       '/images/news/default-library.jpg',
       '/images/news/classics-event.jpg',
@@ -121,6 +122,14 @@
               'results_for' => 'результатов по запросу',
               'copies' => 'Экземпляры',
               'fallback_loaded' => 'Каталог загружен с сохранённой выдачей.',
+              'author_unknown' => 'Автор не указан',
+              'description_placeholder' => 'Аннотация будет добавлена после библиографической доработки записи.',
+              'subjects' => 'Темы',
+              'language_label' => 'Язык',
+              'institution_label' => 'Фонд',
+              'no_location' => 'Локация уточняется',
+              'page_prev' => 'Назад',
+              'page_next' => 'Вперёд',
           ],
       ],
       'kk' => [
@@ -209,6 +218,14 @@
               'results_for' => 'нәтиже',
               'copies' => 'Даналар',
               'fallback_loaded' => 'Каталог сақталған нәтижелермен жүктелді.',
+              'author_unknown' => 'Автор көрсетілмеген',
+              'description_placeholder' => 'Аннотация библиографиялық толықтырудан кейін қосылады.',
+              'subjects' => 'Тақырыптар',
+              'language_label' => 'Тіл',
+              'institution_label' => 'Қор',
+              'no_location' => 'Орналасуы нақтылануда',
+              'page_prev' => 'Артқа',
+              'page_next' => 'Алға',
           ],
       ],
       'en' => [
@@ -297,6 +314,14 @@
               'results_for' => 'results for',
               'copies' => 'Copies',
               'fallback_loaded' => 'Catalog loaded using the preserved result set.',
+              'author_unknown' => 'Author not specified',
+              'description_placeholder' => 'Description will appear after bibliographic enrichment.',
+              'subjects' => 'Subjects',
+              'language_label' => 'Language',
+              'institution_label' => 'Collection',
+              'no_location' => 'Location pending',
+              'page_prev' => 'Previous',
+              'page_next' => 'Next',
           ],
       ],
   ][$lang];
@@ -370,16 +395,22 @@
         <h3 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">{{ $copy['material_type'] }}</h3>
         <ul class="space-y-3">
           @foreach($copy['types'] as $index => $type)
-            <li class="flex items-center gap-3 cursor-pointer group">
-              @if($index === 1)
-                <span class="w-4 h-4 border-2 border-secondary bg-secondary rounded-sm flex items-center justify-center">
-                  <span class="material-symbols-outlined text-[10px] text-white font-bold">check</span>
-                </span>
-                <span class="text-sm text-on-surface font-bold">{{ $type }}</span>
-              @else
-                <span class="w-4 h-4 border-2 border-outline-variant rounded-sm group-hover:border-secondary transition-colors"></span>
-                <span class="text-sm text-on-surface font-medium">{{ $type }}</span>
-              @endif
+            @php
+              $typeValue = [0 => 'all', 1 => 'digital', 2 => 'archive'][$index] ?? 'all';
+              $typeActive = $materialType === $typeValue || ($materialType === '' && $typeValue === 'all');
+            @endphp
+            <li>
+              <button type="button" data-material-type="{{ $typeValue }}" class="w-full flex items-center gap-3 cursor-pointer group text-left">
+                @if($typeActive)
+                  <span class="w-4 h-4 border-2 border-secondary bg-secondary rounded-sm flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[10px] text-white font-bold">check</span>
+                  </span>
+                  <span class="text-sm text-on-surface font-bold">{{ $type }}</span>
+                @else
+                  <span class="w-4 h-4 border-2 border-outline-variant rounded-sm group-hover:border-secondary transition-colors"></span>
+                  <span class="text-sm text-on-surface font-medium">{{ $type }}</span>
+                @endif
+              </button>
             </li>
           @endforeach
         </ul>
@@ -459,13 +490,23 @@
       <div id="catalog-results-list" class="space-y-16">
         @forelse($initialResults as $index => $record)
           @php
-            $title = $record['title']['display'] ?? 'Untitled';
-            $author = $record['primaryAuthor'] ?? 'KazTBU Digital Library';
+            $title = trim((string) ($record['title']['display'] ?? '')) ?: 'Untitled';
+            $author = trim((string) ($record['primaryAuthor'] ?? '')) ?: $copy['ui']['author_unknown'];
             $year = $record['publicationYear'] ?? '—';
-            $publisher = $record['publisher']['name'] ?? 'Digital Library';
-            $isbn = $record['isbn']['raw'] ?? '—';
-            $udc = $record['udc']['raw'] ?? '—';
-            $subtitle = $record['title']['subtitle'] ?? ($record['source'] ?? $title);
+            $publisher = trim((string) ($record['publisher']['name'] ?? ''));
+            $isbn = trim((string) ($record['isbn']['raw'] ?? '')) ?: '—';
+            $udc = trim((string) ($record['udc']['raw'] ?? '')) ?: '—';
+            $subtitleRaw = trim((string) ($record['title']['subtitle'] ?? ''));
+            $subjectLabels = [];
+            foreach (($record['classification'] ?? []) as $subject) {
+                $label = trim((string) ($subject['label'] ?? ''));
+                if ($label !== '') {
+                    $subjectLabels[] = $label;
+                }
+            }
+            $description = $subtitleRaw !== '' && ! str_starts_with($subtitleRaw, 'app.')
+                ? $subtitleRaw
+                : (! empty($subjectLabels) ? implode(' · ', array_slice($subjectLabels, 0, 3)) : $copy['ui']['description_placeholder']);
             $availableCopies = (int) ($record['copies']['available'] ?? 0);
             $totalCopies = (int) ($record['copies']['total'] ?? 0);
             $kind = $totalCopies > 0 ? ($availableCopies > 0 ? 'physical' : 'archive') : 'electronic';
@@ -473,10 +514,12 @@
             $badgeLabel = $kind === 'physical' ? $copy['ui']['physical'] : ($kind === 'archive' ? $copy['ui']['archive'] : $copy['ui']['electronic']);
             $primaryLabel = $kind === 'physical' ? $copy['ui']['locate'] : ($kind === 'archive' ? $copy['ui']['request'] : $copy['ui']['read']);
             $icon = $kind === 'physical' ? 'library_books' : ($kind === 'archive' ? 'history_edu' : 'visibility');
-            $servicePoint = $record['availability']['locations'][0]['servicePoint']['name'] ?? null;
+            $servicePoint = trim((string) ($record['availability']['locations'][0]['servicePoint']['name'] ?? ''));
+            $languageLabel = strtoupper(trim((string) ($record['language']['code'] ?? '')));
             $statusStyle = $kind === 'archive' ? 'text-error' : ($kind === 'electronic' ? 'text-secondary' : 'text-on-surface-variant');
             $status = $kind === 'archive' ? $copy['ui']['permission'] : ($servicePoint ?: $copy['ui']['available']);
             $detailHref = $isbn !== '—' ? $withLang('/book/' . rawurlencode($isbn)) : $withLang('/catalog');
+            $metaParts = array_values(array_filter([$author, $year, $publisher], static fn ($value) => (string) $value !== '' && (string) $value !== '—'));
           @endphp
           <article class="flex flex-col sm:flex-row gap-8 group catalog-item">
             <div class="w-full sm:w-32 h-44 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
@@ -487,15 +530,24 @@
                 <div>
                   <span class="inline-block px-2 py-0.5 {{ $badgeStyle }} text-[10px] font-bold uppercase tracking-wider rounded mb-2">{{ $badgeLabel }}</span>
                   <a href="{{ $detailHref }}" class="block text-2xl font-newsreader font-semibold text-primary mb-1 group-hover:text-secondary transition-colors cursor-pointer">{{ $title }}</a>
-                  <p class="text-on-surface-variant font-medium mb-3">{{ $author }} · {{ $year }} · {{ $publisher }}</p>
+                  <p class="text-on-surface-variant font-medium mb-3">{{ implode(' · ', $metaParts) }}</p>
                 </div>
                 <button type="button" class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer">bookmark</button>
               </div>
-              <p class="text-on-surface-variant text-sm line-clamp-2 mb-4 max-w-2xl leading-relaxed">{{ $subtitle }}</p>
+              <p data-catalog-description class="text-on-surface-variant text-sm line-clamp-2 mb-4 max-w-2xl leading-relaxed">{{ $description }}</p>
+              @if(! empty($subjectLabels))
+                <div class="flex flex-wrap gap-2 mb-4 text-[11px] text-on-surface-variant">
+                  @foreach(array_slice($subjectLabels, 0, 3) as $subjectLabel)
+                    <span class="px-2 py-1 rounded-full bg-surface-container-high">{{ $subjectLabel }}</span>
+                  @endforeach
+                </div>
+              @endif
               <div class="flex flex-wrap gap-3 text-xs text-on-surface-variant mb-6">
                 <span><strong>{{ $copy['ui']['isbn'] }}:</strong> {{ $isbn }}</span>
-                <span><strong>{{ $copy['ui']['udc'] }}:</strong> {{ $udc !== '' ? $udc : '—' }}</span>
+                <span><strong>{{ $copy['ui']['udc'] }}:</strong> {{ $udc }}</span>
                 <span><strong>{{ $copy['ui']['copies'] }}:</strong> {{ $availableCopies }} / {{ $totalCopies }}</span>
+                <span><strong>{{ $copy['ui']['language_label'] }}:</strong> {{ $languageLabel !== '' ? $languageLabel : '—' }}</span>
+                <span><strong>{{ $copy['ui']['institution_label'] }}:</strong> {{ $servicePoint !== '' ? $servicePoint : $copy['ui']['no_location'] }}</span>
               </div>
               <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                 <a href="{{ $detailHref }}" class="text-sm font-bold text-secondary flex items-center gap-2 group/btn">
@@ -519,7 +571,7 @@
       </div>
 
       <div class="mt-24 pt-12 border-t border-outline-variant/10 flex justify-center">
-        <nav class="flex items-center gap-2" aria-label="Catalog pagination">
+        <nav id="catalog-pagination" class="flex items-center gap-2" aria-label="Catalog pagination">
           <button type="button" class="w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
             <span class="material-symbols-outlined">chevron_left</span>
           </button>
@@ -553,13 +605,26 @@
     author: 'author'
   };
 
+  let searchDebounceId = null;
+
   function toggleFilters() {
     const panel = document.getElementById('catalog-filters');
     panel?.classList.toggle('open');
   }
 
+  function isMeaningfulText(value) {
+    const normalized = String(value ?? '').trim();
+    if (!normalized) return false;
+    const lowered = normalized.toLowerCase();
+    if (['null', 'undefined', '[object object]', 'n/a'].includes(lowered)) return false;
+    if (lowered.startsWith('app.')) return false;
+    return true;
+  }
+
   function updateFilterBadge() {
     let active = 0;
+    if ((window.catalogState?.q || '') !== '') active++;
+    if ((window.catalogState?.materialType || 'all') !== 'all') active++;
     if (document.getElementById('filter-available-only')?.checked) active++;
     if (document.getElementById('filter-physical-only')?.checked) active++;
     if ((document.getElementById('institution-select')?.value || '') !== '') active++;
@@ -580,7 +645,9 @@
       yearTo: '2024',
       availableOnly: false,
       physicalOnly: false,
-      institution: ''
+      institution: '',
+      materialType: 'all',
+      page: 1,
     };
 
     document.getElementById('catalog-search-input').value = '';
@@ -591,13 +658,9 @@
     document.getElementById('institution-select').value = '';
     document.getElementById('sort-select').value = 'relevance';
 
-    document.querySelectorAll('#language-chips button').forEach((button) => {
-      button.className = button.dataset.lang === 'all'
-        ? 'px-3 py-2 rounded-lg border text-sm font-medium bg-primary text-white border-primary'
-        : 'px-3 py-2 rounded-lg border text-sm font-medium border-outline-variant/30 bg-white text-on-surface';
-    });
-
     updateFilterBadge();
+    syncLanguageButtons();
+    syncMaterialButtons();
     loadCatalog();
   }
 
@@ -614,6 +677,10 @@
       .replace(/'/g, '&#039;');
   }
 
+  function formatValue(value, fallback = '—') {
+    return isMeaningfulText(value) ? String(value).trim() : fallback;
+  }
+
   function detailHref(isbn) {
     if (!isbn || isbn === '—') {
       return '/catalog' + LANG_SUFFIX;
@@ -621,14 +688,89 @@
     return '/book/' + encodeURIComponent(isbn) + LANG_SUFFIX;
   }
 
-  function buildStatus(item, kind) {
-    const location = item?.availability?.locations?.[0];
-    if (kind === 'archive') return uiCopy.permission;
+  function deriveMaterialKind(item) {
+    const subjectText = Array.isArray(item?.classification)
+      ? item.classification.map((subject) => String(subject?.label || '').toLowerCase()).join(' ')
+      : '';
+    const total = Number(item?.copies?.total ?? 0);
+    const available = Number(item?.copies?.available ?? 0);
+
+    if (/dissert|thesis|диссер|archive|архив/.test(subjectText)) return 'archive';
+    if (total > 0 && available === 0) return 'archive';
+    if (total > 0) return 'physical';
+    return 'digital';
+  }
+
+  function getMaterialPresentation(kind) {
     if (kind === 'physical') {
-      const servicePoint = location?.servicePoint?.name || 'Library';
-      return servicePoint;
+      return {
+        badgeClass: 'bg-surface-container-highest text-on-surface-variant',
+        badgeLabel: uiCopy.physical,
+        primaryLabel: uiCopy.locate,
+        primaryIcon: 'library_books',
+        statusClass: 'text-on-surface-variant',
+        statusDot: 'bg-outline',
+      };
     }
-    return uiCopy.available;
+
+    if (kind === 'archive') {
+      return {
+        badgeClass: 'bg-secondary-container text-on-secondary-container',
+        badgeLabel: uiCopy.archive,
+        primaryLabel: uiCopy.request,
+        primaryIcon: 'history_edu',
+        statusClass: 'text-error',
+        statusDot: 'bg-error',
+      };
+    }
+
+    return {
+      badgeClass: 'bg-secondary-container text-on-secondary-container',
+      badgeLabel: uiCopy.electronic,
+      primaryLabel: uiCopy.read,
+      primaryIcon: 'visibility',
+      statusClass: 'text-secondary',
+      statusDot: 'bg-secondary',
+    };
+  }
+
+  function normalizeRecord(item) {
+    const kind = deriveMaterialKind(item);
+    const title = formatValue(item?.title?.display || item?.title?.raw, 'Untitled');
+    const author = formatValue(item?.primaryAuthor, uiCopy.author_unknown);
+    const publicationYear = isMeaningfulText(item?.publicationYear) ? String(item.publicationYear) : '';
+    const publisher = formatValue(item?.publisher?.name, '');
+    const isbn = formatValue(item?.isbn?.raw);
+    const udc = formatValue(item?.udc?.raw);
+    const location = formatValue(item?.availability?.locations?.[0]?.servicePoint?.name, uiCopy.no_location);
+    const language = formatValue((item?.language?.code || item?.language?.raw || '').toUpperCase(), '—');
+    const copies = Number(item?.copies?.available ?? 0);
+    const total = Number(item?.copies?.total ?? 0);
+    const subjects = Array.isArray(item?.classification)
+      ? item.classification.map((subject) => String(subject?.label || '').trim()).filter(Boolean).slice(0, 3)
+      : [];
+    const subtitle = isMeaningfulText(item?.title?.subtitle) ? String(item.title.subtitle).trim() : '';
+    const description = subtitle || (subjects.length ? subjects.join(' · ') : uiCopy.description_placeholder);
+    const metaLine = [author, publicationYear, publisher].filter((part) => isMeaningfulText(part));
+    const statusLabel = kind === 'archive'
+      ? uiCopy.permission
+      : (location !== uiCopy.no_location ? location : uiCopy.available);
+
+    return {
+      title,
+      metaLine: metaLine.join(' · '),
+      description,
+      subjects,
+      isbn,
+      udc,
+      language,
+      copies,
+      total,
+      location,
+      detailUrl: detailHref(isbn),
+      statusLabel,
+      ...getMaterialPresentation(kind),
+    };
   }
 
   function buildCard(item, index) {
@@ -639,62 +781,58 @@
       '/images/news/author-visit.jpg'
     ];
 
-    const title = item?.title?.display || 'Untitled';
-    const author = item?.primaryAuthor || 'KazUTB Library';
-    const year = item?.publicationYear || '—';
-    const publisher = item?.publisher?.name || 'Digital Library';
-    const isbn = item?.isbn?.raw || '—';
-    const udc = item?.udc?.raw || '—';
-    const copies = item?.copies?.available ?? 0;
-    const total = item?.copies?.total ?? 0;
-    const typeCycle = ['electronic', 'physical', 'archive'];
-    const kind = typeCycle[index % typeCycle.length];
-    const badgeClass = kind === 'physical' ? 'bg-surface-container-highest text-on-surface-variant' : 'bg-secondary-container text-on-secondary-container';
-    const primaryLabel = kind === 'physical' ? uiCopy.locate : (kind === 'archive' ? uiCopy.request : uiCopy.read);
-    const primaryIcon = kind === 'physical' ? 'library_books' : (kind === 'archive' ? 'history_edu' : 'visibility');
-    const badgeLabel = kind === 'physical' ? uiCopy.physical : (kind === 'archive' ? uiCopy.archive : uiCopy.electronic);
-    const statusLabel = buildStatus(item, kind);
-    const statusClass = kind === 'archive' ? 'text-error' : (kind === 'electronic' ? 'text-secondary' : 'text-on-surface-variant');
-    const statusDot = kind === 'archive' ? 'bg-error' : (kind === 'electronic' ? 'bg-secondary' : 'bg-outline');
-    const description = item?.title?.subtitle || item?.source || '';
+    const record = normalizeRecord(item);
+    const subjectsHtml = record.subjects.length
+      ? `<div class="flex flex-wrap gap-2 mb-4 text-[11px] text-on-surface-variant">${record.subjects.map((subject) => `<span class="px-2 py-1 rounded-full bg-surface-container-high">${escapeHtml(subject)}</span>`).join('')}</div>`
+      : '';
 
     return `
       <article class="flex flex-col sm:flex-row gap-8 group catalog-item">
         <div class="w-full sm:w-32 h-44 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
-          <img class="w-full h-full object-cover" src="${imagePool[index % imagePool.length]}" alt="${escapeHtml(title)}" />
+          <img class="w-full h-full object-cover" src="${imagePool[index % imagePool.length]}" alt="${escapeHtml(record.title)}" />
         </div>
         <div class="flex-grow">
           <div class="flex justify-between items-start gap-4">
             <div>
-              <span class="inline-block px-2 py-0.5 ${badgeClass} text-[10px] font-bold uppercase tracking-wider rounded mb-2">${escapeHtml(badgeLabel)}</span>
-              <a href="${detailHref(isbn)}" class="block text-2xl font-newsreader font-semibold text-primary mb-1 group-hover:text-secondary transition-colors cursor-pointer">${escapeHtml(title)}</a>
-              <p class="text-on-surface-variant font-medium mb-3">${escapeHtml(author)} · ${escapeHtml(year)} · ${escapeHtml(publisher)}</p>
+              <span class="inline-block px-2 py-0.5 ${record.badgeClass} text-[10px] font-bold uppercase tracking-wider rounded mb-2">${escapeHtml(record.badgeLabel)}</span>
+              <a href="${record.detailUrl}" class="block text-2xl font-newsreader font-semibold text-primary mb-1 group-hover:text-secondary transition-colors cursor-pointer">${escapeHtml(record.title)}</a>
+              <p class="text-on-surface-variant font-medium mb-3">${escapeHtml(record.metaLine)}</p>
             </div>
             <button type="button" class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer" aria-label="Bookmark">bookmark</button>
           </div>
-          <p class="text-on-surface-variant text-sm line-clamp-2 mb-4 max-w-2xl leading-relaxed">${escapeHtml(description || title)}</p>
+          <p data-catalog-description class="text-on-surface-variant text-sm line-clamp-2 mb-4 max-w-2xl leading-relaxed">${escapeHtml(record.description)}</p>
+          ${subjectsHtml}
           <div class="flex flex-wrap gap-3 text-xs text-on-surface-variant mb-6">
-            <span><strong>${uiCopy.isbn}:</strong> ${escapeHtml(isbn)}</span>
-            <span><strong>${uiCopy.udc}:</strong> ${escapeHtml(udc)}</span>
-            <span><strong>${escapeHtml(uiCopy.copies)}:</strong> ${escapeHtml(copies)} / ${escapeHtml(total)}</span>
+            <span><strong>${uiCopy.isbn}:</strong> ${escapeHtml(record.isbn)}</span>
+            <span><strong>${uiCopy.udc}:</strong> ${escapeHtml(record.udc)}</span>
+            <span><strong>${escapeHtml(uiCopy.copies)}:</strong> ${escapeHtml(record.copies)} / ${escapeHtml(record.total)}</span>
+            <span><strong>${escapeHtml(uiCopy.language_label)}:</strong> ${escapeHtml(record.language)}</span>
+            <span><strong>${escapeHtml(uiCopy.institution_label)}:</strong> ${escapeHtml(record.location)}</span>
           </div>
           <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-            <a href="${detailHref(isbn)}" class="text-sm font-bold text-secondary flex items-center gap-2 group/btn">
-              <span class="material-symbols-outlined text-lg">${primaryIcon}</span>
-              <span>${escapeHtml(primaryLabel)}</span>
+            <a href="${record.detailUrl}" class="text-sm font-bold text-secondary flex items-center gap-2 group/btn">
+              <span class="material-symbols-outlined text-lg">${record.primaryIcon}</span>
+              <span>${escapeHtml(record.primaryLabel)}</span>
             </a>
-            <button type="button" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" onclick="copyCitation(${JSON.stringify(title)})">
+            <button type="button" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" onclick="copyCitation(${JSON.stringify(record.title)})">
               <span class="material-symbols-outlined text-lg">description</span>
               <span>${escapeHtml(uiCopy.cite)}</span>
             </button>
-            <div class="sm:ml-auto text-xs ${statusClass} font-bold flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full ${statusDot}"></span>
-              ${escapeHtml(statusLabel)}
+            <div class="sm:ml-auto text-xs ${record.statusClass} font-bold flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full ${record.statusDot}"></span>
+              ${escapeHtml(record.statusLabel)}
             </div>
           </div>
         </div>
       </article>
     `;
+  }
+
+  function applyMaterialTypeFilter(items) {
+    const materialType = window.catalogState.materialType || 'all';
+    if (materialType === 'all') return items;
+
+    return items.filter((item) => deriveMaterialKind(item) === materialType);
   }
 
   function syncLanguageButtons() {
@@ -706,43 +844,119 @@
     });
   }
 
-  function syncUrl(params) {
-    const base = new URL(window.location.href);
-    base.search = params.toString();
-    window.history.replaceState({}, '', base.toString());
+  function syncMaterialButtons() {
+    document.querySelectorAll('[data-material-type]').forEach((button) => {
+      const active = (button.dataset.materialType || 'all') === (window.catalogState.materialType || 'all');
+      const box = button.querySelector('span');
+      const label = button.querySelectorAll('span')[1];
+      if (!box || !label) return;
+
+      box.className = active
+        ? 'w-4 h-4 border-2 border-secondary bg-secondary rounded-sm flex items-center justify-center'
+        : 'w-4 h-4 border-2 border-outline-variant rounded-sm group-hover:border-secondary transition-colors';
+      box.innerHTML = active ? '<span class="material-symbols-outlined text-[10px] text-white font-bold">check</span>' : '';
+      label.className = active ? 'text-sm text-on-surface font-bold' : 'text-sm text-on-surface font-medium';
+    });
   }
 
-  async function loadCatalog() {
+  function buildUiParams() {
     const params = new URLSearchParams();
     if (window.catalogState.q) params.set('q', window.catalogState.q);
     if (window.catalogState.language && window.catalogState.language !== 'all') params.set('language', window.catalogState.language);
-    if (window.catalogState.yearFrom) params.set('year_from', window.catalogState.yearFrom);
-    if (window.catalogState.yearTo) params.set('year_to', window.catalogState.yearTo);
+    if (window.catalogState.sort && window.catalogState.sort !== 'relevance') params.set('sort', window.catalogState.sort);
+    if (window.catalogState.yearFrom && window.catalogState.yearFrom !== '1950') params.set('year_from', window.catalogState.yearFrom);
+    if (window.catalogState.yearTo && window.catalogState.yearTo !== '2024') params.set('year_to', window.catalogState.yearTo);
     if (window.catalogState.availableOnly) params.set('available_only', '1');
     if (window.catalogState.physicalOnly) params.set('physical_only', '1');
     if (window.catalogState.institution) params.set('institution', window.catalogState.institution);
+    if (window.catalogState.materialType && window.catalogState.materialType !== 'all') params.set('material_type', window.catalogState.materialType);
+    if (window.catalogState.page && window.catalogState.page > 1) params.set('page', String(window.catalogState.page));
     if (@json($lang) !== 'ru') params.set('lang', @json($lang));
-    params.set('sort', SORT_API_MAP[window.catalogState.sort] || 'popular');
-    params.set('limit', '10');
+    return params;
+  }
+
+  function syncUrl() {
+    const base = new URL(window.location.href);
+    base.search = buildUiParams().toString();
+    window.history.replaceState({}, '', base.toString());
+  }
+
+  function renderPagination(meta = {}) {
+    const nav = document.getElementById('catalog-pagination');
+    if (!nav) return;
+
+    const usingLocalMaterialFilter = (window.catalogState.materialType || 'all') !== 'all';
+    const totalPages = usingLocalMaterialFilter ? 1 : Math.max(1, Number(meta.total_pages || meta.totalPages || 1));
+    const currentPage = usingLocalMaterialFilter ? 1 : Math.max(1, Number(meta.page || 1));
+    const pages = [];
+
+    if (totalPages <= 5) {
+      for (let page = 1; page <= totalPages; page += 1) pages.push(page);
+    } else {
+      pages.push(1, 2, 3, '…', totalPages);
+    }
+
+    const previousDisabled = currentPage <= 1;
+    const nextDisabled = currentPage >= totalPages;
+
+    nav.innerHTML = `
+      <button type="button" ${previousDisabled ? 'disabled' : ''} data-page="${Math.max(1, currentPage - 1)}" class="w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors ${previousDisabled ? 'opacity-40 cursor-not-allowed' : ''}" aria-label="${escapeHtml(uiCopy.page_prev)}">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      ${pages.map((page) => {
+        if (page === '…') {
+          return '<span class="px-2 text-on-surface-variant">...</span>';
+        }
+        const active = page === currentPage;
+        return `<button type="button" data-page="${page}" class="w-10 h-10 flex items-center justify-center rounded-lg ${active ? 'bg-primary text-white font-bold' : 'text-on-surface font-medium hover:bg-surface-container-high'}">${page}</button>`;
+      }).join('')}
+      <button type="button" ${nextDisabled ? 'disabled' : ''} data-page="${Math.min(totalPages, currentPage + 1)}" class="w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors ${nextDisabled ? 'opacity-40 cursor-not-allowed' : ''}" aria-label="${escapeHtml(uiCopy.page_next)}">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    `;
+
+    nav.querySelectorAll('[data-page]').forEach((button) => {
+      if (button.hasAttribute('disabled')) return;
+      button.addEventListener('click', () => {
+        window.catalogState.page = Number(button.dataset.page || '1');
+        loadCatalog();
+      });
+    });
+  }
+
+  async function loadCatalog() {
+    const apiParams = new URLSearchParams();
+    if (window.catalogState.q) apiParams.set('q', window.catalogState.q);
+    if (window.catalogState.language && window.catalogState.language !== 'all') apiParams.set('language', window.catalogState.language);
+    if (window.catalogState.yearFrom) apiParams.set('year_from', window.catalogState.yearFrom);
+    if (window.catalogState.yearTo) apiParams.set('year_to', window.catalogState.yearTo);
+    if (window.catalogState.availableOnly) apiParams.set('available_only', '1');
+    if (window.catalogState.physicalOnly) apiParams.set('physical_only', '1');
+    if (window.catalogState.institution) apiParams.set('institution', window.catalogState.institution);
+    apiParams.set('page', String(window.catalogState.page || 1));
+    apiParams.set('sort', SORT_API_MAP[window.catalogState.sort] || 'popular');
+    apiParams.set('limit', '10');
 
     const container = document.getElementById('catalog-results-list');
     const count = document.getElementById('catalog-results-count');
     const summary = document.getElementById('catalog-summary-text');
 
     try {
-      const response = await fetch(`${API_ENDPOINT}?${params.toString()}`, { headers: { Accept: 'application/json' } });
+      const response = await fetch(`${API_ENDPOINT}?${apiParams.toString()}`, { headers: { Accept: 'application/json' } });
       const payload = await response.json();
 
       if (!response.ok) {
         throw new Error(payload?.message || 'Catalog request failed');
       }
 
-      const data = Array.isArray(payload?.data) ? payload.data : [];
+      let data = Array.isArray(payload?.data) ? payload.data : [];
       const meta = payload?.meta || {};
 
       if (window.catalogState.sort === 'year_asc') {
-        data.sort((left, right) => (Number(left?.publicationYear || 0) - Number(right?.publicationYear || 0)));
+        data = [...data].sort((left, right) => Number(left?.publicationYear || 0) - Number(right?.publicationYear || 0));
       }
+
+      data = applyMaterialTypeFilter(data);
 
       if (container) {
         container.innerHTML = data.length
@@ -750,11 +964,12 @@
           : `<p class="text-on-surface-variant text-sm">${escapeHtml(uiCopy.empty)}</p>`;
       }
 
-      const total = Number(meta.total || data.length || 0);
-      const perPage = Number(meta.per_page || data.length || 0);
-      const currentPage = Number(meta.page || 1);
-      const fromValue = total > 0 ? ((currentPage - 1) * perPage) + 1 : 0;
-      const toValue = total > 0 ? Math.min(currentPage * perPage, total) : 0;
+      const usingLocalMaterialFilter = (window.catalogState.materialType || 'all') !== 'all';
+      const total = usingLocalMaterialFilter ? data.length : Number(meta.total || data.length || 0);
+      const perPage = usingLocalMaterialFilter ? data.length : Number(meta.per_page || data.length || 0);
+      const currentPage = usingLocalMaterialFilter ? 1 : Number(meta.page || 1);
+      const fromValue = total > 0 ? ((currentPage - 1) * Math.max(perPage, 1)) + 1 : 0;
+      const toValue = total > 0 ? Math.min(((currentPage - 1) * Math.max(perPage, 1)) + data.length, total) : 0;
       const queryLabel = window.catalogState.q || (document.querySelector('#language-chips button.bg-primary')?.textContent || 'Catalog');
 
       if (count) {
@@ -764,16 +979,20 @@
       if (summary) {
         summary.textContent = `${total.toLocaleString()} ${uiCopy.results_for}.`;
       }
+
+      renderPagination(meta);
     } catch (error) {
       console.error('Catalog load failed:', error);
       if (summary) {
         summary.textContent = uiCopy.fallback_loaded;
       }
+      renderPagination({ page: 1, total_pages: 1 });
     }
 
     updateFilterBadge();
     syncLanguageButtons();
-    syncUrl(params);
+    syncMaterialButtons();
+    syncUrl();
   }
 
   window.catalogState = {
@@ -785,52 +1004,84 @@
     availableOnly: @json($availableOnly),
     physicalOnly: @json($physicalOnly),
     institution: @json($institution),
+    materialType: @json($materialType !== '' ? $materialType : 'all'),
+    page: @json($initialPage),
   };
 
-  document.getElementById('catalog-search-input')?.addEventListener('change', (event) => {
-    window.catalogState.q = event.target.value.trim();
-    loadCatalog();
+  document.getElementById('catalog-search-input')?.addEventListener('input', (event) => {
+    const value = event.target.value.trim();
+    window.catalogState.q = value;
+    window.catalogState.page = 1;
+    clearTimeout(searchDebounceId);
+    searchDebounceId = window.setTimeout(() => loadCatalog(), 250);
+  });
+
+  document.getElementById('catalog-search-input')?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      clearTimeout(searchDebounceId);
+      window.catalogState.q = event.target.value.trim();
+      window.catalogState.page = 1;
+      loadCatalog();
+    }
   });
 
   document.getElementById('year-from-input')?.addEventListener('change', (event) => {
-    window.catalogState.yearFrom = event.target.value.trim();
+    window.catalogState.yearFrom = event.target.value.trim() || '1950';
+    window.catalogState.page = 1;
     loadCatalog();
   });
 
   document.getElementById('year-to-input')?.addEventListener('change', (event) => {
-    window.catalogState.yearTo = event.target.value.trim();
+    window.catalogState.yearTo = event.target.value.trim() || '2024';
+    window.catalogState.page = 1;
     loadCatalog();
   });
 
   document.getElementById('filter-available-only')?.addEventListener('change', (event) => {
     window.catalogState.availableOnly = event.target.checked;
+    window.catalogState.page = 1;
     loadCatalog();
   });
 
   document.getElementById('filter-physical-only')?.addEventListener('change', (event) => {
     window.catalogState.physicalOnly = event.target.checked;
+    window.catalogState.page = 1;
     loadCatalog();
   });
 
   document.getElementById('institution-select')?.addEventListener('change', (event) => {
     window.catalogState.institution = event.target.value;
+    window.catalogState.page = 1;
     loadCatalog();
   });
 
   document.getElementById('sort-select')?.addEventListener('change', (event) => {
     window.catalogState.sort = event.target.value;
+    window.catalogState.page = 1;
     loadCatalog();
   });
 
   document.querySelectorAll('#language-chips button').forEach((button) => {
     button.addEventListener('click', () => {
       window.catalogState.language = button.dataset.lang || 'all';
+      window.catalogState.page = 1;
+      loadCatalog();
+    });
+  });
+
+  document.querySelectorAll('[data-material-type]').forEach((button) => {
+    button.addEventListener('click', () => {
+      window.catalogState.materialType = button.dataset.materialType || 'all';
+      window.catalogState.page = 1;
       loadCatalog();
     });
   });
 
   updateFilterBadge();
   syncLanguageButtons();
+  syncMaterialButtons();
+  renderPagination({ page: @json($initialPage), total_pages: @json((int) ($initialMeta['total_pages'] ?? $initialMeta['totalPages'] ?? 1)) });
   loadCatalog();
 </script>
 @endsection

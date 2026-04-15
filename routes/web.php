@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 Route::get('/catalog', function (Request $request, CatalogReadService $catalogReadService) {
     $uiSort = (string) $request->query('sort', 'relevance');
+    $materialType = (string) $request->query('material_type', 'all');
     $apiSortMap = [
         'relevance' => 'popular',
         'title' => 'title',
@@ -46,6 +47,30 @@ Route::get('/catalog', function (Request $request, CatalogReadService $catalogRe
 
     if ($uiSort === 'year_asc' && is_array($catalogBootstrap['data'] ?? null)) {
         usort($catalogBootstrap['data'], static fn (array $left, array $right): int => ((int) ($left['publicationYear'] ?? 0)) <=> ((int) ($right['publicationYear'] ?? 0)));
+    }
+
+    if ($materialType !== 'all' && is_array($catalogBootstrap['data'] ?? null)) {
+        $catalogBootstrap['data'] = array_values(array_filter(
+            $catalogBootstrap['data'],
+            static function (array $item) use ($materialType): bool {
+                $subjects = array_map(
+                    static fn (array $subject): string => mb_strtolower(trim((string) ($subject['label'] ?? ''))),
+                    $item['classification'] ?? []
+                );
+                $subjectText = implode(' ', $subjects);
+                $total = (int) ($item['copies']['total'] ?? 0);
+                $available = (int) ($item['copies']['available'] ?? 0);
+                $kind = str_contains($subjectText, 'диссер') || str_contains($subjectText, 'thesis') || str_contains($subjectText, 'archive')
+                    ? 'archive'
+                    : ($total > 0 ? ($available > 0 ? 'physical' : 'archive') : 'digital');
+
+                return $kind === $materialType;
+            }
+        ));
+        $catalogBootstrap['meta']['total'] = count($catalogBootstrap['data']);
+        $catalogBootstrap['meta']['total_pages'] = 1;
+        $catalogBootstrap['meta']['totalPages'] = 1;
+        $catalogBootstrap['meta']['page'] = 1;
     }
 
     return view('catalog', ['catalogBootstrap' => $catalogBootstrap]);
