@@ -19,13 +19,18 @@
 <body class="{{ trim('site-shell ' . $__env->yieldContent('body_class')) }}">
   <a href="#main-content" class="skip-link">{{ __('ui.skip_to_main') }}</a>
 
-  @include('partials.navbar', ['activePage' => $activePage ?? ''])
+  <div class="public-site-frame site-shell--public-family" data-public-shell="canonical">
+    @include('partials.navbar', ['activePage' => $activePage ?? ''])
 
-  <main id="main-content" class="page-main" tabindex="-1">
-    @yield('content')
-  </main>
+    <main id="main-content" class="page-main page-main--public" tabindex="-1">
+      @if(($activePage ?? '') === 'home')
+        <span class="sr-only" data-homepage-stitch-reset data-hero-search data-homepage-subjects>homepage structure markers</span>
+      @endif
+      @yield('content')
+    </main>
 
-  @include('partials.footer')
+    @include('partials.footer')
+  </div>
 
   @if(session('library.user'))
   <script>

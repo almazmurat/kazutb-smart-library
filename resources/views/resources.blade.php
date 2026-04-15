@@ -227,6 +227,62 @@
       font-weight: 600;
     }
 
+    .resource-hero-panels {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+      gap: 14px;
+    }
+
+    .resource-policy-note,
+    .resource-access-matrix {
+      border: 1px solid var(--res-border);
+      background: #fff;
+      padding: 16px 18px;
+      min-height: 100%;
+    }
+
+    .resource-policy-note strong,
+    .resource-access-matrix strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--res-ink);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .resource-policy-note p,
+    .resource-access-matrix p {
+      margin: 0;
+      color: var(--res-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .resource-access-modes {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .resource-access-modes span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--res-ink);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .resource-access-modes span::before {
+      content: '•';
+      color: var(--res-accent);
+      font-size: 16px;
+      line-height: 1;
+    }
+
     .guidance-grid {
       margin-top: 16px;
       display: grid;
@@ -746,6 +802,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .resource-hero-panels,
       .guidance-grid,
       .ext-resources-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -783,6 +840,7 @@
         margin: 22px 0 20px;
       }
 
+      .resource-hero-panels,
       .guidance-grid,
       .ext-resources-grid,
       .hero-metrics {
@@ -875,6 +933,22 @@
           <p class="hero-eyebrow">{{ $copy['eyebrow'] }}</p>
           <h1 class="hero-title">{{ $copy['hero'] }}</h1>
           <p class="hero-lead">{{ $copy['lead'] }}</p>
+
+          <div class="resource-hero-panels">
+            <article class="resource-policy-note">
+              <strong>{{ $copy['banner'] }}</strong>
+              <p>{{ $copy['banner_body'] }}</p>
+            </article>
+            <article class="resource-access-matrix">
+              <strong>{{ ['ru' => 'Режимы доступа', 'kk' => 'Қолжетімділік режимдері', 'en' => 'Access modes'][$lang] }}</strong>
+              <p>{{ ['ru' => 'Проверяйте формат входа до перехода на платформу.', 'kk' => 'Платформаға өтпес бұрын кіру режимін тексеріңіз.', 'en' => 'Check the entry mode before opening a platform.'][$lang] }}</p>
+              <div class="resource-access-modes">
+                <span>{{ ['ru' => 'Из кампуса', 'kk' => 'Кампус ішінде', 'en' => 'On campus'][$lang] }}</span>
+                <span>{{ ['ru' => 'Удалённо', 'kk' => 'Қашықтан', 'en' => 'Remote'][$lang] }}</span>
+                <span>{{ ['ru' => 'Открытый доступ', 'kk' => 'Ашық қолжетімділік', 'en' => 'Open access'][$lang] }}</span>
+              </div>
+            </article>
+          </div>
 
           <div class="hero-metrics">
             <div class="hero-metric"><strong id="stat-total">—</strong><span>{{ ['ru' => 'внешних ресурсов', 'kk' => 'сыртқы ресурс', 'en' => 'external resources'][$lang] }}</span></div>
