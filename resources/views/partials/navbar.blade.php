@@ -57,7 +57,7 @@
   <nav class="bg-slate-50/80 backdrop-blur-md text-blue-950 border-b border-slate-200/60">
     <div class="flex justify-between items-center px-6 md:px-8 py-4 w-full max-w-screen-2xl mx-auto gap-4">
       <a href="{{ $routeWithLang('/') }}" class="inline-flex items-center gap-3 text-lg md:text-xl font-['Newsreader'] tracking-tight text-blue-950 font-medium whitespace-nowrap" aria-label="{{ __('ui.brand.home_aria') }}">
-        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="w-8 h-8 rounded-full object-contain bg-white p-1 shadow-sm" loading="eager" decoding="async">
+        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="navbar-brand-logo w-10 h-10 md:w-11 md:h-11 rounded-full object-contain bg-white p-1.5 shadow-sm ring-1 ring-slate-200" loading="eager" decoding="async">
         <span>{{ __('ui.brand.title') }}</span>
       </a>
 

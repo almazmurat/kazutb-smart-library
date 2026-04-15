@@ -74,7 +74,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-2xl mx-auto">
     <div class="space-y-6">
       <div class="inline-flex items-center gap-3 font-['Newsreader'] font-bold text-blue-950 text-2xl">
-        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="w-10 h-10 rounded-full object-contain bg-white p-1 shadow-sm" loading="lazy" decoding="async">
+        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="w-12 h-12 rounded-full object-contain bg-white p-1.5 shadow-sm ring-1 ring-slate-200" loading="lazy" decoding="async">
         <span>{{ $copy['brand'] }}</span>
       </div>
       <p class="font-['Manrope'] text-sm tracking-wide max-w-sm opacity-80">
