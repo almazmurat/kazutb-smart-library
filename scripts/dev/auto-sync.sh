@@ -140,8 +140,8 @@ git add resources/ 2>/dev/null || true
 git add .instructions.md AGENT_TRACKING_INSTRUCTIONS.md QUICK_START_AUTO_TRACKING.md auto-sync 2>/dev/null || true
 
 # Get summary of what changed
-ADDED=$(git diff --cached --name-only | grep -E "^artifacts/obsidian" | wc -l)
-OTHER=$(git diff --cached --name-only | grep -vE "^artifacts/obsidian" | wc -l)
+ADDED=$( (git diff --cached --name-only | grep -E "^artifacts/obsidian" || true) | wc -l)
+OTHER=$( (git diff --cached --name-only | grep -vE "^artifacts/obsidian" || true) | wc -l)
 
 # Create commit message
 COMMIT_MSG="[auto-sync] Continuous memory capture and state tracking
