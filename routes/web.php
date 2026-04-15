@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Library\BookDetailReadService;
 use App\Services\Library\CatalogReadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -85,8 +86,11 @@ Route::get('/catalog', function (Request $request, CatalogReadService $catalogRe
     ]);
 });
 
-Route::get('/book/{isbn}', function () {
-    return view('book');
+Route::get('/book/{isbn}', function (Request $request, string $isbn, BookDetailReadService $bookDetailReadService) {
+    return view('book', [
+        'bookIsbn' => $isbn,
+        'bookBootstrap' => $bookDetailReadService->findByIdentifier($isbn),
+    ]);
 });
 
 Route::get('/digital-viewer/{materialId}', function (Request $request, string $materialId) {

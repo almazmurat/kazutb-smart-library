@@ -76,4 +76,29 @@ class BookPageTest extends TestCase
             ->assertSee('href="/catalog"', false)
             ->assertSee('Вернуться в каталог', false);
     }
+
+    public function test_book_page_has_exported_detail_structure_and_real_ctas(): void
+    {
+        $response = $this->get('/book/test-isbn');
+
+        $response
+            ->assertOk()
+            ->assertSee('id="book-detail-page"', false)
+            ->assertSee('id="detail-abstract"', false)
+            ->assertSee('id="detail-actions"', false)
+            ->assertSee('data-detail-cover', false)
+            ->assertSee('digital-materials-slot', false)
+            ->assertDontSee('href="#"', false);
+    }
+
+    public function test_book_page_supports_locale_specific_detail_copy(): void
+    {
+        $response = $this->get('/book/test-isbn?lang=en');
+
+        $response
+            ->assertOk()
+            ->assertSee('Back to Catalog')
+            ->assertSee('Abstract')
+            ->assertSee('/catalog?lang=en', false);
+    }
 }
