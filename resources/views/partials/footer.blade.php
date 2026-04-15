@@ -19,7 +19,7 @@
   $copy = [
       'ru' => [
           'brand' => 'КазТБУ',
-          'desc' => 'Цифровая библиотека с каталогом, научными ресурсами и единым маршрутом академического доступа.',
+          'desc' => 'Каталог, электронные ресурсы и читательские сервисы в едином интерфейсе КазТБУ.',
           'navigation' => 'Навигация',
           'support' => 'Поддержка',
           'nav_links' => [
@@ -36,7 +36,7 @@
       ],
       'kk' => [
           'brand' => 'КазТБУ',
-          'desc' => 'Каталог, ғылыми ресурстар және академиялық қолжетімділікке арналған бірыңғай цифрлық кітапхана беті.',
+          'desc' => 'Каталог, электрондық ресурстар және оқырман сервистері КазТБУ-дың бірыңғай интерфейсінде берілген.',
           'navigation' => 'Навигация',
           'support' => 'Қолдау',
           'nav_links' => [
@@ -53,7 +53,7 @@
       ],
       'en' => [
           'brand' => 'KazUTB',
-          'desc' => 'A digital library surface for catalog search, research resources, and practical academic access.',
+          'desc' => 'Catalog search, electronic resources, and reader services in one KazTBU library interface.',
           'navigation' => 'Navigation',
           'support' => 'Support',
           'nav_links' => [
@@ -73,7 +73,10 @@
 <footer class="site-footer bg-slate-100 text-blue-950 full-width py-12 px-8 border-t border-slate-200/20">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-2xl mx-auto">
     <div class="space-y-6">
-      <div class="font-['Newsreader'] font-bold text-blue-950 text-2xl">{{ $copy['brand'] }}</div>
+      <div class="inline-flex items-center gap-3 font-['Newsreader'] font-bold text-blue-950 text-2xl">
+        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="w-10 h-10 rounded-full object-contain bg-white p-1 shadow-sm" loading="lazy" decoding="async">
+        <span>{{ $copy['brand'] }}</span>
+      </div>
       <p class="font-['Manrope'] text-sm tracking-wide max-w-sm opacity-80">
         {{ $copy['desc'] }}
       </p>
