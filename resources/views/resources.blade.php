@@ -14,43 +14,37 @@
 
   $copy = [
     'ru' => [
-      'meta' => 'Электронные ресурсы — Digital Library',
-      'eyebrow' => 'Электронные ресурсы',
-      'hero' => 'Цифровые коллекции и научные базы данных',
-      'lead' => 'Доступ к электронным учебникам, международным научным базам, лицензированным платформам и открытым образовательным ресурсам.',
-      'banner' => 'Digital Library',
-      'banner_body' => 'Откройте основной библиотечный фонд: более 50 000 единиц — учебники, монографии, методические материалы и периодика в электронном и печатном формате.',
-      'support_label' => 'Поддержка преподавателей',
-      'support_title' => 'Подборка литературы для дисциплин и исследований',
-      'support_body' => 'Инструменты для силлабуса теперь встроены в основной библиотечный маршрут: ищите книги в каталоге, добавляйте источники в подборку и дополняйте её электронными ресурсами без отдельной страницы.',
-      'faq' => 'Частые вопросы',
-      'faq_help' => 'Ответы на основные вопросы о работе с электронными ресурсами библиотеки.',
+      'meta' => 'Ресурсы — Digital Library',
+      'eyebrow' => 'Институциональные ресурсы',
+      'hero_start' => 'Институциональные',
+      'hero_emphasis' => 'ресурсы',
+      'hero_end' => 'и глобальные исследовательские инструменты',
+      'lead' => 'Кураторский шлюз к лицензированным внешним базам данных, академическим журналам и специализированной исследовательской инфраструктуре Казахского университета технологии и бизнеса.',
+      'support_label' => 'Поддержка и обучение',
+      'support_title' => 'Институциональная поддержка исследователей',
+      'support_body' => 'Если возникают сложности с доступом к внешним ресурсам, библиотека помогает с подключением, навигацией по платформам и быстрыми консультациями для преподавателей и студентов.',
     ],
     'kk' => [
-      'meta' => 'Электрондық ресурстар — Digital Library',
-      'eyebrow' => 'Электрондық ресурстар',
-      'hero' => 'Цифрлық коллекциялар мен ғылыми дерекқорлар',
-      'lead' => 'Электрондық оқулықтарға, халықаралық ғылыми базаларға, лицензиялық платформаларға және ашық білім беру ресурстарына қолжетімділік.',
-      'banner' => 'Digital Library',
-      'banner_body' => 'Негізгі кітапхана қорын ашыңыз: 50 000-нан астам оқу, ғылыми және әдістемелік материалдар цифрлық және баспа форматында қолжетімді.',
-      'support_label' => 'Оқытушыларға қолдау',
-      'support_title' => 'Пәндер мен зерттеулерге арналған әдебиеттер топтамасы',
-      'support_body' => 'Силлабусқа арналған құралдар енді негізгі кітапхана бағытына біріктірілді: каталогтан іздеңіз, материалдарды топтамаға қосыңыз және электрондық ресурстармен толықтырыңыз.',
-      'faq' => 'Жиі қойылатын сұрақтар',
-      'faq_help' => 'Кітапхананың электрондық ресурстары бойынша негізгі жауаптар.',
+      'meta' => 'Ресурстар — Digital Library',
+      'eyebrow' => 'Институционалдық ресурстар',
+      'hero_start' => 'Институционалдық',
+      'hero_emphasis' => 'ресурстар',
+      'hero_end' => 'және жаһандық зерттеу құралдары',
+      'lead' => 'ҚазТБУ қауымдастығына арналған лицензиялық сыртқы дерекқорларға, академиялық журналдарға және зерттеу инфрақұрылымына ашылатын сенімді кітапхана шлюзі.',
+      'support_label' => 'Қолдау және оқыту',
+      'support_title' => 'Зерттеушілерге институционалдық қолдау',
+      'support_body' => 'Сыртқы ресурстарға қолжетімділік қиындаса, кітапхана платформалармен жұмыс істеуге, қосылуға және оқытушылар мен студенттерге кеңес беруге көмектеседі.',
     ],
     'en' => [
-      'meta' => 'Electronic resources — Digital Library',
-      'eyebrow' => 'Electronic resources',
-      'hero' => 'Digital collections and research databases',
-      'lead' => 'Access electronic textbooks, international scholarly databases, licensed platforms, and open educational resources from one modern library entry point.',
-      'banner' => 'Digital Library',
-      'banner_body' => 'Open the main library collection: 50,000+ textbooks, monographs, teaching materials, and periodicals across digital and print formats.',
-      'support_label' => 'Faculty support',
-      'support_title' => 'Reading lists for courses and research',
-      'support_body' => 'The syllabus workflow now lives inside the main library experience: search the catalog, collect sources into a shortlist, and enrich them with electronic resources without a separate landing page.',
-      'faq' => 'Frequently asked questions',
-      'faq_help' => 'Answers to the main questions about the library’s electronic resources.',
+      'meta' => 'Resources — Digital Library',
+      'eyebrow' => 'Institutional resources',
+      'hero_start' => 'Institutional',
+      'hero_emphasis' => 'Resources',
+      'hero_end' => '& Global Research Tools',
+      'lead' => 'A curated gateway to licensed external databases, academic journals, and specialized research infrastructure provided by the Kazakh University of Technology and Business.',
+      'support_label' => 'Assistance & training',
+      'support_title' => 'Institutional Support for Researchers',
+      'support_body' => 'Experiencing difficulty accessing external resources? Our library staff provides one-on-one training sessions and technical support for faculty and students.',
     ],
   ][$lang];
 @endphp
@@ -908,408 +902,569 @@
         width: 100%;
       }
     }
+  .resources-page {
+    background: #f8f9fa;
+    padding: 3.75rem 0 4.5rem;
+  }
+
+  .resources-hero {
+    max-width: 58rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .resources-title {
+    margin: 0 0 1.5rem;
+    color: #000613;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(3rem, 5.8vw, 4.7rem);
+    line-height: .96;
+    letter-spacing: -.04em;
+    max-width: 48rem;
+    text-wrap: balance;
+  }
+
+  .resources-title .accent {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .resources-lead {
+    max-width: 44rem;
+    margin: 0;
+    color: #5b6372;
+    font-size: 1.125rem;
+    line-height: 1.75;
+  }
+
+  .resources-filter-label {
+    width: 100%;
+    color: #14696d;
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  .resources-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .resources-filter-btn {
+    border: 1px solid #d7dce3;
+    border-radius: 999px;
+    background: #e9ecef;
+    padding: .65rem 1rem;
+    color: #4d5563;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .18s ease;
+  }
+
+  .resources-filter-btn:hover {
+    background: #dfe4ea;
+  }
+
+  .resources-filter-btn.is-active {
+    background: #000613;
+    color: #fff;
+    border-color: #000613;
+  }
+
+  .resources-bento {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .resource-card {
+    border: 1px solid rgba(196, 198, 207, .45);
+    border-radius: 1rem;
+    background: #fff;
+    padding: 1.35rem;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, .035);
+    display: flex;
+    flex-direction: column;
+    gap: .95rem;
+    min-height: 12rem;
+  }
+
+  .resource-card--featured {
+    grid-column: span 8;
+    min-height: 15rem;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .resource-card--side {
+    grid-column: span 4;
+    min-height: 15rem;
+  }
+
+  .resource-card--small {
+    grid-column: span 4;
+    min-height: 12.5rem;
+  }
+
+  .resource-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .05);
+  }
+
+  .resource-badge-row {
+    display: flex;
+    gap: .6rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .resource-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: .28rem .6rem;
+    background: rgba(20, 105, 109, .12);
+    color: #14696d;
+    font-size: .6rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .resource-badge.resource-badge--neutral {
+    background: transparent;
+    color: #6b7280;
+    padding-inline: 0;
+  }
+
+  .resource-icon-tile {
+    width: 3rem;
+    height: 3rem;
+    border-radius: .85rem;
+    display: inline-grid;
+    place-items: center;
+    background: #e9ecef;
+    color: #006a6a;
+  }
+
+  .resource-card-title {
+    margin: 0;
+    color: #0b2242;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.55rem, 2.3vw, 2.45rem);
+    line-height: 1.08;
+  }
+
+  .resource-card--small .resource-card-title,
+  .resource-card--side .resource-card-title {
+    font-size: 2rem;
+  }
+
+  .resource-card-desc {
+    margin: 0;
+    color: #5b6372;
+    font-size: .95rem;
+    line-height: 1.7;
+  }
+
+  .resource-feature-ghost {
+    position: absolute;
+    right: 1.4rem;
+    top: 1rem;
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: .9rem;
+    background: rgba(15, 23, 42, .04);
+    color: rgba(15, 23, 42, .12);
+    display: grid;
+    place-items: center;
+    font-size: 3rem;
+  }
+
+  .resource-actions {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+
+  .resource-actions a,
+  .resource-actions button {
+    min-height: 2.6rem;
+    border-radius: .45rem;
+    border: 1px solid #d3d8df;
+    padding: 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    text-decoration: none;
+    font-size: .76rem;
+    font-weight: 800;
+    letter-spacing: .01em;
+    cursor: pointer;
+    background: #fff;
+    color: #0b2242;
+  }
+
+  .resource-actions .resource-primary {
+    background: #000613;
+    border-color: #000613;
+    color: #fff;
+  }
+
+  .resource-actions .resource-secondary {
+    color: #14696d;
+  }
+
+  .resources-support {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr);
+    gap: 1.5rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(180deg, #04101f 0%, #010a15 100%);
+    color: #f5f8fb;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .resources-support-copy span {
+    display: block;
+    margin-bottom: 1rem;
+    color: rgba(217, 243, 247, .7);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .resources-support-copy h2 {
+    margin: 0 0 1rem;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.08;
+  }
+
+  .resources-support-copy p {
+    margin: 0 0 1.25rem;
+    color: rgba(229, 237, 247, .8);
+    line-height: 1.8;
+  }
+
+  .resources-support-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .resources-support-meta strong {
+    display: block;
+    margin-bottom: .3rem;
+    font-size: .68rem;
+    color: rgba(217, 243, 247, .7);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+
+  .resources-support-cta {
+    display: inline-flex;
+    margin-top: 1rem;
+    min-height: 2.7rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: .5rem;
+    padding: 0 1rem;
+    background: #eaf3f4;
+    color: #04101f;
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: 800;
+  }
+
+  .resources-support-image {
+    min-height: 18rem;
+    border-radius: 1rem;
+    background: linear-gradient(rgba(4, 16, 31, .15), rgba(4, 16, 31, .6)), url('/images/news/default-library.jpg') center/cover no-repeat;
+  }
+
+  .resources-empty {
+    grid-column: 1 / -1;
+    border: 1px solid rgba(196, 198, 207, .45);
+    border-radius: 1rem;
+    background: #fff;
+    padding: 2rem;
+    color: #5b6372;
+  }
+
+  @media (max-width: 900px) {
+    .resource-card--featured,
+    .resource-card--side,
+    .resource-card--small {
+      grid-column: span 12;
+    }
+
+    .resources-support {
+      grid-template-columns: 1fr;
+    }
+
+    .resources-support-meta {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 @endsection
 
 @section('content')
-<section class="resources-shell">
+<section id="resources-page" class="resources-page">
   <div class="container">
-    <div class="resources-layout">
-      <aside class="support-rail">
-        <div class="support-rail-head">
-          <h3>{{ ['ru' => 'КазТБУ', 'kk' => 'КазТБУ', 'en' => 'KazUTB'][$lang] }}</h3>
-          <p>{{ ['ru' => 'Служба поддержки по академическим вопросам', 'kk' => 'Academic Resources Desk', 'en' => 'Academic Resources Desk'][$lang] }}</p>
+    <header class="resources-hero">
+      <p class="resources-filter-label">{{ strtoupper($copy['eyebrow']) }}</p>
+      <h1 class="resources-title">{{ $copy['hero_start'] }} <span class="accent">{{ $copy['hero_emphasis'] }}</span> {{ $copy['hero_end'] }}</h1>
+      <p class="resources-lead">{{ $copy['lead'] }}</p>
+    </header>
+
+    <section id="resources-filter-bar" class="resources-filters">
+      <span class="resources-filter-label">{{ ['ru' => 'Фильтр по дисциплине', 'kk' => 'Пән бойынша сүзгі', 'en' => 'Filter by Discipline'][$lang] }}</span>
+      <button type="button" class="resources-filter-btn is-active" data-filter="all">{{ ['ru' => 'Все ресурсы', 'kk' => 'Барлық ресурстар', 'en' => 'All Access'][$lang] }}</button>
+      <button type="button" class="resources-filter-btn" data-filter="engineering">Engineering</button>
+      <button type="button" class="resources-filter-btn" data-filter="economics">Economics</button>
+      <button type="button" class="resources-filter-btn" data-filter="social">Social Sciences</button>
+      <button type="button" class="resources-filter-btn" data-filter="technology">Technology</button>
+    </section>
+
+    <div id="resources-grid" class="resources-bento" data-resource-grid>
+      <article class="resource-card resource-card--featured">
+        <div>
+          <div class="resource-badge-row">
+            <span class="resource-badge">{{ ['ru' => 'Премиум доступ', 'kk' => 'Премиум қолжетімділік', 'en' => 'Premium Access'][$lang] }}</span>
+            <span class="resource-badge resource-badge--neutral">{{ ['ru' => 'Общий академический доступ', 'kk' => 'Жалпы академиялық қолжетімділік', 'en' => 'General Research'][$lang] }}</span>
+          </div>
+          <h3 class="resource-card-title">{{ ['ru' => 'Загрузка платформ...', 'kk' => 'Платформалар жүктелуде...', 'en' => 'Loading platforms...'][$lang] }}</h3>
+          <p class="resource-card-desc">{{ ['ru' => 'Подготавливаем лицензированные и открытые ресурсы библиотеки.', 'kk' => 'Кітапхананың лицензиялық және ашық ресурстары дайындалуда.', 'en' => 'Preparing the library’s licensed and open resources.'][$lang] }}</p>
         </div>
-        <nav class="support-rail-nav">
-          <a href="#resources-hero" class="support-rail-link is-active">{{ ['ru' => 'Обзор и ориентиры', 'kk' => 'Шолу және бағыттар', 'en' => 'Overview and orientation'][$lang] }}</a>
-          <a href="#resources-directory" class="support-rail-link">{{ ['ru' => 'Каталог платформ', 'kk' => 'Платформа каталогы', 'en' => 'Platform directory'][$lang] }}</a>
-          <a href="#resources-help" class="support-rail-link">{{ ['ru' => 'Нужна помощь', 'kk' => 'Көмек қажет', 'en' => 'Need support'][$lang] }}</a>
-          </nav>
-        <a href="{{ $routeWithLang('/catalog') }}" class="support-rail-cta">{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}</a>
-      </aside>
-
-      <div class="resources-main">
-        <section class="hero-card" id="resources-hero">
-          <p class="hero-eyebrow">{{ $copy['eyebrow'] }}</p>
-          <h1 class="hero-title">{{ $copy['hero'] }}</h1>
-          <p class="hero-lead">{{ $copy['lead'] }}</p>
-
-          <div class="resource-hero-panels">
-            <article class="resource-policy-note">
-              <strong>{{ $copy['banner'] }}</strong>
-              <p>{{ $copy['banner_body'] }}</p>
-            </article>
-            <article class="resource-access-matrix">
-              <strong>{{ ['ru' => 'Режимы доступа', 'kk' => 'Қолжетімділік режимдері', 'en' => 'Access modes'][$lang] }}</strong>
-              <p>{{ ['ru' => 'Проверяйте формат входа до перехода на платформу.', 'kk' => 'Платформаға өтпес бұрын кіру режимін тексеріңіз.', 'en' => 'Check the entry mode before opening a platform.'][$lang] }}</p>
-              <div class="resource-access-modes">
-                <span>{{ ['ru' => 'Из кампуса', 'kk' => 'Кампус ішінде', 'en' => 'On campus'][$lang] }}</span>
-                <span>{{ ['ru' => 'Удалённо', 'kk' => 'Қашықтан', 'en' => 'Remote'][$lang] }}</span>
-                <span>{{ ['ru' => 'Открытый доступ', 'kk' => 'Ашық қолжетімділік', 'en' => 'Open access'][$lang] }}</span>
-              </div>
-            </article>
-          </div>
-
-          <div class="hero-metrics">
-            <div class="hero-metric"><strong id="stat-total">—</strong><span>{{ ['ru' => 'внешних ресурсов', 'kk' => 'сыртқы ресурс', 'en' => 'external resources'][$lang] }}</span></div>
-            <div class="hero-metric"><strong>50 000+</strong><span>{{ ['ru' => 'электронных документов', 'kk' => 'электрондық құжат', 'en' => 'digital documents'][$lang] }}</span></div>
-            <div class="hero-metric"><strong>24/7</strong><span>{{ ['ru' => 'удалённый доступ', 'kk' => 'қашықтан қолжетімділік', 'en' => 'remote access'][$lang] }}</span></div>
-            <div class="hero-metric"><strong>3</strong><span>{{ ['ru' => 'режима доступа', 'kk' => 'қолжетімділік режимі', 'en' => 'access modes'][$lang] }}</span></div>
-          </div>
-
-          <div class="guidance-grid">
-            <article class="guidance-card">
-              <span>{{ ['ru' => 'Лицензионный доступ', 'kk' => 'Лицензиялық қолжетімділік', 'en' => 'Licensed access'][$lang] }}</span>
-              <h3>{{ ['ru' => 'Подписные платформы', 'kk' => 'Жазылым платформалары', 'en' => 'Subscribed platforms'][$lang] }}</h3>
-              <p>{{ ['ru' => 'Соберите маршрут от каталога к внешней платформе и сразу закрепите источник в рабочей подборке.', 'kk' => 'Каталогтан сыртқы платформаға дейінгі маршрутты құрып, дереккөзді бірден жұмыс топтамасына бекітіңіз.', 'en' => 'Move from the catalog to the external platform and lock the source into your working shortlist.'][$lang] }}</p>
-            </article>
-            <article class="guidance-card">
-              <span>{{ ['ru' => 'Удалённая работа', 'kk' => 'Қашықтан жұмыс', 'en' => 'Remote work'][$lang] }}</span>
-              <h3>{{ ['ru' => 'Единый сценарий', 'kk' => 'Бірізді сценарий', 'en' => 'One flow'][$lang] }}</h3>
-              <p>{{ ['ru' => 'Переходите к ресурсам из личного кабинета, каталога и подборки литературы в единой структуре.', 'kk' => 'Ресурстарға жеке кабинеттен, каталогтан және әдебиеттер топтамасынан бірыңғай құрылыммен өтіңіз.', 'en' => 'Reach resources from account, catalog, and shortlist in one consistent academic structure.'][$lang] }}</p>
-            </article>
-            <article class="guidance-card">
-              <span>{{ ['ru' => 'Открытое знание', 'kk' => 'Ашық білім', 'en' => 'Open knowledge'][$lang] }}</span>
-              <h3>{{ ['ru' => 'Проверка режима', 'kk' => 'Режимді тексеру', 'en' => 'Access check'][$lang] }}</h3>
-              <p>{{ ['ru' => 'Кампусный, удалённый и открытый статусы помогают мгновенно понять, как войти в источник.', 'kk' => 'Кампус, қашықтан және ашық мәртебелер дереккөзге қалай кіруге болатынын жылдам түсіндіреді.', 'en' => 'Campus, remote, and open status labels make entry requirements immediately clear.'][$lang] }}</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="section-block" id="resources-directory">
-          <div class="section-heading">
-            <p class="section-eyebrow">{{ ['ru' => 'Внешние лицензированные ресурсы', 'kk' => 'Сыртқы лицензиялық ресурстар', 'en' => 'External licensed resources'][$lang] }}</p>
-            <h2 class="section-title">{{ ['ru' => 'Подписные платформы и научные базы данных', 'kk' => 'Жазылым платформалары мен ғылыми дерекқорлар', 'en' => 'Subscribed platforms and research databases'][$lang] }}</h2>
-            <p class="section-lead">{{ ['ru' => 'Внешние электронные ресурсы доступны по подписке или в открытом доступе. Выберите нужную платформу, быстро проверьте режим входа и сразу переходите к источнику или добавляйте его в рабочую подборку.', 'kk' => 'Сыртқы электрондық ресурстар жазылым немесе ашық қолжетімділік арқылы беріледі. Платформаны таңдап, кіру режимін бірден тексеріп, дереккөзге өтіңіз немесе оны жұмыс топтамасына қосыңыз.', 'en' => 'External electronic resources are available via subscription or open access. Choose a platform, check the access mode at a glance, and either open the source or add it to your working shortlist immediately.'][$lang] }}</p>
-          </div>
-
-          <div class="ext-filter-bar" id="ext-filter-bar">
-            <button class="ext-filter-btn ext-filter-btn--active" data-filter="all">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
-          </div>
-
-          <div id="ext-resources-loading" style="text-align:center; padding:32px;">
-            <div style="display:inline-block;width:28px;height:28px;border:3px solid #e5e7eb;border-top-color:var(--res-ink);border-radius:50%;animation:spin .7s linear infinite;"></div>
-            <p style="margin:8px 0 0; color:var(--res-muted); font-size:14px;">{{ ['ru' => 'Загрузка ресурсов...', 'kk' => 'Ресурстар жүктелуде...', 'en' => 'Loading resources...'][$lang] }}</p>
-          </div>
-
-          <div id="ext-resources-grid" class="ext-resources-grid" style="display:none;"></div>
-        </section>
-
-        <section class="section-block" id="resources-help">
-          <div class="section-heading support-section-heading">
-            <p class="section-eyebrow">{{ $copy['support_label'] }}</p>
-            <h2 class="section-title">{{ $copy['support_title'] }}</h2>
-            <p class="section-lead">{{ $copy['support_body'] }}</p>
-          </div>
-
-          <div class="support-section-layout">
-            <div class="support-steps">
-              <article class="support-step">
-                <div class="support-step-index">1</div>
-                <div>
-                  <h4>{{ ['ru' => 'Проверьте режим доступа', 'kk' => 'Қолжетімділік режимін тексеріңіз', 'en' => 'Check access mode'][$lang] }}</h4>
-                  <p>{{ ['ru' => 'Если видите campus-only, подключитесь из сети университета. Для remote-access используйте авторизацию через личный кабинет.', 'kk' => 'Campus-only болса, университет желісінен кіріңіз. Remote-access үшін жеке кабинет арқылы авторизацияны пайдаланыңыз.', 'en' => 'If the source is campus-only, connect from the university network. For remote access, authenticate via your account.'][$lang] }}</p>
-                </div>
-              </article>
-              <article class="support-step">
-                <div class="support-step-index">2</div>
-                <div>
-                  <h4>{{ ['ru' => 'Соберите рабочий набор', 'kk' => 'Жұмыс жиынтығын құраңыз', 'en' => 'Build your working set'][$lang] }}</h4>
-                  <p>{{ ['ru' => 'Добавляйте ресурсы в подборку литературы, чтобы подготовить syllabus, рабочую программу или исследовательский список.', 'kk' => 'Syllabus, оқу бағдарламасы немесе зерттеу тізімін дайындау үшін ресурстарды әдебиеттер топтамасына қосыңыз.', 'en' => 'Add sources to the reading shortlist to prepare a syllabus, course plan, or research list.'][$lang] }}</p>
-                </div>
-              </article>
-              <article class="support-step">
-                <div class="support-step-index">3</div>
-                <div>
-                  <h4>{{ ['ru' => 'Запросите консультацию', 'kk' => 'Кеңес алыңыз', 'en' => 'Request consultation'][$lang] }}</h4>
-                  <p>{{ ['ru' => 'Библиографический отдел поможет подобрать базы данных по дисциплине и оформить подборку для учебного модуля.', 'kk' => 'Библиографиялық бөлім пән бойынша дерекқорларды іріктеуге және оқу модуліне арналған топтаманы рәсімдеуге көмектеседі.', 'en' => 'The bibliographic team can curate databases by discipline and shape a shortlist for your teaching module.'][$lang] }}</p>
-                </div>
-              </article>
-            </div>
-
-            <aside class="help-card">
-              <p class="help-card__eyebrow">{{ ['ru' => 'Помощь библиотекаря', 'kk' => 'Кітапханашы көмегі', 'en' => 'Librarian support'][$lang] }}</p>
-              <h3>{{ ['ru' => 'Нужна помощь?', 'kk' => 'Көмек керек пе?', 'en' => 'Need help?'][$lang] }}</h3>
-              <p>{{ ['ru' => 'Напишите библиотекарю, если нужен удалённый доступ, проверка лицензии или подбор источников по дисциплине.', 'kk' => 'Қашықтан қолжетімділік, лицензияны тексеру немесе пән бойынша дереккөз іріктеу қажет болса, кітапханашыға жазыңыз.', 'en' => 'Message a librarian for remote access support, license checks, or discipline-specific source curation.'][$lang] }}</p>
-              <div class="help-meta">
-                <div>{{ ['ru' => 'Пн–Пт · 09:00–18:00', 'kk' => 'Дс–Жм · 09:00–18:00', 'en' => 'Mon-Fri · 09:00-18:00'][$lang] }}</div>
-                <div>{{ ['ru' => 'Ответ в течение рабочего дня', 'kk' => 'Жұмыс күні ішінде жауап', 'en' => 'Response within one business day'][$lang] }}</div>
-              </div>
-              <a href="{{ $routeWithLang('/contacts') }}">{{ ['ru' => 'Связаться с библиотекой', 'kk' => 'Кітапханамен байланысу', 'en' => 'Contact library team'][$lang] }}</a>
-            </aside>
-          </div>
-        </section>
-      </div>
+      </article>
     </div>
+
+    <section id="resource-support-section" class="resources-support">
+      <div class="resources-support-copy">
+        <span>{{ $copy['support_label'] }}</span>
+        <h2>{{ $copy['support_title'] }}</h2>
+        <p>{{ $copy['support_body'] }}</p>
+        <div class="resources-support-meta">
+          <div>
+            <strong>{{ ['ru' => 'Email inquiry', 'kk' => 'Email inquiry', 'en' => 'Email inquiry'][$lang] }}</strong>
+            <div>library-support@kazutb.edu.kz</div>
+          </div>
+          <div>
+            <strong>{{ ['ru' => 'Live consultation', 'kk' => 'Live consultation', 'en' => 'Live consultation'][$lang] }}</strong>
+            <div>Room 402, Block B</div>
+          </div>
+        </div>
+        <a class="resources-support-cta" href="{{ $routeWithLang('/contacts') }}">{{ ['ru' => 'Связаться с библиотекой', 'kk' => 'Кітапханамен байланысу', 'en' => 'Contact Librarian'][$lang] }}</a>
+      </div>
+      <div class="resources-support-image" aria-hidden="true"></div>
+    </section>
   </div>
 </section>
-
 @endsection
 
 @section('scripts')
 <script>
-(function() {
+(function () {
   const API_URL = '/api/v1/external-resources';
-  const SHORTLIST_API = '/api/v1/shortlist';
-  const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
+  const CONTACT_URL = @json($routeWithLang('/contacts'));
   const RES_LANG = @json($lang);
-  const RES_I18N_MAP = {
+  const copy = {
     ru: {
-      all: 'Все',
-      validUntil: 'Действует',
-      open: 'Перейти ↗',
-      add: '+ В подборку',
-      added: '✓ В подборке',
-      loadingFailed: 'Не удалось загрузить внешние ресурсы.',
+      loading: 'Загрузка ресурсов...',
+      empty: 'Подходящие ресурсы скоро появятся в этом разделе.',
+      support: 'Связаться с библиотекой',
+      open: 'Access Resource',
+      guide: 'User Guide',
+      login: 'LOG IN VIA INSTITUTION',
+      database: 'ACCESS DATABASE',
+      explore: 'EXPLORE CITATIONS',
+      repository: 'OPEN REPOSITORY',
+      premium: 'Premium Access',
+      general: 'General Research',
+      openBadge: 'Open access',
+      remoteBadge: 'Remote access',
+      campusBadge: 'Campus only'
     },
     kk: {
-      all: 'Барлығы',
-      validUntil: 'Қолданыста',
-      open: 'Ашу ↗',
-      add: '+ Топтамаға',
-      added: '✓ Топтамада',
-      loadingFailed: 'Сыртқы ресурстарды жүктеу мүмкін болмады.',
+      loading: 'Ресурстар жүктелуде...',
+      empty: 'Бұл бөлімге лайық ресурстар жақында қосылады.',
+      support: 'Кітапханамен байланысу',
+      open: 'Access Resource',
+      guide: 'User Guide',
+      login: 'LOG IN VIA INSTITUTION',
+      database: 'ACCESS DATABASE',
+      explore: 'EXPLORE CITATIONS',
+      repository: 'OPEN REPOSITORY',
+      premium: 'Premium Access',
+      general: 'General Research',
+      openBadge: 'Open access',
+      remoteBadge: 'Remote access',
+      campusBadge: 'Campus only'
     },
     en: {
-      all: 'All',
-      validUntil: 'Available until',
-      open: 'Open ↗',
-      add: '+ Add to shortlist',
-      added: '✓ In shortlist',
-      loadingFailed: 'Unable to load external resources.',
-    },
+      loading: 'Loading resources...',
+      empty: 'Matching resources will appear here soon.',
+      support: 'Contact Librarian',
+      open: 'Access Resource',
+      guide: 'User Guide',
+      login: 'LOG IN VIA INSTITUTION',
+      database: 'ACCESS DATABASE',
+      explore: 'EXPLORE CITATIONS',
+      repository: 'OPEN REPOSITORY',
+      premium: 'Premium Access',
+      general: 'General Research',
+      openBadge: 'Open access',
+      remoteBadge: 'Remote access',
+      campusBadge: 'Campus only'
+    }
+  }[RES_LANG] || {
+    loading: 'Loading resources...',
+    empty: 'Matching resources will appear here soon.',
+    support: 'Contact Librarian',
+    open: 'Access Resource',
+    guide: 'User Guide',
+    login: 'LOG IN VIA INSTITUTION',
+    database: 'ACCESS DATABASE',
+    explore: 'EXPLORE CITATIONS',
+    repository: 'OPEN REPOSITORY',
+    premium: 'Premium Access',
+    general: 'General Research',
+    openBadge: 'Open access',
+    remoteBadge: 'Remote access',
+    campusBadge: 'Campus only'
   };
-  const RES_I18N = RES_I18N_MAP[RES_LANG] || RES_I18N_MAP.ru;
 
-  const accessBadgeClass = {
-    campus: 'access-badge--campus',
-    remote_auth: 'access-badge--remote',
-    open: 'access-badge--open'
+  const iconMap = {
+    electronic_library: 'menu_book',
+    research_database: 'history_edu',
+    analytics: 'query_stats',
+    open_access: 'library_books'
   };
 
-  const iconColorMap = {
-    electronic_library: 'blue',
-    research_database: 'violet',
-    open_access: 'green',
-    analytics: 'pink'
-  };
+  const filterButtons = Array.from(document.querySelectorAll('[data-filter]'));
+  const grid = document.getElementById('resources-grid');
+  let resources = [];
 
-  let allResources = [];
-  let categories = {};
-  let accessTypes = {};
-  let shortlistedIds = new Set();
-  const railLinks = Array.from(document.querySelectorAll('.support-rail-link'));
-
-  function setActiveRailLink(targetId) {
-    railLinks.forEach(link => {
-      const isActive = link.getAttribute('href') === `#${targetId}`;
-      link.classList.toggle('is-active', isActive);
-      if (isActive) {
-        link.setAttribute('aria-current', 'true');
-      } else {
-        link.removeAttribute('aria-current');
-      }
-    });
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = String(text || '');
+    return div.innerHTML;
   }
 
-  function initSupportRailSpy() {
-    const sectionMap = railLinks
-      .map(link => {
-        const href = link.getAttribute('href') || '';
-        const targetId = href.startsWith('#') ? href.slice(1) : '';
-        return {
-          link,
-          targetId,
-          section: targetId ? document.getElementById(targetId) : null,
-        };
-      })
-      .filter(item => item.section);
+  function guessDiscipline(item) {
+    const haystack = `${item.title || ''} ${item.provider || ''} ${item.category || ''}`.toLowerCase();
+    if (/econ|business|polpred|analytic/.test(haystack)) return 'economics';
+    if (/jstor|рмэб|rmeb|elibrary|social|human/.test(haystack)) return 'social';
+    if (/science|engineering|springer|elsevier|doaj/.test(haystack)) return 'engineering';
+    return 'technology';
+  }
 
-    if (!sectionMap.length) {
+  function accessLabel(kind) {
+    if (kind === 'open') return copy.openBadge;
+    if (kind === 'remote_auth') return copy.remoteBadge;
+    return copy.campusBadge;
+  }
+
+  function normalizeItem(item, index) {
+    return {
+      slug: item.slug || `resource-${index}`,
+      title: item.title || 'Library Resource',
+      provider: item.provider || 'KazUTB Digital Library',
+      description: item.description || item.access_note || 'Institutional access to scholarly materials and curated research support.',
+      category: item.category || 'electronic_library',
+      accessType: item.access_type || 'campus',
+      url: item.url || CONTACT_URL,
+      discipline: guessDiscipline(item),
+      icon: iconMap[item.category] || 'open_in_new'
+    };
+  }
+
+  function secondaryActionLabel(index) {
+    return [copy.login, copy.database, copy.explore, copy.repository][index] || copy.database;
+  }
+
+  function featuredCard(item) {
+    return `
+      <article class="resource-card resource-card--featured">
+        <div class="resource-feature-ghost">
+          <span class="material-symbols-outlined">article</span>
+        </div>
+        <div>
+          <div class="resource-badge-row">
+            <span class="resource-badge">${copy.premium}</span>
+            <span class="resource-badge resource-badge--neutral">${copy.general}</span>
+          </div>
+          <h3 class="resource-card-title">${escapeHtml(item.title)}</h3>
+          <p class="resource-card-desc">${escapeHtml(item.description)}</p>
+        </div>
+        <div class="resource-actions">
+          <a class="resource-primary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${copy.open} <span class="material-symbols-outlined text-sm">open_in_new</span></a>
+          <a class="resource-secondary" href="${escapeHtml(CONTACT_URL)}">${copy.guide}</a>
+        </div>
+      </article>`;
+  }
+
+  function smallCard(item, modifier, index) {
+    return `
+      <article class="resource-card ${modifier}">
+        <div class="resource-icon-tile">
+          <span class="material-symbols-outlined">${item.icon}</span>
+        </div>
+        <h3 class="resource-card-title">${escapeHtml(item.title)}</h3>
+        <p class="resource-card-desc">${escapeHtml(item.description)}</p>
+        <div class="resource-badge-row">
+          <span class="resource-badge">${escapeHtml(accessLabel(item.accessType))}</span>
+        </div>
+        <div class="resource-actions">
+          <a class="resource-secondary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${secondaryActionLabel(index)}</a>
+        </div>
+      </article>`;
+  }
+
+  function render(filter) {
+    const filtered = filter === 'all' ? resources : resources.filter((item) => item.discipline === filter);
+    if (!filtered.length) {
+      grid.innerHTML = `<article class="resources-empty">${escapeHtml(copy.empty)}</article>`;
       return;
     }
 
-    const updateActiveLink = () => {
-      const viewportOffset = Math.max(window.innerHeight * 0.24, 120);
-      let activeTargetId = sectionMap[0].targetId;
+    const items = filtered.slice(0, 5);
+    const blocks = [];
+    if (items[0]) blocks.push(featuredCard(items[0]));
+    if (items[1]) blocks.push(smallCard(items[1], 'resource-card--side', 0));
+    items.slice(2, 5).forEach((item, index) => blocks.push(smallCard(item, 'resource-card--small', index + 1)));
+    grid.innerHTML = blocks.join('');
+  }
 
-      for (const item of sectionMap) {
-        const top = item.section.getBoundingClientRect().top;
-        if (top - viewportOffset <= 0) {
-          activeTargetId = item.targetId;
-        }
-      }
-
-      setActiveRailLink(activeTargetId);
-    };
-
-    railLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        const href = link.getAttribute('href') || '';
-        if (href.startsWith('#')) {
-          setActiveRailLink(href.slice(1));
-        }
-      });
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach((btn) => btn.classList.remove('is-active'));
+      button.classList.add('is-active');
+      render(button.dataset.filter || 'all');
     });
-
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
-    window.addEventListener('resize', updateActiveLink);
-    updateActiveLink();
-  }
-
-  function escapeHtml(text) {
-    if (!text) return '';
-    const d = document.createElement('div');
-    d.textContent = text;
-    return d.innerHTML;
-  }
-
-  function formatExpiry(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-    return `до ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-  }
-
-  function renderFilterBar() {
-    const bar = document.getElementById('ext-filter-bar');
-    const usedCats = [...new Set(allResources.map(r => r.category))];
-    let html = `<button class="ext-filter-btn ext-filter-btn--active" data-filter="all">${RES_I18N.all} (${allResources.length})</button>`;
-    usedCats.forEach(cat => {
-      const info = categories[cat] || {};
-      const count = allResources.filter(r => r.category === cat).length;
-      html += `<button class="ext-filter-btn" data-filter="${escapeHtml(cat)}">${escapeHtml(info.icon || '')} ${escapeHtml(info.label || cat)} (${count})</button>`;
-    });
-    bar.innerHTML = html;
-    bar.querySelectorAll('.ext-filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        bar.querySelectorAll('.ext-filter-btn').forEach(b => b.classList.remove('ext-filter-btn--active'));
-        btn.classList.add('ext-filter-btn--active');
-        renderResources(btn.dataset.filter);
-      });
-    });
-  }
-
-  function renderResources(filter) {
-    const grid = document.getElementById('ext-resources-grid');
-    const filtered = filter === 'all' ? allResources : allResources.filter(r => r.category === filter);
-
-    grid.innerHTML = filtered.map(r => {
-      const catInfo = categories[r.category] || {};
-      const accInfo = accessTypes[r.access_type] || {};
-      const color = iconColorMap[r.category] || 'blue';
-      const badgeClass = accessBadgeClass[r.access_type] || 'access-badge--campus';
-      const inShortlist = shortlistedIds.has('ext:' + r.slug);
-      const hasPrimaryLink = Boolean(r.url);
-
-      return `
-        <div class="ext-resource-card" data-slug="${escapeHtml(r.slug)}">
-          <div class="ext-resource-card__availability">
-            <span class="ext-resource-card__badge ${badgeClass}">${escapeHtml(accInfo.label || r.access_type)}</span>
-            ${r.expiry_date ? `<span class="ext-resource-card__expiry">${RES_I18N.validUntil} ${formatExpiry(r.expiry_date)}</span>` : ''}
-          </div>
-          <div class="ext-resource-card__provider">${escapeHtml(r.provider)}</div>
-          <div class="ext-resource-card__header">
-            <div class="ext-resource-card__icon ext-resource-card__icon--${color}">${escapeHtml(catInfo.icon || '📄')}</div>
-            <div>
-              <h3 class="ext-resource-card__title">${escapeHtml(r.title)}</h3>
-            </div>
-          </div>
-          <p class="ext-resource-card__desc">${escapeHtml(r.description)}</p>
-          <div class="ext-resource-card__footer">
-            <span class="ext-resource-card__category">${escapeHtml(catInfo.label || r.category)}</span>
-          </div>
-          <div class="ext-resource-card__actions${hasPrimaryLink ? '' : ' ext-resource-card__actions--single'}">
-            ${r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="ext-link-btn">${RES_I18N.open}</a>` : ''}
-            <button class="ext-shortlist-btn ${inShortlist ? 'ext-shortlist-btn--added' : ''}"
-              onclick="addExtToShortlist(this, '${escapeHtml(r.slug)}')"
-              ${inShortlist ? 'disabled' : ''}>
-              ${inShortlist ? RES_I18N.added : RES_I18N.add}
-            </button>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    grid.style.display = 'grid';
-  }
-
-  window.addExtToShortlist = async function(btn, slug) {
-    const resource = allResources.find(r => r.slug === slug);
-    if (!resource) return;
-
-    btn.disabled = true;
-    btn.textContent = '...';
-
-    try {
-      const res = await fetch(SHORTLIST_API, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': CSRF
-        },
-        credentials: 'same-origin',
-        body: JSON.stringify({
-          identifier: 'ext:' + slug,
-          title: resource.title,
-          type: 'external_resource',
-          provider: resource.provider,
-          url: resource.url || null,
-          access_type: resource.access_type
-        })
-      });
-
-      if (res.ok || res.status === 409) {
-        btn.textContent = RES_I18N.added;
-        btn.classList.add('ext-shortlist-btn--added');
-        shortlistedIds.add('ext:' + slug);
-      } else {
-        btn.textContent = RES_I18N.add;
-        btn.disabled = false;
-      }
-    } catch (e) {
-      btn.textContent = RES_I18N.add;
-      btn.disabled = false;
-    }
-  };
-
-  async function loadShortlistState() {
-    try {
-      const res = await fetch(SHORTLIST_API, { headers: { Accept: 'application/json' }, credentials: 'same-origin' });
-      if (res.ok) {
-        const json = await res.json();
-        (json.data || []).forEach(item => {
-          if (item.identifier) shortlistedIds.add(item.identifier);
-        });
-      }
-    } catch (_) {}
-  }
+  });
 
   async function init() {
-    const loading = document.getElementById('ext-resources-loading');
-    initSupportRailSpy();
-
     try {
-      const [resResponse] = await Promise.all([
-        fetch(API_URL, { headers: { Accept: 'application/json' } }),
-        loadShortlistState()
-      ]);
-
-      if (!resResponse.ok) throw new Error('API error');
-
-      const json = await resResponse.json();
-      allResources = json.data || [];
-      categories = json.meta?.categories || {};
-      accessTypes = json.meta?.access_types || {};
-
-      document.getElementById('stat-total').textContent = allResources.length + '+';
-      loading.style.display = 'none';
-      renderFilterBar();
-      renderResources('all');
-    } catch (e) {
-      loading.innerHTML = `<p style="color:var(--res-muted);">${RES_I18N.loadingFailed}</p>`;
-      console.error('External resources load error:', e);
+      const response = await fetch(API_URL, { headers: { Accept: 'application/json' } });
+      const payload = await response.json();
+      resources = Array.isArray(payload?.data) ? payload.data.map(normalizeItem) : [];
+      render('all');
+    } catch (error) {
+      grid.innerHTML = `<article class="resources-empty">${escapeHtml(copy.empty)}</article>`;
+      console.error('Resources load failed:', error);
     }
   }
 
