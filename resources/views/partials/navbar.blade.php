@@ -20,10 +20,10 @@
   $copy = [
       'ru' => [
           'links' => [
-              ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
-              ['label' => 'Ресурсы', 'href' => $routeWithLang('/resources')],
-              ['label' => 'Навигация', 'href' => $routeWithLang('/discover')],
-              ['label' => 'О библиотеке', 'href' => $routeWithLang('/about')],
+              ['key' => 'catalog', 'label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
+              ['key' => 'resources', 'label' => 'Ресурсы', 'href' => $routeWithLang('/resources')],
+              ['key' => 'discover', 'label' => 'Навигация', 'href' => $routeWithLang('/discover')],
+              ['key' => 'about', 'label' => 'О библиотеке', 'href' => $routeWithLang('/about')],
           ],
           'guest' => 'Войти',
           'logout' => 'Выйти',
@@ -31,10 +31,10 @@
       ],
       'kk' => [
           'links' => [
-              ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
-              ['label' => 'Ресурстар', 'href' => $routeWithLang('/resources')],
-              ['label' => 'Бағыттар', 'href' => $routeWithLang('/discover')],
-              ['label' => 'Кітапхана туралы', 'href' => $routeWithLang('/about')],
+              ['key' => 'catalog', 'label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
+              ['key' => 'resources', 'label' => 'Ресурстар', 'href' => $routeWithLang('/resources')],
+              ['key' => 'discover', 'label' => 'Бағыттар', 'href' => $routeWithLang('/discover')],
+              ['key' => 'about', 'label' => 'Кітапхана туралы', 'href' => $routeWithLang('/about')],
           ],
           'guest' => 'Кіру',
           'logout' => 'Шығу',
@@ -42,10 +42,10 @@
       ],
       'en' => [
           'links' => [
-              ['label' => 'Catalog', 'href' => $routeWithLang('/catalog')],
-              ['label' => 'Resources', 'href' => $routeWithLang('/resources')],
-              ['label' => 'Discover', 'href' => $routeWithLang('/discover')],
-              ['label' => 'About', 'href' => $routeWithLang('/about')],
+              ['key' => 'catalog', 'label' => 'Catalog', 'href' => $routeWithLang('/catalog')],
+              ['key' => 'resources', 'label' => 'Resources', 'href' => $routeWithLang('/resources')],
+              ['key' => 'discover', 'label' => 'Discover', 'href' => $routeWithLang('/discover')],
+              ['key' => 'about', 'label' => 'About', 'href' => $routeWithLang('/about')],
           ],
           'guest' => 'Sign in',
           'logout' => 'Sign out',
@@ -72,7 +72,10 @@
 
       <div id="site-nav" class="nav-links hidden md:flex items-center space-x-8" aria-label="{{ __('ui.aria.main_navigation') }}">
         @foreach($copy['links'] as $item)
-          <a class="text-slate-600 font-['Manrope'] hover:text-teal-600 transition-colors duration-300" href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+          <a
+            class="font-['Manrope'] transition-colors duration-300 {{ ($activePage ?? '') === ($item['key'] ?? '') ? 'text-teal-700 font-semibold' : 'text-slate-600 hover:text-teal-600' }}"
+            href="{{ $item['href'] }}"
+          >{{ $item['label'] }}</a>
         @endforeach
       </div>
 
