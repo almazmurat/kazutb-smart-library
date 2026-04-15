@@ -11,13 +11,14 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT_DIR"
 
 TODAY=$(date -u +'%Y%m%d')
+TODAY_DASH=$(date -u +'%Y-%m-%d')
 NOW=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 NOW_HHMMSS=$(date -u +'%H%M%S')
 
 MEMORY_FRAGMENTS="artifacts/obsidian/memory-fragments"
 WORK_LOG="$MEMORY_FRAGMENTS/WORK_LOG_$TODAY.md"
-BOUNDARY_FILE="$MEMORY_FRAGMENTS/session-boundary-${TODAY}T${NOW_HHMMSS}.md"
-RUN_NOTE_FILE="$MEMORY_FRAGMENTS/run-${TODAY}T${NOW_HHMMSS}.md"
+BOUNDARY_FILE_PRO="$MEMORY_FRAGMENTS/${TODAY_DASH}_${NOW_HHMMSS}__session-boundary__auto-sync.md"
+RUN_NOTE_FILE_PRO="$MEMORY_FRAGMENTS/${TODAY_DASH}_${NOW_HHMMSS}__sync-heartbeat__no-source-changes.md"
 
 mkdir -p "$MEMORY_FRAGMENTS"
 
@@ -41,7 +42,7 @@ CHANGES=$(git status --short | wc -l)
 if [ "$CHANGES" -eq 0 ]; then
         echo -e "${GREEN}✓${NC} No source changes detected. Logging heartbeat to Obsidian memory."
 
-        cat > "$RUN_NOTE_FILE" <<EOF
+        cat > "$RUN_NOTE_FILE_PRO" <<EOF
 ---
 type: sync-heartbeat
 project: [[Digital Library]]
@@ -66,7 +67,7 @@ links:
 Preserve full session continuity in Obsidian even for "small/no-change" interactions.
 EOF
 
-        git add "$RUN_NOTE_FILE" "$WORK_LOG" 2>/dev/null || true
+        git add "$RUN_NOTE_FILE_PRO" "$WORK_LOG" 2>/dev/null || true
         git commit -m "[obsidian-heartbeat] $NOW" || true
         echo "Pushing heartbeat to origin/main..."
         git push origin main 2>&1 | head -5 || true
@@ -163,7 +164,7 @@ echo ""
 # ─── STEP 5: Create session boundary and push ───
 echo -e "${BLUE}[5/5]${NC} Creating session boundary and syncing..."
 
-cat > "$BOUNDARY_FILE" <<EOF
+cat > "$BOUNDARY_FILE_PRO" <<EOF
 ---
 type: session-boundary
 project: [[Digital Library]]
@@ -203,7 +204,7 @@ Next agent session should:
 Auto-synced by \`./scripts/dev/auto-sync.sh\`
 EOF
 
-git add "$BOUNDARY_FILE"
+git add "$BOUNDARY_FILE_PRO"
 git commit -m "[session-boundary] $NOW" || true
 
 # Push to origin
@@ -218,7 +219,7 @@ echo -e "${GREEN}✓ Auto-Sync Complete${NC}"
 echo -e "${GREEN}════════════════════════════════════════${NC}"
 echo ""
 echo "Memory location: $WORK_LOG"
-echo "Session boundary: $BOUNDARY_FILE"
+echo "Session boundary: $BOUNDARY_FILE_PRO"
 echo "Remote status: $(git rev-parse --abbrev-ref HEAD) synced with origin"
 echo ""
 echo "Agent can now continue work. All changes are tracked."

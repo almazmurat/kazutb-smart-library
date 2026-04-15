@@ -12,13 +12,13 @@ tags: [agent-instructions, auto-tracking, continuous-sync]
 ## Quick Rules (TL;DR)
 
 1. **Before any task**: Run `bash scripts/dev/obsidian-bootstrap.sh` (MANDATORY)
-2. **After every code change**: Write `memory/<category>-<timestamp>.md` with what/why/impact
-3. **Before every commit**: Ensure memory entry exists referencing the commit
-4. **At session end**: Run `bash scripts/dev/auto-sync.sh` to capture everything
-5. **Always use frontmatter**: YAML with project/date/tags/links for Obsidian
-6. **Cross-link everything**: Use `[[memory-fragment-name]]` to connect ideas
-7. **Even no-change sessions**: Persist heartbeat notes to Obsidian via auto-sync
-
+2. **Before implementation**: Capture the raw user prompt via `bash scripts/dev/obsidian-capture-request.sh "<request>"`
+3. **After every code change**: Write `memory/<category>-<timestamp>.md` with what/why/impact
+4. **Before every commit**: Ensure memory entry exists referencing the commit
+5. **At session end**: Run `bash scripts/dev/auto-sync.sh` to capture everything
+6. **Always use frontmatter**: YAML with project/date/tags/links for Obsidian
+7. **Cross-link everything**: Use `[[memory-fragment-name]]` to connect ideas
+8. **Even no-change sessions**: Persist heartbeat notes to Obsidian via auto-sync
 ## Session Start Procedure (MANDATORY)
 
 ```bash
@@ -29,6 +29,33 @@ bash scripts/dev/obsidian-bootstrap.sh
 ```
 
 If bootstrap fails, fix/bootstrap the memory path first and only then continue.
+
+## Request Capture Procedure (MANDATORY)
+
+```bash
+# Every user prompt becomes an Obsidian node
+bash scripts/dev/obsidian-capture-request.sh "<raw request text>"
+
+# Optional entity-state tracking for sticky UI/domain context
+bash scripts/dev/obsidian-capture-request.sh "<request text>" --entity "navbar" --from "resources" --to "books"
+```
+
+This ensures future sessions know what changed before, from what value, and to what value.
+
+## Entity Read-Before-Write Rule
+
+Before changing any known entity again (e.g. `navbar-label`):
+
+```bash
+# 1) Read previous state first
+cat artifacts/obsidian/memory-fragments/entities/entity-navbar-label.md
+
+# 2) Apply new change
+# 3) Capture request with transition
+bash scripts/dev/obsidian-capture-request.sh "<request text>" --entity "navbar-label" --from "books" --to "new-value"
+```
+
+This guarantees continuity across sessions and chats.
 
 ## Detailed Instructions by Task Type
 

@@ -21,10 +21,12 @@ cat AGENT_TRACKING_INSTRUCTIONS.md  # Patterns (10 min read)
 ```
 
 ### During Work
+- **User prompts**: Captured as professional request nodes automatically ✓
 - **Code changes**: Memory created automatically ✓
 - **Tests**: Results logged automatically ✓  
 - **Decisions**: Documented automatically ✓
 - **Gotchas**: Captured automatically ✓
+- **Entity state** (e.g., navbar label history): tracked automatically when provided ✓
 - No manual steps required
 
 ### End of Session
@@ -51,6 +53,8 @@ bash scripts/dev/auto-sync.sh
 | `.instructions.md` | High-level rules | Read once, understand principles |
 | `AGENT_TRACKING_INSTRUCTIONS.md` | How-to patterns | Reference per task type |
 | `scripts/dev/obsidian-bootstrap.sh` | Mandatory session bootstrap | Run before any task |
+| `scripts/dev/obsidian-capture-request.sh` | Prompt capture + entity state tracking | Run for every user request |
+| `scripts/dev/install-auto-sync-alias.sh` | Global shell aliases installer | Run once on machine setup |
 | `scripts/dev/auto-sync.sh` | Session-end automation | Run at end of work |
 | `artifacts/obsidian/memory-fragments/WORK_LOG_*.md` | Daily task tracker | Read at session start |
 | `artifacts/obsidian/memory-fragments/CENTRAL_HUB_MIN.md` | Memory router | Daily navigation hub |
@@ -64,6 +68,8 @@ bash scripts/dev/auto-sync.sh
 
 - [ ] Start session: `bash scripts/dev/obsidian-bootstrap.sh`
 - [ ] Understand rules: Skim `.instructions.md` (first time only)
+- [ ] Capture request: `obs-capture "<raw user request>" [--entity ...]`
+- [ ] If entity changed before: `cat artifacts/obsidian/memory-fragments/entities/entity-<slug>.md` before editing
 - [ ] Work: Make code changes + auto-capture memory
 - [ ] End session: `bash scripts/dev/auto-sync.sh`
 - [ ] Done: All changes committed + pushed automatically
@@ -84,7 +90,10 @@ Auto-tracker creates these fragments:
 | **Integration Note** | `integration-note-YYYYMMDDTHHMM.md` | When calling external API |
 | **Perf Note** | `perf-note-YYYYMMDDTHHMM.md` | When optimizing |
 | **Security Note** | `security-note-YYYYMMDDTHHMM.md` | When fixing security vuln |
-| **Session Boundary** | `session-boundary-YYYYMMDDTHHMM.md` | At session end (auto) |
+| **Session Boundary** | `YYYY-MM-DD_HHMMSS__session-boundary__auto-sync.md` | At session end (auto) |
+| **Request Node** | `YYYY-MM-DD_HHMMSS__request__<slug>.md` | For every user prompt |
+| **Heartbeat** | `YYYY-MM-DD_HHMMSS__sync-heartbeat__no-source-changes.md` | No-change sync run |
+| **Entity State** | `entities/entity-<slug>.md` | Persistent state history |
 
 ---
 

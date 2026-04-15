@@ -23,12 +23,13 @@ It keeps only active knowledge paths, not full transcript summaries.
 ## Latest Architecture Additions (Apr 15)
 - **Auto-Sync System**: New `.instructions.md` + `AGENT_TRACKING_INSTRUCTIONS.md`
 - **Bootstrap Script**: `scripts/dev/obsidian-bootstrap.sh` is mandatory before any task
+- **Request Capture Script**: `scripts/dev/obsidian-capture-request.sh` (every prompt becomes a node)
 - **Session Script**: `scripts/dev/auto-sync.sh` for hands-free memory capture
-- **Automation**: Agent auto-tracks decisions, code changes, tests, gotchas, and micro-updates
+- **Automation**: Agent auto-tracks decisions, code changes, tests, gotchas, micro-updates, and prompt-level requests
+- **Professional naming**: `YYYY-MM-DD_HHMMSS__<type>__<context-slug>.md`
 - **System Status**: ✅ PRODUCTION READY (tested & verified)
 - **System Summary**: [[SYSTEM_SETUP_SUMMARY_2026-04-15]]
 - **Decision**: [[decision-auto-tracking-framework-2026-04-15]]
-
 ## How to Use
 1. **Agent starts task**: Run `bash scripts/dev/obsidian-bootstrap.sh` (required)
 2. **During work**: Follow `.instructions.md` for rules, `AGENT_TRACKING_INSTRUCTIONS.md` for patterns
@@ -40,5 +41,7 @@ It keeps only active knowledge paths, not full transcript summaries.
 - `.instructions.md` — MUST READ: High-level rules agent must follow
 - `AGENT_TRACKING_INSTRUCTIONS.md` — Specific patterns for each task type
 - `scripts/dev/obsidian-bootstrap.sh` — Mandatory session start loader
+- `scripts/dev/obsidian-capture-request.sh` — Capture each user prompt as first-class node
 - `scripts/dev/auto-sync.sh` — Run at session end for automatic sync
 - `artifacts/obsidian/memory-fragments/WORK_LOG_YYYYMMDD.md` — Daily task tracker
+- `artifacts/obsidian/memory-fragments/entities/entity-*.md` — Persistent entity state history (e.g. navbar labels)
