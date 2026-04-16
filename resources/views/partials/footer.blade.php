@@ -73,14 +73,14 @@
 <footer class="site-footer bg-slate-100 text-blue-950 full-width py-12 px-8 border-t border-slate-200/20">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-2xl mx-auto">
     <div class="space-y-6">
-      <div class="inline-flex items-center gap-3 font-['Newsreader'] font-bold text-blue-950 text-2xl">
-        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="w-12 h-12 rounded-full object-contain bg-white p-1.5 shadow-sm ring-1 ring-slate-200" loading="lazy" decoding="async">
-        <span>{{ $copy['brand'] }}</span>
+      <div class="inline-flex items-center gap-2 md:gap-3 font-['Newsreader'] font-bold text-blue-950 text-2xl align-middle">
+        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="w-12 h-12 md:w-14 md:h-14 rounded-full object-contain bg-white p-1.5 shadow-sm ring-1 ring-slate-200 align-middle" loading="lazy" decoding="async">
+        <span class="align-middle leading-tight">{{ $copy['brand'] }}</span>
       </div>
       <p class="font-['Manrope'] text-sm tracking-wide max-w-sm opacity-80">
         {{ $copy['desc'] }}
       </p>
-      <div class="text-slate-500 text-xs">
+      <div class="text-slate-500 text-xs mt-2">
         © {{ date('Y') }} {{ __('ui.brand.title') }}. {{ $copy['copyright'] }}
       </div>
     </div>

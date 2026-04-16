@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Secure Access | KazUTB Digital Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#76d6d5",
+                        "on-tertiary-container": "#76889d",
+                        "on-secondary-container": "#006e6e",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#476083",
+                        "on-primary-fixed": "#001c3a",
+                        "surface-container-low": "#f3f4f5",
+                        "on-surface": "#191c1d",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#90efef",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#43474e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container": "#edeeef",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface": "#f8f9fa",
+                        "tertiary": "#000610",
+                        "primary-fixed-dim": "#afc8f0",
+                        "secondary-fixed": "#93f2f2",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "on-background": "#191c1d",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d1e4fb",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-high": "#e7e8e9",
+                        "primary-container": "#001f3f",
+                        "on-tertiary-fixed-variant": "#36485b",
+                        "primary": "#000613",
+                        "on-secondary-fixed": "#002020",
+                        "primary-fixed": "#d4e3ff",
+                        "outline-variant": "#c4c6cf",
+                        "on-primary-container": "#6f88ad",
+                        "inverse-primary": "#afc8f0",
+                        "on-primary": "#ffffff",
+                        "background": "#f8f9fa",
+                        "outline": "#74777f",
+                        "tertiary-container": "#0d2031",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#091d2e",
+                        "secondary": "#006a6a",
+                        "tertiary-fixed-dim": "#b5c8df"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, .font-serif { font-family: 'Newsreader', serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface overflow-x-hidden">
+<!-- TopNavBar Suppressed as per "Destination" Rule for Login pages -->
+<main class="min-h-screen flex flex-col md:flex-row">
+<!-- Visual Sidebar: Institutional Guidance & Note -->
+<section class="hidden md:flex md:w-5/12 lg:w-1/2 bg-primary relative overflow-hidden flex-col justify-between p-16 text-on-primary">
+<div class="absolute inset-0 opacity-20">
+<img alt="Atmospheric library interior" class="w-full h-full object-cover" data-alt="Moody black and white close-up of classical library bookshelves with soft dramatic light falling on weathered book spines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg8ucE0SdoDVzgb7be9Q_IDvgLZ--3uWmKvAfXLPM5801wes-BdM5j_R033XMIVHpa4Gi4x9m_mpEgOiaOaJhDDxooc3NlcdGZvvA62yva0FCymrB67O9zu0O3Fd0d7miRZRaT_FTAM9eBfDXIgYEOv5kqv9fwWw1GrfcQ1aID0uq-wj19-wX2L6-e7rjpj_nGyZ9L8Czdznjf-Rmbj683K0667ZqLKftIN0Auv1MBEvauddFafWBg-EwC8RJDj4WiVVT4AcVcOK6X"/>
+<div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-container to-transparent"></div>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-12">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl" data-icon="account_balance">account_balance</span>
+<span class="text-xl font-serif italic tracking-tight">KazUTB Digital Library</span>
+</div>
+<div class="max-w-md">
+<h2 class="text-5xl font-headline mb-8 leading-tight">Preserving Knowledge, Empowering Research.</h2>
+<p class="text-on-primary-container text-lg font-body leading-relaxed mb-12">
+                        Welcome to the official repository of the Kazakh University of Technology and Business. Access our curated collections of scientific journals, architectural archives, and economic research.
+                    </p>
+</div>
+</div>
+<div class="relative z-10 space-y-8">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary mt-1" data-icon="verified_user">verified_user</span>
+<div>
+<h4 class="font-bold text-sm uppercase tracking-widest text-secondary-fixed mb-2">Secure Access</h4>
+<p class="text-on-primary-container text-sm leading-snug">Multi-factor authentication is active. Your connection to the digital repository is encrypted using institutional-grade protocols.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary mt-1" data-icon="help">help</span>
+<div>
+<h4 class="font-bold text-sm uppercase tracking-widest text-secondary-fixed mb-2">Support</h4>
+<p class="text-on-primary-container text-sm leading-snug">Encountering issues? Contact the IT help desk at support@kazutb.edu.kz for institutional access recovery.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Access Form Section -->
+<section class="flex-1 flex flex-col justify-center bg-surface-container-lowest p-8 md:p-24 relative">
+<!-- Mobile Header -->
+<div class="md:hidden mb-12 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-2xl" data-icon="account_balance">account_balance</span>
+<span class="text-lg font-serif italic text-primary">KazUTB Digital Library</span>
+</div>
+<div class="max-w-md w-full mx-auto">
+<header class="mb-12">
+<h1 class="text-4xl md:text-5xl font-headline text-primary mb-4 tracking-tight">Access KazUTB Digital Library</h1>
+<p class="text-on-surface-variant font-body">Sign in using your institutional credentials to explore our scientific archives.</p>
+</header>
+<form class="space-y-8">
+<!-- Institutional ID Input -->
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest uppercase text-outline" for="institutional-id">Institutional ID</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 py-4 px-0 focus:ring-0 focus:border-secondary transition-all font-body text-primary placeholder-on-surface-variant/40" id="institutional-id" name="id" placeholder="Enter your faculty or student ID" required="" type="text"/>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center px-2">
+<span class="material-symbols-outlined text-on-surface-variant/50 text-xl" data-icon="badge">badge</span>
+</div>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="block text-xs font-bold tracking-widest uppercase text-outline" for="password">Password</label>
+<a class="text-xs font-bold text-secondary hover:underline transition-all" href="#">Forgot?</a>
+</div>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 py-4 px-0 focus:ring-0 focus:border-secondary transition-all font-body text-primary placeholder-on-surface-variant/40" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center px-2">
+<span class="material-symbols-outlined text-on-surface-variant/50 text-xl" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+<!-- Options -->
+<div class="flex items-center justify-between py-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 rounded-lg border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+</div>
+<span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors">Keep me signed in for 30 days</span>
+</label>
+</div>
+<!-- Primary Action -->
+<button class="w-full py-5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold tracking-widest uppercase text-sm rounded-lg hover:shadow-xl hover:shadow-primary/10 active:opacity-80 transition-all duration-300 flex justify-center items-center gap-2 group" type="submit">
+                        Log in
+                        <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<!-- Alternative Login -->
+<div class="relative py-4">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/10"></div>
+</div>
+<div class="relative flex justify-center text-xs uppercase tracking-widest">
+<span class="bg-surface-container-lowest px-4 text-outline">or access via</span>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<button class="w-full py-4 px-6 bg-surface-container border border-outline-variant/20 rounded-lg flex items-center justify-center gap-3 hover:bg-surface-container-high transition-colors font-body text-on-surface group" type="button">
+<span class="material-symbols-outlined text-secondary" data-icon="language">language</span>
+<span class="text-sm font-semibold">Institutional SSO</span>
+</button>
+</div>
+</form>
+<footer class="mt-16 text-center">
+<p class="text-xs text-outline leading-relaxed max-w-xs mx-auto">
+                        Unauthorized access is prohibited. All activity is logged for security and auditing purposes as per institutional policy.
+                    </p>
+</footer>
+</div>
+</section>
+</main>
+<!-- Generic Institutional Footer mapped from Shared Components -->
+<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200/20 flex flex-col md:flex-row justify-between items-center px-12 py-10 w-full">
+<div class="flex flex-col md:flex-row items-center gap-8 mb-8 md:mb-0">
+<span class="text-slate-500 dark:text-slate-400 font-sans text-sm tracking-wide">© 2024 KazUTB Digital Library. All rights reserved.</span>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-slate-500 dark:text-slate-400 font-sans text-sm tracking-wide hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">Institutional Access</a>
+<a class="text-slate-500 dark:text-slate-400 font-sans text-sm tracking-wide hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">Privacy Policy</a>
+<a class="text-slate-500 dark:text-slate-400 font-sans text-sm tracking-wide hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">Terms of Service</a>
+<a class="text-slate-500 dark:text-slate-400 font-sans text-sm tracking-wide hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">Help Desk</a>
+</div>
+</footer>
+</body></html>

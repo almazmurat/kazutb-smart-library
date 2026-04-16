@@ -1,3 +1,38 @@
+use Illuminate\Support\Facades\Http;
+Route::post('/login', function (\Illuminate\Http\Request $request) {
+    $validated = $request->validate([
+        'email' => ['nullable', 'string', 'email', 'required_without:login'],
+        'login' => ['nullable', 'string', 'required_without:email'],
+        'password' => ['required', 'string'],
+        'device_name' => ['nullable', 'string', 'max:255'],
+    ]);
+
+    $loginIdentifier = $validated['login'] ?? $validated['email'] ?? 'unknown';
+    $authApiUrl = config('services.external_auth.login_url', 'http://crm.local/api/login');
+
+    $response = Http::timeout(12)->acceptJson()->post($authApiUrl, [
+        'email' => $validated['email'] ?? null,
+        'login' => $validated['login'] ?? null,
+        'password' => $validated['password'],
+        'device_name' => $validated['device_name'] ?? 'web',
+    ]);
+
+    if ($response->successful()) {
+        $payload = $response->json();
+        $token = (string) ($payload['token'] ?? $payload['access_token'] ?? '');
+        if ($token === '') {
+            return back()->withErrors(['login' => 'Authentication service returned an unexpected response.']);
+        }
+        $rawUser = $payload['user'] ?? $payload['data']['user'] ?? [];
+        $user = is_array($rawUser) ? $rawUser : [];
+        $request->session()->regenerate();
+        $request->session()->put('library.crm_token', $token);
+        $request->session()->put('library.user', $user);
+        $request->session()->put('library.authenticated_at', now()->toIso8601String());
+        return redirect('/account');
+    }
+    return back()->withErrors(['login' => 'Invalid credentials or authentication failed.']);
+});
 <?php
 
 use App\Services\Library\BookDetailReadService;
@@ -162,9 +197,58 @@ Route::get('/login', function (Request $request) {
         }
     }
 
+    $copy = [
+        'ru' => [
+            'title' => 'Безопасный вход — Digital Library',
+            'brand' => 'KazUTB Digital Library',
+            'eyebrow' => 'Защищённый институциональный доступ',
+            'hero' => 'Вход в библиотечную систему',
+            'lead' => 'Авторизуйтесь, чтобы открыть личный кабинет, проверить выдачи, управлять бронированиями и переходить к контролируемым цифровым материалам.',
+            'loginLabel' => 'Логин или Email',
+            'loginPlaceholder' => 'Например: student01 или mail@example.com',
+            'passwordLabel' => 'Пароль',
+            'passwordPlaceholder' => 'Введите пароль',
+            'submit' => 'Продолжить',
+            'eyebrow' => 'Защищённый институциональный доступ',
+            'accessValue' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.',
+            'footerLegal' => '© 2024 КазТБУ Digital Library. Все права защищены.',
+        ],
+        'kk' => [
+            'title' => 'Қауіпсіз кіру — Digital Library',
+            'brand' => 'KazUTB Digital Library',
+            'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
+            'hero' => 'Кітапхана жүйесіне кіру',
+            'lead' => 'Жеке кабинетке кіру, берілімдерді тексеру, броньдарды басқару және бақыланатын цифрлық материалдарға өту үшін авторизациядан өтіңіз.',
+            'loginLabel' => 'Логин немесе Email',
+            'loginPlaceholder' => 'Мысалы: student01 немесе mail@example.com',
+            'passwordLabel' => 'Құпиясөз',
+            'passwordPlaceholder' => 'Құпиясөзді енгізіңіз',
+            'submit' => 'Жалғастыру',
+            'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
+            'accessValue' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.',
+            'footerLegal' => '© 2024 КазТБУ Digital Library. Барлық құқықтар қорғалған.',
+        ],
+        'en' => [
+            'title' => 'Secure access — Digital Library',
+            'brand' => 'KazUTB Digital Library',
+            'eyebrow' => 'Secure institutional access',
+            'hero' => 'Sign in to the library system',
+            'lead' => 'Authenticate to open your account, review loans, manage reservations, and move into controlled digital materials.',
+            'loginLabel' => 'Login or email',
+            'loginPlaceholder' => 'Example: student01 or mail@example.com',
+            'passwordLabel' => 'Password',
+            'passwordPlaceholder' => 'Enter your password',
+            'submit' => 'Continue',
+            'eyebrow' => 'Secure institutional access',
+            'accessValue' => 'The session stays inside the library interface while credentials are verified through the CRM API.',
+            'footerLegal' => '© 2024 KazUTB Digital Library. All rights reserved.',
+        ],
+    ];
     return view('auth', [
         'demoEnabled' => $demoEnabled,
         'demoIdentities' => $demoIdentities,
+        'copy' => $copy,
+        'lang' => $lang,
     ]);
 });
 

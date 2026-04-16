@@ -1,5 +1,55 @@
 @php
   $lang = app()->getLocale();
+  $copy = [
+    'ru' => [
+      'title' => 'Безопасный вход — Digital Library',
+      'brand' => 'KazUTB Digital Library',
+      'eyebrow' => 'Защищённый институциональный доступ',
+      'hero' => 'Вход в библиотечную систему',
+      'lead' => 'Авторизуйтесь, чтобы открыть личный кабинет, проверить выдачи, управлять бронированиями и переходить к контролируемым цифровым материалам.',
+      'loginLabel' => 'Логин или Email',
+      'loginPlaceholder' => 'Например: student01 или mail@example.com',
+      'passwordLabel' => 'Пароль',
+      'passwordPlaceholder' => 'Введите пароль',
+      'submit' => 'Продолжить',
+      'eyebrow' => 'Защищённый институциональный доступ',
+      'accessValue' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.',
+      'footerLegal' => '© 2024 КазТБУ Digital Library. Все права защищены.',
+    ],
+    'kk' => [
+      'title' => 'Қауіпсіз кіру — Digital Library',
+      'brand' => 'KazUTB Digital Library',
+      'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
+      'hero' => 'Кітапхана жүйесіне кіру',
+      'lead' => 'Жеке кабинетке кіру, берілімдерді тексеру, броньдарды басқару және бақыланатын цифрлық материалдарға өту үшін авторизациядан өтіңіз.',
+      'loginLabel' => 'Логин немесе Email',
+      'loginPlaceholder' => 'Мысалы: student01 немесе mail@example.com',
+      'passwordLabel' => 'Құпиясөз',
+      'passwordPlaceholder' => 'Құпиясөзді енгізіңіз',
+      'submit' => 'Жалғастыру',
+      'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
+      'accessValue' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.',
+      'footerLegal' => '© 2024 КазТБУ Digital Library. Барлық құқықтар қорғалған.',
+    ],
+    'en' => [
+      'title' => 'Secure access — Digital Library',
+      'brand' => 'KazUTB Digital Library',
+      'eyebrow' => 'Secure institutional access',
+      'hero' => 'Sign in to the library system',
+      'lead' => 'Authenticate to open your account, review loans, manage reservations, and move into controlled digital materials.',
+      'loginLabel' => 'Login or email',
+      'loginPlaceholder' => 'Example: student01 or mail@example.com',
+      'passwordLabel' => 'Password',
+      'passwordPlaceholder' => 'Enter your password',
+      'submit' => 'Continue',
+      'eyebrow' => 'Secure institutional access',
+      'accessValue' => 'The session stays inside the library interface while credentials are verified through the CRM API.',
+      'footerLegal' => '© 2024 KazUTB Digital Library. All rights reserved.',
+    ],
+  ][$lang];
+@endphp
+@php
+  $lang = app()->getLocale();
   $withLang = static function (string $path) use ($lang): string {
     return $lang === 'ru' ? $path : $path.(str_contains($path, '?') ? '&' : '?').'lang='.$lang;
   };
@@ -43,407 +93,97 @@
       'ssoBanner' => 'Университеттің бірыңғай кіру шлюзі',
       'divider' => 'немесе есептік деректерді қолданыңыз',
       'formTitle' => 'Кіру',
-      'formSub' => 'Қолданыстағы университет логинін немесе email мен құпиясөзді енгізіңіз. Сәтті кіргеннен кейін оқырман кабинетіне өтесіз.',
-      'loginLabel' => 'Логин немесе Email',
-      'loginPlaceholder' => 'Мысалы: student01 немесе mail@example.com',
-      'passwordLabel' => 'Құпиясөз',
-      'passwordPlaceholder' => 'Құпиясөзді енгізіңіз',
-      'submit' => 'Жалғастыру',
-      'statusLabel' => 'Жүйе күйі',
-      'statusValue' => 'CRM аутентификация контуры: онлайн',
-      'accessLabel' => 'Қолжетімділік контуры',
-      'accessValue' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.',
-      'footerLegal' => '© 2024 КазТБУ Digital Library. Барлық құқықтар қорғалған.',
-      'footerMeta' => 'Institutional Resource Center v4.2.0',
-      'footerLinks' => [
-        ['label' => 'Байланыс', 'href' => '/contacts'],
-        ['label' => 'Ресурстар', 'href' => '/resources'],
-        ['label' => 'Каталог', 'href' => '/catalog'],
-      ],
-      'demoTitle' => 'Жедел кіру',
-      'demoSub' => 'Таңдалған рөлмен бірден кіру үшін карточканы басыңыз.',
-      'demoEnv' => 'Dev / Demo',
-    ],
-    'en' => [
-      'title' => 'Secure access — Digital Library',
-      'brand' => 'KazUTB Digital Library',
-      'eyebrow' => 'Secure institutional access',
-      'hero' => 'Sign in to the library system',
-      'lead' => 'Authenticate to open your account, review loans, manage reservations, and move into controlled digital materials.',
-      'ssoBanner' => 'University single sign-on gateway',
-      'divider' => 'or use credentials',
-      'formTitle' => 'Sign in',
-      'formSub' => 'Use your current university login or email and password. After a successful sign-in you will be redirected to the member account.',
-      'loginLabel' => 'Login or email',
-      'loginPlaceholder' => 'Example: student01 or mail@example.com',
-      'passwordLabel' => 'Password',
-      'passwordPlaceholder' => 'Enter your password',
-      'submit' => 'Continue',
-      'statusLabel' => 'System status',
-      'statusValue' => 'CRM identity gateway: online',
-      'accessLabel' => 'Access layer',
-      'accessValue' => 'The session stays inside the library interface while credentials are verified through the CRM API.',
-      'footerLegal' => '© 2024 KazUTB Digital Library. All rights reserved.',
-      'footerMeta' => 'Institutional Resource Center v4.2.0',
-      'footerLinks' => [
-        ['label' => 'Contacts', 'href' => '/contacts'],
-        ['label' => 'Resources', 'href' => '/resources'],
-        ['label' => 'Catalog', 'href' => '/catalog'],
-      ],
-      'demoTitle' => 'Quick sign-in',
-      'demoSub' => 'Choose a card to sign in instantly with the selected role.',
-      'demoEnv' => 'Dev / Demo',
-    ],
-  ][$lang];
-@endphp
-<!DOCTYPE html>
-<html lang="{{ $lang }}">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>{{ $copy['title'] }}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:wght@500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --surface: #f8f9fa;
-      --surface-low: #f3f4f5;
-      --surface-lowest: #ffffff;
-      --surface-high: #e7e8e9;
-      --outline: #74777f;
-      --outline-variant: #c4c6cf;
-      --text: #191c1d;
-      --muted: #44474e;
-      --primary: #000511;
-      --primary-deep: #001e40;
-      --secondary: #13696d;
-      --tertiary: #f7bd48;
-      --danger: #ba1a1a;
-      --success: #13696d;
-      --shadow: 0 14px 32px rgba(25, 28, 29, 0.05);
-      --shadow-soft: 0 8px 20px rgba(25, 28, 29, 0.04);
-      --radius-lg: 4px;
-      --radius-xl: 8px;
-      --container: 560px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: 'Manrope', system-ui, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(19, 105, 109, 0.04), transparent 26%),
-        radial-gradient(circle at right 12%, rgba(0, 30, 64, 0.04), transparent 20%),
-        linear-gradient(180deg, #fcfcfc 0%, var(--surface) 100%);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .header {
-      width: 100%;
-      padding: 28px 24px 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .header-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      text-align: center;
-    }
-
-    .brand {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(1.85rem, 3.4vw, 2.3rem);
-      font-weight: 600;
-      letter-spacing: -0.04em;
-      color: var(--primary-deep);
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid rgba(196, 198, 207, 0.35);
-      color: var(--secondary);
-      font-size: 9px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .eyebrow-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--secondary);
-      box-shadow: 0 0 0 3px rgba(19, 105, 109, 0.12);
-    }
-
-    .main {
-      flex: 1;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 24px 40px;
-    }
-
-    .auth-shell {
-      width: min(100%, var(--container));
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .auth-card {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(196, 198, 207, 0.2);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius-xl);
-      padding: 32px 34px 24px;
-    }
-
-    .intro {
-      margin-bottom: 22px;
-      display: grid;
-      gap: 10px;
-      text-align: center;
-    }
-
-    .intro h1 {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(2rem, 3.2vw, 2.4rem);
-      font-weight: 500;
-      letter-spacing: -0.05em;
-      color: var(--primary-deep);
-    }
-
-    .intro p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.65;
-    }
-
-    .sso-banner {
-      width: 100%;
-      border: 1px solid rgba(196, 198, 207, 0.22);
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 12px;
-      padding: 13px 14px;
-      border-radius: var(--radius-lg);
-      background: linear-gradient(180deg, rgba(243, 244, 245, 0.96), rgba(255, 255, 255, 0.96));
-      color: var(--primary-deep);
-      font-size: 0.76rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      box-shadow: none;
-    }
-
-    .sso-icon {
-      width: 18px;
-      height: 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin: 14px 0 20px;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(196, 198, 207, 0.35);
-    }
-
-    .divider span {
-      color: var(--outline);
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      white-space: nowrap;
-    }
-
-    .field {
-      margin-bottom: 16px;
-    }
-
-    .label {
-      display: block;
-      margin: 0 0 8px 1px;
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    .input {
-      width: 100%;
-      border: 0;
-      border-bottom: 1px solid var(--outline);
-      background: transparent;
-      color: var(--text);
-      border-radius: 0;
-      padding: 13px 1px;
-      outline: none;
-      font-size: 0.94rem;
-      box-shadow: none;
-      transition: border-color 0.18s ease, background 0.18s ease;
-    }
-
-    .input::placeholder {
-      color: rgba(116, 119, 127, 0.58);
-    }
-
-    .input:focus {
-      border-color: var(--secondary);
-      box-shadow: none;
-      background: rgba(255, 255, 255, 0.4);
-    }
-
-    .submit-wrap {
-      padding-top: 8px;
-    }
-
-    .submit {
-      width: 100%;
-      border: 1px solid rgba(0, 30, 64, 0.18);
-      background: linear-gradient(135deg, var(--primary-deep), #173c68);
-      color: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 15px 18px;
-      font-size: 0.83rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .submit:hover:not(:disabled) {
-      background: linear-gradient(135deg, #052751, #1d497a);
-      border-color: rgba(0, 30, 64, 0.3);
-      transform: translateY(-1px);
-    }
-
-    .submit:disabled {
-      opacity: 0.65;
-      cursor: wait;
-    }
-
-    .message {
-      margin-top: 16px;
-      padding: 12px 14px;
-      border-radius: var(--radius-lg);
-      font-size: 12px;
-      line-height: 1.45;
-      display: none;
-    }
-
-    .message.error {
-      display: block;
-      color: var(--danger);
-      border: 1px solid rgba(220,38,38,.20);
-      background: rgba(220,38,38,.06);
-    }
-
-    .message.success {
-      display: block;
-      color: var(--success);
-      border: 1px solid rgba(22,163,74,.20);
-      background: rgba(22,163,74,.08);
-    }
-
-    .status-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      padding: 0 12px;
-    }
-
-    .status-card {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 76px;
-    }
-
-    .status-card--accent {
-      padding-left: 12px;
-      border-left: 1px solid rgba(247, 189, 72, 0.8);
-    }
-
-    .status-label {
-      color: rgba(174, 126, 0, 0.95);
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    .status-card:not(.status-card--accent) .status-label {
-      color: var(--muted);
-    }
-
-    .status-line {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--secondary);
-      flex-shrink: 0;
-    }
+      @include('partials.navbar', ['activePage' => 'login'])
+      <main class="min-h-screen flex flex-col md:flex-row">
+        <!-- Visual Sidebar: Institutional Guidance & Note -->
+        <section class="hidden md:flex md:w-5/12 lg:w-1/2 bg-primary relative overflow-hidden flex-col justify-between p-16 text-on-primary">
+          <div class="absolute inset-0 opacity-20">
+            <img alt="Atmospheric library interior" class="w-full h-full object-cover" src="/images/login-bg.jpg" />
+            <div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-container to-transparent"></div>
+          </div>
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-12">
+              <span class="material-symbols-outlined text-secondary-fixed text-3xl" data-icon="account_balance">account_balance</span>
+              <span class="text-xl font-serif italic tracking-tight">{{ $copy['brand'] }}</span>
+            </div>
+            <div class="max-w-md">
+              <h2 class="text-5xl font-headline mb-8 leading-tight">{{ $copy['hero'] }}</h2>
+              <p class="text-on-primary-container text-lg font-body leading-relaxed mb-12">{{ $copy['lead'] }}</p>
+            </div>
+          </div>
+          <div class="relative z-10 space-y-8">
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-secondary mt-1" data-icon="verified_user">verified_user</span>
+              <div>
+                <h4 class="font-bold text-sm uppercase tracking-widest text-secondary-fixed mb-2">{{ $copy['eyebrow'] }}</h4>
+                <p class="text-on-primary-container text-sm leading-snug">{{ $copy['accessValue'] }}</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-secondary mt-1" data-icon="help">help</span>
+              <div>
+                <h4 class="font-bold text-sm uppercase tracking-widest text-secondary-fixed mb-2">Support</h4>
+                <p class="text-on-primary-container text-sm leading-snug">support@kazutb.edu.kz</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Access Form Section -->
+        <section class="flex-1 flex flex-col justify-center bg-surface-container-lowest p-8 md:p-24 relative">
+          <div class="md:hidden mb-12 flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary text-2xl" data-icon="account_balance">account_balance</span>
+            <span class="text-lg font-serif italic text-primary">{{ $copy['brand'] }}</span>
+          </div>
+          <div class="max-w-md w-full mx-auto">
+            <header class="mb-12">
+              <h1 class="text-4xl md:text-5xl font-headline text-primary mb-4 tracking-tight">{{ $copy['hero'] }}</h1>
+              <p class="text-on-surface-variant font-body">{{ $copy['lead'] }}</p>
+            </header>
+            <form class="space-y-8" method="POST" action="{{ route('login') }}">
+              @csrf
+              <div class="space-y-2">
+                <label class="block text-xs font-bold tracking-widest uppercase text-outline" for="login">{{ $copy['loginLabel'] }}</label>
+                <div class="relative group">
+                  <input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 py-4 px-0 focus:ring-0 focus:border-secondary transition-all font-body text-primary placeholder-on-surface-variant/40" id="login" name="login" placeholder="{{ $copy['loginPlaceholder'] }}" required type="text" autocomplete="username" />
+                  <div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center px-2">
+                    <span class="material-symbols-outlined text-on-surface-variant/50 text-xl" data-icon="badge">badge</span>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between items-end">
+                  <label class="block text-xs font-bold tracking-widest uppercase text-outline" for="password">{{ $copy['passwordLabel'] }}</label>
+                  <a class="text-xs font-bold text-secondary hover:underline transition-all" href="/password/reset">{{ __('Forgot?') }}</a>
+                </div>
+                <div class="relative group">
+                  <input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 py-4 px-0 focus:ring-0 focus:border-secondary transition-all font-body text-primary placeholder-on-surface-variant/40" id="password" name="password" placeholder="{{ $copy['passwordPlaceholder'] }}" required type="password" autocomplete="current-password" />
+                  <div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center px-2">
+                    <span class="material-symbols-outlined text-on-surface-variant/50 text-xl" data-icon="lock">lock</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between py-2">
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <div class="relative flex items-center">
+                    <input class="peer h-5 w-5 rounded-lg border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox" name="remember" />
+                  </div>
+                  <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors">{{ __('Keep me signed in for 30 days') }}</span>
+                </label>
+              </div>
+              <button class="w-full py-5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold tracking-widest uppercase text-sm rounded-lg hover:shadow-xl hover:shadow-primary/10 active:opacity-80 transition-all duration-300 flex justify-center items-center gap-2 group" type="submit">
+                {{ $copy['submit'] }}
+                <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+              </button>
+            </form>
+            <footer class="mt-16 text-center">
+              <p class="text-xs text-outline leading-relaxed max-w-xs mx-auto">
+                {{ __('Unauthorized access is prohibited. All activity is logged for security and auditing purposes as per institutional policy.') }}
+              </p>
+            </footer>
+          </div>
+        </section>
+      </main>
+      @include('partials.footer')
 
     .demo-block {
       margin-top: 16px;
