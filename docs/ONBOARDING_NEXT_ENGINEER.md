@@ -4,9 +4,9 @@ This note is the short repo-focused onboarding guide for the next developer.
 
 ## 1. Read the core entry docs
 Start here:
-- `README.md`
-- `docs/qa/README.md`
-- `docs/design-exports/canonical-design-map.md` if design context is needed
+- [README.md](../README.md)
+- [docs/qa/README.md](qa/README.md)
+- [docs/design-exports/canonical-design-map.md](design-exports/canonical-design-map.md) if design context is needed
 
 ## 2. Set up the environment
 ```sh

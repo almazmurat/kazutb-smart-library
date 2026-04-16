@@ -85,11 +85,11 @@ npm run test:e2e
 ```
 
 Use the QA documentation surface here:
-- `docs/qa/README.md`
-- `docs/qa/qa-test-strategy-document.md`
-- `docs/qa/quality-gates.md`
-- `docs/qa/ci-cd.md`
-- `docs/qa/evidence-index.md`
+- [docs/qa/README.md](docs/qa/README.md)
+- [docs/qa/qa-test-strategy-document.md](docs/qa/qa-test-strategy-document.md)
+- [docs/qa/quality-gates.md](docs/qa/quality-gates.md)
+- [docs/qa/ci-cd.md](docs/qa/ci-cd.md)
+- [docs/qa/evidence-index.md](docs/qa/evidence-index.md)
 
 ---
 
