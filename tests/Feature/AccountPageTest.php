@@ -67,19 +67,31 @@ class AccountPageTest extends TestCase
             ->assertSee('loadWorkbench', false);
     }
 
-    public function test_account_page_uses_dashboard_body_shell_with_sidebar_and_real_rails(): void
+    public function test_account_page_uses_export_dashboard_sections_with_stable_shell_and_safe_routes(): void
     {
         $response = $this->withSession($this->authenticatedSession())->get('/account?lang=en');
 
         $response
             ->assertOk()
-            ->assertSee('data-account-dashboard-shell', false)
+            ->assertSee('data-member-dashboard-page', false)
+            ->assertSee('data-member-dashboard-hero', false)
+            ->assertSee('data-member-dashboard-overview', false)
+            ->assertSee('data-member-dashboard-reservations', false)
+            ->assertSee('data-member-dashboard-activity', false)
+            ->assertSee('data-member-dashboard-note', false)
             ->assertSee('Member Dashboard')
-            ->assertSee('What matters now')
-            ->assertSee('Waitlist')
-            ->assertDontSee('Room Booking')
-            ->assertDontSee('Research Request')
-            ->assertDontSee('Pay Overdue Fees');
+            ->assertSee('Current Reservations')
+            ->assertSee('Quick Actions')
+            ->assertSee('Recent Activity')
+            ->assertSee("Librarian's Note")
+            ->assertSee('/catalog', false)
+            ->assertSee('/shortlist', false)
+            ->assertSee('/resources', false)
+            ->assertSee('My Desk')
+            ->assertSee('Research Folders')
+            ->assertDontSee('href="#"', false)
+            ->assertDontSee('Search archive...')
+            ->assertDontSee('Archive');
     }
 
     public function test_account_page_workbench_calls_summary_api(): void

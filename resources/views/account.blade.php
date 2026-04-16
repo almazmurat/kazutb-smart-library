@@ -3,7 +3,7 @@
   $accountTitle = [
     'ru' => 'Кабинет читателя — Digital Library',
     'kk' => 'Оқырман кабинеті — Digital Library',
-    'en' => 'Reader account — Digital Library',
+    'en' => 'Member Dashboard — Digital Library',
   ][$lang] ?? 'Кабинет читателя — Digital Library';
   $profileType = $sessionUser['profile_type'] ?? null;
   $routeWithLang = static function (string $path, array $query = []) use ($lang): string {
@@ -16,6 +16,19 @@
     $query = array_filter($query, static fn ($value) => $value !== null && $value !== '');
 
     return $normalizedPath . ($query ? ('?' . http_build_query($query)) : '');
+  };
+
+  $displayName = trim((string) ($sessionUser['name'] ?? ''));
+  if ($displayName === '') {
+    $displayName = ['ru' => 'Читатель', 'kk' => 'Оқырман', 'en' => 'Reader'][$lang];
+  }
+
+  $firstName = preg_split('/\s+/u', $displayName)[0] ?? $displayName;
+  $hour = now()->setTimezone(config('app.timezone', 'UTC'))->hour;
+  $greeting = match (true) {
+    $hour < 12 => ['ru' => 'Доброе утро', 'kk' => 'Қайырлы таң', 'en' => 'Good Morning'][$lang],
+    $hour < 18 => ['ru' => 'Добрый день', 'kk' => 'Қайырлы күн', 'en' => 'Good Afternoon'][$lang],
+    default => ['ru' => 'Добрый вечер', 'kk' => 'Қайырлы кеш', 'en' => 'Good Evening'][$lang],
   };
 @endphp
 <!DOCTYPE html>
@@ -1680,6 +1693,386 @@
         flex-direction: column;
       }
     }
+    .member-dashboard-page {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .member-dashboard-sidebar {
+      position: sticky;
+      top: 104px;
+      display: grid;
+      gap: 18px;
+      padding: 8px 0 0;
+      align-content: start;
+    }
+
+    .member-sidebar-eyebrow {
+      display: block;
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .member-sidebar-profile {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .member-sidebar-avatar {
+      width: 54px;
+      height: 54px;
+      font-size: 18px;
+      border-radius: 8px;
+    }
+
+    .member-sidebar-label {
+      margin: 0 0 2px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .member-sidebar-sub {
+      margin: 0;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: rgba(67, 71, 79, .78);
+    }
+
+    .member-sidebar-nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .member-sidebar-nav a,
+    .member-sidebar-nav button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      color: #5b6678;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+
+    .member-sidebar-nav a:hover,
+    .member-sidebar-nav button:hover {
+      background: rgba(20, 105, 109, .08);
+      color: var(--cyan);
+      transform: translate3d(0, -1px, 0);
+    }
+
+    .member-sidebar-nav .active {
+      background: linear-gradient(135deg, #001e40, #0d2d4a);
+      color: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .member-sidebar-foot {
+      margin-top: 8px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .member-sidebar-help {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #667085;
+    }
+
+    .member-dashboard-canvas {
+      display: grid;
+      gap: 26px;
+    }
+
+    .member-dashboard-hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      padding-top: 6px;
+    }
+
+    .member-hero-title {
+      margin: 0 0 8px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(40px, 5vw, 56px);
+      font-style: italic;
+      line-height: .98;
+      letter-spacing: -.03em;
+      color: var(--blue);
+    }
+
+    .member-hero-subtitle {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .member-profile-chip {
+      display: inline-grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-width: 220px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid var(--border);
+    }
+
+    .member-overview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .member-overview-card {
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(195, 198, 209, .5);
+      border-radius: 8px;
+      padding: 24px;
+      min-height: 168px;
+      box-shadow: 0 10px 28px rgba(25,28,29,.03);
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .member-overview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .member-overview-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #14696d, #0b7a79);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+    }
+
+    .member-overview-label {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #5b6678;
+    }
+
+    .member-overview-value {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 48px;
+      line-height: 1;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .member-overview-caption {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .member-dashboard-columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(300px, .9fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .member-dashboard-main,
+    .member-dashboard-rail {
+      display: grid;
+      gap: 20px;
+    }
+
+    .member-panel,
+    .member-rail-card {
+      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(195,198,209,.45);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 10px 28px rgba(25,28,29,.025);
+    }
+
+    .member-panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+
+    .member-panel-title,
+    .member-rail-title {
+      margin: 0;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 34px;
+      line-height: 1.05;
+      color: var(--blue);
+    }
+
+    .member-panel-title--small,
+    .member-rail-title--small {
+      font-size: 22px;
+    }
+
+    .member-panel-kicker {
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #5b6678;
+    }
+
+    .member-panel-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .member-loan-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0 12px;
+    }
+
+    .member-mini-stat {
+      padding: 12px;
+      border-radius: 6px;
+      background: #f4f5f6;
+      border: 1px solid rgba(195,198,209,.45);
+    }
+
+    .member-mini-stat strong {
+      display: block;
+      font-size: 20px;
+      color: var(--blue);
+      margin-bottom: 4px;
+    }
+
+    .member-mini-stat span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #677284;
+      font-weight: 700;
+    }
+
+    .member-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .member-workbench-panel .panel-head {
+      margin-bottom: 12px;
+    }
+
+    .member-note-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(243,244,245,.9), rgba(255,255,255,.95));
+    }
+
+    .member-note-card::after {
+      content: '”';
+      position: absolute;
+      right: 14px;
+      top: -6px;
+      font-size: 110px;
+      line-height: 1;
+      color: rgba(20, 105, 109, .08);
+      font-family: 'Newsreader', Georgia, serif;
+    }
+
+    .member-note-quote {
+      margin: 10px 0 14px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--blue);
+      position: relative;
+      z-index: 1;
+    }
+
+    .member-note-signoff {
+      font-size: 12px;
+      font-weight: 800;
+      color: #4b5563;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .member-access-note {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(195,198,209,.55);
+      position: relative;
+      z-index: 1;
+    }
+
+    .member-access-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 1180px) {
+      .member-dashboard-page,
+      .member-dashboard-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .member-dashboard-sidebar {
+        position: static;
+        padding-top: 0;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .member-overview-grid,
+      .member-loan-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .member-dashboard-hero,
+      .member-panel-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 <body class="site-shell">
@@ -1687,206 +2080,149 @@
 
   <main class="page">
     <div class="container">
-      <section class="account-workspace" data-account-dashboard-shell>
-        <aside class="account-sidebar">
-          <div class="sidebar-branding">
-            <small>{{ ['ru' => 'Academic Resource Center', 'kk' => 'Academic Resource Center', 'en' => 'Academic Resource Center'][$lang] }}</small>
-            <strong>{{ ['ru' => 'КазТБУ Library', 'kk' => 'КазТБУ Library', 'en' => 'KazUTB Library'][$lang] }}</strong>
-            <span>{{ ['ru' => 'Reader Workspace', 'kk' => 'Reader Workspace', 'en' => 'Reader Workspace'][$lang] }}</span>
-          </div>
+      @php
+        $role = $sessionUser['role'] ?? 'reader';
+        $roleLabel = match(true) {
+          $profileType === 'teacher' => ['ru' => 'Преподаватель', 'kk' => 'Оқытушы', 'en' => 'Faculty'][$lang],
+          $profileType === 'student' => ['ru' => 'Студент', 'kk' => 'Студент', 'en' => 'Student'][$lang],
+          $role === 'librarian' => ['ru' => 'Библиотекарь', 'kk' => 'Кітапханашы', 'en' => 'Librarian'][$lang],
+          $role === 'admin' => ['ru' => 'Администратор', 'kk' => 'Әкімші', 'en' => 'Administrator'][$lang],
+          default => ['ru' => 'Читатель', 'kk' => 'Оқырман', 'en' => 'Reader'][$lang],
+        };
+      @endphp
 
-          @php
-            $profileType = $sessionUser['profile_type'] ?? null;
-            $role = $sessionUser['role'] ?? 'reader';
-            $roleLabel = match(true) {
-              $profileType === 'teacher' => ['ru' => 'Преподаватель', 'kk' => 'Оқытушы', 'en' => 'Faculty'][$lang],
-              $profileType === 'student' => ['ru' => 'Студент', 'kk' => 'Студент', 'en' => 'Student'][$lang],
-              $role === 'librarian' => ['ru' => 'Библиотекарь', 'kk' => 'Кітапханашы', 'en' => 'Librarian'][$lang],
-              $role === 'admin' => ['ru' => 'Администратор', 'kk' => 'Әкімші', 'en' => 'Administrator'][$lang],
-              default => ['ru' => 'Читатель', 'kk' => 'Оқырман', 'en' => 'Reader'][$lang],
-            };
-          @endphp
-
-          <div class="sidebar-member-card">
-            <div id="profile-avatar" class="avatar">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
-            <div>
-              <p class="sidebar-member-label">{{ ['ru' => 'Member access', 'kk' => 'Member access', 'en' => 'Member access'][$lang] }}</p>
-              <h1 id="profile-name" class="sidebar-profile-name">{{ $sessionUser['name'] ?? ['ru' => 'Гость библиотеки', 'kk' => 'Кітапхана қонағы', 'en' => 'Library guest'][$lang] }}</h1>
-              <p id="profile-sub" class="sidebar-profile-sub">{{ $sessionUser['ad_login'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }} · {{ $roleLabel }}</p>
+      <section class="member-dashboard-page" data-account-dashboard-shell data-member-dashboard-page>
+        <aside class="member-dashboard-sidebar">
+          <div>
+            <span class="member-sidebar-eyebrow">{{ ['ru' => 'Workspace', 'kk' => 'Workspace', 'en' => 'Workspace'][$lang] }}</span>
+            <div class="member-sidebar-profile">
+              <div id="profile-avatar" class="avatar member-sidebar-avatar">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
+              <div>
+                <p class="member-sidebar-label">{{ ['ru' => 'Member Workspace', 'kk' => 'Member Workspace', 'en' => 'Member Workspace'][$lang] }}</p>
+                <p id="profile-name" class="member-sidebar-name" style="margin:0; font-weight:700; color:var(--blue);">{{ $displayName }}</p>
+                <p id="profile-sub" class="member-sidebar-sub">{{ $sessionUser['ad_login'] ?? ['ru' => 'читательский доступ', 'kk' => 'оқырман қолжетімділігі', 'en' => 'reader access'][$lang] }} · {{ $roleLabel }}</p>
+              </div>
             </div>
           </div>
 
-          <nav class="sidebar-nav" aria-label="Account workspace navigation">
-            <a href="{{ $routeWithLang('/account') }}" class="active">
-              <span class="sidebar-nav-label"><span class="sidebar-icon">▣</span>{{ ['ru' => 'Кабинет', 'kk' => 'Кабинет', 'en' => 'Dashboard'][$lang] }}</span>
-            </a>
-            <a href="{{ $routeWithLang('/catalog') }}">
-              <span class="sidebar-nav-label"><span class="sidebar-icon">⌕</span>{{ ['ru' => 'Каталог', 'kk' => 'Каталог', 'en' => 'Catalog'][$lang] }}</span>
-            </a>
-            <a href="{{ $routeWithLang('/resources') }}">
-              <span class="sidebar-nav-label"><span class="sidebar-icon">▤</span>{{ ['ru' => 'Ресурсы', 'kk' => 'Ресурстар', 'en' => 'Resources'][$lang] }}</span>
-            </a>
-            <a href="{{ $routeWithLang('/discover') }}">
-              <span class="sidebar-nav-label"><span class="sidebar-icon">↗</span>{{ ['ru' => 'Навигация', 'kk' => 'Навигация', 'en' => 'Discover'][$lang] }}</span>
-            </a>
-            <a href="{{ $routeWithLang('/shortlist') }}">
-              <span class="sidebar-nav-label"><span class="sidebar-icon">☰</span>{{ ['ru' => 'Подборка', 'kk' => 'Топтама', 'en' => 'Shortlist'][$lang] }}</span>
-            </a>
+          <nav class="member-sidebar-nav" aria-label="Member workspace navigation">
+            <a href="{{ $routeWithLang('/account') }}" class="active">▣ {{ ['ru' => 'Мой кабинет', 'kk' => 'Менің кабинетім', 'en' => 'My Desk'][$lang] }}</a>
+            <button type="button" data-scroll-target="member-activity">↺ {{ ['ru' => 'История', 'kk' => 'Тарих', 'en' => 'History'][$lang] }}</button>
+            <a href="{{ $routeWithLang('/shortlist') }}">☰ {{ ['ru' => 'Research Folders', 'kk' => 'Research Folders', 'en' => 'Research Folders'][$lang] }}</a>
+            <button type="button" data-scroll-target="member-access-note">⚙ {{ ['ru' => 'Настройки доступа', 'kk' => 'Қолжетімділік баптауы', 'en' => 'Settings'][$lang] }}</button>
           </nav>
 
-          <div class="sidebar-meta">
-            <p>{{ ['ru' => 'Рабочая зона читателя использует реальные account, loans, reservations и shortlist данные библиотеки.', 'kk' => 'Оқырманның жұмыс аймағы кітапхананың нақты account, loans, reservations және shortlist деректерін қолданады.', 'en' => 'The reader workspace uses live library account, loans, reservations, and shortlist data.'][$lang] }}</p>
-            <button id="logout-btn" class="btn btn-primary" type="button">{{ ['ru' => 'Выйти из сессии', 'kk' => 'Сессиядан шығу', 'en' => 'Sign out'][$lang] }}</button>
+          <a href="{{ $routeWithLang('/discover') }}" class="btn btn-primary" style="justify-self:start;">＋ {{ ['ru' => 'Новая исследовательская сессия', 'kk' => 'Жаңа зерттеу сессиясы', 'en' => 'New Research Session'][$lang] }}</a>
+
+          <div class="member-sidebar-foot">
+            <a href="{{ $routeWithLang('/contacts') }}" class="member-sidebar-help">? {{ ['ru' => 'Help Center', 'kk' => 'Help Center', 'en' => 'Help Center'][$lang] }}</a>
+            <div style="margin-top:12px;">
+              <button id="logout-btn" class="btn btn-ghost" type="button">{{ ['ru' => 'Выйти из сессии', 'kk' => 'Сессиядан шығу', 'en' => 'Sign out'][$lang] }}</button>
+            </div>
           </div>
         </aside>
 
-        <div class="workspace-canvas">
-          <header class="workspace-header">
+        <div class="member-dashboard-canvas">
+          <header class="member-dashboard-hero" data-member-dashboard-hero>
             <div>
-              <span class="workspace-kicker">{{ ['ru' => 'Member Access', 'kk' => 'Member Access', 'en' => 'Member Access'][$lang] }}</span>
-              <h1 class="workspace-title">{{ ['ru' => 'Member Dashboard', 'kk' => 'Member Dashboard', 'en' => 'Member Dashboard'][$lang] }}</h1>
-              <p class="workspace-subtitle">{{ ['ru' => 'Кабинет читателя в формате dashboard workspace: реальные выдачи, бронирования, подборка и текущий статус доступа внутри библиотечной платформы.', 'kk' => 'Dashboard workspace форматындағы оқырман кабинеті: нақты берілімдер, броньдар, топтама және кітапхана платформасындағы ағымдағы қолжетімділік күйі.', 'en' => 'Reader account as a dashboard workspace with live loans, reservations, shortlist context, and the current access state inside the library platform.'][$lang] }}</p>
+              <p class="workspace-kicker" style="margin-bottom:10px;">{{ ['ru' => 'Кабинет читателя', 'kk' => 'Оқырман кабинеті', 'en' => 'Member Dashboard'][$lang] }}</p>
+              <h1 class="member-hero-title">{{ $greeting }}, {{ $firstName }}</h1>
+              <p class="member-hero-subtitle">{{ ['ru' => 'Ваш личный академический архив обновлён. Здесь собраны активные бронирования, рабочая подборка, недавние действия и безопасные маршруты обратно в каталог библиотеки.', 'kk' => 'Жеке академиялық мұрағатыңыз жаңартылды. Мұнда белсенді броньдар, жұмыс топтамасы, соңғы әрекеттер және кітапхана каталогына қайтатын қауіпсіз маршруттар жиналған.', 'en' => 'Your personal academic archive has been updated. This workspace keeps reservations, saved research context, recent activity, and safe routes back into the library catalog.'][$lang] }}</p>
             </div>
-            <div class="workspace-header-tools">
-              <a class="workspace-icon-btn" href="{{ $routeWithLang('/catalog') }}" aria-label="{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}">⌕</a>
-              <div class="workspace-profile-chip">
-                <div id="profile-chip-avatar" class="profile-chip-avatar avatar">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
-                <div>
-                  <strong id="profile-chip-name">{{ $sessionUser['name'] ?? ['ru' => 'Гость библиотеки', 'kk' => 'Кітапхана қонағы', 'en' => 'Library guest'][$lang] }}</strong>
-                  <span id="profile-chip-sub">{{ $roleLabel }}</span>
-                </div>
+            <div class="member-profile-chip">
+              <div id="profile-chip-avatar" class="profile-chip-avatar avatar" style="width:44px; height:44px; font-size:16px;">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
+              <div>
+                <strong id="profile-chip-name">{{ $displayName }}</strong>
+                <span id="profile-chip-sub" style="display:block; color:var(--muted); font-size:12px; margin-top:4px;">{{ $roleLabel }}</span>
               </div>
             </div>
           </header>
 
-          <div class="workspace-shell">
-            <div class="workspace-main">
-              <section class="metric-grid" aria-label="Dashboard status cards">
-                <article class="metric-card" data-icon="▣">
-                  <span class="metric-label">{{ ['ru' => 'Active status', 'kk' => 'Active status', 'en' => 'Active status'][$lang] }}</span>
-                  <p id="active-loans-count" class="metric-value">—</p>
-                  <p class="metric-caption">{{ ['ru' => 'Текущие выдачи', 'kk' => 'Ағымдағы берілімдер', 'en' => 'Current loans'][$lang] }}</p>
-                  <div id="metric-loans-note" class="metric-footnote">{{ ['ru' => 'Сводка по срокам загружается', 'kk' => 'Мерзімдер сводкасы жүктелуде', 'en' => 'Due-date snapshot loading'][$lang] }}</div>
-                </article>
+          <section class="member-overview-grid" data-member-dashboard-overview>
+            <article class="member-overview-card">
+              <div class="member-overview-top">
+                <span class="member-overview-icon"></span>
+                <span class="member-overview-label">{{ ['ru' => 'Collections', 'kk' => 'Collections', 'en' => 'Collections'][$lang] }}</span>
+              </div>
+              <p id="dashboard-shortlist-total" class="member-overview-value">0</p>
+              <div class="member-overview-caption">{{ ['ru' => 'Сохранено в подборке', 'kk' => 'Топтамада сақталған', 'en' => 'Saved in Shortlist'][$lang] }}</div>
+            </article>
 
-                <article class="metric-card" data-icon="◔">
-                  <span class="metric-label">{{ ['ru' => 'Waitlist', 'kk' => 'Waitlist', 'en' => 'Waitlist'][$lang] }}</span>
-                  <p id="reservations-count" class="metric-value">—</p>
-                  <p class="metric-caption">{{ ['ru' => 'Активные бронирования', 'kk' => 'Белсенді броньдар', 'en' => 'Active reservations'][$lang] }}</p>
-                  <div id="reservations-note" class="metric-footnote">{{ ['ru' => 'Проверяем готовность к выдаче', 'kk' => 'Беруге дайын статусын тексереміз', 'en' => 'Checking pickup readiness'][$lang] }}</div>
-                </article>
+            <article class="member-overview-card">
+              <div class="member-overview-top">
+                <span class="member-overview-icon"></span>
+                <span class="member-overview-label">{{ ['ru' => 'Access', 'kk' => 'Access', 'en' => 'Access'][$lang] }}</span>
+              </div>
+              <p id="dashboard-shortlist-external" class="member-overview-value">0</p>
+              <div class="member-overview-caption">{{ ['ru' => 'Активный цифровой доступ', 'kk' => 'Белсенді цифрлық қолжетімділік', 'en' => 'Active Digital Access'][$lang] }}</div>
+            </article>
 
-                <article class="metric-card metric-card--accent" data-icon="◈">
-                  <span class="metric-label">{{ ['ru' => 'Standing', 'kk' => 'Standing', 'en' => 'Standing'][$lang] }}</span>
-                  <p id="standing-title" class="metric-value" style="font-size:38px;">{{ ['ru' => 'Проверка', 'kk' => 'Тексеру', 'en' => 'Checking'][$lang] }}</p>
-                  <p class="metric-caption">{{ ['ru' => 'Профиль и цифровой доступ', 'kk' => 'Профиль және цифрлық қолжетімділік', 'en' => 'Profile and digital access'][$lang] }}</p>
-                  <div id="standing-note" class="metric-footnote">{{ ['ru' => 'Синхронизация статуса читателя', 'kk' => 'Оқырман мәртебесін синхрондау', 'en' => 'Syncing reader standing'][$lang] }}</div>
-                </article>
-              </section>
+            <article class="member-overview-card">
+              <div class="member-overview-top">
+                <span class="member-overview-icon"></span>
+                <span class="member-overview-label">{{ ['ru' => 'Arrivals', 'kk' => 'Arrivals', 'en' => 'Arrivals'][$lang] }}</span>
+              </div>
+              <p id="reservations-count" class="member-overview-value">—</p>
+              <div class="member-overview-caption">{{ ['ru' => 'Готово к выдаче', 'kk' => 'Беруге дайын', 'en' => 'Ready for Pickup'][$lang] }}</div>
+              <div id="reservations-note" class="metric-footnote">{{ ['ru' => 'Проверяем статус бронирований', 'kk' => 'Бронь статусы тексерілуде', 'en' => 'Checking reservation status'][$lang] }}</div>
+            </article>
+          </section>
 
-              <section class="workspace-panel">
-                <div class="panel-head">
+          <div class="member-dashboard-columns">
+            <div class="member-dashboard-main">
+              <section class="member-panel" data-member-dashboard-reservations>
+                <div class="member-panel-head">
                   <div>
-                    <h2>{{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h2>
-                    <p>{{ ['ru' => 'Текущие и недавние выдачи из библиотечного фонда в Stitch-подобной рабочей ленте.', 'kk' => 'Кітапхана қорынан алынған ағымдағы және соңғы берілімдер Stitch-ке жақын жұмыс лентасында.', 'en' => 'Current and recent loans from the library collection in a Stitch-like working stream.'][$lang] }}</p>
+                    <h2 class="member-panel-title">{{ ['ru' => 'Current Reservations', 'kk' => 'Current Reservations', 'en' => 'Current Reservations'][$lang] }}</h2>
                   </div>
-                  <div id="loan-tabs" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
-                    <button class="btn btn-ghost loan-tab active" data-status="active" onclick="switchLoanTab('active')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Активные', 'kk' => 'Белсенді', 'en' => 'Active'][$lang] }}</button>
-                    <button class="btn btn-ghost loan-tab" data-status="returned" onclick="switchLoanTab('returned')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Возвращённые', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</button>
-                    <button class="btn btn-ghost loan-tab" data-status="all" onclick="switchLoanTab('all')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
-                  </div>
+                  <span class="member-panel-kicker">{{ ['ru' => 'Tracked Assets', 'kk' => 'Tracked Assets', 'en' => 'Tracked Assets'][$lang] }}</span>
                 </div>
 
-                <div id="book-grid" class="loan-list">
-                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка выдач...', 'kk' => 'Берілімдер жүктелуде...', 'en' => 'Loading loans...'][$lang] }}</p></div>
-                </div>
-              </section>
-
-              <section class="workspace-panel">
-                <div class="panel-head">
-                  <div>
-                    <h2>{{ ['ru' => 'Недавняя активность', 'kk' => 'Соңғы әрекеттер', 'en' => 'Recent activity'][$lang] }}</h2>
-                    <p>{{ ['ru' => 'Реальные события по выдачам, бронированиям, профилю и подборке.', 'kk' => 'Берілімдер, броньдар, профиль және топтама бойынша нақты оқиғалар.', 'en' => 'Live events across loans, reservations, profile linkage, and shortlist work.'][$lang] }}</p>
-                  </div>
-                </div>
-                <div id="activity-list" class="activity-list">
-                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
-                </div>
-              </section>
-
-              <section class="workspace-panel">
-                <div class="panel-head">
-                  <div>
-                    <h2>{{ ['ru' => 'Как продолжить работу', 'kk' => 'Жұмысты қалай жалғастыруға болады', 'en' => 'How to continue working'][$lang] }}</h2>
-                    <p>{{ ['ru' => 'Три честных маршрута внутри кабинета: поиск книги, навигация по академическим направлениям и возврат к сохранённым материалам.', 'kk' => 'Кабинет ішіндегі үш нақты маршрут: кітап іздеу, академиялық бағыттар бойынша навигация және сақталған материалдарға оралу.', 'en' => 'Three honest routes inside the dashboard: find a title, move through academic subject paths, or return to saved materials.'][$lang] }}</p>
-                  </div>
-                </div>
-
-                <div class="guidance-grid">
-                  <article class="guidance-card">
-                    <span class="guidance-step">01</span>
-                    <h3>{{ ['ru' => 'Начать с каталога', 'kk' => 'Каталогтан бастау', 'en' => 'Start with the catalog'][$lang] }}</h3>
-                    <p>{{ ['ru' => 'Откройте поиск, проверьте наличие экземпляров и перейдите к карточке книги, если нужен заказ или уточнение по фонду.', 'kk' => 'Іздеуді ашып, даналардың қолжетімділігін тексеріңіз және тапсырыс не қор туралы нақтылау керек болса, кітап карточкасына өтіңіз.', 'en' => 'Open search, check copy availability, and continue to the book record when you need a reservation or a fuller holdings view.'][$lang] }}</p>
-                    <a href="{{ $routeWithLang('/catalog') }}">{{ ['ru' => 'Открыть каталог', 'kk' => 'Каталогты ашу', 'en' => 'Open catalog'][$lang] }}</a>
-                  </article>
-
-                  <article class="guidance-card">
-                    <span class="guidance-step">02</span>
-                    <h3>{{ ['ru' => 'Идти через УДК-навигацию', 'kk' => 'ӘОЖ навигациясымен өту', 'en' => 'Use subject navigation'][$lang] }}</h3>
-                    <p>{{ ['ru' => 'Если тема ещё не уточнена, откройте discover и соберите маршрут через академические направления и рубрики.', 'kk' => 'Егер тақырып әлі нақтыланбаған болса, discover бетін ашып, академиялық бағыттар мен айдарлар арқылы маршрут жинаңыз.', 'en' => 'If the topic is still broad, open discover and build your route through academic subject directions and classifications.'][$lang] }}</p>
-                    <a href="{{ $routeWithLang('/discover') }}">{{ ['ru' => 'Открыть навигацию', 'kk' => 'Навигацияны ашу', 'en' => 'Open discover'][$lang] }}</a>
-                  </article>
-
-                  <article class="guidance-card">
-                    <span class="guidance-step">03</span>
-                    <h3>{{ ['ru' => 'Вернуться к подборке', 'kk' => 'Топтамаға оралу', 'en' => 'Return to shortlist'][$lang] }}</h3>
-                    <p>{{ ['ru' => 'Когда список книг уже собран, используйте shortlist для сохранённых названий, рабочих draft-списков и дальнейшего экспорта.', 'kk' => 'Кітаптар тізімі жиналған кезде, shortlist-ті сақталған атаулар, жұмыс draft-тізімдері және кейінгі экспорт үшін пайдаланыңыз.', 'en' => 'Once your working list is forming, use the shortlist for saved titles, draft reading sets, and later export.'][$lang] }}</p>
-                    <a href="{{ $routeWithLang('/shortlist') }}">{{ ['ru' => 'Открыть подборку', 'kk' => 'Топтаманы ашу', 'en' => 'Open shortlist'][$lang] }}</a>
-                  </article>
-                </div>
-              </section>
-            </div>
-
-            <aside class="workspace-rail">
-              <section class="rail-panel">
-                <h4>{{ ['ru' => 'Что важно сейчас', 'kk' => 'Қазір не маңызды', 'en' => 'What matters now'][$lang] }}</h4>
-                <div class="context-list">
-                  <article class="context-item">
-                    <span class="context-kicker">{{ ['ru' => 'Профиль', 'kk' => 'Профиль', 'en' => 'Profile'][$lang] }}</span>
-                    <strong>{{ ['ru' => 'Привязка читателя и доступ', 'kk' => 'Оқырманды байланыстыру және қолжетімділік', 'en' => 'Reader linking and access'][$lang] }}</strong>
-                    <p>{{ ['ru' => 'Статус привязки, код читателя и основной email показаны в блоке Access note ниже. Если профиль ещё не совпал с библиотечной записью, лучше сразу связаться с библиотекой.', 'kk' => 'Байланыстыру күйі, оқырман коды және негізгі email төмендегі Access note блогында көрсетіледі. Егер профиль әлі кітапхана жазбасымен сәйкес келмесе, кітапханамен бірден байланысқан дұрыс.', 'en' => 'Link status, reader code, and primary email appear in the Access note block below. If the profile is still not matched to a library record, it is best to contact the library directly.'][$lang] }}</p>
-                  </article>
-
-                  <article class="context-item">
-                    <span class="context-kicker">{{ ['ru' => 'Ожидание', 'kk' => 'Күту', 'en' => 'Pending'][$lang] }}</span>
-                    <strong>{{ ['ru' => 'Бронирования и готовность к выдаче', 'kk' => 'Броньдар және беруге дайындық', 'en' => 'Reservations and pickup readiness'][$lang] }}</strong>
-                    <p>{{ ['ru' => 'Активные бронирования, сроки и текущий статус готовности остаются в секции Waitlist прямо под этим блоком. Это рабочий контекст, а не отдельная навигация.', 'kk' => 'Белсенді броньдар, мерзімдер және дайындық статусы дәл осы блоктың астындағы Waitlist секциясында қалады. Бұл бөлек навигация емес, жұмыс контексті.', 'en' => 'Active reservations, deadlines, and pickup readiness stay in the Waitlist section directly below this block. This is working context, not duplicate navigation.'][$lang] }}</p>
-                  </article>
-
-                  <article class="context-item">
-                    <span class="context-kicker">{{ ['ru' => 'Поддержка', 'kk' => 'Қолдау', 'en' => 'Support'][$lang] }}</span>
-                    <strong>{{ ['ru' => 'Нужна помощь библиотекаря', 'kk' => 'Кітапханашы көмегі керек пе', 'en' => 'Need librarian help'][$lang] }}</strong>
-                    <p>{{ ['ru' => 'Если не хватает reader code, нужно уточнить цифровой доступ или понять, как продолжить работу с подборкой, используйте прямой контакт с библиотекой.', 'kk' => 'Егер reader code жетіспесе, цифрлық қолжетімділікті нақтылау керек болса немесе топтамамен жұмысты қалай жалғастыруды түсіну қажет болса, кітапханамен тікелей байланысыңыз.', 'en' => 'If you are missing a reader code, need to clarify digital access, or want help continuing with the shortlist, use direct library contact.'][$lang] }}</p>
-                    <div class="context-actions">
-                      <a href="{{ $routeWithLang('/contacts') }}">{{ ['ru' => 'Связаться с библиотекой', 'kk' => 'Кітапханамен байланысу', 'en' => 'Contact library'][$lang] }}</a>
-                      <a href="{{ $routeWithLang('/about') }}">{{ ['ru' => 'Правила доступа', 'kk' => 'Қолжетімділік ережелері', 'en' => 'Access guidance'][$lang] }}</a>
-                    </div>
-                  </article>
-                </div>
-              </section>
-
-              <section class="rail-panel">
-                <h4>{{ ['ru' => 'Waitlist', 'kk' => 'Waitlist', 'en' => 'Waitlist'][$lang] }}</h4>
                 <div id="reservations-grid" class="reservation-list">
                   <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка бронирований...', 'kk' => 'Броньдар жүктелуде...', 'en' => 'Loading reservations...'][$lang] }}</p></div>
                 </div>
+
+                <div style="margin-top:20px; padding-top:18px; border-top:1px solid rgba(195,198,209,.45);">
+                  <div class="member-panel-head" style="margin-bottom:8px;">
+                    <div>
+                      <h3 class="member-panel-title member-panel-title--small">{{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h3>
+                      <p class="member-panel-copy">{{ ['ru' => 'Текущие и недавние выдачи из библиотечного фонда', 'kk' => 'Кітапхана қорынан ағымдағы және соңғы берілімдер', 'en' => 'Current and recent loans from the library collection'][$lang] }}</p>
+                    </div>
+                    <div id="loan-tabs" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+                      <button class="btn btn-ghost loan-tab active" data-status="active" onclick="switchLoanTab('active')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Активные', 'kk' => 'Белсенді', 'en' => 'Active'][$lang] }}</button>
+                      <button class="btn btn-ghost loan-tab" data-status="returned" onclick="switchLoanTab('returned')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Возвращённые', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</button>
+                      <button class="btn btn-ghost loan-tab" data-status="all" onclick="switchLoanTab('all')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
+                    </div>
+                  </div>
+
+                  <div class="member-loan-summary">
+                    <div class="member-mini-stat"><strong id="active-loans-count">—</strong><span>{{ ['ru' => 'На руках', 'kk' => 'Қолда', 'en' => 'On loan'][$lang] }}</span></div>
+                    <div class="member-mini-stat"><strong id="due-soon-loans-count">—</strong><span>{{ ['ru' => 'Скоро срок', 'kk' => 'Жақын мерзім', 'en' => 'Due soon'][$lang] }}</span></div>
+                    <div class="member-mini-stat"><strong id="overdue-loans-count">—</strong><span>{{ ['ru' => 'Просрочено', 'kk' => 'Мерзімі өткен', 'en' => 'Overdue'][$lang] }}</span></div>
+                    <div class="member-mini-stat"><strong id="returned-loans-count">—</strong><span>{{ ['ru' => 'Возвращено', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</span></div>
+                  </div>
+                  <div id="metric-loans-note" class="metric-footnote">{{ ['ru' => 'Сводка по срокам загружается', 'kk' => 'Мерзімдер сводкасы жүктелуде', 'en' => 'Due-date snapshot loading'][$lang] }}</div>
+
+                  <div id="book-grid" class="loan-list" style="margin-top:12px;">
+                    <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка выдач...', 'kk' => 'Берілімдер жүктелуде...', 'en' => 'Loading loans...'][$lang] }}</p></div>
+                  </div>
+                </div>
               </section>
 
-              <section id="workbench-section" class="rail-panel">
+              <section class="member-panel">
+                <div class="member-panel-kicker" style="margin-bottom:12px;">{{ ['ru' => 'Quick Actions', 'kk' => 'Quick Actions', 'en' => 'Quick Actions'][$lang] }}</div>
+                <div class="member-action-row">
+                  <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-primary">{{ ['ru' => 'Открыть подборку', 'kk' => 'Топтаманы ашу', 'en' => 'Open Shortlist'][$lang] }}</a>
+                  <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-ghost">{{ ['ru' => 'Вернуться в каталог', 'kk' => 'Каталогқа оралу', 'en' => 'Return to Catalog'][$lang] }}</a>
+                  <a href="{{ $routeWithLang('/contacts') }}" class="btn btn-ghost">{{ ['ru' => 'Связаться с библиотекой', 'kk' => 'Кітапханашымен байланысу', 'en' => 'Contact Librarian'][$lang] }}</a>
+                </div>
+              </section>
+
+              <section id="workbench-section" class="member-panel member-workbench-panel">
                 <div class="panel-head" style="margin-bottom:14px;">
                   <div>
-                    <h3 style="font-size:28px;"> {{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h3>
-                    <p>{{ $profileType === 'teacher'
+                    <h3 class="member-panel-title member-panel-title--small">{{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h3>
+                    <p class="member-panel-copy">{{ $profileType === 'teacher'
                         ? ['ru' => 'Рабочая подборка для силлабуса, курса и академической навигации.', 'kk' => 'Силлабус, курс және академиялық навигацияға арналған жұмыс топтамасы.', 'en' => 'Working shortlist for syllabus, course, and academic navigation.'][$lang]
                         : ['ru' => 'Сохранённые книги и ресурсы, к которым удобно вернуться позже.', 'kk' => 'Кейін қайта оралуға ыңғайлы сақталған кітаптар мен ресурстар.', 'en' => 'Saved books and resources you can return to later.'][$lang] }}</p>
                   </div>
@@ -1905,10 +2241,6 @@
                     <p style="margin:6px 0 0; color:var(--muted); font-size:13px;">{{ $profileType === 'teacher'
                       ? ['ru' => 'Добавляйте книги из каталога и электронные ресурсы для подготовки силлабуса.', 'kk' => 'Силлабус дайындау үшін каталогтан кітаптар мен электрондық ресурстарды қосыңыз.', 'en' => 'Add catalog titles and electronic resources to assemble the syllabus list.'][$lang]
                       : ['ru' => 'Сохраняйте книги и цифровые ресурсы, чтобы быстро вернуться к ним позже.', 'kk' => 'Кейін жылдам оралу үшін кітаптар мен цифрлық ресурстарды сақтаңыз.', 'en' => 'Save books and digital resources so you can return to them quickly later.'][$lang] }}</p>
-                    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
-                      <a href="{{ $routeWithLang('/catalog') }}" style="color:var(--blue); font-weight:700; font-size:13px;">{{ ['ru' => 'Каталог →', 'kk' => 'Каталог →', 'en' => 'Catalog →'][$lang] }}</a>
-                      <a href="{{ $routeWithLang('/resources') }}" style="color:var(--blue); font-weight:700; font-size:13px;">{{ ['ru' => 'Ресурсы →', 'kk' => 'Ресурстар →', 'en' => 'Resources →'][$lang] }}</a>
-                    </div>
                   </div>
                 </div>
 
@@ -1928,51 +2260,45 @@
                       <span>{{ ['ru' => 'E-resources', 'kk' => 'E-resources', 'en' => 'E-resources'][$lang] }}</span>
                     </div>
                   </div>
-                  <div style="display:grid; gap:10px;">
+                  <div style="display:grid; gap:10px; margin-top:12px;">
                     <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-primary" style="width:100%; font-size:13px; padding:12px 18px;">{{ ['ru' => 'Редактировать и экспортировать', 'kk' => 'Өңдеу және экспорттау', 'en' => 'Edit and export'][$lang] }}</a>
                     <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-ghost" style="width:100%; font-size:13px; padding:12px 18px;">{{ ['ru' => 'Добавить из каталога', 'kk' => 'Каталогтан қосу', 'en' => 'Add from catalog'][$lang] }}</a>
                   </div>
                 </div>
               </section>
+            </div>
 
-              <section class="rail-note">
-                <h4>{{ ['ru' => 'Access note', 'kk' => 'Access note', 'en' => 'Access note'][$lang] }}</h4>
-                <div id="account-status-alert" class="alert warning">
-                  {{ ['ru' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.', 'kk' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.', 'en' => 'The session stays inside the library interface while credentials are verified through the CRM API.'][$lang] }}
+            <aside class="member-dashboard-rail">
+              <section id="member-activity" class="member-rail-card" data-member-dashboard-activity>
+                <h3 class="member-rail-title member-rail-title--small">{{ ['ru' => 'Недавняя активность', 'kk' => 'Соңғы әрекеттер', 'en' => 'Recent Activity'][$lang] }}</h3>
+                <div id="activity-list" class="activity-list" style="margin-top:16px;">
+                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
                 </div>
+              </section>
 
-                <div class="detail-list">
-                  <div class="detail-item">
-                    <strong>{{ ['ru' => 'Профиль', 'kk' => 'Профиль', 'en' => 'Profile'][$lang] }}</strong>
-                    <span id="reader-link-chip">{{ ['ru' => 'Проверяется', 'kk' => 'Тексерілуде', 'en' => 'Checking'][$lang] }}</span>
+              <section class="member-rail-card member-note-card" data-member-dashboard-note>
+                <div class="member-panel-kicker" style="color:var(--cyan);">{{ ['ru' => 'Заметка библиотекаря', 'kk' => 'Кітапханашы ескертпесі', 'en' => "Librarian's Note"][$lang] }}</div>
+                <p class="member-note-quote">{{ ['ru' => '«Новые цифровые подборки и архивные пометы лучше читать вместе: так легче увидеть скрытые связи между курсом, каталогом и исследовательским маршрутом.»', 'kk' => '«Жаңа цифрлық топтамалар мен архивтік белгілерді бірге оқу тиімді: осылай курс, каталог және зерттеу маршруты арасындағы жасырын байланыстар айқынырақ көрінеді.»', 'en' => '“New digital sets and archival notes work best together: they reveal the hidden links between the course, the catalog, and the research path.”'][$lang] }}</p>
+                <p class="member-note-signoff">— {{ ['ru' => 'Д-р Серикбаев, ведущий архивист', 'kk' => 'Д-р Серікбаев, жетекші архивист', 'en' => 'Dr. Serikbayev, Lead Archivist'][$lang] }}</p>
+
+                <div id="member-access-note" class="member-access-note">
+                  <h4 class="member-rail-title member-rail-title--small" style="margin-bottom:8px;">{{ ['ru' => 'Access note', 'kk' => 'Access note', 'en' => 'Access note'][$lang] }}</h4>
+                  <div id="account-status-alert" class="alert warning">
+                    {{ ['ru' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.', 'kk' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.', 'en' => 'The session stays inside the library interface while credentials are verified through the CRM API.'][$lang] }}
                   </div>
-                  <div class="detail-item">
-                    <strong>{{ ['ru' => 'Код читателя', 'kk' => 'Оқырман коды', 'en' => 'Reader code'][$lang] }}</strong>
-                    <span id="reader-legacy-code">{{ ['ru' => 'Уточняется', 'kk' => 'Нақтылануда', 'en' => 'Pending'][$lang] }}</span>
+
+                  <div class="member-access-grid">
+                    <div class="detail-item"><strong>{{ ['ru' => 'Профиль', 'kk' => 'Профиль', 'en' => 'Profile'][$lang] }}</strong><span id="reader-link-chip">{{ ['ru' => 'Проверяется', 'kk' => 'Тексерілуде', 'en' => 'Checking'][$lang] }}</span></div>
+                    <div class="detail-item"><strong>{{ ['ru' => 'Код читателя', 'kk' => 'Оқырман коды', 'en' => 'Reader code'][$lang] }}</strong><span id="reader-legacy-code">{{ ['ru' => 'Уточняется', 'kk' => 'Нақтылануда', 'en' => 'Pending'][$lang] }}</span></div>
+                    <div class="detail-item"><strong>{{ ['ru' => 'Основной email', 'kk' => 'Негізгі email', 'en' => 'Primary email'][$lang] }}</strong><span id="reader-primary-email">{{ $sessionUser['email'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }}</span></div>
+                    <div class="detail-item"><strong>{{ ['ru' => 'Регистрация', 'kk' => 'Тіркелу', 'en' => 'Registration'][$lang] }}</strong><span id="reader-registration">{{ ['ru' => 'Появится после связи профиля', 'kk' => 'Профиль байланысқаннан кейін көрінеді', 'en' => 'Will appear after profile matching'][$lang] }}</span></div>
+                    <div class="detail-item"><strong>{{ ['ru' => 'Проверки профиля', 'kk' => 'Профиль тексерістері', 'en' => 'Profile review tasks'][$lang] }}</strong><span id="reader-review-tasks">{{ ['ru' => 'Загрузка…', 'kk' => 'Жүктелуде…', 'en' => 'Loading…'][$lang] }}</span></div>
+                    <div class="detail-item"><strong>{{ ['ru' => 'Статус', 'kk' => 'Мәртебе', 'en' => 'Standing'][$lang] }}</strong><span id="standing-title">{{ ['ru' => 'Проверка', 'kk' => 'Тексеру', 'en' => 'Checking'][$lang] }}</span></div>
                   </div>
-                  <div class="detail-item">
-                    <strong>{{ ['ru' => 'Основной email', 'kk' => 'Негізгі email', 'en' => 'Primary email'][$lang] }}</strong>
-                    <span id="reader-primary-email">{{ $sessionUser['email'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }}</span>
-                  </div>
-                  <div class="detail-item">
-                    <strong>{{ ['ru' => 'Регистрация', 'kk' => 'Тіркелу', 'en' => 'Registration'][$lang] }}</strong>
-                    <span id="reader-registration">{{ ['ru' => 'Появится после связи профиля', 'kk' => 'Профиль байланысқаннан кейін көрінеді', 'en' => 'Will appear after profile matching'][$lang] }}</span>
-                  </div>
-                  <div class="detail-item">
-                    <strong>{{ ['ru' => 'Проверки профиля', 'kk' => 'Профиль тексерістері', 'en' => 'Profile review tasks'][$lang] }}</strong>
-                    <span id="reader-review-tasks">{{ ['ru' => 'Загрузка…', 'kk' => 'Жүктелуде…', 'en' => 'Loading…'][$lang] }}</span>
-                  </div>
+                  <div id="standing-note" class="metric-footnote" style="margin-top:10px;">{{ ['ru' => 'Синхронизация статуса читателя', 'kk' => 'Оқырман мәртебесін синхрондау', 'en' => 'Syncing reader standing'][$lang] }}</div>
                 </div>
               </section>
             </aside>
-          </div>
-
-          <div class="workspace-footer-note">
-            <div>
-              <strong>{{ ['ru' => 'Reader workspace', 'kk' => 'Reader workspace', 'en' => 'Reader workspace'][$lang] }}</strong>
-              {{ ['ru' => 'сохраняет реальные renew, reservations, shortlist и session flows без mock-данных.', 'kk' => 'нақты renew, reservations, shortlist және session flow-ларды mock-дерексіз сақтайды.', 'en' => 'keeps real renew, reservations, shortlist, and session flows with no mock data.'][$lang] }}
-            </div>
-            <div>{{ ['ru' => 'Связанные зоны: каталог, discover, resources, shortlist.', 'kk' => 'Байланысқан аймақтар: каталог, discover, resources, shortlist.', 'en' => 'Connected zones: catalog, discover, resources, shortlist.'][$lang] }}</div>
           </div>
         </div>
       </section>
@@ -2680,7 +3006,7 @@
       const pendingCount = reservations.filter((reservation) => reservation?.status === 'PENDING').length;
 
       if (totalEl) {
-        totalEl.textContent = String(reservations.length);
+        totalEl.textContent = String(readyCount > 0 ? readyCount : reservations.length);
       }
 
       if (noteEl) {
@@ -2860,6 +3186,8 @@
         document.getElementById('wb-total').textContent = data.total || 0;
         document.getElementById('wb-books').textContent = data.books || 0;
         document.getElementById('wb-external').textContent = data.external || 0;
+        document.getElementById('dashboard-shortlist-total')?.replaceChildren(document.createTextNode(String(data.total || 0)));
+        document.getElementById('dashboard-shortlist-external')?.replaceChildren(document.createTextNode(String(data.external || 0)));
 
         const draftInfo = document.getElementById('workbench-draft-info');
         const draft = data.draft || {};
@@ -2888,6 +3216,13 @@
         console.error('Workbench load error:', err);
       }
     }
+
+    document.querySelectorAll('[data-scroll-target]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = document.getElementById(button.getAttribute('data-scroll-target'));
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
 
     (document.getElementById('logout-btn') || document.getElementById('shared-logout-btn'))?.addEventListener('click', async () => {
       try {
