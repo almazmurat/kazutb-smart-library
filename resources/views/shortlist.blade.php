@@ -14,121 +14,103 @@
 
   $copy = [
       'ru' => [
-          'title' => 'Подборка литературы — Digital Library',
-          'hero_eyebrow' => 'Черновик списка литературы',
-          'hero_title' => 'Черновик списка литературы',
-          'hero_body' => 'Сохраняйте сюда книги из каталога и подходящие электронные ресурсы. Эта страница помогает собрать рабочий список для курса, темы или исследовательской задачи без фальшивых сценариев.',
-          'workspace_label' => 'Как это работает',
-          'workspace_title' => 'Рабочая зона для подбора и экспорта литературы',
-          'workspace_body' => 'Shortlist уже работает как реальный промежуточный слой: записи попадают сюда из каталога и ресурсных карточек, а затем собираются в печатный или копируемый черновик.',
-          'workspace_cards' => [
-            ['title' => 'Добавляйте записи из каталога', 'body' => 'Открывайте книги, проверяйте доступность и сохраняйте подходящие позиции в shortlist.'],
-            ['title' => 'Смешивайте печатные и электронные источники', 'body' => 'В одном черновике можно держать локальные книги и внешние лицензированные ресурсы.'],
-            ['title' => 'Готовьте черновой список без лишней ручной сборки', 'body' => 'Когда список сформирован, его можно скопировать, распечатать или доработать как рабочий библиографический черновик.'],
-          ],
-          'loading' => 'Загрузка подборки...',
-          'empty_icon' => 'Подборка',
+          'title' => 'Исследовательская подборка — Digital Library',
+          'hero_title' => 'Исследовательская подборка',
+          'hero_body' => 'Подборка академических материалов для активных рабочих сессий. Сохраняйте источники, организуйте цитирование и готовьте проектные библиографии в спокойной исследовательской среде.',
+          'loading' => 'Загрузка исследовательской подборки...',
           'empty_title' => 'Подборка пока пуста',
-          'empty_body' => 'Записи появятся здесь после добавления из карточек каталога, страниц книг и подключённых электронных ресурсов. Как только появится первый набор, вы сможете собрать и экспортировать черновик списка литературы.',
-          'open_catalog' => 'Открыть каталог',
-          'resources' => 'Ресурсы',
-          'browse_subjects' => 'Поиск по направлениям',
-          'back_to_account' => '← Вернуться в читательский кабинет',
-          'draft_title_label' => 'Название черновика',
-          'draft_title_placeholder' => 'Например: Литература для дисциплины «Информатика»',
-          'draft_notes_label' => 'Заметки',
-          'draft_notes_placeholder' => 'Заметки для себя: семестр, группа, комментарии...',
-          'selected_sources' => 'Выбранные источники',
-          'items_suffix' => 'в подборке',
-          'print' => '🖨 Печать',
-          'clear' => '🗑 Очистить',
-          'books_title' => 'Основная литература',
-          'external_title' => 'Электронные ресурсы',
-          'bibliography_title' => '📄 Список литературы',
-          'bibliography_body' => 'Готовый текст для вставки в силлабус или документ',
-          'format' => 'Формат:',
-          'format_numbered' => 'Нумерованный список',
+          'empty_body' => 'Добавьте книги из каталога и электронные ресурсы, чтобы собрать рабочий список для курса, темы или исследовательской задачи.',
+          'open_catalog' => 'Вернуться в каталог',
+          'resources' => 'Изучить ресурсы',
+          'browse_subjects' => 'Открыть направления',
+          'back_to_account' => '← Вернуться в кабинет',
+          'draft_title_label' => 'Рабочее название',
+          'draft_title_placeholder' => 'Например: Подборка для дисциплины «Информатика»',
+          'draft_notes_label' => 'Заметки исследователя',
+          'draft_notes_placeholder' => 'Семестр, группа, комментарии или заметка для себя...',
+          'summary_title' => 'Сводка подборки',
+          'total_label' => 'Всего записей',
+          'digital_label' => 'Цифровые',
+          'physical_label' => 'Печатные',
+          'smart_export_title' => 'Умный экспорт',
+          'smart_export_body' => 'Сформируйте библиографический список для всех сохранённых материалов и перенесите его в рабочий документ или силлабус.',
+          'format' => 'Формат',
+          'format_numbered' => 'Нумерованный',
           'format_grouped' => 'По разделам',
           'format_syllabus' => 'Для силлабуса',
-          'copy_text' => '📋 Скопировать текст',
+          'copy_text' => 'Экспорт списка цитирования',
+          'print' => 'Печать',
+          'clear' => 'Очистить подборку',
+          'librarian_note_title' => 'Заметка библиотекаря',
+          'librarian_note' => '«Сохранённые материалы синхронизируются между устройствами. Для печатных экземпляров лучше оформлять резерв не позднее чем за сутки до визита в кампус.»',
+          'continue_title' => 'Продолжить поиск',
+          'continue_body' => 'Готовы найти больше материалов для исследования? Просмотрите каталог и подключённые академические ресурсы.',
       ],
       'kk' => [
-          'title' => 'Әдебиет іріктемесі — Digital Library',
-          'hero_eyebrow' => 'Әдебиет тізімінің жұмыс нұсқасы',
-          'hero_title' => 'Әдебиет тізімінің жұмыс нұсқасы',
-          'hero_body' => 'Каталогтағы кітаптар мен лайықты электрондық ресурстарды осында сақтаңыз. Бұл бет артық уәделерсіз курс, тақырып немесе зерттеу үшін жұмыс тізімін жинауға көмектеседі.',
-          'workspace_label' => 'Қалай жұмыс істейді',
-          'workspace_title' => 'Әдебиетті іріктеу мен экспорттауға арналған жұмыс аймағы',
-          'workspace_body' => 'Shortlist қазірдің өзінде нақты аралық қабат ретінде жұмыс істейді: жазбалар каталогтан және ресурс карталарынан түседі, содан кейін басып шығаруға не көшіруге болатын жұмыс нұсқасына жиналады.',
-          'workspace_cards' => [
-            ['title' => 'Жазбаларды каталогтан қосыңыз', 'body' => 'Кітап карточкаларын ашып, қолжетімділікті тексеріп, керек позицияларды shortlist-ке сақтаңыз.'],
-            ['title' => 'Баспа және электрондық көздерді бірге ұстаңыз', 'body' => 'Бір жұмыс нұсқасында жергілікті кітаптар мен лицензиялық сыртқы ресурстар қатар тұра алады.'],
-            ['title' => 'Тізімді қолмен жинамай-ақ дайындаңыз', 'body' => 'Жиын қалыптасқаннан кейін оны көшіруге, басып шығаруға немесе жұмыс библиографиясы ретінде жетілдіруге болады.'],
-          ],
-          'loading' => 'Іріктеме жүктелуде...',
-          'empty_icon' => 'Іріктеме',
+          'title' => 'Зерттеу іріктемесі — Digital Library',
+          'hero_title' => 'Зерттеу іріктемесі',
+          'hero_body' => 'Белсенді жұмыс сессияларына арналған академиялық материалдар жинағы. Дереккөздерді сақтап, дәйексөздерді реттеп, жоба библиографиясын тыныш зерттеу кеңістігінде дайындаңыз.',
+          'loading' => 'Зерттеу іріктемесі жүктелуде...',
           'empty_title' => 'Іріктеме әзірге бос',
-          'empty_body' => 'Жазбалар каталог карточкаларынан, кітап беттерінен және қосылған электрондық ресурстардан қосылғаннан кейін осында көрінеді. Бірінші жиын пайда болғанда, оны әдебиет тізімінің жұмыс нұсқасы ретінде экспорттай аласыз.',
-          'open_catalog' => 'Каталогты ашу',
-          'resources' => 'Ресурстар',
-          'browse_subjects' => 'Тақырыптарды қарау',
-          'back_to_account' => '← Оқырман кабинетіне оралу',
-          'draft_title_label' => 'Жұмыс нұсқасының атауы',
-          'draft_title_placeholder' => 'Мысалы: «Информатика» пәніне арналған әдебиет',
-          'draft_notes_label' => 'Ескертпелер',
-          'draft_notes_placeholder' => 'Өзіңізге арналған белгі: семестр, топ, түсініктеме...',
-          'selected_sources' => 'Таңдалған дереккөздер',
-          'items_suffix' => 'іріктемеде',
-          'print' => '🖨 Басып шығару',
-          'clear' => '🗑 Тазарту',
-          'books_title' => 'Негізгі әдебиет',
-          'external_title' => 'Электрондық ресурстар',
-          'bibliography_title' => '📄 Әдебиет тізімі',
-          'bibliography_body' => 'Силлабусқа немесе құжатқа енгізуге дайын мәтін',
-          'format' => 'Формат:',
-          'format_numbered' => 'Нөмірленген тізім',
+          'empty_body' => 'Курсқа, тақырыпқа немесе зерттеу міндетіне арналған жұмыс тізімін жинау үшін каталогтан кітаптар мен электрондық ресурстарды қосыңыз.',
+          'open_catalog' => 'Каталогқа оралу',
+          'resources' => 'Ресурстарды ашу',
+          'browse_subjects' => 'Бағыттарды қарау',
+          'back_to_account' => '← Кабинетке оралу',
+          'draft_title_label' => 'Жұмыс атауы',
+          'draft_title_placeholder' => 'Мысалы: «Информатика» пәніне арналған іріктеме',
+          'draft_notes_label' => 'Зерттеуші ескертпесі',
+          'draft_notes_placeholder' => 'Семестр, топ, түсініктеме немесе өзіңізге белгі...',
+          'summary_title' => 'Іріктеме жиынтығы',
+          'total_label' => 'Барлығы',
+          'digital_label' => 'Цифрлық',
+          'physical_label' => 'Баспа',
+          'smart_export_title' => 'Смарт экспорт',
+          'smart_export_body' => 'Барлық сақталған материалдар бойынша библиографиялық тізім дайындап, оны силлабусқа немесе жұмыс құжатына көшіріңіз.',
+          'format' => 'Пішім',
+          'format_numbered' => 'Нөмірленген',
           'format_grouped' => 'Бөлімдер бойынша',
-          'format_syllabus' => 'Силлабус үшін',
-          'copy_text' => '📋 Мәтінді көшіру',
+          'format_syllabus' => 'Силлабусқа',
+          'copy_text' => 'Дәйексөздер тізімін экспорттау',
+          'print' => 'Басып шығару',
+          'clear' => 'Іріктемені тазарту',
+          'librarian_note_title' => 'Кітапханашы ескертпесі',
+          'librarian_note' => '«Сақталған материалдар құрылғылар арасында синхрондалады. Баспа даналарын кампусқа келерден кемінде бір күн бұрын брондаған дұрыс.»',
+          'continue_title' => 'Іздеуді жалғастыру',
+          'continue_body' => 'Зерттеу үшін тағы материалдар керек пе? Каталог пен қосылған академиялық ресурстарды қараңыз.',
       ],
       'en' => [
-          'title' => 'Shortlist — Digital Library',
-          'hero_eyebrow' => 'Draft reading list',
-          'hero_title' => 'Draft reading list',
-          'hero_body' => 'Save catalog titles and relevant electronic resources here. This page is a real working draft for a course, topic, or research task rather than a fake placeholder workspace.',
-          'workspace_label' => 'How it works',
-          'workspace_title' => 'A working layer for gathering and exporting sources',
-          'workspace_body' => 'The shortlist already behaves like a usable intermediate workspace: records arrive from catalog and resource pages, then become a printable or copyable draft bibliography.',
-          'workspace_cards' => [
-            ['title' => 'Add records from the catalog', 'body' => 'Open book records, review availability, and save the right items into shortlist.'],
-            ['title' => 'Mix print and electronic sources', 'body' => 'One draft can hold local books and licensed external resources side by side.'],
-            ['title' => 'Export a usable draft quickly', 'body' => 'Once the set is ready, copy it, print it, or continue refining it as a working bibliography.'],
-          ],
-          'loading' => 'Loading shortlist...',
-          'empty_icon' => 'Shortlist',
+          'title' => 'Research Shortlist — Digital Library',
+          'hero_title' => 'Research Shortlist',
+          'hero_body' => 'A curated set of academic materials for active working sessions. Save sources, organize citations, and prepare project bibliographies in a focused scholarly environment.',
+          'loading' => 'Loading research shortlist...',
           'empty_title' => 'The shortlist is empty',
-          'empty_body' => 'Records will appear here after they are added from catalog cards, book pages, and connected electronic resources. Once the first set exists, you can export it as a real draft reading list.',
-          'open_catalog' => 'Open catalog',
-          'resources' => 'Resources',
-          'browse_subjects' => 'Browse subjects',
-          'back_to_account' => '← Return to member account',
-          'draft_title_label' => 'Draft title',
+          'empty_body' => 'Add catalog books and electronic resources to build a working list for a course, topic, or research task.',
+          'open_catalog' => 'Return to Catalog',
+          'resources' => 'Explore Resources',
+          'browse_subjects' => 'Browse Disciplines',
+          'back_to_account' => '← Return to account',
+          'draft_title_label' => 'Working title',
           'draft_title_placeholder' => 'For example: Reading list for “Computer Science”',
-          'draft_notes_label' => 'Notes',
-          'draft_notes_placeholder' => 'Working notes: semester, group, comments...',
-          'selected_sources' => 'Selected sources',
-          'items_suffix' => 'in shortlist',
-          'print' => '🖨 Print',
-          'clear' => '🗑 Clear',
-          'books_title' => 'Core readings',
-          'external_title' => 'Electronic resources',
-          'bibliography_title' => '📄 Bibliography',
-          'bibliography_body' => 'Ready-to-use text for a syllabus or working document',
-          'format' => 'Format:',
-          'format_numbered' => 'Numbered list',
-          'format_grouped' => 'Grouped by section',
-          'format_syllabus' => 'Syllabus format',
-          'copy_text' => '📋 Copy text',
+          'draft_notes_label' => 'Research notes',
+          'draft_notes_placeholder' => 'Semester, group, comments, or a note for yourself...',
+          'summary_title' => 'Shortlist Summary',
+          'total_label' => 'Total Items',
+          'digital_label' => 'Digital',
+          'physical_label' => 'Physical',
+          'smart_export_title' => 'Smart Export',
+          'smart_export_body' => 'Generate a bibliography for all saved materials and move it into your working document or syllabus.',
+          'format' => 'Format',
+          'format_numbered' => 'Numbered',
+          'format_grouped' => 'Grouped',
+          'format_syllabus' => 'Syllabus',
+          'copy_text' => 'Export Citation List',
+          'print' => 'Print',
+          'clear' => 'Clear shortlist',
+          'librarian_note_title' => 'Librarian’s Note',
+          'librarian_note' => '“Your saved items sync across devices. For physical copies, reserve them at least one day before your campus visit.”',
+          'continue_title' => 'Continue your discovery',
+          'continue_body' => 'Ready to find more materials for your research? Continue through the catalog and connected academic resources.',
       ],
   ][$lang];
 @endphp
@@ -136,133 +118,111 @@
 @section('title', $copy['title'])
 
 @section('content')
-  <section class="page-hero">
-    <div class="container">
-      <div class="eyebrow eyebrow--violet">{{ $copy['hero_eyebrow'] }}</div>
-      <h1>{{ $copy['hero_title'] }}</h1>
-      <p>{{ $copy['hero_body'] }}</p>
-    </div>
-  </section>
-
-  <section class="page-section">
-    <div class="container">
-      <div class="shortlist-guide-block">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--green">{{ $copy['workspace_label'] }}</div>
-            <h2>{{ $copy['workspace_title'] }}</h2>
-            <p>{{ $copy['workspace_body'] }}</p>
-          </div>
-        </div>
-
-        <div class="shortlist-guide-grid">
-          @foreach($copy['workspace_cards'] as $card)
-            <article class="shortlist-guide-card">
-              <h3>{{ $card['title'] }}</h3>
-              <p>{{ $card['body'] }}</p>
-            </article>
-          @endforeach
-        </div>
-      </div>
+  <section class="research-shortlist-page" data-shortlist-page>
+    <div class="shortlist-shell">
+      <header class="research-shortlist-hero" data-shortlist-hero>
+        <h1>{{ $copy['hero_title'] }}</h1>
+        <p>{{ $copy['hero_body'] }}</p>
+      </header>
 
       <div id="shortlist-loading" class="shortlist-state shortlist-state--loading">
-        <div class="shortlist-spinner"></div>
+        <div class="shortlist-spinner" aria-hidden="true"></div>
         <p>{{ $copy['loading'] }}</p>
       </div>
 
-      <div id="shortlist-empty" class="shortlist-state" style="display:none;">
-        <div class="shortlist-state-icon">{{ $copy['empty_icon'] }}</div>
+      <div id="shortlist-empty" class="shortlist-state shortlist-state--empty" style="display:none;">
         <h2>{{ $copy['empty_title'] }}</h2>
         <p>{{ $copy['empty_body'] }}</p>
         <div class="shortlist-state-actions">
-          <a href="{{ $withLang('/catalog') }}" class="btn btn-primary">{{ $copy['open_catalog'] }}</a>
-          <a href="{{ $withLang('/resources') }}" class="btn btn-ghost">{{ $copy['resources'] }}</a>
-          <a href="{{ $withLang('/discover') }}" class="btn btn-ghost">{{ $copy['browse_subjects'] }}</a>
+          <a href="{{ $withLang('/catalog') }}" class="shortlist-btn shortlist-btn--light">{{ $copy['open_catalog'] }}</a>
+          <a href="{{ $withLang('/resources') }}" class="shortlist-btn shortlist-btn--dark">{{ $copy['resources'] }}</a>
+          <a href="{{ $withLang('/discover') }}" class="shortlist-btn shortlist-btn--ghost">{{ $copy['browse_subjects'] }}</a>
         </div>
       </div>
 
       <div id="shortlist-content" style="display:none;">
-        {{-- Cabinet navigation --}}
-        @if(session('library.user'))
-        <div style="margin-bottom:18px;">
-          <a href="{{ $withLang('/account') }}" style="color:var(--blue); font-size:14px; font-weight:600; text-decoration:none;">{{ $copy['back_to_account'] }}</a>
-        </div>
-        @endif
+        <div class="research-shortlist-layout">
+          <div class="research-shortlist-list-column" data-shortlist-items>
+            @if(session('library.user'))
+              <div class="account-return-link-wrap">
+                <a href="{{ $withLang('/account') }}" class="account-return-link">{{ $copy['back_to_account'] }}</a>
+              </div>
+            @endif
 
-        {{-- Draft metadata block --}}
-        <div id="draft-meta-block" class="draft-meta-block">
-          <div id="draft-persistence-badge" class="draft-persistence-badge" style="display:none;"></div>
-          <div class="draft-meta-fields">
-            <div class="draft-field-group">
-              <label for="draft-title" class="draft-label">{{ $copy['draft_title_label'] }}</label>
-              <input type="text" id="draft-title" class="draft-input" placeholder="{{ $copy['draft_title_placeholder'] }}" maxlength="500">
+            <div id="draft-meta-block" class="working-draft-card">
+              <div class="working-draft-toolbar">
+                <div id="draft-persistence-badge" class="draft-persistence-badge" style="display:none;"></div>
+                <button type="button" class="draft-clear-link" onclick="clearShortlist()">{{ $copy['clear'] }}</button>
+              </div>
+              <div class="working-draft-fields">
+                <div class="draft-field-group">
+                  <label for="draft-title" class="draft-label">{{ $copy['draft_title_label'] }}</label>
+                  <input type="text" id="draft-title" class="draft-input" placeholder="{{ $copy['draft_title_placeholder'] }}" maxlength="500">
+                </div>
+                <div class="draft-field-group">
+                  <label for="draft-notes" class="draft-label">{{ $copy['draft_notes_label'] }}</label>
+                  <textarea id="draft-notes" class="draft-textarea" placeholder="{{ $copy['draft_notes_placeholder'] }}" maxlength="2000" rows="2"></textarea>
+                </div>
+              </div>
+              <div id="draft-save-status" class="draft-save-status"></div>
             </div>
-            <div class="draft-field-group">
-              <label for="draft-notes" class="draft-label">{{ $copy['draft_notes_label'] }}</label>
-              <textarea id="draft-notes" class="draft-textarea" placeholder="{{ $copy['draft_notes_placeholder'] }}" maxlength="2000" rows="2"></textarea>
-            </div>
+
+            <div id="shortlist-items-list" class="shortlist-item-stack"></div>
           </div>
-          <div id="draft-save-status" class="draft-save-status"></div>
+
+          <aside class="research-shortlist-sidebar" data-shortlist-sidebar>
+            <div class="shortlist-summary-card">
+              <h3>{{ $copy['summary_title'] }}</h3>
+              <div class="summary-metric-row">
+                <span>{{ $copy['total_label'] }}</span>
+                <strong id="shortlist-summary-total">00</strong>
+              </div>
+              <div class="summary-metric-row">
+                <span>{{ $copy['digital_label'] }}</span>
+                <strong id="shortlist-summary-digital">00</strong>
+              </div>
+              <div class="summary-metric-row">
+                <span>{{ $copy['physical_label'] }}</span>
+                <strong id="shortlist-summary-physical">00</strong>
+              </div>
+            </div>
+
+            <div class="smart-export-card" data-smart-export>
+              <span class="material-symbols-outlined smart-export-icon" aria-hidden="true">auto_awesome</span>
+              <h4>{{ $copy['smart_export_title'] }}</h4>
+              <p>{{ $copy['smart_export_body'] }}</p>
+              <div class="bibliography-format-controls">
+                <label class="bibliography-format-label" for="bib-format">{{ $copy['format'] }}</label>
+                <select id="bib-format" class="bibliography-format-select" onchange="loadExport()">
+                  <option value="numbered">{{ $copy['format_numbered'] }}</option>
+                  <option value="grouped" selected>{{ $copy['format_grouped'] }}</option>
+                  <option value="syllabus">{{ $copy['format_syllabus'] }}</option>
+                </select>
+              </div>
+              <div id="bibliography-text" class="bibliography-preview"></div>
+              <div class="smart-export-actions">
+                <button class="shortlist-btn shortlist-btn--teal" onclick="copyBibliography()" id="copy-bib-btn">{{ $copy['copy_text'] }}</button>
+                <button class="shortlist-btn shortlist-btn--ghost" onclick="window.print()">{{ $copy['print'] }}</button>
+              </div>
+            </div>
+
+            <div class="librarian-note-card">
+              <h4>{{ $copy['librarian_note_title'] }}</h4>
+              <p>{{ $copy['librarian_note'] }}</p>
+            </div>
+          </aside>
         </div>
 
-        {{-- Header with stats and actions --}}
-        <div class="shortlist-header">
+        <section class="research-shortlist-bridge" data-shortlist-bridge>
           <div>
-            <h2 style="margin:0 0 4px; font-size:22px;">{{ $copy['selected_sources'] }}</h2>
-            <p style="margin:0; color:var(--muted); font-size:14px;">
-              <span id="shortlist-count">0</span> <span id="shortlist-count-label">0</span> {{ $copy['items_suffix'] }}
-              <span id="shortlist-type-summary" style="margin-left:4px;"></span>
-            </p>
+            <h3>{{ $copy['continue_title'] }}</h3>
+            <p>{{ $copy['continue_body'] }}</p>
           </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn btn-ghost" onclick="window.print()" title="{{ $copy['print'] }}">{{ $copy['print'] }}</button>
-            <button class="btn btn-ghost" onclick="clearShortlist()" style="color:var(--danger);">{{ $copy['clear'] }}</button>
+          <div class="bridge-actions">
+            <a href="{{ $withLang('/catalog') }}" class="shortlist-btn shortlist-btn--light">{{ $copy['open_catalog'] }}</a>
+            <a href="{{ $withLang('/resources') }}" class="shortlist-btn shortlist-btn--dark">{{ $copy['resources'] }}</a>
           </div>
-        </div>
-
-        {{-- Items grouped by type --}}
-        <div id="shortlist-books-section" class="shortlist-type-section" style="display:none;">
-          <div class="shortlist-type-heading">
-            <span class="shortlist-type-icon">📚</span>
-            <h3>{{ $copy['books_title'] }}</h3>
-            <span id="shortlist-books-count" class="shortlist-type-count"></span>
-          </div>
-          <div id="shortlist-books" class="shortlist-grid"></div>
-        </div>
-
-        <div id="shortlist-external-section" class="shortlist-type-section" style="display:none;">
-          <div class="shortlist-type-heading">
-            <span class="shortlist-type-icon">🌐</span>
-            <h3>{{ $copy['external_title'] }}</h3>
-            <span id="shortlist-external-count" class="shortlist-type-count"></span>
-          </div>
-          <div id="shortlist-external" class="shortlist-grid"></div>
-        </div>
-
-        {{-- Bibliography export block --}}
-        <div id="bibliography-block" class="bibliography-export-block">
-          <div class="bibliography-export-header">
-            <div>
-              <h3 style="margin:0 0 4px; font-size:18px;">{{ $copy['bibliography_title'] }}</h3>
-              <p style="color:var(--muted); font-size:13px; margin:0;">{{ $copy['bibliography_body'] }}</p>
-            </div>
-            <div class="bibliography-format-controls">
-              <label class="bibliography-format-label" for="bib-format">{{ $copy['format'] }}</label>
-              <select id="bib-format" class="bibliography-format-select" onchange="loadExport()">
-                <option value="numbered">{{ $copy['format_numbered'] }}</option>
-                <option value="grouped" selected>{{ $copy['format_grouped'] }}</option>
-                <option value="syllabus">{{ $copy['format_syllabus'] }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div id="bibliography-text" class="bibliography-text-area"></div>
-
-          <div class="bibliography-export-actions">
-            <button class="btn btn-primary" onclick="copyBibliography()" id="copy-bib-btn">{{ $copy['copy_text'] }}</button>
-            <button class="btn btn-ghost" onclick="window.print()">{{ $copy['print'] }}</button>
-          </div>
-        </div>
+        </section>
       </div>
     </div>
   </section>
@@ -271,488 +231,620 @@
 @section('head')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
-  .shortlist-guide-block {
-    margin-bottom: 28px;
+  .research-shortlist-page {
+    background: #f8f9fa;
   }
 
-  .shortlist-guide-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
+  .shortlist-shell {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 5rem;
   }
 
-  .shortlist-guide-card {
-    padding: 18px;
-    border-radius: var(--radius-lg, 6px);
-    border: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  .research-shortlist-hero {
+    max-width: 52rem;
+    margin-bottom: 3rem;
   }
 
-  .shortlist-guide-card:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
-    border-color: rgba(20,105,109,.18);
+  .research-shortlist-hero h1 {
+    margin: 0 0 1rem;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: .96;
+    letter-spacing: -.03em;
+    color: #000613;
   }
 
-  .shortlist-guide-card h3 {
-    margin: 0 0 8px;
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 1.28rem;
-    color: var(--blue);
-  }
-
-  .shortlist-guide-card p {
+  .research-shortlist-hero p {
     margin: 0;
-    color: var(--muted);
-    font-size: 14px;
+    max-width: 44rem;
+    font-size: 1.1rem;
     line-height: 1.7;
+    color: #43474e;
   }
 
-  .draft-meta-block {
-    margin-bottom: 24px;
-    padding: 20px 22px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg, 6px);
-    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .draft-meta-block:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
-    border-color: rgba(0,30,64,.12);
-  }
-
-  .draft-meta-fields {
+  .research-shortlist-layout {
     display: grid;
-    gap: 12px;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .research-shortlist-list-column,
+  .research-shortlist-sidebar {
+    min-width: 0;
+  }
+
+  .account-return-link-wrap {
+    margin-bottom: 1rem;
+  }
+
+  .account-return-link {
+    color: #001f3f;
+    font-size: .95rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .working-draft-card {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.1rem;
+    border-radius: 1rem;
+    background: #f3f4f5;
+  }
+
+  .working-draft-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: .75rem;
+    align-items: center;
+    margin-bottom: .75rem;
+    flex-wrap: wrap;
+  }
+
+  .working-draft-fields {
+    display: grid;
+    gap: .75rem;
   }
 
   .draft-field-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: .3rem;
   }
 
   .draft-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
     text-transform: uppercase;
-    letter-spacing: .04em;
+    color: #5f6368;
   }
 
-  .draft-input, .draft-textarea {
-    padding: 10px 0;
+  .draft-input,
+  .draft-textarea {
+    width: 100%;
+    padding: .7rem 0;
     border: 0;
-    border-bottom: 1px solid var(--border);
-    border-radius: 0;
+    border-bottom: 1px solid rgba(116,119,127,.35);
     background: transparent;
-    font-size: 15px;
-    font-family: inherit;
-    color: var(--text, #1a1a1a);
-    transition: border-color .2s, background .2s ease;
+    font-size: .95rem;
+    color: #191c1d;
     resize: vertical;
   }
 
-  .draft-input:focus, .draft-textarea:focus {
+  .draft-input:focus,
+  .draft-textarea:focus {
     outline: none;
-    border-color: var(--blue);
-    background: rgba(255,255,255,.42);
+    border-bottom-color: #006a6a;
   }
 
   .draft-save-status {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 6px;
-    min-height: 18px;
+    min-height: 1rem;
+    margin-top: .35rem;
+    font-size: .75rem;
+    color: #5f6368;
   }
 
   .draft-persistence-badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 5px 10px;
+    gap: .35rem;
+    padding: .3rem .65rem;
     border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .03em;
-    margin-bottom: 10px;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .04em;
   }
 
   .draft-persistence-badge.persistent {
-    background: rgba(20,105,109,.08);
-    color: #14696d;
-    border: 1px solid rgba(20,105,109,.16);
+    background: rgba(0,106,106,.1);
+    color: #006a6a;
   }
 
   .draft-persistence-badge.session-only {
-    background: rgba(93,66,1,.08);
-    color: #5d4201;
-    border: 1px solid rgba(93,66,1,.16);
+    background: rgba(0,31,63,.08);
+    color: #001f3f;
   }
 
-  .shortlist-header {
+  .draft-clear-link {
+    border: 0;
+    background: transparent;
+    color: #ba1a1a;
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .shortlist-item-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .shortlist-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 1.75rem;
+    transition: background .35s ease, transform .35s ease, box-shadow .35s ease;
+  }
+
+  .shortlist-card:hover {
+    background: #eceeef;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px rgba(0, 6, 19, .04);
+  }
+
+  .shortlist-card-inner {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .shortlist-cover {
+    width: 5.5rem;
+    height: 7.75rem;
+    border-radius: .35rem;
+    overflow: hidden;
+    display: flex;
+    align-items: end;
+    justify-content: start;
+    padding: .7rem;
+    color: #fff;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+
+  .shortlist-cover.is-book {
+    background: linear-gradient(180deg, #24364f 0%, #102038 100%);
+  }
+
+  .shortlist-cover.is-external {
+    background: linear-gradient(180deg, #0e5f67 0%, #09333d 100%);
+  }
+
+  .shortlist-card-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 16px 18px;
-    border-radius: var(--radius-lg, 6px);
-    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 24px rgba(25,28,29,.03);
-  }
-
-  .shortlist-type-section {
-    margin-bottom: 28px;
-    padding: 16px;
-    border-radius: var(--radius-lg, 6px);
-    background: rgba(255,255,255,.72);
-    border: 1px solid rgba(195,198,209,.45);
-  }
-
-  .shortlist-type-heading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 0;
-  }
-
-  .shortlist-type-heading h3 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 600;
-    font-family: 'Newsreader', Georgia, serif;
-    color: var(--blue);
-  }
-
-  .shortlist-type-icon {
-    font-size: 20px;
-  }
-
-  .shortlist-type-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    height: 24px;
-    padding: 0 8px;
-    border-radius: 999px;
-    background: var(--bg-soft, #f0f4ff);
-    border: 1px solid var(--border);
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--muted);
-  }
-
-  .shortlist-grid {
-    display: grid;
-    gap: 12px;
-  }
-
-  .shortlist-item {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    gap: .75rem;
     align-items: start;
-    gap: 16px;
-    padding: 18px 22px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg, 6px);
-    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), background .2s ease, box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    margin-bottom: .35rem;
+    flex-wrap: wrap;
   }
 
-  .shortlist-item:hover {
-    box-shadow: 0 14px 28px rgba(25,28,29,.05);
-    background: rgba(243,244,245,.96);
-    border-color: rgba(20,105,109,.18);
-    transform: translate3d(0, -2px, 0);
+  .shortlist-type-label {
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #006a6a;
   }
 
-  .shortlist-item-info h4 {
-    margin: 0 0 4px;
-    font-size: 16px;
-    font-weight: 700;
+  .shortlist-type-label.is-book {
+    color: #5f6368;
   }
 
-  .shortlist-item-info h4 a {
+  .shortlist-added-badge {
+    padding: .18rem .4rem;
+    border-radius: .3rem;
+    background: #f3f4f5;
+    color: #6d7278;
+    font-size: .7rem;
+  }
+
+  .shortlist-card-title {
+    margin: 0 0 .25rem;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.6rem, 2.7vw, 2.35rem);
+    line-height: 1.05;
+    color: #000613;
+  }
+
+  .shortlist-card-title a {
     color: inherit;
     text-decoration: none;
-    transition: color .2s;
   }
 
-  .shortlist-item-info h4 a:hover {
-    color: var(--blue);
+  .shortlist-card-meta {
+    margin: 0 0 .85rem;
+    color: #43474e;
+    font-size: .92rem;
   }
 
-  .shortlist-item-meta {
+  .shortlist-card-meta strong {
+    color: #000613;
+    font-weight: 800;
+  }
+
+  .shortlist-card-snippet {
+    margin: 0 0 1.15rem;
+    max-width: 42rem;
+    color: #43474e;
+    line-height: 1.7;
+  }
+
+  .shortlist-card-footer {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 6px;
-  }
-
-  .shortlist-item-meta .tag {
-    display: inline-flex;
-    padding: 3px 10px;
-    border-radius: 999px;
-    background: var(--bg-soft, #f0f4ff);
-    border: 1px solid var(--border);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-
-  .shortlist-remove-btn {
-    padding: 8px 16px;
-    border-radius: var(--radius-md, 4px);
-    border: 1px solid var(--border);
-    background: transparent;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all .2s;
-    white-space: nowrap;
-  }
-
-  .shortlist-remove-btn:hover {
-    border-color: var(--danger, #dc2626);
-    color: var(--danger, #dc2626);
-    background: rgba(220, 38, 38, .05);
-  }
-
-  /* Bibliography export block */
-  .bibliography-export-block {
-    margin-top: 36px;
-    padding: 24px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg, 6px);
-    box-shadow: none;
-    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .bibliography-export-block:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 14px 28px rgba(25,28,29,.05);
-    border-color: rgba(0,30,64,.12);
-  }
-
-  .bibliography-export-header {
-    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 1rem;
+  }
+
+  .shortlist-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .88rem;
+    font-weight: 700;
+    color: #006a6a;
+  }
+
+  .shortlist-status.is-book {
+    color: #191c1d;
+  }
+
+  .shortlist-status .material-symbols-outlined {
+    font-size: 1rem;
+  }
+
+  .shortlist-card-actions {
+    display: flex;
     flex-wrap: wrap;
+    gap: .35rem;
+  }
+
+  .shortlist-action {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .55rem .8rem;
+    border: 0;
+    border-radius: .5rem;
+    background: transparent;
+    color: #191c1d;
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s ease, color .2s ease, opacity .2s ease;
+  }
+
+  .shortlist-action:hover {
+    background: rgba(0, 6, 19, .05);
+  }
+
+  .shortlist-action--dark {
+    background: #000613;
+    color: #ffffff;
+  }
+
+  .shortlist-action--danger {
+    color: #ba1a1a;
+  }
+
+  .research-shortlist-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .shortlist-summary-card,
+  .librarian-note-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: #f3f4f5;
+  }
+
+  .shortlist-summary-card {
+    border-left: 2px solid #000613;
+  }
+
+  .shortlist-summary-card h3,
+  .smart-export-card h4 {
+    margin: 0 0 1rem;
+    font-family: 'Newsreader', serif;
+    font-size: 1.45rem;
+    color: #000613;
+  }
+
+  .summary-metric-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .8rem 0;
+    color: #5f6368;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+
+  .summary-metric-row strong {
+    color: #000613;
+    font-family: 'Newsreader', serif;
+    font-size: 1.8rem;
+    font-weight: 500;
+    letter-spacing: normal;
+  }
+
+  .summary-metric-row + .summary-metric-row {
+    border-top: 1px solid rgba(116,119,127,.16);
+  }
+
+  .smart-export-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: linear-gradient(180deg, #001f3f 0%, #000613 100%);
+    color: #d7e5f7;
+  }
+
+  .smart-export-card h4 {
+    color: #ffffff;
+    margin-bottom: .45rem;
+  }
+
+  .smart-export-card p {
+    margin: 0 0 1rem;
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .smart-export-icon {
+    display: inline-block;
+    margin-bottom: .5rem;
+    color: #afc8f0;
+    font-size: 1.8rem;
   }
 
   .bibliography-format-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: grid;
+    gap: .35rem;
+    margin-bottom: .85rem;
   }
 
   .bibliography-format-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    white-space: nowrap;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #afc8f0;
   }
 
   .bibliography-format-select {
-    padding: 7px 14px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--bg-soft, #f8fafc);
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text, #1a1a1a);
-    cursor: pointer;
-    transition: border-color .2s;
-    -webkit-appearance: none;
-    appearance: none;
-    padding-right: 28px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
+    width: 100%;
+    padding: .65rem .8rem;
+    border: 1px solid rgba(175,200,240,.22);
+    border-radius: .5rem;
+    background: rgba(255,255,255,.06);
+    color: #ffffff;
   }
 
-  .bibliography-format-select:focus {
-    outline: none;
-    border-color: var(--blue);
-  }
-
-  .bibliography-text-area {
-    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 18px;
-    font-size: 14px;
-    line-height: 1.85;
+  .bibliography-preview {
+    min-height: 7rem;
+    padding: .85rem;
+    border-radius: .6rem;
+    background: rgba(255,255,255,.06);
+    color: #eef4fb;
+    font-size: .82rem;
+    line-height: 1.65;
     white-space: pre-wrap;
-    font-family: 'Manrope', sans-serif;
-    min-height: 80px;
-    color: var(--text, #1a1a1a);
   }
 
-  .bibliography-export-actions {
+  .smart-export-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 18px;
+    flex-wrap: wrap;
+    gap: .55rem;
+    margin-top: 1rem;
+  }
+
+  .librarian-note-card h4 {
+    margin: 0 0 .75rem;
+    color: #6d7278;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .librarian-note-card p {
+    margin: 0;
+    font-family: 'Newsreader', serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    font-style: italic;
+    color: #5f6368;
+  }
+
+  .research-shortlist-bridge {
+    margin-top: 4rem;
+    padding: 2rem;
+    border-top: 1px solid rgba(116,119,127,.14);
+    background: #f3f4f5;
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     flex-wrap: wrap;
   }
 
+  .research-shortlist-bridge h3 {
+    margin: 0 0 .4rem;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+    color: #000613;
+  }
+
+  .research-shortlist-bridge p {
+    margin: 0;
+    max-width: 38rem;
+    color: #43474e;
+  }
+
+  .bridge-actions,
+  .shortlist-state-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+  }
+
+  .shortlist-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .9rem 1.1rem;
+    border-radius: .55rem;
+    border: 0;
+    text-decoration: none;
+    font-size: .84rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: opacity .2s ease, background .2s ease;
+  }
+
+  .shortlist-btn--light {
+    background: #ffffff;
+    color: #000613;
+  }
+
+  .shortlist-btn--dark {
+    background: #000613;
+    color: #ffffff;
+  }
+
+  .shortlist-btn--ghost {
+    background: transparent;
+    color: #001f3f;
+  }
+
+  .shortlist-btn--teal {
+    width: 100%;
+    background: #006a6a;
+    color: #ffffff;
+  }
+
   .shortlist-state {
-    position: relative;
-    overflow: hidden;
+    padding: 3rem 1.25rem;
     text-align: center;
-    padding: 48px 24px;
-    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg, 6px);
-    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-radius: 1rem;
+    background: #ffffff;
   }
 
-  .shortlist-state::after {
-    content: '';
-    position: absolute;
-    inset: -40px -40px auto auto;
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(20,105,109,.08), transparent 72%);
-    pointer-events: none;
+  .shortlist-state h2 {
+    margin: 0 0 .75rem;
+    font-family: 'Newsreader', serif;
+    font-size: 2rem;
+    color: #000613;
   }
 
-  .shortlist-state--loading {
-    background: var(--bg-soft, #f8fafc);
-  }
-
-  .shortlist-state:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 14px 28px rgba(25,28,29,.05);
-    border-color: rgba(0,30,64,.12);
+  .shortlist-state p {
+    max-width: 34rem;
+    margin: 0 auto 1rem;
+    color: #43474e;
+    line-height: 1.7;
   }
 
   .shortlist-spinner {
     display: inline-block;
-    width: 32px;
-    height: 32px;
-    border: 3px solid rgba(195,198,209,.55);
-    border-top-color: var(--blue);
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-  }
-
-  .shortlist-state-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 90px;
-    height: 36px;
-    padding: 0 14px;
-    margin-bottom: 12px;
+    width: 2rem;
+    height: 2rem;
     border-radius: 999px;
-    background: rgba(0,30,64,.05);
-    color: var(--blue);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    box-shadow: 0 10px 20px rgba(25,28,29,.03);
-  }
-
-  .shortlist-state h2 {
-    margin: 0 0 10px;
-    font-size: 26px;
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 600;
-    color: var(--blue);
-  }
-
-  .shortlist-state p {
-    color: var(--muted);
-    max-width: 520px;
-    margin: 0 auto 20px;
-    line-height: 1.7;
-  }
-
-  .shortlist-state a {
-    color: var(--blue);
-    font-weight: 700;
-  }
-
-  .shortlist-state-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
+    border: 3px solid rgba(0,31,63,.14);
+    border-top-color: #006a6a;
+    animation: spin .7s linear infinite;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  @media (max-width: 680px) {
-    .shortlist-guide-grid {
+  @media (max-width: 1024px) {
+    .research-shortlist-layout {
       grid-template-columns: 1fr;
-    }
-
-    .shortlist-item {
-      grid-template-columns: 1fr;
-    }
-    .shortlist-remove-btn {
-      width: 100%;
-      text-align: center;
-    }
-    .bibliography-export-header {
-      flex-direction: column;
-    }
-    .bibliography-format-controls {
-      width: 100%;
-    }
-    .bibliography-format-select {
-      flex: 1;
     }
   }
 
-  /* Print styles */
+  @media (max-width: 680px) {
+    .shortlist-shell {
+      padding-inline: 1rem;
+    }
+
+    .shortlist-card {
+      padding: 1rem;
+    }
+
+    .shortlist-card-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .shortlist-cover {
+      width: 100%;
+      max-width: 6rem;
+    }
+
+    .shortlist-card-footer,
+    .research-shortlist-bridge {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .shortlist-card-actions,
+    .bridge-actions,
+    .shortlist-state-actions,
+    .smart-export-actions {
+      flex-direction: column;
+    }
+
+    .shortlist-action,
+    .shortlist-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
   @media print {
-    .topbar, .nav, .footer, .page-hero,
-    .shortlist-header, .shortlist-type-section,
-    .bibliography-export-actions, .bibliography-format-controls,
-    .bibliography-export-header > div:first-child > p,
-    .shortlist-remove-btn, button, .nav-actions, .btn,
-    .draft-meta-block {
+    .research-shortlist-hero,
+    .working-draft-card,
+    .research-shortlist-bridge,
+    .research-shortlist-sidebar,
+    .shortlist-action,
+    .shortlist-btn,
+    .account-return-link-wrap {
       display: none !important;
     }
-    body { background: #fff; }
-    .bibliography-export-block {
-      border: none;
-      padding: 0;
-      margin: 0;
-      box-shadow: none;
+
+    .research-shortlist-layout {
+      display: block;
     }
-    .bibliography-export-header > div:first-child > h3 {
-      font-size: 16pt;
-      margin-bottom: 12pt;
-    }
-    .bibliography-text-area {
-      border: none;
+
+    .shortlist-card {
       background: #fff;
-      padding: 0;
-      font-size: 11pt;
-      line-height: 1.6;
+      box-shadow: none;
+      break-inside: avoid;
     }
-    .page-section { padding: 0; }
-    .container { max-width: 100%; padding: 0 24px; }
   }
 </style>
 @endsection
@@ -765,8 +857,13 @@
   const SHORTLIST_I18N_MAP = {!! json_encode([
     'ru' => [
       'untitled' => 'Без названия',
-      'platformPrefix' => 'Платформа',
-      'remove' => '✕ Убрать',
+      'electronic' => 'Электронный ресурс',
+      'physical' => 'Печатный экземпляр',
+      'viewDetails' => 'Подробнее',
+      'cite' => 'Цитата',
+      'reserve' => 'Резерв',
+      'openResource' => 'Открыть ресурс',
+      'remove' => 'Убрать',
       'campus' => 'Только в кампусе',
       'remote_auth' => 'Доступ по авторизации',
       'open' => 'Открытый доступ',
@@ -774,19 +871,31 @@
       'exportFailed' => 'Не удалось подготовить экспорт',
       'clearConfirm' => 'Очистить всю подборку?',
       'copied' => '✓ Скопировано',
-      'savedToAccount' => '☁ Сохраняется в аккаунте',
-      'sessionOnly' => '⏳ Только в текущей сессии',
+      'itemCopied' => '✓ Цитата скопирована',
+      'savedToAccount' => 'Синхронизируется с аккаунтом',
+      'sessionOnly' => 'Только в текущей сессии',
       'saving' => 'Сохранение...',
       'saved' => '✓ Сохранено',
       'saveError' => 'Ошибка сохранения',
       'networkError' => 'Ошибка сети',
-      'booksCount' => 'книг',
-      'externalCount' => 'эл. ресурсов',
+      'instantAccess' => 'Мгновенный цифровой доступ',
+      'catalogStatus' => 'Проверить наличие в каталоге',
+      'citationFallback' => 'Библиографический текст появится здесь после загрузки списка.',
+      'addedPrefix' => 'Добавлено',
+      'addedRecently' => 'Добавлено недавно',
+      'addedYesterday' => 'Добавлено вчера',
+      'bookSnippet' => 'Печатное издание доступно для проверки по каталожной записи, резервирования и последующего цитирования.',
+      'externalSnippet' => 'Электронный источник подключён к рабочей подборке и готов для перехода и цитирования.',
     ],
     'kk' => [
       'untitled' => 'Атауы жоқ',
-      'platformPrefix' => 'Платформа',
-      'remove' => '✕ Алып тастау',
+      'electronic' => 'Электрондық ресурс',
+      'physical' => 'Баспа данасы',
+      'viewDetails' => 'Толығырақ',
+      'cite' => 'Дәйексөз',
+      'reserve' => 'Брондау',
+      'openResource' => 'Ресурсты ашу',
+      'remove' => 'Алып тастау',
       'campus' => 'Тек кампуста',
       'remote_auth' => 'Авторизация арқылы',
       'open' => 'Ашық қолжетімділік',
@@ -794,19 +903,31 @@
       'exportFailed' => 'Экспортты дайындау мүмкін болмады',
       'clearConfirm' => 'Бүкіл іріктемені тазарту керек пе?',
       'copied' => '✓ Көшірілді',
-      'savedToAccount' => '☁ Аккаунтта сақталады',
-      'sessionOnly' => '⏳ Тек ағымдағы сессияда',
+      'itemCopied' => '✓ Дәйексөз көшірілді',
+      'savedToAccount' => 'Аккаунтпен синхрондалады',
+      'sessionOnly' => 'Тек ағымдағы сессияда',
       'saving' => 'Сақталуда...',
       'saved' => '✓ Сақталды',
       'saveError' => 'Сақтау қатесі',
       'networkError' => 'Желі қатесі',
-      'booksCount' => 'кітап',
-      'externalCount' => 'эл. ресурс',
+      'instantAccess' => 'Лезде цифрлық қолжетімділік',
+      'catalogStatus' => 'Қолжетімділікті каталогтан тексеру',
+      'citationFallback' => 'Библиографиялық мәтін тізім жүктелгеннен кейін осында шығады.',
+      'addedPrefix' => 'Қосылды',
+      'addedRecently' => 'Жақында қосылды',
+      'addedYesterday' => 'Кеше қосылды',
+      'bookSnippet' => 'Баспа басылымын каталог жазбасы арқылы тексеруге, брондауға және дәйексөзге енгізуге болады.',
+      'externalSnippet' => 'Электрондық дереккөз жұмыс іріктемесіне қосылған және ашуға, дәйексөздеуге дайын.',
     ],
     'en' => [
       'untitled' => 'Untitled',
-      'platformPrefix' => 'Platform',
-      'remove' => '✕ Remove',
+      'electronic' => 'Electronic Resource',
+      'physical' => 'Physical Copy',
+      'viewDetails' => 'View Details',
+      'cite' => 'Cite',
+      'reserve' => 'Reserve',
+      'openResource' => 'Open Resource',
+      'remove' => 'Remove',
       'campus' => 'Campus only',
       'remote_auth' => 'Authenticated access',
       'open' => 'Open access',
@@ -814,17 +935,25 @@
       'exportFailed' => 'Unable to prepare the export',
       'clearConfirm' => 'Clear the entire shortlist?',
       'copied' => '✓ Copied',
-      'savedToAccount' => '☁ Saved to account',
-      'sessionOnly' => '⏳ Session only',
+      'itemCopied' => '✓ Citation copied',
+      'savedToAccount' => 'Synced to account',
+      'sessionOnly' => 'Session only',
       'saving' => 'Saving...',
       'saved' => '✓ Saved',
       'saveError' => 'Save failed',
       'networkError' => 'Network error',
-      'booksCount' => 'books',
-      'externalCount' => 'e-resources',
+      'instantAccess' => 'Instant Digital Access',
+      'catalogStatus' => 'Check live catalog availability',
+      'citationFallback' => 'Bibliography text will appear here after the shortlist loads.',
+      'addedPrefix' => 'Added',
+      'addedRecently' => 'Added recently',
+      'addedYesterday' => 'Added yesterday',
+      'bookSnippet' => 'This print title is ready for live catalog review, reservation, and citation export.',
+      'externalSnippet' => 'This electronic source is attached to your working shortlist and ready for access and citation.',
     ],
   ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!};
   const SHORTLIST_I18N = SHORTLIST_I18N_MAP[SHORTLIST_LANG] || SHORTLIST_I18N_MAP.ru;
+  const LOCALE_MAP = { ru: 'ru-RU', kk: 'kk-KZ', en: 'en-US' };
 
   let currentItems = [];
   let draftSaveTimer = null;
@@ -837,25 +966,100 @@
     return url.pathname + url.search;
   }
 
-  function escapeHtml(text) {
-    if (!text) return '';
+  function escapeHtml(value) {
     const div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = value ?? '';
     return div.innerHTML;
   }
 
-  function pluralItems(n) {
-    if (SHORTLIST_LANG === 'ru') {
-      if (n % 10 === 1 && n % 100 !== 11) return 'источник';
-      if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return 'источника';
-      return 'источников';
+  function padCount(value) {
+    return String(value ?? 0).padStart(2, '0');
+  }
+
+  function formatAddedLabel(addedAt) {
+    if (!addedAt) return SHORTLIST_I18N.addedRecently;
+
+    const date = new Date(addedAt);
+    if (Number.isNaN(date.getTime())) return SHORTLIST_I18N.addedRecently;
+
+    const diffHours = Math.abs(Date.now() - date.getTime()) / 36e5;
+    if (diffHours < 36) return SHORTLIST_I18N.addedYesterday;
+
+    return `${SHORTLIST_I18N.addedPrefix} ${date.toLocaleDateString(LOCALE_MAP[SHORTLIST_LANG] || 'en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })}`;
+  }
+
+  function buildCitationText(item, index = null) {
+    const parts = [];
+    if (item.author) parts.push(item.author);
+    parts.push(item.title || SHORTLIST_I18N.untitled);
+    if (item.publisher) parts.push(item.publisher);
+    if (item.year) parts.push(item.year);
+
+    const body = `${parts.filter(Boolean).join('. ')}.`;
+    return index === null ? body : `${index + 1}. ${body}`;
+  }
+
+  function getSnippet(item) {
+    return item.type === 'external_resource'
+      ? SHORTLIST_I18N.externalSnippet
+      : SHORTLIST_I18N.bookSnippet;
+  }
+
+  function getStatusText(item) {
+    if (item.type === 'external_resource') {
+      return SHORTLIST_I18N[item.access_type] || SHORTLIST_I18N.instantAccess;
     }
 
-    if (SHORTLIST_LANG === 'kk') {
-      return 'дереккөз';
+    if (typeof item.available === 'number' && typeof item.total === 'number') {
+      return `${SHORTLIST_I18N.catalogStatus} · ${item.available}/${item.total}`;
     }
 
-    return n === 1 ? 'source' : 'sources';
+    return SHORTLIST_I18N.catalogStatus;
+  }
+
+  function renderItemCard(item, index) {
+    const identifier = item.identifier || '';
+    const isExternal = item.type === 'external_resource';
+    const detailHref = isExternal && item.url ? item.url : withLang(`/book/${encodeURIComponent(identifier)}`);
+    const detailTarget = isExternal && item.url ? ' target="_blank" rel="noopener"' : '';
+    const leadMeta = item.author || item.provider || '';
+    const trailingMeta = [item.year, item.publisher].filter(Boolean).join(' • ');
+    const metaMarkup = leadMeta
+      ? `<strong>${escapeHtml(leadMeta)}</strong>${trailingMeta ? ` • ${escapeHtml(trailingMeta)}` : ''}`
+      : escapeHtml(trailingMeta);
+
+    return `
+      <article class="shortlist-card" data-shortlist-item>
+        <div class="shortlist-card-inner">
+          <div class="shortlist-cover ${isExternal ? 'is-external' : 'is-book'}">${isExternal ? 'Digital' : 'Print'}</div>
+          <div>
+            <div class="shortlist-card-top">
+              <span class="shortlist-type-label ${isExternal ? '' : 'is-book'}">${isExternal ? SHORTLIST_I18N.electronic : SHORTLIST_I18N.physical}</span>
+              <span class="shortlist-added-badge">${escapeHtml(formatAddedLabel(item.addedAt))}</span>
+            </div>
+            <h2 class="shortlist-card-title"><a href="${detailHref}"${detailTarget}>${escapeHtml(item.title || SHORTLIST_I18N.untitled)}</a></h2>
+            <p class="shortlist-card-meta">${metaMarkup}</p>
+            <p class="shortlist-card-snippet">${escapeHtml(getSnippet(item))}</p>
+            <div class="shortlist-card-footer">
+              <div class="shortlist-status ${isExternal ? '' : 'is-book'}">
+                <span class="material-symbols-outlined">${isExternal ? 'check_circle' : 'location_on'}</span>
+                ${escapeHtml(getStatusText(item))}
+              </div>
+              <div class="shortlist-card-actions">
+                <a class="shortlist-action" href="${detailHref}"${detailTarget}><span class="material-symbols-outlined">visibility</span>${SHORTLIST_I18N.viewDetails}</a>
+                <button class="shortlist-action" type="button" onclick='copyItemCitation(${JSON.stringify(identifier)})'><span class="material-symbols-outlined">format_quote</span>${SHORTLIST_I18N.cite}</button>
+                <a class="shortlist-action ${isExternal ? '' : 'shortlist-action--dark'}" href="${detailHref}"${detailTarget}><span class="material-symbols-outlined">${isExternal ? 'open_in_new' : 'bookmark'}</span>${isExternal ? SHORTLIST_I18N.openResource : SHORTLIST_I18N.reserve}</a>
+                <button class="shortlist-action shortlist-action--danger" type="button" onclick='removeItem(${JSON.stringify(identifier)})'><span class="material-symbols-outlined">delete</span>${SHORTLIST_I18N.remove}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
   }
 
   async function loadShortlist() {
@@ -872,7 +1076,12 @@
       if (!res.ok) throw new Error(SHORTLIST_I18N.loadFailed);
 
       const json = await res.json();
-      const items = Array.isArray(json.data) ? json.data : [];
+      const items = (Array.isArray(json.data) ? json.data : []).slice().sort((a, b) => {
+        const left = a.addedAt ? new Date(a.addedAt).getTime() : 0;
+        const right = b.addedAt ? new Date(b.addedAt).getTime() : 0;
+        return right - left;
+      });
+
       currentItems = items;
       loading.style.display = 'none';
 
@@ -885,19 +1094,14 @@
       empty.style.display = 'none';
       content.style.display = 'block';
 
-      document.getElementById('shortlist-count').textContent = items.length;
-      document.getElementById('shortlist-count-label').textContent = pluralItems(items.length);
+      const digital = items.filter((item) => item.type === 'external_resource').length;
+      const physical = items.length - digital;
 
-      const books = items.filter((item) => (item.type || 'book') !== 'external_resource');
-      const external = items.filter((item) => item.type === 'external_resource');
-      const summaryParts = [];
+      document.getElementById('shortlist-summary-total').textContent = padCount(items.length);
+      document.getElementById('shortlist-summary-digital').textContent = padCount(digital);
+      document.getElementById('shortlist-summary-physical').textContent = padCount(physical);
 
-      if (books.length > 0) summaryParts.push(`${books.length} ${SHORTLIST_I18N.booksCount}`);
-      if (external.length > 0) summaryParts.push(`${external.length} ${SHORTLIST_I18N.externalCount}`);
-
-      document.getElementById('shortlist-type-summary').textContent = summaryParts.length ? `(${summaryParts.join(', ')})` : '';
-
-      renderGroupedItems(books, external);
+      document.getElementById('shortlist-items-list').innerHTML = items.map(renderItemCard).join('');
       loadExport();
     } catch (err) {
       loading.style.display = 'none';
@@ -906,78 +1110,10 @@
     }
   }
 
-  function renderGroupedItems(books, external) {
-    const booksSection = document.getElementById('shortlist-books-section');
-    const externalSection = document.getElementById('shortlist-external-section');
-
-    if (books.length > 0) {
-      booksSection.style.display = 'block';
-      document.getElementById('shortlist-books-count').textContent = books.length;
-      document.getElementById('shortlist-books').innerHTML = books.map((item, idx) =>
-        renderItemCard(item, idx + 1, false)
-      ).join('');
-    } else {
-      booksSection.style.display = 'none';
-    }
-
-    if (external.length > 0) {
-      externalSection.style.display = 'block';
-      document.getElementById('shortlist-external-count').textContent = external.length;
-      document.getElementById('shortlist-external').innerHTML = external.map((item, idx) =>
-        renderItemCard(item, idx + 1, true)
-      ).join('');
-    } else {
-      externalSection.style.display = 'none';
-    }
-  }
-
-  function renderItemCard(item, num, isExternal) {
-    const identifier = item.identifier || '';
-    const title = escapeHtml(item.title || SHORTLIST_I18N.untitled);
-    const author = escapeHtml(item.author || '');
-    const publisher = escapeHtml(item.publisher || '');
-    const provider = escapeHtml(item.provider || '');
-    const year = escapeHtml(item.year || '');
-    const language = escapeHtml(item.language || '');
-    const isbn = escapeHtml(item.isbn || '');
-    const accessType = item.access_type || '';
-
-    const accessLabels = {
-      campus: SHORTLIST_I18N.campus,
-      remote_auth: SHORTLIST_I18N.remote_auth,
-      open: SHORTLIST_I18N.open,
-    };
-
-    const tags = [
-      year ? `<span class="tag">${year}</span>` : '',
-      language ? `<span class="tag">${language}</span>` : '',
-      isbn ? `<span class="tag">ISBN: ${isbn}</span>` : '',
-      isExternal && accessType
-        ? `<span class="tag" style="background:rgba(20,105,109,.08);color:var(--cyan);">${escapeHtml(accessLabels[accessType] || accessType)}</span>`
-        : '',
-    ].filter(Boolean).join('');
-
-    const linkHref = isExternal && item.url ? item.url : withLang(`/book/${encodeURIComponent(identifier)}`);
-    const linkTarget = isExternal ? ' target="_blank" rel="noopener"' : '';
-    const linkSuffix = isExternal ? ' ↗' : '';
-
-    return `
-      <div class="shortlist-item" data-identifier="${escapeHtml(identifier)}">
-        <div class="shortlist-item-info">
-          <h4><a href="${linkHref}"${linkTarget}>${num}. ${title}${linkSuffix}</a></h4>
-          ${author ? `<div style="color:var(--muted); font-size:14px;">${author}</div>` : ''}
-          ${publisher ? `<div style="color:var(--muted); font-size:13px;">${publisher}</div>` : ''}
-          ${isExternal && provider ? `<div style="color:var(--muted); font-size:13px;">${SHORTLIST_I18N.platformPrefix}: ${provider}</div>` : ''}
-          <div class="shortlist-item-meta">${tags}</div>
-        </div>
-        <button class="shortlist-remove-btn" onclick="removeItem('${escapeHtml(identifier)}')">${SHORTLIST_I18N.remove}</button>
-      </div>
-    `;
-  }
-
   async function loadExport() {
-    const format = document.getElementById('bib-format').value;
+    const format = document.getElementById('bib-format')?.value || 'grouped';
     const block = document.getElementById('bibliography-text');
+    if (!block) return;
 
     try {
       const res = await fetch(`${API_BASE}/export?format=${encodeURIComponent(format)}`, {
@@ -987,16 +1123,11 @@
 
       if (!res.ok) throw new Error(SHORTLIST_I18N.exportFailed);
       const json = await res.json();
-      block.textContent = json.data?.text || '';
+      block.textContent = json.data?.text || SHORTLIST_I18N.citationFallback;
     } catch (err) {
-      block.textContent = currentItems.map((item, idx) => {
-        const parts = [];
-        if (item.author) parts.push(item.author);
-        parts.push(item.title || SHORTLIST_I18N.untitled);
-        if (item.publisher) parts.push(item.publisher);
-        if (item.year) parts.push(item.year);
-        return `${idx + 1}. ${parts.join('. ')}.`;
-      }).join('\n');
+      block.textContent = currentItems.length
+        ? currentItems.map((item, index) => buildCitationText(item, index)).join('\n')
+        : SHORTLIST_I18N.citationFallback;
     }
   }
 
@@ -1011,9 +1142,7 @@
         credentials: 'same-origin',
       });
 
-      if (res.ok) {
-        loadShortlist();
-      }
+      if (res.ok) loadShortlist();
     } catch (err) {
       console.error('Remove error:', err);
     }
@@ -1037,17 +1166,14 @@
     }
   }
 
-  function copyBibliography() {
-    const text = document.getElementById('bibliography-text')?.textContent;
+  function copyTextWithFeedback(text, button, successLabel) {
     if (!text) return;
 
-    const btn = document.getElementById('copy-bib-btn');
     const showCopied = () => {
-      if (!btn) return;
-      const orig = btn.innerHTML;
-      btn.innerHTML = SHORTLIST_I18N.copied;
-      btn.style.background = 'var(--cyan, #14696d)';
-      setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2000);
+      if (!button) return;
+      const original = button.innerHTML;
+      button.innerHTML = successLabel;
+      setTimeout(() => { button.innerHTML = original; }, 1800);
     };
 
     navigator.clipboard.writeText(text).then(showCopied).catch(() => {
@@ -1063,6 +1189,18 @@
     });
   }
 
+  function copyBibliography() {
+    const text = document.getElementById('bibliography-text')?.textContent?.trim();
+    copyTextWithFeedback(text, document.getElementById('copy-bib-btn'), SHORTLIST_I18N.copied);
+  }
+
+  function copyItemCitation(identifier) {
+    const item = currentItems.find((entry) => entry.identifier === identifier);
+    if (!item) return;
+
+    copyTextWithFeedback(buildCitationText(item), null, SHORTLIST_I18N.itemCopied);
+  }
+
   async function loadDraftMeta() {
     try {
       const res = await fetch(`${API_BASE}/summary`, {
@@ -1070,11 +1208,12 @@
         credentials: 'same-origin',
       });
       if (!res.ok) return;
+
       const json = await res.json();
       const draft = json.data?.draft || {};
-
       const titleInput = document.getElementById('draft-title');
       const notesInput = document.getElementById('draft-notes');
+
       if (titleInput && draft.title) titleInput.value = draft.title;
       if (notesInput && draft.notes) notesInput.value = draft.notes;
 
@@ -1112,12 +1251,12 @@
 
         if (statusEl) {
           statusEl.textContent = res.ok ? SHORTLIST_I18N.saved : SHORTLIST_I18N.saveError;
-          setTimeout(() => { statusEl.textContent = ''; }, 3000);
+          setTimeout(() => { statusEl.textContent = ''; }, 2500);
         }
       } catch (err) {
         if (statusEl) statusEl.textContent = SHORTLIST_I18N.networkError;
       }
-    }, 800);
+    }, 700);
   }
 
   document.getElementById('draft-title')?.addEventListener('input', saveDraftMeta);

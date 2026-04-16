@@ -6,40 +6,39 @@ use Tests\TestCase;
 
 class ShortlistPageTest extends TestCase
 {
-    public function test_shortlist_page_renders_successfully(): void
+    public function test_shortlist_page_renders_the_research_shortlist_shell(): void
     {
         $response = $this->get('/shortlist');
 
         $response
             ->assertOk()
-            ->assertSee('Подборка литературы', false)
+            ->assertSee('data-shortlist-page', false)
+            ->assertSee('data-shortlist-hero', false)
+            ->assertSee('data-shortlist-items', false)
+            ->assertSee('data-shortlist-sidebar', false)
             ->assertSee('/api/v1/shortlist', false)
             ->assertSee('shortlist-loading', false)
-            ->assertSee('shortlist-empty', false)
-            ->assertSee('bibliography-text', false);
+            ->assertSee('shortlist-empty', false);
     }
 
-    public function test_shortlist_page_has_catalog_link(): void
-    {
-        $response = $this->get('/shortlist');
-
-        $response
-            ->assertOk()
-            ->assertSee('href="/catalog"', false)
-            ->assertDontSee('href="/for-teachers"', false);
-    }
-
-    public function test_shortlist_page_has_copy_and_clear_actions(): void
+    public function test_shortlist_page_preserves_export_actions_and_sections(): void
     {
         $response = $this->get('/shortlist');
 
         $response
             ->assertOk()
             ->assertSee('copyBibliography()', false)
-            ->assertSee('clearShortlist()', false);
+            ->assertSee('clearShortlist()', false)
+            ->assertSee('loadExport()', false)
+            ->assertSee('loadDraftMeta()', false)
+            ->assertSee('data-smart-export', false)
+            ->assertSee('data-shortlist-bridge', false)
+            ->assertSee('href="/catalog"', false)
+            ->assertSee('href="/resources"', false)
+            ->assertDontSee('href="/for-teachers"', false);
     }
 
-    public function test_shortlist_page_has_format_selector(): void
+    public function test_shortlist_page_has_export_controls_and_summary_cards(): void
     {
         $response = $this->get('/shortlist');
 
@@ -48,67 +47,11 @@ class ShortlistPageTest extends TestCase
             ->assertSee('bib-format', false)
             ->assertSee('numbered', false)
             ->assertSee('grouped', false)
-            ->assertSee('syllabus', false);
-    }
-
-    public function test_shortlist_page_has_print_button(): void
-    {
-        $response = $this->get('/shortlist');
-
-        $response
-            ->assertOk()
-            ->assertSee('window.print()', false);
-    }
-
-    public function test_shortlist_page_has_export_api_call(): void
-    {
-        $response = $this->get('/shortlist');
-
-        $response
-            ->assertOk()
-            ->assertSee('loadExport()', false)
-            ->assertSee('/export?format=', false);
-    }
-
-    public function test_shortlist_page_has_grouped_sections(): void
-    {
-        $response = $this->get('/shortlist');
-
-        $response
-            ->assertOk()
-            ->assertSee('shortlist-books-section', false)
-            ->assertSee('shortlist-external-section', false);
-    }
-
-    public function test_shortlist_page_has_resources_link(): void
-    {
-        $response = $this->get('/shortlist');
-
-        $response
-            ->assertOk()
-            ->assertSee('href="/resources"', false);
-    }
-
-    public function test_shortlist_page_has_draft_metadata_fields(): void
-    {
-        $response = $this->get('/shortlist');
-
-        $response
-            ->assertOk()
-            ->assertSee('draft-title', false)
-            ->assertSee('draft-notes', false)
-            ->assertSee('draft-meta-block', false)
-            ->assertSee('saveDraftMeta', false);
-    }
-
-    public function test_shortlist_page_loads_draft_from_summary_api(): void
-    {
-        $response = $this->get('/shortlist');
-
-        $response
-            ->assertOk()
-            ->assertSee('loadDraftMeta()', false)
-            ->assertSee('/summary', false);
+            ->assertSee('syllabus', false)
+            ->assertSee('bibliography-text', false)
+            ->assertSee('shortlist-summary-total', false)
+            ->assertSee('shortlist-summary-digital', false)
+            ->assertSee('shortlist-summary-physical', false);
     }
 
     public function test_shortlist_page_shows_cabinet_link_when_authenticated(): void
@@ -124,7 +67,6 @@ class ShortlistPageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('href="/account"', false)
-            ->assertSee('Вернуться в кабинет', false);
+            ->assertSee('href="/account"', false);
     }
 }

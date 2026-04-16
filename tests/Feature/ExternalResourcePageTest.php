@@ -97,7 +97,7 @@ class ExternalResourcePageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('Подборка литературы', false)
+            ->assertSee('data-shortlist-page', false)
             ->assertSee('shortlist-loading', false);
     }
 

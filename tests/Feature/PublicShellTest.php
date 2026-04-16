@@ -75,13 +75,13 @@ class PublicShellTest extends TestCase
     {
         $this->get('/shortlist?lang=kk')
             ->assertOk()
-            ->assertSee('Әдебиет тізімінің жұмыс нұсқасы')
-            ->assertDontSee('Черновик списка литературы');
+            ->assertSee('Зерттеу іріктемесі')
+            ->assertDontSee('Исследовательская подборка');
 
         $this->get('/shortlist?lang=en')
             ->assertOk()
-            ->assertSee('Draft reading list')
-            ->assertDontSee('Черновик списка литературы');
+            ->assertSee('Research Shortlist')
+            ->assertDontSee('Исследовательская подборка');
     }
 
     public function test_authenticated_account_page_renders_localized_shell_for_each_language(): void
