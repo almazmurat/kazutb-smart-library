@@ -1,521 +1,256 @@
-@php
-  $lang = app()->getLocale();
-  $copy = [
-    'ru' => [
-      'title' => 'Безопасный вход — Digital Library',
-      'brand' => 'KazUTB Digital Library',
-      'eyebrow' => 'Защищённый институциональный доступ',
-      'hero' => 'Вход в библиотечную систему',
-      'lead' => 'Авторизуйтесь, чтобы открыть личный кабинет, проверить выдачи, управлять бронированиями и переходить к контролируемым цифровым материалам.',
-      'loginLabel' => 'Логин или Email',
-      'loginPlaceholder' => 'Например: student01 или mail@example.com',
-      'passwordLabel' => 'Пароль',
-      'passwordPlaceholder' => 'Введите пароль',
-      'submit' => 'Продолжить',
-      'eyebrow' => 'Защищённый институциональный доступ',
-      'accessValue' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.',
-      'footerLegal' => '© 2024 КазТБУ Digital Library. Все права защищены.',
-    ],
-    'kk' => [
-      'title' => 'Қауіпсіз кіру — Digital Library',
-      'brand' => 'KazUTB Digital Library',
-      'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
-      'hero' => 'Кітапхана жүйесіне кіру',
-      'lead' => 'Жеке кабинетке кіру, берілімдерді тексеру, броньдарды басқару және бақыланатын цифрлық материалдарға өту үшін авторизациядан өтіңіз.',
-      'loginLabel' => 'Логин немесе Email',
-      'loginPlaceholder' => 'Мысалы: student01 немесе mail@example.com',
-      'passwordLabel' => 'Құпиясөз',
-      'passwordPlaceholder' => 'Құпиясөзді енгізіңіз',
-      'submit' => 'Жалғастыру',
-      'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
-      'accessValue' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.',
-      'footerLegal' => '© 2024 КазТБУ Digital Library. Барлық құқықтар қорғалған.',
-    ],
-    'en' => [
-      'title' => 'Secure access — Digital Library',
-      'brand' => 'KazUTB Digital Library',
-      'eyebrow' => 'Secure institutional access',
-      'hero' => 'Sign in to the library system',
-      'lead' => 'Authenticate to open your account, review loans, manage reservations, and move into controlled digital materials.',
-      'loginLabel' => 'Login or email',
-      'loginPlaceholder' => 'Example: student01 or mail@example.com',
-      'passwordLabel' => 'Password',
-      'passwordPlaceholder' => 'Enter your password',
-      'submit' => 'Continue',
-      'eyebrow' => 'Secure institutional access',
-      'accessValue' => 'The session stays inside the library interface while credentials are verified through the CRM API.',
-      'footerLegal' => '© 2024 KazUTB Digital Library. All rights reserved.',
-    ],
-  ][$lang];
-@endphp
-@php
-  $lang = app()->getLocale();
-  $withLang = static function (string $path) use ($lang): string {
-    return $lang === 'ru' ? $path : $path.(str_contains($path, '?') ? '&' : '?').'lang='.$lang;
-  };
-  $copy = [
-    'ru' => [
-      'title' => 'Безопасный вход — Digital Library',
-      'brand' => 'KazUTB Digital Library',
-      'eyebrow' => 'Защищённый институциональный доступ',
-      'hero' => 'Вход в библиотечную систему',
-      'lead' => 'Авторизуйтесь, чтобы открыть личный кабинет, проверить выдачи, управлять бронированиями и переходить к контролируемым цифровым материалам.',
-      'ssoBanner' => 'Университетский шлюз единого входа',
-      'divider' => 'или используйте учётные данные',
-      'formTitle' => 'Войти',
-      'formSub' => 'Используйте действующий университетский логин или email и пароль. После успешного входа вы будете перенаправлены в кабинет читателя.',
-      'loginLabel' => 'Логин или Email',
-      'loginPlaceholder' => 'Например: student01 или mail@example.com',
-      'passwordLabel' => 'Пароль',
-      'passwordPlaceholder' => 'Введите пароль',
-      'submit' => 'Продолжить',
-      'statusLabel' => 'Статус системы',
-      'statusValue' => 'Контур CRM-аутентификации: онлайн',
-      'accessLabel' => 'Контур доступа',
-      'accessValue' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.',
-      'footerLegal' => '© 2024 КазТБУ Digital Library. Все права защищены.',
-      'footerMeta' => 'Institutional Resource Center v4.2.0',
-      'footerLinks' => [
-        ['label' => 'Контакты', 'href' => '/contacts'],
-        ['label' => 'Ресурсы', 'href' => '/resources'],
-        ['label' => 'Каталог', 'href' => '/catalog'],
-      ],
-      'demoTitle' => 'Быстрый вход',
-      'demoSub' => 'Нажмите на карточку для мгновенного входа под выбранной ролью.',
-      'demoEnv' => 'Dev / Demo',
-    ],
-    'kk' => [
-      'title' => 'Қауіпсіз кіру — Digital Library',
-      'brand' => 'KazUTB Digital Library',
-      'eyebrow' => 'Қауіпсіз институционалдық қолжетімділік',
-      'hero' => 'Кітапхана жүйесіне кіру',
-      'lead' => 'Жеке кабинетке кіру, берілімдерді тексеру, броньдарды басқару және бақыланатын цифрлық материалдарға өту үшін авторизациядан өтіңіз.',
-      'ssoBanner' => 'Университеттің бірыңғай кіру шлюзі',
-      'divider' => 'немесе есептік деректерді қолданыңыз',
-      'formTitle' => 'Кіру',
-      @include('partials.navbar', ['activePage' => 'login'])
-      <main class="min-h-screen flex flex-col md:flex-row">
-        <!-- Visual Sidebar: Institutional Guidance & Note -->
-        <section class="hidden md:flex md:w-5/12 lg:w-1/2 bg-primary relative overflow-hidden flex-col justify-between p-16 text-on-primary">
-          <div class="absolute inset-0 opacity-20">
-            <img alt="Atmospheric library interior" class="w-full h-full object-cover" src="/images/login-bg.jpg" />
-            <div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-container to-transparent"></div>
-          </div>
-          <div class="relative z-10">
-            <div class="flex items-center gap-3 mb-12">
-              <span class="material-symbols-outlined text-secondary-fixed text-3xl" data-icon="account_balance">account_balance</span>
-              <span class="text-xl font-serif italic tracking-tight">{{ $copy['brand'] }}</span>
-            </div>
-            <div class="max-w-md">
-              <h2 class="text-5xl font-headline mb-8 leading-tight">{{ $copy['hero'] }}</h2>
-              <p class="text-on-primary-container text-lg font-body leading-relaxed mb-12">{{ $copy['lead'] }}</p>
-            </div>
-          </div>
-          <div class="relative z-10 space-y-8">
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-secondary mt-1" data-icon="verified_user">verified_user</span>
-              <div>
-                <h4 class="font-bold text-sm uppercase tracking-widest text-secondary-fixed mb-2">{{ $copy['eyebrow'] }}</h4>
-                <p class="text-on-primary-container text-sm leading-snug">{{ $copy['accessValue'] }}</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-secondary mt-1" data-icon="help">help</span>
-              <div>
-                <h4 class="font-bold text-sm uppercase tracking-widest text-secondary-fixed mb-2">Support</h4>
-                <p class="text-on-primary-container text-sm leading-snug">support@kazutb.edu.kz</p>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- Access Form Section -->
-        <section class="flex-1 flex flex-col justify-center bg-surface-container-lowest p-8 md:p-24 relative">
-          <div class="md:hidden mb-12 flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary text-2xl" data-icon="account_balance">account_balance</span>
-            <span class="text-lg font-serif italic text-primary">{{ $copy['brand'] }}</span>
-          </div>
-          <div class="max-w-md w-full mx-auto">
-            <header class="mb-12">
-              <h1 class="text-4xl md:text-5xl font-headline text-primary mb-4 tracking-tight">{{ $copy['hero'] }}</h1>
-              <p class="text-on-surface-variant font-body">{{ $copy['lead'] }}</p>
-            </header>
-            <form class="space-y-8" method="POST" action="{{ route('login') }}">
-              @csrf
-              <div class="space-y-2">
-                <label class="block text-xs font-bold tracking-widest uppercase text-outline" for="login">{{ $copy['loginLabel'] }}</label>
-                <div class="relative group">
-                  <input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 py-4 px-0 focus:ring-0 focus:border-secondary transition-all font-body text-primary placeholder-on-surface-variant/40" id="login" name="login" placeholder="{{ $copy['loginPlaceholder'] }}" required type="text" autocomplete="username" />
-                  <div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center px-2">
-                    <span class="material-symbols-outlined text-on-surface-variant/50 text-xl" data-icon="badge">badge</span>
-                  </div>
-                </div>
-              </div>
-              <div class="space-y-2">
-                <div class="flex justify-between items-end">
-                  <label class="block text-xs font-bold tracking-widest uppercase text-outline" for="password">{{ $copy['passwordLabel'] }}</label>
-                  <a class="text-xs font-bold text-secondary hover:underline transition-all" href="/password/reset">{{ __('Forgot?') }}</a>
-                </div>
-                <div class="relative group">
-                  <input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 py-4 px-0 focus:ring-0 focus:border-secondary transition-all font-body text-primary placeholder-on-surface-variant/40" id="password" name="password" placeholder="{{ $copy['passwordPlaceholder'] }}" required type="password" autocomplete="current-password" />
-                  <div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center px-2">
-                    <span class="material-symbols-outlined text-on-surface-variant/50 text-xl" data-icon="lock">lock</span>
-                  </div>
-                </div>
-              </div>
-              <div class="flex items-center justify-between py-2">
-                <label class="flex items-center gap-3 cursor-pointer group">
-                  <div class="relative flex items-center">
-                    <input class="peer h-5 w-5 rounded-lg border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox" name="remember" />
-                  </div>
-                  <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors">{{ __('Keep me signed in for 30 days') }}</span>
-                </label>
-              </div>
-              <button class="w-full py-5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold tracking-widest uppercase text-sm rounded-lg hover:shadow-xl hover:shadow-primary/10 active:opacity-80 transition-all duration-300 flex justify-center items-center gap-2 group" type="submit">
-                {{ $copy['submit'] }}
-                <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
-              </button>
-            </form>
-            <footer class="mt-16 text-center">
-              <p class="text-xs text-outline leading-relaxed max-w-xs mx-auto">
-                {{ __('Unauthorized access is prohibited. All activity is logged for security and auditing purposes as per institutional policy.') }}
-              </p>
-            </footer>
-          </div>
-        </section>
-      </main>
-      @include('partials.footer')
-
-    .demo-block {
-      margin-top: 16px;
-      padding: 16px;
-      border: 1px solid rgba(196, 198, 207, 0.24);
-      border-radius: var(--radius-lg);
-      background: rgba(243, 244, 245, 0.72);
+<!DOCTYPE html>
+<html lang="{{ $lang ?? app()->getLocale() }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{{ $copy['title'] ?? 'Digital Library' }}</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #18212f;
+      --muted: #637083;
+      --primary: #123a63;
+      --accent: #1f7a8c;
+      --border: #d8e0ea;
+      --danger: #b3261e;
+      --success: #13696d;
     }
-
-    .demo-env-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      background: rgba(245, 158, 11, 0.1);
-      color: #b45309;
-      border: 1px solid rgba(245, 158, 11, 0.2);
-      margin-bottom: 12px;
-    }
-
-    .demo-block-title {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      margin: 0 0 5px;
-    }
-
-    .demo-block-subtitle {
-      font-size: 12px;
-      color: var(--muted);
-      margin: 0 0 14px;
-      line-height: 1.5;
-    }
-
-    .demo-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .demo-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 13px;
-      border: 1px solid rgba(196, 198, 207, 0.3);
-      border-radius: var(--radius-lg);
-      background: rgba(255,255,255,.9);
-      cursor: pointer;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
-      text-align: left;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(135deg, #eef4fb 0%, var(--bg) 100%);
       color: var(--text);
     }
-
-    .demo-card:hover {
-      border-color: rgba(0,30,64,.18);
-      background: rgba(243, 244, 245, 0.95);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(25, 28, 29, .04);
-    }
-
-    .demo-card:disabled {
-      opacity: .5;
-      cursor: wait;
-    }
-
-    .demo-card-icon {
-      font-size: 24px;
-      flex-shrink: 0;
-    }
-
-    .demo-card-info {
-      min-width: 0;
-    }
-
-    .demo-card-label {
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .demo-card-desc {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.35;
-      margin-top: 2px;
-    }
-
-    .support-note {
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(196, 198, 207, 0.22);
+    .page {
+      min-height: 100vh;
       display: grid;
-      gap: 6px;
+      place-items: center;
+      padding: 24px;
     }
-
-    .support-note strong {
-      color: var(--primary-deep);
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
+    .card {
+      width: min(100%, 920px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(18, 58, 99, 0.08);
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      overflow: hidden;
     }
-
-    .support-note p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
+    .panel {
+      padding: 40px;
     }
-
-    .support-note-status {
+    .panel.brand {
+      background: linear-gradient(160deg, var(--primary), #244d7f);
+      color: #fff;
+    }
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      width: fit-content;
-      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      opacity: .9;
+      margin-bottom: 16px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
       border-radius: 999px;
-      background: rgba(19, 105, 109, 0.08);
-      color: var(--secondary);
+      background: #7be0d0;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+    p {
+      margin: 0;
+      color: inherit;
+      line-height: 1.6;
+    }
+    .brand-note {
+      margin-top: 28px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.12);
+    }
+    .field { margin-bottom: 16px; }
+    .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+    .input {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fff;
+    }
+    .input:focus {
+      outline: 2px solid rgba(31, 122, 140, .18);
+      border-color: var(--accent);
+    }
+    .submit {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .submit:disabled { opacity: .7; cursor: wait; }
+    .message {
+      margin-top: 12px;
+      font-size: 14px;
+      min-height: 20px;
+    }
+    .message.error { color: var(--danger); }
+    .message.success { color: var(--success); }
+    .demo-block {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .demo-env-badge {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #fff3cd;
+      color: #7a5600;
       font-size: 11px;
       font-weight: 700;
     }
-
-    .support-note-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--secondary);
+    .demo-block-title {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 700;
     }
-
-    .footer {
-      width: 100%;
-      border-top: 1px solid rgba(196, 198, 207, 0.18);
-      background: rgba(248, 249, 250, 0.88);
-      padding: 20px 24px 24px;
+    .demo-block-subtitle {
+      margin: 0 0 12px;
+      font-size: 13px;
+      color: var(--muted);
     }
-
-    .footer-inner {
-      width: min(100%, var(--container));
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+    .demo-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
-
-    .footer-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      color: rgba(68, 71, 78, 0.82);
+    .demo-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
     }
-
-    .footer-copy strong {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 0.95rem;
-      font-weight: 500;
+    .demo-card-label {
+      display: block;
+      font-weight: 700;
+      color: var(--text);
     }
-
-    .footer-copy span {
-      font-size: 10px;
-      font-weight: 800;
+    .demo-card-desc {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .support-note {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #f7fafc;
+      border: 1px solid var(--border);
+    }
+    .support-note strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
+      letter-spacing: .1em;
+      color: var(--muted);
     }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 28px;
-    }
-
-    .footer-links a {
-      color: rgba(68, 71, 78, 0.8);
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      transition: color 0.18s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--primary-deep);
-    }
-
-    @media (max-width: 768px) {
-      .header {
-        padding-top: 24px;
-      }
-
-      .main {
-        padding: 8px 16px 34px;
-      }
-
-      .auth-card {
-        padding: 24px 20px 20px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .footer-links {
-        justify-content: flex-start;
-        gap: 18px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .demo-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .divider {
-        gap: 10px;
-      }
-
-      .divider span {
-        font-size: 9px;
-      }
+    @media (max-width: 800px) {
+      .card { grid-template-columns: 1fr; }
+      .panel { padding: 24px; }
+      .demo-cards { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <header class="header">
-      <div class="header-inner">
-        <div class="brand">{{ $copy['brand'] }}</div>
-        <div class="eyebrow">
-          <span class="eyebrow-dot" aria-hidden="true"></span>
-          <span>{{ $copy['eyebrow'] }}</span>
+    <div class="card">
+      <section class="panel brand">
+        <div class="eyebrow">{{ $copy['eyebrow'] ?? '' }}</div>
+        <h1>{{ $copy['hero'] ?? 'Вход в библиотечную систему' }}</h1>
+        <p>{{ $copy['lead'] ?? '' }}</p>
+
+        <div class="brand-note">
+          <strong>{{ $copy['accessLabel'] ?? 'Контур доступа' }}</strong>
+          <p>{{ $copy['accessValue'] ?? '' }}</p>
         </div>
-      </div>
-    </header>
+      </section>
 
-    <main class="main">
-      <div class="auth-shell">
-        <section class="auth-card">
-          <div class="intro">
-            <h1>{{ $copy['hero'] }}</h1>
-            <p>{{ $copy['lead'] }}</p>
+      <section class="panel">
+        <form id="login-form" method="POST" action="{{ route('login') }}" novalidate>
+          @csrf
+          <div class="field">
+            <label class="label" for="login">{{ $copy['loginLabel'] ?? 'Login or Email' }}</label>
+            <input class="input" id="login" name="login" type="text" placeholder="{{ $copy['loginPlaceholder'] ?? '' }}" autocomplete="username" required>
           </div>
 
-          <div class="sso-banner" aria-hidden="true">
-            <span class="sso-icon">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-                <path d="M12 3 3 7v2h18V7l-9-4Zm-7 8v6H3v2h18v-2h-2v-6h-2v6h-3v-6h-2v6H9v-6H7Z"/>
-              </svg>
-            </span>
-            <span>{{ $copy['ssoBanner'] }}</span>
+          <div class="field">
+            <label class="label" for="password">{{ $copy['passwordLabel'] ?? 'Password' }}</label>
+            <input class="input" id="password" name="password" type="password" placeholder="{{ $copy['passwordPlaceholder'] ?? '' }}" autocomplete="current-password" required>
           </div>
 
-          <div class="divider">
-            <span>{{ $copy['divider'] }}</span>
-          </div>
+          <button id="submit-btn" type="submit" class="submit">{{ $copy['submit'] ?? 'Continue' }}</button>
+          <div id="form-message" class="message" aria-live="polite"></div>
+        </form>
 
-          <form id="login-form" novalidate>
-            <div class="field">
-              <label class="label" for="login">{{ $copy['loginLabel'] }}</label>
-              <input class="input" id="login" name="login" type="text" placeholder="{{ $copy['loginPlaceholder'] }}" autocomplete="username" required />
-            </div>
-
-            <div class="field">
-              <label class="label" for="password">{{ $copy['passwordLabel'] }}</label>
-              <input class="input" id="password" name="password" type="password" placeholder="{{ $copy['passwordPlaceholder'] }}" autocomplete="current-password" required />
-            </div>
-
-            <div class="submit-wrap">
-              <button id="submit-btn" type="submit" class="submit">{{ $copy['submit'] }}</button>
-            </div>
-            <div id="form-message" class="message" aria-live="polite"></div>
-          </form>
-
-          @if(!empty($demoEnabled) && !empty($demoIdentities))
+        @if(!empty($demoEnabled) && !empty($demoIdentities))
           <div class="demo-block" id="demo-login-block">
-            <span class="demo-env-badge">{{ $copy['demoEnv'] }}</span>
-            <p class="demo-block-title">{{ $copy['demoTitle'] }}</p>
-            <p class="demo-block-subtitle">{{ $copy['demoSub'] }}</p>
+            <span class="demo-env-badge">{{ $copy['demoEnv'] ?? 'Dev / Demo' }}</span>
+            <p class="demo-block-title">{{ $copy['demoTitle'] ?? 'Быстрый вход' }}</p>
+            <p class="demo-block-subtitle">{{ $copy['demoSub'] ?? '' }}</p>
             <div class="demo-cards">
               @foreach($demoIdentities as $identity)
-              <button type="button" class="demo-card" data-demo-slug="{{ $identity['slug'] }}" onclick="demoLogin('{{ $identity['slug'] }}', this)">
-                <span class="demo-card-icon">{{ $identity['icon'] }}</span>
-                <span class="demo-card-info">
-                  <span class="demo-card-label">{{ $identity['label'] }}</span>
-                  <span class="demo-card-desc">{{ $identity['description'] }}</span>
-                </span>
-              </button>
+                <button type="button" class="demo-card" data-demo-slug="{{ $identity['slug'] }}" onclick="demoLogin('{{ $identity['slug'] }}', this)">
+                  <span class="demo-card-label">{{ $identity['icon'] ?? '👤' }} {{ $identity['label'] }}</span>
+                  <span class="demo-card-desc">{{ $identity['description'] ?? '' }}</span>
+                </button>
               @endforeach
             </div>
           </div>
-          @endif
+        @endif
 
-          <div class="support-note" aria-label="Access context">
-            <strong>{{ $copy['accessLabel'] }}</strong>
-            <span class="support-note-status">
-              <span class="support-note-status-dot" aria-hidden="true"></span>
-              <span>{{ $copy['statusValue'] }}</span>
-            </span>
-            <p>{{ $copy['accessValue'] }}</p>
-          </div>
-        </section>
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-copy">
-          <strong>{{ $copy['footerLegal'] }}</strong>
-          <span>{{ $copy['footerMeta'] }}</span>
+        <div class="support-note">
+          <strong>{{ $copy['statusLabel'] ?? 'Статус системы' }}</strong>
+          <p>{{ $copy['statusValue'] ?? '' }}</p>
         </div>
-        <nav class="footer-links" aria-label="Footer navigation">
-          @foreach($copy['footerLinks'] as $link)
-            <a href="{{ $withLang($link['href']) }}">{{ $link['label'] }}</a>
-          @endforeach
-        </nav>
-      </div>
-    </footer>
+      </section>
+    </div>
   </div>
 
   <script>
     const AUTH_USER_KEY = 'library.auth.user';
-    const AUTH_LANG = @json($lang);
+    const AUTH_LANG = @json($lang ?? 'ru');
     const AUTH_I18N_MAP = {!! json_encode([
       'ru' => [
         'authError' => 'Ошибка авторизации',
@@ -577,10 +312,7 @@
     }
 
     async function submitLogin(loginValue, passwordValue) {
-      const payload = {
-        password: passwordValue,
-        device_name: 'web',
-      };
+      const payload = { password: passwordValue, device_name: 'web' };
 
       if (loginValue.includes('@')) {
         payload.email = loginValue;
@@ -592,22 +324,19 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
+          'Accept': 'application/json',
           'X-CSRF-TOKEN': getCsrfToken(),
         },
         body: JSON.stringify(payload),
       });
 
       const data = await response.json().catch(() => ({}));
-
       if (!response.ok) {
-        const message = data?.message || data?.details?.message || AUTH_I18N.authError;
-        throw new Error(message);
+        throw new Error(data?.message || AUTH_I18N.authError);
       }
 
-      const user = data?.user || null;
-      if (user) {
-        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+      if (data?.user) {
+        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(data.user));
       }
     }
 
@@ -616,78 +345,67 @@
       clearMessage();
 
       const submitBtn = document.getElementById('submit-btn');
-      const loginInput = document.getElementById('login');
-      const passwordInput = document.getElementById('password');
-
-      const loginValue = (loginInput?.value || '').trim();
-      const passwordValue = (passwordInput?.value || '').trim();
+      const loginValue = (document.getElementById('login')?.value || '').trim();
+      const passwordValue = (document.getElementById('password')?.value || '').trim();
 
       if (!loginValue || !passwordValue) {
         showMessage(AUTH_I18N.fillFields, 'error');
         return;
       }
 
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = AUTH_I18N.submitting;
-      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = AUTH_I18N.submitting;
 
       try {
         await submitLogin(loginValue, passwordValue);
         showMessage(AUTH_I18N.success, 'success');
+        const params = new URLSearchParams(window.location.search);
+        const redirectTo = params.get('redirect') || withLang('/account');
         window.setTimeout(() => {
-          const params = new URLSearchParams(window.location.search);
-          const redirectTo = params.get('redirect') || withLang('/account');
-          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
-          window.location.href = safeRedirect;
-        }, 350);
+          window.location.href = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
+        }, 300);
       } catch (error) {
         showMessage(error?.message || AUTH_I18N.submitError, 'error');
       } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = AUTH_I18N.submitDefault;
-        }
+        submitBtn.disabled = false;
+        submitBtn.textContent = AUTH_I18N.submitDefault;
       }
     });
 
     async function demoLogin(slug, btn) {
       clearMessage();
       const allCards = document.querySelectorAll('.demo-card');
-      allCards.forEach(c => c.disabled = true);
+      allCards.forEach(card => card.disabled = true);
 
       try {
         const response = await fetch('/api/demo-auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
+            'Accept': 'application/json',
             'X-CSRF-TOKEN': getCsrfToken(),
           },
           body: JSON.stringify({ role: slug }),
         });
 
         const data = await response.json().catch(() => ({}));
-
         if (!response.ok) {
-          throw new Error(data?.message || 'Demo login failed');
+          throw new Error(data?.message || AUTH_I18N.demoError);
         }
 
-        const user = data?.user || null;
-        if (user) {
-          localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+        if (data?.user) {
+          localStorage.setItem(AUTH_USER_KEY, JSON.stringify(data.user));
         }
 
         showMessage(AUTH_I18N.demoSuccess, 'success');
+        const params = new URLSearchParams(window.location.search);
+        const redirectTo = params.get('redirect') || withLang('/account');
         window.setTimeout(() => {
-          const params = new URLSearchParams(window.location.search);
-          const redirectTo = params.get('redirect') || withLang('/account');
-          const safeRedirect = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
-          window.location.href = safeRedirect;
+          window.location.href = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
         }, 300);
       } catch (error) {
         showMessage(error?.message || AUTH_I18N.demoError, 'error');
-        allCards.forEach(c => c.disabled = false);
+        allCards.forEach(card => card.disabled = false);
       }
     }
   </script>

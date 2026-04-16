@@ -180,6 +180,33 @@ class AuthHardeningTest extends TestCase
             ->assertJsonPath('user.role', 'librarian');
     }
 
+    public function test_browser_login_redirects_to_account_and_stores_session(): void
+    {
+        Http::fake([
+            '*' => Http::response([
+                'token' => 'crm-browser-token-123',
+                'user' => [
+                    'id' => 'u-browser',
+                    'name' => 'Browser User',
+                    'email' => 'browser@example.com',
+                    'login' => 'browser-user',
+                    'role' => 'reader',
+                ],
+            ], 200),
+        ]);
+
+        $response = $this
+            ->withoutMiddleware(PreventRequestForgery::class)
+            ->post('/login', [
+                'login' => 'browser-user',
+                'password' => 'correct-pass',
+            ]);
+
+        $response->assertRedirect('/account');
+        $this->assertSame('crm-browser-token-123', session('library.crm_token'));
+        $this->assertSame('browser@example.com', session('library.user.email'));
+    }
+
     // ──────────────────────────────────────────────────
     // Login: failure logging
     // ──────────────────────────────────────────────────

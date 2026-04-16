@@ -1,43 +1,9 @@
-use Illuminate\Support\Facades\Http;
-Route::post('/login', function (\Illuminate\Http\Request $request) {
-    $validated = $request->validate([
-        'email' => ['nullable', 'string', 'email', 'required_without:login'],
-        'login' => ['nullable', 'string', 'required_without:email'],
-        'password' => ['required', 'string'],
-        'device_name' => ['nullable', 'string', 'max:255'],
-    ]);
-
-    $loginIdentifier = $validated['login'] ?? $validated['email'] ?? 'unknown';
-    $authApiUrl = config('services.external_auth.login_url', 'http://crm.local/api/login');
-
-    $response = Http::timeout(12)->acceptJson()->post($authApiUrl, [
-        'email' => $validated['email'] ?? null,
-        'login' => $validated['login'] ?? null,
-        'password' => $validated['password'],
-        'device_name' => $validated['device_name'] ?? 'web',
-    ]);
-
-    if ($response->successful()) {
-        $payload = $response->json();
-        $token = (string) ($payload['token'] ?? $payload['access_token'] ?? '');
-        if ($token === '') {
-            return back()->withErrors(['login' => 'Authentication service returned an unexpected response.']);
-        }
-        $rawUser = $payload['user'] ?? $payload['data']['user'] ?? [];
-        $user = is_array($rawUser) ? $rawUser : [];
-        $request->session()->regenerate();
-        $request->session()->put('library.crm_token', $token);
-        $request->session()->put('library.user', $user);
-        $request->session()->put('library.authenticated_at', now()->toIso8601String());
-        return redirect('/account');
-    }
-    return back()->withErrors(['login' => 'Invalid credentials or authentication failed.']);
-});
 <?php
 
 use App\Services\Library\BookDetailReadService;
 use App\Services\Library\CatalogReadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 $internalStaffView = static function (Request $request, string $view) {
@@ -150,6 +116,46 @@ Route::get('/account', function (Request $request) {
     return view('account', ['sessionUser' => $user]);
 });
 
+Route::post('/login', function (Request $request) {
+    $validated = $request->validate([
+        'email' => ['nullable', 'string', 'email', 'required_without:login'],
+        'login' => ['nullable', 'string', 'required_without:email'],
+        'password' => ['required', 'string'],
+        'device_name' => ['nullable', 'string', 'max:255'],
+    ]);
+
+    $loginIdentifier = $validated['login'] ?? $validated['email'] ?? 'unknown';
+    $authApiUrl = config('services.external_auth.login_url', 'http://crm.local/api/login');
+
+    $response = Http::timeout(12)->acceptJson()->post($authApiUrl, [
+        'email' => $validated['email'] ?? null,
+        'login' => $validated['login'] ?? null,
+        'password' => $validated['password'],
+        'device_name' => $validated['device_name'] ?? 'web',
+    ]);
+
+    if ($response->successful()) {
+        $payload = $response->json();
+        $token = (string) ($payload['token'] ?? $payload['access_token'] ?? '');
+
+        if ($token === '') {
+            return back()->withErrors(['login' => 'Authentication service returned an unexpected response.']);
+        }
+
+        $rawUser = $payload['user'] ?? $payload['data']['user'] ?? [];
+        $user = is_array($rawUser) ? $rawUser : [];
+
+        $request->session()->regenerate();
+        $request->session()->put('library.crm_token', $token);
+        $request->session()->put('library.user', $user);
+        $request->session()->put('library.authenticated_at', now()->toIso8601String());
+
+        return redirect('/account');
+    }
+
+    return back()->withErrors(['login' => 'Invalid credentials or authentication failed.']);
+});
+
 Route::get('/login', function (Request $request) {
     $lang = $request->query('lang', 'ru');
     $lang = in_array($lang, ['ru', 'kk', 'en'], true) ? $lang : 'ru';
@@ -250,7 +256,7 @@ Route::get('/login', function (Request $request) {
         'copy' => $copy,
         'lang' => $lang,
     ]);
-});
+})->name('login');
 
 // Consolidated pages: /services and /news removed — redirects to prevent 404s.
 Route::get('/services', fn () => redirect('/', 301));
