@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Librarian Workspace</title>
+    <title>KazUTB Admin Overview</title>
     <style>
         :root {
             --bg: #f6f7f8;
@@ -410,19 +410,108 @@
             display: none;
         }
 
+        .overview-columns {
+            display: grid;
+            grid-template-columns: minmax(0, 1.7fr) minmax(280px, .9fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .sidebar-stack {
+            display: grid;
+            gap: 20px;
+        }
+
+        .sticky-card {
+            position: sticky;
+            top: 20px;
+        }
+
+        .cards.cards-three {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .activity-log {
+            display: grid;
+            gap: 12px;
+        }
+
+        .activity-log-item {
+            display: grid;
+            grid-template-columns: 40px minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid var(--line);
+        }
+
+        .activity-log-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: rgba(0,30,64,.05);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .activity-log-item strong {
+            color: var(--accent);
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .activity-log-item p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.75;
+        }
+
+        .quote-card {
+            min-height: 240px;
+            background: linear-gradient(180deg, rgba(243,244,245,.9), rgba(255,255,255,.98));
+        }
+
+        .quote-card blockquote {
+            margin: 0;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 20px;
+            line-height: 1.7;
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .quote-card p {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
         @media (max-width: 1100px) {
-            .hero { grid-template-columns: 1fr; }
-            .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .hero,
+            .overview-columns { grid-template-columns: 1fr; }
+            .cards,
+            .cards.cards-three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .panel.half { grid-column: span 12; }
             .route-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .sticky-card { position: static; }
         }
 
         @media (max-width: 720px) {
             .shell { width: min(100% - 20px, 1280px); }
             .hero, .panel { padding: 18px; }
             .cards,
+            .cards.cards-three,
             .route-grid { grid-template-columns: 1fr; }
-            .queue-item { grid-template-columns: 1fr; }
+            .queue-item,
+            .activity-log-item { grid-template-columns: 1fr; }
             .staff-meta-item { flex-direction: column; }
         }
     </style>
@@ -436,157 +525,184 @@
         $staffLogin = (string) ($staff['ad_login'] ?? ($staff['login'] ?? 'не указан'));
         $staffPhoneExt = (string) ($staff['phone_extension'] ?? 'не указан');
     @endphp
-    <main class="shell" data-librarian-workspace>
+    <main class="shell" data-librarian-workspace data-admin-overview-page>
         <div class="workspace">
-            <section class="hero">
+            <section class="hero" data-admin-overview-hero>
                 <div>
-                    <div class="eyebrow">KazТБУ Librarian Workspace</div>
-                    <h1>Операционная панель библиотеки</h1>
+                    <div class="eyebrow">Internal Administration</div>
+                    <h1>System Oversight</h1>
                     <p class="subtitle">
-                        Первая staff-facing рабочая поверхность для библиотекарей: очереди, незавершённые профильные кейсы,
-                        контактные и доступные проблемы, а также быстрые переходы в реальные библиотечные сценарии.
+                        A unified summary of repository health, metadata integrity, and system-wide circulation dynamics
+                        for the library platform, rendered through the stable internal shell rather than a broken export navbar.
                     </p>
                     <div class="nav-row">
-                        <a class="nav-link primary" href="/internal/circulation">Circulation Desk</a>
                         <a class="nav-link primary" href="/internal/review">Review Queue</a>
+                        <a class="nav-link primary" href="/internal/circulation">Circulation Desk</a>
                         <a class="nav-link" href="/internal/stewardship">Data Stewardship</a>
                         <a class="nav-link" href="/internal/ai-chat">AI Assistant</a>
-                        <a class="nav-link" href="/catalog">Каталог</a>
+                        <a class="nav-link" href="/catalog">Catalog</a>
                     </div>
                     <div class="status-row" id="status-row">
-                        <div class="status-chip">Загрузка triage summary…</div>
-                        <div class="status-chip">Загрузка reader review…</div>
-                        <div class="status-chip">Загрузка contact stats…</div>
+                        <div class="status-chip">Loading triage summary…</div>
+                        <div class="status-chip">Loading reader review…</div>
+                        <div class="status-chip">Loading contact stats…</div>
                     </div>
                     <div class="error-box" id="dashboard-error"></div>
                 </div>
 
                 <div class="hero-meta">
                     <section class="staff-card">
-                        <div class="staff-kicker">Текущая staff-сессия</div>
+                        <div class="staff-kicker">Current staff session</div>
                         <h2 class="staff-name">{{ $staffName }}</h2>
                         <p class="staff-role">{{ $staffRole }}</p>
                         <div class="staff-meta-list">
                             <div class="staff-meta-item"><strong>Email</strong><span>{{ $staffEmail }}</span></div>
-                            <div class="staff-meta-item"><strong>Логин</strong><span>{{ $staffLogin }}</span></div>
-                            <div class="staff-meta-item"><strong>Телефон вн.</strong><span>{{ $staffPhoneExt }}</span></div>
+                            <div class="staff-meta-item"><strong>Login</strong><span>{{ $staffLogin }}</span></div>
+                            <div class="staff-meta-item"><strong>Phone ext.</strong><span>{{ $staffPhoneExt }}</span></div>
                         </div>
                     </section>
 
                     <section class="note-card staff-card">
-                        <div class="staff-kicker">Операционный контур</div>
-                        <strong>Что уже реально подключено</strong>
-                        <p>Панель читает только существующие staff summary endpoints: triage, reader review, reader contacts, enrichment и stewardship.</p>
-                        <p>Отдельная библиотечная очередь по бронированиям и staff-модерация waitlist останутся следующим этапом интеграции.</p>
+                        <div class="staff-kicker">Operational note</div>
+                        <strong>Stable shell preserved</strong>
+                        <p>The admin overview body follows the export, while the live internal shell stays intact and safe for staff workflows.</p>
+                        <p>Only real routes and real summary endpoints are used on this page.</p>
                     </section>
                 </div>
             </section>
 
-            <section class="grid">
-                <article class="panel">
-                    <div class="panel-head">
-                        <div>
-                            <h2>Сегодня требует внимания</h2>
-                            <p>Операционные сигналы, которые библиотекарь может использовать сразу: нерешённые review cases, читатели с проблемами привязки и контактные пробелы.</p>
+            <section class="overview-columns">
+                <div class="workspace">
+                    <article class="panel" data-admin-overview-health>
+                        <div class="panel-head">
+                            <div>
+                                <h2>Health Summary</h2>
+                                <p>Core operational signals for circulation, metadata review, and active scholar-facing support.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="cards" id="operational-queue"></div>
-                </article>
+                        <div class="cards cards-three" id="operational-queue"></div>
+                    </article>
 
-                <article class="panel half">
-                    <div class="panel-head">
-                        <div>
-                            <h2>Очереди по сущностям</h2>
-                            <p>Какие типы библиотечных сущностей сейчас чаще всего требуют staff-разбора.</p>
+                    <article class="panel" data-admin-overview-activity>
+                        <div class="panel-head">
+                            <div>
+                                <h2>System-wide Activity</h2>
+                                <p>A calm summary of what changed most recently across review, repository, and reader-support operations.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="queue-list" id="entity-queues"></div>
-                </article>
+                        <div class="activity-log" id="system-activity-log"></div>
+                    </article>
 
-                <article class="panel half">
-                    <div class="panel-head">
-                        <div>
-                            <h2>Top reason codes</h2>
-                            <p>Основные причины review и triage — хороший ориентир для разборов смены.</p>
-                        </div>
-                    </div>
-                    <div class="reason-list" id="top-reasons"></div>
-                    <div class="source-note" id="triage-source-note"></div>
-                </article>
+                    <section class="grid">
+                        <article class="panel half">
+                            <div class="panel-head">
+                                <div>
+                                    <h2>Entity Queues</h2>
+                                    <p>Which operational objects most often need admin or librarian attention right now.</p>
+                                </div>
+                            </div>
+                            <div class="queue-list" id="entity-queues"></div>
+                        </article>
 
-                <article class="panel half">
-                    <div class="panel-head">
-                        <div>
-                            <h2>Профили и доступ читателей</h2>
-                            <p>Честно derived operational state для profile linking, email coverage и access clarification.</p>
-                        </div>
-                    </div>
-                    <div class="cards" id="reader-access-metrics"></div>
-                </article>
+                        <article class="panel half">
+                            <div class="panel-head">
+                                <div>
+                                    <h2>Top reason codes</h2>
+                                    <p>The dominant review reasons currently shaping the oversight backlog.</p>
+                                </div>
+                            </div>
+                            <div class="reason-list" id="top-reasons"></div>
+                            <div class="source-note" id="triage-source-note"></div>
+                        </article>
 
-                <article class="panel half">
-                    <div class="panel-head">
-                        <div>
-                            <h2>Каталог и фонд</h2>
-                            <p>Сигналы по metadata stewardship и enrichable документам, которые логично разбирать из staff workspace.</p>
-                        </div>
-                    </div>
-                    <div class="cards" id="stewardship-metrics"></div>
-                </article>
+                        <article class="panel half">
+                            <div class="panel-head">
+                                <div>
+                                    <h2>Reader access overview</h2>
+                                    <p>Profile linking, email coverage, and access clarification signals derived from the live platform.</p>
+                                </div>
+                            </div>
+                            <div class="cards" id="reader-access-metrics"></div>
+                        </article>
 
-                <article class="panel">
-                    <div class="panel-head">
-                        <div>
-                            <h2>Рабочие маршруты библиотекаря</h2>
-                            <p>Реальные staff entry points без фейковой аналитики: выдача и возврат, review workflows, stewardship и библиотечные консультации.</p>
-                        </div>
-                    </div>
-                    <div class="route-grid">
-                        <div class="route-item">
-                            <strong>Circulation Desk</strong>
-                            <p>Выдача, возврат, продление и проверка активных выдач читателя или экземпляра.</p>
-                            <a href="/internal/circulation">Открыть workflow</a>
-                        </div>
-                        <div class="route-item">
-                            <strong>Reader / Document Review</strong>
-                            <p>Очереди review по читателям, документам и экземплярам с bulk resolution и triage codes.</p>
-                            <a href="/internal/review">Открыть review</a>
-                        </div>
-                        <div class="route-item">
-                            <strong>Data Stewardship</strong>
-                            <p>Контакты, enrichment gaps, здоровье данных и корректность библиотечной записи.</p>
-                            <a href="/internal/stewardship">Открыть stewardship</a>
-                        </div>
-                        <div class="route-item">
-                            <strong>Читательская поддержка</strong>
-                            <p>Если нужен прямой контакт по доступу, уточнению профиля или работе с библиотечными правилами.</p>
-                            <a href="/contacts">Открыть контакты</a>
-                        </div>
-                    </div>
-                </article>
+                        <article class="panel half">
+                            <div class="panel-head">
+                                <div>
+                                    <h2>Catalog and holdings</h2>
+                                    <p>Metadata integrity and enrichment readiness for institutional records and the wider library fund.</p>
+                                </div>
+                            </div>
+                            <div class="cards" id="stewardship-metrics"></div>
+                        </article>
+                    </section>
+                </div>
 
-                <article class="panel">
-                    <div class="panel-head">
-                        <div>
-                            <h2>Операционные заметки</h2>
-                            <p>Честный слой v1: что уже работает для staff и что останется следующим интеграционным шагом.</p>
+                <aside class="sidebar-stack sticky-card">
+                    <article class="panel" data-admin-overview-actions>
+                        <div class="panel-head">
+                            <div>
+                                <h2>Quick Links</h2>
+                            </div>
                         </div>
-                    </div>
-                    <div class="note-list">
-                        <div class="note-item">
-                            <strong>Reservation queue</strong>
-                            <p>Отдельная librarian-facing очередь по ожиданию и выдаче бронирований ещё не вынесена в собственный staff-модуль. Пока рабочий путь остаётся через Circulation Desk и существующие waitlist контуры.</p>
+                        <div class="route-list">
+                            <div class="route-item">
+                                <strong>Role Management</strong>
+                                <p>Move to staff-facing review workflows and administrative moderation paths already available in the product.</p>
+                                <a href="/internal/review">Open review</a>
+                            </div>
+                            <div class="route-item">
+                                <strong>System Settings</strong>
+                                <p>Continue through stewardship and operational correction routes instead of fake admin placeholders.</p>
+                                <a href="/internal/stewardship">Open stewardship</a>
+                            </div>
+                            <div class="route-item">
+                                <strong>Collection Audits</strong>
+                                <p>Use circulation and catalog surfaces to inspect active library records and copy-level health.</p>
+                                <a href="/internal/circulation">Open circulation</a>
+                            </div>
+                            <div class="route-item">
+                                <strong>Contact Librarian</strong>
+                                <p>Open the live library contact surface for escalation, policy clarification, or reader-support follow-up.</p>
+                                <a href="/contacts">Open contacts</a>
+                            </div>
                         </div>
-                        <div class="note-item">
-                            <strong>Reader profile linking</strong>
-                            <p>Reader review summary уже показывает, сколько читательских профилей требует разбора. Следующий шаг — отдельный case-list и карточка разбора конкретного читателя.</p>
+                    </article>
+
+                    <article class="panel quote-card">
+                        <div class="staff-kicker">Administrative Context</div>
+                        <blockquote>
+                            “A digital library is not just a repository; it is a curated operational system where oversight, stewardship, and reader trust must stay in balance.”
+                        </blockquote>
+                        <p>— KazUTB Digital Library, internal admin context</p>
+                    </article>
+
+                    <article class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Operational notes</h2>
+                                <p>What is already connected and what remains a future integration pass.</p>
+                            </div>
                         </div>
-                        <div class="note-item">
-                            <strong>Catalog / holdings review</strong>
-                            <p>Stewardship и enrichment statistics уже дают operational picture по фонду. Отдельные action workflows по записи и экземпляру остаются для следующей librarian integration wave.</p>
+                        <div class="note-list">
+                            <div class="note-item">
+                                <strong>Reservation queue</strong>
+                                <p>Reservation operations still flow through circulation and the current waitlist contours.</p>
+                            </div>
+                            <div class="note-item">
+                                <strong>Reader profile linking</strong>
+                                <p>Reader review summary already exposes the profiles needing direct staff resolution.</p>
+                            </div>
+                            <div class="note-item">
+                                <strong>Catalog / holdings review</strong>
+                                <p>Stewardship and enrichment statistics already surface the operational picture for the fund.</p>
+                            </div>
+                            <div class="note-item">
+                                <strong>Support routes</strong>
+                                <p>Safe routes remain available through circulation, review, stewardship, AI chat, catalog, and library contacts.</p>
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                </aside>
             </section>
         </div>
     </main>
@@ -686,11 +802,45 @@
             const enrichmentData = enrichment?.data || {};
 
             document.getElementById('operational-queue').innerHTML = [
-                metricCard('Unresolved review', formatNumber(triageData.totalUnresolved), 'Все нерешённые staff review cases по копиям, документам и читателям.', 'alert'),
-                metricCard('Reader linkage cases', formatNumber(readerData.needsReviewCount), 'Читательские профили, которым нужен staff review или подтверждение связи.', 'warn'),
-                metricCard('Readers without email', formatNumber(contactData.readersWithoutEmail), 'Основа для access clarification и контакта с читателем.', 'warn'),
-                metricCard('Enrichable records', formatNumber(enrichmentData.enrichableByIsbn), 'Документы, где библиотекарь уже может продолжить metadata enrichment.', 'soft'),
+                metricCard('Current Circulation', formatNumber(triageData.totalUnresolved), 'Live circulation-adjacent oversight signals from the active review backlog.', 'soft'),
+                metricCard('Metadata Tasks', formatNumber(enrichmentData.enrichableByIsbn), 'Pending records that are ready for staff metadata enrichment and correction.', 'warn'),
+                metricCard('Active Scholars', formatNumber((readerData.needsReviewCount ?? 0) + (contactData.readersWithValidEmail ?? 0)), 'Reader-facing profiles currently visible to the admin oversight surface.', 'soft'),
             ].join('');
+        }
+
+        function renderSystemActivity(triage, readers, contacts, stewardship, enrichment) {
+            const triageData = triage?.data || {};
+            const readerData = readers?.data || {};
+            const contactData = contacts?.data || {};
+            const reviewTasks = stewardship?.data?.reviewTasks || {};
+            const enrichmentData = enrichment?.data || {};
+
+            const target = document.getElementById('system-activity-log');
+            target.innerHTML = [
+                {
+                    icon: '↺',
+                    title: 'Policy and review backlog refreshed',
+                    note: `Unresolved cases in the current queue: ${formatNumber(triageData.totalUnresolved)}.`,
+                },
+                {
+                    icon: '⛁',
+                    title: 'Repository and metadata sync snapshot',
+                    note: `Enrichable records currently visible: ${formatNumber(enrichmentData.enrichableByIsbn)}.`,
+                },
+                {
+                    icon: '✓',
+                    title: 'Reader-support posture updated',
+                    note: `Profiles needing review: ${formatNumber(readerData.needsReviewCount)}. Valid email coverage: ${formatNumber(contactData.readersWithValidEmail)}. Open tasks: ${formatNumber(reviewTasks.open)}.`,
+                },
+            ].map((item) => `
+                <div class="activity-log-item">
+                    <div class="activity-log-icon">${escapeHtml(item.icon)}</div>
+                    <div>
+                        <strong>${escapeHtml(item.title)}</strong>
+                        <p>${escapeHtml(item.note)}</p>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function renderEntityQueues(triage) {
@@ -759,6 +909,7 @@
 
             renderStatus(statuses);
             renderOperationalQueue(payloads.triage, payloads.readers, payloads.contacts, payloads.enrichment);
+            renderSystemActivity(payloads.triage, payloads.readers, payloads.contacts, payloads.stewardship, payloads.enrichment);
             renderEntityQueues(payloads.triage);
             renderTopReasons(payloads.triage);
             renderReaderAccess(payloads.readers, payloads.contacts, payloads.stewardship);
