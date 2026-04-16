@@ -1,0 +1,86 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "github_personal_access_token",
+      "description": "GitHub Personal Access Token for optional GitHub MCP access",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "stitch_api_key",
+      "description": "Google Stitch API key for optional frontend/UI MCP access",
+      "password": true
+    }
+  ],
+  "servers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ]
+    },
+    "memory": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    },
+    "fetch": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp/fetch"
+      ]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp"
+      ]
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "set -a; [ -f \"${workspaceFolder}/.env\" ] && . \"${workspaceFolder}/.env\"; set +a; exec npx -y @upstash/context7-mcp"
+      ]
+    },
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_personal_access_token}"
+      }
+    },
+    "stitch": {
+      "type": "http",
+      "url": "https://stitch.googleapis.com/mcp",
+      "headers": {
+        "X-Goog-Api-Key": "${input:stitch_api_key}"
+      }
+    },
+    "postgres": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/scripts/dev/start-postgres-mcp.sh"
+      ]
+    }
+  }
+}
