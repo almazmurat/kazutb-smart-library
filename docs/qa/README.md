@@ -1,11 +1,10 @@
 # QA and Verification
 
-This directory contains the repository’s professional QA baseline: automated scope, quality gates, CI/CD design, verification metrics, and indexed evidence. The focus is repeatable engineering verification for the Digital Library platform, not coursework-style reporting.
+This directory is the retained QA surface for the repository.
 
-## Current verification baseline
-The repository intentionally verifies a **risk-based critical path** rather than claiming exhaustive monolith coverage. The defended baseline covers the most important public, auth, catalog, and staff-boundary flows.
+It focuses on practical, repeatable verification for the Digital Library platform rather than a large set of overlapping narrative reports.
 
-### Primary commands
+## Primary commands
 ```bash
 composer qa:ci
 npm run test:e2e:install
@@ -13,37 +12,28 @@ npm run test:e2e
 composer qa:evidence
 ```
 
-### Latest verified results
-- `composer qa:ci` → **139 passed** (`595 assertions`) on the fresh 2026-04-11 verification run with the expanded unit + integration risk pack
-- `npm run test:e2e` → **3 passed** (`4.7s`) on the latest smoke refresh
-- critical-path Clover line coverage remains defended at **4.24%** against the full `app/` namespace
-- GitHub Actions remains configured with `Secret Scan`, `Backend Verification & Coverage`, and `Frontend Build & Browser Smoke`
-- the latest successful main-branch verification run is `Continuous Verification` **`24274728457`**
+## Recommended reading order
+Use these files as the main QA source of truth:
+- `docs/qa/qa-test-strategy-document.md` — verification scope and strategy
+- `docs/qa/quality-gates.md` — local and CI gate definitions
+- `docs/qa/ci-cd.md` — workflow and pipeline overview
+- `docs/qa/evidence-index.md` — raw proof and evidence locations
+- `docs/qa/final-qa-report.md` — polished external report, if needed for review or submission
 
-## Document map
-- `final-qa-report.md` — **open this first** for the polished, self-contained defense/report narrative
-- `defense-guide.md` — concise live-demo walkthrough, likely questions, and presentation flow
-- `qa-implementation-analysis.md` — implementation-focused QA analysis package for the live repo
-- `technical-qa-report.md` — supporting analytical report with tables, figures, and operational conclusions
-- `qa-test-strategy-document.md` — formal QA strategy outline for the written report / research paper
-- `verification-report.md` — executive summary, failure-history audit, and stabilization results
-- `test-scope.md` — risk-ranked automation scope, scenario design, and traceability
-- `tooling-rationale.md` — why PHPUnit, Playwright, Pint, Docker, and GitHub Actions are the right fit here
-- `metrics-report.md` — reproducible coverage, timing, and defect-tracking metrics
-- `quality-gates.md` — local/CI gate definitions, thresholds, and failure handling
-- `ci-cd.md` — workflow topology, action versions, and clean-runner behavior
-- `evidence-index.md` — index of raw proof artifacts under `evidence/verification/`
+## Verification posture
+The current QA baseline is intentionally risk-based and focused on the highest-value flows:
+- authentication and session lifecycle
+- catalog discovery and book detail
+- reader account and reservation behavior
+- protected internal boundaries
+- frontend build and CI reproducibility
+
+## Supporting notes
+Some additional QA files still remain in the directory as transitional merge or archive candidates. They should not be treated as the primary long-term entry surface.
 
 ## Evidence location
-All supporting artifacts are organized under:
+Raw verification outputs are stored under:
 
 ```text
 evidence/verification/
 ```
-
-## Verification posture
-This QA area is intentionally honest about scope and limitations:
-- strong coverage on the highest-risk flows
-- deterministic clean-runner behavior in CI
-- reproducible command paths for local and remote verification
-- clear evidence mapping for reviewers and maintainers

@@ -1,40 +1,44 @@
-# ONBOARDING_NEXT_ENGINEER.md
+# Onboarding — Next Engineer
 
-## Быстрый старт для новых инженеров и Copilot Pro+
+This note is the short repo-focused onboarding guide for the next developer.
 
-1. **Клонируйте репозиторий:**
-   ```sh
-git clone <repo-url>
-cd kazutb-smart-library-main
+## 1. Read the core entry docs
+Start here:
+- `README.md`
+- `docs/qa/README.md`
+- `docs/design-exports/canonical-design-map.md` if design context is needed
+
+## 2. Set up the environment
+```sh
+cp .env.example .env
+composer install
+npm install
 ```
-2. **Ознакомьтесь с `README.md` и `/docs/`** — там описаны основные команды, структура и архитектура.
-3. **Скопируйте `.env.example` → `.env`** и заполните секреты по инструкции в `/docs/`.
-4. **Запустите bootstrap/dev-окружение:**
-   ```sh
-make dev up
-# или
-./scripts/bootstrap.sh
+
+Fill local environment values as needed in `.env`.
+
+## 3. Start the recommended local stack
+```sh
+docker compose up --build -d app frontend-dev
 ```
-5. **Проверьте CI/CD:**
-   - Все workflows в `.github/workflows/`.
-   - Тесты и сборка должны проходить локально и на GitHub Actions.
-6. **Изучите архитектуру и workflow:**
-   - `/docs/ARCHITECTURE.md`, `/docs/qa/`, `/docs/design-exports/`
-   - Vault с памятью и meta-знаниями: `/artifacts/obsidian/memory-fragments/`
-   - Все conventions, примеры, edge cases — там же.
-7. **Copilot/LLM-агенты:**
-   - Для поиска знаний используйте `/docs/`, `/artifacts/obsidian/`, `GH_COPILOT_MEMORY.md` (если есть).
-   - Все правила, workflow, onboarding — versioned и доступны.
 
----
+## 4. Run the baseline verification commands
+```sh
+composer qa:ci
+npm run test:e2e:install
+npm run test:e2e
+```
 
-## Строгий промпт (source-of-truth)
+## 5. Know the repository shape
+- `app/`, `routes/`, `config/` — application and runtime logic
+- `resources/` and `public/` — UI and public assets
+- `tests/` — backend and browser verification
+- `docs/qa/` — retained QA and evidence documentation
+- `scripts/dev/` — local QA and support tooling
 
-> "Для полного онбординга нового инженера или Copilot Pro+:
-> - Все настройки, workflows, vault с памятью, архитектурные решения и инструкции versioned и лежат в репозитории.
-> - После клонирования: читайте `README.md`, `/docs/`, копируйте `.env.example`, запускайте dev-окружение, проверяйте CI/CD, изучайте vault и meta-доки.
-> - Любой агент или человек сразу видит все conventions, примеры, архитектуру и может работать без ручной передачи знаний."
+## 6. Working rules
+- keep changes scoped and verifiable
+- prefer repo truth over stale notes or chat summaries
+- do not commit secrets or machine-local credentials
+- verify relevant behavior before opening or merging changes
 
----
-
-**Если чего-то не хватает — дополни vault или `/docs/` и закоммить!**
