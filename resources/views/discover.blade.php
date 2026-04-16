@@ -3,6 +3,7 @@
 @php
   $lang = app()->getLocale();
   $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+
   $withLang = function (string $path, array $query = []) use ($lang): string {
       if ($lang !== 'ru' && ! array_key_exists('lang', $query)) {
           $query['lang'] = $lang;
@@ -15,172 +16,175 @@
 
   $copy = [
       'ru' => [
-        'title' => 'Академическая навигация — Digital Library',
-          'hero_eyebrow' => 'Академическая навигация',
-          'hero_title' => 'Ищите по теме, дисциплине и исследовательской задаче',
-        'hero_lead' => 'Начните с UDC-направления, затем переходите в реальный каталог с доступностью, библиографией, копиями и дальнейшими фильтрами.',
-          'hero_catalog' => 'Открыть каталог',
-          'hero_resources' => 'Научные ресурсы',
-          'aside_eyebrow' => 'Как пользоваться',
-        'aside_title' => 'Начинайте с UDC, а не с витринной таксономии',
-        'aside_body' => 'Эта страница не подменяет каталог. Она помогает быстро выбрать академическое направление, перейти в каталог по UDC и затем уточнить поиск по реальным библиотечным данным.',
-          'aside_steps' => [
-          'Выберите UDC-маршрут, который ближе всего к вашей теме или дисциплине.',
-          'Откройте каталог уже с применённым UDC-фильтром и сортировкой.',
-          'Уточните выдачу по доступности, языку, году и библиографическим признакам.',
-          'Сохраните нужные позиции в черновик списка литературы или перейдите к внешним ресурсам.',
+          'title' => 'Карта знаний — Digital Library',
+          'hero_eyebrow' => 'Навигационная структура',
+          'hero_title' => 'Карта знаний',
+          'hero_body' => 'Кураторский мост к академическому репозиторию КазТБУ. Организованный через Универсальную десятичную классификацию, этот хаб помогает исследователям проходить по дисциплинам с институциональной точностью.',
+          'hero_quote' => '«Системная организация — первый шаг к открытию.»',
+          'disciplines_title' => 'Академические дисциплины',
+          'disciplines_body' => 'Основные академические маршруты, выстроенные по глобальным библиографическим стандартам.',
+          'volume_label' => 'Общий объём каталога',
+          'volume_value' => '482 000+ материалов',
+          'browse_all_title' => 'Просмотреть все архивы',
+          'browse_all_body' => 'Ищите по всем подразделениям и историческим архивам, используя полный спектр UDC.',
+          'launch_catalog' => 'Запустить каталог',
+          'workflow_title' => 'Исследовательский маршрут',
+          'workflow' => [
+              ['number' => '01', 'title' => 'Выберите направление', 'body' => 'Определите домен исследования через маршрут UDC или университетские теги.'],
+              ['number' => '02', 'title' => 'Откройте каталог', 'body' => 'Просматривайте основные публикации, курсовые материалы и актуальные издания по теме.'],
+              ['number' => '03', 'title' => 'Уточните результат', 'body' => 'Фильтруйте выдачу по репозиторию, году, языку или конкретному подразделению.'],
+              ['number' => '04', 'title' => 'Соберите shortlist', 'body' => 'Сохраняйте нужные материалы для библиографии, курса или исследовательского запроса.'],
           ],
-        'panel_eyebrow' => 'Вторичный слой метаданных',
-        'panel_title' => 'Академические термины, уже присутствующие в каталоге',
-        'panel_body' => 'Ниже показаны реальные факультетные, кафедральные и специализационные термины из библиотечных записей. Они помогают уточнять поиск, но основной backbone discovery остаётся UDC.',
-          'loading' => 'Загрузка направлений...',
-        'pathways_eyebrow' => 'UDC-маршруты',
-        'pathways_title' => 'Академические направления с прямым входом в каталог',
-        'pathways_body' => 'Каждый маршрут сразу ведёт в живой каталог с UDC-фильтром. Ключевые слова ниже помогают сузить поиск внутри этого же направления.',
-        'workflow_eyebrow' => 'Рабочий маршрут',
-        'workflow_title' => 'От академической темы к реальному списку литературы',
-        'workflow_body' => 'Используйте UDC как первую точку входа, затем переходите к уточнению, проверке доступности и сборке чернового списка литературы.',
-        'banner_title' => 'UDC задаёт основной каркас академического discovery',
-        'banner_body' => 'Факультеты, кафедры и специализации полезны как поддерживающие термины, но навигация платформы строится вокруг UDC, библиографии, наличия и типа ресурса.',
-          'cta_title' => 'Нужен более широкий маршрут поиска?',
-        'cta_body' => 'Откройте основной каталог для полного поиска по фонду или перейдите в черновик списка литературы, если уже собираете материалы для курса, темы или исследования.',
-        'cta_shortlist' => 'Открыть черновик списка',
-        'card_cta' => 'Открыть маршрут в каталоге',
-          'groups' => [
-          'faculties' => 'Факультетные термины',
-          'departments' => 'Кафедральные термины',
-          'specializations' => 'Термины специализаций',
-          'items' => 'записей',
-          'error' => 'Не удалось загрузить терминологическую карту. Используйте UDC-маршруты и ключевые слова ниже.',
+          'metadata_title' => 'Институциональные метаданные',
+          'metadata_body' => 'Открывайте контент, связанный со структурой университета. Эти теги помогают находить локальные проекты, диссертации и профильные коллекции.',
+          'status_label' => 'Статус обновления',
+          'status_text' => 'Репозиторий синхронизирован с живыми факультетскими, кафедральными и специализационными записями.',
+          'resources_cta' => 'Открыть ресурсы',
+          'bridge' => [
+              ['title' => 'Библиотечный каталог', 'body' => 'Доступ к основной базе данных с расширенным поиском и UDC-фильтрами.', 'cta' => 'Войти в базу', 'url' => $withLang('/catalog')],
+              ['title' => 'Научные ресурсы', 'body' => 'Навигаторы по цитированию, библиотечным базам и академическим платформам.', 'cta' => 'Открыть гиды', 'url' => $withLang('/resources')],
+              ['title' => 'Личный shortlist', 'body' => 'Возвращайтесь к сохранённым подборкам и рабочим спискам литературы.', 'cta' => 'Открыть shortlist', 'url' => $withLang('/shortlist')],
+          ],
+          'metadata' => [
+              'loading' => 'Загружаем живые метаданные...',
+              'items' => 'записей',
+              'status' => 'Загружено :count живых академических тегов из репозитория.',
+              'fallback' => 'Показана локальная карта тегов, пока API метаданных недоступен.',
+              'error' => 'Не удалось загрузить живые теги. Доступна базовая навигационная карта.',
+          ],
+          'fallback_chips' => [
+              ['label' => 'Факультет технологий', 'count' => '1.2k', 'query' => 'технология'],
+              ['label' => 'Дизайн и архитектура', 'count' => '842', 'query' => 'архитектура'],
+              ['label' => 'Кафедра автоматизации', 'count' => '411', 'query' => 'автоматизация'],
+              ['label' => 'Информационные системы', 'count' => '2.9k', 'query' => 'информационные системы'],
+              ['label' => 'Экономическая теория', 'count' => '1.1k', 'query' => 'экономическая теория'],
+              ['label' => 'Биотехнологические исследования', 'count' => '654', 'query' => 'биотехнология'],
+              ['label' => 'Прикладная математика', 'count' => '312', 'query' => 'прикладная математика'],
+              ['label' => 'Государственное управление', 'count' => '188', 'query' => 'государственное управление'],
+              ['label' => 'История Казахстана', 'count' => '920', 'query' => 'история казахстана'],
           ],
       ],
       'kk' => [
-        'title' => 'Академиялық навигация — Digital Library',
-          'hero_eyebrow' => 'Академиялық навигация',
-          'hero_title' => 'Тақырып, пән және зерттеу сұранысы бойынша іздеңіз',
-        'hero_lead' => 'ӘОЖ бағытымен бастап, қолжетімділігі, библиографиясы, даналары және қосымша сүзгілері бар нақты каталогқа өтіңіз.',
-          'hero_catalog' => 'Каталогты ашу',
-          'hero_resources' => 'Ғылыми ресурстар',
-          'aside_eyebrow' => 'Қолдану жолы',
-        'aside_title' => 'Витриналық таксономиядан емес, ӘОЖ-дан бастаңыз',
-        'aside_body' => 'Бұл бет каталогты алмастырмайды. Ол академиялық бағытты тез таңдап, каталогқа ӘОЖ бойынша өтіп, іздеуді нақты кітапханалық деректермен дәлдеуге көмектеседі.',
-          'aside_steps' => [
-          'Тақырыпқа немесе пәнге сәйкес келетін ӘОЖ-маршрутты таңдаңыз.',
-          'Каталогты ӘОЖ сүзгісі мен сұрыптауы бірге қолданылған күйде ашыңыз.',
-          'Нәтижені қолжетімділік, тіл, жыл және библиографиялық белгілер бойынша нақтылаңыз.',
-          'Қажетті позицияларды әдебиет тізімінің жұмыс нұсқасына сақтаңыз не сыртқы ресурстарға өтіңіз.',
+          'title' => 'Білім картасы — Digital Library',
+          'hero_eyebrow' => 'Навигация құрылымы',
+          'hero_title' => 'Білім картасы',
+          'hero_body' => 'ҚазТБУ академиялық репозиторийіне апаратын кураторлық көпір. Әмбебап ондық жіктеу арқылы құрылған бұл хаб зерттеушілерге пәндер арасында институционалдық дәлдікпен жүруге мүмкіндік береді.',
+          'hero_quote' => '«Жүйелі ұйымдастыру — жаңалық ашудың алғашқы қадамы.»',
+          'disciplines_title' => 'Академиялық пәндер',
+          'disciplines_body' => 'Әлемдік библиографиялық стандарттар бойынша құрылған негізгі академиялық бағыттар.',
+          'volume_label' => 'Каталогтың жалпы көлемі',
+          'volume_value' => '482 000+ материал',
+          'browse_all_title' => 'Барлық архивтерді шолу',
+          'browse_all_body' => 'ӘОЖ-дың толық спектрі арқылы барлық бөлімдер мен тарихи архивтер бойынша іздеңіз.',
+          'launch_catalog' => 'Каталогты іске қосу',
+          'workflow_title' => 'Зерттеу маршруты',
+          'workflow' => [
+              ['number' => '01', 'title' => 'Бағытты таңдаңыз', 'body' => 'Зерттеу доменін ӘОЖ маршруты немесе университет тегтері арқылы анықтаңыз.'],
+              ['number' => '02', 'title' => 'Каталогты ашыңыз', 'body' => 'Негізгі жарияланымдарды, курстық материалдарды және тақырып бойынша өзекті басылымдарды қараңыз.'],
+              ['number' => '03', 'title' => 'Нәтижені нақтылаңыз', 'body' => 'Репозиторий, жыл, тіл немесе нақты бөлім бойынша сүзгілерді қолданыңыз.'],
+              ['number' => '04', 'title' => 'Shortlist жинаңыз', 'body' => 'Библиография, курс немесе зерттеу сұранысы үшін материалдарды сақтаңыз.'],
           ],
-        'panel_eyebrow' => 'Метадеректің қосымша қабаты',
-        'panel_title' => 'Каталогта қазірдің өзінде бар академиялық терминдер',
-        'panel_body' => 'Төменде кітапхана жазбаларынан алынған нақты факультет, кафедра және мамандандыру терминдері көрсетіледі. Олар іздеуді нақтылайды, бірақ discovery-дің негізгі қаңқасы ӘОЖ болып қалады.',
-          'loading' => 'Бағыттар жүктелуде...',
-        'pathways_eyebrow' => 'ӘОЖ-маршруттар',
-        'pathways_title' => 'Каталогқа тікелей апаратын академиялық бағыттар',
-        'pathways_body' => 'Әр маршрут бірден ӘОЖ сүзгісімен тірі каталогқа апарады. Төмендегі кілт сөздер сол бағыттың ішінде іздеуді тарылтады.',
-        'workflow_eyebrow' => 'Жұмыс маршруты',
-        'workflow_title' => 'Академиялық тақырыптан нақты әдебиет тізіміне дейін',
-        'workflow_body' => 'Алдымен ӘОЖ-ды таңдаңыз, содан кейін қолжетімділікті тексеріп, іздеуді нақтылап, әдебиет тізімінің жұмыс нұсқасын жинаңыз.',
-        'banner_title' => 'Академиялық discovery-дің негізгі қаңқасын ӘОЖ береді',
-        'banner_body' => 'Факультет, кафедра және мамандандыру терминдері пайдалы, бірақ платформа навигациясы ӘОЖ, библиография, қолжетімділік және ресурс түрі төңірегінде құрылады.',
-          'cta_title' => 'Іздеудің кеңірек жолы керек пе?',
-        'cta_body' => 'Қор бойынша толық іздеу үшін негізгі каталогқа өтіңіз немесе курс, тақырып не зерттеу үшін материал жинап жатсаңыз, әдебиет тізімінің жұмыс нұсқасын ашыңыз.',
-        'cta_shortlist' => 'Жұмыс нұсқасын ашу',
-        'card_cta' => 'Маршрутты каталогта ашу',
-          'groups' => [
-          'faculties' => 'Факультет терминдері',
-          'departments' => 'Кафедра терминдері',
-          'specializations' => 'Мамандандыру терминдері',
-          'items' => 'жазба',
-          'error' => 'Терминологиялық картаны жүктеу мүмкін болмады. Төмендегі ӘОЖ-маршруттар мен кілт сөздерді қолданыңыз.',
+          'metadata_title' => 'Институционалдық метадеректер',
+          'metadata_body' => 'Университет құрылымына қатысты контентті ашыңыз. Бұл тегтер жергілікті жобаларды, диссертацияларды және профильдік топтамаларды табуға көмектеседі.',
+          'status_label' => 'Жаңарту күйі',
+          'status_text' => 'Репозиторий тірі факультет, кафедра және мамандандыру жазбаларымен синхрондалған.',
+          'resources_cta' => 'Ресурстарды ашу',
+          'bridge' => [
+              ['title' => 'Кітапхана каталогы', 'body' => 'Кеңейтілген іздеу және ӘОЖ сүзгілері бар негізгі дерекқорға қолжетімділік.', 'cta' => 'Дерекқорға өту', 'url' => $withLang('/catalog')],
+              ['title' => 'Ғылыми ресурстар', 'body' => 'Дәйексөздеу, кітапханалық базалар және академиялық платформалар бойынша гидтер.', 'cta' => 'Гидтерді көру', 'url' => $withLang('/resources')],
+              ['title' => 'Жеке shortlist', 'body' => 'Сақталған іріктемелер мен жұмыс әдебиет тізімдеріне қайта оралыңыз.', 'cta' => 'Shortlist ашу', 'url' => $withLang('/shortlist')],
+          ],
+          'metadata' => [
+              'loading' => 'Тірі метадеректер жүктелуде...',
+              'items' => 'жазба',
+              'status' => 'Репозиторийден :count тірі академиялық тег жүктелді.',
+              'fallback' => 'Метадеректер API қолжетімсіз болғанда жергілікті тег картасы көрсетіледі.',
+              'error' => 'Тірі тегтерді жүктеу мүмкін болмады. Негізгі навигациялық карта қолжетімді.',
+          ],
+          'fallback_chips' => [
+              ['label' => 'Технология факультеті', 'count' => '1.2k', 'query' => 'технология'],
+              ['label' => 'Дизайн және сәулет', 'count' => '842', 'query' => 'архитектура'],
+              ['label' => 'Автоматтандыру кафедрасы', 'count' => '411', 'query' => 'автоматизация'],
+              ['label' => 'Ақпараттық жүйелер', 'count' => '2.9k', 'query' => 'информационные системы'],
+              ['label' => 'Экономикалық теория', 'count' => '1.1k', 'query' => 'экономическая теория'],
+              ['label' => 'Биотехнология зерттеулері', 'count' => '654', 'query' => 'биотехнология'],
+              ['label' => 'Қолданбалы математика', 'count' => '312', 'query' => 'прикладная математика'],
+              ['label' => 'Мемлекеттік басқару', 'count' => '188', 'query' => 'государственное управление'],
+              ['label' => 'Қазақстан тарихы', 'count' => '920', 'query' => 'история казахстана'],
           ],
       ],
       'en' => [
-        'title' => 'Academic navigation — Digital Library',
-        'hero_eyebrow' => 'Academic navigation',
-          'hero_title' => 'Browse by subject, teaching area, and research need',
-        'hero_lead' => 'Start from a UDC direction, then move into the live catalog with real availability, bibliographic detail, copies, and follow-up filters.',
-          'hero_catalog' => 'Open catalog',
-          'hero_resources' => 'Research resources',
-          'aside_eyebrow' => 'How to use it',
-        'aside_title' => 'Start with UDC, not a brochure taxonomy',
-        'aside_body' => 'This page does not replace the catalog. It helps readers choose an academic direction quickly, enter the catalog with a UDC filter, and then refine the search around real library data.',
-          'aside_steps' => [
-          'Choose the UDC route closest to the topic, discipline, or research task.',
-          'Open the catalog with the UDC filter and sort already applied.',
-          'Refine the result set by availability, language, year, and bibliographic cues.',
-          'Save selected items into the draft reading list or continue into external resources.',
+          'title' => 'Academic Discovery Hub — Digital Library',
+          'hero_eyebrow' => 'Navigation Framework',
+          'hero_title' => 'The Map of Knowledge',
+          'hero_body' => 'A curated bridge to the Kazakh University of Technology and Business scholarly repository. Organized through the Universal Decimal Classification, this hub enables researchers to traverse disciplines with institutional precision.',
+          'hero_quote' => '“Systematic organization is the first step toward discovery.”',
+          'disciplines_title' => 'Scholarly Disciplines',
+          'disciplines_body' => 'Primary academic pathways mapped to global bibliographic standards.',
+          'volume_label' => 'Total Catalog Volume',
+          'volume_value' => '482,000+ Assets',
+          'browse_all_title' => 'Browse All Archives',
+          'browse_all_body' => 'Search across all departments and historical archives using the full UDC spectrum.',
+          'launch_catalog' => 'Launch Catalog',
+          'workflow_title' => 'Research Workflow',
+          'workflow' => [
+              ['number' => '01', 'title' => 'Choose direction', 'body' => 'Identify your research domain via the UDC pathway or faculty tags.'],
+              ['number' => '02', 'title' => 'Explore catalog', 'body' => 'Browse curated high-impact works and recent faculty publications.'],
+              ['number' => '03', 'title' => 'Refine results', 'body' => 'Filter by institutional repository, year, language, or specific department.'],
+              ['number' => '04', 'title' => 'Build shortlist', 'body' => 'Save bookmarks into your academic working set for citation management.'],
           ],
-        'panel_eyebrow' => 'Secondary metadata layer',
-        'panel_title' => 'Academic terms already present in the catalog',
-        'panel_body' => 'These faculty, department, and specialization terms are pulled from real library records. They help narrow the search, but UDC remains the main discovery backbone.',
-          'loading' => 'Loading subject groups...',
-        'pathways_eyebrow' => 'UDC routes',
-        'pathways_title' => 'Academic lanes with a direct catalog entry point',
-        'pathways_body' => 'Each route opens the live catalog with a UDC filter. The keyword chips narrow the search inside the same direction.',
-        'workflow_eyebrow' => 'Working route',
-        'workflow_title' => 'From an academic topic to a usable reading list',
-        'workflow_body' => 'Use UDC as the first step, then refine by real holdings and availability before collecting materials into a draft bibliography.',
-        'banner_title' => 'UDC provides the primary discovery structure',
-        'banner_body' => 'Faculty and specialization labels are useful support terms, but the platform is designed around UDC, bibliography, availability, and resource type.',
-          'cta_title' => 'Need a broader search path?',
-        'cta_body' => 'Move into the main catalog for full collection discovery or open the draft reading list when you are already gathering sources for a course, topic, or research task.',
-        'cta_shortlist' => 'Open draft list',
-        'card_cta' => 'Open route in catalog',
-          'groups' => [
-          'faculties' => 'Faculty terms',
-          'departments' => 'Department terms',
-          'specializations' => 'Specialization terms',
+          'metadata_title' => 'Institutional Metadata',
+          'metadata_body' => 'Access content specific to the university structure. These tags help readers find local research projects, dissertations, and disciplinary collections.',
+          'status_label' => 'Update Status',
+          'status_text' => 'Repository synced with live faculty, department, and specialization records.',
+          'resources_cta' => 'View Resources',
+          'bridge' => [
+              ['title' => 'Library Catalog', 'body' => 'Access the main database with advanced query builders and UDC filters.', 'cta' => 'Enter Database', 'url' => $withLang('/catalog')],
+              ['title' => 'Research Resources', 'body' => 'Guides for citation formatting, licensed databases, and bibliography tools.', 'cta' => 'View Guides', 'url' => $withLang('/resources')],
+              ['title' => 'Personal Shortlist', 'body' => 'Retrieve saved collections and working reading lists from the public library flow.', 'cta' => 'Open Shortlist', 'url' => $withLang('/shortlist')],
+          ],
+          'metadata' => [
+              'loading' => 'Loading live metadata...',
               'items' => 'records',
-          'error' => 'Unable to load the terminology map. Use the UDC routes and keyword chips below instead.',
+              'status' => 'Loaded :count live academic tags from the repository.',
+              'fallback' => 'Showing the local tag map while live institutional metadata is unavailable.',
+              'error' => 'Unable to load live tags. The fallback discovery map remains available.',
+          ],
+          'fallback_chips' => [
+              ['label' => 'Faculty of Technology', 'count' => '1.2k', 'query' => 'technology'],
+              ['label' => 'Design & Architecture', 'count' => '842', 'query' => 'design architecture'],
+              ['label' => 'Dept. of Automation', 'count' => '411', 'query' => 'automation'],
+              ['label' => 'Information Systems', 'count' => '2.9k', 'query' => 'information systems'],
+              ['label' => 'Economic Theory', 'count' => '1.1k', 'query' => 'economic theory'],
+              ['label' => 'Biotechnology Research', 'count' => '654', 'query' => 'biotechnology'],
+              ['label' => 'Applied Mathematics', 'count' => '312', 'query' => 'applied mathematics'],
+              ['label' => 'Public Administration', 'count' => '188', 'query' => 'public administration'],
+              ['label' => 'History of Kazakhstan', 'count' => '920', 'query' => 'history of kazakhstan'],
           ],
       ],
   ][$lang];
 
   $cards = [
       'ru' => [
-        ['meta' => 'UDC backbone', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Информатика и цифровые системы', 'body' => 'Программирование, базы данных, сети, информационные системы, кибербезопасность и цифровая инфраструктура.', 'keywords' => [['q' => 'программирование', 'label' => 'Программирование'], ['q' => 'информационные системы', 'label' => 'Информационные системы'], ['q' => 'базы данных', 'label' => 'Базы данных']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Экономика, финансы и менеджмент', 'body' => 'Экономическая теория, управленческие дисциплины, финансы, маркетинг и прикладная аналитика.', 'keywords' => [['q' => 'экономика', 'label' => 'Экономика'], ['q' => 'менеджмент', 'label' => 'Менеджмент'], ['q' => 'финансы', 'label' => 'Финансы']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Право и нормативная среда', 'body' => 'Гражданское, уголовное, административное, трудовое и международное право с выходом к живым записям фонда.', 'keywords' => [['q' => 'право', 'label' => 'Право'], ['q' => 'юриспруденция', 'label' => 'Юриспруденция'], ['q' => 'гражданское право', 'label' => 'Гражданское право']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '37', 'udc' => 'UDC 37', 'title' => 'Педагогика и методика преподавания', 'body' => 'Дидактика, instructional design, психология обучения, силлабусы и методические материалы.', 'keywords' => [['q' => 'педагогика', 'label' => 'Педагогика'], ['q' => 'методика преподавания', 'label' => 'Методика преподавания'], ['q' => 'образование', 'label' => 'Образование']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Инженерия и производственные технологии', 'body' => 'Автоматизация, электрические системы, транспорт, машиностроение, материалы и прикладные технологии.', 'keywords' => [['q' => 'инженерия', 'label' => 'Инженерия'], ['q' => 'автоматизация', 'label' => 'Автоматизация'], ['q' => 'машиностроение', 'label' => 'Машиностроение']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '5', 'udc' => 'UDC 5', 'title' => 'Естественные науки, химия и экология', 'body' => 'Математика, физика, химия, биология, экология и смежные дисциплины для базовой академической подготовки.', 'keywords' => [['q' => 'математика', 'label' => 'Математика'], ['q' => 'химия', 'label' => 'Химия'], ['q' => 'экология', 'label' => 'Экология']]],
+          ['icon' => 'terminal', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Вычисления и информатика', 'body' => 'Продвинутые исследования алгоритмических систем, программной инженерии и цифровой инфраструктуры.', 'tags' => ['Кибербезопасность', 'AI Systems', 'Big Data']],
+          ['icon' => 'trending_up', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Экономика и менеджмент', 'body' => 'Анализ рыночных структур, бизнес-логистики и национального экономического развития.', 'tags' => ['Логистика', 'Аудит', 'Governance']],
+          ['icon' => 'gavel', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Юридические науки', 'body' => 'Конституционные рамки, международное право и исследования права в контексте Центральной Азии.', 'tags' => ['Гражданское право', 'Дипломатия', 'Этика']],
+          ['icon' => 'engineering', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Инженерия и технологии', 'body' => 'Материаловедение, механика и инновационные технологические приложения.', 'tags' => ['Робототехника', 'Механика', 'Автоматизация']],
+          ['icon' => 'biotech', 'udc_code' => '50', 'udc' => 'UDC 50', 'title' => 'Естественные науки', 'body' => 'Биологические исследования, химическая инженерия и экологическая устойчивость.', 'tags' => ['Экология', 'Генетика', 'Химия']],
       ],
       'kk' => [
-        ['meta' => 'UDC backbone', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Информатика және цифрлық жүйелер', 'body' => 'Бағдарламалау, дерекқорлар, желілер, ақпараттық жүйелер, киберқауіпсіздік және цифрлық инфрақұрылым.', 'keywords' => [['q' => 'программирование', 'label' => 'Бағдарламалау'], ['q' => 'информационные системы', 'label' => 'Ақпараттық жүйелер'], ['q' => 'базы данных', 'label' => 'Дерекқорлар']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Экономика, қаржы және менеджмент', 'body' => 'Экономикалық теория, басқару пәндері, қаржы, маркетинг және қолданбалы талдау.', 'keywords' => [['q' => 'экономика', 'label' => 'Экономика'], ['q' => 'менеджмент', 'label' => 'Менеджмент'], ['q' => 'финансы', 'label' => 'Қаржы']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Құқық және нормативтік орта', 'body' => 'Азаматтық, қылмыстық, әкімшілік, еңбек және халықаралық құқық бағыттары қордағы нақты жазбаларға апарады.', 'keywords' => [['q' => 'право', 'label' => 'Құқық'], ['q' => 'юриспруденция', 'label' => 'Юриспруденция'], ['q' => 'гражданское право', 'label' => 'Азаматтық құқық']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '37', 'udc' => 'UDC 37', 'title' => 'Педагогика және оқыту әдістемесі', 'body' => 'Дидактика, instructional design, оқу психологиясы, силлабус және әдістемелік материалдар.', 'keywords' => [['q' => 'педагогика', 'label' => 'Педагогика'], ['q' => 'методика преподавания', 'label' => 'Оқыту әдістемесі'], ['q' => 'образование', 'label' => 'Білім беру']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Инженерлік және өндірістік технологиялар', 'body' => 'Автоматтандыру, электр жүйелері, көлік, машина жасау, материалдар және қолданбалы технологиялар.', 'keywords' => [['q' => 'инженерия', 'label' => 'Инженерия'], ['q' => 'автоматизация', 'label' => 'Автоматтандыру'], ['q' => 'машиностроение', 'label' => 'Машина жасау']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '5', 'udc' => 'UDC 5', 'title' => 'Жаратылыстану ғылымдары, химия және экология', 'body' => 'Математика, физика, химия, биология, экология және базалық академиялық дайындыққа қажет аралас пәндер.', 'keywords' => [['q' => 'математика', 'label' => 'Математика'], ['q' => 'химия', 'label' => 'Химия'], ['q' => 'экология', 'label' => 'Экология']]],
+          ['icon' => 'terminal', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Есептеу және информатика', 'body' => 'Алгоритмдік жүйелер, бағдарламалық инженерия және цифрлық инфрақұрылым бойынша терең зерттеулер.', 'tags' => ['Киберқауіпсіздік', 'AI Systems', 'Big Data']],
+          ['icon' => 'trending_up', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Экономика және менеджмент', 'body' => 'Нарық құрылымдарын, бизнес-логистиканы және ұлттық экономикалық дамуды институционалдық талдау.', 'tags' => ['Логистика', 'Аудит', 'Governance']],
+          ['icon' => 'gavel', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Құқықтық ғылымдар', 'body' => 'Орталық Азия кеңістігіндегі конституциялық модельдер, халықаралық құқық және құқықтану зерттеулері.', 'tags' => ['Азаматтық құқық', 'Дипломатия', 'Этика']],
+          ['icon' => 'engineering', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Инженерия және технология', 'body' => 'Материалтану, механикалық инженерия және инновациялық технологиялық қолданбалар.', 'tags' => ['Робототехника', 'Механика', 'Автоматтандыру']],
+          ['icon' => 'biotech', 'udc_code' => '50', 'udc' => 'UDC 50', 'title' => 'Жаратылыстану ғылымдары', 'body' => 'Биологиялық зерттеулер, химиялық инженерия және экологиялық тұрақтылық тақырыптары.', 'tags' => ['Экология', 'Генетика', 'Химия']],
       ],
       'en' => [
-        ['meta' => 'UDC backbone', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Computer science and digital systems', 'body' => 'Programming, databases, networking, information systems, cybersecurity, and digital infrastructure.', 'keywords' => [['q' => 'программирование', 'label' => 'Programming'], ['q' => 'информационные системы', 'label' => 'Information systems'], ['q' => 'базы данных', 'label' => 'Databases']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Economics, finance, and management', 'body' => 'Economic theory, management disciplines, finance, marketing, and applied analytics.', 'keywords' => [['q' => 'экономика', 'label' => 'Economics'], ['q' => 'менеджмент', 'label' => 'Management'], ['q' => 'финансы', 'label' => 'Finance']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Law and the regulatory environment', 'body' => 'Civil, criminal, administrative, labor, and international law with a direct path to live records.', 'keywords' => [['q' => 'право', 'label' => 'Law'], ['q' => 'юриспруденция', 'label' => 'Jurisprudence'], ['q' => 'гражданское право', 'label' => 'Civil law']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '37', 'udc' => 'UDC 37', 'title' => 'Pedagogy and teaching method', 'body' => 'Didactics, instructional design, learning psychology, syllabi, and teaching-method resources.', 'keywords' => [['q' => 'педагогика', 'label' => 'Pedagogy'], ['q' => 'методика преподавания', 'label' => 'Teaching method'], ['q' => 'образование', 'label' => 'Education']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Engineering and industrial technologies', 'body' => 'Automation, electrical systems, transport, machinery, materials, and applied industrial processes.', 'keywords' => [['q' => 'инженерия', 'label' => 'Engineering'], ['q' => 'автоматизация', 'label' => 'Automation'], ['q' => 'машиностроение', 'label' => 'Machinery']]],
-        ['meta' => 'UDC backbone', 'udc_code' => '5', 'udc' => 'UDC 5', 'title' => 'Natural sciences, chemistry, and environment', 'body' => 'Mathematics, physics, chemistry, biology, ecology, and adjacent foundations for academic study.', 'keywords' => [['q' => 'математика', 'label' => 'Mathematics'], ['q' => 'химия', 'label' => 'Chemistry'], ['q' => 'экология', 'label' => 'Ecology']]],
-      ],
-  ][$lang];
-
-  $workflow = [
-      'ru' => [
-        ['title' => 'Выберите UDC-направление', 'body' => 'Начните с маршрута, который отражает реальную академическую тему: вычисления, экономика, право, педагогика, инженерия или естественные науки.'],
-        ['title' => 'Откройте каталог уже в нужной зоне', 'body' => 'Каждый маршрут ведёт в каталог с UDC-фильтром, поэтому вы не начинаете поиск с пустого экрана.'],
-        ['title' => 'Уточните по доступности и типу ресурса', 'body' => 'Проверьте наличие экземпляров, язык, год, ISBN, а при необходимости перейдите в лицензионные и внешние ресурсы.'],
-        ['title' => 'Соберите рабочий список литературы', 'body' => 'Добавьте подходящие записи в shortlist, чтобы получить черновой список для курса, темы или исследовательской задачи.'],
-      ],
-      'kk' => [
-        ['title' => 'ӘОЖ бағытын таңдаңыз', 'body' => 'Есептеу, экономика, құқық, педагогика, инженерия немесе жаратылыстану секілді нақты академиялық тақырыптан бастаңыз.'],
-        ['title' => 'Каталогты бірден дұрыс аймақта ашыңыз', 'body' => 'Әр маршрут каталогты ӘОЖ сүзгісімен ашады, сондықтан іздеу бос экраннан басталмайды.'],
-        ['title' => 'Қолжетімділік пен ресурс түрін нақтылаңыз', 'body' => 'Даналардың бар-жоғын, тілді, жылды, ISBN-ды тексеріп, қажет болса сыртқы және лицензиялық ресурстарға өтіңіз.'],
-        ['title' => 'Әдебиет тізімінің жұмыс нұсқасын жинаңыз', 'body' => 'Курс, тақырып немесе зерттеу үшін керек жазбаларды shortlist-ке сақтаңыз.'],
-      ],
-      'en' => [
-        ['title' => 'Choose the UDC direction', 'body' => 'Start from a real academic lane such as computing, economics, law, pedagogy, engineering, or natural sciences.'],
-        ['title' => 'Open the catalog in the right zone', 'body' => 'Each route opens the catalog with a UDC filter so the search does not begin from an empty state.'],
-        ['title' => 'Refine by availability and resource type', 'body' => 'Check copies, language, year, ISBN, and move into licensed or external resources when the topic requires it.'],
-        ['title' => 'Build a working draft bibliography', 'body' => 'Save the right records into shortlist so the material set can support a course, topic, or research task.'],
+          ['icon' => 'terminal', 'udc_code' => '004', 'udc' => 'UDC 004', 'title' => 'Computing & Informatics', 'body' => 'Advanced research in algorithmic systems, software engineering, and digital infrastructure.', 'tags' => ['Cybersecurity', 'AI Systems', 'Big Data']],
+          ['icon' => 'trending_up', 'udc_code' => '33', 'udc' => 'UDC 33', 'title' => 'Economics & Management', 'body' => 'Institutional analysis of market structures, business logistics, and national economic development.', 'tags' => ['Logistics', 'Audit', 'Governance']],
+          ['icon' => 'gavel', 'udc_code' => '34', 'udc' => 'UDC 34', 'title' => 'Legal Sciences', 'body' => 'Constitutional frameworks, international law, and jurisprudential studies across Central Asia.', 'tags' => ['Civil Law', 'Diplomacy', 'Ethics']],
+          ['icon' => 'engineering', 'udc_code' => '62', 'udc' => 'UDC 62', 'title' => 'Engineering & Tech', 'body' => 'Materials science, mechanical engineering, and innovative technological applications.', 'tags' => ['Robotics', 'Mechanics', 'Automation']],
+          ['icon' => 'biotech', 'udc_code' => '50', 'udc' => 'UDC 50', 'title' => 'Natural Sciences', 'body' => 'Biological research, chemical engineering, and environmental sustainability studies.', 'tags' => ['Ecology', 'Genetics', 'Chemistry']],
       ],
   ][$lang];
 @endphp
@@ -188,498 +192,694 @@
 @section('title', $copy['title'])
 
 @section('content')
-  <div id="discover-page">
-  <section class="page-hero discover-hero">
-    <div class="container discover-hero-shell">
-      <div>
-        <div class="eyebrow eyebrow--cyan">{{ $copy['hero_eyebrow'] }}</div>
-        <h1>{{ $copy['hero_title'] }}</h1>
-        <p>{{ $copy['hero_lead'] }}</p>
-      </div>
-      <div class="discover-hero-actions">
-        <a href="{{ $withLang('/catalog') }}" class="btn btn-primary">{{ $copy['hero_catalog'] }}</a>
-        <a href="{{ $withLang('/resources') }}" class="btn btn-ghost">{{ $copy['hero_resources'] }}</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="page-section">
-    <div class="container discover-layout">
-      <aside class="discover-rail">
-        <div class="eyebrow eyebrow--violet">{{ $copy['aside_eyebrow'] }}</div>
-        <h2>{{ $copy['aside_title'] }}</h2>
-        <p>{{ $copy['aside_body'] }}</p>
-        <ul class="discover-rail-list">
-          @foreach($copy['aside_steps'] as $step)
-            <li>{{ $step }}</li>
-          @endforeach
-        </ul>
-      </aside>
-
-      <div class="discover-main">
-        <div class="discover-panel">
-          <div class="eyebrow">{{ $copy['panel_eyebrow'] }}</div>
-          <h2>{{ $copy['panel_title'] }}</h2>
-          <p>{{ $copy['panel_body'] }}</p>
-
-          <div id="subjects-loading" class="discover-loading">{{ $copy['loading'] }}</div>
-          <div id="subjects-container" style="display:none;">
-            <div id="faculties-section" class="subjects-group"></div>
-            <div id="departments-section" class="subjects-group"></div>
-            <div id="specializations-section" class="subjects-group"></div>
+<div id="discover-page" class="discover-export-page">
+  <section id="discover-hero" class="discover-export-hero">
+    <div class="discover-shell">
+      <div class="discover-hero-grid">
+        <div class="discover-hero-copy">
+          <span class="discover-kicker">{{ $copy['hero_eyebrow'] }}</span>
+          <h1>{{ $copy['hero_title'] }}</h1>
+          <p>{{ $copy['hero_body'] }}</p>
+          <div class="discover-hero-actions">
+            <a href="{{ $withLang('/catalog') }}" class="discover-btn discover-btn-primary">{{ $copy['launch_catalog'] }}</a>
+            <a href="{{ $withLang('/resources') }}" class="discover-btn discover-btn-secondary">{{ $copy['resources_cta'] }}</a>
           </div>
         </div>
+
+        <div class="discover-hero-visual-wrap">
+          <div class="discover-hero-visual" aria-hidden="true">
+            <span class="discover-visual-chip chip-one">UDC 004</span>
+            <span class="discover-visual-chip chip-two">UDC 33</span>
+            <span class="discover-visual-chip chip-three">UDC 62</span>
+            <div class="discover-visual-orbit orbit-one"></div>
+            <div class="discover-visual-orbit orbit-two"></div>
+          </div>
+          <div class="discover-quote-card">{{ $copy['hero_quote'] }}</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="discover-pathways" class="page-section">
-    <div class="container">
-      <div class="section-head">
+  <section id="discover-disciplines" class="discover-disciplines-section">
+    <div class="discover-shell">
+      <div class="discover-section-head">
         <div>
-          <div class="eyebrow eyebrow--green">{{ $copy['pathways_eyebrow'] }}</div>
-          <h2>{{ $copy['pathways_title'] }}</h2>
-          <p>{{ $copy['pathways_body'] }}</p>
+          <h2>{{ $copy['disciplines_title'] }}</h2>
+          <p>{{ $copy['disciplines_body'] }}</p>
+        </div>
+        <div class="discover-volume-panel">
+          <span>{{ $copy['volume_label'] }}</span>
+          <strong>{{ $copy['volume_value'] }}</strong>
         </div>
       </div>
 
-      <div class="discover-grid">
-        @foreach($cards as $card)
-          <article class="discover-card">
-            <div class="discover-card-meta">{{ $card['meta'] }} <span>{{ $card['udc'] }}</span></div>
+      <div class="discover-card-grid">
+        @foreach ($cards as $card)
+          <article class="discover-lane-card">
+            <div class="discover-card-top">
+              <span class="discover-udc-pill">{{ $card['udc'] }}</span>
+              <span class="material-symbols-outlined discover-card-icon">{{ $card['icon'] }}</span>
+            </div>
             <h3>{{ $card['title'] }}</h3>
             <p>{{ $card['body'] }}</p>
-            <div class="discover-keywords">
-              @foreach($card['keywords'] as $keyword)
-                <a href="{{ $withLang('/catalog', ['udc' => $card['udc_code'], 'q' => $keyword['q'], 'sort' => 'title']) }}" class="keyword-chip">{{ $keyword['label'] }}</a>
+            <div class="discover-tag-list">
+              @foreach ($card['tags'] as $tag)
+                <span class="discover-tag">{{ $tag }}</span>
               @endforeach
             </div>
-            <a href="{{ $withLang('/catalog', ['udc' => $card['udc_code'], 'sort' => 'title']) }}" class="discover-card-cta">{{ $copy['card_cta'] }}</a>
+            <a href="{{ $withLang('/catalog', ['udc' => $card['udc_code'], 'sort' => 'title']) }}" class="discover-inline-link">
+              {{ $copy['launch_catalog'] }}
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+          </article>
+        @endforeach
+
+        <article class="discover-lane-card discover-lane-card-featured">
+          <div>
+            <span class="material-symbols-outlined discover-featured-icon">explore</span>
+            <h3>{{ $copy['browse_all_title'] }}</h3>
+            <p>{{ $copy['browse_all_body'] }}</p>
+          </div>
+          <div class="discover-featured-action">
+            <a href="{{ $withLang('/catalog') }}" class="discover-btn discover-btn-teal">{{ $copy['launch_catalog'] }}</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="discover-workflow" class="discover-workflow-section">
+    <div class="discover-shell">
+      <h2 class="discover-centered-title">{{ $copy['workflow_title'] }}</h2>
+      <div class="discover-workflow-grid">
+        @foreach ($copy['workflow'] as $step)
+          <article class="discover-workflow-card">
+            <div class="discover-step-number">{{ $step['number'] }}</div>
+            <h4>{{ $step['title'] }}</h4>
+            <p>{{ $step['body'] }}</p>
           </article>
         @endforeach
       </div>
     </div>
   </section>
 
-  <section id="discover-workflow" class="page-section">
-    <div class="container">
-      <div class="section-head section-head-centered">
-        <div>
-          <div class="eyebrow eyebrow--violet">{{ $copy['workflow_eyebrow'] }}</div>
-          <h2>{{ $copy['workflow_title'] }}</h2>
-          <p>{{ $copy['workflow_body'] }}</p>
+  <section id="discover-metadata" class="discover-metadata-section">
+    <div class="discover-shell discover-metadata-grid">
+      <div class="discover-metadata-copy">
+        <h2>{{ $copy['metadata_title'] }}</h2>
+        <p>{{ $copy['metadata_body'] }}</p>
+
+        <div class="discover-status-card">
+          <span>{{ $copy['status_label'] }}</span>
+          <strong id="metadata-status-text">{{ $copy['status_text'] }}</strong>
         </div>
       </div>
 
-      <div class="workflow-steps">
-        @foreach($workflow as $index => $step)
-          <div class="workflow-step">
-            <div class="step-marker">{{ $index + 1 }}</div>
-            <div class="step-content">
-              <h3>{{ $step['title'] }}</h3>
-              <p>{{ $step['body'] }}</p>
-            </div>
-          </div>
+      <div class="discover-metadata-cloud">
+        <div id="subjects-loading" class="discover-loading-text">{{ $copy['metadata']['loading'] }}</div>
+        <div id="discover-metadata-chips" class="discover-metadata-chips">
+          @foreach ($copy['fallback_chips'] as $chip)
+            <a href="{{ $withLang('/catalog', ['q' => $chip['query'], 'sort' => 'title']) }}" class="discover-meta-chip">
+              <span>{{ $chip['label'] }}</span>
+              <span class="discover-meta-count">{{ $chip['count'] }}</span>
+            </a>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="discover-bridge" class="discover-bridge-section">
+    <div class="discover-shell">
+      <div class="discover-bridge-panel">
+        @foreach ($copy['bridge'] as $bridgeCard)
+          <article class="discover-bridge-card">
+            <h3>{{ $bridgeCard['title'] }}</h3>
+            <p>{{ $bridgeCard['body'] }}</p>
+            <a href="{{ $bridgeCard['url'] }}">{{ $bridgeCard['cta'] }}</a>
+          </article>
         @endforeach
       </div>
     </div>
   </section>
-
-  <section class="page-section">
-    <div class="container">
-      <div class="info-banner">
-        <div class="info-banner-icon">i</div>
-        <div class="info-banner-text">
-          <h3>{{ $copy['banner_title'] }}</h3>
-          <p>{{ $copy['banner_body'] }}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="discover-cta" class="cta-section">
-    <div class="container">
-      <h2>{{ $copy['cta_title'] }}</h2>
-      <p>{{ $copy['cta_body'] }}</p>
-      <div class="cta-buttons">
-        <a href="{{ $withLang('/catalog') }}" class="btn btn-primary">{{ $copy['hero_catalog'] }}</a>
-        <a href="{{ $withLang('/shortlist') }}" class="btn btn-ghost">{{ $copy['cta_shortlist'] }}</a>
-      </div>
-    </div>
-  </section>
-  </div>
+</div>
 @endsection
 
 @section('head')
 <style>
-  .discover-hero {
-    padding-bottom: 16px;
+  .discover-export-page {
+    background: #f8f9fa;
+    color: #191c1d;
   }
 
-  .discover-hero-shell {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 24px;
-    text-align: left;
-    animation: discoverReveal .5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  .discover-shell {
+    max-width: 1536px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .discover-export-hero {
+    padding: 56px 0 48px;
+  }
+
+  .discover-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(320px, 5fr);
+    gap: 48px;
+    align-items: center;
+  }
+
+  .discover-kicker {
+    display: block;
+    margin-bottom: 16px;
+    color: #006a6a;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+  }
+
+  .discover-hero-copy h1 {
+    margin: 0 0 24px;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(3rem, 5vw, 4.75rem);
+    line-height: 1.05;
+    color: #000613;
+  }
+
+  .discover-hero-copy p {
+    margin: 0;
+    max-width: 720px;
+    color: #43474e;
+    font-size: 1.1rem;
+    line-height: 1.8;
   }
 
   .discover-hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
+    margin-top: 28px;
   }
 
-  .discover-layout {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 24px;
-    align-items: start;
-  }
-
-  .discover-rail {
-    position: sticky;
-    top: var(--shell-sticky-offset);
-    padding: 22px;
-    border-radius: var(--radius-xl);
-    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
-    border: 1px solid rgba(195, 198, 209, 0.42);
-    box-shadow: var(--shadow-soft);
-    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .discover-rail:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
-    border-color: rgba(0,30,64,.12);
-  }
-
-  .discover-rail h2 {
-    margin: 0 0 10px;
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 1.75rem;
-    color: var(--blue);
-    line-height: 1.1;
-  }
-
-  .discover-rail p {
-    margin: 0 0 16px;
-    color: var(--muted);
-    line-height: 1.7;
+  .discover-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 10px;
     font-size: 14px;
-  }
-
-  .discover-rail-list {
-    margin: 0;
-    padding-left: 18px;
-    color: var(--muted);
-    display: grid;
-    gap: 10px;
-    line-height: 1.65;
-    font-size: 14px;
-  }
-
-  .discover-rail-list a {
-    color: var(--blue);
     font-weight: 700;
+    text-decoration: none;
+    transition: transform .25s ease, opacity .2s ease, background .2s ease;
   }
 
-  .discover-panel {
-    padding: 24px;
-    border-radius: var(--radius-xl);
-    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-soft);
+  .discover-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .discover-btn-primary {
+    background: linear-gradient(135deg, #000613, #001f3f);
+    color: #ffffff;
+  }
+
+  .discover-btn-secondary {
+    background: #edeeef;
+    color: #000613;
+  }
+
+  .discover-btn-teal {
+    background: #006a6a;
+    color: #ffffff;
+  }
+
+  .discover-hero-visual-wrap {
+    position: relative;
+    padding-bottom: 24px;
+  }
+
+  .discover-hero-visual {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
     overflow: hidden;
-    transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.22), transparent 0 24%),
+      linear-gradient(135deg, rgba(0,6,19,.95), rgba(71,96,131,.72)),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 38px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0 1px, transparent 1px 38px);
+    box-shadow: 0 20px 50px rgba(0, 6, 19, .14);
+    isolation: isolate;
   }
 
-  .discover-panel:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 16px 34px rgba(25, 28, 29, 0.05);
-    border-color: rgba(0,30,64,.12);
+  .discover-hero-visual::before,
+  .discover-hero-visual::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 14px;
+    transform: rotate(-7deg);
   }
 
-  .discover-panel h2 {
-    margin: 0 0 8px;
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    color: var(--blue);
+  .discover-hero-visual::before {
+    inset: 14% 14% 20% 12%;
   }
 
-  .discover-panel > p {
-    margin: 0 0 18px;
-    color: var(--muted);
-    line-height: 1.75;
+  .discover-hero-visual::after {
+    inset: 30% 18% 12% 24%;
+    transform: rotate(11deg);
   }
 
-  .discover-loading {
-    padding: 30px 16px;
-    text-align: center;
-    color: var(--muted);
-    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(243,244,245,.94));
-    border-radius: var(--radius-lg);
-    border: 1px dashed rgba(195,198,209,.7);
+  .discover-visual-orbit {
+    position: absolute;
+    border-radius: 999px;
+    border: 1px solid rgba(147, 242, 242, .28);
   }
 
-  .discover-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 18px;
+  .orbit-one {
+    inset: 18% 16% 22% 20%;
   }
 
-  .discover-grid .discover-card:nth-child(3n + 2) {
-    transform: translate3d(0, 10px, 0);
+  .orbit-two {
+    inset: 34% 26% 16% 12%;
   }
 
-  .discover-grid .discover-card:nth-child(3n + 2):hover {
-    transform: translate3d(0, 6px, 0);
-  }
-
-  .discover-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), background .2s ease, border-color .2s ease, box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .discover-card:hover {
-    background: rgba(243, 244, 245, 0.96);
-    border-color: rgba(20, 105, 109, 0.22);
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 14px 28px rgba(25, 28, 29, 0.05);
-  }
-
-  .discover-card-meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
+  .discover-visual-chip {
+    position: absolute;
+    z-index: 2;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    color: #d4e3ff;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--muted);
   }
 
-  .discover-card h3 {
-    margin: 0;
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 1.35rem;
-    color: var(--blue);
-    line-height: 1.18;
+  .chip-one { top: 16%; left: 12%; }
+  .chip-two { top: 48%; right: 12%; }
+  .chip-three { bottom: 16%; left: 22%; }
+
+  .discover-quote-card {
+    position: absolute;
+    left: -24px;
+    bottom: 0;
+    max-width: 280px;
+    padding: 22px 24px;
+    border-radius: 12px;
+    background: #001f3f;
+    color: #afc8f0;
+    font-family: 'Newsreader', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    line-height: 1.45;
+    box-shadow: 0 18px 36px rgba(0, 6, 19, .2);
   }
 
-  .discover-card > p {
+  .discover-disciplines-section {
+    padding: 72px 0;
+    background: #f3f4f5;
+  }
+
+  .discover-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .discover-section-head h2,
+  .discover-centered-title,
+  .discover-metadata-copy h2 {
+    margin: 0 0 12px;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(2.1rem, 3vw, 3rem);
+    color: #000613;
+  }
+
+  .discover-section-head p,
+  .discover-metadata-copy p {
     margin: 0;
-    color: var(--muted);
+    color: #43474e;
+    line-height: 1.75;
+  }
+
+  .discover-volume-panel {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .discover-volume-panel span {
+    display: block;
+    margin-bottom: 6px;
+    color: #74777f;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .discover-volume-panel strong {
+    display: block;
+    color: #000613;
+    font-family: 'Newsreader', serif;
+    font-size: 2rem;
+  }
+
+  .discover-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .discover-lane-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    padding: 32px;
+    border-radius: 16px;
+    background: #ffffff;
+    transition: background .35s ease, transform .35s ease;
+  }
+
+  .discover-lane-card:hover {
+    background: #e7e8e9;
+    transform: translateY(-2px);
+  }
+
+  .discover-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .discover-udc-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #90efef;
+    color: #006a6a;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .discover-card-icon {
+    color: #74777f;
+  }
+
+  .discover-lane-card h3,
+  .discover-lane-card-featured h3,
+  .discover-bridge-card h3 {
+    margin: 0 0 10px;
+    font-family: 'Newsreader', serif;
+    font-size: 2rem;
+    color: #000613;
+  }
+
+  .discover-lane-card p,
+  .discover-bridge-card p {
+    margin: 0 0 20px;
+    color: #43474e;
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.75;
   }
 
-  .discover-keywords {
+  .discover-tag-list {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-bottom: 20px;
   }
 
-  .discover-card-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 4px;
-    padding: 11px 14px;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(195, 198, 209, 0.55);
-    background: rgba(0, 30, 64, 0.03);
-    color: var(--blue);
-    font-size: 12px;
+  .discover-tag {
+    padding: 4px 8px;
+    background: #edeeef;
+    color: #74777f;
+    font-size: 10px;
     font-weight: 800;
-    letter-spacing: .06em;
+    letter-spacing: .1em;
     text-transform: uppercase;
-    text-decoration: none;
-    transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .18s ease, border-color .18s ease, color .18s ease;
   }
 
-  .discover-card-cta:hover {
-    background: var(--blue);
-    color: #fff;
-    border-color: var(--blue);
-    transform: translate3d(0, -1px, 0);
-  }
-
-  .keyword-chip {
+  .discover-inline-link {
     display: inline-flex;
     align-items: center;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    background: rgba(0, 30, 64, 0.04);
-    color: var(--blue);
-    border: 1px solid rgba(195, 198, 209, 0.55);
-    text-decoration: none;
-    transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .15s ease, color .15s ease, border-color .15s ease;
-  }
-
-  .keyword-chip:hover {
-    background: var(--blue);
-    color: #fff;
-    transform: translate3d(0, -1px, 0);
-  }
-
-  .workflow-steps {
-    max-width: 820px;
-    margin: 0 auto;
-    display: grid;
-    gap: 12px;
-  }
-
-  .workflow-step {
-    display: grid;
-    grid-template-columns: 42px 1fr;
-    gap: 14px;
-    align-items: start;
-    padding: 18px;
-    border-radius: var(--radius-lg);
-    background: #fff;
-    border: 1px solid var(--border);
-    transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .workflow-step:nth-child(even) {
-    transform: translate3d(12px, 0, 0);
-  }
-
-  .workflow-step:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 12px 26px rgba(25, 28, 29, 0.04);
-    border-color: rgba(20,105,109,.18);
-  }
-
-  .step-marker {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 999px;
-    background: rgba(20, 105, 109, 0.10);
-    color: var(--cyan);
-    font-weight: 800;
-    font-size: 15px;
-  }
-
-  .step-content h3 {
-    margin: 0 0 6px;
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--blue);
-  }
-
-  .step-content p {
-    margin: 0;
-    color: var(--muted);
+    gap: 8px;
+    color: #006a6a;
     font-size: 14px;
-    line-height: 1.7;
-  }
-
-  .step-content a {
-    color: var(--blue);
     font-weight: 700;
+    text-decoration: none;
   }
 
-  .subjects-group {
+  .discover-inline-link .material-symbols-outlined {
+    font-size: 18px;
+    transition: transform .25s ease;
+  }
+
+  .discover-inline-link:hover .material-symbols-outlined {
+    transform: translateX(3px);
+  }
+
+  .discover-lane-card-featured {
+    background: #000613;
+    color: #ffffff;
+  }
+
+  .discover-lane-card-featured h3 {
+    color: #ffffff;
+  }
+
+  .discover-lane-card-featured p {
+    color: #afc8f0;
+  }
+
+  .discover-featured-icon {
     margin-bottom: 18px;
+    color: #93f2f2;
+    font-size: 42px;
   }
 
-  .subjects-group-title {
+  .discover-featured-action {
+    margin-top: 20px;
+  }
+
+  .discover-workflow-section {
+    padding: 72px 0;
+    border-bottom: 1px solid #e7e8e9;
+  }
+
+  .discover-centered-title {
+    margin-bottom: 56px;
+    text-align: center;
+  }
+
+  .discover-workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .discover-workflow-card {
+    position: relative;
+    padding-top: 20px;
+  }
+
+  .discover-step-number {
+    position: absolute;
+    top: -18px;
+    left: -4px;
+    z-index: -1;
+    font-family: 'Newsreader', serif;
+    font-size: 3.75rem;
+    font-style: italic;
+    color: #e1e3e4;
+  }
+
+  .discover-workflow-card h4 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #000613;
+  }
+
+  .discover-workflow-card p {
+    margin: 0;
+    color: #43474e;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .discover-metadata-section {
+    padding: 72px 0;
+    background: #ffffff;
+  }
+
+  .discover-metadata-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 4fr) minmax(0, 8fr);
+    gap: 48px;
+    align-items: start;
+  }
+
+  .discover-status-card {
+    margin-top: 24px;
+    padding: 18px 20px;
+    background: #f3f4f5;
+    border-left: 4px solid #006a6a;
+    border-radius: 10px;
+  }
+
+  .discover-status-card span {
+    display: block;
+    margin-bottom: 6px;
+    color: #006a6a;
     font-size: 11px;
     font-weight: 800;
-    color: var(--muted);
+    letter-spacing: .18em;
     text-transform: uppercase;
-    letter-spacing: .14em;
-    margin-bottom: 10px;
   }
 
-  .subjects-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  .discover-status-card strong {
+    color: #000613;
+    font-size: 14px;
+    line-height: 1.6;
   }
 
-  .subject-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: var(--radius-md);
+  .discover-loading-text {
+    margin-bottom: 14px;
+    color: #74777f;
     font-size: 13px;
     font-weight: 700;
+  }
+
+  .discover-metadata-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .discover-meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: #edeeef;
+    color: #000613;
+    font-size: 14px;
+    font-weight: 800;
     text-decoration: none;
-    border: 1px solid var(--border);
-    background: #fff;
-    color: var(--blue);
-    transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .2s ease, border-color .2s ease, box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: background .25s ease, transform .25s ease;
   }
 
-  .subject-chip:hover {
-    background: rgba(243, 244, 245, 0.96);
-    border-color: rgba(20, 105, 109, 0.22);
-    box-shadow: 0 10px 20px rgba(25, 28, 29, 0.04);
-    transform: translate3d(0, -1px, 0);
+  .discover-meta-chip:hover {
+    background: #90efef;
+    transform: translateY(-1px);
   }
 
-  .subject-chip.faculty {
-    background: rgba(0, 30, 64, 0.03);
-    color: var(--blue);
-  }
-
-  .subject-chip.department {
-    background: rgba(20, 105, 109, 0.04);
-    color: var(--cyan);
-  }
-
-  .subject-chip.specialization {
-    background: rgba(69, 48, 0, 0.05);
-    color: #5d4201;
-  }
-
-  .subject-count {
+  .discover-meta-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #006a6a;
     font-size: 11px;
     font-weight: 800;
-    opacity: .7;
   }
 
-  @media (max-width: 900px) {
-    .discover-hero-shell,
-    .discover-layout {
-      grid-template-columns: 1fr;
-      display: grid;
+  .discover-bridge-section {
+    padding: 56px 0 80px;
+  }
+
+  .discover-bridge-panel {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    padding: 36px;
+    border-radius: 20px;
+    background: #001f3f;
+  }
+
+  .discover-bridge-card h3 {
+    color: #d4e3ff;
+  }
+
+  .discover-bridge-card p {
+    color: rgba(212, 227, 255, .8);
+  }
+
+  .discover-bridge-card a {
+    color: #93f2f2;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 2px solid #93f2f2;
+    padding-bottom: 4px;
+  }
+
+  @media (max-width: 1100px) {
+    .discover-hero-grid,
+    .discover-metadata-grid,
+    .discover-card-grid,
+    .discover-workflow-grid,
+    .discover-bridge-panel {
+      grid-template-columns: 1fr 1fr;
     }
 
-    .discover-rail {
-      position: static;
-      top: auto;
-    }
-
-    .discover-grid .discover-card:nth-child(3n + 2),
-    .workflow-step:nth-child(even) {
-      transform: none;
+    .discover-hero-copy {
+      grid-column: 1 / -1;
     }
   }
 
-  @media (max-width: 680px) {
-    .discover-grid {
+  @media (max-width: 780px) {
+    .discover-shell {
+      padding: 0 20px;
+    }
+
+    .discover-export-hero,
+    .discover-disciplines-section,
+    .discover-workflow-section,
+    .discover-metadata-section,
+    .discover-bridge-section {
+      padding-top: 44px;
+      padding-bottom: 44px;
+    }
+
+    .discover-hero-grid,
+    .discover-card-grid,
+    .discover-workflow-grid,
+    .discover-metadata-grid,
+    .discover-bridge-panel {
       grid-template-columns: 1fr;
     }
 
-    .workflow-step {
-      grid-template-columns: 1fr;
+    .discover-section-head {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 32px;
+    }
+
+    .discover-volume-panel {
+      text-align: left;
+    }
+
+    .discover-quote-card {
+      position: relative;
+      left: 0;
+      margin-top: -20px;
+    }
+
+    .discover-lane-card,
+    .discover-bridge-panel {
+      padding: 24px;
     }
   }
 </style>
@@ -687,8 +887,8 @@
 
 @section('scripts')
 <script>
-  const DISCOVER_I18N = @json($copy['groups']);
   const DISCOVER_LANG = @json($lang);
+  const DISCOVER_I18N = @json($copy['metadata']);
 
   function withLang(path, query = {}) {
     const url = new URL(path, window.location.origin);
@@ -707,32 +907,49 @@
 
   (async function loadSubjectsForDiscover() {
     const loading = document.getElementById('subjects-loading');
-    const container = document.getElementById('subjects-container');
-    try {
-      const res = await fetch('/api/v1/subjects', { headers: { Accept: 'application/json' } });
-      if (!res.ok) throw new Error('API error');
-      const data = await res.json();
+    const cloud = document.getElementById('discover-metadata-chips');
+    const status = document.getElementById('metadata-status-text');
 
-      function renderGroup(containerId, title, items, kind) {
-        if (!items || items.length === 0) return;
-        const el = document.getElementById(containerId);
-        const chips = items.map(item => {
-          const url = withLang('/catalog', { subject_id: item.id, subject_label: item.label });
-          const titleText = `${item.documentCount} ${DISCOVER_I18N.items}`;
-          return `<a href="${url}" class="subject-chip ${kind}" title="${titleText}">${item.label} <span class="subject-count">${item.documentCount}</span></a>`;
-        }).join('');
-        el.innerHTML = `<div class="subjects-group-title">${title}</div><div class="subjects-chips">${chips}</div>`;
+    try {
+      const response = await fetch('/api/v1/subjects', { headers: { Accept: 'application/json' } });
+      if (!response.ok) {
+        throw new Error('Metadata API error');
       }
 
-      renderGroup('faculties-section', DISCOVER_I18N.faculties, data.faculties, 'faculty');
-      renderGroup('departments-section', DISCOVER_I18N.departments, data.departments, 'department');
-      renderGroup('specializations-section', DISCOVER_I18N.specializations, data.specializations, 'specialization');
+      const data = await response.json();
+      const items = [
+        ...(data.faculties || []).map((item) => ({ ...item, kind: 'faculty' })),
+        ...(data.departments || []).map((item) => ({ ...item, kind: 'department' })),
+        ...(data.specializations || []).map((item) => ({ ...item, kind: 'specialization' })),
+      ]
+        .sort((left, right) => (right.documentCount || 0) - (left.documentCount || 0))
+        .slice(0, 18);
+
+      if (items.length > 0) {
+        cloud.innerHTML = items.map((item) => {
+          const href = withLang('/catalog', {
+            subject_id: item.id,
+            subject_label: item.label,
+            sort: 'title',
+          });
+
+          return `<a href="${href}" class="discover-meta-chip ${item.kind}" title="${item.documentCount} ${DISCOVER_I18N.items}"><span>${item.label}</span><span class="discover-meta-count">${item.documentCount}</span></a>`;
+        }).join('');
+
+        if (status) {
+          status.textContent = DISCOVER_I18N.status.replace(':count', String(items.length));
+        }
+      } else if (status) {
+        status.textContent = DISCOVER_I18N.fallback;
+      }
 
       loading.style.display = 'none';
-      container.style.display = 'block';
-    } catch (e) {
+    } catch (error) {
       loading.textContent = DISCOVER_I18N.error;
-      console.warn('Subjects load error:', e);
+      if (status) {
+        status.textContent = DISCOVER_I18N.fallback;
+      }
+      console.warn('Discover metadata load failed:', error);
     }
   })();
 </script>
