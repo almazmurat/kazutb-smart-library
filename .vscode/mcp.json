@@ -35,6 +35,19 @@
         "@playwright/mcp"
       ]
     },
+    "markitdown": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "python:3.12-slim",
+        "sh",
+        "-lc",
+        "pip install -q markitdown-mcp >/dev/null 2>&1 && exec python -m markitdown_mcp"
+      ]
+    },
     "context7": {
       "type": "stdio",
       "command": "npx",
