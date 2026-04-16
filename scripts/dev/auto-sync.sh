@@ -223,3 +223,28 @@ echo "Session boundary: $BOUNDARY_FILE_PRO"
 echo "Remote status: $(git rev-parse --abbrev-ref HEAD) synced with origin"
 echo ""
 echo "Agent can now continue work. All changes are tracked."
+
+# Add this block to your existing auto-sync script (~/kazutb-smart-library-main/auto-sync)
+
+VAULT_DIR="$HOME/kazutb-library-vault"
+DATE=$(date +%Y-%m-%d)
+TIME=$(date +%H:%M)
+SNAPSHOT_FILE="$VAULT_DIR/09-daily-notes/WORK_LOG_$(date +%Y%m%d).md"
+
+# Append current session context
+cat >> "$SNAPSHOT_FILE" << EOF
+
+## [$TIME] Auto-Snapshot
+
+**Branch**: $(git branch --show-current)
+**Last commit**: $(git log -1 --oneline)
+**Changed files**:
+$(git diff --name-only HEAD~1 HEAD 2>/dev/null | sed 's/^/- /')
+
+**Open routes** (web.php summary):
+$(grep "Route::" routes/web.php | head -20 | sed 's/^/    /')
+
+---
+EOF
+
+echo "Snapshot written to Obsidian"
