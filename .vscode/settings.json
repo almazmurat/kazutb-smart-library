@@ -1,0 +1,14 @@
+{
+    "chat.agent.enabled": true,
+    "chat.mcp.autostart": true,
+    "chat.mcp.serverSampling": {
+        "kazutb-smart-library-main/.vscode/mcp.json: postgres": {
+            "allowedModels": [
+                "copilot/auto"
+            ]
+        }
+    },
+    "workbench.editorLargeFileConfirmation": 1000,
+    "dailyNotes.autoCommit": false,
+    "dailyNotes.autoSync": false
+}

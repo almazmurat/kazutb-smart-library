@@ -35,6 +35,17 @@
         "@playwright/mcp"
       ]
     },
+    "chromeDevTools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--headless",
+        "--isolated",
+        "--no-usage-statistics"
+      ]
+    },
     "markitdown": {
       "type": "stdio",
       "command": "docker",
@@ -65,6 +76,27 @@
         "@modelcontextprotocol/server-github"
       ],
       "envFile": "${workspaceFolder}/.env"
+    },
+    "sentry": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@sentry/mcp-server@latest"
+      ],
+      "envFile": "${workspaceFolder}/.env"
+    },
+    "redis": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env-file",
+        "${workspaceFolder}/.env",
+        "mcp/redis"
+      ]
     },
     "stitch": {
       "type": "http",
