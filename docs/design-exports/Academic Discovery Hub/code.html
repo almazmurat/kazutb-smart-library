@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academic Discovery Hub | KazUTB Digital Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700;6..72,800&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "on-secondary-fixed": "#002020",
+                        "primary": "#000613",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c4c6cf",
+                        "on-surface": "#191c1d",
+                        "surface-dim": "#d9dadb",
+                        "primary-fixed-dim": "#afc8f0",
+                        "primary-fixed": "#d4e3ff",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#36485b",
+                        "on-background": "#191c1d",
+                        "tertiary-fixed-dim": "#b5c8df",
+                        "surface-bright": "#f8f9fa",
+                        "outline": "#74777f",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#000610",
+                        "primary-container": "#001f3f",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#afc8f0",
+                        "surface-container": "#edeeef",
+                        "secondary-container": "#90efef",
+                        "on-tertiary-fixed": "#091d2e",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#76d6d5",
+                        "secondary": "#006a6a",
+                        "tertiary-fixed": "#d1e4fb",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-fixed": "#93f2f2",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed": "#001c3a",
+                        "inverse-surface": "#2e3132",
+                        "on-surface-variant": "#43474e",
+                        "tertiary-container": "#0d2031",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "surface": "#f8f9fa",
+                        "surface-tint": "#476083",
+                        "on-secondary-container": "#006e6e",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary-container": "#76889d",
+                        "background": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#6f88ad"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3 { font-family: 'Newsreader', serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 bg-[#F8F9FA] dark:bg-[#000613] backdrop-blur-md opacity-95">
+<nav class="flex justify-between items-center px-12 py-4 max-w-screen-2xl mx-auto font-['Newsreader'] tracking-tight">
+<div class="text-xl font-bold font-['Newsreader'] text-[#000613] dark:text-white">
+                KazUTB Digital Library
+            </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-[#191C1D] dark:text-[#F8F9FA] font-medium hover:text-[#006A6A] transition-colors duration-300" href="#">Catalog</a>
+<a class="text-[#006A6A] dark:text-[#006A6A] font-semibold border-b-2 border-[#006A6A] pb-1" href="#">Resources</a>
+<a class="text-[#191C1D] dark:text-[#F8F9FA] font-medium hover:text-[#006A6A] transition-colors duration-300" href="#">Archive</a>
+<a class="text-[#191C1D] dark:text-[#F8F9FA] font-medium hover:text-[#006A6A] transition-colors duration-300" href="#">Scholarly Works</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container rounded-lg px-3 py-1.5">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-40 font-body" placeholder="Search curated works..." type="text"/>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">bookmarks</span>
+<span class="material-symbols-outlined text-primary cursor-pointer">account_circle</span>
+</div>
+</div>
+</nav>
+</header>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="max-w-screen-2xl mx-auto px-12 py-24 mb-12">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+<div class="md:col-span-7">
+<span class="text-secondary font-semibold tracking-widest uppercase text-xs mb-4 block">Navigation Framework</span>
+<h1 class="text-7xl font-bold text-primary mb-8 leading-[1.1]">The Map of Knowledge</h1>
+<p class="text-xl text-on-surface-variant max-w-2xl font-body leading-relaxed">
+                        A curated bridge to the Kazakh University of Technology and Business scholarly repository. Organized through the Universal Decimal Classification (UDC), this hub enables researchers to traverse disciplines with institutional precision.
+                    </p>
+</div>
+<div class="md:col-span-5 relative">
+<div class="aspect-square bg-surface-container-high rounded-xl overflow-hidden relative grayscale opacity-80 mix-blend-multiply">
+<img class="object-cover w-full h-full" data-alt="close-up of an antique library map with intricate line work and scholarly notations in a warm dimly lit study environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL5kiLkRLmKABWtusJtwwUObgPOvVQ5IsfplZMMIp5VScRTunMs0JKEP_eiTaS5zsLH_yIJZtkQKoPWDM_FpWeLBUU6mR6dq6qXBvtZCnxBI6HnScWdxY9chY_4nSm94x2TQSYQdccuDM-vpXJmrij0TD9elYG1Fx0i7zH8_c_h6_1UIE5byTC3Uxt0HewjPEr2AMxSnxJ_lKwJmL1fc0-PqhJpjVzXfGmDW_7My3Vv7Fg-na_GvbLMX0oHRARnNwcViRtP7dRm-xU"/>
+</div>
+<div class="absolute -bottom-6 -left-6 bg-primary-container p-8 rounded-lg shadow-xl max-w-xs">
+<p class="text-on-primary-container font-headline italic text-lg leading-snug">"Systematic organization is the first step toward discovery."</p>
+</div>
+</div>
+</div>
+</section>
+<!-- UDC Pathway Grid -->
+<section class="bg-surface-container-low py-32 px-12">
+<div class="max-w-screen-2xl mx-auto">
+<div class="flex justify-between items-end mb-20">
+<div class="max-w-xl">
+<h2 class="text-4xl font-bold text-primary mb-4">Scholarly Disciplines</h2>
+<p class="text-on-surface-variant font-body">Primary academic pathways mapped to global bibliographic standards.</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-label text-outline mb-2">Total Catalog Volume</p>
+<p class="text-3xl font-headline font-bold text-primary">482,000+ Assets</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+<!-- Computing -->
+<div class="bg-surface-container-lowest p-10 rounded-xl group hover:bg-surface-container-high transition-colors duration-500">
+<div class="flex justify-between items-start mb-8">
+<span class="text-secondary font-bold text-sm tracking-tighter bg-secondary-container px-3 py-1 rounded">UDC 004</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">terminal</span>
+</div>
+<h3 class="text-2xl font-bold text-primary mb-3">Computing &amp; Informatics</h3>
+<p class="text-on-surface-variant mb-6 font-body text-sm leading-relaxed">Advanced research in algorithmic systems, software engineering, and digital infrastructure at KazUTB.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Cybersecurity</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">AI Systems</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Big Data</span>
+</div>
+<button class="flex items-center gap-2 text-secondary font-semibold text-sm group/btn">
+                            Open pathway in catalog
+                            <span class="material-symbols-outlined text-sm transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<!-- Economics -->
+<div class="bg-surface-container-lowest p-10 rounded-xl group hover:bg-surface-container-high transition-colors duration-500">
+<div class="flex justify-between items-start mb-8">
+<span class="text-secondary font-bold text-sm tracking-tighter bg-secondary-container px-3 py-1 rounded">UDC 33</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">trending_up</span>
+</div>
+<h3 class="text-2xl font-bold text-primary mb-3">Economics &amp; Management</h3>
+<p class="text-on-surface-variant mb-6 font-body text-sm leading-relaxed">Institutional analysis of market structures, business logistics, and national economic development.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Logistics</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Audit</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Governance</span>
+</div>
+<button class="flex items-center gap-2 text-secondary font-semibold text-sm group/btn">
+                            Open pathway in catalog
+                            <span class="material-symbols-outlined text-sm transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<!-- Law -->
+<div class="bg-surface-container-lowest p-10 rounded-xl group hover:bg-surface-container-high transition-colors duration-500">
+<div class="flex justify-between items-start mb-8">
+<span class="text-secondary font-bold text-sm tracking-tighter bg-secondary-container px-3 py-1 rounded">UDC 34</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">gavel</span>
+</div>
+<h3 class="text-2xl font-bold text-primary mb-3">Legal Sciences</h3>
+<p class="text-on-surface-variant mb-6 font-body text-sm leading-relaxed">Constitutional frameworks, international law, and jurisprudential studies across Central Asia.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Civil Law</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Diplomacy</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Ethics</span>
+</div>
+<button class="flex items-center gap-2 text-secondary font-semibold text-sm group/btn">
+                            Open pathway in catalog
+                            <span class="material-symbols-outlined text-sm transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<!-- Engineering -->
+<div class="bg-surface-container-lowest p-10 rounded-xl group hover:bg-surface-container-high transition-colors duration-500">
+<div class="flex justify-between items-start mb-8">
+<span class="text-secondary font-bold text-sm tracking-tighter bg-secondary-container px-3 py-1 rounded">UDC 62</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">engineering</span>
+</div>
+<h3 class="text-2xl font-bold text-primary mb-3">Engineering &amp; Tech</h3>
+<p class="text-on-surface-variant mb-6 font-body text-sm leading-relaxed">Materials science, mechanical engineering, and innovative technological applications.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Robotics</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Mechanics</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Automation</span>
+</div>
+<button class="flex items-center gap-2 text-secondary font-semibold text-sm group/btn">
+                            Open pathway in catalog
+                            <span class="material-symbols-outlined text-sm transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<!-- Natural Sciences -->
+<div class="bg-surface-container-lowest p-10 rounded-xl group hover:bg-surface-container-high transition-colors duration-500">
+<div class="flex justify-between items-start mb-8">
+<span class="text-secondary font-bold text-sm tracking-tighter bg-secondary-container px-3 py-1 rounded">UDC 50</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">biotech</span>
+</div>
+<h3 class="text-2xl font-bold text-primary mb-3">Natural Sciences</h3>
+<p class="text-on-surface-variant mb-6 font-body text-sm leading-relaxed">Biological research, chemical engineering, and environmental sustainability studies.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Ecology</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Genetics</span>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline-variant bg-surface-container px-2 py-1">Chemistry</span>
+</div>
+<button class="flex items-center gap-2 text-secondary font-semibold text-sm group/btn">
+                            Open pathway in catalog
+                            <span class="material-symbols-outlined text-sm transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<!-- Search All -->
+<div class="bg-primary p-10 rounded-xl flex flex-col justify-between text-on-primary">
+<div>
+<span class="material-symbols-outlined text-secondary-fixed text-4xl mb-6">explore</span>
+<h3 class="text-3xl font-bold mb-4 font-headline">Browse All Archives</h3>
+<p class="text-primary-fixed-dim font-body text-sm leading-relaxed">Search across all departments and historical archives using the full UDC spectrum.</p>
+</div>
+<div class="mt-8">
+<a class="inline-block bg-secondary text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-opacity-90 transition-all" href="#">Launch Catalog</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Guided Workflow -->
+<section class="max-w-screen-2xl mx-auto px-12 py-32 border-b border-surface-container">
+<h2 class="text-4xl font-bold text-center mb-20 text-primary">Research Workflow</h2>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="relative">
+<div class="text-6xl font-headline italic text-surface-container-highest absolute -top-12 -left-4 -z-10">01</div>
+<h4 class="text-xl font-bold mb-3 text-primary">Choose direction</h4>
+<p class="text-on-surface-variant text-sm font-body leading-relaxed">Identify your research domain via the UDC pathway or faculty tags.</p>
+</div>
+<div class="relative">
+<div class="text-6xl font-headline italic text-surface-container-highest absolute -top-12 -left-4 -z-10">02</div>
+<h4 class="text-xl font-bold mb-3 text-primary">Explore catalog</h4>
+<p class="text-on-surface-variant text-sm font-body leading-relaxed">Browse curated high-impact works and recent faculty publications.</p>
+</div>
+<div class="relative">
+<div class="text-6xl font-headline italic text-surface-container-highest absolute -top-12 -left-4 -z-10">03</div>
+<h4 class="text-xl font-bold mb-3 text-primary">Refine results</h4>
+<p class="text-on-surface-variant text-sm font-body leading-relaxed">Filter by institutional repository, year, or specific department.</p>
+</div>
+<div class="relative">
+<div class="text-6xl font-headline italic text-surface-container-highest absolute -top-12 -left-4 -z-10">04</div>
+<h4 class="text-xl font-bold mb-3 text-primary">Build shortlist</h4>
+<p class="text-on-surface-variant text-sm font-body leading-relaxed">Save bookmarks to your academic profile for citation management.</p>
+</div>
+</div>
+</section>
+<!-- Institutional Metadata -->
+<section class="py-32 px-12 bg-white">
+<div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16">
+<div class="md:col-span-4">
+<h2 class="text-4xl font-bold text-primary mb-6">Institutional Metadata</h2>
+<p class="text-on-surface-variant font-body mb-8">Access content specific to our university structure. Use these tags to find localized research projects and dissertations.</p>
+<div class="p-6 bg-surface-container-low rounded-lg border-l-4 border-secondary">
+<p class="text-xs text-secondary font-bold uppercase tracking-widest mb-1">Update Status</p>
+<p class="text-sm font-body text-primary font-medium">Repository updated 14 minutes ago with 42 new faculty records.</p>
+</div>
+</div>
+<div class="md:col-span-8">
+<div class="flex flex-wrap gap-4">
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Faculty of Technology</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">1.2k</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Design &amp; Architecture</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">842</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Dept. of Automation</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">411</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Information Systems</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">2.9k</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Economic Theory</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">1.1k</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Biotechnology Research</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">654</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Applied Mathematics</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">312</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">Public Administration</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">188</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-full hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-sm font-bold text-primary">History of Kazakhstan</span>
+<span class="text-[10px] font-label bg-white px-2 py-0.5 rounded-full text-secondary">920</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Bridge -->
+<section class="max-w-screen-2xl mx-auto px-12 py-24">
+<div class="bg-primary-container p-16 rounded-2xl grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="text-on-primary-container">
+<h3 class="text-2xl font-bold mb-4 font-headline">Library Catalog</h3>
+<p class="text-sm font-body opacity-80 mb-8">Access the main database with advanced query builders and UDC filters.</p>
+<a class="text-secondary font-bold text-sm uppercase tracking-widest border-b-2 border-secondary pb-1" href="#">Enter Database</a>
+</div>
+<div class="text-on-primary-container">
+<h3 class="text-2xl font-bold mb-4 font-headline">Research Resources</h3>
+<p class="text-sm font-body opacity-80 mb-8">Guides for citation formatting, APA/Chicago standards, and bibliography tools.</p>
+<a class="text-secondary font-bold text-sm uppercase tracking-widest border-b-2 border-secondary pb-1" href="#">View Guides</a>
+</div>
+<div class="text-on-primary-container">
+<h3 class="text-2xl font-bold mb-4 font-headline">Personal Shortlist</h3>
+<p class="text-sm font-body opacity-80 mb-8">Retrieve your saved collections and active borrowing records.</p>
+<a class="text-secondary font-bold text-sm uppercase tracking-widest border-b-2 border-secondary pb-1" href="#">Access Account</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-[#000613] dark:bg-[#000105] text-[#F8F9FA] w-full py-16 px-12 font-['Manrope'] text-sm leading-relaxed">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-screen-2xl mx-auto">
+<div>
+<div class="text-lg font-['Newsreader'] text-white mb-6">KazUTB Digital Library</div>
+<p class="text-gray-400 text-xs leading-loose">
+                    Advancing scholarly discovery through systemic organization and digital excellence.
+                </p>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6 text-xs uppercase tracking-widest">Repository</h5>
+<ul class="space-y-4">
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Institutional Repository</a></li>
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Faculty Research</a></li>
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Student Theses</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6 text-xs uppercase tracking-widest">Support</h5>
+<ul class="space-y-4">
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Contact Librarian</a></li>
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Interlibrary Loan</a></li>
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Search Help</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6 text-xs uppercase tracking-widest">Policies</h5>
+<ul class="space-y-4">
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Terms of Access</a></li>
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Copyright Policy</a></li>
+<li><a class="text-gray-400 hover:text-[#006A6A] transition-all" href="#">Privacy Notice</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-screen-2xl mx-auto mt-16 pt-8 border-t border-gray-800 flex justify-between items-center opacity-60">
+<p>© 2024 Kazakh University of Technology and Business. Scholarly Repository.</p>
+<div class="flex gap-6">
+<span class="material-symbols-outlined cursor-pointer">social_leaderboard</span>
+<span class="material-symbols-outlined cursor-pointer">language</span>
+</div>
+</div>
+</footer>
+</body></html>
