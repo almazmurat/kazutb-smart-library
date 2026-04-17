@@ -213,6 +213,20 @@ class DemoAuthTest extends TestCase
             ->assertSee('/api/login', false);
     }
 
+    public function test_login_page_exposes_quick_fill_for_librarian_and_admin(): void
+    {
+        Config::set('demo_auth.enabled', true);
+
+        $response = $this->get('/login');
+
+        $response
+            ->assertOk()
+            ->assertSee('data-quick-fill="librarian"', false)
+            ->assertSee('data-quick-fill="admin"', false)
+            ->assertSee('demo_librarian')
+            ->assertSee('demo_admin');
+    }
+
     // ── No regression in real auth ────────────────────────────────
 
     public function test_real_login_route_unaffected_by_demo_config(): void

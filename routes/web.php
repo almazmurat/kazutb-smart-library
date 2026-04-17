@@ -124,7 +124,46 @@ Route::post('/login', function (Request $request) {
         'device_name' => ['nullable', 'string', 'max:255'],
     ]);
 
-    $loginIdentifier = $validated['login'] ?? $validated['email'] ?? 'unknown';
+    $loginIdentifier = trim((string) ($validated['login'] ?? $validated['email'] ?? 'unknown'));
+
+    if ((bool) config('demo_auth.enabled')) {
+        foreach (config('demo_auth.identities', []) as $slug => $identity) {
+            $demoLogin = trim((string) ($identity['login'] ?? ''));
+            $demoQuickLogin = trim((string) ($identity['quick_fill_login'] ?? ''));
+            $demoEmail = trim((string) ($identity['email'] ?? ''));
+            $demoPassword = (string) ($identity['password'] ?? '');
+
+            $identifierMatches = $loginIdentifier !== ''
+                && in_array(mb_strtolower($loginIdentifier), array_filter([
+                    $demoLogin !== '' ? mb_strtolower($demoLogin) : null,
+                    $demoQuickLogin !== '' ? mb_strtolower($demoQuickLogin) : null,
+                    $demoEmail !== '' ? mb_strtolower($demoEmail) : null,
+                ]), true);
+
+            if ($identifierMatches && $demoPassword !== '' && hash_equals($demoPassword, (string) $validated['password'])) {
+                $user = [
+                    'id' => (string) ($identity['id'] ?? ''),
+                    'name' => (string) ($identity['name'] ?? ''),
+                    'email' => (string) ($identity['email'] ?? ''),
+                    'login' => (string) ($identity['login'] ?? ''),
+                    'ad_login' => (string) ($identity['ad_login'] ?? ''),
+                    'role' => (string) ($identity['role'] ?? 'reader'),
+                    'title' => (string) ($identity['title'] ?? ''),
+                    'phone_extension' => (string) ($identity['phone_extension'] ?? ''),
+                    'profile_type' => (string) ($identity['profile_type'] ?? ''),
+                ];
+
+                $request->session()->regenerate();
+                $request->session()->put('library.crm_token', 'demo-token-' . $slug);
+                $request->session()->put('library.user', $user);
+                $request->session()->put('library.authenticated_at', now()->toIso8601String());
+                $request->session()->put('library.demo_identity', $slug);
+
+                return redirect('/account');
+            }
+        }
+    }
+
     $authApiUrl = config('services.external_auth.login_url', 'http://crm.local/api/login');
 
     $response = Http::timeout(12)->acceptJson()->post($authApiUrl, [
@@ -199,6 +238,10 @@ Route::get('/login', function (Request $request) {
                 'description' => $localizedIdentity['description'] ?? ($identity['description'] ?? ''),
                 'icon' => $identity['icon'] ?? '👤',
                 'role' => $identity['role'] ?? 'reader',
+                'login' => $identity['login'] ?? '',
+                'quickFillLogin' => $identity['quick_fill_login'] ?? ($identity['login'] ?? ''),
+                'email' => $identity['email'] ?? '',
+                'password' => $identity['password'] ?? '',
             ];
         }
     }

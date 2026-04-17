@@ -113,6 +113,9 @@
       opacity: 0.65;
       cursor: wait;
     }
+    .quick-fill-card {
+      border: 1px solid rgba(196, 198, 207, 0.35);
+    }
   </style>
 </head>
 <body class="bg-surface text-on-surface overflow-x-hidden">
@@ -243,6 +246,27 @@
                 </button>
               @endforeach
             </div>
+
+            @php
+              $quickFillIdentities = collect($demoIdentities)->filter(fn ($identity) => in_array($identity['slug'] ?? '', ['librarian', 'admin'], true))->values();
+            @endphp
+            @if($quickFillIdentities->isNotEmpty())
+              <div class="mt-5 grid grid-cols-1 gap-3">
+                <p class="text-[11px] font-bold uppercase tracking-widest text-outline">Quick fill demo credentials</p>
+                @foreach($quickFillIdentities as $identity)
+                  <button
+                    type="button"
+                    class="quick-fill-card rounded-lg bg-surface-container-lowest px-4 py-3 text-left hover:bg-surface-container-high transition-colors"
+                    data-quick-fill="{{ $identity['slug'] }}"
+                    onclick="fillDemoCredentials('{{ $identity['slug'] }}', '{{ $identity['quickFillLogin'] ?? $identity['login'] }}', '{{ $identity['password'] }}')"
+                  >
+                    <span class="block font-semibold text-primary">{{ $identity['icon'] ?? '👤' }} {{ $identity['label'] }}</span>
+                    <span class="block mt-1 text-xs text-on-surface-variant">Login: {{ $identity['quickFillLogin'] ?? $identity['login'] }}</span>
+                    <span class="block text-xs text-on-surface-variant">Password: {{ $identity['password'] }}</span>
+                  </button>
+                @endforeach
+              </div>
+            @endif
           </div>
         @endif
       </div>
@@ -326,7 +350,35 @@
       el.className = 'min-h-[20px] text-sm text-on-surface-variant';
     }
 
+    const DEMO_CREDENTIALS = {
+      librarian: { login: 'demo_librarian', password: 'DemoLibrarian2026!' },
+      admin: { login: 'demo_admin', password: 'DemoAdmin2026!' },
+      teacher: { login: 'demo_teacher', password: 'DemoTeacher2026!' },
+      student: { login: 'demo_student', password: 'DemoStudent2026!' },
+    };
+
+    function resolveDemoSlug(loginValue, passwordValue) {
+      const normalized = String(loginValue || '').trim().toLowerCase();
+      return Object.entries(DEMO_CREDENTIALS).find(([, identity]) => {
+        return identity.password === passwordValue && identity.login.toLowerCase() === normalized;
+      })?.[0] || null;
+    }
+
+    function fillDemoCredentials(slug, loginValue, passwordValue) {
+      const loginInput = document.getElementById('login');
+      const passwordInput = document.getElementById('password');
+      if (loginInput) loginInput.value = loginValue || '';
+      if (passwordInput) passwordInput.value = passwordValue || '';
+      showMessage(`Demo ${slug} credentials filled.`, 'info');
+    }
+
     async function submitLogin(loginValue, passwordValue) {
+      const demoSlug = resolveDemoSlug(loginValue, passwordValue);
+      if (demoSlug) {
+        await demoLogin(demoSlug, null, true);
+        return;
+      }
+
       const payload = { password: passwordValue, device_name: 'web' };
 
       if (loginValue.includes('@')) {
@@ -391,7 +443,7 @@
       showMessage(AUTH_I18N.ssoPending, 'info');
     });
 
-    async function demoLogin(slug, btn) {
+    async function demoLogin(slug, btn, keepDisabled = false) {
       clearMessage();
       const allCards = document.querySelectorAll('.demo-card');
       allCards.forEach(card => card.disabled = true);
@@ -425,6 +477,10 @@
       } catch (error) {
         showMessage(error?.message || AUTH_I18N.demoError, 'error');
         allCards.forEach(card => card.disabled = false);
+      } finally {
+        if (!keepDisabled) {
+          allCards.forEach(card => card.disabled = false);
+        }
       }
     }
   </script>
