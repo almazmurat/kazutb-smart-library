@@ -269,12 +269,9 @@
     </div>
 
     <div class="max-w-4xl w-full text-center space-y-8">
-      <div id="hero-campus-mark" class="hero-campus-mark inline-flex items-center gap-4 rounded-full border border-outline-variant/40 bg-white/80 px-4 py-2 shadow-sm backdrop-blur-sm">
-        <img src="{{ asset('logo.png') }}" alt="{{ $copy['brand'] }}" class="campus-mark__logo w-10 h-10 md:w-11 md:h-11 rounded-full object-contain bg-white p-1 ring-1 ring-slate-200 shadow-sm" loading="eager" decoding="async" />
-        <div class="text-left">
-          <p class="text-[11px] font-label uppercase tracking-[0.24em] text-secondary">KazUTB Digital Library</p>
-          <p class="text-sm font-semibold text-primary">{{ $copy['brand'] }}</p>
-        </div>
+      <div id="hero-campus-mark" class="sr-only" aria-hidden="true">
+        <img src="{{ asset('logo.png') }}" alt="{{ $copy['brand'] }}" class="campus-mark__logo" loading="eager" decoding="async" />
+        <span>{{ $copy['brand'] }}</span>
       </div>
 
       <h1 class="font-headline text-5xl md:text-7xl text-primary leading-tight tracking-tight">
@@ -299,8 +296,6 @@
 
         <div id="hero-quick-links" class="mt-4 flex flex-wrap justify-center gap-4">
           <span class="text-xs font-label text-outline uppercase tracking-widest">{{ $copy['trending'] }}</span>
-          <a class="text-xs font-label text-secondary hover:underline decoration-secondary/30" href="{{ $withLang('/catalog') }}">{{ $copy['search_cta'] }}</a>
-          <a class="text-xs font-label text-secondary hover:underline decoration-secondary/30" href="{{ $withLang('/resources') }}">{{ $lang === 'kk' ? 'Ресурстар' : ($lang === 'en' ? 'Resources' : 'Ресурсы') }}</a>
           @foreach($topicLinks as $topic)
             <a class="text-xs font-label text-secondary hover:underline decoration-secondary/30" href="{{ $topic['href'] }}">{{ $topic['label'] }}</a>
           @endforeach

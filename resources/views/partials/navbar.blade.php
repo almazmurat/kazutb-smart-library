@@ -22,8 +22,8 @@
           'links' => [
               ['key' => 'catalog', 'label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
               ['key' => 'resources', 'label' => 'Ресурсы', 'href' => $routeWithLang('/resources')],
-              ['key' => 'discover', 'label' => 'Навигация', 'href' => $routeWithLang('/discover')],
-              ['key' => 'about', 'label' => 'О библиотеке', 'href' => $routeWithLang('/about')],
+              ['key' => 'discover', 'label' => 'Архив', 'href' => $routeWithLang('/discover')],
+              ['key' => 'about', 'label' => 'Научные работы', 'href' => $routeWithLang('/about')],
           ],
           'guest' => 'Войти',
           'logout' => 'Выйти',
@@ -33,8 +33,8 @@
           'links' => [
               ['key' => 'catalog', 'label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
               ['key' => 'resources', 'label' => 'Ресурстар', 'href' => $routeWithLang('/resources')],
-              ['key' => 'discover', 'label' => 'Бағыттар', 'href' => $routeWithLang('/discover')],
-              ['key' => 'about', 'label' => 'Кітапхана туралы', 'href' => $routeWithLang('/about')],
+              ['key' => 'discover', 'label' => 'Мұрағат', 'href' => $routeWithLang('/discover')],
+              ['key' => 'about', 'label' => 'Ғылыми еңбектер', 'href' => $routeWithLang('/about')],
           ],
           'guest' => 'Кіру',
           'logout' => 'Шығу',
@@ -44,8 +44,8 @@
           'links' => [
               ['key' => 'catalog', 'label' => 'Catalog', 'href' => $routeWithLang('/catalog')],
               ['key' => 'resources', 'label' => 'Resources', 'href' => $routeWithLang('/resources')],
-              ['key' => 'discover', 'label' => 'Discover', 'href' => $routeWithLang('/discover')],
-              ['key' => 'about', 'label' => 'About', 'href' => $routeWithLang('/about')],
+              ['key' => 'discover', 'label' => 'Archive', 'href' => $routeWithLang('/discover')],
+              ['key' => 'about', 'label' => 'Scholarly Works', 'href' => $routeWithLang('/about')],
           ],
           'guest' => 'Sign in',
           'logout' => 'Sign out',
@@ -56,8 +56,8 @@
 <header class="top-0 sticky z-50 transition-all">
   <nav class="bg-slate-50/80 backdrop-blur-md text-blue-950 border-b border-slate-200/60">
     <div class="flex justify-between items-center px-6 md:px-8 py-4 w-full max-w-screen-2xl mx-auto gap-4">
-      <a href="{{ $routeWithLang('/') }}" class="inline-flex items-center gap-2 md:gap-3 text-lg md:text-xl font-['Newsreader'] tracking-tight text-blue-950 font-medium whitespace-nowrap align-middle" aria-label="{{ __('ui.brand.home_aria') }}">
-        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="navbar-brand-logo w-11 h-11 md:w-12 md:h-12 rounded-full object-contain bg-white p-1.5 shadow-sm ring-1 ring-slate-200 align-middle" loading="eager" decoding="async">
+      <a href="{{ $routeWithLang('/') }}" class="inline-flex items-center text-lg md:text-xl font-['Newsreader'] tracking-tight text-blue-950 font-medium whitespace-nowrap align-middle" aria-label="{{ __('ui.brand.home_aria') }}">
+        <img src="{{ asset('logo.png') }}" alt="{{ __('ui.brand.title') }} logo" class="navbar-brand-logo sr-only" loading="eager" decoding="async">
         <span class="align-middle leading-tight">{{ __('ui.brand.title') }}</span>
       </a>
 
@@ -79,13 +79,13 @@
         @endforeach
       </div>
 
-      <div class="flex items-center space-x-2 md:space-x-4 lg:space-x-6">
-        <div class="hidden lg:inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-1.5 py-1 gap-0.5" data-locale-switcher aria-label="{{ __('ui.aria.locale_switcher') }}">
-          <a href="{{ request()->fullUrlWithQuery(['lang' => 'kk']) }}" class="px-2 py-1 text-[10px] font-semibold rounded-full transition-colors @if($pageLang === 'kk') bg-slate-900 text-white @else text-slate-600 hover:bg-slate-200 @endif">KK</a>
-          <a href="{{ request()->fullUrlWithQuery(['lang' => 'ru']) }}" class="px-2 py-1 text-[10px] font-semibold rounded-full transition-colors @if($pageLang === 'ru') bg-slate-900 text-white @else text-slate-600 hover:bg-slate-200 @endif">RU</a>
-          <a href="{{ request()->fullUrlWithQuery(['lang' => 'en']) }}" class="px-2 py-1 text-[10px] font-semibold rounded-full transition-colors @if($pageLang === 'en') bg-slate-900 text-white @else text-slate-600 hover:bg-slate-200 @endif">EN</a>
-        </div>
+      <div class="sr-only" data-locale-switcher aria-label="{{ __('ui.aria.locale_switcher') }}">
+        <a href="{{ request()->fullUrlWithQuery(['lang' => 'kk']) }}">KK</a>
+        <a href="{{ request()->fullUrlWithQuery(['lang' => 'ru']) }}">RU</a>
+        <a href="{{ request()->fullUrlWithQuery(['lang' => 'en']) }}">EN</a>
+      </div>
 
+      <div class="flex items-center space-x-2 md:space-x-4 lg:space-x-6">
         @if($isAuthenticated)
           <button type="button" id="shared-logout-btn" class="font-['Manrope'] text-sm font-semibold text-teal-700 hover:opacity-80 transition-all">{{ $copy['logout'] }}</button>
         @else
