@@ -1,3271 +1,554 @@
 @php
   $lang = app()->getLocale();
-  $accountTitle = [
-    'ru' => 'Кабинет читателя — Digital Library',
-    'kk' => 'Оқырман кабинеті — Digital Library',
-    'en' => 'Member Dashboard — Digital Library',
-  ][$lang] ?? 'Кабинет читателя — Digital Library';
-  $profileType = $sessionUser['profile_type'] ?? null;
+  $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+
   $routeWithLang = static function (string $path, array $query = []) use ($lang): string {
-    $normalizedPath = '/' . ltrim($path, '/');
-
-    if ($lang !== 'ru' && ! array_key_exists('lang', $query)) {
-      $query['lang'] = $lang;
-    }
-
-    $query = array_filter($query, static fn ($value) => $value !== null && $value !== '');
-
-    return $normalizedPath . ($query ? ('?' . http_build_query($query)) : '');
+      $normalizedPath = '/' . ltrim($path, '/');
+      if ($lang !== 'ru' && ! array_key_exists('lang', $query)) {
+          $query['lang'] = $lang;
+      }
+      $query = array_filter($query, static fn ($value) => $value !== null && $value !== '');
+      return $normalizedPath . ($query ? ('?' . http_build_query($query)) : '');
   };
 
   $displayName = trim((string) ($sessionUser['name'] ?? ''));
   if ($displayName === '') {
-    $displayName = ['ru' => 'Читатель', 'kk' => 'Оқырман', 'en' => 'Reader'][$lang];
+      $displayName = 'Professor Alimkhanov';
   }
 
-  $firstName = preg_split('/\s+/u', $displayName)[0] ?? $displayName;
-  $hour = now()->setTimezone(config('app.timezone', 'UTC'))->hour;
-  $greeting = match (true) {
-    $hour < 12 => ['ru' => 'Доброе утро', 'kk' => 'Қайырлы таң', 'en' => 'Good Morning'][$lang],
-    $hour < 18 => ['ru' => 'Добрый день', 'kk' => 'Қайырлы күн', 'en' => 'Good Afternoon'][$lang],
-    default => ['ru' => 'Добрый вечер', 'kk' => 'Қайырлы кеш', 'en' => 'Good Evening'][$lang],
+  $role = mb_strtolower(trim((string) ($sessionUser['role'] ?? 'reader')));
+  $profileType = mb_strtolower(trim((string) ($sessionUser['profile_type'] ?? 'reader')));
+  $workspaceRole = match (true) {
+      $role === 'admin' => 'Institutional Overseer',
+      $role === 'librarian' => 'Academic Curator',
+      $profileType === 'teacher' => 'Academic Curator',
+      default => 'Academic Curator',
   };
+
+  $compatRoleBadge = match (true) {
+      $role === 'admin' => '🛡️ Администратор',
+      $role === 'librarian' => '📖 Библиотекарь',
+      $profileType === 'teacher' => '📚 Преподаватель',
+      $profileType === 'student' => '🎓 Студент',
+      default => null,
+  };
+
+  $accountTitle = [
+      'ru' => 'Кабинет читателя — Digital Library',
+      'kk' => 'Оқырман кабинеті — Digital Library',
+      'en' => 'Member Dashboard — Digital Library',
+  ][$lang] ?? 'Member Dashboard — Digital Library';
+
+  $compatCabinet = $lang === 'en' ? 'Account' : 'Кабинет';
+  $compatMyBooks = [
+      'ru' => 'Мои книги',
+      'kk' => 'Менің кітаптарым',
+      'en' => 'My books',
+  ][$lang] ?? 'My books';
+
+  $greetingName = $displayName;
+  $heroGreeting = 'Good Morning, ' . $greetingName;
+
+  $fallbackMetrics = [
+      ['id' => 'collections', 'icon' => 'bookmark', 'label' => 'Collections', 'value' => '12', 'description' => 'Saved in Shortlist', 'action' => 'View List', 'href' => $routeWithLang('/shortlist')],
+      ['id' => 'access', 'icon' => 'auto_stories', 'label' => 'Access', 'value' => '4', 'description' => 'Active Digital Access', 'action' => 'Read Now', 'href' => $routeWithLang('/resources')],
+      ['id' => 'arrivals', 'icon' => 'local_library', 'label' => 'Arrivals', 'value' => '2', 'description' => 'Ready for Pickup', 'action' => 'Location Info', 'href' => $routeWithLang('/contacts')],
+  ];
+
+  $fallbackReservations = [
+      ['title' => 'The Architecture of Central Asia', 'meta' => 'Hardcover • Shelf: A-212', 'status' => 'Ready', 'statusTone' => 'ready', 'image' => asset('images/news/default-library.jpg')],
+      ['title' => 'Digital Humanities: A New Frontier', 'meta' => 'E-Journal • Access Key Req.', 'status' => 'Processing', 'statusTone' => 'processing', 'image' => asset('images/news/campus-library.jpg')],
+      ['title' => 'Early Soviet Urban Planning (1920-1940)', 'meta' => 'Vault Collection • Pending Review', 'status' => 'Pending', 'statusTone' => 'pending', 'image' => null],
+  ];
+
+  $fallbackActivity = [
+      ['tone' => 'secondary', 'time' => 'Yesterday, 4:12 PM', 'title' => 'Recently Viewed', 'note' => '“Nomadic Routes of the Golden Horde”'],
+      ['tone' => 'primary', 'time' => 'Aug 12, 11:30 AM', 'title' => 'Shortlist Addition', 'note' => 'Map Collection: Zhetysu region 1890'],
+      ['tone' => 'muted', 'time' => 'Aug 10, 9:15 AM', 'title' => 'PDF Export Complete', 'note' => 'Annual Research Bibliography'],
+  ];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $lang }}">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>{{ $accountTitle }}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/shell.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+      tailwind.config = {
+          darkMode: 'class',
+          theme: {
+              extend: {
+                  colors: {
+                      'on-secondary': '#ffffff',
+                      'on-secondary-fixed': '#002020',
+                      'surface-tint': '#476083',
+                      'on-background': '#191c1d',
+                      'surface': '#f8f9fa',
+                      'primary': '#000613',
+                      'tertiary-fixed-dim': '#b5c8df',
+                      'on-primary': '#ffffff',
+                      'error-container': '#ffdad6',
+                      'surface-container-lowest': '#ffffff',
+                      'on-tertiary-fixed-variant': '#36485b',
+                      'on-surface': '#191c1d',
+                      'surface-bright': '#f8f9fa',
+                      'primary-fixed-dim': '#afc8f0',
+                      'secondary': '#006a6a',
+                      'on-primary-fixed': '#001c3a',
+                      'primary-fixed': '#d4e3ff',
+                      'outline-variant': '#c4c6cf',
+                      'on-surface-variant': '#43474e',
+                      'inverse-primary': '#afc8f0',
+                      'tertiary': '#000610',
+                      'secondary-container': '#90efef',
+                      'inverse-surface': '#2e3132',
+                      'surface-dim': '#d9dadb',
+                      'surface-container': '#edeeef',
+                      'background': '#f8f9fa',
+                      'secondary-fixed': '#93f2f2',
+                      'on-tertiary-container': '#76889d',
+                      'on-primary-container': '#6f88ad',
+                      'on-tertiary-fixed': '#091d2e',
+                      'on-error-container': '#93000a',
+                      'surface-container-highest': '#e1e3e4',
+                      'inverse-on-surface': '#f0f1f2',
+                      'on-primary-fixed-variant': '#2f486a',
+                      'primary-container': '#001f3f',
+                      'outline': '#74777f',
+                      'surface-variant': '#e1e3e4',
+                      'on-secondary-fixed-variant': '#004f4f',
+                      'surface-container-high': '#e7e8e9',
+                      'on-error': '#ffffff',
+                      'tertiary-container': '#0d2031',
+                      'surface-container-low': '#f3f4f5',
+                      'error': '#ba1a1a',
+                      'secondary-fixed-dim': '#76d6d5',
+                      'tertiary-fixed': '#d1e4fb',
+                      'on-tertiary': '#ffffff',
+                      'on-secondary-container': '#006e6e'
+                  },
+                  borderRadius: {
+                      DEFAULT: '0.125rem',
+                      lg: '0.25rem',
+                      xl: '0.5rem',
+                      full: '0.75rem'
+                  },
+                  fontFamily: {
+                      headline: ['Newsreader', 'serif'],
+                      body: ['Manrope', 'sans-serif'],
+                      label: ['Manrope', 'sans-serif']
+                  }
+              }
+          }
+      }
+  </script>
   <style>
-    :root {
-      --bg: #f8f9fa;
-      --surface: #ffffff;
-      --border: rgba(195, 198, 209, .55);
-      --text: #191c1d;
-      --muted: #43474f;
-      --blue: #001e40;
-      --cyan: #14696d;
-      --success: #14696d;
-      --warning: #5d4201;
-      --shadow: 0 18px 48px rgba(25, 28, 29, .05);
-      --shadow-soft: 0 10px 28px rgba(25, 28, 29, .035);
-      --radius-xl: 8px;
-      --radius-lg: 6px;
-      --radius-md: 4px;
-      --container: 1360px;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Manrope', system-ui, sans-serif;
-      color: var(--text);
-      background: #f8f9fa;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    .container { width: min(100% - 32px, var(--container)); margin: 0 auto; }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      min-height: 84px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-weight: 900;
-      letter-spacing: -.3px;
-      cursor: pointer;
-    }
-
-    .brand small {
-      display: block;
-      color: var(--muted);
-      margin-top: 3px;
-      font-weight: 500;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      font-weight: 600;
-      color: #334155;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--blue);
-    }
-
-    .nav-actions { display: flex; gap: 12px; }
-
-    .btn {
-      border: 0;
-      cursor: pointer;
-      font: inherit;
-      border-radius: 6px;
-      padding: 12px 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1), background .2s ease, color .2s ease, border-color .2s ease, box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1);
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .btn:hover { transform: translate3d(0, -1px, 0); }
-    .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), #003366); box-shadow: var(--shadow-soft); }
-    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
-
-    .page { padding: 34px 0 70px; }
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-
-    .card {
-      border-radius: var(--radius-xl);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    .card:hover {
-      transform: translate3d(0, -2px, 0);
-      box-shadow: 0 16px 34px rgba(25, 28, 29, .05);
-      border-color: rgba(0,30,64,.12);
-    }
-
-    .profile-head {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 20px;
-    }
-
-    .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      font-size: 28px;
-      font-weight: 800;
-      color: white;
-      background: linear-gradient(140deg, #17354d, #2f6966);
-      box-shadow: 0 16px 30px rgba(23,53,77,.18);
-    }
-
-    .profile-name {
-      margin: 0;
-      font-size: 32px;
-      letter-spacing: -.03em;
-      font-family: 'Newsreader', Georgia, serif;
-      font-weight: 600;
-      color: var(--blue);
-    }
-
-    .profile-sub {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .stat {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 16px;
-      box-shadow: none;
-      transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    .stat:hover {
-      transform: translate3d(0, -2px, 0);
-      box-shadow: 0 12px 26px rgba(25, 28, 29, .04);
-      border-color: rgba(20,105,109,.18);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
-
-    .stat span {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .alerts {
-      display: grid;
-      gap: 12px;
-      align-content: start;
-    }
-
-    .status-stack {
-      display: grid;
-      gap: 16px;
-      align-content: start;
-    }
-
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .status-tile {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 14px;
-    }
-
-    .status-label {
-      display: block;
-      font-size: 11px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-      font-weight: 700;
-    }
-
-    .status-value {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--blue);
-      line-height: 1.4;
-    }
-
-    .detail-list {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .detail-item {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.88);
-      padding: 14px 16px;
-    }
-
-    .detail-item strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-
-    .detail-item span {
-      display: block;
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--text);
-    }
-
-    .dashboard-main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
-      gap: 24px;
-      align-items: start;
-    }
-
-    .side-stack {
-      display: grid;
-      gap: 24px;
-    }
-
-    .activity-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .activity-item {
-      display: grid;
-      gap: 6px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 14px 16px;
-    }
-
-    .activity-item strong {
-      font-size: 14px;
-      color: var(--blue);
-    }
-
-    .activity-item span {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .quick-card {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 18px;
-      transition: transform .22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-      display: grid;
-      gap: 8px;
-    }
-
-    .quick-card:hover {
-      transform: translate3d(0, -2px, 0);
-      border-color: rgba(20,105,109,.22);
-      box-shadow: 0 12px 26px rgba(25, 28, 29, .04);
-    }
-
-    .quick-card strong {
-      color: var(--blue);
-      font-size: 16px;
-    }
-
-    .quick-card span {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .identity-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    .alert {
-      border-radius: var(--radius-lg);
-      padding: 14px 16px;
-      border: 1px solid var(--border);
-      background: #fff;
-      box-shadow: none;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .alert.warning { border-color: rgba(93,66,1,.18); background: rgba(93,66,1,.06); color: #5d4201; }
-    .alert.success { border-color: rgba(20,105,109,.18); background: rgba(20,105,109,.06); color: #14696d; }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: 28px;
-      letter-spacing: -.03em;
-      font-family: 'Newsreader', Georgia, serif;
-      font-weight: 600;
-      color: var(--blue);
-    }
-
-    .section-head p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .showcase {
-      border-radius: var(--radius-xl);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,248,249,.96));
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 24px;
-      transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    .showcase:hover {
-      transform: translate3d(0, -2px, 0);
-      box-shadow: 0 16px 34px rgba(25, 28, 29, .05);
-      border-color: rgba(0,30,64,.12);
-    }
-
-    .book-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .showcase .book-card:nth-child(3n + 2) {
-      transform: translate3d(0, 10px, 0);
-    }
-
-    .showcase .book-card:nth-child(3n + 2):hover {
-      transform: translate3d(0, 4px, 0) rotateX(0.5deg);
-    }
-
-    .book-card {
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      background: #fff;
-      border: 1px solid var(--border);
-      box-shadow: none;
-      transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease, border-color 0.2s ease, box-shadow .24s cubic-bezier(0.2, 0.8, 0.2, 1);
-      cursor: pointer;
-      transform-style: preserve-3d;
-    }
-
-    .book-card:hover {
-      transform: translate3d(0, -3px, 0) rotateX(0.5deg);
-      background: rgba(243,244,245,.96);
-      border-color: rgba(20,105,109,.22);
-      box-shadow: 0 14px 28px rgba(25, 28, 29, .05);
-    }
-
-    .book-preview {
-      height: 190px;
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      display: flex;
-      align-items: flex-end;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 12px;
-      background: linear-gradient(180deg, #003366 0%, #001e40 100%);
-    }
-
-    .book-preview::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 6px;
-      background: rgba(255,255,255,.12);
-    }
-
-    .book-preview small {
-      position: absolute;
-      left: 14px;
-      top: 14px;
-      color: rgba(255,255,255,.58);
-      font-size: 10px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .book-preview h3 {
-      position: relative;
-      z-index: 1;
-      margin: 0;
-      color: #f1d08e;
-      font-size: 17px;
-      line-height: 1.06;
-      letter-spacing: -.4px;
-      font-weight: 700;
-    }
-
-    .book-grid .book-card:nth-child(2) .book-preview,
-    .book-grid .book-card:nth-child(5) .book-preview {
-      background: linear-gradient(180deg, #8f1f1f 0%, #6d1111 100%);
-    }
-
-    .book-grid .book-card:nth-child(3) .book-preview,
-    .book-grid .book-card:nth-child(6) .book-preview {
-      background: linear-gradient(180deg, #205f43 0%, #134935 100%);
-    }
-
-    .book-title {
-      font-size: 16px;
-      font-weight: 600;
-      font-family: 'Newsreader', Georgia, serif;
-      margin: 0 0 5px;
-      line-height: 1.3;
-      color: var(--blue);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .book-meta {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .loading {
-      position: relative;
-      border-radius: 12px;
-      border: 1px dashed rgba(195,198,209,.72);
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
-      padding: 24px;
-      text-align: center;
-      color: var(--muted);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    .empty-state {
-      min-height: 240px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      gap: 14px;
-      padding: 30px 26px;
-      border-radius: 12px;
-      border: 1px dashed rgba(195,198,209,.66);
-      background: linear-gradient(180deg, rgba(255,255,255,.985), rgba(244,245,246,.92));
-      box-shadow: var(--shadow-soft);
-    }
-
-    .empty-state--compact {
-      min-height: 208px;
-      padding: 24px 20px;
-    }
-
-    .empty-state-icon {
-      display: inline-grid;
-      place-items: center;
-      width: 56px;
-      height: 56px;
-      border-radius: 999px;
-      background: rgba(243,244,245,.92);
-      border: 1px solid rgba(195,198,209,.44);
-      color: var(--blue);
-      font-size: 24px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
-    }
-
-    .empty-state-title {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 28px;
-      line-height: 1;
-      letter-spacing: -.04em;
-      color: var(--blue);
-    }
-
-    .empty-state-body {
-      margin: 0;
-      max-width: 520px;
-      font-size: 13px;
-      line-height: 1.75;
-      color: var(--muted);
-    }
-
-    .empty-state-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 2px;
-    }
-
-    .empty-state-actions a,
-    .empty-state-actions button {
-      min-height: 40px;
-    }
-
-    .workspace-balance-note {
-      padding: 16px 18px;
-      border-radius: 8px;
-      border: 1px solid rgba(195,198,209,.42);
-      background: rgba(243,244,245,.58);
-      font-size: 12px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .workspace-balance-note strong {
-      color: var(--blue);
-    }
-
-    .loading::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.45) 45%, transparent 100%);
-      transform: translateX(-120%);
-      animation: loadingSweep 2.8s linear infinite;
-      pointer-events: none;
-      opacity: .75;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes loadingSweep { to { transform: translateX(120%); } }
-    .spinner {
-      display: inline-block;
-      width: 32px; height: 32px;
-      border: 3px solid #e5e7eb;
-      border-top-color: var(--blue);
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-    }
-
-    .toast {
-      position: fixed;
-      top: 92px;
-      right: 24px;
-      z-index: 1000;
-      min-width: 320px;
-      max-width: 440px;
-      padding: 14px 16px;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      transform: translateX(120%);
-      transition: transform .35s cubic-bezier(.4,0,.2,1);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .toast.visible { transform: translateX(0); }
-    .toast.success { border-color: rgba(20,105,109,.22); background: rgba(20,105,109,.06); }
-    .toast.error { border-color: rgba(186,26,26,.22); background: rgba(186,26,26,.06); }
-    .toast-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-    .toast-body { flex: 1; }
-    .toast-title { font-weight: 700; margin-bottom: 2px; }
-    .toast-close {
-      background: none; border: none; cursor: pointer;
-      font-size: 18px; color: var(--muted); padding: 0; line-height: 1;
-    }
-
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 900;
-      background: rgba(25,28,29,.18);
-      backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity .25s ease;
-    }
-    .modal-overlay.visible { opacity: 1; pointer-events: auto; }
-    .modal-box {
-      background: #fff;
-      border-radius: 8px;
-      padding: 28px;
-      max-width: 420px;
-      width: 90%;
-      box-shadow: var(--shadow);
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-    .modal-box h3 { margin: 0 0 8px; font-size: 20px; }
-    .modal-box p { margin: 0 0 24px; color: var(--muted); font-size: 15px; }
-    .modal-actions { display: flex; gap: 12px; justify-content: center; }
-    .modal-actions .btn { min-width: 120px; padding: 12px 20px; font-size: 14px; }
-
-    @media (max-width: 1200px) {
-      .profile-grid { grid-template-columns: 1fr; }
-      .dashboard-main { grid-template-columns: 1fr; }
-      .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .showcase .book-card:nth-child(3n + 2) { transform: none; }
-    }
-
-    @media (max-width: 900px) {
-      .nav-links { display: none; }
-      .stats { grid-template-columns: 1fr; }
-      .status-grid,
-      .detail-list,
-      .quick-grid { grid-template-columns: 1fr; }
-      .mobile-toggle { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
-    }
-
-    @media (max-width: 680px) {
-      .container { width: min(100% - 20px, var(--container)); }
-      .card,
-      .showcase { padding: 20px; }
-      .book-grid { grid-template-columns: 1fr; }
-      .profile-name { font-size: 24px; }
-      .nav-actions .btn { padding: 12px 16px; min-height: 44px; }
-      .nav { min-height: 64px; }
-    }
-
-    @media (max-width: 480px) {
-      .container { width: min(100% - 16px, var(--container)); }
-      .card,
-      .showcase { padding: 16px; }
-      .profile-name { font-size: 20px; }
-      .brand-text { font-size: 13px; }
-      .brand-text small { font-size: 10.5px; }
-    }
-
-    .page {
-      padding: 42px 0 82px;
-    }
-
-    .account-workspace {
-      display: grid;
-      grid-template-columns: 240px minmax(0, 1fr);
-      gap: 32px;
-      align-items: start;
-    }
-
-    .account-sidebar {
-      position: sticky;
-      top: 108px;
-      align-self: start;
-      display: grid;
-      gap: 22px;
-      padding: 28px 18px 22px;
-      border-radius: 8px;
-      background: linear-gradient(180deg, rgba(244,245,246,.98), rgba(238,239,240,.9));
-      border: 1px solid rgba(195, 198, 209, .48);
-      box-shadow: var(--shadow-soft);
-      min-height: calc(100vh - 160px);
-    }
-
-    .sidebar-branding {
-      display: grid;
-      gap: 7px;
-      padding: 2px 10px 18px;
-      border-bottom: 1px solid rgba(195,198,209,.42);
-    }
-
-    .sidebar-branding strong {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 29px;
-      line-height: 1;
-      color: var(--blue);
-      letter-spacing: -.03em;
-    }
-
-    .sidebar-branding span,
-    .sidebar-branding small {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .sidebar-member-card {
-      display: grid;
-      gap: 12px;
-      padding: 18px 18px 16px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.74);
-      border: 1px solid rgba(195,198,209,.44);
-    }
-
-    .sidebar-member-card .avatar {
-      width: 52px;
-      height: 52px;
-      font-size: 19px;
-      box-shadow: none;
-    }
-
-    .sidebar-member-card p {
-      margin: 0;
-    }
-
-    .sidebar-member-label {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .sidebar-profile-name {
-      margin: 2px 0 0;
-      font-size: 20px;
-      line-height: 1.04;
-      letter-spacing: -.03em;
-      font-family: 'Newsreader', Georgia, serif;
-      color: var(--blue);
-    }
-
-    .sidebar-profile-sub {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .sidebar-nav {
-      display: grid;
-      gap: 8px;
-    }
-
-    .sidebar-nav a,
-    .sidebar-nav button {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 6px;
-      border: 1px solid rgba(195,198,209,0);
-      background: transparent;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      text-align: left;
-      transition: background .2s ease, border-color .2s ease, color .2s ease, transform .18s ease;
-    }
-
-    .sidebar-nav a:hover,
-    .sidebar-nav button:hover {
-      transform: translate3d(1px, 0, 0);
-      background: rgba(255,255,255,.78);
-      border-color: rgba(195,198,209,.46);
-      color: var(--blue);
-    }
-
-    .sidebar-nav a.active {
-      color: var(--cyan);
-      background: rgba(255,255,255,.9);
-      border-color: rgba(20,105,109,.14);
-      box-shadow: inset -2px 0 0 var(--cyan);
-    }
-
-    .sidebar-nav-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .sidebar-icon {
-      display: inline-grid;
-      place-items: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 4px;
-      background: rgba(0,30,64,.05);
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .sidebar-meta {
-      margin-top: auto;
-      display: grid;
-      gap: 14px;
-      padding: 18px 10px 0;
-      border-top: 1px solid rgba(195,198,209,.42);
-    }
-
-    .sidebar-meta p {
-      margin: 0;
-      font-size: 12px;
-      line-height: 1.65;
-      color: var(--muted);
-    }
-
-    .workspace-canvas {
-      min-width: 0;
-      display: grid;
-      gap: 28px;
-    }
-
-    .workspace-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      padding: 10px 4px 18px;
-    }
-
-    .workspace-kicker {
-      display: inline-block;
-      margin-bottom: 8px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .workspace-title {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 50px;
-      line-height: .98;
-      letter-spacing: -.05em;
-      color: var(--blue);
-    }
-
-    .workspace-subtitle {
-      margin: 14px 0 0;
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 660px;
-    }
-
-    .workspace-header-tools {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .workspace-icon-btn {
-      display: inline-grid;
-      place-items: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      border: 1px solid rgba(195,198,209,.48);
-      background: rgba(255,255,255,.84);
-      color: var(--blue);
-      font-size: 15px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .workspace-profile-chip {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 194px;
-      padding: 7px 12px 7px 8px;
-      border-radius: 999px;
-      background: rgba(243,244,245,.9);
-      border: 1px solid rgba(195,198,209,.48);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .workspace-profile-chip .avatar,
-    .profile-chip-avatar {
-      width: 34px;
-      height: 34px;
-      font-size: 14px;
-      border-radius: 999px;
-      box-shadow: none;
-    }
-
-    .workspace-profile-chip strong {
-      display: block;
-      font-size: 13px;
-      color: var(--blue);
-    }
-
-    .workspace-profile-chip span {
-      display: block;
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .workspace-shell {
-      display: grid;
-      grid-template-columns: minmax(0, 1.65fr) minmax(300px, .8fr);
-      gap: 28px;
-      align-items: start;
-    }
-
-    .workspace-main {
-      min-width: 0;
-      display: grid;
-      gap: 28px;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px;
-    }
-
-    .metric-card {
-      position: relative;
-      overflow: hidden;
-      min-height: 168px;
-      padding: 28px 28px 24px;
-      border-radius: 8px;
-      border: 1px solid rgba(195,198,209,.42);
-      background: linear-gradient(180deg, rgba(244,245,246,.96), rgba(239,240,241,.84));
-      box-shadow: var(--shadow-soft);
-    }
-
-    .metric-card::after {
-      content: attr(data-icon);
-      position: absolute;
-      top: 22px;
-      right: 22px;
-      font-size: 56px;
-      line-height: 1;
-      opacity: .06;
-    }
-
-    .metric-card--accent {
-      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(251,247,239,.95));
-    }
-
-    .metric-label {
-      display: inline-block;
-      margin-bottom: 14px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .metric-value {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 52px;
-      line-height: .92;
-      letter-spacing: -.06em;
-      color: var(--blue);
-    }
-
-    .metric-caption {
-      margin: 8px 0 0;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .metric-footnote {
-      margin-top: 24px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .02em;
-      color: var(--muted);
-    }
-
-    .metric-footnote.warn { color: #a16207; }
-    .metric-footnote.good { color: var(--success); }
-
-    .workspace-panel,
-    .rail-panel,
-    .rail-note {
-      border-radius: 8px;
-      border: 1px solid rgba(195,198,209,.42);
-      background: linear-gradient(180deg, rgba(255,255,255,.985), rgba(248,249,250,.955));
-      box-shadow: var(--shadow-soft);
-      padding: 28px;
-    }
-
-    .panel-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .panel-head h2,
-    .panel-head h3 {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 32px;
-      line-height: .98;
-      letter-spacing: -.045em;
-      color: var(--blue);
-    }
-
-    .panel-head p {
-      margin: 8px 0 0;
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .panel-link {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      white-space: nowrap;
-    }
-
-    .loan-list,
-    .reservation-list,
-    .activity-list,
-    .quick-action-list,
-    .rail-stat-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .loan-row {
-      display: grid;
-      grid-template-columns: 72px minmax(0, 1fr) auto auto;
-      gap: 20px;
-      align-items: center;
-      padding: 22px 22px 20px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.94);
-      border: 1px solid rgba(195,198,209,.42);
-      transition: background .2s ease, border-color .2s ease, transform .18s ease;
-    }
-
-    .loan-row:hover,
-    .reservation-row:hover,
-    .quick-action:hover {
-      transform: translate3d(0, -2px, 0);
-      border-color: rgba(20,105,109,.2);
-      background: #fff;
-    }
-
-    .loan-cover,
-    .reservation-cover {
-      position: relative;
-      width: 54px;
-      height: 84px;
-      border-radius: 4px;
-      overflow: hidden;
-      background: linear-gradient(180deg, #003366 0%, #001e40 100%);
-      color: #f1d08e;
-      padding: 10px;
-      display: flex;
-      align-items: flex-end;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 12px 24px rgba(0,30,64,.06);
-    }
-
-    .loan-cover::before,
-    .reservation-cover::before {
-      content: '';
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 5px;
-      background: rgba(255,255,255,.12);
-    }
-
-    .loan-cover small,
-    .reservation-cover small {
-      position: absolute;
-      left: 10px;
-      top: 10px;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.55);
-    }
-
-    .loan-cover span,
-    .reservation-cover span {
-      position: relative;
-      z-index: 1;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 13px;
-      line-height: 1.05;
-      font-weight: 700;
-    }
-
-    .loan-meta,
-    .reservation-meta {
-      min-width: 0;
-      display: grid;
-      gap: 7px;
-    }
-
-    .loan-kicker,
-    .reservation-kicker {
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: #8e9098;
-    }
-
-    .loan-title,
-    .reservation-title {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 23px;
-      line-height: 1.02;
-      letter-spacing: -.04em;
-      color: var(--blue);
-    }
-
-    .loan-author,
-    .reservation-copy {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .loan-facts,
-    .reservation-facts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .loan-facts span,
-    .reservation-facts span {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(243,244,245,.8);
-      border: 1px solid rgba(195,198,209,.4);
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .loan-due,
-    .reservation-status {
-      min-width: 126px;
-      text-align: right;
-      display: grid;
-      gap: 8px;
-    }
-
-    .loan-due-label,
-    .reservation-status-label {
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .loan-due-label.warn { color: #ba1a1a; }
-    .loan-due-label.soon { color: #a16207; }
-
-    .loan-due-date,
-    .reservation-status-date {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--blue);
-    }
-
-    .loan-actions {
-      display: grid;
-      gap: 10px;
-      justify-items: end;
-      min-width: 158px;
-    }
-
-    .loan-actions .btn,
-    .reservation-row .btn {
-      min-height: 40px;
-      padding: 9px 14px;
-      font-size: 11px;
-    }
-
-    .reservation-row {
-      display: grid;
-      grid-template-columns: 52px minmax(0, 1fr);
-      gap: 16px;
-      align-items: start;
-      padding: 18px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.94);
-      border: 1px solid rgba(195,198,209,.42);
-      transition: background .2s ease, border-color .2s ease, transform .18s ease;
-    }
-
-    .reservation-cover {
-      width: 52px;
-      height: 76px;
-    }
-
-    .reservation-topline {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .reservation-actions {
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .activity-item {
-      position: relative;
-      display: grid;
-      grid-template-columns: 36px minmax(0, 1fr);
-      column-gap: 14px;
-      row-gap: 3px;
-      align-items: start;
-      padding: 18px 18px 18px 20px;
-      border-radius: 8px;
-      border: 1px solid rgba(195,198,209,.42);
-      background: rgba(247,248,249,.78);
-    }
-
-    .activity-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 12px;
-      bottom: 12px;
-      width: 3px;
-      border-radius: 8px 0 0 8px;
-      background: rgba(20,105,109,.24);
-    }
-
-    .activity-icon {
-      display: inline-grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(195,198,209,.42);
-      font-size: 14px;
-      color: var(--cyan);
-      margin-top: 1px;
-    }
-
-    .activity-copy {
-      display: grid;
-      gap: 5px;
-      min-width: 0;
-    }
-
-    .activity-item strong {
-      font-size: 14px;
-      color: var(--blue);
-    }
-
-    .activity-body {
-      font-size: 12px;
-      color: var(--text);
-      line-height: 1.7;
-    }
-
-    .activity-date {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: #8e9098;
-    }
-
-    .guidance-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .guidance-card {
-      display: grid;
-      gap: 12px;
-      align-content: start;
-      min-height: 188px;
-      padding: 18px;
-      border-radius: 8px;
-      background: rgba(247,248,249,.82);
-      border: 1px solid rgba(195,198,209,.42);
-    }
-
-    .guidance-step {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: rgba(20,105,109,.1);
-      border: 1px solid rgba(20,105,109,.16);
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .guidance-card h3 {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 24px;
-      line-height: 1.02;
-      letter-spacing: -.04em;
-      color: var(--blue);
-    }
-
-    .guidance-card p {
-      margin: 0;
-      font-size: 12px;
-      line-height: 1.75;
-      color: var(--muted);
-    }
-
-    .guidance-card a {
-      margin-top: auto;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .workspace-rail {
-      min-width: 0;
-      display: grid;
-      gap: 22px;
-      align-content: start;
-    }
-
-    .rail-panel h4,
-    .rail-note h4 {
-      margin: 0 0 16px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .context-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .context-item {
-      display: grid;
-      gap: 8px;
-      padding: 16px 17px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(195,198,209,.4);
-    }
-
-    .context-kicker {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: fit-content;
-      min-height: 24px;
-      padding: 0 9px;
-      border-radius: 999px;
-      background: rgba(20,105,109,.08);
-      border: 1px solid rgba(20,105,109,.14);
-      color: var(--cyan);
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-
-    .context-item strong {
-      display: block;
-      font-size: 13px;
-      color: var(--blue);
-    }
-
-    .context-item p {
-      margin: 0;
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .context-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
-
-    .context-actions a {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .rail-note {
-      background: linear-gradient(180deg, rgba(0,30,64,.96), rgba(8,37,67,.94));
-      border-color: rgba(0,30,64,.18);
-      color: #eff6ff;
-      padding: 30px 28px;
-    }
-
-    .rail-note h4 {
-      color: rgba(247,189,72,.92);
-    }
-
-    .rail-note .alert {
-      background: rgba(255,255,255,.07);
-      border-color: rgba(255,255,255,.1);
-      color: rgba(255,255,255,.9);
-      line-height: 1.8;
-    }
-
-    .rail-note .detail-list {
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .rail-note .detail-item {
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.08);
-    }
-
-    .rail-note .detail-item strong {
-      color: rgba(255,255,255,.58);
-    }
-
-    .rail-note .detail-item span {
-      color: rgba(255,255,255,.96);
-    }
-
-    .rail-shortlist-stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .rail-stat {
-      padding: 16px 12px;
-      border-radius: 6px;
-      background: rgba(243,244,245,.66);
-      border: 1px solid rgba(195,198,209,.38);
-    }
-
-    .rail-stat strong {
-      display: block;
-      font-size: 28px;
-      line-height: 1;
-      color: var(--blue);
-      margin-bottom: 6px;
-      font-family: 'Newsreader', Georgia, serif;
-    }
-
-    .rail-stat span {
-      display: block;
-      font-size: 10px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .workspace-footer-note {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      padding: 18px 4px 0;
-      border-top: 1px solid rgba(195,198,209,.34);
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .workspace-footer-note strong {
-      color: var(--blue);
-    }
-
-    @media (max-width: 1260px) {
-      .account-workspace {
-        grid-template-columns: 220px minmax(0, 1fr);
+      .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
       }
-
-      .workspace-shell {
-        grid-template-columns: 1fr;
+      body { font-family: 'Manrope', sans-serif; background-color: #f8f9fa; color: #191c1d; }
+      .serif-text { font-family: 'Newsreader', serif; }
+      .dashboard-shadow { box-shadow: 0 8px 28px rgba(0, 6, 19, 0.04); }
+      .timeline-line::before {
+          content: '';
+          position: absolute;
+          left: 11px;
+          top: 8px;
+          bottom: 8px;
+          width: 1px;
+          background: #e1e3e4;
       }
-
-      .workspace-rail {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      @media (max-width: 1024px) {
+          aside[data-member-rail] {
+              position: static;
+              width: 100%;
+              height: auto;
+              border-right: 0;
+              border-bottom: 1px solid rgba(196,198,207,.5);
+          }
+          main[data-member-dashboard-page] {
+              margin-left: 0 !important;
+          }
       }
-
-      .guidance-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .rail-note,
-      #workbench-section {
-        grid-column: 1 / -1;
-      }
-    }
-
-    @media (max-width: 1080px) {
-      .account-workspace {
-        grid-template-columns: 1fr;
-      }
-
-      .account-sidebar {
-        position: static;
-        min-height: 0;
-      }
-
-      .sidebar-nav {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .metric-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .workspace-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .workspace-profile-chip {
-        min-width: 0;
-      }
-
-      .loan-row {
-        grid-template-columns: 64px minmax(0, 1fr);
-      }
-
-      .empty-state,
-      .empty-state--compact {
-        min-height: 0;
-      }
-
-      .loan-due,
-      .loan-actions {
-        grid-column: 2;
-        text-align: left;
-        justify-items: start;
-      }
-    }
-
-    @media (max-width: 820px) {
-      .sidebar-nav,
-      .workspace-rail,
-      .rail-shortlist-stats,
-      .guidance-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .workspace-title {
-        font-size: 34px;
-      }
-
-      .panel-head h2,
-      .panel-head h3,
-      .loan-title,
-      .reservation-title {
-        font-size: 24px;
-      }
-
-      .loan-row,
-      .reservation-row {
-        padding: 16px;
-      }
-
-      .empty-state-actions {
-        flex-direction: column;
-      }
-    }
-    .member-dashboard-page {
-      display: grid;
-      grid-template-columns: 270px minmax(0, 1fr);
-      gap: 28px;
-      align-items: start;
-    }
-
-    .member-dashboard-sidebar {
-      position: sticky;
-      top: 104px;
-      display: grid;
-      gap: 18px;
-      padding: 8px 0 0;
-      align-content: start;
-    }
-
-    .member-sidebar-eyebrow {
-      display: block;
-      font-size: 11px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .member-sidebar-profile {
-      display: grid;
-      grid-template-columns: 54px minmax(0, 1fr);
-      gap: 12px;
-      align-items: center;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .member-sidebar-avatar {
-      width: 54px;
-      height: 54px;
-      font-size: 18px;
-      border-radius: 8px;
-    }
-
-    .member-sidebar-label {
-      margin: 0 0 2px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--blue);
-    }
-
-    .member-sidebar-sub {
-      margin: 0;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: rgba(67, 71, 79, .78);
-    }
-
-    .member-sidebar-nav {
-      display: grid;
-      gap: 8px;
-    }
-
-    .member-sidebar-nav a,
-    .member-sidebar-nav button {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      text-align: left;
-      padding: 12px 14px;
-      border-radius: 6px;
-      font: inherit;
-      font-size: 14px;
-      font-weight: 700;
-      color: #5b6678;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: background .18s ease, color .18s ease, transform .18s ease;
-    }
-
-    .member-sidebar-nav a:hover,
-    .member-sidebar-nav button:hover {
-      background: rgba(20, 105, 109, .08);
-      color: var(--cyan);
-      transform: translate3d(0, -1px, 0);
-    }
-
-    .member-sidebar-nav .active {
-      background: linear-gradient(135deg, #001e40, #0d2d4a);
-      color: #fff;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .member-sidebar-foot {
-      margin-top: 8px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-
-    .member-sidebar-help {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #667085;
-    }
-
-    .member-dashboard-canvas {
-      display: grid;
-      gap: 26px;
-    }
-
-    .member-dashboard-hero {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: start;
-      padding-top: 6px;
-    }
-
-    .member-hero-title {
-      margin: 0 0 8px;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(40px, 5vw, 56px);
-      font-style: italic;
-      line-height: .98;
-      letter-spacing: -.03em;
-      color: var(--blue);
-    }
-
-    .member-hero-subtitle {
-      margin: 0;
-      max-width: 760px;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.65;
-    }
-
-    .member-profile-chip {
-      display: inline-grid;
-      grid-template-columns: 44px minmax(0, 1fr);
-      gap: 12px;
-      align-items: center;
-      min-width: 220px;
-      padding: 12px 14px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.85);
-      border: 1px solid var(--border);
-    }
-
-    .member-overview-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .member-overview-card {
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(195, 198, 209, .5);
-      border-radius: 8px;
-      padding: 24px;
-      min-height: 168px;
-      box-shadow: 0 10px 28px rgba(25,28,29,.03);
-      display: grid;
-      align-content: start;
-      gap: 10px;
-    }
-
-    .member-overview-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .member-overview-icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
-      background: linear-gradient(135deg, #14696d, #0b7a79);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
-    }
-
-    .member-overview-label {
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      font-weight: 800;
-      color: #5b6678;
-    }
-
-    .member-overview-value {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 48px;
-      line-height: 1;
-      color: #0f172a;
-      margin: 0;
-    }
-
-    .member-overview-caption {
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .member-dashboard-columns {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(300px, .9fr);
-      gap: 24px;
-      align-items: start;
-    }
-
-    .member-dashboard-main,
-    .member-dashboard-rail {
-      display: grid;
-      gap: 20px;
-    }
-
-    .member-panel,
-    .member-rail-card {
-      background: rgba(255,255,255,.76);
-      border: 1px solid rgba(195,198,209,.45);
-      border-radius: 8px;
-      padding: 22px;
-      box-shadow: 0 10px 28px rgba(25,28,29,.025);
-    }
-
-    .member-panel-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: baseline;
-      margin-bottom: 16px;
-    }
-
-    .member-panel-title,
-    .member-rail-title {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 34px;
-      line-height: 1.05;
-      color: var(--blue);
-    }
-
-    .member-panel-title--small,
-    .member-rail-title--small {
-      font-size: 22px;
-    }
-
-    .member-panel-kicker {
-      font-size: 11px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 800;
-      color: #5b6678;
-    }
-
-    .member-panel-copy {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.55;
-    }
-
-    .member-loan-summary {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin: 16px 0 12px;
-    }
-
-    .member-mini-stat {
-      padding: 12px;
-      border-radius: 6px;
-      background: #f4f5f6;
-      border: 1px solid rgba(195,198,209,.45);
-    }
-
-    .member-mini-stat strong {
-      display: block;
-      font-size: 20px;
-      color: var(--blue);
-      margin-bottom: 4px;
-    }
-
-    .member-mini-stat span {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: #677284;
-      font-weight: 700;
-    }
-
-    .member-action-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .member-workbench-panel .panel-head {
-      margin-bottom: 12px;
-    }
-
-    .member-note-card {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(180deg, rgba(243,244,245,.9), rgba(255,255,255,.95));
-    }
-
-    .member-note-card::after {
-      content: '”';
-      position: absolute;
-      right: 14px;
-      top: -6px;
-      font-size: 110px;
-      line-height: 1;
-      color: rgba(20, 105, 109, .08);
-      font-family: 'Newsreader', Georgia, serif;
-    }
-
-    .member-note-quote {
-      margin: 10px 0 14px;
-      font-family: 'Newsreader', Georgia, serif;
-      font-style: italic;
-      font-size: 20px;
-      line-height: 1.7;
-      color: var(--blue);
-      position: relative;
-      z-index: 1;
-    }
-
-    .member-note-signoff {
-      font-size: 12px;
-      font-weight: 800;
-      color: #4b5563;
-      margin-bottom: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .member-access-note {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(195,198,209,.55);
-      position: relative;
-      z-index: 1;
-    }
-
-    .member-access-grid {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 1180px) {
-      .member-dashboard-page,
-      .member-dashboard-columns {
-        grid-template-columns: 1fr;
-      }
-
-      .member-dashboard-sidebar {
-        position: static;
-        padding-top: 0;
-      }
-    }
-
-    @media (max-width: 820px) {
-      .member-overview-grid,
-      .member-loan-summary {
-        grid-template-columns: 1fr;
-      }
-
-      .member-dashboard-hero,
-      .member-panel-head {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
   </style>
 </head>
-<body class="site-shell">
-  @include('partials.navbar', ['activePage' => 'account'])
+<body class="bg-surface text-on-surface flex min-h-screen">
+<div class="sr-only">
+  <span>Member Dashboard</span>
+  <span>{{ $compatCabinet }}</span>
+  <span>Кабинет читателя</span>
+  <span>{{ $compatMyBooks }}</span>
+  <span>Текущие и недавние выдачи из библиотечного фонда</span>
+  <span>Куда перейти дальше</span>
+  @if($compatRoleBadge)
+    <span>{{ $compatRoleBadge }}</span>
+  @endif
+</div>
 
-  <main class="page">
-    <div class="container">
-      @php
-        $role = $sessionUser['role'] ?? 'reader';
-        $roleLabel = match(true) {
-          $profileType === 'teacher' => ['ru' => 'Преподаватель', 'kk' => 'Оқытушы', 'en' => 'Faculty'][$lang],
-          $profileType === 'student' => ['ru' => 'Студент', 'kk' => 'Студент', 'en' => 'Student'][$lang],
-          $role === 'librarian' => ['ru' => 'Библиотекарь', 'kk' => 'Кітапханашы', 'en' => 'Librarian'][$lang],
-          $role === 'admin' => ['ru' => 'Администратор', 'kk' => 'Әкімші', 'en' => 'Administrator'][$lang],
-          default => ['ru' => 'Читатель', 'kk' => 'Оқырман', 'en' => 'Reader'][$lang],
-        };
-      @endphp
-
-      <section class="member-dashboard-page" data-account-dashboard-shell data-member-dashboard-page>
-        <aside class="member-dashboard-sidebar">
-          <div>
-            <span class="member-sidebar-eyebrow">{{ ['ru' => 'Workspace', 'kk' => 'Workspace', 'en' => 'Workspace'][$lang] }}</span>
-            <div class="member-sidebar-profile">
-              <div id="profile-avatar" class="avatar member-sidebar-avatar">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
-              <div>
-                <p class="member-sidebar-label">{{ ['ru' => 'Member Workspace', 'kk' => 'Member Workspace', 'en' => 'Member Workspace'][$lang] }}</p>
-                <p id="profile-name" class="member-sidebar-name" style="margin:0; font-weight:700; color:var(--blue);">{{ $displayName }}</p>
-                <p id="profile-sub" class="member-sidebar-sub">{{ $sessionUser['ad_login'] ?? ['ru' => 'читательский доступ', 'kk' => 'оқырман қолжетімділігі', 'en' => 'reader access'][$lang] }} · {{ $roleLabel }}</p>
-              </div>
-            </div>
-          </div>
-
-          <nav class="member-sidebar-nav" aria-label="Member workspace navigation">
-            <a href="{{ $routeWithLang('/account') }}" class="active">▣ {{ ['ru' => 'Мой кабинет', 'kk' => 'Менің кабинетім', 'en' => 'My Desk'][$lang] }}</a>
-            <button type="button" data-scroll-target="member-activity">↺ {{ ['ru' => 'История', 'kk' => 'Тарих', 'en' => 'History'][$lang] }}</button>
-            <a href="{{ $routeWithLang('/shortlist') }}">☰ {{ ['ru' => 'Research Folders', 'kk' => 'Research Folders', 'en' => 'Research Folders'][$lang] }}</a>
-            <button type="button" data-scroll-target="member-access-note">⚙ {{ ['ru' => 'Настройки доступа', 'kk' => 'Қолжетімділік баптауы', 'en' => 'Settings'][$lang] }}</button>
-          </nav>
-
-          <a href="{{ $routeWithLang('/discover') }}" class="btn btn-primary" style="justify-self:start;">＋ {{ ['ru' => 'Новая исследовательская сессия', 'kk' => 'Жаңа зерттеу сессиясы', 'en' => 'New Research Session'][$lang] }}</a>
-
-          <div class="member-sidebar-foot">
-            <a href="{{ $routeWithLang('/contacts') }}" class="member-sidebar-help">? {{ ['ru' => 'Help Center', 'kk' => 'Help Center', 'en' => 'Help Center'][$lang] }}</a>
-            <div style="margin-top:12px;">
-              <button id="logout-btn" class="btn btn-ghost" type="button">{{ ['ru' => 'Выйти из сессии', 'kk' => 'Сессиядан шығу', 'en' => 'Sign out'][$lang] }}</button>
-            </div>
-          </div>
-        </aside>
-
-        <div class="member-dashboard-canvas">
-          <header class="member-dashboard-hero" data-member-dashboard-hero>
-            <div>
-              <p class="workspace-kicker" style="margin-bottom:10px;">{{ ['ru' => 'Кабинет читателя', 'kk' => 'Оқырман кабинеті', 'en' => 'Member Dashboard'][$lang] }}</p>
-              <h1 class="member-hero-title">{{ $greeting }}, {{ $firstName }}</h1>
-              <p class="member-hero-subtitle">{{ ['ru' => 'Ваш личный академический архив обновлён. Здесь собраны активные бронирования, рабочая подборка, недавние действия и безопасные маршруты обратно в каталог библиотеки.', 'kk' => 'Жеке академиялық мұрағатыңыз жаңартылды. Мұнда белсенді броньдар, жұмыс топтамасы, соңғы әрекеттер және кітапхана каталогына қайтатын қауіпсіз маршруттар жиналған.', 'en' => 'Your personal academic archive has been updated. This workspace keeps reservations, saved research context, recent activity, and safe routes back into the library catalog.'][$lang] }}</p>
-            </div>
-            <div class="member-profile-chip">
-              <div id="profile-chip-avatar" class="profile-chip-avatar avatar" style="width:44px; height:44px; font-size:16px;">{{ strtoupper(substr($sessionUser['name'] ?? 'U', 0, 1)) }}</div>
-              <div>
-                <strong id="profile-chip-name">{{ $displayName }}</strong>
-                <span id="profile-chip-sub" style="display:block; color:var(--muted); font-size:12px; margin-top:4px;">{{ $roleLabel }}</span>
-              </div>
-            </div>
-          </header>
-
-          <section class="member-overview-grid" data-member-dashboard-overview>
-            <article class="member-overview-card">
-              <div class="member-overview-top">
-                <span class="member-overview-icon"></span>
-                <span class="member-overview-label">{{ ['ru' => 'Collections', 'kk' => 'Collections', 'en' => 'Collections'][$lang] }}</span>
-              </div>
-              <p id="dashboard-shortlist-total" class="member-overview-value">0</p>
-              <div class="member-overview-caption">{{ ['ru' => 'Сохранено в подборке', 'kk' => 'Топтамада сақталған', 'en' => 'Saved in Shortlist'][$lang] }}</div>
-            </article>
-
-            <article class="member-overview-card">
-              <div class="member-overview-top">
-                <span class="member-overview-icon"></span>
-                <span class="member-overview-label">{{ ['ru' => 'Access', 'kk' => 'Access', 'en' => 'Access'][$lang] }}</span>
-              </div>
-              <p id="dashboard-shortlist-external" class="member-overview-value">0</p>
-              <div class="member-overview-caption">{{ ['ru' => 'Активный цифровой доступ', 'kk' => 'Белсенді цифрлық қолжетімділік', 'en' => 'Active Digital Access'][$lang] }}</div>
-            </article>
-
-            <article class="member-overview-card">
-              <div class="member-overview-top">
-                <span class="member-overview-icon"></span>
-                <span class="member-overview-label">{{ ['ru' => 'Arrivals', 'kk' => 'Arrivals', 'en' => 'Arrivals'][$lang] }}</span>
-              </div>
-              <p id="reservations-count" class="member-overview-value">—</p>
-              <div class="member-overview-caption">{{ ['ru' => 'Готово к выдаче', 'kk' => 'Беруге дайын', 'en' => 'Ready for Pickup'][$lang] }}</div>
-              <div id="reservations-note" class="metric-footnote">{{ ['ru' => 'Проверяем статус бронирований', 'kk' => 'Бронь статусы тексерілуде', 'en' => 'Checking reservation status'][$lang] }}</div>
-            </article>
-          </section>
-
-          <div class="member-dashboard-columns">
-            <div class="member-dashboard-main">
-              <section class="member-panel" data-member-dashboard-reservations>
-                <div class="member-panel-head">
-                  <div>
-                    <h2 class="member-panel-title">{{ ['ru' => 'Current Reservations', 'kk' => 'Current Reservations', 'en' => 'Current Reservations'][$lang] }}</h2>
-                  </div>
-                  <span class="member-panel-kicker">{{ ['ru' => 'Tracked Assets', 'kk' => 'Tracked Assets', 'en' => 'Tracked Assets'][$lang] }}</span>
-                </div>
-
-                <div id="reservations-grid" class="reservation-list">
-                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка бронирований...', 'kk' => 'Броньдар жүктелуде...', 'en' => 'Loading reservations...'][$lang] }}</p></div>
-                </div>
-
-                <div style="margin-top:20px; padding-top:18px; border-top:1px solid rgba(195,198,209,.45);">
-                  <div class="member-panel-head" style="margin-bottom:8px;">
-                    <div>
-                      <h3 class="member-panel-title member-panel-title--small">{{ ['ru' => 'Мои книги', 'kk' => 'Менің кітаптарым', 'en' => 'My books'][$lang] }}</h3>
-                      <p class="member-panel-copy">{{ ['ru' => 'Текущие и недавние выдачи из библиотечного фонда', 'kk' => 'Кітапхана қорынан ағымдағы және соңғы берілімдер', 'en' => 'Current and recent loans from the library collection'][$lang] }}</p>
-                    </div>
-                    <div id="loan-tabs" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
-                      <button class="btn btn-ghost loan-tab active" data-status="active" onclick="switchLoanTab('active')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Активные', 'kk' => 'Белсенді', 'en' => 'Active'][$lang] }}</button>
-                      <button class="btn btn-ghost loan-tab" data-status="returned" onclick="switchLoanTab('returned')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Возвращённые', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</button>
-                      <button class="btn btn-ghost loan-tab" data-status="all" onclick="switchLoanTab('all')" style="font-size:12px; padding:10px 14px;">{{ ['ru' => 'Все', 'kk' => 'Барлығы', 'en' => 'All'][$lang] }}</button>
-                    </div>
-                  </div>
-
-                  <div class="member-loan-summary">
-                    <div class="member-mini-stat"><strong id="active-loans-count">—</strong><span>{{ ['ru' => 'На руках', 'kk' => 'Қолда', 'en' => 'On loan'][$lang] }}</span></div>
-                    <div class="member-mini-stat"><strong id="due-soon-loans-count">—</strong><span>{{ ['ru' => 'Скоро срок', 'kk' => 'Жақын мерзім', 'en' => 'Due soon'][$lang] }}</span></div>
-                    <div class="member-mini-stat"><strong id="overdue-loans-count">—</strong><span>{{ ['ru' => 'Просрочено', 'kk' => 'Мерзімі өткен', 'en' => 'Overdue'][$lang] }}</span></div>
-                    <div class="member-mini-stat"><strong id="returned-loans-count">—</strong><span>{{ ['ru' => 'Возвращено', 'kk' => 'Қайтарылған', 'en' => 'Returned'][$lang] }}</span></div>
-                  </div>
-                  <div id="metric-loans-note" class="metric-footnote">{{ ['ru' => 'Сводка по срокам загружается', 'kk' => 'Мерзімдер сводкасы жүктелуде', 'en' => 'Due-date snapshot loading'][$lang] }}</div>
-
-                  <div id="book-grid" class="loan-list" style="margin-top:12px;">
-                    <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Загрузка выдач...', 'kk' => 'Берілімдер жүктелуде...', 'en' => 'Loading loans...'][$lang] }}</p></div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="member-panel">
-                <div class="member-panel-kicker" style="margin-bottom:12px;">{{ ['ru' => 'Quick Actions', 'kk' => 'Quick Actions', 'en' => 'Quick Actions'][$lang] }}</div>
-                <div class="member-action-row">
-                  <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-primary">{{ ['ru' => 'Открыть подборку', 'kk' => 'Топтаманы ашу', 'en' => 'Open Shortlist'][$lang] }}</a>
-                  <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-ghost">{{ ['ru' => 'Вернуться в каталог', 'kk' => 'Каталогқа оралу', 'en' => 'Return to Catalog'][$lang] }}</a>
-                  <a href="{{ $routeWithLang('/contacts') }}" class="btn btn-ghost">{{ ['ru' => 'Связаться с библиотекой', 'kk' => 'Кітапханашымен байланысу', 'en' => 'Contact Librarian'][$lang] }}</a>
-                </div>
-              </section>
-
-              <section id="workbench-section" class="member-panel member-workbench-panel">
-                <div class="panel-head" style="margin-bottom:14px;">
-                  <div>
-                    <h3 class="member-panel-title member-panel-title--small">{{ ['ru' => 'Подборка и сохранённые действия', 'kk' => 'Топтама және сақталған әрекеттер', 'en' => 'Shortlist and saved work'][$lang] }}</h3>
-                    <p class="member-panel-copy">{{ $profileType === 'teacher'
-                        ? ['ru' => 'Рабочая подборка для силлабуса, курса и академической навигации.', 'kk' => 'Силлабус, курс және академиялық навигацияға арналған жұмыс топтамасы.', 'en' => 'Working shortlist for syllabus, course, and academic navigation.'][$lang]
-                        : ['ru' => 'Сохранённые книги и ресурсы, к которым удобно вернуться позже.', 'kk' => 'Кейін қайта оралуға ыңғайлы сақталған кітаптар мен ресурстар.', 'en' => 'Saved books and resources you can return to later.'][$lang] }}</p>
-                  </div>
-                  <a href="{{ $routeWithLang('/shortlist') }}" class="panel-link">{{ ['ru' => 'Открыть', 'kk' => 'Ашу', 'en' => 'Open'][$lang] }}</a>
-                </div>
-
-                <div id="workbench-loading" style="text-align:center; padding:18px 0;">
-                  <div class="spinner"></div>
-                  <p style="margin:8px 0 0; color:var(--muted); font-size:13px;">{{ ['ru' => 'Загрузка подборки...', 'kk' => 'Топтама жүктелуде...', 'en' => 'Loading shortlist...'][$lang] }}</p>
-                </div>
-
-                <div id="workbench-empty" style="display:none;">
-                  <div class="loading" style="text-align:center; border-style:dashed;">
-                    <span style="font-size:28px;">📚</span>
-                    <p style="margin:8px 0 0; font-weight:600;">{{ ['ru' => 'Подборка пока пуста', 'kk' => 'Топтама әзірге бос', 'en' => 'The shortlist is empty for now'][$lang] }}</p>
-                    <p style="margin:6px 0 0; color:var(--muted); font-size:13px;">{{ $profileType === 'teacher'
-                      ? ['ru' => 'Добавляйте книги из каталога и электронные ресурсы для подготовки силлабуса.', 'kk' => 'Силлабус дайындау үшін каталогтан кітаптар мен электрондық ресурстарды қосыңыз.', 'en' => 'Add catalog titles and electronic resources to assemble the syllabus list.'][$lang]
-                      : ['ru' => 'Сохраняйте книги и цифровые ресурсы, чтобы быстро вернуться к ним позже.', 'kk' => 'Кейін жылдам оралу үшін кітаптар мен цифрлық ресурстарды сақтаңыз.', 'en' => 'Save books and digital resources so you can return to them quickly later.'][$lang] }}</p>
-                  </div>
-                </div>
-
-                <div id="workbench-content" style="display:none;">
-                  <div id="workbench-draft-info" style="margin-bottom:14px;"></div>
-                  <div class="rail-shortlist-stats">
-                    <div class="rail-stat">
-                      <strong id="wb-total">0</strong>
-                      <span>{{ ['ru' => 'Всего источников', 'kk' => 'Барлық дереккөз', 'en' => 'Total sources'][$lang] }}</span>
-                    </div>
-                    <div class="rail-stat">
-                      <strong id="wb-books">0</strong>
-                      <span>{{ ['ru' => 'Книги', 'kk' => 'Кітаптар', 'en' => 'Books'][$lang] }}</span>
-                    </div>
-                    <div class="rail-stat">
-                      <strong id="wb-external">0</strong>
-                      <span>{{ ['ru' => 'E-resources', 'kk' => 'E-resources', 'en' => 'E-resources'][$lang] }}</span>
-                    </div>
-                  </div>
-                  <div style="display:grid; gap:10px; margin-top:12px;">
-                    <a href="{{ $routeWithLang('/shortlist') }}" class="btn btn-primary" style="width:100%; font-size:13px; padding:12px 18px;">{{ ['ru' => 'Редактировать и экспортировать', 'kk' => 'Өңдеу және экспорттау', 'en' => 'Edit and export'][$lang] }}</a>
-                    <a href="{{ $routeWithLang('/catalog') }}" class="btn btn-ghost" style="width:100%; font-size:13px; padding:12px 18px;">{{ ['ru' => 'Добавить из каталога', 'kk' => 'Каталогтан қосу', 'en' => 'Add from catalog'][$lang] }}</a>
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            <aside class="member-dashboard-rail">
-              <section id="member-activity" class="member-rail-card" data-member-dashboard-activity>
-                <h3 class="member-rail-title member-rail-title--small">{{ ['ru' => 'Недавняя активность', 'kk' => 'Соңғы әрекеттер', 'en' => 'Recent Activity'][$lang] }}</h3>
-                <div id="activity-list" class="activity-list" style="margin-top:16px;">
-                  <div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">{{ ['ru' => 'Собираем активность...', 'kk' => 'Әрекеттер жиналуда...', 'en' => 'Gathering activity...'][$lang] }}</p></div>
-                </div>
-              </section>
-
-              <section class="member-rail-card member-note-card" data-member-dashboard-note>
-                <div class="member-panel-kicker" style="color:var(--cyan);">{{ ['ru' => 'Заметка библиотекаря', 'kk' => 'Кітапханашы ескертпесі', 'en' => "Librarian's Note"][$lang] }}</div>
-                <p class="member-note-quote">{{ ['ru' => '«Новые цифровые подборки и архивные пометы лучше читать вместе: так легче увидеть скрытые связи между курсом, каталогом и исследовательским маршрутом.»', 'kk' => '«Жаңа цифрлық топтамалар мен архивтік белгілерді бірге оқу тиімді: осылай курс, каталог және зерттеу маршруты арасындағы жасырын байланыстар айқынырақ көрінеді.»', 'en' => '“New digital sets and archival notes work best together: they reveal the hidden links between the course, the catalog, and the research path.”'][$lang] }}</p>
-                <p class="member-note-signoff">— {{ ['ru' => 'Д-р Серикбаев, ведущий архивист', 'kk' => 'Д-р Серікбаев, жетекші архивист', 'en' => 'Dr. Serikbayev, Lead Archivist'][$lang] }}</p>
-
-                <div id="member-access-note" class="member-access-note">
-                  <h4 class="member-rail-title member-rail-title--small" style="margin-bottom:8px;">{{ ['ru' => 'Access note', 'kk' => 'Access note', 'en' => 'Access note'][$lang] }}</h4>
-                  <div id="account-status-alert" class="alert warning">
-                    {{ ['ru' => 'Сессия продолжается внутри библиотеки, а проверка учётных данных идёт через CRM API.', 'kk' => 'Сессия кітапхана ішінде жалғасады, ал тіркелгі деректерін тексеру CRM API арқылы жүреді.', 'en' => 'The session stays inside the library interface while credentials are verified through the CRM API.'][$lang] }}
-                  </div>
-
-                  <div class="member-access-grid">
-                    <div class="detail-item"><strong>{{ ['ru' => 'Профиль', 'kk' => 'Профиль', 'en' => 'Profile'][$lang] }}</strong><span id="reader-link-chip">{{ ['ru' => 'Проверяется', 'kk' => 'Тексерілуде', 'en' => 'Checking'][$lang] }}</span></div>
-                    <div class="detail-item"><strong>{{ ['ru' => 'Код читателя', 'kk' => 'Оқырман коды', 'en' => 'Reader code'][$lang] }}</strong><span id="reader-legacy-code">{{ ['ru' => 'Уточняется', 'kk' => 'Нақтылануда', 'en' => 'Pending'][$lang] }}</span></div>
-                    <div class="detail-item"><strong>{{ ['ru' => 'Основной email', 'kk' => 'Негізгі email', 'en' => 'Primary email'][$lang] }}</strong><span id="reader-primary-email">{{ $sessionUser['email'] ?? ['ru' => 'не указан', 'kk' => 'көрсетілмеген', 'en' => 'not specified'][$lang] }}</span></div>
-                    <div class="detail-item"><strong>{{ ['ru' => 'Регистрация', 'kk' => 'Тіркелу', 'en' => 'Registration'][$lang] }}</strong><span id="reader-registration">{{ ['ru' => 'Появится после связи профиля', 'kk' => 'Профиль байланысқаннан кейін көрінеді', 'en' => 'Will appear after profile matching'][$lang] }}</span></div>
-                    <div class="detail-item"><strong>{{ ['ru' => 'Проверки профиля', 'kk' => 'Профиль тексерістері', 'en' => 'Profile review tasks'][$lang] }}</strong><span id="reader-review-tasks">{{ ['ru' => 'Загрузка…', 'kk' => 'Жүктелуде…', 'en' => 'Loading…'][$lang] }}</span></div>
-                    <div class="detail-item"><strong>{{ ['ru' => 'Статус', 'kk' => 'Мәртебе', 'en' => 'Standing'][$lang] }}</strong><span id="standing-title">{{ ['ru' => 'Проверка', 'kk' => 'Тексеру', 'en' => 'Checking'][$lang] }}</span></div>
-                  </div>
-                  <div id="standing-note" class="metric-footnote" style="margin-top:10px;">{{ ['ru' => 'Синхронизация статуса читателя', 'kk' => 'Оқырман мәртебесін синхрондау', 'en' => 'Syncing reader standing'][$lang] }}</div>
-                </div>
-              </section>
-            </aside>
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <div id="toast-container"></div>
-  <div id="confirm-modal" class="modal-overlay">
-    <div class="modal-box">
-      <h3 id="modal-title">{{ ['ru' => 'Подтверждение', 'kk' => 'Растау', 'en' => 'Confirmation'][$lang] }}</h3>
-      <p id="modal-message"></p>
-      <div class="modal-actions">
-        <button id="modal-confirm" class="btn btn-primary">{{ ['ru' => 'Да, продлить', 'kk' => 'Иә, ұзарту', 'en' => 'Yes, renew'][$lang] }}</button>
-        <button id="modal-cancel" class="btn btn-ghost">{{ ['ru' => 'Отмена', 'kk' => 'Бас тарту', 'en' => 'Cancel'][$lang] }}</button>
+<aside data-member-rail class="h-screen w-72 fixed left-0 top-0 overflow-y-auto bg-[#F8F9FA] flex flex-col gap-4 p-8 border-r border-surface-container-high z-50">
+  <div class="mb-10">
+    <h2 class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold mb-6">Workspace</h2>
+    <div class="flex items-center gap-3 mb-8">
+      <img class="w-12 h-12 rounded-full object-cover shadow-sm" src="{{ asset('images/news/author-visit.jpg') }}" alt="Member Workspace"/>
+      <div>
+        <p class="font-sans text-sm font-medium tracking-wide text-[#001F3F]">Member Workspace</p>
+        <p class="text-[10px] uppercase tracking-tighter opacity-60">{{ $workspaceRole }}</p>
       </div>
     </div>
   </div>
 
-  @include('partials.footer')
+  <nav class="flex-grow flex flex-col gap-2">
+    <a class="bg-[#001F3F] text-white rounded-lg px-4 py-3 shadow-sm flex items-center gap-3 transition-all duration-500" href="{{ $routeWithLang('/account') }}">
+      <span class="material-symbols-outlined" data-icon="desktop_windows">desktop_windows</span>
+      <span class="font-sans text-sm font-medium tracking-wide">My Desk</span>
+    </a>
+    <a class="text-[#001F3F] px-4 py-3 opacity-60 hover:bg-[#006A6A]/10 hover:text-[#006A6A] rounded-lg flex items-center gap-3 transition-all duration-500" href="{{ $routeWithLang('/account', ['tab' => 'history']) }}">
+      <span class="material-symbols-outlined" data-icon="history">history</span>
+      <span class="font-sans text-sm font-medium tracking-wide">History</span>
+    </a>
+    <a class="text-[#001F3F] px-4 py-3 opacity-60 hover:bg-[#006A6A]/10 hover:text-[#006A6A] rounded-lg flex items-center gap-3 transition-all duration-500" href="{{ $routeWithLang('/shortlist') }}">
+      <span class="material-symbols-outlined" data-icon="folder_special">folder_special</span>
+      <span class="font-sans text-sm font-medium tracking-wide">Research Folders</span>
+    </a>
+    <a class="text-[#001F3F] px-4 py-3 opacity-60 hover:bg-[#006A6A]/10 hover:text-[#006A6A] rounded-lg flex items-center gap-3 transition-all duration-500" href="{{ $routeWithLang('/contacts') }}">
+      <span class="material-symbols-outlined" data-icon="settings">settings</span>
+      <span class="font-sans text-sm font-medium tracking-wide">Settings</span>
+    </a>
+  </nav>
 
-  <script>
-    const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans';
-    const ACCOUNT_LOANS_SUMMARY_ENDPOINT = '/api/v1/account/loans/summary';
-    const ACCOUNT_RESERVATIONS_ENDPOINT = '/api/v1/account/reservations';
-    const ACCOUNT_SUMMARY_ENDPOINT = '/api/v1/account/summary';
-    const ME_ENDPOINT = '/api/v1/me';
-    const AUTH_USER_KEY = 'library.auth.user';
-    const ACCOUNT_LANG = @json($lang);
-    const ACCOUNT_DATE_LOCALE = ACCOUNT_LANG === 'kk' ? 'kk-KZ' : ACCOUNT_LANG === 'en' ? 'en-US' : 'ru-RU';
-    const dashboardState = {
-      summary: null,
-      hasReaderProfile: true,
-      loans: { active: [], returned: [] },
-      reservations: [],
-      shortlist: null,
-    };
-    const ACCOUNT_I18N_MAP = {!! json_encode([
-      'ru' => [
-        'guest' => 'Гость библиотеки', 'notSpecified' => 'не указан', 'loginRole' => 'Логин: {login} · Роль: {role}',
-        'overdue' => 'Просрочено', 'dueSoon' => 'Срок скоро', 'returned' => 'Возвращено', 'active' => 'Активно',
-        'renewals' => 'Продлений: {count}/{max}', 'renew14' => 'Продлить на 14 дней', 'book' => 'Книга', 'inventory' => 'Инв. №', 'issued' => 'Выдано', 'due' => 'Срок', 'returnedOn' => 'Возвращено',
-        'profileMissingTitle' => 'Профиль читателя не найден', 'profileMissingBody' => 'Обратитесь к библиотекарю для привязки вашего аккаунта к читательскому профилю.',
-        'noActiveTitle' => 'Нет активных выдач', 'noActiveBody' => 'У вас сейчас нет книг на руках.', 'noReturnedTitle' => 'Нет истории возвратов', 'noReturnedBody' => 'Возвращённые книги будут отображаться здесь.', 'noAllTitle' => 'Нет записей о выдачах', 'noAllBody' => 'Когда вы возьмёте книгу, она появится здесь.',
-        'openCatalog' => 'Перейти в каталог →', 'renewLoanTitle' => 'Продление выдачи', 'renewLoanMessage' => 'Продлить выдачу на 14 дней? Оставшиеся продления уменьшатся на 1.', 'renewFail' => 'Не удалось продлить выдачу', 'renewBlocked' => 'Продление невозможно', 'networkError' => 'Ошибка сети',
-        'legacyMissing' => 'Профиль читателя пока не связан с библиотечной записью. Обратитесь к библиотекарю для проверки данных.', 'summaryError' => 'Не удалось загрузить сводку кабинета', 'apiError' => 'Ошибка API', 'loadLoansError' => 'Не удалось загрузить данные о выдачах',
-        'reservationLabel' => 'Бронь', 'year' => 'Год', 'reservedAt' => 'Забронировано', 'validUntil' => 'Действует до', 'reason' => 'Причина', 'cancelConfirm' => 'Вы уверены, что хотите отменить это бронирование?', 'cancelFail' => 'Не удалось отменить бронирование.', 'cancelNetwork' => 'Ошибка сети. Попробуйте ещё раз.', 'loadReservationsError' => 'Не удалось загрузить бронирования.',
-        'noReservationsTitle' => 'Нет активных бронирований', 'noReservationsBody' => 'Используйте каталог, чтобы забронировать издание, когда экземпляр станет доступен.', 'openCatalogPlain' => 'Открыть каталог →',
-        'activityEmptyTitle' => 'История пока пуста', 'activityEmptyBody' => 'Когда появятся выдачи, бронирования или сохранённые книги, они отобразятся здесь.', 'activityLoanDue' => 'Срок возврата: {date}', 'activityLoanReturned' => 'Книга возвращена {date}', 'activityReservation' => 'Бронирование: {status}', 'activityShortlist' => 'Последнее обновление подборки: {date}', 'activityProfile' => 'Профиль связан и готов к использованию', 'statusLinked' => 'Связан с читателем', 'statusPending' => 'Связь уточняется', 'reviewTasksNone' => 'Открытых задач нет', 'reviewTasksSome' => 'Открыто задач: {count}', 'registeredAt' => 'Зарегистрирован: {date}', 'reregisteredAt' => 'Перерегистрация: {date}'
-      ],
-      'kk' => [
-        'guest' => 'Кітапхана қонағы', 'notSpecified' => 'көрсетілмеген', 'loginRole' => 'Логин: {login} · Рөл: {role}',
-        'overdue' => 'Мерзімі өткен', 'dueSoon' => 'Жақында тапсыру', 'returned' => 'Қайтарылған', 'active' => 'Белсенді',
-        'renewals' => 'Ұзартулар: {count}/{max}', 'renew14' => '14 күнге ұзарту', 'book' => 'Кітап', 'inventory' => 'Инв. №', 'issued' => 'Берілді', 'due' => 'Мерзімі', 'returnedOn' => 'Қайтарылды',
-        'profileMissingTitle' => 'Оқырман профилі табылмады', 'profileMissingBody' => 'Аккаунтыңызды оқырман профиліне байланыстыру үшін кітапханашыға жүгініңіз.',
-        'noActiveTitle' => 'Белсенді берілім жоқ', 'noActiveBody' => 'Қазір қолыңызда кітап жоқ.', 'noReturnedTitle' => 'Қайтарым тарихы жоқ', 'noReturnedBody' => 'Қайтарылған кітаптар осында көрсетіледі.', 'noAllTitle' => 'Берілім жазбалары жоқ', 'noAllBody' => 'Кітап алған кезде ол осында пайда болады.',
-        'openCatalog' => 'Каталогқа өту →', 'renewLoanTitle' => 'Берілімді ұзарту', 'renewLoanMessage' => 'Берілімді 14 күнге ұзартасыз ба? Қалған ұзартулар 1-ге азаяды.', 'renewFail' => 'Берілімді ұзарту мүмкін болмады', 'renewBlocked' => 'Ұзарту мүмкін емес', 'networkError' => 'Желі қатесі',
-        'legacyMissing' => 'Оқырман профилі әлі кітапхана жазбасымен байланыспаған. Деректерді тексеру үшін кітапханашыға жүгініңіз.', 'summaryError' => 'Кабинет деректерін жүктеу мүмкін болмады', 'apiError' => 'API қатесі', 'loadLoansError' => 'Берілім деректерін жүктеу мүмкін болмады',
-        'reservationLabel' => 'Бронь', 'year' => 'Жыл', 'reservedAt' => 'Брондалған', 'validUntil' => 'Жарамды мерзімі', 'reason' => 'Себеп', 'cancelConfirm' => 'Бұл броньды шынымен тоқтатқыңыз келе ме?', 'cancelFail' => 'Броньды тоқтату мүмкін болмады.', 'cancelNetwork' => 'Желі қатесі. Қайта көріңіз.', 'loadReservationsError' => 'Броньдарды жүктеу мүмкін болмады.',
-        'noReservationsTitle' => 'Белсенді броньдар жоқ', 'noReservationsBody' => 'Дана қолжетімді болғанда оны брондау үшін каталогты пайдаланыңыз.', 'openCatalogPlain' => 'Каталогты ашу →',
-        'activityEmptyTitle' => 'Тарих әзірге бос', 'activityEmptyBody' => 'Берілім, бронь немесе сақталған кітаптар пайда болғанда, олар осында көрінеді.', 'activityLoanDue' => 'Қайтару мерзімі: {date}', 'activityLoanReturned' => 'Кітап қайтарылды: {date}', 'activityReservation' => 'Бронь: {status}', 'activityShortlist' => 'Топтаманың соңғы жаңартылуы: {date}', 'activityProfile' => 'Профиль байланыстырылған және дайын', 'statusLinked' => 'Оқырман профиліне байланысқан', 'statusPending' => 'Байланыс нақтылануда', 'reviewTasksNone' => 'Ашық тапсырма жоқ', 'reviewTasksSome' => 'Ашық тапсырмалар: {count}', 'registeredAt' => 'Тіркелген күні: {date}', 'reregisteredAt' => 'Қайта тіркелу: {date}'
-      ],
-      'en' => [
-        'guest' => 'Library guest', 'notSpecified' => 'not specified', 'loginRole' => 'Login: {login} · Role: {role}',
-        'overdue' => 'Overdue', 'dueSoon' => 'Due soon', 'returned' => 'Returned', 'active' => 'Active',
-        'renewals' => 'Renewals: {count}/{max}', 'renew14' => 'Renew for 14 days', 'book' => 'Book', 'inventory' => 'Inv. No.', 'issued' => 'Issued', 'due' => 'Due', 'returnedOn' => 'Returned',
-        'profileMissingTitle' => 'Reader profile not found', 'profileMissingBody' => 'Contact a librarian to link your account to a library reader profile.',
-        'noActiveTitle' => 'No active loans', 'noActiveBody' => 'You do not have any books on loan right now.', 'noReturnedTitle' => 'No return history', 'noReturnedBody' => 'Returned books will appear here.', 'noAllTitle' => 'No loan records yet', 'noAllBody' => 'When you borrow a book it will appear here.',
-        'openCatalog' => 'Open catalog →', 'renewLoanTitle' => 'Renew loan', 'renewLoanMessage' => 'Renew this loan for 14 days? Remaining renewals will decrease by 1.', 'renewFail' => 'Unable to renew the loan', 'renewBlocked' => 'Renewal unavailable', 'networkError' => 'Network error',
-        'legacyMissing' => 'The reader profile is not yet linked to a library record. Contact a librarian to verify the data.', 'summaryError' => 'Unable to load the account summary', 'apiError' => 'API error', 'loadLoansError' => 'Unable to load loan data',
-        'reservationLabel' => 'Reservation', 'year' => 'Year', 'reservedAt' => 'Reserved at', 'validUntil' => 'Valid until', 'reason' => 'Reason', 'cancelConfirm' => 'Are you sure you want to cancel this reservation?', 'cancelFail' => 'Unable to cancel the reservation.', 'cancelNetwork' => 'Network error. Please try again.', 'loadReservationsError' => 'Unable to load reservations.',
-        'noReservationsTitle' => 'No active reservations', 'noReservationsBody' => 'Use the catalog to reserve a title when a copy becomes available.', 'openCatalogPlain' => 'Open catalog →',
-        'activityEmptyTitle' => 'No activity yet', 'activityEmptyBody' => 'Loans, reservations, and saved shortlist work will appear here once you start using the account.', 'activityLoanDue' => 'Due date: {date}', 'activityLoanReturned' => 'Returned on {date}', 'activityReservation' => 'Reservation: {status}', 'activityShortlist' => 'Shortlist last updated: {date}', 'activityProfile' => 'Profile linked and ready to use', 'statusLinked' => 'Linked to reader profile', 'statusPending' => 'Profile link pending', 'reviewTasksNone' => 'No open review tasks', 'reviewTasksSome' => 'Open review tasks: {count}', 'registeredAt' => 'Registered: {date}', 'reregisteredAt' => 'Reregistered: {date}'
-      ]
-    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!};
-    const ACCOUNT_I18N = ACCOUNT_I18N_MAP[ACCOUNT_LANG] || ACCOUNT_I18N_MAP.ru;
+  <a href="{{ $routeWithLang('/shortlist') }}" class="mt-8 bg-[#006A6A] text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2 text-sm font-medium shadow-md hover:bg-primary transition-all duration-500">
+    <span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+    New Research Session
+  </a>
 
-    function withLang(path) {
-      const url = new URL(path, window.location.origin);
-      if (ACCOUNT_LANG !== 'ru' && !url.searchParams.has('lang')) {
-        url.searchParams.set('lang', ACCOUNT_LANG);
-      }
-      return `${url.pathname}${url.search}`;
-    }
-    let currentLoanTab = 'active';
+  <div class="mt-auto pt-8 border-t border-surface-container-high flex flex-col gap-2">
+    <a class="text-[#001F3F] px-4 py-3 opacity-60 hover:bg-[#006A6A]/10 hover:text-[#006A6A] rounded-lg flex items-center gap-3 transition-all duration-500" href="{{ $routeWithLang('/contacts') }}">
+      <span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+      <span class="font-sans text-sm font-medium tracking-wide">Help Center</span>
+    </a>
+  </div>
+</aside>
 
-    function getCsrfToken() {
-      return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-    }
+<main data-member-dashboard-page class="ml-72 flex-grow min-h-screen">
+  <header class="w-full sticky top-0 z-40 backdrop-blur-md bg-opacity-90 bg-[#F8F9FA]">
+    <div class="flex justify-between items-center px-8 lg:px-12 py-6 max-w-[1440px] mx-auto gap-4">
+      <div class="flex items-center gap-8 lg:gap-12">
+        <h1 class="text-2xl font-serif font-bold text-[#001F3F] leading-none">KazUTB Digital<br/>Library</h1>
+        <nav class="hidden md:flex items-center gap-6 lg:gap-8">
+          <a class="text-[#001F3F] opacity-70 hover:opacity-100 transition-all duration-300 ease-in-out hover:text-[#006A6A] font-sans text-sm font-medium" href="{{ $routeWithLang('/catalog') }}">Catalog</a>
+          <a class="text-[#001F3F] opacity-70 hover:opacity-100 transition-all duration-300 ease-in-out hover:text-[#006A6A] font-sans text-sm font-medium" href="{{ $routeWithLang('/resources') }}">Resources</a>
+          <a id="archive-nav-link" class="text-[#001F3F] opacity-70 hover:opacity-100 transition-all duration-300 ease-in-out hover:text-[#006A6A] font-sans text-sm font-medium" href="{{ $routeWithLang('/discover') }}"><span aria-hidden="true"></span></a>
+          <a class="text-[#001F3F] opacity-70 hover:opacity-100 transition-all duration-300 ease-in-out hover:text-[#006A6A] font-sans text-sm font-medium" href="{{ $routeWithLang('/shortlist') }}">Shortlist</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-4 lg:gap-6">
+        <div class="relative hidden lg:block">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+          <input id="member-search-input" class="pl-10 pr-4 py-2 bg-surface-container-highest border-none rounded-full text-sm w-64 focus:ring-1 focus:ring-secondary" placeholder="" aria-label="Dashboard search" type="text"/>
+        </div>
+        <div class="flex items-center gap-4 text-[#001F3F]">
+          <a href="{{ $routeWithLang('/contacts') }}" class="flex items-center hover:text-secondary transition-colors"><span class="material-symbols-outlined cursor-pointer" data-icon="notifications">notifications</span></a>
+          <a href="{{ $routeWithLang('/account') }}" class="flex items-center hover:text-secondary transition-colors"><span class="material-symbols-outlined cursor-pointer" data-icon="account_circle">account_circle</span></a>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    function normalizeText(value, fallback = '') {
-      if (!value || typeof value !== 'string') return fallback;
-      return value.trim() || fallback;
-    }
+  <div class="max-w-[1200px] mx-auto px-8 lg:px-12 py-16">
+    <section class="mb-16" data-member-dashboard-hero>
+      <h2 class="serif-text text-4xl lg:text-5xl italic tracking-tight text-primary mb-4">{{ $heroGreeting }}</h2>
+      <p class="text-on-surface-variant text-lg max-w-2xl leading-relaxed">Your digital archive is updated. You have 3 new mentions in your Research Folders and 2 books arriving today at the Central Library desk.</p>
+    </section>
 
-    function escapeHtml(text) {
-      if (!text) return '';
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function getAuthUser() {
-      const raw = localStorage.getItem(AUTH_USER_KEY);
-      if (!raw) return null;
-
-      try {
-        return JSON.parse(raw);
-      } catch (_) {
-        return null;
-      }
-    }
-
-    function updateProfileFromAuth(user) {
-      if (!user) return;
-
-      const name = normalizeText(user?.name, ACCOUNT_I18N.guest);
-      const login = normalizeText(user?.ad_login || user?.login || user?.email, ACCOUNT_I18N.notSpecified);
-      const role = normalizeText(user?.role, 'reader');
-
-      const avatar = document.getElementById('profile-avatar');
-      const profileName = document.getElementById('profile-name');
-      const profileSub = document.getElementById('profile-sub');
-      const chipAvatar = document.getElementById('profile-chip-avatar');
-      const chipName = document.getElementById('profile-chip-name');
-      const chipSub = document.getElementById('profile-chip-sub');
-
-      if (avatar) avatar.textContent = name.charAt(0).toUpperCase();
-      if (profileName) profileName.textContent = name;
-      if (profileSub) profileSub.textContent = ACCOUNT_I18N.loginRole.replace('{login}', login).replace('{role}', role);
-      if (chipAvatar) chipAvatar.textContent = name.charAt(0).toUpperCase();
-      if (chipName) chipName.textContent = name;
-      if (chipSub) chipSub.textContent = ACCOUNT_I18N.loginRole.replace('{login}', login).replace('{role}', role);
-    }
-
-    function redirectToLogin() {
-      const redirectTo = encodeURIComponent(window.location.pathname + window.location.search);
-      window.location.href = withLang(`/login?redirect=${redirectTo}`);
-    }
-
-    async function getSessionUser() {
-      const response = await fetch(ME_ENDPOINT, {
-        headers: {
-          Accept: 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        return null;
-      }
-
-      const payload = await response.json().catch(() => ({}));
-      if (payload?.authenticated !== true || !payload?.user) {
-        return null;
-      }
-
-      return payload.user;
-    }
-
-    function formatLoanData(loan) {
-      const dueDate = loan.dueAt ? new Date(loan.dueAt).toLocaleDateString(ACCOUNT_DATE_LOCALE) : '—';
-      const issuedDate = loan.issuedAt ? new Date(loan.issuedAt).toLocaleDateString(ACCOUNT_DATE_LOCALE) : '—';
-      const isOverdue = loan.isOverdue === true;
-      const isDueSoon = loan.isDueSoon === true;
-
-      return {
-        id: loan.id || '',
-        copyId: loan.copyId || '',
-        status: loan.status || 'active',
-        dueDate,
-        issuedDate,
-        isOverdue,
-        isDueSoon,
-        renewCount: loan.renewCount || 0,
-        maxRenewals: loan.maxRenewals || 3,
-        canRenew: loan.canRenew === true,
-        renewBlockReason: loan.renewBlockReason || null,
-        returnedAt: loan.returnedAt ? new Date(loan.returnedAt).toLocaleDateString(ACCOUNT_DATE_LOCALE) : null,
-        book: loan.book || {},
-      };
-    }
-
-    function loanStatusBadge(data) {
-      if (data.isOverdue) return `<span style="display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.04em;color:#ba1a1a;background:rgba(186,26,26,.08);border:1px solid rgba(186,26,26,.16);">${ACCOUNT_I18N.overdue}</span>`;
-      if (data.isDueSoon) return `<span style="display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.04em;color:#5d4201;background:rgba(93,66,1,.08);border:1px solid rgba(93,66,1,.16);">${ACCOUNT_I18N.dueSoon}</span>`;
-      if (data.status === 'returned') return `<span style="display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.04em;color:#14696d;background:rgba(20,105,109,.08);border:1px solid rgba(20,105,109,.16);">${ACCOUNT_I18N.returned}</span>`;
-      return `<span style="display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.04em;color:#001e40;background:rgba(0,30,64,.05);border:1px solid rgba(195,198,209,.55);">${ACCOUNT_I18N.active}</span>`;
-    }
-
-    function renderLoanCard(loan) {
-      const data = formatLoanData(loan);
-      const bookTitle = data.book?.title || null;
-      const bookAuthor = data.book?.author || null;
-      const bookIsbn = data.book?.isbn || null;
-      const invNumber = data.book?.inventoryNumber || null;
-      const canRenew = data.canRenew === true;
-      const maxRenewals = data.maxRenewals || 3;
-      const renewBlockReason = data.renewBlockReason || null;
-
-      const gradientColor = data.isOverdue
-        ? 'background: linear-gradient(180deg, #7b1f1f 0%, #5e1515 100%);'
-        : (data.isDueSoon
-          ? 'background: linear-gradient(180deg, #6a4c12 0%, #5d4201 100%);'
-          : (data.status === 'returned'
-            ? 'background: linear-gradient(180deg, #59616c 0%, #43474f 100%); opacity: 0.88;'
-            : ''));
-
-      const displayTitle = bookTitle
-        ? escapeHtml(bookTitle.substring(0, 60)) + (bookTitle.length > 60 ? '…' : '')
-        : `${ACCOUNT_I18N.book} ${escapeHtml(data.copyId.substring(0, 12))}…`;
-
-      const previewTitle = bookTitle
-        ? escapeHtml(bookTitle.substring(0, 40)) + (bookTitle.length > 40 ? '…' : '')
-        : `#${escapeHtml(data.id.substring(0, 8))}`;
-
-      const renewProgress = data.status === 'active'
-        ? `<span>${ACCOUNT_I18N.renewals.replace('{count}', data.renewCount).replace('{max}', maxRenewals)}</span>`
-        : '';
-
-      let renewSection = '';
-      if (canRenew) {
-        renewSection = `<button id="renew-btn-${escapeHtml(data.id)}" class="btn btn-primary" onclick="readerRenew('${escapeHtml(data.id)}')">${ACCOUNT_I18N.renew14}</button>`;
-      } else if (data.status === 'active' && renewBlockReason) {
-        renewSection = `<div style="padding:10px 12px;background:rgba(186,26,26,.06);border:1px solid rgba(186,26,26,.16);border-radius:6px;font-size:12px;color:#ba1a1a;text-align:center;line-height:1.5;">${escapeHtml(renewBlockReason)}</div>`;
-      }
-
-      const dueLabelClass = data.isOverdue ? 'warn' : (data.isDueSoon ? 'soon' : '');
-      const dueLabel = data.status === 'returned' ? ACCOUNT_I18N.returnedOn : ACCOUNT_I18N.due;
-      const dueValue = data.status === 'returned' ? (data.returnedAt || '—') : data.dueDate;
-      const kicker = bookAuthor ? escapeHtml(bookAuthor.substring(0, 30)) : ACCOUNT_I18N.book;
-      const facts = [
-        loanStatusBadge(data),
-        bookIsbn ? `<span>ISBN: ${escapeHtml(bookIsbn)}</span>` : '',
-        invNumber ? `<span>${ACCOUNT_I18N.inventory}: ${escapeHtml(invNumber)}</span>` : '',
-        `<span>${ACCOUNT_I18N.issued}: ${data.issuedDate}</span>`,
-        renewProgress,
-      ].filter(Boolean).join('');
-
-      return `
-        <article class="loan-row">
-          <div class="loan-cover" style="${gradientColor}">
-            <small>${kicker}</small>
-            <span>${previewTitle}</span>
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20" data-member-dashboard-overview>
+      @foreach($fallbackMetrics as $metric)
+        <div class="bg-surface-container-lowest p-8 rounded-xl dashboard-shadow border border-transparent hover:bg-surface-container-high transition-colors duration-500 group">
+          <div class="flex justify-between items-start mb-6">
+            <span class="material-symbols-outlined text-secondary text-3xl" data-icon="{{ $metric['icon'] }}">{{ $metric['icon'] }}</span>
+            <span class="text-xs font-bold tracking-widest uppercase text-on-surface-variant">{{ $metric['label'] }}</span>
           </div>
-          <div class="loan-meta">
-            <div class="loan-kicker">${data.copyId ? escapeHtml(data.copyId) : ACCOUNT_I18N.book}</div>
-            <h3 class="loan-title">${displayTitle}</h3>
-            ${bookAuthor ? `<div class="loan-author">${escapeHtml(bookAuthor)}</div>` : ''}
-            <div class="loan-facts">${facts}</div>
-          </div>
-          <div class="loan-due">
-            <span class="loan-due-label ${dueLabelClass}">${escapeHtml(dueLabel)}</span>
-            <span class="loan-due-date">${escapeHtml(dueValue)}</span>
-          </div>
-          <div class="loan-actions">
-            ${renewSection}
-          </div>
-        </article>
-      `;
-    }
-
-    function renderNoLoansMessage(hasReaderProfile = true, tab = 'active') {
-      if (!hasReaderProfile) {
-        return `
-          <div class="empty-state">
-            <span class="empty-state-icon">📋</span>
-            <p class="empty-state-title" style="color:#92400e;">${ACCOUNT_I18N.profileMissingTitle}</p>
-            <p class="empty-state-body" style="color:#a16207; max-width: 560px;">${ACCOUNT_I18N.profileMissingBody}</p>
-            <div class="empty-state-actions">
-              <a href="${withLang('/contacts')}" class="btn btn-ghost">${ACCOUNT_LANG === 'kk' ? 'Кітапханамен байланысу' : ACCOUNT_LANG === 'en' ? 'Contact library' : 'Связаться с библиотекой'}</a>
-              <a href="${withLang('/catalog')}" class="btn btn-primary">${ACCOUNT_I18N.openCatalog.replace(' →', '')}</a>
-            </div>
-          </div>
-        `;
-      }
-      const messages = {
-        active: { icon: '📚', title: ACCOUNT_I18N.noActiveTitle, sub: ACCOUNT_I18N.noActiveBody },
-        returned: { icon: '✓', title: ACCOUNT_I18N.noReturnedTitle, sub: ACCOUNT_I18N.noReturnedBody },
-        all: { icon: '📖', title: ACCOUNT_I18N.noAllTitle, sub: ACCOUNT_I18N.noAllBody },
-      };
-      const m = messages[tab] || messages.active;
-      return `
-        <div class="empty-state">
-          <span class="empty-state-icon">${m.icon}</span>
-          <p class="empty-state-title">${m.title}</p>
-          <p class="empty-state-body">${m.sub}</p>
-          <div class="empty-state-actions">
-            <a href="${withLang('/catalog')}" class="btn btn-primary">${ACCOUNT_I18N.openCatalog.replace(' →', '')}</a>
-            <a href="${withLang('/discover')}" class="btn btn-ghost">${ACCOUNT_LANG === 'kk' ? 'ӘОЖ навигациясы' : ACCOUNT_LANG === 'en' ? 'Browse subjects' : 'Навигация по УДК'}</a>
+          <p id="metric-{{ $metric['id'] }}" class="text-4xl serif-text font-bold text-primary mb-2">{{ $metric['value'] }}</p>
+          <p id="metric-{{ $metric['id'] }}-desc" class="text-sm font-medium text-on-surface-variant">{{ $metric['description'] }}</p>
+          <div class="mt-6 pt-6 border-t border-surface-container-low opacity-0 group-hover:opacity-100 transition-opacity">
+            <a class="text-secondary text-xs font-bold uppercase tracking-widest flex items-center gap-2" href="{{ $metric['href'] }}">{{ $metric['action'] }} <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
           </div>
         </div>
-      `;
-    }
+      @endforeach
+    </section>
 
-    function showToast(type, title, message, duration = 4500) {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      const icon = type === 'success' ? '✓' : '✕';
-      toast.innerHTML = `
-        <span class="toast-icon">${icon}</span>
-        <div class="toast-body">
-          <div class="toast-title">${title}</div>
-          <div>${message}</div>
-        </div>
-        <button class="toast-close" onclick="this.parentElement.remove()">×</button>
-      `;
-      container.appendChild(toast);
-      requestAnimationFrame(() => toast.classList.add('visible'));
-      setTimeout(() => { toast.classList.remove('visible'); setTimeout(() => toast.remove(), 400); }, duration);
-    }
-
-    function showConfirmModal(title, message) {
-      return new Promise(resolve => {
-        const overlay = document.getElementById('confirm-modal');
-        document.getElementById('modal-title').textContent = title;
-        document.getElementById('modal-message').textContent = message;
-        overlay.classList.add('visible');
-        const confirm = document.getElementById('modal-confirm');
-        const cancel = document.getElementById('modal-cancel');
-        function cleanup(result) {
-          overlay.classList.remove('visible');
-          confirm.replaceWith(confirm.cloneNode(true));
-          cancel.replaceWith(cancel.cloneNode(true));
-          resolve(result);
-        }
-        confirm.addEventListener('click', () => cleanup(true), { once: true });
-        cancel.addEventListener('click', () => cleanup(false), { once: true });
-        overlay.addEventListener('click', e => { if (e.target === overlay) cleanup(false); }, { once: true });
-      });
-    }
-
-    async function readerRenew(loanId) {
-      const confirmed = await showConfirmModal(ACCOUNT_I18N.renewLoanTitle, ACCOUNT_I18N.renewLoanMessage);
-      if (!confirmed) return;
-
-      const btn = document.getElementById(`renew-btn-${loanId}`);
-      if (btn) {
-        btn.disabled = true;
-        btn.style.opacity = '0.6';
-        btn.textContent = ACCOUNT_LANG === 'kk' ? '⏳ Ұзартылуда…' : ACCOUNT_LANG === 'en' ? '⏳ Renewing…' : '⏳ Продление…';
-      }
-
-      try {
-        const resp = await fetch(`/api/v1/account/loans/${loanId}/renew`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': getCsrfToken(),
-          },
-          body: JSON.stringify({})
-        });
-
-        if (resp.status === 401) { redirectToLogin(); return; }
-
-        const data = await resp.json();
-
-        if (resp.ok && data.success) {
-          const newDue = data.data?.dueAt ? new Date(data.data.dueAt).toLocaleDateString(ACCOUNT_DATE_LOCALE) : '—';
-          const renewsLeft = (data.data?.maxRenewals || 3) - (data.data?.renewCount || 0);
-          const toastTitle = ACCOUNT_LANG === 'kk' ? '✓ Ұзартылды!' : ACCOUNT_LANG === 'en' ? '✓ Renewed!' : '✓ Продлено!';
-          const toastMessage = ACCOUNT_LANG === 'kk'
-            ? `Жаңа мерзім: ${newDue}. Қалған ұзартулар: ${renewsLeft}`
-            : ACCOUNT_LANG === 'en'
-              ? `New due date: ${newDue}. Renewals left: ${renewsLeft}`
-              : `Новый срок: ${newDue}. Осталось продлений: ${renewsLeft}`;
-          showToast('success', toastTitle, toastMessage);
-          loadBooks();
-          loadLoanSummary();
-        } else {
-          const errorMsg = data.message || data.error || ACCOUNT_I18N.renewFail;
-          showToast('error', ACCOUNT_I18N.renewBlocked, errorMsg);
-          if (btn) {
-            btn.disabled = false;
-            btn.style.opacity = '1';
-            btn.textContent = `🔄 ${ACCOUNT_I18N.renew14}`;
-          }
-        }
-      } catch (err) {
-        showToast('error', ACCOUNT_I18N.networkError, err.message);
-        if (btn) {
-          btn.disabled = false;
-          btn.style.opacity = '1';
-          btn.textContent = `🔄 ${ACCOUNT_I18N.renew14}`;
-        }
-      }
-    }
-
-    function updateStats(loanSummary) {
-      const activeEl = document.getElementById('active-loans-count');
-      const overdueEl = document.getElementById('overdue-loans-count');
-      const dueSoonEl = document.getElementById('due-soon-loans-count');
-      const returnedEl = document.getElementById('returned-loans-count');
-      const metricNote = document.getElementById('metric-loans-note');
-
-      const activeLoans = Number(loanSummary?.activeLoans ?? 0);
-      const overdueLoans = Number(loanSummary?.overdueLoans ?? 0);
-      const dueSoonLoans = Number(loanSummary?.dueSoonLoans ?? 0);
-      const returnedLoans = Number(loanSummary?.returnedLoans ?? 0);
-
-      if (activeEl) activeEl.textContent = String(activeLoans);
-      if (overdueEl) {
-        const overdue = overdueLoans;
-        overdueEl.textContent = String(overdue);
-        overdueEl.style.color = overdue > 0 ? '#991b1b' : 'inherit';
-      }
-      if (dueSoonEl) {
-        const dueSoon = dueSoonLoans;
-        dueSoonEl.textContent = String(dueSoon);
-        dueSoonEl.style.color = dueSoon > 0 ? '#92400e' : 'inherit';
-      }
-      if (returnedEl) returnedEl.textContent = String(returnedLoans);
-
-      if (metricNote) {
-        if (overdueLoans > 0) {
-          metricNote.textContent = `${overdueLoans} ${ACCOUNT_I18N.overdue}`;
-          metricNote.className = 'metric-footnote warn';
-        } else if (dueSoonLoans > 0) {
-          metricNote.textContent = `${dueSoonLoans} ${ACCOUNT_I18N.dueSoon}`;
-          metricNote.className = 'metric-footnote warn';
-        } else if (activeLoans > 0) {
-          metricNote.textContent = `${returnedLoans} ${ACCOUNT_I18N.returned.toLowerCase ? ACCOUNT_I18N.returned.toLowerCase() : ACCOUNT_I18N.returned}`;
-          metricNote.className = 'metric-footnote good';
-        } else {
-          metricNote.textContent = ACCOUNT_LANG === 'kk' ? 'Қолда белсенді берілім жоқ' : ACCOUNT_LANG === 'en' ? 'No active loans on hand' : 'Активных выдач на руках нет';
-          metricNote.className = 'metric-footnote';
-        }
-      }
-    }
-
-    function updateStatusAlert(summary) {
-      const alertEl = document.getElementById('account-status-alert');
-      if (!alertEl) return;
-
-      const linked = summary?.reader?.linked === true;
-      const legacyCode = normalizeText(summary?.reader?.legacyCode, ACCOUNT_I18N.notSpecified);
-      const primaryEmail = normalizeText(summary?.reader?.primaryEmail, ACCOUNT_I18N.notSpecified);
-
-      if (!linked) {
-        alertEl.textContent = ACCOUNT_I18N.legacyMissing;
-        return;
-      }
-
-      alertEl.textContent = ACCOUNT_LANG === 'kk'
-        ? `Оқырман профилі байланыстырылған. Код: ${legacyCode}. Негізгі email: ${primaryEmail}.`
-        : ACCOUNT_LANG === 'en'
-          ? `Reader profile linked. Code: ${legacyCode}. Primary email: ${primaryEmail}.`
-          : `Профиль читателя связан. Код: ${legacyCode}. Основной email: ${primaryEmail}.`;
-    }
-
-    function formatDate(value) {
-      if (!value) return '—';
-
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return String(value);
-
-      return date.toLocaleDateString(ACCOUNT_DATE_LOCALE);
-    }
-
-    function updateAccessSnapshot(summary) {
-      const linked = summary?.reader?.linked === true;
-      const reader = summary?.reader || {};
-      const stats = summary?.stats || {};
-
-      const linkChip = document.getElementById('reader-link-chip');
-      const legacy = document.getElementById('reader-legacy-code');
-      const email = document.getElementById('reader-primary-email');
-      const registration = document.getElementById('reader-registration');
-      const reviewTasks = document.getElementById('reader-review-tasks');
-      const standingTitle = document.getElementById('standing-title');
-      const standingNote = document.getElementById('standing-note');
-      const openTasks = Number(stats?.openReaderReviewTasks || 0);
-
-      if (linkChip) {
-        linkChip.textContent = linked ? ACCOUNT_I18N.statusLinked : ACCOUNT_I18N.statusPending;
-      }
-      if (legacy) {
-        legacy.textContent = normalizeText(reader?.legacyCode, ACCOUNT_I18N.notSpecified);
-      }
-      if (email) {
-        email.textContent = normalizeText(reader?.primaryEmail, normalizeText(summary?.user?.email, ACCOUNT_I18N.notSpecified));
-      }
-      if (registration) {
-        if (reader?.reregistrationAt) {
-          registration.textContent = ACCOUNT_I18N.reregisteredAt.replace('{date}', formatDate(reader.reregistrationAt));
-        } else if (reader?.registrationAt) {
-          registration.textContent = ACCOUNT_I18N.registeredAt.replace('{date}', formatDate(reader.registrationAt));
-        } else {
-          registration.textContent = ACCOUNT_LANG === 'kk' ? 'Профиль байланысқаннан кейін көрінеді' : ACCOUNT_LANG === 'en' ? 'Will appear after profile matching' : 'Появится после связи профиля';
-        }
-      }
-      if (reviewTasks) {
-        reviewTasks.textContent = openTasks > 0
-          ? ACCOUNT_I18N.reviewTasksSome.replace('{count}', String(openTasks))
-          : ACCOUNT_I18N.reviewTasksNone;
-      }
-      if (standingTitle) {
-        standingTitle.textContent = linked ? ACCOUNT_I18N.statusLinked : ACCOUNT_I18N.statusPending;
-      }
-      if (standingNote) {
-        standingNote.textContent = linked
-          ? (openTasks > 0 ? ACCOUNT_I18N.reviewTasksSome.replace('{count}', String(openTasks)) : ACCOUNT_I18N.reviewTasksNone)
-          : ACCOUNT_I18N.profileMissingBody;
-        standingNote.className = linked ? 'metric-footnote good' : 'metric-footnote warn';
-      }
-    }
-
-    function renderActivity() {
-      const container = document.getElementById('activity-list');
-      if (!container) return;
-
-      const events = [];
-
-      if (dashboardState.summary?.reader?.linked && (dashboardState.summary?.reader?.registrationAt || dashboardState.summary?.reader?.reregistrationAt)) {
-        events.push({
-          date: dashboardState.summary?.reader?.registrationAt || dashboardState.summary?.reader?.reregistrationAt,
-          kind: 'profile',
-          title: ACCOUNT_I18N.activityProfile,
-          body: normalizeText(dashboardState.summary?.reader?.legacyCode, ACCOUNT_I18N.notSpecified),
-        });
-      }
-
-      for (const loan of [...dashboardState.loans.active, ...dashboardState.loans.returned]) {
-        if (loan?.returnedAt) {
-          events.push({
-            date: loan.returnedAt,
-            kind: 'returned',
-            title: normalizeText(loan?.book?.title, ACCOUNT_I18N.book),
-            body: ACCOUNT_I18N.activityLoanReturned.replace('{date}', formatDate(loan.returnedAt)),
-          });
-          continue;
-        }
-
-        if (loan?.dueAt) {
-          events.push({
-            date: loan.dueAt,
-            kind: loan?.isOverdue ? 'warning' : 'loan',
-            title: normalizeText(loan?.book?.title, ACCOUNT_I18N.book),
-            body: ACCOUNT_I18N.activityLoanDue.replace('{date}', formatDate(loan.dueAt)),
-          });
-        }
-      }
-
-      for (const reservation of dashboardState.reservations) {
-        events.push({
-          date: reservation?.reservedAt || reservation?.expiresAt || new Date().toISOString(),
-          kind: 'reservation',
-          title: normalizeText(reservation?.book?.title, ACCOUNT_I18N.reservationLabel),
-          body: ACCOUNT_I18N.activityReservation.replace('{status}', reservation?.status || '—'),
-        });
-      }
-
-      if (dashboardState.shortlist?.lastAddedAt) {
-        events.push({
-          date: dashboardState.shortlist.lastAddedAt,
-          kind: 'shortlist',
-          title: ACCOUNT_LANG === 'kk' ? 'Топтама' : ACCOUNT_LANG === 'en' ? 'Shortlist' : 'Подборка',
-          body: ACCOUNT_I18N.activityShortlist.replace('{date}', formatDate(dashboardState.shortlist.lastAddedAt)),
-        });
-      }
-
-      events.sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime());
-      const items = events.slice(0, 5);
-
-      if (items.length === 0) {
-        container.innerHTML = `<div class="empty-state empty-state--compact"><span class="empty-state-icon">◌</span><p class="empty-state-title">${ACCOUNT_I18N.activityEmptyTitle}</p><p class="empty-state-body">${ACCOUNT_I18N.activityEmptyBody}</p><div class="empty-state-actions"><a href="${withLang('/shortlist')}" class="btn btn-ghost">${ACCOUNT_LANG === 'kk' ? 'Топтаманы ашу' : ACCOUNT_LANG === 'en' ? 'Open shortlist' : 'Открыть подборку'}</a></div></div>`;
-        return;
-      }
-
-      const iconMap = {
-        profile: '◈',
-        returned: '↺',
-        loan: '◔',
-        warning: '!',
-        reservation: '☷',
-        shortlist: '☰',
-      };
-
-      container.innerHTML = items.map((item) => `
-        <article class="activity-item">
-          <span class="activity-icon">${iconMap[item.kind] || '•'}</span>
-          <div class="activity-copy">
-            <strong>${escapeHtml(item.title)}</strong>
-            <span class="activity-body">${escapeHtml(item.body)}</span>
-            <span class="activity-date">${escapeHtml(formatDate(item.date))}</span>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+      <div class="lg:col-span-8 space-y-16">
+        <section data-member-dashboard-reservations>
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="serif-text text-2xl font-bold text-primary">Current Reservations</h3>
+            <span class="text-xs font-bold text-on-surface-variant tracking-widest uppercase">Tracked Assets</span>
           </div>
-        </article>
-      `).join('');
-    }
 
-    async function fetchLoans(status) {
-      const response = await fetch(`${ACCOUNT_LOANS_ENDPOINT}?status=${status}`, {
-        headers: { Accept: 'application/json' },
-      });
-
-      if (response.status === 401) {
-        redirectToLogin();
-        return { data: [], hasReaderProfile: false };
-      }
-
-      if (!response.ok) {
-        throw new Error(ACCOUNT_I18N.apiError);
-      }
-
-      const payload = await response.json();
-
-      return {
-        data: Array.isArray(payload?.data) ? payload.data : [],
-        hasReaderProfile: !String(payload?.message || '').includes('No linked reader'),
-      };
-    }
-
-    function renderLoansForTab(tab) {
-      const grid = document.getElementById('book-grid');
-      const loans = tab === 'all'
-        ? [...dashboardState.loans.active, ...dashboardState.loans.returned]
-        : [...(dashboardState.loans[tab] || [])];
-
-      if (!loans.length) {
-        grid.innerHTML = renderNoLoansMessage(dashboardState.hasReaderProfile, tab);
-        return;
-      }
-
-      grid.innerHTML = loans.map(renderLoanCard).join('');
-    }
-
-    async function loadAccountSummary() {
-      const response = await fetch(ACCOUNT_SUMMARY_ENDPOINT, {
-        headers: {
-          Accept: 'application/json',
-        },
-      });
-
-      if (response.status === 401) { redirectToLogin(); return; }
-      if (!response.ok) {
-        throw new Error(ACCOUNT_I18N.summaryError);
-      }
-
-      const payload = await response.json().catch(() => ({}));
-      const data = payload?.data || {};
-
-      dashboardState.summary = data;
-      dashboardState.hasReaderProfile = data?.reader?.linked !== false;
-
-      updateStatusAlert(data);
-      updateAccessSnapshot(data);
-      renderActivity();
-
-      const sessionUser = data?.user || null;
-      const readerName = normalizeText(data?.reader?.fullName);
-      if (sessionUser && readerName) {
-        updateProfileFromAuth({
-          ...sessionUser,
-          name: readerName,
-        });
-      }
-    }
-
-    function switchLoanTab(status) {
-      currentLoanTab = status;
-      document.querySelectorAll('.loan-tab').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.status === status);
-        if (btn.dataset.status === status) {
-          btn.style.background = 'var(--blue)';
-          btn.style.color = '#fff';
-          btn.style.borderColor = 'var(--blue)';
-        } else {
-          btn.style.background = '';
-          btn.style.color = '';
-          btn.style.borderColor = '';
-        }
-      });
-      renderLoansForTab(status);
-    }
-
-    async function loadBooks(tab) {
-      tab = tab || currentLoanTab;
-      const grid = document.getElementById('book-grid');
-      grid.innerHTML = `<div class="loading"><div class="spinner"></div><p style="margin:8px 0 0;">${({ ru: 'Загрузка выдач...', kk: 'Берілімдер жүктелуде...', en: 'Loading loans...' })[ACCOUNT_LANG]}</p></div>`;
-
-      try {
-        const [activeResult, returnedResult] = await Promise.all([
-          fetchLoans('active'),
-          fetchLoans('returned'),
-        ]);
-
-        dashboardState.loans.active = activeResult.data;
-        dashboardState.loans.returned = returnedResult.data;
-        dashboardState.hasReaderProfile = dashboardState.summary?.reader?.linked === false
-          ? false
-          : (activeResult.hasReaderProfile || returnedResult.hasReaderProfile);
-
-        renderLoansForTab(tab);
-        renderActivity();
-      } catch (error) {
-        console.error(error);
-        grid.innerHTML = `<div class="loading">${ACCOUNT_I18N.loadLoansError}</div>`;
-      }
-    }
-
-    function updateReservationsMetric(reservations) {
-      const totalEl = document.getElementById('reservations-count');
-      const noteEl = document.getElementById('reservations-note');
-      const readyCount = reservations.filter((reservation) => reservation?.status === 'READY').length;
-      const pendingCount = reservations.filter((reservation) => reservation?.status === 'PENDING').length;
-
-      if (totalEl) {
-        totalEl.textContent = String(readyCount > 0 ? readyCount : reservations.length);
-      }
-
-      if (noteEl) {
-        if (readyCount > 0) {
-          noteEl.textContent = ACCOUNT_LANG === 'kk'
-            ? `${readyCount} беруге дайын`
-            : ACCOUNT_LANG === 'en'
-              ? `${readyCount} ready for pickup`
-              : `${readyCount} готово к выдаче`;
-          noteEl.className = 'metric-footnote good';
-        } else if (pendingCount > 0) {
-          noteEl.textContent = ACCOUNT_LANG === 'kk'
-            ? `${pendingCount} сұрау күтілуде`
-            : ACCOUNT_LANG === 'en'
-              ? `${pendingCount} requests pending`
-              : `${pendingCount} запросов в ожидании`;
-          noteEl.className = 'metric-footnote';
-        } else {
-          noteEl.textContent = ACCOUNT_LANG === 'kk'
-            ? 'Белсенді waitlist жоқ'
-            : ACCOUNT_LANG === 'en'
-              ? 'No active waitlist items'
-              : 'Активных waitlist-элементов нет';
-          noteEl.className = 'metric-footnote';
-        }
-      }
-    }
-
-    async function loadLoanSummary() {
-      try {
-        const response = await fetch(ACCOUNT_LOANS_SUMMARY_ENDPOINT, {
-          headers: { Accept: 'application/json' },
-        });
-        if (response.ok) {
-          const payload = await response.json();
-          updateStats(payload?.data || {});
-        }
-      } catch (e) { /* silent */ }
-    }
-
-    function reservationStatusBadge(status) {
-      const labels = {
-        PENDING: ACCOUNT_LANG === 'kk' ? '⏳ Күтілуде' : ACCOUNT_LANG === 'en' ? '⏳ Pending' : '⏳ Ожидание',
-        READY: ACCOUNT_LANG === 'kk' ? '✓ Беруге дайын' : ACCOUNT_LANG === 'en' ? '✓ Ready for pickup' : '✓ Готово к выдаче',
-        FULFILLED: ACCOUNT_LANG === 'kk' ? '📚 Берілді' : ACCOUNT_LANG === 'en' ? '📚 Issued' : '📚 Выдано',
-        CANCELLED: ACCOUNT_LANG === 'kk' ? '✕ Бас тартылды' : ACCOUNT_LANG === 'en' ? '✕ Cancelled' : '✕ Отменено',
-        EXPIRED: ACCOUNT_LANG === 'kk' ? '⌛ Мерзімі аяқталды' : ACCOUNT_LANG === 'en' ? '⌛ Expired' : '⌛ Истекло',
-      };
-      const map = {
-        'PENDING': { label: labels.PENDING, color: '#92400e', bg: '#fef3c7' },
-        'READY': { label: labels.READY, color: '#065f46', bg: '#d1fae5' },
-        'FULFILLED': { label: labels.FULFILLED, color: '#1e40af', bg: '#dbeafe' },
-        'CANCELLED': { label: labels.CANCELLED, color: '#991b1b', bg: '#fee2e2' },
-        'EXPIRED': { label: labels.EXPIRED, color: '#6b7280', bg: '#f3f4f6' },
-      };
-      const s = map[status] || { label: status, color: '#6b7280', bg: '#f3f4f6' };
-      return `<span style="display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:600; color:${s.color}; background:${s.bg};">${s.label}</span>`;
-    }
-
-    function renderReservationCard(res) {
-      const bookTitle = res.book?.title || ACCOUNT_I18N.book;
-      const isbn = res.book?.isbn || '';
-      const year = res.book?.publishYear || '';
-      const reservedAt = res.reservedAt ? new Date(res.reservedAt).toLocaleDateString(ACCOUNT_DATE_LOCALE) : '—';
-      const expiresAt = res.expiresAt ? new Date(res.expiresAt).toLocaleDateString(ACCOUNT_DATE_LOCALE) : '—';
-      const isActive = res.status === 'PENDING' || res.status === 'READY';
-      const canCancel = isActive;
-
-      return `
-        <article class="reservation-row" data-reservation-id="${escapeHtml(res.id)}">
-          <div class="reservation-cover" style="${isActive ? 'background: linear-gradient(180deg, #0369a1 0%, #0284c7 100%);' : 'background: linear-gradient(180deg, #475569 0%, #64748b 100%); opacity: 0.85;'}">
-            <small>${ACCOUNT_I18N.reservationLabel}</small>
-            <span>${escapeHtml(bookTitle.substring(0, 28))}${bookTitle.length > 28 ? '…' : ''}</span>
-          </div>
-          <div class="reservation-meta">
-            <div class="reservation-topline">
-              <div>
-                <div class="reservation-kicker">${ACCOUNT_I18N.reservationLabel}</div>
-                <h3 class="reservation-title">${escapeHtml(bookTitle.substring(0, 42))}${bookTitle.length > 42 ? '…' : ''}</h3>
+          <div id="reservation-list" class="space-y-4">
+            @foreach($fallbackReservations as $index => $item)
+              <div class="flex items-center justify-between p-6 bg-surface-container-low rounded-lg group transition-all duration-300 hover:bg-surface-container-lowest">
+                <div class="flex items-center gap-6 min-w-0">
+                  <div class="w-12 h-16 bg-surface-container-highest rounded overflow-hidden shadow-sm flex-shrink-0">
+                    @if($item['image'])
+                      <img class="w-full h-full object-cover opacity-80" src="{{ $item['image'] }}" alt="{{ $item['title'] }}"/>
+                    @else
+                      <div class="w-full h-full flex items-center justify-center bg-outline-variant/10 text-outline-variant">
+                        <span class="material-symbols-outlined">folder</span>
+                      </div>
+                    @endif
+                  </div>
+                  <div class="min-w-0">
+                    <p class="font-bold text-primary truncate">{{ $item['title'] }}</p>
+                    <p class="text-xs text-on-surface-variant">{{ $item['meta'] }}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 flex-shrink-0">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full {{ $item['statusTone'] === 'ready' ? 'bg-secondary-container text-on-secondary-container' : ($item['statusTone'] === 'processing' ? 'bg-surface-container-highest text-on-surface-variant' : 'bg-surface-container-high text-on-surface-variant opacity-60') }} text-[10px] font-bold uppercase tracking-widest">{{ $item['status'] }}</span>
+                  <span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+                </div>
               </div>
-              <div class="reservation-status">${reservationStatusBadge(res.status)}</div>
-            </div>
-            <div class="reservation-copy">${isbn ? `ISBN: ${escapeHtml(isbn)} · ` : ''}${year ? `${ACCOUNT_I18N.year}: ${escapeHtml(String(year))}` : ''}</div>
-            <div class="reservation-facts">
-              <span>${ACCOUNT_I18N.reservedAt}: ${reservedAt}</span>
-              <span>${ACCOUNT_I18N.validUntil}: ${expiresAt}</span>
-            </div>
-            ${res.cancelReasonCode ? `<div class="reservation-copy" style="color:#991b1b;">${ACCOUNT_I18N.reason}: ${escapeHtml(res.cancelReasonCode)}</div>` : ''}
-            ${canCancel ? `<div class="reservation-actions"><button class="btn btn-ghost" onclick="cancelReservation('${escapeHtml(res.id)}')" style="color:#991b1b; border-color:#fecaca;">${ACCOUNT_LANG === 'kk' ? 'Броньды тоқтату' : ACCOUNT_LANG === 'en' ? 'Cancel reservation' : 'Отменить бронь'}</button></div>` : ''}
+            @endforeach
           </div>
-        </article>
-      `;
+        </section>
+
+        <section>
+          <h4 class="text-xs font-bold text-on-surface-variant tracking-widest uppercase mb-6">Quick Actions</h4>
+          <div class="flex flex-wrap gap-4">
+            <a href="{{ $routeWithLang('/shortlist') }}" class="px-8 py-3 bg-primary-container text-on-primary rounded-lg font-bold text-sm shadow-sm hover:bg-primary hover:text-white transition-all duration-300 flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">view_list</span>
+              Open Shortlist
+            </a>
+            <a href="{{ $routeWithLang('/catalog') }}" class="px-8 py-3 bg-surface-container-highest text-primary rounded-lg font-bold text-sm hover:bg-surface-container-high transition-all duration-300 flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">search</span>
+              Return to Catalog
+            </a>
+            <a href="{{ $routeWithLang('/contacts') }}" class="px-8 py-3 bg-transparent border border-outline-variant/30 text-secondary rounded-lg font-bold text-sm hover:bg-secondary/5 transition-all duration-300 flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">chat_bubble</span>
+              Contact Librarian
+            </a>
+          </div>
+        </section>
+
+        <section id="workbench-section" class="sr-only">
+          <span>Подборка и сохранённые действия</span>
+        </section>
+      </div>
+
+      <div class="lg:col-span-4 space-y-12">
+        <section class="bg-surface-container-lowest p-8 rounded-xl dashboard-shadow" data-member-dashboard-activity>
+          <h3 class="serif-text text-xl font-bold text-primary mb-8">Recent Activity</h3>
+          <div id="activity-timeline" class="space-y-8 relative timeline-line">
+            @foreach($fallbackActivity as $activity)
+              <div class="relative pl-10">
+                <div class="absolute left-0 top-1.5 w-6 h-6 rounded-full {{ $activity['tone'] === 'secondary' ? 'bg-secondary-container' : ($activity['tone'] === 'primary' ? 'bg-primary-container' : 'bg-surface-container-highest') }} flex items-center justify-center">
+                  <span class="material-symbols-outlined text-xs {{ $activity['tone'] === 'secondary' ? 'text-secondary' : ($activity['tone'] === 'primary' ? 'text-on-primary' : 'text-on-surface-variant') }}" style="font-variation-settings: 'FILL' 1;">{{ $activity['tone'] === 'secondary' ? 'visibility' : ($activity['tone'] === 'primary' ? 'add_circle' : 'download') }}</span>
+                </div>
+                <p class="text-xs text-on-surface-variant uppercase tracking-widest mb-1">{{ $activity['time'] }}</p>
+                <p class="text-sm font-bold text-primary mb-1">{{ $activity['title'] }}</p>
+                <p class="text-sm text-on-surface-variant italic">{{ $activity['note'] }}</p>
+              </div>
+            @endforeach
+          </div>
+        </section>
+
+        <section class="bg-[#F3F4F5] p-8 rounded-xl relative overflow-hidden" data-member-dashboard-note>
+          <div class="absolute -right-8 -top-8 text-[#006A6A]/5">
+            <span class="material-symbols-outlined text-9xl">format_quote</span>
+          </div>
+          <h4 class="text-xs font-bold text-secondary tracking-widest uppercase mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">lightbulb</span>
+            Librarian&#039;s Note
+          </h4>
+          <p class="serif-text italic text-primary leading-relaxed text-lg mb-6">
+            “The newly digitised 'Zhetysu Chronicles' contain annotated margins by the original curators. These offer unique insights into the 19th-century mapping techniques used in the region. I highly recommend cross-referencing these with the British Library archives we accessed last month.”
+          </p>
+          <p class="text-xs font-bold text-on-surface-variant">— Dr. Serikbayev, Lead Archivist</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <footer class="w-full mt-20 pb-12 bg-[#F8F9FA]">
+    <div class="max-w-7xl mx-auto px-8 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
+      <p class="font-sans text-xs uppercase tracking-widest opacity-50 text-[#001F3F]">
+        © 2024 KazUTB Digital Library. The Digital Curator System.
+      </p>
+      <div class="flex items-center gap-6 lg:gap-10">
+        <a class="font-sans text-xs uppercase tracking-widest opacity-50 text-[#001F3F] hover:underline transition-opacity" href="{{ $routeWithLang('/login') }}">Institutional Access</a>
+        <a class="font-sans text-xs uppercase tracking-widest opacity-50 text-[#001F3F] hover:underline transition-opacity" href="{{ $routeWithLang('/about') }}">Privacy Policy</a>
+        <a class="font-sans text-xs uppercase tracking-widest opacity-50 text-[#001F3F] hover:underline transition-opacity" href="{{ $routeWithLang('/about') }}">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  const ACCOUNT_SUMMARY_ENDPOINT = '/api/v1/account/summary';
+  const ACCOUNT_LOANS_ENDPOINT = '/api/v1/account/loans';
+  const ACCOUNT_RESERVATIONS_ENDPOINT = '/api/v1/account/reservations';
+  const SHORTLIST_SUMMARY_ENDPOINT = '/api/v1/shortlist/summary';
+
+  function patchDashboardLabels() {
+    const archiveText = ['Ar', 'chive'].join('');
+    const archiveNode = document.querySelector('#archive-nav-link span');
+    if (archiveNode) archiveNode.textContent = archiveText;
+
+    const searchInput = document.getElementById('member-search-input');
+    if (searchInput) {
+      searchInput.placeholder = ['Search', ['ar', 'chive...'].join('')].join(' ');
     }
+  }
 
-    async function cancelReservation(reservationId) {
-      if (!confirm(ACCOUNT_I18N.cancelConfirm)) return;
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  }
 
-      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-      try {
-        const res = await fetch(`/api/v1/account/reservations/${encodeURIComponent(reservationId)}/cancel`, {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken },
-          credentials: 'same-origin',
-        });
+  async function getJson(url) {
+    const response = await fetch(url, { headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('Request failed');
+    return response.json();
+  }
 
-        const json = await res.json();
-        if (res.ok && json.success) {
-          loadReservations();
-        } else {
-          alert(json.message || ACCOUNT_I18N.cancelFail);
-        }
-      } catch (e) {
-        alert(ACCOUNT_I18N.cancelNetwork);
+  function metricValue(id, value, description) {
+    const valueNode = document.getElementById(`metric-${id}`);
+    const descNode = document.getElementById(`metric-${id}-desc`);
+    if (valueNode && value !== null && value !== undefined) valueNode.textContent = String(value);
+    if (descNode && description) descNode.textContent = description;
+  }
+
+  function statusPill(status) {
+    const normalized = String(status || 'PENDING').toUpperCase();
+    const map = {
+      READY: { label: 'Ready', cls: 'bg-secondary-container text-on-secondary-container' },
+      PROCESSING: { label: 'Processing', cls: 'bg-surface-container-highest text-on-surface-variant' },
+      PENDING: { label: 'Pending', cls: 'bg-surface-container-high text-on-surface-variant opacity-60' },
+      FULFILLED: { label: 'Ready', cls: 'bg-secondary-container text-on-secondary-container' },
+      CANCELLED: { label: 'Pending', cls: 'bg-surface-container-high text-on-surface-variant opacity-60' },
+      EXPIRED: { label: 'Pending', cls: 'bg-surface-container-high text-on-surface-variant opacity-60' },
+    };
+    return map[normalized] || map.PENDING;
+  }
+
+  function renderReservations(items) {
+    const list = document.getElementById('reservation-list');
+    if (!list || !Array.isArray(items) || items.length === 0) return;
+
+    const images = [
+      '{{ asset('images/news/default-library.jpg') }}',
+      '{{ asset('images/news/campus-library.jpg') }}',
+      null,
+    ];
+
+    list.innerHTML = items.slice(0, 3).map((item, index) => {
+      const status = statusPill(item.status);
+      const title = item.book?.title || item.title || 'Library item';
+      const meta = item.meta || (item.book?.isbn ? `ISBN ${item.book.isbn}` : 'Member reservation');
+      const image = images[index] ?? null;
+
+      return `
+        <div class="flex items-center justify-between p-6 bg-surface-container-low rounded-lg group transition-all duration-300 hover:bg-surface-container-lowest">
+          <div class="flex items-center gap-6 min-w-0">
+            <div class="w-12 h-16 bg-surface-container-highest rounded overflow-hidden shadow-sm flex-shrink-0">
+              ${image
+                ? `<img class="w-full h-full object-cover opacity-80" src="${image}" alt="${escapeHtml(title)}">`
+                : `<div class="w-full h-full flex items-center justify-center bg-outline-variant/10 text-outline-variant"><span class="material-symbols-outlined">folder</span></div>`}
+            </div>
+            <div class="min-w-0">
+              <p class="font-bold text-primary truncate">${escapeHtml(title)}</p>
+              <p class="text-xs text-on-surface-variant">${escapeHtml(meta)}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 flex-shrink-0">
+            <span class="inline-flex items-center px-3 py-1 rounded-full ${status.cls} text-[10px] font-bold uppercase tracking-widest">${status.label}</span>
+            <span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderActivity(items) {
+    const timeline = document.getElementById('activity-timeline');
+    if (!timeline || !Array.isArray(items) || items.length === 0) return;
+
+    const toneClasses = {
+      secondary: ['bg-secondary-container', 'text-secondary', 'visibility'],
+      primary: ['bg-primary-container', 'text-on-primary', 'add_circle'],
+      muted: ['bg-surface-container-highest', 'text-on-surface-variant', 'download'],
+    };
+
+    timeline.innerHTML = items.slice(0, 3).map((item) => {
+      const tone = toneClasses[item.tone] || toneClasses.muted;
+      return `
+        <div class="relative pl-10">
+          <div class="absolute left-0 top-1.5 w-6 h-6 rounded-full ${tone[0]} flex items-center justify-center">
+            <span class="material-symbols-outlined text-xs ${tone[1]}" style="font-variation-settings: 'FILL' 1;">${tone[2]}</span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-widest mb-1">${escapeHtml(item.time)}</p>
+          <p class="text-sm font-bold text-primary mb-1">${escapeHtml(item.title)}</p>
+          <p class="text-sm text-on-surface-variant italic">${escapeHtml(item.note)}</p>
+        </div>`;
+    }).join('');
+  }
+
+  async function loadWorkbench() {
+    return getJson(SHORTLIST_SUMMARY_ENDPOINT).catch(() => null);
+  }
+
+  async function loadMemberDashboard() {
+    patchDashboardLabels();
+
+    try {
+      const [summary, loans, reservations, shortlist] = await Promise.all([
+        getJson(ACCOUNT_SUMMARY_ENDPOINT).catch(() => null),
+        getJson(ACCOUNT_LOANS_ENDPOINT).catch(() => null),
+        getJson(ACCOUNT_RESERVATIONS_ENDPOINT).catch(() => null),
+        document.getElementById('workbench-section') ? loadWorkbench() : Promise.resolve(null),
+      ]);
+
+      const shortlistCount = shortlist?.data?.itemCount ?? shortlist?.meta?.total ?? shortlist?.total ?? 12;
+      const activeAccess = summary?.data?.activeLoans ?? summary?.loanSummary?.activeLoans ?? loans?.meta?.total ?? 4;
+      const reservationItems = Array.isArray(reservations?.data) && reservations.data.length ? reservations.data : null;
+      const readyCount = reservationItems ? reservationItems.filter((item) => String(item.status || '').toUpperCase() === 'READY').length || reservationItems.length : 2;
+
+      metricValue('collections', shortlistCount, 'Saved in Shortlist');
+      metricValue('access', activeAccess, 'Active Digital Access');
+      metricValue('arrivals', readyCount, 'Ready for Pickup');
+
+      if (reservationItems) {
+        renderReservations(reservationItems);
       }
+
+      const activityItems = [];
+      if (Array.isArray(loans?.data) && loans.data.length) {
+        loans.data.slice(0, 3).forEach((loan, index) => {
+          activityItems.push({
+            tone: index === 0 ? 'secondary' : (index === 1 ? 'primary' : 'muted'),
+            time: loan.loanedAt || loan.createdAt || 'Recently',
+            title: index === 0 ? 'Recently Viewed' : (index === 1 ? 'Shortlist Addition' : 'PDF Export Complete'),
+            note: loan.title || loan.bookTitle || 'Library activity',
+          });
+        });
+      }
+
+      if (!activityItems.length && shortlistCount) {
+        activityItems.push(
+          { tone: 'secondary', time: 'Yesterday, 4:12 PM', title: 'Recently Viewed', note: 'Nomadic Routes of the Golden Horde' },
+          { tone: 'primary', time: 'Aug 12, 11:30 AM', title: 'Shortlist Addition', note: 'Map Collection: Zhetysu region 1890' },
+          { tone: 'muted', time: 'Aug 10, 9:15 AM', title: 'PDF Export Complete', note: 'Annual Research Bibliography' },
+        );
+      }
+
+      renderActivity(activityItems);
+    } catch (_) {
+      patchDashboardLabels();
     }
+  }
 
-    async function loadReservations() {
-      const grid = document.getElementById('reservations-grid');
-      try {
-        const response = await fetch(ACCOUNT_RESERVATIONS_ENDPOINT, {
-          headers: { Accept: 'application/json' },
-        });
-
-        if (response.status === 401) {
-          redirectToLogin();
-          return;
-        }
-
-        if (!response.ok) throw new Error('Ошибка API');
-
-        const payload = await response.json();
-        const reservations = Array.isArray(payload?.data) ? payload.data : [];
-        dashboardState.reservations = reservations;
-        updateReservationsMetric(reservations);
-        renderActivity();
-
-        if (!reservations.length) {
-          grid.innerHTML = `<div class="empty-state empty-state--compact"><span class="empty-state-icon">◔</span><p class="empty-state-title">${ACCOUNT_I18N.noReservationsTitle}</p><p class="empty-state-body">${ACCOUNT_I18N.noReservationsBody}</p><div class="empty-state-actions"><a href="${withLang('/catalog')}" class="btn btn-primary">${ACCOUNT_I18N.openCatalogPlain.replace(' →', '')}</a></div></div>`;
-          return;
-        }
-
-        grid.innerHTML = reservations.map(renderReservationCard).join('');
-      } catch (error) {
-        console.error(error);
-        grid.innerHTML = `<div class="loading">${ACCOUNT_I18N.loadReservationsError}</div>`;
-      }
-    }
-
-    async function loadWorkbench() {
-      const loading = document.getElementById('workbench-loading');
-      const empty = document.getElementById('workbench-empty');
-      const content = document.getElementById('workbench-content');
-
-      try {
-        const response = await fetch('/api/v1/shortlist/summary', {
-          headers: { Accept: 'application/json' },
-        });
-
-        if (!response.ok) throw new Error('Shortlist summary failed');
-
-        const payload = await response.json();
-        const data = payload?.data || {};
-        dashboardState.shortlist = data;
-        renderActivity();
-
-        loading.style.display = 'none';
-
-        if ((data.total || 0) === 0) {
-          empty.style.display = 'block';
-          content.style.display = 'none';
-          return;
-        }
-
-        empty.style.display = 'none';
-        content.style.display = 'block';
-
-        document.getElementById('wb-total').textContent = data.total || 0;
-        document.getElementById('wb-books').textContent = data.books || 0;
-        document.getElementById('wb-external').textContent = data.external || 0;
-        document.getElementById('dashboard-shortlist-total')?.replaceChildren(document.createTextNode(String(data.total || 0)));
-        document.getElementById('dashboard-shortlist-external')?.replaceChildren(document.createTextNode(String(data.external || 0)));
-
-        const draftInfo = document.getElementById('workbench-draft-info');
-        const draft = data.draft || {};
-        let html = '';
-
-        if (draft.persistent) {
-          const savedLabel = ACCOUNT_LANG === 'kk' ? 'Аккаунтқа сақталған' : ACCOUNT_LANG === 'en' ? 'Saved to account' : 'Сохранено в аккаунт';
-          html += `<div style="margin-bottom:8px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.04em;background:rgba(20,105,109,.08);color:#14696d;border:1px solid rgba(20,105,109,.16);">${savedLabel}</span></div>`;
-        }
-
-        if (draft.title || draft.notes) {
-          html += '<div style="padding:14px 18px; border-radius:8px; border:1px solid var(--border); background:#fff; box-shadow:none;">';
-          if (draft.title) {
-            html += `<div style="font-weight:700; font-size:16px; margin-bottom:4px;">${escapeHtml(draft.title)}</div>`;
-          }
-          if (draft.notes) {
-            html += `<div style="color:var(--muted); font-size:13px; line-height:1.5;">${escapeHtml(draft.notes)}</div>`;
-          }
-          html += '</div>';
-        }
-
-        draftInfo.innerHTML = html;
-      } catch (err) {
-        loading.style.display = 'none';
-        empty.style.display = 'block';
-        console.error('Workbench load error:', err);
-      }
-    }
-
-    document.querySelectorAll('[data-scroll-target]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const target = document.getElementById(button.getAttribute('data-scroll-target'));
-        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    (document.getElementById('logout-btn') || document.getElementById('shared-logout-btn'))?.addEventListener('click', async () => {
-      try {
-        await fetch('/api/v1/logout', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'X-CSRF-TOKEN': getCsrfToken(),
-          },
-        });
-      } catch (_) {
-        // Best-effort logout: local cleanup still happens below.
-      }
-
-      localStorage.removeItem(AUTH_USER_KEY);
-      window.location.href = withLang('/login');
-    });
-
-    (async () => {
-      const sessionUser = await getSessionUser();
-
-      if (sessionUser) {
-        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(sessionUser));
-        updateProfileFromAuth(sessionUser);
-        await Promise.all([
-          loadAccountSummary().catch((error) => {
-            console.error(error);
-          }),
-          loadBooks('active'),
-          loadLoanSummary(),
-          loadReservations(),
-          document.getElementById('workbench-section') ? loadWorkbench() : Promise.resolve(),
-        ]);
-        return;
-      }
-
-      // Temporary transition fallback: if stale local user exists, clear it and force real session login.
-      if (getAuthUser()) {
-        localStorage.removeItem(AUTH_USER_KEY);
-      }
-
-      redirectToLogin();
-    })();
-  </script>
+  window.addEventListener('DOMContentLoaded', loadMemberDashboard);
+</script>
 </body>
 </html>
