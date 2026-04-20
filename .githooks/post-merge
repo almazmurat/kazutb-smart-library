@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+bash "$ROOT/scripts/dev/git-vault-hook.sh" "post-merge" "$@" >/dev/null 2>&1 || true
