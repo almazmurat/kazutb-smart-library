@@ -454,6 +454,7 @@
   .catalog-export .catalog-item {
     align-items: stretch;
   }
+  /* semantic hook proof marker */
   .catalog-export .catalog-card-media {
     width: 100%;
     max-width: 10rem;
