@@ -28,31 +28,6 @@ for keyword in fix feat decision breaking auth rbac migration schema; do
   fi
 done
 decision_keyword_csv="$(IFS=,; echo "${decision_keywords[*]:-}")"
-state_change_notes=()
-for changed_file in "${changed_files[@]:-}"; do
-  case "$changed_file" in
-    database/migrations/*)
-      state_change_notes+=("DB schema changed")
-      ;;
-    routes/*)
-      state_change_notes+=("Routes changed")
-      ;;
-    app/Models/*)
-      state_change_notes+=("Models changed")
-      ;;
-    app/Http/Controllers/*)
-      state_change_notes+=("Controllers changed")
-      ;;
-    resources/views/*)
-      state_change_notes+=("Views/Blade changed")
-      ;;
-  esac
-done
-if [[ ${#state_change_notes[@]} -gt 0 ]]; then
-  state_change_csv="$(printf '%s\n' "${state_change_notes[@]}" | awk '!seen[$0]++' | paste -sd '|' -)"
-else
-  state_change_csv=""
-fi
 
 collect_changed_files() {
   case "$EVENT" in
@@ -83,6 +58,32 @@ collect_changed_files() {
 
 changed_files_raw="$(collect_changed_files "$@")"
 mapfile -t changed_files < <(printf '%s\n' "$changed_files_raw" | sed '/^$/d' | head -n 12)
+
+state_change_notes=()
+for changed_file in "${changed_files[@]:-}"; do
+  case "$changed_file" in
+    database/migrations/*)
+      state_change_notes+=("DB schema changed")
+      ;;
+    routes/*)
+      state_change_notes+=("Routes changed")
+      ;;
+    app/Models/*)
+      state_change_notes+=("Models changed")
+      ;;
+    app/Http/Controllers/*)
+      state_change_notes+=("Controllers changed")
+      ;;
+    resources/views/*)
+      state_change_notes+=("Views/Blade changed")
+      ;;
+  esac
+done
+if [[ ${#state_change_notes[@]} -gt 0 ]]; then
+  state_change_csv="$(printf '%s\n' "${state_change_notes[@]}" | awk '!seen[$0]++' | paste -sd '|' -)"
+else
+  state_change_csv=""
+fi
 
 if [[ ${#changed_files[@]} -eq 0 ]]; then
   changed_preview="no file changes detected"
@@ -177,17 +178,21 @@ block = (
     + "- Links: [[TASK_LOG]], [[GRAPH_INDEX]]\n"
 )
 
-pattern = re.compile(r"(## Last changed\n.*?(?=\n## |\Z)\n?)?(## Latest Git Automation\n.*?(?=\n## |\Z))", re.S)
-if pattern.search(state):
-    state = pattern.sub(block + "\n", state, count=1)
-else:
-    links_marker = "\n## Links"
-    if links_marker in state:
-        state = state.replace(links_marker, "\n\n" + block + links_marker, 1)
-    else:
-        state = state.rstrip() + "\n\n" + block + "\n"
+state = re.sub(r"\n## Last changed\n.*?(?=\n## |\Z)", "", state, flags=re.S)
+state = re.sub(r"\n## Latest Git Automation\n.*?(?=\n## |\Z)", "", state, flags=re.S)
 
-current_state.write_text(state, encoding='utf-8')
+insertion = "\n\n" + block.rstrip() + "\n"
+if "\n> Last updated:" in state:
+    head, rest = state.split("\n", 2)[:2], state.split("\n", 2)[2] if len(state.split("\n", 2)) > 2 else ""
+    state = head[0] + "\n" + head[1] + insertion + rest.lstrip("\n")
+else:
+    first_newline = state.find("\n")
+    if first_newline != -1:
+        state = state[:first_newline] + insertion + state[first_newline:].lstrip("\n")
+    else:
+        state = state + insertion
+
+current_state.write_text(state.rstrip() + "\n", encoding='utf-8')
 
 if event == 'post-commit' and decision_keywords:
     if decisions_file.exists():

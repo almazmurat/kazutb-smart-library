@@ -38,6 +38,18 @@ Each entry: Date | Decision | Why | Who
 **Alternatives considered:** Requiring Composer for every memory update.
 **Impact:** Developer docs and routine operations can rely on the underlying scripts when needed.
 
+
+## 2026-04-20 — Git-derived decision signal: feat: capture decision keywords in vault hooks
+**Decision:** The commit message matched strategic keywords: feat, decision.
+**Reason:** The change was auto-captured from Git history to preserve important implementation context in the second brain.
+**Alternatives considered:** Not captured automatically by the hook.
+**Impact:** Changed files: README.md, scripts/dev/git-vault-hook.sh
+**Source:** Git hook auto-capture from commit 1bb3a8e
+
+---
+
+
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]

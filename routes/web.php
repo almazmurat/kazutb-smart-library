@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
+// Route changes are intentionally tracked by the vault hook automation.
+
 $internalStaffView = static function (Request $request, string $view) {
     $user = $request->session()->get('library.user');
     $role = is_array($user) ? mb_strtolower(trim((string) ($user['role'] ?? ''))) : '';
