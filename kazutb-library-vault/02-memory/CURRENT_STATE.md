@@ -35,6 +35,17 @@ The project is in the institutional build-out phase: the canonical product model
 - Analytics and export depth need richer operational dashboards
 - Contract-aware management of licensed external resources is future-ready but not yet complete
 
+
+## Latest Git Automation
+- Time: 2026-04-20 11:08:39 UTC
+- Event: post-merge
+- Branch: main
+- Commit: bdf40aa
+- Update: Git post-merge on main: Rebuild Obsidian vault around PROJECT_CONTEXT
+- Detail: Merged files: .env.example, .gitignore, .instructions.md, .vscode/mcp.json, .vscode/settings.json, README.md, app/Http/Controllers/Api/CatalogController.php, app/Http/Controllers/Api/DemoAuthController.php, app/Http/Middleware/SetRequestLocale.php, app/Services/Library/BookDetailReadService.php, app/Services/Library/CatalogReadService.php, artifacts/obsidian/memory-fragments/CENTRAL_HUB_MIN.md
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
+
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[DECISIONS]]
