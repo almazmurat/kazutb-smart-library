@@ -23,7 +23,7 @@ commit_hash="$(git rev-parse --short HEAD 2>/dev/null || echo none)"
 commit_subject="$(git log -1 --pretty=format:'%s' 2>/dev/null || echo 'No commit message available')"
 commit_subject_lower="$(printf '%s' "$commit_subject" | tr '[:upper:]' '[:lower:]')"
 decision_keywords=()
-for keyword in fix feat decision breaking auth rbac migration schema; do
+for keyword in feat fix decision breaking auth rbac migration schema refactor perf ui ux style api model config security release hotfix revert; do
   if [[ "$commit_subject_lower" =~ (^|[^a-z])${keyword}([^a-z]|$) ]]; then
     decision_keywords+=("$keyword")
   fi
@@ -74,34 +74,135 @@ collect_changed_files() {
   esac
 }
 
+classify_file_semantic() {
+  local changed_file="${1:-}"
+
+  case "$changed_file" in
+    kazutb-library-vault/*|scripts/dev/*)
+      return 1
+      ;;
+    resources/views/catalog*.blade.php|resources/views/catalog*)
+      printf 'UI/Blade view change — CATALOG PAGE'
+      ;;
+    resources/views/book*.blade.php|resources/views/book*)
+      printf 'UI/Blade view change — BOOK DETAIL PAGE'
+      ;;
+    resources/views/admin*.blade.php|resources/views/admin*)
+      printf 'UI/Blade view change — ADMIN PANEL'
+      ;;
+    resources/views/librarian*.blade.php|resources/views/librarian*)
+      printf 'UI/Blade view change — LIBRARIAN PANEL'
+      ;;
+    resources/views/dashboard*.blade.php|resources/views/dashboard*)
+      printf 'UI/Blade view change — MEMBER DASHBOARD'
+      ;;
+    resources/views/*.blade.php)
+      printf 'UI/Blade view change'
+      ;;
+    database/migrations/*)
+      printf 'DB SCHEMA change — run migrations on server'
+      ;;
+    app/Models/*)
+      printf 'Model change — check relationships and casts'
+      ;;
+    app/Http/Controllers/Api/*)
+      printf 'API Controller change — check endpoints'
+      ;;
+    app/Http/Controllers/*)
+      printf 'Controller change'
+      ;;
+    app/Services/*)
+      printf 'Service layer change'
+      ;;
+    routes/web.php)
+      printf 'Web routes change — check page map'
+      ;;
+    routes/api.php)
+      printf 'API routes change — notify CRM team if public API changed'
+      ;;
+    config/*)
+      printf 'Config change — verify .env and deployment'
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+derive_change_summary() {
+  case "${1:-}" in
+    'UI/Blade view change — CATALOG PAGE') printf 'Blade view modification — catalog UI' ;;
+    'UI/Blade view change — BOOK DETAIL PAGE') printf 'Blade view modification — book detail UI' ;;
+    'UI/Blade view change — ADMIN PANEL') printf 'Blade view modification — admin panel UI' ;;
+    'UI/Blade view change — LIBRARIAN PANEL') printf 'Blade view modification — librarian panel UI' ;;
+    'UI/Blade view change — MEMBER DASHBOARD') printf 'Blade view modification — member dashboard UI' ;;
+    'UI/Blade view change') printf 'Blade view modification — library UI' ;;
+    'DB SCHEMA change — run migrations on server') printf 'Database migration/schema update' ;;
+    'Model change — check relationships and casts') printf 'Eloquent model update' ;;
+    'API Controller change — check endpoints') printf 'API controller modification' ;;
+    'Controller change') printf 'Controller logic modification' ;;
+    'Service layer change') printf 'Service/business logic modification' ;;
+    'Web routes change — check page map') printf 'Route definition update' ;;
+    'API routes change — notify CRM team if public API changed') printf 'API route definition update' ;;
+    'Config change — verify .env and deployment') printf 'Application configuration update' ;;
+    *) printf 'Repository maintenance change' ;;
+  esac
+}
+
+derive_impact_text() {
+  case "${1:-}" in
+    UI/Blade\ view\ change*) printf 'Frontend visual change — verify in browser after deploy' ;;
+    DB\ SCHEMA\ change*) printf 'Database structure changed — run migrations on server' ;;
+    Model\ change*) printf 'Domain model change — check relationships and casts' ;;
+    API\ Controller\ change*) printf 'API behavior change — check endpoints' ;;
+    'Controller change') printf 'Request/response behavior changed — verify affected flow' ;;
+    'Service layer change') printf 'Business logic changed — verify dependent workflows' ;;
+    Web\ routes\ change*) printf 'Routing change — check page map' ;;
+    API\ routes\ change*) printf 'API surface changed — notify CRM team if public API changed' ;;
+    Config\ change*) printf 'Configuration changed — verify .env and deployment settings' ;;
+    *) printf 'No user-facing app-surface change detected' ;;
+  esac
+}
+
+derive_commit_area() {
+  case "${1:-}" in
+    UI/Blade\ view\ change*) printf 'UI/Frontend' ;;
+    DB\ SCHEMA\ change*) printf 'Database' ;;
+    Model\ change*|'Controller change'|'Service layer change') printf 'Backend' ;;
+    API\ Controller\ change*|API\ routes\ change*) printf 'API' ;;
+    Web\ routes\ change*) printf 'Routing' ;;
+    Config\ change*) printf 'Config' ;;
+    *) printf 'Tooling' ;;
+  esac
+}
+
 changed_files_raw="$(collect_changed_files "$@")"
 mapfile -t changed_files < <(printf '%s\n' "$changed_files_raw" | sed '/^$/d')
 preview_files=("${changed_files[@]:0:12}")
 
-state_change_notes=()
+semantic_labels=()
+semantic_files=()
 for changed_file in "${changed_files[@]:-}"; do
-  case "$changed_file" in
-    database/migrations/*)
-      state_change_notes+=("DB schema changed")
-      ;;
-    routes/*)
-      state_change_notes+=("Routes changed")
-      ;;
-    app/Models/*)
-      state_change_notes+=("Models changed")
-      ;;
-    app/Http/Controllers/*)
-      state_change_notes+=("Controllers changed")
-      ;;
-    resources/views/*)
-      state_change_notes+=("Views/Blade changed")
-      ;;
-  esac
+  semantic_label="$(classify_file_semantic "$changed_file" || true)"
+  if [[ -n "$semantic_label" ]]; then
+    semantic_labels+=("$semantic_label")
+    semantic_files+=("$changed_file")
+  fi
 done
-if [[ ${#state_change_notes[@]} -gt 0 ]]; then
-  state_change_csv="$(printf '%s\n' "${state_change_notes[@]}" | awk '!seen[$0]++' | paste -sd '|' -)"
+
+if [[ ${#semantic_labels[@]} -gt 0 ]]; then
+  semantic_primary="$(printf '%s\n' "${semantic_labels[@]}" | awk '!seen[$0]++ { print; exit }')"
+  semantic_label_csv="$(printf '%s\n' "${semantic_labels[@]}" | awk '!seen[$0]++' | paste -sd '|' -)"
 else
-  state_change_csv=""
+  semantic_primary="No app-surface change detected"
+  semantic_label_csv=""
+fi
+
+if [[ ${#semantic_files[@]} -eq 0 ]]; then
+  semantic_files_preview="none (vault/tooling only)"
+else
+  semantic_files_preview="$(printf '%s, ' "${semantic_files[@]:0:12}")"
+  semantic_files_preview="${semantic_files_preview%, }"
 fi
 
 if [[ ${#changed_files[@]} -eq 0 ]]; then
@@ -109,6 +210,19 @@ if [[ ${#changed_files[@]} -eq 0 ]]; then
 else
   changed_preview="$(printf '%s, ' "${preview_files[@]}")"
   changed_preview="${changed_preview%, }"
+fi
+
+commit_type='change'
+commit_type_guess="$(printf '%s' "$commit_subject_lower" | sed -nE 's/^([a-z0-9_-]+)(\([^)]*\))?:.*/\1/p')"
+if [[ -n "$commit_type_guess" ]]; then
+  commit_type="$commit_type_guess"
+fi
+commit_area="$(derive_commit_area "$semantic_primary")"
+change_summary="$(derive_change_summary "$semantic_primary")"
+impact_text="$(derive_impact_text "$semantic_primary")"
+significant_change='0'
+if [[ -n "$semantic_label_csv" && ${#decision_keywords[@]} -gt 0 ]]; then
+  significant_change='1'
 fi
 
 prev_ref="${1:-}"
@@ -149,7 +263,7 @@ case "$EVENT" in
     ;;
  esac
 
-python3 - "$TASK_LOG" "$CURRENT_STATE" "$DECISIONS_FILE" "$utc_day" "$utc_stamp" "$branch_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" "$commit_subject" "$decision_keyword_csv" "$state_change_csv" "$from_branch" "$to_branch" <<'PY'
+python3 - "$TASK_LOG" "$CURRENT_STATE" "$DECISIONS_FILE" "$utc_day" "$utc_stamp" "$branch_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" "$commit_subject" "$decision_keyword_csv" "$semantic_primary" "$semantic_files_preview" "$change_summary" "$impact_text" "$commit_type" "$commit_area" "$significant_change" "$from_branch" "$to_branch" <<'PY'
 from pathlib import Path
 import re
 import sys
@@ -167,12 +281,22 @@ done_text = sys.argv[10]
 left_text = sys.argv[11]
 commit_subject = sys.argv[12]
 decision_keywords = [item for item in sys.argv[13].split(',') if item]
-state_changes = [item for item in sys.argv[14].split('|') if item]
-from_branch = sys.argv[15]
-to_branch = sys.argv[16]
+semantic_label = sys.argv[14]
+semantic_files = sys.argv[15]
+change_summary = sys.argv[16]
+impact_text = sys.argv[17]
+commit_type = sys.argv[18]
+commit_area = sys.argv[19]
+significant_change = sys.argv[20] == '1'
+from_branch = sys.argv[21]
+to_branch = sys.argv[22]
 
 if event == 'post-checkout':
     log_entry = f"[{branch_stamp}] Branch switch\nFrom: {from_branch} To: {to_branch}"
+elif event == 'post-commit':
+    log_entry = f"{day} | {commit_subject} | [{semantic_label}] | commit: {commit_hash} | branch: {branch}"
+elif event == 'post-merge':
+    log_entry = f"{day} | merge on {branch}: {commit_subject} | [{semantic_label}] | commit: {commit_hash} | branch: {branch}"
 else:
     log_entry = f"{day} | {done_text} | {left_text}"
 
@@ -201,14 +325,15 @@ if match:
     existing_last_changed = match.group(0).strip('\n') + "\n\n"
 
 last_changed_block = existing_last_changed
-if state_changes:
-    bullets = '\n'.join(f'- {item}' for item in state_changes)
+if semantic_label != 'No app-surface change detected':
     last_changed_block = (
         "## Last changed\n"
         f"- Time: {stamp}\n"
         f"- Commit: {commit_hash}\n"
         f"- Branch: {branch}\n"
-        f"{bullets}\n\n"
+        f"- Change type: {semantic_label}\n"
+        f"- Files: {semantic_files}\n"
+        f"- Commit message: {commit_subject}\n\n"
     )
 
 block = (
@@ -220,6 +345,7 @@ block = (
     + f"- Commit: {commit_hash}\n"
     + f"- Update: {done_text}\n"
     + f"- Detail: {left_text}\n"
+    + f"- Semantic: {semantic_label}\n"
     + "- Links: [[TASK_LOG]], [[GRAPH_INDEX]]\n"
 )
 
@@ -239,7 +365,7 @@ else:
 
 current_state.write_text(state.rstrip() + "\n", encoding='utf-8')
 
-if event == 'post-commit' and decision_keywords:
+if event == 'post-commit' and decision_keywords and significant_change:
     if decisions_file.exists():
         decisions_text = decisions_file.read_text(encoding='utf-8')
     else:
@@ -249,11 +375,13 @@ if event == 'post-commit' and decision_keywords:
     if source_marker not in decisions_text:
         keyword_text = ', '.join(decision_keywords)
         decision_block = (
-            f"## {day} — Git-derived decision signal: {commit_subject}\n"
-            f"**Decision:** The commit message matched strategic keywords: {keyword_text}.\n"
-            f"**Reason:** The change was auto-captured from Git history to preserve important implementation context in the second brain.\n"
-            f"**Alternatives considered:** Not captured automatically by the hook.\n"
-            f"**Impact:** {left_text}\n"
+            f"## {day} — {commit_subject}\n"
+            f"**Type:** {commit_type} ({commit_area})\n"
+            f"**Files changed:** {semantic_files}\n"
+            f"**What changed:** {change_summary}\n"
+            f"**Commit:** {commit_hash} on {branch}\n"
+            f"**Impact:** {impact_text}\n"
+            f"**Keywords:** {keyword_text}\n"
             f"**Source:** Git hook auto-capture from commit {commit_hash}\n\n"
             "---\n"
         )
