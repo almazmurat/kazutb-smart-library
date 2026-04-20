@@ -418,10 +418,7 @@ Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin
     })->name('overview');
 
     Route::get('/users', function (Request $request) use ($adminView) {
-        return $adminView($request, 'admin.placeholder', [
-            'title' => 'User & Role Management',
-            'description' => 'Phase 1 continuation surface for reader, staff, and permission governance.',
-        ]);
+        return $adminView($request, 'admin.users');
     })->name('users');
 
     Route::get('/logs', function (Request $request) use ($adminView) {

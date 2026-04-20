@@ -51,11 +51,32 @@ class AdminOverviewPageTest extends TestCase
 
     public function test_admin_follow_on_placeholders_render_for_admin_session(): void
     {
-        $this->withSession($this->staffSession('admin'))->get('/admin/users')->assertOk()->assertSee('User &amp; Role Management', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/logs')->assertOk()->assertSee('Governance &amp; Logs', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/news')->assertOk()->assertSee('News Management', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/feedback')->assertOk()->assertSee('Feedback Inbox', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/settings')->assertOk()->assertSee('System Settings', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/reports')->assertOk()->assertSee('Reports &amp; Analytics', false);
+    }
+
+    public function test_admin_users_page_renders_full_user_management(): void
+    {
+        $response = $this->withSession($this->staffSession('admin'))->get('/admin/users');
+
+        $response->assertOk()
+            ->assertSee('User &amp; Role Management', false)
+            ->assertSee('Manage institutional identities', false)
+            ->assertSee('User Identity', false)
+            ->assertSee('System Role', false)
+            ->assertSee('Identity Dossier', false)
+            ->assertSee('Directory Integration', false)
+            ->assertSee('System Permissions', false)
+            ->assertSee('Export Roster', false)
+            ->assertSee('Provision Identity', false)
+            ->assertSee('Primary Role', false)
+            ->assertSee('CRM Sync Status', false)
+            ->assertSee('Dr. Robert Chen', false)
+            ->assertSee('Amina Kasymova', false)
+            ->assertSee('Sarah Jenkins', false)
+            ->assertSee('Marcus Johnson', false);
     }
 }
