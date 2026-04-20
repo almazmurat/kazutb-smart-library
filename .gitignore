@@ -36,3 +36,4 @@ Thumbs.db
 /.playwright-mcp
 /scr
 /docs/qa/*-draft*.md
+/artifacts/obsidian/vault-mirror

@@ -72,6 +72,18 @@
         "dev:check": [
             "./scripts/dev/check-dev-env.sh"
         ],
+        "dev:session-snapshot": [
+            "bash scripts/dev/session-snapshot.sh"
+        ],
+        "dev:vault-sync": [
+            "bash scripts/dev/vault-sync.sh"
+        ],
+        "dev:vault-watch": [
+            "bash scripts/dev/vault-watch.sh"
+        ],
+        "dev:install-vault-hooks": [
+            "bash scripts/dev/install-vault-hooks.sh"
+        ],
 
         "dev:catalog-paths": [
             "bash scripts/dev/check-public-catalog-paths.sh"

@@ -93,6 +93,36 @@ Use the QA documentation surface here:
 
 ---
 
+## Obsidian vault memory sync
+
+This repo now includes a vault sync helper that can grow your Obsidian graph with linked Markdown nodes from Copilot chat activity and repository changes.
+
+Useful commands:
+
+```bash
+composer dev:session-snapshot
+composer dev:vault-sync
+composer dev:vault-watch
+composer dev:install-vault-hooks
+```
+
+Optional environment variables in your local setup:
+
+```bash
+OBSIDIAN_VAULT_ROOT=/path/to/kazutb-library-vault
+OBSIDIAN_SYNC_INTERVAL=10
+```
+
+Behavior summary:
+- captures recent Copilot user/assistant transcript content
+- creates timestamped notes under the vault inbox
+- links new notes to master hubs such as MASTER_CONTEXT, CURRENT_STATE, DECISIONS, NEXT_ACTIONS, SESSION_MEMORY, and TASK_LOG
+- can run continuously as a watcher and also after commits, merges, and checkouts via git hooks
+
+If the real vault path is not mounted on the Linux host, the sync falls back to a local mirror under `artifacts/obsidian/vault-mirror`.
+
+---
+
 ## Repository structure
 
 ```text
@@ -110,6 +140,8 @@ docs/qa/             retained QA and verification docs
 ---
 
 ## Current delivery focus
+
+The current reset has already landed its anchor surfaces: the public homepage, the library-hosted secure access flow, and the member dashboard. The next delivery depth is internal staff experience, catalog tightening, and controlled access refinement.
 
 The repo is in an active hardening and delivery phase, with ongoing work around:
 - catalog and discovery UX
