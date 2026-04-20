@@ -118,6 +118,7 @@ Behavior summary:
 - creates timestamped notes under the vault inbox
 - links new notes to master hubs such as MASTER_CONTEXT, CURRENT_STATE, DECISIONS, NEXT_ACTIONS, SESSION_MEMORY, and TASK_LOG
 - can run continuously as a watcher and also after commits, merges, and checkouts via git hooks
+- the installed Git hooks also append commit and checkout events into the project vault memory so the second brain stays aligned with repository activity
 
 If the real vault path is not mounted on the Linux host, the sync falls back to a local mirror under `artifacts/obsidian/vault-mirror`.
 
