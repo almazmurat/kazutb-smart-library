@@ -75,7 +75,8 @@ collect_changed_files() {
 }
 
 changed_files_raw="$(collect_changed_files "$@")"
-mapfile -t changed_files < <(printf '%s\n' "$changed_files_raw" | sed '/^$/d' | head -n 12)
+mapfile -t changed_files < <(printf '%s\n' "$changed_files_raw" | sed '/^$/d')
+preview_files=("${changed_files[@]:0:12}")
 
 state_change_notes=()
 for changed_file in "${changed_files[@]:-}"; do
@@ -106,7 +107,7 @@ fi
 if [[ ${#changed_files[@]} -eq 0 ]]; then
   changed_preview="no file changes detected"
 else
-  changed_preview="$(printf '%s, ' "${changed_files[@]}")"
+  changed_preview="$(printf '%s, ' "${preview_files[@]}")"
   changed_preview="${changed_preview%, }"
 fi
 
@@ -116,6 +117,10 @@ checkout_flag="${3:-0}"
 from_branch="$(resolve_ref_name "$prev_ref")"
 to_branch="$branch"
 if [[ "$EVENT" == "post-checkout" ]]; then
+  previous_symbolic="$(git rev-parse --abbrev-ref '@{-1}' 2>/dev/null || true)"
+  if [[ -n "$previous_symbolic" && "$previous_symbolic" != '@{-1}' ]]; then
+    from_branch="$previous_symbolic"
+  fi
   reflog_line="$(git reflog -1 --pretty=%gs 2>/dev/null || true)"
   if [[ "$reflog_line" =~ moving\ from\ (.+)\ to\ (.+)$ ]]; then
     from_branch="${BASH_REMATCH[1]}"

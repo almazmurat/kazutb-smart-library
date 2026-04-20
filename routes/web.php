@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route changes are intentionally tracked by the vault hook automation.
 // This file doubles as the final validation target for route-aware vault logging.
+// Route-aware state snapshots are now part of the vault workflow.
 
 $internalStaffView = static function (Request $request, string $view) {
     $user = $request->session()->get('library.user');

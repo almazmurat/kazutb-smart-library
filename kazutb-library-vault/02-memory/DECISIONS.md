@@ -68,6 +68,16 @@ Each entry: Date | Decision | Why | Who
 **Impact:** Recorded through log_decision.ps1 for future session continuity.
 
 ---
+
+## 2026-04-20 — Git-derived decision signal: feat: add vault session helper scripts and watcher
+**Decision:** The commit message matched strategic keywords: feat.
+**Reason:** The change was auto-captured from Git history to preserve important implementation context in the second brain.
+**Alternatives considered:** Not captured automatically by the hook.
+**Impact:** Changed files: .githooks/post-checkout, .githooks/post-commit, .githooks/post-merge, .githooks/prepare-commit-msg, .github/copilot-instructions.md, .gitignore, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/OPEN_QUESTIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/scripts/LAST_GRAPH_HEALTH.md, kazutb-library-vault/scripts/WATCHER.ps1
+**Source:** Git hook auto-capture from commit db8337e
+
+---
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]
