@@ -51,7 +51,6 @@ class AdminOverviewPageTest extends TestCase
 
     public function test_admin_follow_on_placeholders_render_for_admin_session(): void
     {
-        $this->withSession($this->staffSession('admin'))->get('/admin/logs')->assertOk()->assertSee('Governance &amp; Logs', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/news')->assertOk()->assertSee('News Management', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/feedback')->assertOk()->assertSee('Feedback Inbox', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/settings')->assertOk()->assertSee('System Settings', false);
@@ -78,5 +77,45 @@ class AdminOverviewPageTest extends TestCase
             ->assertSee('Amina Kasymova', false)
             ->assertSee('Sarah Jenkins', false)
             ->assertSee('Marcus Johnson', false);
+    }
+
+    public function test_admin_governance_page_renders_full_audit_surface(): void
+    {
+        $response = $this->withSession($this->staffSession('admin'))->get('/admin/logs');
+
+        $response->assertOk()
+            ->assertSee('System Audit', false)
+            ->assertSee('Governance, Logs &amp; Monitoring', false)
+            ->assertSee('Comprehensive oversight of system events', false)
+            ->assertSee('Advanced Filter', false)
+            ->assertSee('Export Report', false)
+            // System Pulse
+            ->assertSee('System Pulse', false)
+            ->assertSee('Authentication', false)
+            ->assertSee('Catalog DB', false)
+            ->assertSee('External API', false)
+            ->assertSee('Degraded', false)
+            // Security Flags
+            ->assertSee('Recent Security Flags', false)
+            ->assertSee('Multiple Failed Logins', false)
+            ->assertSee('Policy Override Attempt', false)
+            ->assertSee('High Severity', false)
+            ->assertSee('Medium Severity', false)
+            // Audit Log table headers
+            ->assertSee('Timestamp', false)
+            ->assertSee('Event / Context', false)
+            ->assertSee('Severity', false)
+            // Audit Log rows
+            ->assertSee('Record Modification: Collection Metadata', false)
+            ->assertSee('E. Kassenov', false)
+            ->assertSee('Authentication Failure', false)
+            ->assertSee('Configuration Change: API Keys', false)
+            ->assertSee('User Role Change', false)
+            ->assertSee('Digital Access Policy Update', false)
+            // Drawer
+            ->assertSee('Event Details', false)
+            ->assertSee('Acknowledge Event', false)
+            // Pagination
+            ->assertSee('Showing 1 to 6 of 1,284 entries', false);
     }
 }

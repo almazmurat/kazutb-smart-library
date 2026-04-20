@@ -422,10 +422,7 @@ Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin
     })->name('users');
 
     Route::get('/logs', function (Request $request) use ($adminView) {
-        return $adminView($request, 'admin.placeholder', [
-            'title' => 'Governance & Logs',
-            'description' => 'Phase 1 continuation surface for audit visibility, operational logs, and policy review.',
-        ]);
+        return $adminView($request, 'admin.governance');
     })->name('logs');
 
     Route::get('/news', function (Request $request) use ($adminView) {

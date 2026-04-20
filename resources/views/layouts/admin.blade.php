@@ -174,5 +174,6 @@
       window.location.href = @json($loginRedirectUrl);
     });
   </script>
+  @stack('scripts')
 </body>
 </html>
