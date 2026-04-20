@@ -148,6 +148,18 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+
+## 2026-04-20 — feat: implement admin overview governance shell
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/admin/overview.blade.php, resources/views/admin/placeholder.blade.php, resources/views/layouts/admin.blade.php, routes/web.php
+**What changed:** Blade view modification — admin panel UI
+**Commit:** 61b9285 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 61b9285
+
+---
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]

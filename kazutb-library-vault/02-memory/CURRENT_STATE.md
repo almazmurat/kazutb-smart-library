@@ -2,21 +2,21 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-20 13:02:13 UTC
-- Commit: 524dabb
+- Time: 2026-04-20 13:38:43 UTC
+- Commit: 61b9285
 - Branch: main
-- Change type: UI/Blade view change — CATALOG PAGE
-- Files: resources/views/catalog.blade.php
-- Commit message: Revert "fix: test semantic hook capture"
+- Change type: UI/Blade view change — ADMIN PANEL
+- Files: resources/views/admin/overview.blade.php, resources/views/admin/placeholder.blade.php, resources/views/layouts/admin.blade.php, routes/web.php
+- Commit message: feat: implement admin overview governance shell
 
 ## Latest Git Automation
-- Time: 2026-04-20 13:03:25 UTC
+- Time: 2026-04-20 13:38:43 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 6b06d64
-- Update: Git post-commit on main: fix: polish semantic hook type parsing
-- Detail: Changed files: scripts/dev/git-vault-hook.sh
-- Semantic: No app-surface change detected
+- Commit: 61b9285
+- Update: Git post-commit on main: feat: implement admin overview governance shell
+- Detail: Changed files: app/Http/Middleware/EnsureAdminStaff.php, bootstrap/app.php, resources/views/admin/overview.blade.php, resources/views/admin/placeholder.blade.php, resources/views/layouts/admin.blade.php, routes/web.php, tests/Feature/AdminOverviewPageTest.php
+- Semantic: UI/Blade view change — ADMIN PANEL
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase

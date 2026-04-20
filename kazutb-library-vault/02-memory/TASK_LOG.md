@@ -5,6 +5,7 @@
 
 ---
 
+2026-04-20 | feat: implement admin overview governance shell | [UI/Blade view change — ADMIN PANEL] | commit: 61b9285 | branch: main
 2026-04-20 | fix: polish semantic hook type parsing | [No app-surface change detected] | commit: 6b06d64 | branch: main
 2026-04-20 | Revert "fix: test semantic hook capture" | [UI/Blade view change — CATALOG PAGE] | commit: 524dabb | branch: main
 2026-04-20 | fix: test semantic hook capture | [UI/Blade view change — CATALOG PAGE] | commit: 8807adf | branch: main
