@@ -5,6 +5,7 @@ ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 VAULT_ROOT="$ROOT/kazutb-library-vault"
 TASK_LOG="$VAULT_ROOT/02-memory/TASK_LOG.md"
 CURRENT_STATE="$VAULT_ROOT/02-memory/CURRENT_STATE.md"
+DECISIONS_FILE="$VAULT_ROOT/02-memory/DECISIONS.md"
 GRAPH_SCRIPT="$VAULT_ROOT/scripts/rebuild_graph.ps1"
 
 EVENT="${1:-post-commit}"
@@ -19,6 +20,14 @@ utc_stamp="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 branch="$(git branch --show-current 2>/dev/null || echo detached)"
 commit_hash="$(git rev-parse --short HEAD 2>/dev/null || echo none)"
 commit_subject="$(git log -1 --pretty=format:'%s' 2>/dev/null || echo 'No commit message available')"
+commit_subject_lower="$(printf '%s' "$commit_subject" | tr '[:upper:]' '[:lower:]')"
+decision_keywords=()
+for keyword in fix feat decision breaking auth rbac migration schema; do
+  if [[ "$commit_subject_lower" =~ (^|[^a-z])${keyword}([^a-z]|$) ]]; then
+    decision_keywords+=("$keyword")
+  fi
+done
+decision_keyword_csv="$(IFS=,; echo "${decision_keywords[*]:-}")"
 
 collect_changed_files() {
   case "$EVENT" in
@@ -80,20 +89,23 @@ case "$EVENT" in
     ;;
  esac
 
-python3 - "$TASK_LOG" "$CURRENT_STATE" "$utc_day" "$utc_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" <<'PY'
+python3 - "$TASK_LOG" "$CURRENT_STATE" "$DECISIONS_FILE" "$utc_day" "$utc_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" "$commit_subject" "$decision_keyword_csv" <<'PY'
 from pathlib import Path
 import re
 import sys
 
 task_log = Path(sys.argv[1])
 current_state = Path(sys.argv[2])
-day = sys.argv[3]
-stamp = sys.argv[4]
-event = sys.argv[5]
-branch = sys.argv[6]
-commit_hash = sys.argv[7]
-done_text = sys.argv[8]
-left_text = sys.argv[9]
+decisions_file = Path(sys.argv[3])
+day = sys.argv[4]
+stamp = sys.argv[5]
+event = sys.argv[6]
+branch = sys.argv[7]
+commit_hash = sys.argv[8]
+done_text = sys.argv[9]
+left_text = sys.argv[10]
+commit_subject = sys.argv[11]
+decision_keywords = [item for item in sys.argv[12].split(',') if item]
 
 log_entry = f"{day} | {done_text} | {left_text}"
 
@@ -138,6 +150,33 @@ else:
         state = state.rstrip() + "\n\n" + block + "\n"
 
 current_state.write_text(state, encoding='utf-8')
+
+if event == 'post-commit' and decision_keywords:
+    if decisions_file.exists():
+        decisions_text = decisions_file.read_text(encoding='utf-8')
+    else:
+        decisions_text = "# Decision Log — KazUTB Library Platform\n\n## Links\n- [[PROJECT_CONTEXT]]\n- [[CURRENT_STATE]]\n- [[OPEN_QUESTIONS]]\n"
+
+    source_marker = f"**Source:** Git hook auto-capture from commit {commit_hash}"
+    if source_marker not in decisions_text:
+        keyword_text = ', '.join(decision_keywords)
+        decision_block = (
+            f"## {day} — Git-derived decision signal: {commit_subject}\n"
+            f"**Decision:** The commit message matched strategic keywords: {keyword_text}.\n"
+            f"**Reason:** The change was auto-captured from Git history to preserve important implementation context in the second brain.\n"
+            f"**Alternatives considered:** Not captured automatically by the hook.\n"
+            f"**Impact:** {left_text}\n"
+            f"**Source:** Git hook auto-capture from commit {commit_hash}\n\n"
+            "---\n"
+        )
+
+        links_marker = "\n## Links"
+        if links_marker in decisions_text:
+            decisions_text = decisions_text.replace(links_marker, "\n\n" + decision_block + links_marker, 1)
+        else:
+            decisions_text = decisions_text.rstrip() + "\n\n" + decision_block + "\n"
+
+        decisions_file.write_text(decisions_text, encoding='utf-8')
 PY
 
 if command -v pwsh >/dev/null 2>&1 && [[ -f "$GRAPH_SCRIPT" ]]; then
