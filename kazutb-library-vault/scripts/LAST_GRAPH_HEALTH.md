@@ -1,0 +1,20 @@
+# Last Graph Health
+
+Generated: 2026-04-20 07:22:06
+
+## Health Summary
+- Total files: 40
+- Total wiki-links: 285
+- Orphan files: 0
+- Broken links: 0
+- Files with zero outgoing links: 0
+
+## Orphans
+
+## Broken Links
+
+## Zero Outgoing Links
+
+## Links
+- [[GRAPH_INDEX]]
+- [[VAULT_RULES]]

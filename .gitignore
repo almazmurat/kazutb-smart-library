@@ -37,3 +37,6 @@ Thumbs.db
 /scr
 /docs/qa/*-draft*.md
 /artifacts/obsidian/vault-mirror
+
+# Local Obsidian app state for the embedded project vault
+/kazutb-library-vault/.obsidian/
