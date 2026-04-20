@@ -33,12 +33,6 @@
   $publisherFilter = (string) request()->query('publisher', '');
   $isbnFilter = (string) request()->query('isbn', '');
   $udcFilter = (string) request()->query('udc', '');
-  $imagePool = [
-      '/images/news/default-library.jpg',
-      '/images/news/classics-event.jpg',
-      '/images/news/campus-library.jpg',
-      '/images/news/author-visit.jpg',
-  ];
 
   $copy = [
       'ru' => [
@@ -461,8 +455,212 @@
     align-items: stretch;
   }
   .catalog-export .catalog-card-media {
+    width: 100%;
+    max-width: 10rem;
     min-height: 17rem;
     align-self: stretch;
+    margin-inline: auto;
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+  }
+  .catalog-export .catalog-card-book {
+    position: relative;
+    width: 100%;
+    min-height: 17rem;
+    height: 100%;
+    perspective: 1800px;
+  }
+  .catalog-export .catalog-card-book__stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 17rem;
+    transform-style: preserve-3d;
+  }
+  .catalog-export .catalog-card-book__pages {
+    position: absolute;
+    inset: 0.3rem 0.15rem 0.3rem 0.55rem;
+    border-radius: 0 0.75rem 0.75rem 0;
+    overflow: hidden;
+    background: linear-gradient(90deg, #f3ead7 0%, #fffdfa 18%, #f3ede2 100%);
+    box-shadow: inset 0 0 0 1px rgba(120, 96, 58, 0.12), 0 14px 30px rgba(15, 23, 42, 0.16);
+  }
+  .catalog-export .catalog-card-book__pages::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, rgba(120,96,58,0.04) 0, rgba(120,96,58,0.04) 2px, transparent 2px, transparent 6px);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .catalog-export .catalog-card-book__page-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.65rem;
+    height: 100%;
+    padding: 0.75rem;
+  }
+  .catalog-export .catalog-card-book__page-label {
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8b6b3f;
+  }
+  .catalog-export .catalog-card-book__page-text {
+    margin: 0;
+    color: #3b3428;
+    font-size: 0.68rem;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    overflow: hidden;
+  }
+  .catalog-export .catalog-card-book__page-meta {
+    display: grid;
+    gap: 0.3rem;
+  }
+  .catalog-export .catalog-card-book__page-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding-top: 0.28rem;
+    border-top: 1px solid rgba(120, 96, 58, 0.14);
+  }
+  .catalog-export .catalog-card-book__page-row span {
+    font-size: 0.53rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8b6b3f;
+  }
+  .catalog-export .catalog-card-book__page-row strong {
+    font-size: 0.6rem;
+    color: #2f2b25;
+    text-align: right;
+    word-break: break-word;
+  }
+  .catalog-export .catalog-card-book__cover {
+    position: absolute;
+    inset: 0;
+    border-radius: 0.35rem 0.75rem 0.75rem 0.35rem;
+    overflow: hidden;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
+    border-left: 10px solid rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    isolation: isolate;
+  }
+  .catalog-export .catalog-card-book:hover .catalog-card-book__cover {
+    transform: rotateY(-90deg);
+  }
+  .catalog-export .catalog-card-book__cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.02) 45%, rgba(0,0,0,0.12) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .catalog-export .catalog-card-book__cover-art {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.42;
+    z-index: 0;
+  }
+  .catalog-export .catalog-card-book__cover-shell {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+    height: 100%;
+    padding: 0.8rem 0.8rem 0.9rem;
+  }
+  .catalog-export .catalog-card-book__eyebrow {
+    display: inline-flex;
+    max-width: 100%;
+    padding: 0.25rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.88);
+    font-size: 0.52rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .catalog-export .catalog-card-book__title {
+    margin: 0.5rem 0 0;
+    color: #f4dda2;
+    font-family: 'Newsreader', serif;
+    font-size: 1.3rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+  .catalog-export .catalog-card-book__author {
+    margin: 0.35rem 0 0;
+    color: rgba(255,255,255,0.82);
+    font-size: 0.72rem;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .catalog-export .catalog-card-book__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .catalog-export .catalog-card-book__meta span {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.42rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.9);
+    font-size: 0.52rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .catalog-export .catalog-card-book--navy .catalog-card-book__cover {
+    background: linear-gradient(135deg, #163450 0%, #0c2138 100%);
+  }
+  .catalog-export .catalog-card-book--wine .catalog-card-book__cover {
+    background: linear-gradient(135deg, #6f1d2d 0%, #441019 100%);
+  }
+  .catalog-export .catalog-card-book--forest .catalog-card-book__cover {
+    background: linear-gradient(135deg, #1e5a46 0%, #12372a 100%);
+  }
+  .catalog-export .catalog-card-book--wood .catalog-card-book__cover {
+    background: linear-gradient(135deg, #6c4428 0%, #3d2416 100%);
+  }
+  .catalog-export .catalog-card-book--plum .catalog-card-book__cover {
+    background: linear-gradient(135deg, #54406d 0%, #2e2240 100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .catalog-export .catalog-card-book__cover {
+      transition: none;
+    }
   }
   .catalog-export .catalog-range {
     position: absolute;
@@ -727,8 +925,52 @@
             $metaParts = array_values(array_filter([$author, $year, $publisher], static fn ($value) => (string) $value !== '' && (string) $value !== '—'));
           @endphp
           <article class="flex flex-col sm:flex-row gap-8 group catalog-item">
-            <div class="catalog-card-media w-full sm:w-36 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
-              <img class="w-full h-full object-cover" src="{{ $imagePool[$index % count($imagePool)] }}" alt="{{ $title }}" />
+            @php
+              $coverTones = ['catalog-card-book--navy', 'catalog-card-book--wine', 'catalog-card-book--forest', 'catalog-card-book--wood', 'catalog-card-book--plum'];
+              $coverTone = $coverTones[$index % count($coverTones)];
+              $coverUrl = trim((string) ($record['coverUrl'] ?? data_get($record, 'cover.medium') ?? data_get($record, 'cover.small') ?? ''));
+              $coverDescription = trim((string) $description) !== '' ? $description : $copy['ui']['description_placeholder'];
+              $coverCode = $udc !== '—' ? $udc : $isbn;
+            @endphp
+            <div class="catalog-card-media w-full sm:w-36 flex-shrink-0">
+              <div class="catalog-card-book {{ $coverTone }} {{ $coverUrl !== '' ? 'has-art' : '' }}">
+                <div class="catalog-card-book__stack">
+                  <div class="catalog-card-book__pages" aria-hidden="true">
+                    <div class="catalog-card-book__page-content">
+                      <div>
+                        <div class="catalog-card-book__page-label">{{ $publisher !== '' ? $publisher : $badgeLabel }}</div>
+                        <p class="catalog-card-book__page-text">{{ $coverDescription }}</p>
+                      </div>
+                      <div class="catalog-card-book__page-meta">
+                        <div class="catalog-card-book__page-row"><span>{{ $copy['ui']['isbn'] }}</span><strong>{{ $isbn }}</strong></div>
+                        <div class="catalog-card-book__page-row"><span>{{ $copy['ui']['udc'] }}</span><strong>{{ $udc }}</strong></div>
+                        <div class="catalog-card-book__page-row"><span>{{ $copy['ui']['language_label'] }}</span><strong>{{ $languageLabel !== '' ? $languageLabel : '—' }}</strong></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="catalog-card-book__cover">
+                    @if ($coverUrl !== '')
+                      <div class="catalog-card-book__cover-art" style="background-image: url('{{ e($coverUrl) }}');"></div>
+                    @endif
+                    <div class="catalog-card-book__cover-shell">
+                      <div>
+                        <span class="catalog-card-book__eyebrow">{{ $badgeLabel }}</span>
+                        <h3 class="catalog-card-book__title">{{ $title }}</h3>
+                        <p class="catalog-card-book__author">{{ $author }}</p>
+                      </div>
+                      <div class="catalog-card-book__meta">
+                        @if ($year !== '—')
+                          <span>{{ $year }}</span>
+                        @endif
+                        <span>{{ $languageLabel !== '' ? $languageLabel : '—' }}</span>
+                        @if ($coverCode !== '—')
+                          <span>{{ $coverCode }}</span>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="flex-grow">
               <div class="flex justify-between items-start gap-4">
@@ -1121,6 +1363,9 @@
 
     return {
       title,
+      author,
+      publicationYear: publicationYear || '—',
+      publisher,
       metaLine: metaLine.join(' · '),
       description,
       subjects,
@@ -1130,20 +1375,71 @@
       copies,
       total,
       location,
+      coverUrl: normalizeText(item?.coverUrl || item?.cover?.medium || item?.cover?.small, ''),
       detailUrl: detailHref(isbn),
       statusLabel,
       ...getMaterialPresentation(kind),
     };
   }
 
-  function buildCard(item, index) {
-    const imagePool = [
-      '/images/news/default-library.jpg',
-      '/images/news/classics-event.jpg',
-      '/images/news/campus-library.jpg',
-      '/images/news/author-visit.jpg'
+  function coverToneClass(index) {
+    const tones = [
+      'catalog-card-book--navy',
+      'catalog-card-book--wine',
+      'catalog-card-book--forest',
+      'catalog-card-book--wood',
+      'catalog-card-book--plum'
     ];
 
+    return tones[index % tones.length];
+  }
+
+  function buildBookMedia(record, index) {
+    const descriptionText = record.description || uiCopy.description_placeholder;
+    const coverCode = record.udc !== '—' ? record.udc : record.isbn;
+    const coverArt = record.coverUrl
+      ? `<div class="catalog-card-book__cover-art" style="background-image: url('${encodeURI(record.coverUrl)}');"></div>`
+      : '';
+
+    return `
+      <div class="catalog-card-media w-full sm:w-36 flex-shrink-0">
+        <div class="catalog-card-book ${coverToneClass(index)} ${record.coverUrl ? 'has-art' : ''}">
+          <div class="catalog-card-book__stack">
+            <div class="catalog-card-book__pages" aria-hidden="true">
+              <div class="catalog-card-book__page-content">
+                <div>
+                  <div class="catalog-card-book__page-label">${escapeHtml(record.publisher || record.badgeLabel)}</div>
+                  <p class="catalog-card-book__page-text">${escapeHtml(descriptionText)}</p>
+                </div>
+                <div class="catalog-card-book__page-meta">
+                  <div class="catalog-card-book__page-row"><span>${escapeHtml(uiCopy.isbn)}</span><strong>${escapeHtml(record.isbn)}</strong></div>
+                  <div class="catalog-card-book__page-row"><span>${escapeHtml(uiCopy.udc)}</span><strong>${escapeHtml(record.udc)}</strong></div>
+                  <div class="catalog-card-book__page-row"><span>${escapeHtml(uiCopy.language_label)}</span><strong>${escapeHtml(record.language)}</strong></div>
+                </div>
+              </div>
+            </div>
+            <div class="catalog-card-book__cover">
+              ${coverArt}
+              <div class="catalog-card-book__cover-shell">
+                <div>
+                  <span class="catalog-card-book__eyebrow">${escapeHtml(record.badgeLabel)}</span>
+                  <h3 class="catalog-card-book__title">${escapeHtml(record.title)}</h3>
+                  <p class="catalog-card-book__author">${escapeHtml(record.author)}</p>
+                </div>
+                <div class="catalog-card-book__meta">
+                  ${record.publicationYear !== '—' ? `<span>${escapeHtml(record.publicationYear)}</span>` : ''}
+                  <span>${escapeHtml(record.language)}</span>
+                  ${coverCode !== '—' ? `<span>${escapeHtml(coverCode)}</span>` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function buildCard(item, index) {
     const record = normalizeRecord(item);
     const subjectsHtml = record.subjects.length
       ? `<div class="flex flex-wrap gap-2 mb-4 text-[11px] text-on-surface-variant">${record.subjects.map((subject) => `<span class="px-2 py-1 rounded-full bg-surface-container-high">${escapeHtml(subject)}</span>`).join('')}</div>`
@@ -1151,9 +1447,7 @@
 
     return `
       <article class="flex flex-col sm:flex-row gap-8 group catalog-item">
-        <div class="catalog-card-media w-full sm:w-36 flex-shrink-0 bg-surface-container-low overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
-          <img class="w-full h-full object-cover" src="${imagePool[index % imagePool.length]}" alt="${escapeHtml(record.title)}" />
-        </div>
+        ${buildBookMedia(record, index)}
         <div class="flex-grow">
           <div class="flex justify-between items-start gap-4">
             <div>
