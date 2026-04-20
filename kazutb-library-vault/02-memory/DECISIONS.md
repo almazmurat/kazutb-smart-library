@@ -78,6 +78,16 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+
+## 2026-04-20 — Git-derived decision signal: fix: preserve watched vault state updates
+**Decision:** The commit message matched strategic keywords: fix.
+**Reason:** The change was auto-captured from Git history to preserve important implementation context in the second brain.
+**Alternatives considered:** Not captured automatically by the hook.
+**Impact:** Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/scripts/LAST_GRAPH_HEALTH.md, routes/web.php, scripts/dev/git-vault-hook.sh
+**Source:** Git hook auto-capture from commit f9b581a
+
+---
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]

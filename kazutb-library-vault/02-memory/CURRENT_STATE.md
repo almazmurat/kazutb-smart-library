@@ -1,13 +1,19 @@
 # Current State — KazUTB Library Platform
 > Last updated: 2026-04-20
 
+## Last changed
+- Time: 2026-04-20 11:47:43 UTC
+- Commit: f9b581a
+- Branch: main
+- Routes changed
+
 ## Latest Git Automation
-- Time: 2026-04-20 11:46:24 UTC
+- Time: 2026-04-20 11:47:43 UTC
 - Event: post-commit
 - Branch: main
-- Commit: db8337e
-- Update: Git post-commit on main: feat: add vault session helper scripts and watcher
-- Detail: Changed files: .githooks/post-checkout, .githooks/post-commit, .githooks/post-merge, .githooks/prepare-commit-msg, .github/copilot-instructions.md, .gitignore, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/OPEN_QUESTIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/scripts/LAST_GRAPH_HEALTH.md, kazutb-library-vault/scripts/WATCHER.ps1
+- Commit: f9b581a
+- Update: Git post-commit on main: fix: preserve watched vault state updates
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/scripts/LAST_GRAPH_HEALTH.md, routes/web.php, scripts/dev/git-vault-hook.sh
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
