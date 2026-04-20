@@ -214,6 +214,9 @@ fi
 
 commit_type='change'
 commit_type_guess="$(printf '%s' "$commit_subject_lower" | sed -nE 's/^([a-z0-9_-]+)(\([^)]*\))?:.*/\1/p')"
+if [[ -z "$commit_type_guess" ]]; then
+  commit_type_guess="$(printf '%s' "$commit_subject_lower" | sed -nE 's/^([a-z0-9_-]+).*/\1/p')"
+fi
 if [[ -n "$commit_type_guess" ]]; then
   commit_type="$commit_type_guess"
 fi
