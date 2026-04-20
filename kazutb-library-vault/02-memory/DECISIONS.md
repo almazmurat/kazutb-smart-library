@@ -50,7 +50,26 @@ Each entry: Date | Decision | Why | Who
 
 
 
+
+## 2026-04-20 — Git-derived decision signal: fix: add route-aware state change hook
+**Decision:** The commit message matched strategic keywords: fix.
+**Reason:** The change was auto-captured from Git history to preserve important implementation context in the second brain.
+**Alternatives considered:** Not captured automatically by the hook.
+**Impact:** Changed files: kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, routes/web.php, scripts/dev/git-vault-hook.sh, scripts/dev/prepare-commit-msg-hook.sh
+**Source:** Git hook auto-capture from commit b136c45
+
+---
+
+
+## 2026-04-20 — Vault helper workflow
+**Decision:** Manual decision logging is available from the vault scripts.
+**Reason:** Session continuity should be one command away.
+**Alternatives considered:** Manually capture later.
+**Impact:** Recorded through log_decision.ps1 for future session continuity.
+
+---
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]
 - [[OPEN_QUESTIONS]]
+

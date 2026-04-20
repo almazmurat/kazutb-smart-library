@@ -38,5 +38,7 @@ Thumbs.db
 /docs/qa/*-draft*.md
 /artifacts/obsidian/vault-mirror
 
-# Local Obsidian app state for the embedded project vault
-/kazutb-library-vault/.obsidian/
+# Obsidian local config (not knowledge)
+/kazutb-library-vault/.obsidian/workspace.json
+/kazutb-library-vault/.obsidian/workspace-mobile.json
+/kazutb-library-vault/.obsidian/plugins/*/data.json

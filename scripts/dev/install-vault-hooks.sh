@@ -27,14 +27,14 @@ write_hook() {
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="\$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-bash "\$ROOT/scripts/dev/prepare-commit-msg-hook.sh" "\$@" >/dev/null 2>&1 || true
+bash "\$ROOT/scripts/dev/prepare-commit-msg-hook.sh" "\$@" || true
 EOF
   else
     cat > "$hook_dir/$hook_name" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="\$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-bash "\$ROOT/scripts/dev/git-vault-hook.sh" "$hook_name" "\$@" >/dev/null 2>&1 || true
+bash "\$ROOT/scripts/dev/git-vault-hook.sh" "$hook_name" "\$@" || true
 EOF
   fi
 

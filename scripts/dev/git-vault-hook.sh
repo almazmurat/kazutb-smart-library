@@ -17,6 +17,7 @@ fi
 
 utc_day="$(date -u '+%Y-%m-%d')"
 utc_stamp="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+branch_stamp="$(date '+%Y-%m-%d %H:%M')"
 branch="$(git branch --show-current 2>/dev/null || echo detached)"
 commit_hash="$(git rev-parse --short HEAD 2>/dev/null || echo none)"
 commit_subject="$(git log -1 --pretty=format:'%s' 2>/dev/null || echo 'No commit message available')"
@@ -28,6 +29,23 @@ for keyword in fix feat decision breaking auth rbac migration schema; do
   fi
 done
 decision_keyword_csv="$(IFS=,; echo "${decision_keywords[*]:-}")"
+
+resolve_ref_name() {
+  local ref="${1:-}"
+  if [[ -z "$ref" ]]; then
+    printf 'unknown'
+    return 0
+  fi
+
+  local name
+  name="$(git name-rev --name-only --exclude='tags/*' --exclude='remotes/*' "$ref" 2>/dev/null || true)"
+  name="${name%%~*}"
+  if [[ -n "$name" && "$name" != "undefined" ]]; then
+    printf '%s' "$name"
+  else
+    printf '%.7s' "$ref"
+  fi
+}
 
 collect_changed_files() {
   case "$EVENT" in
@@ -92,6 +110,21 @@ else
   changed_preview="${changed_preview%, }"
 fi
 
+prev_ref="${1:-}"
+new_ref="${2:-}"
+checkout_flag="${3:-0}"
+from_branch="$(resolve_ref_name "$prev_ref")"
+to_branch="$branch"
+if [[ "$EVENT" == "post-checkout" ]]; then
+  reflog_line="$(git reflog -1 --pretty=%gs 2>/dev/null || true)"
+  if [[ "$reflog_line" =~ moving\ from\ (.+)\ to\ (.+)$ ]]; then
+    from_branch="${BASH_REMATCH[1]}"
+    to_branch="${BASH_REMATCH[2]}"
+  elif [[ "$checkout_flag" != "1" ]]; then
+    to_branch="$(resolve_ref_name "$new_ref")"
+  fi
+fi
+
 case "$EVENT" in
   post-commit)
     done_text="Git post-commit on $branch: $commit_subject"
@@ -102,12 +135,8 @@ case "$EVENT" in
     left_text="Merged files: $changed_preview"
     ;;
   post-checkout)
-    checkout_type="path checkout"
-    if [[ "${3:-0}" == "1" ]]; then
-      checkout_type="branch checkout"
-    fi
-    done_text="Git post-checkout on $branch: $checkout_type"
-    left_text="Changed context: $changed_preview"
+    done_text="Branch switch"
+    left_text="From: $from_branch To: $to_branch"
     ;;
   *)
     done_text="Git $EVENT on $branch"
@@ -115,7 +144,7 @@ case "$EVENT" in
     ;;
  esac
 
-python3 - "$TASK_LOG" "$CURRENT_STATE" "$DECISIONS_FILE" "$utc_day" "$utc_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" "$commit_subject" "$decision_keyword_csv" "$state_change_csv" <<'PY'
+python3 - "$TASK_LOG" "$CURRENT_STATE" "$DECISIONS_FILE" "$utc_day" "$utc_stamp" "$branch_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" "$commit_subject" "$decision_keyword_csv" "$state_change_csv" "$from_branch" "$to_branch" <<'PY'
 from pathlib import Path
 import re
 import sys
@@ -125,16 +154,22 @@ current_state = Path(sys.argv[2])
 decisions_file = Path(sys.argv[3])
 day = sys.argv[4]
 stamp = sys.argv[5]
-event = sys.argv[6]
-branch = sys.argv[7]
-commit_hash = sys.argv[8]
-done_text = sys.argv[9]
-left_text = sys.argv[10]
-commit_subject = sys.argv[11]
-decision_keywords = [item for item in sys.argv[12].split(',') if item]
-state_changes = [item for item in sys.argv[13].split('|') if item]
+branch_stamp = sys.argv[6]
+event = sys.argv[7]
+branch = sys.argv[8]
+commit_hash = sys.argv[9]
+done_text = sys.argv[10]
+left_text = sys.argv[11]
+commit_subject = sys.argv[12]
+decision_keywords = [item for item in sys.argv[13].split(',') if item]
+state_changes = [item for item in sys.argv[14].split('|') if item]
+from_branch = sys.argv[15]
+to_branch = sys.argv[16]
 
-log_entry = f"{day} | {done_text} | {left_text}"
+if event == 'post-checkout':
+    log_entry = f"[{branch_stamp}] Branch switch\nFrom: {from_branch} To: {to_branch}"
+else:
+    log_entry = f"{day} | {done_text} | {left_text}"
 
 if task_log.exists():
     text = task_log.read_text(encoding='utf-8')
@@ -155,7 +190,12 @@ if current_state.exists():
 else:
     state = "# Current State — KazUTB Library Platform\n\n## Links\n- [[PROJECT_CONTEXT]]\n- [[TASK_LOG]]\n"
 
-last_changed_block = ''
+existing_last_changed = ''
+match = re.search(r"\n## Last changed\n.*?(?=\n## |\Z)", state, flags=re.S)
+if match:
+    existing_last_changed = match.group(0).strip('\n') + "\n\n"
+
+last_changed_block = existing_last_changed
 if state_changes:
     bullets = '\n'.join(f'- {item}' for item in state_changes)
     last_changed_block = (
@@ -181,7 +221,7 @@ block = (
 state = re.sub(r"\n## Last changed\n.*?(?=\n## |\Z)", "", state, flags=re.S)
 state = re.sub(r"\n## Latest Git Automation\n.*?(?=\n## |\Z)", "", state, flags=re.S)
 
-insertion = "\n\n" + block.rstrip() + "\n"
+insertion = "\n\n" + block.rstrip() + "\n\n"
 if "\n> Last updated:" in state:
     head, rest = state.split("\n", 2)[:2], state.split("\n", 2)[2] if len(state.split("\n", 2)) > 2 else ""
     state = head[0] + "\n" + head[1] + insertion + rest.lstrip("\n")
@@ -225,5 +265,15 @@ PY
 if command -v pwsh >/dev/null 2>&1 && [[ -f "$GRAPH_SCRIPT" ]]; then
   pwsh -File "$GRAPH_SCRIPT" >/dev/null 2>&1 || true
 fi
+
+case "$EVENT" in
+  post-commit)
+    printf '📚 Vault reminder: important decisions → run: ./kazutb-library-vault/scripts/log_decision.ps1\n'
+    printf 'Session end? → run: ./kazutb-library-vault/scripts/end_session.ps1 "summary"\n'
+    ;;
+  post-checkout)
+    printf '📚 KazUTB Vault: You switched to branch %s → Check CURRENT_STATE: kazutb-library-vault/02-memory/CURRENT_STATE.md\n' "$to_branch"
+    ;;
+esac
 
 exit 0

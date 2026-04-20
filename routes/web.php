@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 // Route changes are intentionally tracked by the vault hook automation.
+// This file doubles as the final validation target for route-aware vault logging.
 
 $internalStaffView = static function (Request $request, string $view) {
     $user = $request->session()->get('library.user');

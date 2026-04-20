@@ -14,15 +14,13 @@ case "$COMMIT_SOURCE" in
     ;;
 esac
 
-REMINDER_FILE_CONTENT='# [KazUTB vault reminder]
-# - Use meaningful commit prefixes when relevant: feat, fix, auth, rbac, migration, schema, decision, breaking
-# - Important commit keywords are mirrored into the Obsidian second brain automatically
-# - Keep the message concise and factual
+REMINDER_FILE_CONTENT='# 📚 Vault reminder: important decisions → run: ./kazutb-library-vault/scripts/log_decision.ps1
+# Session end? → run: ./kazutb-library-vault/scripts/end_session.ps1 "summary"
 
 '
 
 current_content="$(cat "$MSG_FILE")"
-if [[ "$current_content" == *"# [KazUTB vault reminder]"* ]]; then
+if [[ "$current_content" == *"# 📚 Vault reminder: important decisions"* ]]; then
   exit 0
 fi
 

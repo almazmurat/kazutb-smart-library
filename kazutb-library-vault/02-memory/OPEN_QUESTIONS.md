@@ -13,7 +13,10 @@ Each entry: Priority (HIGH/MED/LOW) | Question | What blocks on this | Who shoul
 - **MED** | Which operational panels may CRM mirror through API without weakening the library as the authoritative domain system? | Integration contracts and boundary safety | Product owner + CRM team
 - **MED** | When should transport hardening and broader security polish move from internal-LAN tolerance to production-grade enforcement? | Deployment readiness and integration planning | Admin + infrastructure owner
 
+- **LOW** | Should watcher summaries roll into daily notes later? | Future vault maintenance design | Manual session follow-up
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[DECISIONS]]
 - [[CURRENT_STATE]]
+
