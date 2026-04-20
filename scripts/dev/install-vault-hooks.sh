@@ -22,12 +22,21 @@ write_hook() {
 
   mkdir -p "$hook_dir"
 
-  cat > "$hook_dir/$hook_name" <<EOF
+  if [[ "$hook_name" == "prepare-commit-msg" ]]; then
+    cat > "$hook_dir/$hook_name" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="\$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+bash "\$ROOT/scripts/dev/prepare-commit-msg-hook.sh" "\$@" >/dev/null 2>&1 || true
+EOF
+  else
+    cat > "$hook_dir/$hook_name" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="\$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 bash "\$ROOT/scripts/dev/git-vault-hook.sh" "$hook_name" "\$@" >/dev/null 2>&1 || true
 EOF
+  fi
 
   chmod +x "$hook_dir/$hook_name"
 }
@@ -36,5 +45,6 @@ for hook_dir in "${HOOK_DIRS[@]}"; do
   write_hook "$hook_dir" post-commit
   write_hook "$hook_dir" post-merge
   write_hook "$hook_dir" post-checkout
+  write_hook "$hook_dir" prepare-commit-msg
   printf 'Installed KazUTB vault git hooks into %s\n' "$hook_dir"
 done

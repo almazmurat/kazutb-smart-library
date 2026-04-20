@@ -28,6 +28,31 @@ for keyword in fix feat decision breaking auth rbac migration schema; do
   fi
 done
 decision_keyword_csv="$(IFS=,; echo "${decision_keywords[*]:-}")"
+state_change_notes=()
+for changed_file in "${changed_files[@]:-}"; do
+  case "$changed_file" in
+    database/migrations/*)
+      state_change_notes+=("DB schema changed")
+      ;;
+    routes/*)
+      state_change_notes+=("Routes changed")
+      ;;
+    app/Models/*)
+      state_change_notes+=("Models changed")
+      ;;
+    app/Http/Controllers/*)
+      state_change_notes+=("Controllers changed")
+      ;;
+    resources/views/*)
+      state_change_notes+=("Views/Blade changed")
+      ;;
+  esac
+done
+if [[ ${#state_change_notes[@]} -gt 0 ]]; then
+  state_change_csv="$(printf '%s\n' "${state_change_notes[@]}" | awk '!seen[$0]++' | paste -sd '|' -)"
+else
+  state_change_csv=""
+fi
 
 collect_changed_files() {
   case "$EVENT" in
@@ -89,7 +114,7 @@ case "$EVENT" in
     ;;
  esac
 
-python3 - "$TASK_LOG" "$CURRENT_STATE" "$DECISIONS_FILE" "$utc_day" "$utc_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" "$commit_subject" "$decision_keyword_csv" <<'PY'
+python3 - "$TASK_LOG" "$CURRENT_STATE" "$DECISIONS_FILE" "$utc_day" "$utc_stamp" "$EVENT" "$branch" "$commit_hash" "$done_text" "$left_text" "$commit_subject" "$decision_keyword_csv" "$state_change_csv" <<'PY'
 from pathlib import Path
 import re
 import sys
@@ -106,6 +131,7 @@ done_text = sys.argv[9]
 left_text = sys.argv[10]
 commit_subject = sys.argv[11]
 decision_keywords = [item for item in sys.argv[12].split(',') if item]
+state_changes = [item for item in sys.argv[13].split('|') if item]
 
 log_entry = f"{day} | {done_text} | {left_text}"
 
@@ -128,18 +154,30 @@ if current_state.exists():
 else:
     state = "# Current State — KazUTB Library Platform\n\n## Links\n- [[PROJECT_CONTEXT]]\n- [[TASK_LOG]]\n"
 
+last_changed_block = ''
+if state_changes:
+    bullets = '\n'.join(f'- {item}' for item in state_changes)
+    last_changed_block = (
+        "## Last changed\n"
+        f"- Time: {stamp}\n"
+        f"- Commit: {commit_hash}\n"
+        f"- Branch: {branch}\n"
+        f"{bullets}\n\n"
+    )
+
 block = (
-    "## Latest Git Automation\n"
-    f"- Time: {stamp}\n"
-    f"- Event: {event}\n"
-    f"- Branch: {branch}\n"
-    f"- Commit: {commit_hash}\n"
-    f"- Update: {done_text}\n"
-    f"- Detail: {left_text}\n"
-    "- Links: [[TASK_LOG]], [[GRAPH_INDEX]]\n"
+    last_changed_block
+    + "## Latest Git Automation\n"
+    + f"- Time: {stamp}\n"
+    + f"- Event: {event}\n"
+    + f"- Branch: {branch}\n"
+    + f"- Commit: {commit_hash}\n"
+    + f"- Update: {done_text}\n"
+    + f"- Detail: {left_text}\n"
+    + "- Links: [[TASK_LOG]], [[GRAPH_INDEX]]\n"
 )
 
-pattern = re.compile(r"## Latest Git Automation\n.*?(?=\n## |\Z)", re.S)
+pattern = re.compile(r"(## Last changed\n.*?(?=\n## |\Z)\n?)?(## Latest Git Automation\n.*?(?=\n## |\Z))", re.S)
 if pattern.search(state):
     state = pattern.sub(block + "\n", state, count=1)
 else:
