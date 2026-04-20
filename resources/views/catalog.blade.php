@@ -480,11 +480,18 @@
   }
   .catalog-export .catalog-card-book__pages {
     position: absolute;
-    inset: 0.3rem 0.15rem 0.3rem 0.55rem;
+    inset: 0.3rem 0.15rem 0.3rem 0.4rem;
     border-radius: 0 0.75rem 0.75rem 0;
     overflow: hidden;
     background: linear-gradient(90deg, #f3ead7 0%, #fffdfa 18%, #f3ede2 100%);
     box-shadow: inset 0 0 0 1px rgba(120, 96, 58, 0.12), 0 14px 30px rgba(15, 23, 42, 0.16);
+    opacity: 0;
+    transform: translateX(0.35rem) scaleX(0.985);
+    transition: opacity 0.25s ease, transform 0.4s ease;
+  }
+  .catalog-export .catalog-card-book:hover .catalog-card-book__pages {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
   }
   .catalog-export .catalog-card-book__pages::before {
     content: '';
@@ -493,6 +500,18 @@
     background: repeating-linear-gradient(90deg, rgba(120,96,58,0.04) 0, rgba(120,96,58,0.04) 2px, transparent 2px, transparent 6px);
     opacity: 0.9;
     pointer-events: none;
+  }
+  .catalog-export .catalog-card-book__pages::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(90deg, rgba(244,238,227,0.98) 0%, rgba(244,238,227,0.94) 42%, rgba(244,238,227,0.3) 72%, rgba(244,238,227,0) 100%);
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .catalog-export .catalog-card-book:hover .catalog-card-book__pages::after {
+    opacity: 0;
   }
   .catalog-export .catalog-card-book__page-content {
     position: relative;
@@ -556,12 +575,23 @@
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
-    border-left: 10px solid rgba(0, 0, 0, 0.18);
+    border-left: 2px solid rgba(0, 0, 0, 0.16);
     cursor: pointer;
     isolation: isolate;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .catalog-export .catalog-card-book__cover::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: rgba(255,255,255,0.18);
+    z-index: 3;
+    pointer-events: none;
   }
   .catalog-export .catalog-card-book:hover .catalog-card-book__cover {
-    transform: rotateY(-90deg);
+    transform: rotateY(-90deg) translateX(-1px);
   }
   .catalog-export .catalog-card-book__cover::after {
     content: '';
@@ -576,8 +606,10 @@
     inset: 0;
     background-size: cover;
     background-position: center;
-    opacity: 0.42;
+    opacity: 0.28;
     z-index: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
   .catalog-export .catalog-card-book__cover-shell {
     position: relative;
