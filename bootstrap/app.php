@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureAdminStaff;
 use App\Http\Middleware\EnsureAuthenticatedReader;
 use App\Http\Middleware\EnsureIntegrationBoundary;
 use App\Http\Middleware\EnsureInternalCirculationStaff;
@@ -22,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
+            'admin.staff' => EnsureAdminStaff::class,
             'internal.circulation.staff' => EnsureInternalCirculationStaff::class,
             'integration.boundary' => EnsureIntegrationBoundary::class,
             'integration.log' => LogIntegrationRequest::class,

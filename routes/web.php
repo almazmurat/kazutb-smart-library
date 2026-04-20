@@ -21,6 +21,12 @@ $internalStaffView = static function (Request $request, string $view) {
     ]);
 };
 
+$adminView = static function (Request $request, string $view, array $data = []) {
+    return view($view, array_merge([
+        'internalStaffUser' => $request->session()->get('library.user'),
+    ], $data));
+};
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -404,6 +410,54 @@ Route::prefix('internal')->group(function () use ($internalStaffView) {
     Route::get('/ai-chat', function (Request $request) use ($internalStaffView) {
         return $internalStaffView($request, 'internal-ai-chat');
     });
+});
+
+Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin.')->group(function () use ($adminView) {
+    Route::get('/', function (Request $request) use ($adminView) {
+        return $adminView($request, 'admin.overview');
+    })->name('overview');
+
+    Route::get('/users', function (Request $request) use ($adminView) {
+        return $adminView($request, 'admin.placeholder', [
+            'title' => 'User & Role Management',
+            'description' => 'Phase 1 continuation surface for reader, staff, and permission governance.',
+        ]);
+    })->name('users');
+
+    Route::get('/logs', function (Request $request) use ($adminView) {
+        return $adminView($request, 'admin.placeholder', [
+            'title' => 'Governance & Logs',
+            'description' => 'Phase 1 continuation surface for audit visibility, operational logs, and policy review.',
+        ]);
+    })->name('logs');
+
+    Route::get('/news', function (Request $request) use ($adminView) {
+        return $adminView($request, 'admin.placeholder', [
+            'title' => 'News Management',
+            'description' => 'Phase 2 management surface for institutional announcements and controlled publishing.',
+        ]);
+    })->name('news');
+
+    Route::get('/feedback', function (Request $request) use ($adminView) {
+        return $adminView($request, 'admin.placeholder', [
+            'title' => 'Feedback Inbox',
+            'description' => 'Phase 2 management surface for incoming reader requests and issue triage.',
+        ]);
+    })->name('feedback');
+
+    Route::get('/settings', function (Request $request) use ($adminView) {
+        return $adminView($request, 'admin.placeholder', [
+            'title' => 'System Settings',
+            'description' => 'Phase 2 management surface for operational configuration and platform governance.',
+        ]);
+    })->name('settings');
+
+    Route::get('/reports', function (Request $request) use ($adminView) {
+        return $adminView($request, 'admin.placeholder', [
+            'title' => 'Reports & Analytics',
+            'description' => 'Phase 3 analytical surface for circulation, holdings, stewardship, and institutional reporting.',
+        ]);
+    })->name('reports');
 });
 
 // SPA shell — React Router handles client-side routing under /app
