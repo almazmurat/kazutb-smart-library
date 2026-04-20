@@ -108,8 +108,50 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+
+## 2026-04-20 — Animated book covers in catalog
+**Decision:** Replaced placeholder images with CSS animated covers. Open 90deg on hover. Metadata shown on cover. Real uploaded images will replace color fills later without changing animation.
+**Reason:** Performance: no external image requests. Better UX. Future-proof for real cover uploads.
+**Alternatives considered:** Manually capture later.
+**Impact:** Recorded through log_decision.ps1 for future session continuity.
+
+---
+
+## 2026-04-20 — Animated book covers in catalog
+**Decision:** Replaced placeholder images with CSS animated covers. Open 90deg on hover. Metadata shown on cover. Real uploaded images will replace color fills later without changing animation.
+**Reason:** Performance: no external image requests. Better UX. Future-proof for real cover uploads.
+**Alternatives considered:** Manually capture later.
+**Impact:** Recorded through log_decision.ps1 for future session continuity.
+
+---
+
+## 2026-04-20 — fix: test semantic hook capture
+**Type:** fix (UI/Frontend)
+**Files changed:** resources/views/catalog.blade.php
+**What changed:** Blade view modification — catalog UI
+**Commit:** 8807adf on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** fix
+**Source:** Git hook auto-capture from commit 8807adf
+
+---
+
+
+## 2026-04-20 — Revert "fix: test semantic hook capture"
+**Type:** change (UI/Frontend)
+**Files changed:** resources/views/catalog.blade.php
+**What changed:** Blade view modification — catalog UI
+**Commit:** 524dabb on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** fix, revert
+**Source:** Git hook auto-capture from commit 524dabb
+
+---
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]
 - [[OPEN_QUESTIONS]]
+
+
 

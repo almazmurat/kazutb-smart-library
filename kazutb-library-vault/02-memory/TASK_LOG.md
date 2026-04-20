@@ -5,6 +5,10 @@
 
 ---
 
+2026-04-20 | fix: polish semantic hook type parsing | [No app-surface change detected] | commit: 6b06d64 | branch: main
+2026-04-20 | Revert "fix: test semantic hook capture" | [UI/Blade view change — CATALOG PAGE] | commit: 524dabb | branch: main
+2026-04-20 | fix: test semantic hook capture | [UI/Blade view change — CATALOG PAGE] | commit: 8807adf | branch: main
+2026-04-20 | fix: improve semantic vault hook capture | [No app-surface change detected] | commit: 3c0ab43 | branch: main
 2026-04-20 | Git post-commit on main: fix: refine animated catalog cover hinge | Changed files: resources/views/catalog.blade.php
 2026-04-20 | Git post-commit on main: feat: add animated catalog book covers | Changed files: resources/views/catalog.blade.php
 2026-04-20 | Git post-commit on main: fix: preserve watched vault state updates | Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/scripts/LAST_GRAPH_HEALTH.md, routes/web.php, scripts/dev/git-vault-hook.sh
