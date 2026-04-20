@@ -98,6 +98,16 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+
+## 2026-04-20 — Git-derived decision signal: fix: refine animated catalog cover hinge
+**Decision:** The commit message matched strategic keywords: fix.
+**Reason:** The change was auto-captured from Git history to preserve important implementation context in the second brain.
+**Alternatives considered:** Not captured automatically by the hook.
+**Impact:** Changed files: resources/views/catalog.blade.php
+**Source:** Git hook auto-capture from commit b566e20
+
+---
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]

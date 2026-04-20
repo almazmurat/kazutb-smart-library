@@ -5,6 +5,7 @@
 
 ---
 
+2026-04-20 | Git post-commit on main: fix: refine animated catalog cover hinge | Changed files: resources/views/catalog.blade.php
 2026-04-20 | Git post-commit on main: feat: add animated catalog book covers | Changed files: resources/views/catalog.blade.php
 2026-04-20 | Git post-commit on main: fix: preserve watched vault state updates | Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/scripts/LAST_GRAPH_HEALTH.md, routes/web.php, scripts/dev/git-vault-hook.sh
 2026-04-20 | Git post-commit on main: feat: add vault session helper scripts and watcher | Changed files: .githooks/post-checkout, .githooks/post-commit, .githooks/post-merge, .githooks/prepare-commit-msg, .github/copilot-instructions.md, .gitignore, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/OPEN_QUESTIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/scripts/LAST_GRAPH_HEALTH.md, kazutb-library-vault/scripts/WATCHER.ps1
