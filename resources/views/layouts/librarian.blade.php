@@ -20,8 +20,8 @@
       [
           'label' => 'Circulation',
           'icon' => 'sync_alt',
-          'href' => '/internal/circulation',
-          'active' => request()->is('internal/circulation'),
+          'href' => route('librarian.circulation'),
+          'active' => request()->routeIs('librarian.circulation'),
       ],
       [
           'label' => 'Reservations',
@@ -44,14 +44,14 @@
       [
           'label' => 'Data Cleanup',
           'icon' => 'mop',
-          'href' => '/internal/stewardship',
-          'active' => request()->is('internal/stewardship'),
+          'href' => route('librarian.data-cleanup'),
+          'active' => request()->routeIs('librarian.data-cleanup'),
       ],
       [
           'label' => 'Scientific Repository',
           'icon' => 'school',
-          'href' => '/internal/review',
-          'active' => request()->is('internal/review'),
+          'href' => route('librarian.repository'),
+          'active' => request()->routeIs('librarian.repository'),
       ],
       [
           'label' => 'News',
@@ -187,7 +187,7 @@
     </nav>
 
     <div class="px-6 mt-8 space-y-4">
-      <a href="/internal/circulation" class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-3 rounded-md font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+      <a href="{{ route('librarian.circulation') }}" class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-3 rounded-md font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
         <span class="material-symbols-outlined">add</span>
         <span>New Transaction</span>
       </a>

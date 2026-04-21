@@ -38,9 +38,9 @@ Used only for the newly generated missing pages:
 | Surface | Page Type | Canonical Source | Target Route / Surface | Target View / Area | Status | Notes |
 |---|---|---|---|---|---|---|
 | Librarian | Librarian Overview | `docs/design-exports/librarian_overview/` | `/librarian` | `librarian/overview.blade.php` | implemented — archive-reference | Canonical librarian shell (`layouts.librarian`); Phase 1.1 |
-| Librarian | Circulation Desk | `docs/design-exports/circulation_desk/` | `/librarian/circulation` (pending) | pending | design-ready | Phase 1.x — export awaiting Blade port |
-| Librarian | Data Stewardship & Cleanup | `docs/design-exports/data_cleanup_stewardship/` | `/librarian/data-cleanup` (pending) | pending | design-ready | Phase 1.x — export awaiting Blade port |
-| Librarian | Scientific Works Moderation Queue | `docs/design-exports/scientific_works_moderation_queue/` | `/librarian/repository` (pending) | pending | design-ready | Phase 4 — merges with repository module |
+| Librarian | Circulation Desk | `docs/design-exports/circulation_desk/` | `/librarian/circulation` | `librarian/circulation.blade.php` | implemented — archive-reference | Canonical librarian shell (`layouts.librarian`); Phase 1.2 |
+| Librarian | Data Stewardship & Cleanup | `docs/design-exports/data_cleanup_stewardship/` | `/librarian/data-cleanup` | `librarian/data-cleanup.blade.php` | implemented — archive-reference | Canonical librarian shell (`layouts.librarian`); Phase 1.2 |
+| Librarian | Scientific Works Moderation Queue | `docs/design-exports/scientific_works_moderation_queue/` | `/librarian/repository` | `librarian/repository.blade.php` | implemented — archive-reference | Canonical librarian shell; Phase 1.2 — merges with repository module in Phase 4 |
 | Internal (transitional) | Librarian Operations Center | Project A / Librarian Operations Center | `/internal/dashboard` | `internal-dashboard.blade.php` | transitional — superseded by `/librarian` | Kept working during Phase 1 migration; will be 301 → `/librarian` |
 | Internal (transitional) | Catalog Records Management | Project A / Catalog Records Management | future/internal records surface | staff records area | reference-only | Backend foundation first |
 | Internal (transitional) | Librarian Record Editor | Project A / Librarian Record Editor | future/internal editor surface | staff editor area | reference-only | Backend foundation first |

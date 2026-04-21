@@ -437,6 +437,19 @@ Route::prefix('librarian')->middleware(['library.auth', 'librarian.staff'])->nam
     Route::get('/', function (Request $request) use ($librarianView) {
         return $librarianView($request, 'librarian.overview');
     })->name('overview');
+
+    // Phase 1.2 — canonical librarian screens (ported from design exports).
+    Route::get('/circulation', function (Request $request) use ($librarianView) {
+        return $librarianView($request, 'librarian.circulation');
+    })->name('circulation');
+
+    Route::get('/data-cleanup', function (Request $request) use ($librarianView) {
+        return $librarianView($request, 'librarian.data-cleanup');
+    })->name('data-cleanup');
+
+    Route::get('/repository', function (Request $request) use ($librarianView) {
+        return $librarianView($request, 'librarian.repository');
+    })->name('repository');
 });
 
 Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin.')->group(function () use ($adminView) {

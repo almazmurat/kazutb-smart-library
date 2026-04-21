@@ -2,25 +2,25 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-21 10:10:35 UTC
-- Commit: 0dd6dcb
+- Time: 2026-04-21 10:53:07 UTC
+- Commit: 9a6e8b0
 - Branch: main
-- Change type: Web routes change — check page map
-- Files: routes/web.php
-- Commit message: feat(phase-0): role-based login redirect + /internal/* auth + design-export cleanup
+- Change type: UI/Blade view change
+- Files: resources/views/layouts/librarian.blade.php, resources/views/librarian/overview.blade.php, routes/web.php
+- Commit message: feat(phase-1.1): librarian shell + /librarian overview page
 
 ## Latest Git Automation
-- Time: 2026-04-21 10:10:35 UTC
+- Time: 2026-04-21 10:53:07 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 0dd6dcb
-- Update: Git post-commit on main: feat(phase-0): role-based login redirect + /internal/* auth + design-export cleanup
-- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/01-master/DELIVERY_ROADMAP.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/OPEN_QUESTIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, routes/web.php, tests/Feature/PostLoginRedirectTest.php
-- Semantic: Web routes change — check page map
+- Commit: 9a6e8b0
+- Update: Git post-commit on main: feat(phase-1.1): librarian shell + /librarian overview page
+- Detail: Changed files: app/Http/Middleware/EnsureLibrarianStaff.php, bootstrap/app.php, docs/design-exports/canonical-design-map.md, docs/design-exports/circulation_desk/code.html, docs/design-exports/circulation_desk/screen.png, docs/design-exports/data_cleanup_stewardship/code.html, docs/design-exports/data_cleanup_stewardship/screen.png, docs/design-exports/librarian_overview/code.html, docs/design-exports/librarian_overview/screen.png, docs/design-exports/scientific_works_moderation_queue/code.html, docs/design-exports/scientific_works_moderation_queue/screen.png, kazutb-library-vault/02-memory/CURRENT_STATE.md
+- Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
-Phase 0 is complete. Phase 1 (Librarian Shell Normalization) is underway — the reusable `layouts.librarian` shell and canonical `/librarian` Overview page are live. `EnsureLibrarianStaff` middleware is registered as `librarian.staff` (accepts librarian or admin); the `/librarian` group runs under `library.auth + librarian.staff`. Post-login redirect now routes librarians to `/librarian` (interim `/internal/dashboard` removed from the match). `/internal/*` staff pages remain functional for transitional compatibility and will be 301-redirected to `/librarian/*` in a later Phase 1 wave. The other three librarian exports (circulation_desk, data_cleanup_stewardship, scientific_works_moderation_queue) remain design-ready and are not yet ported to Blade. Admins continue to land on `/admin`; members continue to land on `/account` (interim).
+Phase 0 and Phase 1.1 are complete. **Phase 1.2 is complete** — the three remaining librarian screens are now ported to canonical `/librarian/*` routes: `/librarian/circulation` (Circulation Desk), `/librarian/data-cleanup` (Data Stewardship & Cleanup), and `/librarian/repository` (Scientific Works Moderation Queue). All four screens extend `layouts.librarian`; sidebar links now target canonical librarian routes. The `/internal/*` staff pages remain functional for transitional compatibility (no 301 redirects yet — that is Phase 1.4). The other three librarian exports have been flipped from design-ready to implemented — archive-reference in the canonical design map. Admins continue to land on `/admin`; members continue to land on `/account` (interim).
 
 ## What Is Done
 - Canonical product truth is consolidated in [[PROJECT_CONTEXT]]
