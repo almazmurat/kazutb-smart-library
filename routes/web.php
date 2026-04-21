@@ -438,10 +438,7 @@ Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin
     })->name('settings');
 
     Route::get('/reports', function (Request $request) use ($adminView) {
-        return $adminView($request, 'admin.placeholder', [
-            'title' => 'Reports & Analytics',
-            'description' => 'Phase 3 analytical surface for circulation, holdings, stewardship, and institutional reporting.',
-        ]);
+        return $adminView($request, 'admin.reports');
     })->name('reports');
 });
 

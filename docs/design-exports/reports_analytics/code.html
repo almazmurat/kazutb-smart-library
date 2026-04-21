@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports and Analytics - KazUTB Smart Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f8f9fa",
+                      "secondary-fixed": "#93f2f2",
+                      "primary-fixed": "#d4e3ff",
+                      "on-secondary-container": "#006e6e",
+                      "on-primary-fixed": "#001c3a",
+                      "surface-container": "#edeeef",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#2e3132",
+                      "error": "#ba1a1a",
+                      "on-surface": "#191c1d",
+                      "surface-dim": "#d9dadb",
+                      "primary-fixed-dim": "#afc8f0",
+                      "tertiary-fixed-dim": "#b5c8df",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed": "#091d2e",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#36485b",
+                      "surface-container-high": "#e7e8e9",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-container": "#76889d",
+                      "background": "#f8f9fa",
+                      "on-secondary-fixed": "#002020",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c4c6cf",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-surface-variant": "#43474e",
+                      "surface-tint": "#476083",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#6f88ad",
+                      "secondary-container": "#90efef",
+                      "secondary": "#006a6a",
+                      "outline": "#74777f",
+                      "primary": "#000613",
+                      "tertiary-fixed": "#d1e4fb",
+                      "inverse-primary": "#afc8f0",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e1e3e4",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-secondary-fixed-variant": "#004f4f",
+                      "on-background": "#191c1d",
+                      "tertiary-container": "#0d2031",
+                      "on-primary-fixed-variant": "#2f486a",
+                      "primary-container": "#001f3f",
+                      "secondary-fixed-dim": "#76d6d5",
+                      "surface-container-low": "#f3f4f5",
+                      "tertiary": "#000610"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Newsreader"
+                      ],
+                      "body": [
+                              "Manrope"
+                      ],
+                      "label": [
+                              "Manrope"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #f8f9fa; color: #191c1d; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Newsreader', serif; }
+      </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="bg-[#F8F9FA] dark:bg-[#000613] text-[#001F3F] dark:text-[#F8F9FA] font-['Manrope'] text-base font-medium h-screen w-72 flex flex-col fixed left-0 top-0 bg-surface-container-lowest shadow-none border-r-0 border-transparent ease-in-out duration-300 z-40 hidden md:flex">
+<div class="p-6">
+<div class="font-['Newsreader'] text-2xl font-black text-[#001F3F] mb-1">Admin Portal</div>
+<div class="text-sm opacity-70 mb-8">High-Control Governance</div>
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-md py-3 px-4 mb-8 text-left flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Collection</span>
+</button>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 rounded-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                        Governance Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 rounded-md" href="#">
+<span class="material-symbols-outlined">library_books</span>
+                        Collection Management
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 rounded-md" href="#">
+<span class="material-symbols-outlined">group</span>
+                        Patron Directory
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 rounded-md" href="#">
+<span class="material-symbols-outlined">payments</span>
+                        Acquisition Flows
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 bg-[#001F3F] text-white dark:bg-[#006A6A] rounded-md mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                        Scholarly Analytics
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 rounded-md" href="#">
+<span class="material-symbols-outlined">settings_suggest</span>
+                        System Settings
+                    </a>
+</li>
+</ul>
+</div>
+<div class="mt-auto p-6 space-y-1">
+<a class="flex items-center gap-3 text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 rounded-md" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Archive Access
+            </a>
+<a class="flex items-center gap-3 text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 rounded-md" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 flex flex-col min-h-screen">
+<!-- TopNavBar (Mobile Only) -->
+<header class="bg-white/80 dark:bg-[#000613]/80 backdrop-blur-xl text-[#001F3F] dark:text-[#F8F9FA] font-['Newsreader'] tracking-tight text-[1.75rem] w-full top-0 sticky bg-surface-container-low shadow-sm shadow-[#001F3F]/5 flex justify-between items-center px-8 py-3 z-50 md:hidden">
+<div class="font-['Newsreader'] text-xl font-bold text-[#001F3F] dark:text-[#F8F9FA]">KazUTB Smart Library</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-[#F8F9FA] dark:hover:bg-[#001F3F] transition-colors duration-300 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#F8F9FA] dark:hover:bg-[#001F3F] transition-colors duration-300 rounded-full">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<img alt="Administrator Profile" class="w-8 h-8 rounded-full object-cover" data-alt="Professional headshot of male administrator in soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZtT1ojInoiEq5Qg-I1TNHkyb35UtUSO6mh2oYPOg5liMsHLiKaeA88vtWIoXciElnvN9QGFN_nIsuqHi0rNpzkSB5s86XsdoHAngK8aioZLK0JayUjFpGR8unvI3P_y87iPyzCtBddfYTm3eZineQj76dQgIuARzFsvVvuopOmfNAHC92LZi_u-09YO2hSC1boOIjOUhOOrUD9h8Z4OTMrNJOoZZPGD_YqpV5vckt5ERoRqSyurU8kbtjDfAxSyXymvUzgG0ULky6"/>
+</div>
+</header>
+<div class="p-8 lg:p-12 max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+<div>
+<h1 class="font-headline text-[3.5rem] leading-none text-primary mb-3">Scholarly Analytics</h1>
+<p class="text-on-surface-variant text-lg max-w-2xl font-body">Comprehensive insights into collection utilization, patron engagement, and resource distribution.</p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-4 py-2 bg-transparent border-b border-outline-variant/20 text-secondary hover:bg-surface-container-low transition-colors rounded-t-DEFAULT">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="text-sm font-medium">Filter</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-md hover:opacity-90 transition-opacity shadow-[0_4px_24px_-4px_rgba(0,31,63,0.4)]">
+<span class="material-symbols-outlined text-sm">download</span>
+<span class="text-sm font-medium">Export Report</span>
+</button>
+</div>
+</div>
+<!-- Key Metrics Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-[0_4px_24px_-4px_rgba(0,31,63,0.04)] hover:bg-surface-container-high transition-colors duration-300">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-on-surface-variant text-sm font-medium uppercase tracking-wider">Total Circulation</h3>
+<span class="material-symbols-outlined text-secondary opacity-80">auto_stories</span>
+</div>
+<div class="text-[2.5rem] font-headline text-primary leading-none mb-2">124,592</div>
+<div class="flex items-center gap-1 text-sm text-secondary">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+12.4% vs last term</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-[0_4px_24px_-4px_rgba(0,31,63,0.04)] hover:bg-surface-container-high transition-colors duration-300">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-on-surface-variant text-sm font-medium uppercase tracking-wider">Active Digital Patrons</h3>
+<span class="material-symbols-outlined text-secondary opacity-80">devices</span>
+</div>
+<div class="text-[2.5rem] font-headline text-primary leading-none mb-2">8,941</div>
+<div class="flex items-center gap-1 text-sm text-secondary">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+5.2% vs last term</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-[0_4px_24px_-4px_rgba(0,31,63,0.04)] hover:bg-surface-container-high transition-colors duration-300">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-on-surface-variant text-sm font-medium uppercase tracking-wider">Fund Utilization</h3>
+<span class="material-symbols-outlined text-secondary opacity-80">account_balance</span>
+</div>
+<div class="text-[2.5rem] font-headline text-primary leading-none mb-2">68%</div>
+<div class="flex items-center gap-1 text-sm text-on-surface-variant opacity-70">
+<span>On track for fiscal year</span>
+</div>
+</div>
+</div>
+<!-- Main Charts Area (Bento Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+<!-- Large Chart Span -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 shadow-[0_4px_24px_-4px_rgba(0,31,63,0.04)] relative overflow-hidden group">
+<div class="flex justify-between items-center mb-8">
+<h2 class="font-headline text-[1.75rem] text-primary">Circulation Trends Over Time</h2>
+<select class="bg-transparent border-b border-outline-variant/20 text-sm py-1 focus:ring-0 focus:border-secondary text-on-surface-variant pr-8">
+<option>Academic Year '23-'24</option>
+<option>Fall Semester '23</option>
+<option>Spring Semester '24</option>
+</select>
+</div>
+<!-- Abstract Chart Representation -->
+<div class="h-64 flex items-end gap-2 pt-4 border-l border-b border-outline-variant/20 relative pl-4 pb-2">
+<!-- Y-axis labels -->
+<div class="absolute left-0 bottom-2 -ml-8 text-xs text-on-surface-variant opacity-50">0k</div>
+<div class="absolute left-0 top-1/2 -ml-8 text-xs text-on-surface-variant opacity-50">50k</div>
+<div class="absolute left-0 top-0 -ml-10 text-xs text-on-surface-variant opacity-50">100k</div>
+<!-- Grid lines -->
+<div class="absolute w-full h-[1px] bg-outline-variant/10 top-0 left-0"></div>
+<div class="absolute w-full h-[1px] bg-outline-variant/10 top-1/2 left-0"></div>
+<!-- Bars -->
+<div class="w-full bg-primary/10 rounded-t-sm h-[40%] relative group-hover:bg-primary/20 transition-colors"></div>
+<div class="w-full bg-primary/30 rounded-t-sm h-[55%] relative group-hover:bg-primary/40 transition-colors"></div>
+<div class="w-full bg-secondary/80 rounded-t-sm h-[85%] relative group-hover:bg-secondary transition-colors"></div>
+<div class="w-full bg-primary/40 rounded-t-sm h-[60%] relative group-hover:bg-primary/50 transition-colors"></div>
+<div class="w-full bg-primary/20 rounded-t-sm h-[45%] relative group-hover:bg-primary/30 transition-colors"></div>
+<div class="w-full bg-primary/10 rounded-t-sm h-[30%] relative group-hover:bg-primary/20 transition-colors"></div>
+<div class="w-full bg-primary/60 rounded-t-sm h-[70%] relative group-hover:bg-primary/70 transition-colors"></div>
+<div class="w-full bg-primary/80 rounded-t-sm h-[95%] relative group-hover:bg-primary/90 transition-colors"></div>
+<!-- X-axis labels -->
+<div class="absolute -bottom-6 flex justify-between w-full pr-4 text-xs text-on-surface-variant opacity-50">
+<span>Sep</span>
+<span>Oct</span>
+<span>Nov</span>
+<span>Dec</span>
+<span>Jan</span>
+<span>Feb</span>
+<span>Mar</span>
+<span>Apr</span>
+</div>
+</div>
+</div>
+<!-- Vertical Stacked Area -->
+<div class="flex flex-col gap-8">
+<!-- Distribution Chart -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_4px_24px_-4px_rgba(0,31,63,0.04)] flex-1">
+<h2 class="font-headline text-[1.375rem] text-primary mb-6">Resource Allocation</h2>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant">Digital Journals</span>
+<span class="font-medium text-primary">45%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 45%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant">Physical Monographs</span>
+<span class="font-medium text-primary">30%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary/70 h-full rounded-full" style="width: 30%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant">Database Subscriptions</span>
+<span class="font-medium text-primary">15%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 15%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant">Special Collections</span>
+<span class="font-medium text-primary">10%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-outline h-full rounded-full" style="width: 10%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Insight Card -->
+<div class="bg-gradient-to-br from-primary to-primary-container rounded-xl p-8 text-on-primary shadow-[0_4px_24px_-4px_rgba(0,31,63,0.2)]">
+<span class="material-symbols-outlined mb-4 text-secondary-fixed">lightbulb</span>
+<h3 class="font-headline text-[1.375rem] mb-2">Curator's Insight</h3>
+<p class="text-sm text-on-primary/80 leading-relaxed font-body">Digital journal access has peaked in the Sciences faculty, suggesting an optimal time to review current STEM database subscriptions before the next fiscal quarter.</p>
+</div>
+</div>
+</div>
+<!-- Detailed Data Table Section -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_24px_-4px_rgba(0,31,63,0.04)] overflow-hidden">
+<div class="p-6 border-b border-surface-container flex justify-between items-center bg-surface/50">
+<h2 class="font-headline text-[1.375rem] text-primary">Top Performing Collections</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-transparent border-b border-outline-variant/20 pl-6 pr-4 py-1 text-sm focus:ring-0 focus:border-secondary w-64 text-on-surface" placeholder="Search collections..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-xs text-on-surface-variant uppercase tracking-wider border-b border-surface-container">
+<th class="px-6 py-4 font-medium">Collection Name</th>
+<th class="px-6 py-4 font-medium">Department</th>
+<th class="px-6 py-4 font-medium text-right">Accesses</th>
+<th class="px-6 py-4 font-medium text-right">Trend</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="border-b border-surface-container hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-medium text-primary">Advanced Quantum Mechanics Archives</td>
+<td class="px-6 py-4 text-on-surface-variant">Physics</td>
+<td class="px-6 py-4 text-right font-mono text-primary">12,450</td>
+<td class="px-6 py-4 text-right text-secondary"><span class="material-symbols-outlined text-sm align-middle">arrow_upward</span> 18%</td>
+</tr>
+<tr class="border-b border-surface-container hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-medium text-primary">Modern Central Asian History</td>
+<td class="px-6 py-4 text-on-surface-variant">Humanities</td>
+<td class="px-6 py-4 text-right font-mono text-primary">8,211</td>
+<td class="px-6 py-4 text-right text-secondary"><span class="material-symbols-outlined text-sm align-middle">arrow_upward</span> 5%</td>
+</tr>
+<tr class="border-b border-surface-container hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-medium text-primary">Applied Biotechnology Journals</td>
+<td class="px-6 py-4 text-on-surface-variant">Biology</td>
+<td class="px-6 py-4 text-right font-mono text-primary">7,904</td>
+<td class="px-6 py-4 text-right text-outline"><span class="material-symbols-outlined text-sm align-middle">horizontal_rule</span> 0%</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-medium text-primary">Economic Theory Classics</td>
+<td class="px-6 py-4 text-on-surface-variant">Economics</td>
+<td class="px-6 py-4 text-right font-mono text-primary">6,540</td>
+<td class="px-6 py-4 text-right text-error"><span class="material-symbols-outlined text-sm align-middle">arrow_downward</span> 2%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Spacer for bottom breathing room -->
+<div class="h-24"></div>
+</div>
+</main>
+</body></html>

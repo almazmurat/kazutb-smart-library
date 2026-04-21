@@ -51,7 +51,36 @@ class AdminOverviewPageTest extends TestCase
 
     public function test_admin_follow_on_placeholders_render_for_admin_session(): void
     {
-        $this->withSession($this->staffSession('admin'))->get('/admin/reports')->assertOk()->assertSee('Reports &amp; Analytics', false);
+        // All previously-planned admin pages are now fully implemented.
+        // This test intentionally has no placeholder URIs to assert against.
+        $this->assertTrue(true);
+    }
+
+    public function test_admin_reports_page_renders_analytics_surface(): void
+    {
+        $response = $this->withSession($this->staffSession('admin'))->get('/admin/reports');
+
+        $response->assertOk()
+            ->assertSee('Reports &amp; Analytics', false)
+            ->assertSee('Total Circulation', false)
+            ->assertSee('Active Digital Patrons', false)
+            ->assertSee('Acquisition Fund Utilization', false)
+            ->assertSee('Controlled Digital Views', false)
+            ->assertSee('Circulation Trends', false)
+            ->assertSee('Resource Allocation', false)
+            ->assertSee('Licensed Digital Journals', false)
+            ->assertSee('Rare &amp; Special Collections', false)
+            ->assertSee("Curator's Insight", false)
+            ->assertSee('Circulation by Branch', false)
+            ->assertSee('Main Library — Astana Campus', false)
+            ->assertSee('Engineering Reading Hall', false)
+            ->assertSee('Top Performing Collections', false)
+            ->assertSee('Central Asian Studies Archive', false)
+            ->assertSee('School of Engineering', false)
+            ->assertSee('Scheduled Report Dispatches', false)
+            ->assertSee('Monthly Circulation Summary', false)
+            ->assertSee('Data Readiness', false)
+            ->assertDontSee('Phase 3 analytical surface', false);
     }
 
     public function test_admin_settings_page_renders_configuration_surface(): void
