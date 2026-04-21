@@ -50,7 +50,25 @@ Used only for the newly generated missing pages:
 
 | Surface | Page Type | Canonical Source | Target Route / Surface | Target View / Area | Status | Notes |
 |---|---|---|---|---|---|---|
-| Admin | Admin Overview | Project B / Admin Overview | future admin overview surface | admin overview page | pending | Must remain sibling to librarian family |
+| Admin | Admin Overview | Project B / Admin Overview | `/admin` | `admin/overview.blade.php` | implemented — archive-reference | Canonical admin shell (`layouts.admin`) |
+| Admin | User & Role Management | `docs/design-exports/user_role_management/` | `/admin/users` | `admin/users.blade.php` | implemented — archive-reference | Mock data until Phase 6 (real data layer) |
+| Admin | Governance & Logs | `docs/design-exports/governance_logs/` | `/admin/logs` | `admin/governance.blade.php` | implemented — archive-reference | Awaiting real `AuditLogService` |
+| Admin | News Management | `docs/design-exports/news_management/` | `/admin/news` | `admin/news.blade.php` | implemented — archive-reference | CRUD wiring is Phase 6 |
+| Admin | Feedback Inbox | `docs/design-exports/feedback_inbox/` | `/admin/feedback` | `admin/feedback.blade.php` | implemented — archive-reference | Intake pipeline wiring is Phase 6 |
+| Admin | Reports & Analytics | `docs/design-exports/reports_analytics/` | `/admin/reports` | `admin/reports.blade.php` | implemented — archive-reference | Real aggregations pending Phase 6 |
+| Admin | System Settings | `docs/design-exports/system_settings/` | `/admin/settings` | `admin/settings.blade.php` | implemented — archive-reference | Persistence pending Phase 6 |
+
+> Implementation milestones for the admin shell are recorded in [[DELIVERY_ROADMAP]]. Exports marked "archive-reference" stay for historical traceability; the running Blade view is the source of truth.
+
+### Public — auth (cross-reference)
+
+| Surface | Page Type | Canonical Source | Target Route / Surface | Target View / Area | Status | Notes |
+|---|---|---|---|---|---|---|
+| Public | Login | Project A / Secure Institutional Access (`docs/design-exports/Secure Access/`) | `/login` | `auth.blade.php` | implemented — archive-reference | Behavior preserved; no active redesign |
+
+### Removed
+
+- `docs/design-exports/athenaeum_digital/` — **deleted 2026-04-21**. This direction was explicitly identified as non-canonical in [[PROJECT_CONTEXT]] §31.2 and must never be reintroduced.
 
 ---
 

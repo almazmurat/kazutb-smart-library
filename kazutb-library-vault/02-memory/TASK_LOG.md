@@ -5,6 +5,19 @@
 
 ---
 
+2026-04-21 | Phase 0 executed — Architecture Normalization: T1 role-based post-login redirect in `routes/web.php` (admin→/admin, librarian→/internal/dashboard, member→/account); T2 `library.auth` middleware applied to `/internal/*` route group; T3 `docs/design-exports/athenaeum_digital/` deleted; T4 `canonical-design-map.md` updated — all 7 admin surfaces + `/login` marked implemented—archive-reference; T5 `tests/Feature/PostLoginRedirectTest.php` added (4 tests, 8 assertions). | Changed: routes/web.php, docs/design-exports/canonical-design-map.md, docs/design-exports/athenaeum_digital/ (deleted), tests/Feature/PostLoginRedirectTest.php, kazutb-library-vault/02-memory/{CURRENT_STATE,TASK_LOG}.md | Status: done | Verification: PostLoginRedirect 4/4 green, AdminOverviewPageTest 10/10 green.
+
+2026-04-21 | Architecture audit — full system review produced: 12-section report (routes, shells, role routing, design exports, gaps, risks, roadmap, next actions, open questions); [[DELIVERY_ROADMAP]] created at `kazutb-library-vault/01-master/DELIVERY_ROADMAP.md` with 9 phases; [[CURRENT_STATE]] pivoted to architecture-normalization phase; [[DECISIONS]] appended with 6 ratified decisions (hybrid shell, `/internal/*` → `/librarian/*` rename, role-based redirect mandatory, `athenaeum_digital` deletion approved, admin-inherits-librarian, admin mock data until Phase 6); [[OPEN_QUESTIONS]] appended with 9 residual decisions. | Next session: execute Phase 0 of [[DELIVERY_ROADMAP]] starting with post-login redirect fix. | Status: done | commit: (vault-only, no code)
+
+[2026-04-21 08:19] Branch switch
+From: main To: main
+2026-04-21 | feat: implement reports & analytics admin page (/admin/reports) | [UI/Blade view change — ADMIN PANEL] | commit: 9c97e4e | branch: main
+2026-04-21 | feat: implement system settings admin page (/admin/settings) | [UI/Blade view change — ADMIN PANEL] | commit: 43b00ba | branch: main
+2026-04-21 | feat: implement news management admin page (/admin/news) | [UI/Blade view change — ADMIN PANEL] | commit: 0f2d43c | branch: main
+2026-04-21 | feat: implement feedback inbox admin page (/admin/feedback) | [UI/Blade view change — ADMIN PANEL] | commit: c59d42a | branch: main
+2026-04-21 | feat: implement feedback inbox admin page (/admin/feedback) | Changed: routes/web.php, resources/views/admin/feedback.blade.php, tests/Feature/AdminOverviewPageTest.php | Status: done
+2026-04-20 | feat: implement governance & logs admin page (/admin/logs) | [UI/Blade view change — ADMIN PANEL] | commit: abf720c | branch: main
+2026-04-20 | feat: implement user & role management admin page (/admin/users) | [UI/Blade view change — ADMIN PANEL] | commit: f059215 | branch: main
 2026-04-20 | feat: implement admin overview governance shell | [UI/Blade view change — ADMIN PANEL] | commit: 61b9285 | branch: main
 2026-04-20 | fix: polish semantic hook type parsing | [No app-surface change detected] | commit: 6b06d64 | branch: main
 2026-04-20 | Revert "fix: test semantic hook capture" | [UI/Blade view change — CATALOG PAGE] | commit: 524dabb | branch: main
@@ -35,3 +48,28 @@ From: main To: main
 - [[CURRENT_STATE]]
 - [[DECISIONS]]
 
+
+## 2026-04-21 — Feedback Inbox admin page implemented
+- Changed: routes/web.php (wired /admin/feedback to admin.feedback view), resources/views/admin/feedback.blade.php (new two-column inbox surface), tests/Feature/AdminOverviewPageTest.php (added two-column UAT), docs/design-exports/feedback_inbox/ (design reference committed)
+- Status: done
+- Commit: c59d42a — feat: implement feedback inbox admin page (/admin/feedback)
+- Verification: 7/7 admin tests pass (94 assertions); route admin.feedback registered and resolvable; all 5 categories present (Request, Complaint, Improvement Suggestion, Question, Other)
+
+## 2026-04-21 — News Management admin page implemented
+- Changed: routes/web.php (wired /admin/news to admin.news view), resources/views/admin/news.blade.php (new editorial management surface), tests/Feature/AdminOverviewPageTest.php (added editorial UAT), docs/design-exports/news_management/ (design reference committed)
+- Status: done
+- Commit: 0f2d43c — feat: implement news management admin page (/admin/news)
+- Verification: 8/8 admin tests pass (112 assertions); route admin.news registered and resolvable; all 4 states (Published/Draft/Scheduled/Archived) and 4 categories (Event/Announcement/Update/Schedule/Meeting) present
+
+## 2026-04-21 — System Settings admin page implemented
+- Changed: routes/web.php (wired /admin/settings to admin.settings view), resources/views/admin/settings.blade.php (new configuration surface), tests/Feature/AdminOverviewPageTest.php (added settings UAT), docs/design-exports/system_settings/ (design reference committed)
+- Status: done
+- Commit: 43b00ba — feat: implement system settings admin page (/admin/settings)
+- Verification: 9/9 admin tests pass (130 assertions); route admin.settings registered and resolvable; placeholder fully replaced (assertDontSee 'Phase 2 management surface')
+
+## 2026-04-21 — Reports & Analytics admin page implemented
+- Changed: routes/web.php (wired /admin/reports to admin.reports view), resources/views/admin/reports.blade.php (new analytics surface), tests/Feature/AdminOverviewPageTest.php (added reports UAT, retired placeholder assertion), docs/design-exports/reports_analytics/ (design reference committed)
+- Status: done
+- Commit: 9c97e4e — feat: implement reports & analytics admin page (/admin/reports)
+- Verification: 10/10 admin tests pass (150 assertions); route admin.reports registered; placeholder fully replaced (assertDontSee 'Phase 3 analytical surface')
+- Milestone: all planned admin placeholder pages are now implemented (overview, users, logs, feedback, news, settings, reports)

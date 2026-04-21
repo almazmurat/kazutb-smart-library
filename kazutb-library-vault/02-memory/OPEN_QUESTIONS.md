@@ -15,8 +15,24 @@ Each entry: Priority (HIGH/MED/LOW) | Question | What blocks on this | Who shoul
 
 - **LOW** | Should watcher summaries roll into daily notes later? | Future vault maintenance design | Manual session follow-up
 
+- **HIGH** | Вопрос? | Что блокирует | Manual session follow-up
+
+## 2026-04-21 — Architecture audit open questions
+
+- **HIGH** | Should `/internal/*` → `/librarian/*` migration run in a single cycle with 301s, or in two cycles (dual-path first, remove `/internal/*` second)? | Phase 1 of [[DELIVERY_ROADMAP]] sequencing | Product owner + delivery lead
+- **HIGH** | Should `/account` rename to `/dashboard` happen immediately with 301, or wait until member sub-routes exist? | Phase 2 of [[DELIVERY_ROADMAP]] | Product owner
+- **HIGH** | Should admin users inherit every librarian route, or only selected librarian surfaces? | Middleware chain for `/librarian/*` | Product owner + library ops
+- **MED** | Which admin module should be wired to real data first in Phase 6 (users, logs, news, feedback, reports, settings)? | Phase 6 ordering | Delivery lead
+- **MED** | Should `/internal/ai-chat` survive the librarian shell migration as an experimental feature, or be removed? | Scope of new `/librarian/*` namespace | Product owner
+- **MED** | Should the legacy 301 for `/news → /` be reversed and a real `/news` index be built in Phase 3? | Public surface scope | Product owner
+- **HIGH** | Is the scientific repository module (PROJECT_CONTEXT §20) in scope immediately after Phase 2, or deferred one cycle? | Phase 4 timing of [[DELIVERY_ROADMAP]] | Product owner + research office
+- **MED** | What depth of audit-log emission is required from mutating controllers before Phase 6 proceeds? | `AuditLogService` contract + retention | Admin + security
+- **LOW** | Should the legacy `reader.blade.php` and `/book/{isbn}/read` route be removed now that `/digital-viewer/{id}` is canonical? | Legacy cleanup wave | Manual session follow-up
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[DECISIONS]]
 - [[CURRENT_STATE]]
+- [[DELIVERY_ROADMAP]]
+
 

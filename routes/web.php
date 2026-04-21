@@ -14,11 +14,26 @@ $internalStaffView = static function (Request $request, string $view) {
     $user = $request->session()->get('library.user');
     $role = is_array($user) ? mb_strtolower(trim((string) ($user['role'] ?? ''))) : '';
 
+    // Belt-and-braces: route group also has library.auth applied at the group level.
     abort_unless(in_array($role, ['librarian', 'admin'], true), 403);
 
     return view($view, [
         'internalStaffUser' => $user,
     ]);
+};
+
+// Role-based post-login landing destination.
+// Canonical page map (PROJECT_CONTEXT §30) expects: admin -> /admin,
+// librarian -> /librarian (interim: /internal/dashboard), member -> /dashboard
+// (interim: /account).
+$postLoginDestination = static function (array $user): string {
+    $role = mb_strtolower(trim((string) ($user['role'] ?? '')));
+
+    return match ($role) {
+        'admin' => '/admin',
+        'librarian' => '/internal/dashboard',
+        default => '/account',
+    };
 };
 
 $adminView = static function (Request $request, string $view, array $data = []) {
@@ -126,7 +141,7 @@ Route::get('/account', function (Request $request) {
     return view('account', ['sessionUser' => $user]);
 });
 
-Route::post('/login', function (Request $request) {
+Route::post('/login', function (Request $request) use ($postLoginDestination) {
     $validated = $request->validate([
         'email' => ['nullable', 'string', 'email', 'required_without:login'],
         'login' => ['nullable', 'string', 'required_without:email'],
@@ -169,7 +184,7 @@ Route::post('/login', function (Request $request) {
                 $request->session()->put('library.authenticated_at', now()->toIso8601String());
                 $request->session()->put('library.demo_identity', $slug);
 
-                return redirect('/account');
+                return redirect($postLoginDestination($user));
             }
         }
     }
@@ -199,7 +214,7 @@ Route::post('/login', function (Request $request) {
         $request->session()->put('library.user', $user);
         $request->session()->put('library.authenticated_at', now()->toIso8601String());
 
-        return redirect('/account');
+        return redirect($postLoginDestination($user));
     }
 
     return back()->withErrors(['login' => 'Invalid credentials or authentication failed.']);
@@ -394,7 +409,7 @@ Route::get('/book/{isbn}/read', function ($isbn) {
     return view('reader', ['isbn' => $isbn]);
 })->name('reader.transitional');
 
-Route::prefix('internal')->group(function () use ($internalStaffView) {
+Route::prefix('internal')->middleware(['library.auth'])->group(function () use ($internalStaffView) {
     Route::get('/dashboard', function (Request $request) use ($internalStaffView) {
         return $internalStaffView($request, 'internal-dashboard');
     });
