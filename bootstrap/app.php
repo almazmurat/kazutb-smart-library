@@ -4,6 +4,7 @@ use App\Http\Middleware\EnsureAdminStaff;
 use App\Http\Middleware\EnsureAuthenticatedReader;
 use App\Http\Middleware\EnsureIntegrationBoundary;
 use App\Http\Middleware\EnsureInternalCirculationStaff;
+use App\Http\Middleware\EnsureLibrarianStaff;
 use App\Http\Middleware\LogIntegrationRequest;
 use App\Http\Middleware\SetRequestLocale;
 use Illuminate\Foundation\Application;
@@ -27,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'internal.circulation.staff' => EnsureInternalCirculationStaff::class,
             'integration.boundary' => EnsureIntegrationBoundary::class,
             'integration.log' => LogIntegrationRequest::class,
+            'librarian.staff' => EnsureLibrarianStaff::class,
             'library.auth' => EnsureAuthenticatedReader::class,
         ]);
     })

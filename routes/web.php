@@ -24,14 +24,13 @@ $internalStaffView = static function (Request $request, string $view) {
 
 // Role-based post-login landing destination.
 // Canonical page map (PROJECT_CONTEXT §30) expects: admin -> /admin,
-// librarian -> /librarian (interim: /internal/dashboard), member -> /dashboard
-// (interim: /account).
+// librarian -> /librarian, member -> /dashboard (interim: /account).
 $postLoginDestination = static function (array $user): string {
     $role = mb_strtolower(trim((string) ($user['role'] ?? '')));
 
     return match ($role) {
         'admin' => '/admin',
-        'librarian' => '/internal/dashboard',
+        'librarian' => '/librarian',
         default => '/account',
     };
 };
@@ -39,6 +38,12 @@ $postLoginDestination = static function (array $user): string {
 $adminView = static function (Request $request, string $view, array $data = []) {
     return view($view, array_merge([
         'internalStaffUser' => $request->session()->get('library.user'),
+    ], $data));
+};
+
+$librarianView = static function (Request $request, string $view, array $data = []) {
+    return view($view, array_merge([
+        'librarianStaffUser' => $request->session()->get('library.user'),
     ], $data));
 };
 
@@ -425,6 +430,13 @@ Route::prefix('internal')->middleware(['library.auth'])->group(function () use (
     Route::get('/ai-chat', function (Request $request) use ($internalStaffView) {
         return $internalStaffView($request, 'internal-ai-chat');
     });
+});
+
+Route::prefix('librarian')->middleware(['library.auth', 'librarian.staff'])->name('librarian.')->group(function () use ($librarianView) {
+    // Librarian Overview — canonical landing for library staff (PROJECT_CONTEXT §30).
+    Route::get('/', function (Request $request) use ($librarianView) {
+        return $librarianView($request, 'librarian.overview');
+    })->name('overview');
 });
 
 Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin.')->group(function () use ($adminView) {

@@ -37,14 +37,18 @@ Used only for the newly generated missing pages:
 
 | Surface | Page Type | Canonical Source | Target Route / Surface | Target View / Area | Status | Notes |
 |---|---|---|---|---|---|---|
-| Internal | Librarian Operations Center | Project A / Librarian Operations Center | `/internal/dashboard` | `internal-dashboard.blade.php` | design-ready | Existing internal shell |
-| Internal | Catalog Records Management | Project A / Catalog Records Management | future/internal records surface | staff records area | reference-only | Backend foundation first |
-| Internal | Librarian Record Editor | Project A / Librarian Record Editor | future/internal editor surface | staff editor area | reference-only | Backend foundation first |
-| Internal | Digital Asset & File Management | Project A / Digital Asset & File Management | future/internal asset surface | staff asset area | reference-only | Backend foundation first |
-| Internal | Book Cover & Media Management | Project A / Book Cover & Media Management | future/internal media surface | staff media area | reference-only | Backend foundation first |
-| Internal | Reader Access Clarification Hub | Project A / Reader Access Clarification Hub | internal reader clarification surface | internal reader support area | design-ready | Existing internal API support |
-| Internal | Circulation & Waitlist Manager | Project A / Circulation & Waitlist Manager | `/internal/circulation` | `internal-circulation.blade.php` | design-ready | Waitlist portion may need lighter adaptation |
-| Internal | Metadata Quality & Curation Hub | Project A / Metadata Quality & Curation Hub | `/internal/review` | `internal-review.blade.php` | design-ready | Existing review queues and summaries |
+| Librarian | Librarian Overview | `docs/design-exports/librarian_overview/` | `/librarian` | `librarian/overview.blade.php` | implemented — archive-reference | Canonical librarian shell (`layouts.librarian`); Phase 1.1 |
+| Librarian | Circulation Desk | `docs/design-exports/circulation_desk/` | `/librarian/circulation` (pending) | pending | design-ready | Phase 1.x — export awaiting Blade port |
+| Librarian | Data Stewardship & Cleanup | `docs/design-exports/data_cleanup_stewardship/` | `/librarian/data-cleanup` (pending) | pending | design-ready | Phase 1.x — export awaiting Blade port |
+| Librarian | Scientific Works Moderation Queue | `docs/design-exports/scientific_works_moderation_queue/` | `/librarian/repository` (pending) | pending | design-ready | Phase 4 — merges with repository module |
+| Internal (transitional) | Librarian Operations Center | Project A / Librarian Operations Center | `/internal/dashboard` | `internal-dashboard.blade.php` | transitional — superseded by `/librarian` | Kept working during Phase 1 migration; will be 301 → `/librarian` |
+| Internal (transitional) | Catalog Records Management | Project A / Catalog Records Management | future/internal records surface | staff records area | reference-only | Backend foundation first |
+| Internal (transitional) | Librarian Record Editor | Project A / Librarian Record Editor | future/internal editor surface | staff editor area | reference-only | Backend foundation first |
+| Internal (transitional) | Digital Asset & File Management | Project A / Digital Asset & File Management | future/internal asset surface | staff asset area | reference-only | Backend foundation first |
+| Internal (transitional) | Book Cover & Media Management | Project A / Book Cover & Media Management | future/internal media surface | staff media area | reference-only | Backend foundation first |
+| Internal (transitional) | Reader Access Clarification Hub | Project A / Reader Access Clarification Hub | internal reader clarification surface | internal reader support area | design-ready | Existing internal API support |
+| Internal (transitional) | Circulation & Waitlist Manager | Project A / Circulation & Waitlist Manager | `/internal/circulation` | `internal-circulation.blade.php` | transitional | Canonical target: `/librarian/circulation` |
+| Internal (transitional) | Metadata Quality & Curation Hub | Project A / Metadata Quality & Curation Hub | `/internal/review` | `internal-review.blade.php` | transitional | Canonical target: `/librarian/repository` |
 
 ### Admin-facing
 

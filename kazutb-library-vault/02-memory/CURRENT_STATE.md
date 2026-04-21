@@ -2,25 +2,25 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-21 07:51:51 UTC
-- Commit: 9c97e4e
+- Time: 2026-04-21 10:10:35 UTC
+- Commit: 0dd6dcb
 - Branch: main
-- Change type: UI/Blade view change — ADMIN PANEL
-- Files: resources/views/admin/reports.blade.php, routes/web.php
-- Commit message: feat: implement reports & analytics admin page (/admin/reports)
+- Change type: Web routes change — check page map
+- Files: routes/web.php
+- Commit message: feat(phase-0): role-based login redirect + /internal/* auth + design-export cleanup
 
 ## Latest Git Automation
-- Time: 2026-04-21 08:19:52 UTC
-- Event: post-checkout
+- Time: 2026-04-21 10:10:35 UTC
+- Event: post-commit
 - Branch: main
-- Commit: 9c97e4e
-- Update: Branch switch
-- Detail: From: main To: main
-- Semantic: No app-surface change detected
+- Commit: 0dd6dcb
+- Update: Git post-commit on main: feat(phase-0): role-based login redirect + /internal/* auth + design-export cleanup
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/01-master/DELIVERY_ROADMAP.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/OPEN_QUESTIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, routes/web.php, tests/Feature/PostLoginRedirectTest.php
+- Semantic: Web routes change — check page map
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
-Phase 0 (Architecture Normalization) is complete. Role-based post-login redirect now routes admin → `/admin`, librarian → `/internal/dashboard` (interim), members → `/account` (interim); the `/internal/*` route group runs under `library.auth` middleware; the obsolete `athenaeum_digital` design export has been purged; canonical-design-map marks all seven admin surfaces as implemented archive-reference; `PostLoginRedirectTest` covers the redirect contract (4 passing). The next delivery focus is Phase 1 of [[DELIVERY_ROADMAP]] — the librarian shell Stitch cycle and migration of `/internal/*` to canonical `/librarian/*`.
+Phase 0 is complete. Phase 1 (Librarian Shell Normalization) is underway — the reusable `layouts.librarian` shell and canonical `/librarian` Overview page are live. `EnsureLibrarianStaff` middleware is registered as `librarian.staff` (accepts librarian or admin); the `/librarian` group runs under `library.auth + librarian.staff`. Post-login redirect now routes librarians to `/librarian` (interim `/internal/dashboard` removed from the match). `/internal/*` staff pages remain functional for transitional compatibility and will be 301-redirected to `/librarian/*` in a later Phase 1 wave. The other three librarian exports (circulation_desk, data_cleanup_stewardship, scientific_works_moderation_queue) remain design-ready and are not yet ported to Blade. Admins continue to land on `/admin`; members continue to land on `/account` (interim).
 
 ## What Is Done
 - Canonical product truth is consolidated in [[PROJECT_CONTEXT]]
@@ -46,11 +46,11 @@ Phase 0 (Architecture Normalization) is complete. Role-based post-login redirect
 - CRM mirroring boundaries must stay conservative so the library remains the operational owner
 
 ## Immediate Next Actions
-- [ ] Phase 1.1: Stitch export of `Librarian Operations Shell` (sidebar nav mirroring `layouts.admin`)
-- [ ] Phase 1.2: Create `resources/views/layouts/librarian.blade.php`
-- [ ] Phase 1.3: Create `EnsureLibrarianStaff` middleware (accepts `librarian` or `admin`)
-- [ ] Phase 1.4: Mount `/librarian/*` route group; migrate `/internal/*` pages with 301 redirects
-- [ ] Phase 1.5: Update post-login redirect: librarian → `/librarian` (drop `/internal/dashboard` interim)
+- [ ] Phase 1.4a: Port `docs/design-exports/circulation_desk/` → `resources/views/librarian/circulation.blade.php` + mount `/librarian/circulation`
+- [ ] Phase 1.4b: Port `docs/design-exports/data_cleanup_stewardship/` → `resources/views/librarian/data-cleanup.blade.php` + mount `/librarian/data-cleanup`
+- [ ] Phase 1.4c: Port `docs/design-exports/scientific_works_moderation_queue/` → `resources/views/librarian/repository.blade.php` + mount `/librarian/repository` (or merge into Phase 4)
+- [ ] Phase 1.4d: Add 301 redirects from every `/internal/*` path to the new `/librarian/*` path; update sidebar hrefs in `layouts.librarian` accordingly
+- [ ] Phase 1.5: Remove `/internal/*` interim code paths once 301s are in place and no callers remain
 
 ## Known Technical Debt
 - Post-migration metadata correction and duplicate cleanup remain ongoing

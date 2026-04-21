@@ -42,12 +42,12 @@ class PostLoginRedirectTest extends TestCase
             ->assertRedirect('/admin');
     }
 
-    public function test_librarian_login_redirects_to_internal_dashboard(): void
+    public function test_librarian_login_redirects_to_librarian_overview(): void
     {
         $identity = config('demo_auth.identities.librarian');
 
         $this->postLogin($identity['login'], $identity['password'])
-            ->assertRedirect('/internal/dashboard');
+            ->assertRedirect('/librarian');
     }
 
     public function test_student_login_redirects_to_account(): void

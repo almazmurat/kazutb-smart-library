@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scientific Works Moderation Queue - KazUTB Smart Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f8f9fa",
+                    "primary": "#000613",
+                    "primary-container": "#001f3f",
+                    "on-primary-container": "#6f88ad",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#004f4f",
+                    "outline": "#74777f",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f8f9fa",
+                    "surface-dim": "#d9dadb",
+                    "on-tertiary-container": "#76889d",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d1e4fb",
+                    "on-surface": "#191c1d",
+                    "secondary-container": "#90efef",
+                    "secondary": "#006a6a",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#001c3a",
+                    "primary-fixed-dim": "#afc8f0",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#b5c8df",
+                    "on-tertiary-fixed": "#091d2e",
+                    "on-surface-variant": "#43474e",
+                    "inverse-on-surface": "#f0f1f2",
+                    "tertiary": "#000610",
+                    "on-secondary-container": "#006e6e",
+                    "inverse-primary": "#afc8f0",
+                    "tertiary-container": "#0d2031",
+                    "surface-container-high": "#e7e8e9",
+                    "secondary-fixed-dim": "#76d6d5",
+                    "inverse-surface": "#2e3132",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#36485b",
+                    "on-primary-fixed-variant": "#2f486a",
+                    "on-error-container": "#93000a",
+                    "on-background": "#191c1d",
+                    "error-container": "#ffdad6",
+                    "surface": "#f8f9fa",
+                    "on-secondary-fixed": "#002020",
+                    "primary-fixed": "#d4e3ff",
+                    "outline-variant": "#c4c6cf",
+                    "surface-container-low": "#f3f4f5",
+                    "surface-tint": "#476083",
+                    "surface-container": "#edeeef",
+                    "surface-variant": "#e1e3e4",
+                    "secondary-fixed": "#93f2f2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": [
+                            "Newsreader"
+                    ],
+                    "body": [
+                            "Manrope"
+                    ],
+                    "label": [
+                            "Manrope"
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Newsreader', serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-background min-h-screen flex flex-col md:flex-row antialiased">
+<!-- Top Navigation Bar for Mobile -->
+<nav class="md:hidden bg-[#F8F9FA]/80 backdrop-blur-md text-[#001F3F] font-headline text-2xl font-medium tracking-tight docked full-width top-0 sticky z-40 tonal shift via bg-surface-container-low no-border flat no shadows flex justify-between items-center px-8 py-4 w-full">
+<div class="font-headline italic text-[#001F3F] text-xl">KazUTB Smart Library</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-500 hover:text-[#001F3F] hover:bg-slate-100 transition-colors duration-300 scale-95 duration-300 ease-in-out cursor-pointer p-2 rounded-full" data-icon="search">search</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-[#001F3F] hover:bg-slate-100 transition-colors duration-300 scale-95 duration-300 ease-in-out cursor-pointer p-2 rounded-full" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-[#001F3F] hover:bg-slate-100 transition-colors duration-300 scale-95 duration-300 ease-in-out cursor-pointer p-2 rounded-full" data-icon="history_edu">history_edu</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-[#001F3F] hover:bg-slate-100 transition-colors duration-300 scale-95 duration-300 ease-in-out cursor-pointer p-2 rounded-full" data-icon="account_circle">account_circle</span>
+</div>
+</nav>
+<!-- Side Navigation Bar for Web -->
+<aside class="hidden md:flex flex-col bg-[#F8F9FA] text-[#001F3F] font-body text-sm tracking-wide h-screen w-72 flex-shrink-0 sticky top-0 left-0 tonal background shift from surface to surface-container-low flat no-border py-8 border-r-0">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-6">
+<img alt="KazUTB Insignia" class="w-10 h-10 rounded-full object-cover" data-alt="University insignia crest carved in stone with subtle lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXv026ZfdKQV88O4KVzTYH60VJt_O0F7Lz2AdT2IfBRGGBa7ubJDxlrXBBclHCYyVqBVkPyCZl1cBT7Z4fr9upS6Ge7n-XuUypCz3QlnuORuNhoGcZ1C9urh2DHHK3lnZW1tt8_UEW0IrwO3UP4WlRjWxTCMgyV8SP7S0fVA5iJMsV8qbl7VzZ1iW_t-MMNbUMNxihH1cO3pakt3ZM6GKRd9rtEdo2Ko3MwbcPA2xK2ppEqzvkign5SmXFEpfcVFLIHoYIhA5R1n7_"/>
+<div>
+<h2 class="font-headline text-lg font-bold text-[#001F3F]">Operations</h2>
+<p class="text-xs text-slate-600">Librarian Console</p>
+</div>
+</div>
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-2.5 px-4 rounded-md font-medium text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Transaction
+            </button>
+</div>
+<nav class="flex-1 overflow-y-auto smooth-scroll transition-transform duration-300 pr-4">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>Overview</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="sync_alt">sync_alt</span>Circulation</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="bookmark_manager">bookmark_manager</span>Reservations</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="menu_book">menu_book</span>Catalog</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="inventory_2">inventory_2</span>Copies/Items</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="mop">mop</span>Data Cleanup</a></li>
+<li><a class="flex items-center gap-3 bg-white text-[#006A6A] font-semibold rounded-r-full shadow-sm py-3 px-6" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="school">school</span>Scientific Repository</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="newspaper">newspaper</span>News</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="analytics">analytics</span>Reports</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>Messages</a></li>
+</ul>
+</nav>
+<div class="mt-auto px-4 pt-6 border-t-0 border-surface-dim">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 text-slate-600 py-2 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 text-sm" href="#"><span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>Settings</a></li>
+<li><a class="flex items-center gap-3 text-slate-600 py-2 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 text-sm" href="#"><span class="material-symbols-outlined text-[18px]" data-icon="help_outline">help_outline</span>Help</a></li>
+</ul>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-6 py-12 md:px-12 md:py-20 flex flex-col gap-16">
+<!-- Page Header -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8">
+<div class="max-w-2xl">
+<h1 class="font-headline text-[3.5rem] leading-tight text-primary tracking-tight mb-4">Moderation Queue</h1>
+<p class="font-body text-lg text-on-surface-variant leading-relaxed">Review and curate scholarly submissions for the institutional repository. Ensure academic standards and metadata accuracy before publication.</p>
+</div>
+<!-- Contextual Actions -->
+<div class="flex items-center gap-4 bg-surface-container-lowest rounded-full p-2 pr-4 shadow-[0_4px_24px_rgba(0,6,19,0.04)]">
+<div class="relative bg-surface-container-high rounded-full overflow-hidden flex items-center px-4 py-2 w-64 border-b border-outline-variant/20">
+<span class="material-symbols-outlined text-outline text-sm mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none outline-none text-sm font-body text-on-surface w-full placeholder:text-outline/70 focus:ring-0 p-0" placeholder="Search authors, UDC, titles..." type="text"/>
+</div>
+<button class="flex items-center gap-2 text-secondary font-medium text-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                    Filter
+                </button>
+</div>
+</header>
+<!-- Queue Content Area -->
+<section class="flex flex-col gap-8">
+<!-- Submission Item: Under Review -->
+<article class="bg-surface-container-low rounded-lg p-6 flex flex-col md:flex-row gap-8 hover:bg-surface-container-high transition-colors duration-300 relative group overflow-hidden">
+<div class="flex-1 flex flex-col gap-4 relative z-10">
+<!-- Status & Meta -->
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-surface-container-lowest text-primary text-[0.65rem] uppercase tracking-widest font-bold py-1 px-3 rounded-full border border-outline-variant/20 shadow-sm flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Under Review
+                        </span>
+<span class="font-body text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> Submitted 2 days ago
+                        </span>
+</div>
+<!-- Title & Authors -->
+<div>
+<h3 class="font-headline text-2xl text-primary mb-2 leading-snug pr-12">Analysis of Deep Learning Architectures in Natural Language Processing for Turkic Languages</h3>
+<p class="font-body text-sm text-on-surface-variant font-medium">Assel Nurgaliyeva, Timur Khasanov</p>
+</div>
+<!-- Abstract Snippet -->
+<p class="font-body text-sm text-outline leading-relaxed line-clamp-2 max-w-3xl">
+                        This paper presents a comprehensive evaluation of transformer-based architectures fine-tuned on Kazakh and other Turkic languages. We identify unique morphological challenges and propose a modified attention mechanism that improves contextual embedding alignment.
+                    </p>
+<!-- Tags / Metadata -->
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="font-body text-xs text-outline bg-surface-container rounded-md px-2 py-1">UDC: 004.8:81'322</span>
+<span class="font-body text-xs text-outline bg-surface-container rounded-md px-2 py-1">Dissertation</span>
+<span class="font-body text-xs text-outline bg-surface-container rounded-md px-2 py-1">Computer Science</span>
+</div>
+</div>
+<!-- Actions Sidebar -->
+<div class="flex flex-row md:flex-col justify-end items-end gap-3 md:w-48 relative z-10 border-t md:border-t-0 md:border-l border-surface-dim pt-4 md:pt-0 md:pl-6">
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-2 px-4 rounded-md font-body font-medium text-sm hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                        Review Details
+                    </button>
+<button class="w-full bg-transparent border-b border-outline-variant/20 text-secondary py-2 px-4 rounded-md font-body font-medium text-sm hover:bg-surface-variant transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span> PDF
+                    </button>
+<div class="mt-auto hidden md:flex items-center gap-2 text-xs text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="assignment_ind">assignment_ind</span>
+                        Assigned: Dr. Smirnov
+                    </div>
+</div>
+</article>
+<!-- Submission Item: Draft / Pending Initial Review -->
+<article class="bg-surface-container-lowest rounded-lg p-6 flex flex-col md:flex-row gap-8 shadow-[0_4px_32px_rgba(0,6,19,0.02)] hover:shadow-[0_8px_48px_rgba(0,6,19,0.05)] transition-all duration-300 relative group overflow-hidden border-l-4 border-l-secondary/20">
+<div class="flex-1 flex flex-col gap-4 relative z-10">
+<!-- Status & Meta -->
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-surface-container text-on-surface-variant text-[0.65rem] uppercase tracking-widest font-bold py-1 px-3 rounded-full border border-outline-variant/20 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Pending Initial
+                        </span>
+<span class="font-body text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> Submitted 4 hours ago
+                        </span>
+</div>
+<!-- Title & Authors -->
+<div>
+<h3 class="font-headline text-2xl text-primary mb-2 leading-snug pr-12">Economic Impacts of Renewable Energy Transition in Central Asia: A Decade Review</h3>
+<p class="font-body text-sm text-on-surface-variant font-medium">Bakhytzhan Ospanov</p>
+</div>
+<!-- Abstract Snippet -->
+<p class="font-body text-sm text-outline leading-relaxed line-clamp-2 max-w-3xl">
+                        A retrospective analysis of policy shifts and economic indicators across Central Asian republics from 2010 to 2020, focusing on the friction between established fossil fuel economies and emerging green infrastructure investments.
+                    </p>
+<!-- Tags / Metadata -->
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="font-body text-xs text-outline bg-surface rounded-md px-2 py-1">UDC: 338.2:620.9(575)</span>
+<span class="font-body text-xs text-outline bg-surface rounded-md px-2 py-1">Journal Article</span>
+<span class="font-body text-xs text-outline bg-surface rounded-md px-2 py-1">Economics</span>
+</div>
+</div>
+<!-- Actions Sidebar -->
+<div class="flex flex-row md:flex-col justify-end items-end gap-3 md:w-48 relative z-10 border-t md:border-t-0 md:border-l border-surface-dim pt-4 md:pt-0 md:pl-6">
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-2 px-4 rounded-md font-body font-medium text-sm hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                        Review Details
+                    </button>
+<button class="w-full bg-transparent border-b border-outline-variant/20 text-primary py-2 px-4 rounded-md font-body font-medium text-sm hover:bg-surface-variant transition-colors flex justify-center items-center gap-2">
+                        Claim Task
+                    </button>
+</div>
+</article>
+<!-- Submission Item: Approved (Recent) -->
+<article class="bg-surface-container-low/50 rounded-lg p-6 flex flex-col md:flex-row gap-8 opacity-80 hover:opacity-100 transition-opacity duration-300 relative group overflow-hidden">
+<div class="flex-1 flex flex-col gap-4 relative z-10">
+<!-- Status & Meta -->
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-surface-container-lowest text-on-surface text-[0.65rem] uppercase tracking-widest font-bold py-1 px-3 rounded-full border border-outline-variant/20 flex items-center gap-1.5 opacity-60">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span> Approved
+                        </span>
+<span class="font-body text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="history">history</span> Approved yesterday
+                        </span>
+</div>
+<!-- Title & Authors -->
+<div>
+<h3 class="font-headline text-xl text-primary mb-2 leading-snug pr-12 text-outline">Structural Integrity of Sustainable Concrete Alternatives in Seismic Zones</h3>
+<p class="font-body text-sm text-outline font-medium">Diana Kim, Almas Serikov</p>
+</div>
+<!-- Abstract Snippet -->
+<p class="font-body text-sm text-outline/70 leading-relaxed line-clamp-1 max-w-3xl italic">
+                        Investigating geopolymer concrete resilience under simulated high-frequency seismic stress...
+                    </p>
+</div>
+<!-- Actions Sidebar -->
+<div class="flex flex-row md:flex-col justify-end items-end gap-3 md:w-48 relative z-10 border-t md:border-t-0 md:border-l border-surface-dim pt-4 md:pt-0 md:pl-6">
+<button class="w-full bg-transparent text-secondary py-2 px-4 rounded-md font-body font-medium text-sm hover:bg-surface-variant transition-colors flex justify-center items-center gap-2">
+                        View in Catalog
+                    </button>
+</div>
+</article>
+</section>
+</main>
+</body></html>

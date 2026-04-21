@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Circulation - KazUTB Smart Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9fa",
+                        "primary": "#000613",
+                        "primary-container": "#001f3f",
+                        "on-primary-container": "#6f88ad",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "outline": "#74777f",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f8f9fa",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-container": "#76889d",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#d1e4fb",
+                        "on-surface": "#191c1d",
+                        "secondary-container": "#90efef",
+                        "secondary": "#006a6a",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#001c3a",
+                        "primary-fixed-dim": "#afc8f0",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#b5c8df",
+                        "on-tertiary-fixed": "#091d2e",
+                        "on-surface-variant": "#43474e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary": "#000610",
+                        "on-secondary-container": "#006e6e",
+                        "inverse-primary": "#afc8f0",
+                        "tertiary-container": "#0d2031",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary-fixed-dim": "#76d6d5",
+                        "inverse-surface": "#2e3132",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#36485b",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1d",
+                        "error-container": "#ffdad6",
+                        "surface": "#f8f9fa",
+                        "on-secondary-fixed": "#002020",
+                        "primary-fixed": "#d4e3ff",
+                        "outline-variant": "#c4c6cf",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-tint": "#476083",
+                        "surface-container": "#edeeef",
+                        "surface-variant": "#e1e3e4",
+                        "secondary-fixed": "#93f2f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: theme('colors.surface'); color: theme('colors.on-surface'); }
+        h1, h2, h3, .font-headline { font-family: 'Newsreader', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(248, 249, 250, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .ghost-border { border-bottom: 1px solid rgba(116, 119, 127, 0.2); }
+        .focus-border:focus-within { border-bottom-color: theme('colors.secondary'); border-bottom-width: 2px; outline: none; }
+    </style>
+</head>
+<body class="flex min-h-screen bg-surface">
+<!-- SideNavBar (Shared Component) -->
+<nav class="bg-[#F8F9FA] dark:bg-[#000613] text-[#001F3F] dark:text-white font-sans text-sm tracking-wide h-screen w-72 flex-shrink-0 sticky top-0 left-0 hidden md:flex flex-col py-8 border-r-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30">
+<div class="px-8 mb-10 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-headline italic">K</div>
+<div>
+<h2 class="font-serif text-lg font-bold text-[#001F3F]">Operations</h2>
+<p class="text-xs text-on-surface-variant opacity-80">Librarian Console</p>
+</div>
+</div>
+<div class="px-6 mb-8">
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-3 px-4 rounded-md shadow-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">add</span>
+<span class="font-medium">New Transaction</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto px-4 space-y-1">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-3 bg-white dark:bg-[#001F3F] text-[#006A6A] font-semibold py-3 px-6 rounded-r-full shadow-sm border-l-4 border-secondary transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">sync_alt</span>
+<span>Circulation</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">bookmark_manager</span>
+<span>Reservations</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Catalog</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Copies/Items</span>
+</a>
+<div class="my-4 border-t border-surface-variant opacity-50 mx-6"></div>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">mop</span>
+<span>Data Cleanup</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>Scientific Repository</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">newspaper</span>
+<span>News</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span>Messages</span>
+</a>
+</div>
+<div class="mt-auto px-4 pb-4 space-y-1">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 py-3 px-6 hover:pl-8 hover:text-[#006A6A] transition-all duration-500 rounded-lg" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span>Help</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface">
+<!-- TopNavBar (Shared Component Mobile Fallback / Header Area) -->
+<header class="bg-[#F8F9FA]/80 dark:bg-[#000613]/80 backdrop-blur-md text-[#001F3F] dark:text-slate-100 font-serif text-2xl font-medium tracking-tight docked full-width top-0 sticky z-40 flat no shadows flex justify-between items-center px-8 py-4 w-full shadow-[0_4px_24px_rgba(0,0,0,0.02)] md:hidden">
+<div class="font-serif italic text-[#001F3F] dark:text-white text-xl">KazUTB Smart Library</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300 p-2 rounded-full scale-95 duration-300 ease-in-out">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300 p-2 rounded-full scale-95 duration-300 ease-in-out">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<div class="p-8 max-w-7xl mx-auto w-full flex-1 flex flex-col gap-8">
+<!-- Page Header -->
+<div class="flex items-baseline justify-between mb-4">
+<div>
+<h1 class="text-4xl font-headline text-primary mb-2">Circulation Desk</h1>
+<p class="text-on-surface-variant font-body">Manage checkouts, returns, and reader accounts.</p>
+</div>
+<div class="text-sm font-label text-on-surface-variant flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                    Desk Active: 09:00 - 18:00
+                </div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1">
+<!-- Left Column: Primary Actions & Scanning -->
+<div class="lg:col-span-5 flex flex-col gap-8">
+<!-- Unified Scan Panel -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_48px_rgba(0,31,63,0.04)] flex flex-col gap-6">
+<h2 class="font-headline text-2xl text-primary border-b border-surface-container-high pb-4">Rapid Scan</h2>
+<div class="space-y-6">
+<!-- Reader Scan -->
+<div class="relative bg-surface-container-low p-4 rounded-lg ghost-border focus-border">
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase tracking-wider">Reader ID / Barcode</label>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">badge</span>
+<input autofocus="" class="w-full bg-transparent border-none focus:ring-0 text-primary font-body text-lg placeholder-outline-variant p-0" placeholder="Scan or type ID..." type="text"/>
+</div>
+</div>
+<!-- Item Scan -->
+<div class="relative bg-surface-container-low p-4 rounded-lg ghost-border focus-border">
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase tracking-wider">Item Barcode</label>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">barcode_scanner</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-primary font-body text-lg placeholder-outline-variant p-0" placeholder="Scan item barcode..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-4 mt-2">
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-md font-medium text-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">outbox</span>
+                                Issue
+                            </button>
+<button class="bg-surface-container text-primary py-4 rounded-md font-medium text-lg flex items-center justify-center gap-2 hover:bg-surface-container-high transition-colors ghost-border">
+<span class="material-symbols-outlined">move_to_inbox</span>
+                                Return
+                            </button>
+</div>
+</div>
+<!-- Quick Lookup / Recent History Minimal List -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_48px_rgba(0,31,63,0.04)] flex-1">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline text-xl text-primary">Recent Transactions</h2>
+<button class="text-secondary text-sm font-medium hover:underline">View All</button>
+</div>
+<div class="space-y-4">
+<!-- List Item -->
+<div class="flex items-start gap-4 p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-sm">outbox</span>
+</div>
+<div class="flex-1">
+<p class="font-medium text-primary text-sm group-hover:text-secondary transition-colors">Principles of Economics</p>
+<p class="text-xs text-on-surface-variant">Issued to: Aibek N. (ID: 9482) • 2m ago</p>
+</div>
+</div>
+<!-- List Item -->
+<div class="flex items-start gap-4 p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-sm">move_to_inbox</span>
+</div>
+<div class="flex-1">
+<p class="font-medium text-primary text-sm group-hover:text-secondary transition-colors">Data Structures in C++</p>
+<p class="text-xs text-on-surface-variant">Returned by: Zhanel T. (ID: 1104) • 15m ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Active Context (Reader or Item Details) -->
+<div class="lg:col-span-7 flex flex-col gap-8">
+<!-- Active Reader Profile Canvas -->
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_4px_48px_rgba(0,31,63,0.04)] flex-1 flex flex-col">
+<!-- Empty State (Shown when no reader is scanned) -->
+<div class="hidden flex-1 flex-col items-center justify-center text-center opacity-60">
+<span class="material-symbols-outlined text-6xl text-outline mb-4" style="font-variation-settings: 'wght' 200;">document_scanner</span>
+<h3 class="font-headline text-2xl text-primary mb-2">Ready for Scan</h3>
+<p class="font-body text-on-surface-variant max-w-sm">Scan a reader ID or item barcode to load details and begin a transaction.</p>
+</div>
+<!-- Active State (Mockup data) -->
+<div class="flex-1 flex flex-col">
+<!-- Header Profile -->
+<div class="flex items-start gap-6 pb-8 border-b border-surface-container-high mb-8">
+<div class="w-24 h-24 rounded-lg bg-surface-container-high overflow-hidden shrink-0 relative">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="professional headshot of a young woman with dark hair in a neutral studio setting soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf7FX87n9ulWXwTmbVc3LXh9VG2fh9M4MToWRPuPjkumPLhHTk3Llgh0kR9omJsG8V1W_mIwzSGJBeFJpiUtLyxo8LcqC_qUzbcuX72qu4U6Ri7fxEqpYB-XkJ9UcNJYW7mUxvSsCBxiV8fU-Twp5OpK1QfRu2F7B492yktZzGDU3oj0XXm1Uemx5UtmPUQaSmY5apKOQmGCAYznHr0sA07WkGrFCVa9XAqVk0AEmOw4HJyUJwfGwY3tpSDBjzv3aaURuGgXZkpH6P"/>
+<div class="absolute bottom-0 inset-x-0 h-1 bg-secondary"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline text-3xl text-primary mb-1">Aruzhan Kasymova</h2>
+<p class="text-on-surface-variant font-medium text-sm flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[16px]">school</span> Undergraduate • Computer Science
+                                            </p>
+</div>
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                                            Active
+                                        </div>
+</div>
+<div class="flex gap-6 mt-2 text-sm">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-0.5">Reader ID</span>
+<span class="font-mono font-medium text-primary">KUTB-2021-4829</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-0.5">Limit</span>
+<span class="font-medium text-primary">2 / 5 Items</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-error uppercase tracking-wider mb-0.5">Fines</span>
+<span class="font-medium text-error">0.00 KZT</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Current Loans section -->
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline text-xl text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">library_books</span>
+                                    Current Loans (2)
+                                </h3>
+<div class="space-y-4">
+<!-- Loan Item Card -->
+<div class="bg-surface border-l-4 border-secondary p-5 rounded-r-lg flex justify-between items-center group transition-colors hover:bg-surface-container-low">
+<div class="flex gap-4 items-center">
+<div class="w-12 h-16 bg-surface-container-high rounded overflow-hidden shadow-sm shrink-0">
+<img alt="Book Cover" class="w-full h-full object-cover opacity-80" data-alt="minimalist abstract book cover design with geometric shapes in navy and teal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSnYWWRMOBY7RDvpk2nm9Fj3QRRgGKv90_D7ziLx25fwc-6VKvIQIK_MfztGgMa5fMLzGdt4J6bX4KzdT3QYbtA-sG2vJFTcPzGEEK7HWrLtP2wg2oT_YzMklmYoD40DquHb-A3BCl8buaZsF93MCjzfTHZDp_vU6Do6Rl06yMriN6oNOUz1f7b9lUhOf_YEYhHcgUJVZIbWrT1Tl6uoS6gLXVb6EjOwtwhtZgN1LpGrpR9hBDQFpMWQloBoSlx8hpxhff90CHHfyo"/>
+</div>
+<div>
+<h4 class="font-bold text-primary text-base group-hover:text-secondary transition-colors cursor-pointer">Operating System Concepts</h4>
+<p class="text-xs text-on-surface-variant mb-1">Silberschatz, A. • Barcode: 10048291</p>
+<div class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">event</span>
+                                                    Due: Oct 24, 2023 (in 5 days)
+                                                </div>
+</div>
+</div>
+<button class="px-4 py-2 text-sm font-medium text-primary hover:bg-surface-variant rounded transition-colors ghost-border">
+                                            Renew
+                                        </button>
+</div>
+<!-- Loan Item Card (Overdue) -->
+<div class="bg-error-container/20 border-l-4 border-error p-5 rounded-r-lg flex justify-between items-center group transition-colors hover:bg-error-container/30">
+<div class="flex gap-4 items-center">
+<div class="w-12 h-16 bg-surface-container-high rounded overflow-hidden shadow-sm shrink-0">
+<img alt="Book Cover" class="w-full h-full object-cover opacity-80" data-alt="vintage book cover with elegant serif typography on textured cream paper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIMCzQjmU-y-1NRPRJVlSbXpagTEG2aAuE3kkCboY_6DT-ffqnFd09IXg3croWhHPUJzTAfJFm-QR4AcHOkDKxQBc1nSCvdghHenzZ6olkBn3Yhebc9YjKiHj7msZLnkpfh-L1Rn6uIwfb9KXlvOEF8Kcbwy0PPfERAQ6tAWsLNiwnvzq74L4cRDKZKWZgSB7Rv_h7a_jxt7NDgvXzMm80bYv3cEpsn-N4CjOpIoYXxHh2YAWKAoB1V9cOkgZhDvZIbWbz_4nqjFE2"/>
+</div>
+<div>
+<h4 class="font-bold text-primary text-base cursor-pointer">Introduction to Algorithms</h4>
+<p class="text-xs text-on-surface-variant mb-1">Cormen, T. • Barcode: 10039284</p>
+<div class="flex items-center gap-2 text-xs font-bold text-error">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                                                    Overdue: Oct 15, 2023 (4 days late)
+                                                </div>
+</div>
+</div>
+<button class="px-4 py-2 text-sm font-medium text-primary hover:bg-surface-variant rounded transition-colors ghost-border">
+                                            Return
+                                        </button>
+</div>
+</div>
+</div>
+<!-- Bottom Action Row within context -->
+<div class="mt-8 pt-6 border-t border-surface-container-high flex justify-end gap-4">
+<button class="text-primary px-6 py-2 rounded font-medium hover:bg-surface-container-high transition-colors text-sm">Clear Session</button>
+<button class="text-secondary px-6 py-2 rounded font-medium hover:bg-secondary/10 transition-colors text-sm ghost-border">View Full Profile</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
