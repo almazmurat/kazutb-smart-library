@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>News &amp; Announcements Management - KazUTB Smart Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:opsz,wght@6..72,400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f8f9fa",
+                      "secondary-fixed": "#93f2f2",
+                      "primary-fixed": "#d4e3ff",
+                      "on-secondary-container": "#006e6e",
+                      "on-primary-fixed": "#001c3a",
+                      "surface-container": "#edeeef",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#2e3132",
+                      "error": "#ba1a1a",
+                      "on-surface": "#191c1d",
+                      "surface-dim": "#d9dadb",
+                      "primary-fixed-dim": "#afc8f0",
+                      "tertiary-fixed-dim": "#b5c8df",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed": "#091d2e",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#36485b",
+                      "surface-container-high": "#e7e8e9",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-container": "#76889d",
+                      "background": "#f8f9fa",
+                      "on-secondary-fixed": "#002020",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c4c6cf",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-surface-variant": "#43474e",
+                      "surface-tint": "#476083",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#6f88ad",
+                      "secondary-container": "#90efef",
+                      "secondary": "#006a6a",
+                      "outline": "#74777f",
+                      "primary": "#000613",
+                      "tertiary-fixed": "#d1e4fb",
+                      "inverse-primary": "#afc8f0",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e1e3e4",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-secondary-fixed-variant": "#004f4f",
+                      "on-background": "#191c1d",
+                      "tertiary-container": "#0d2031",
+                      "on-primary-fixed-variant": "#2f486a",
+                      "primary-container": "#001f3f",
+                      "secondary-fixed-dim": "#76d6d5",
+                      "surface-container-low": "#f3f4f5",
+                      "tertiary": "#000610"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Newsreader"
+                      ],
+                      "body": [
+                              "Manrope"
+                      ],
+                      "label": [
+                              "Manrope"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          body {
+              background-color: theme('colors.surface');
+              color: theme('colors.on-surface');
+          }
+      </style>
+</head>
+<body class="font-body antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-[#F8F9FA] dark:bg-[#000613] text-[#001F3F] dark:text-[#F8F9FA] font-['Manrope'] body-lg font-medium h-screen w-72 flex-col fixed left-0 top-0 bg-surface-container-lowest shadow-none flex flex-col h-full border-r-0 border-transparent z-40 hidden md:flex">
+<!-- Header -->
+<div class="px-6 py-8">
+<div class="flex items-center gap-3 mb-6">
+<img alt="KazUTB Institutional Seal" class="w-10 h-10 rounded-full object-cover" data-alt="Classic academic university seal embossed in dark navy and gold on textured paper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7an35KEKW314xnAd6uX_V6CvkvKt9pWflMpUJWZRoEUO5vDvvHQyNsWCmpIyvB2VvBTXr5Cp2kzR1gMMLFSvypkLvh-JmL-qF3uZgetckh5doUAUy9tPo5mE5cKQiJSCpgGs5RMpGpeUyB2erk_ceIkGNR6YZhbfcC66D9DQ-x6OHvwEW4685rwyz1Kuu1xCyOvLlSI5i06gASmX1cI1MVa5QjdCZsiiIgS70O99GS8AktUZHafcm6KYx36AFvDZI4gkXUipEIL30"/>
+<div>
+<h1 class="font-['Newsreader'] text-2xl font-black text-[#001F3F] leading-tight">Admin Portal</h1>
+<p class="text-sm opacity-70">High-Control Governance</p>
+</div>
+</div>
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-3 rounded-md font-semibold hover:opacity-90 transition-opacity ease-in-out duration-300">New Collection</button>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 overflow-y-auto py-4">
+<ul class="space-y-1">
+<li>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                        Governance Dashboard
+                    </a>
+</li>
+<li>
+<a class="bg-[#001F3F] text-white dark:bg-[#006A6A] rounded-md mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300" href="#">
+<span class="material-symbols-outlined">library_books</span>
+                        Collection Management
+                    </a>
+</li>
+<li>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined">group</span>
+                        Patron Directory
+                    </a>
+</li>
+<li>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined">payments</span>
+                        Acquisition Flows
+                    </a>
+</li>
+<li>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                        Scholarly Analytics
+                    </a>
+</li>
+<li>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined">settings_suggest</span>
+                        System Settings
+                    </a>
+</li>
+</ul>
+</div>
+<!-- Footer Navigation -->
+<div class="px-2 py-4 mb-4">
+<ul class="space-y-1">
+<li>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                        Archive Access
+                    </a>
+</li>
+<li>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 flex items-center gap-4 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 ease-in-out duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined">logout</span>
+                        Logout
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-72 flex flex-col h-screen overflow-y-auto bg-surface relative">
+<!-- TopNavBar (Mobile Only for Shell, but we need a header here) -->
+<header class="md:hidden bg-white/80 dark:bg-[#000613]/80 backdrop-blur-xl text-[#001F3F] dark:text-[#F8F9FA] font-['Newsreader'] tracking-tight headline-md docked full-width top-0 sticky bg-surface-container-low no-border shadow-sm shadow-[#001F3F]/5 flex justify-between items-center w-full px-8 py-3 z-50">
+<div class="font-['Newsreader'] text-xl font-bold text-[#001F3F] dark:text-[#F8F9FA]">KazUTB Smart Library</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-[#F8F9FA] dark:hover:bg-[#001F3F] transition-colors duration-300 p-2 rounded-full scale-98 active:opacity-80 transition-all text-[#191C1D] dark:text-[#F8F9FA]/70">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img alt="Administrator Profile" class="w-8 h-8 rounded-full" data-alt="Professional portrait of a librarian administrator in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4uVNNK9T_j04mbIULjxWLm0yXVD-WRAJTt6p_sCcb94l9XS0brWnJV8Drp47IeEZOUMwboADbMggvt7qec2qi3g7eyy6AcLsDc5L2l1wxfpExOYgleOx4HsJlDcuXlWr-TgA5yDCXm7R_2QSxzii1dKS_7LZOV3S2F7XWHlyco2Tq6retuYJJlFttGXzmr2fDsRPfL9ZJA_RTqA8W-WgU13Pj16mh0mCzRUKGMYxh_Fd4UGMw6C8Gs7LzZ7twySSJb8IUSzxMGBSS"/>
+</div>
+</header>
+<div class="max-w-7xl mx-auto w-full px-6 py-12 lg:px-12 xl:px-20">
+<!-- Page Header (Editorial Asymmetry) -->
+<div class="mb-16 md:ml-12 border-l-[3px] border-secondary pl-8 py-2">
+<p class="font-body text-sm font-semibold tracking-wider text-secondary uppercase mb-2">Editorial Desk</p>
+<h1 class="font-headline text-5xl md:text-6xl text-primary leading-tight font-bold max-w-3xl">News &amp; Announcements</h1>
+<p class="font-body text-lg text-on-surface-variant mt-4 max-w-2xl leading-relaxed">Curate institutional updates, academic achievements, and library advisories. Content structured here reflects the high-trust authority of KazUTB.</p>
+</div>
+<!-- Bento Layout Content -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative">
+<!-- Left Column: Content List (The Ledger) -->
+<div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+<!-- Controls Row -->
+<div class="flex items-center justify-between mb-2">
+<h2 class="font-headline text-2xl text-primary font-semibold">Publication Ledger</h2>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-sm font-body text-primary hover:text-secondary transition-colors px-4 py-2 bg-surface-container-low rounded-md">
+<span class="material-symbols-outlined text-base">filter_list</span>
+                                Filter
+                            </button>
+<div class="relative">
+<input class="bg-surface-container-highest border-b border-outline-variant/20 focus:border-secondary focus:ring-0 text-sm font-body px-4 py-2 rounded-t-md w-48 transition-all" placeholder="Search entries..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant text-sm">search</span>
+</div>
+</div>
+</div>
+<!-- List Items (Tonal Stacking) -->
+<article class="bg-surface-container-lowest p-6 rounded-lg transition-all duration-300 hover:bg-surface-container-high group cursor-pointer">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container-high text-primary">Published</span>
+<span class="text-xs font-body text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined" style="font-size: 14px;">calendar_today</span>
+                                        Oct 24, 2023
+                                    </span>
+<span class="text-xs font-body text-secondary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined" style="font-size: 14px;">campaign</span>
+                                        Homepage Featured
+                                    </span>
+</div>
+<h3 class="font-headline text-xl text-primary font-semibold mb-2 group-hover:text-secondary transition-colors">Digital Humanities Symposium: Call for Papers</h3>
+<p class="font-body text-sm text-on-surface-variant line-clamp-2 leading-relaxed">The library will host the annual symposium focusing on the intersection of data science and historical archives. Submissions are open to all graduate researchers.</p>
+</div>
+<div class="flex-shrink-0 relative">
+<img alt="Symposium announcement cover" class="w-24 h-24 object-cover rounded-md opacity-90 group-hover:opacity-100 transition-opacity" data-alt="Abstract academic visual with soft geometric shapes in navy and teal on textured paper background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1BUVMpEWR22_POc0PoC0Xgl8pkp0LhuKDh6JAxgLwHM5_VwtC61BPU5rvd98azJkzIKLCkUfp6hCDYEaKXg68pclVYHM-BQMPilmmcu1_swn9c_iW-Ehe57QY45rDXCVhcDWAp_ygz76GVZHwCXTrQg7m6GK2oCmYEXw2niOYnJnuGl_lwZYAdOGI9YUOZROtOGS5XbFr6BUbsYpoY9wYUUy--OfcpxlSv96hdOXKxmLOmIpRrq33j0V9iOeBuQy3l9oKIPT2AUeb"/>
+</div>
+</div>
+</article>
+<article class="bg-surface-container-lowest p-6 rounded-lg transition-all duration-300 hover:bg-surface-container-high group cursor-pointer relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-outline-variant/30"></div>
+<div class="flex items-start justify-between gap-4 pl-2">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">Draft</span>
+<span class="text-xs font-body text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined" style="font-size: 14px;">edit</span>
+                                        Last edited 2 hrs ago
+                                    </span>
+</div>
+<h3 class="font-headline text-xl text-primary font-semibold mb-2 group-hover:text-secondary transition-colors">Revised Access Protocols for Rare Books Collection</h3>
+<p class="font-body text-sm text-on-surface-variant line-clamp-2 leading-relaxed">Due to preservation concerns, physical access to the 18th-century manuscript collection will require advanced booking and faculty sponsorship starting next semester.</p>
+</div>
+</div>
+</article>
+<article class="bg-surface-container-lowest p-6 rounded-lg transition-all duration-300 hover:bg-surface-container-high group cursor-pointer">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container-high text-primary">Published</span>
+<span class="text-xs font-body text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined" style="font-size: 14px;">calendar_today</span>
+                                        Oct 15, 2023
+                                    </span>
+</div>
+<h3 class="font-headline text-xl text-primary font-semibold mb-2 group-hover:text-secondary transition-colors">Extended Finals Week Hours &amp; Support Services</h3>
+<p class="font-body text-sm text-on-surface-variant line-clamp-2 leading-relaxed">The main reading room will remain open 24/7 during finals week. Additional research consultation slots have been added to the schedule.</p>
+</div>
+</div>
+</article>
+<div class="flex justify-center mt-8">
+<button class="font-body text-sm text-primary hover:text-secondary font-semibold transition-colors flex items-center gap-2">
+                            Load Previous Entries
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Right Column: The "Scholar's Drawer" Form -->
+<div class="lg:col-span-5 xl:col-span-4">
+<div class="sticky top-8 bg-surface-container-lowest/80 backdrop-blur-xl p-8 rounded-xl shadow-[0_24px_48px_-12px_rgba(0,6,19,0.04)] h-fit">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline text-2xl text-primary font-semibold">Compose Dispatch</h2>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="space-y-6">
+<!-- Title Input (Ghost Border) -->
+<div>
+<label class="block text-xs font-body text-on-surface-variant mb-1 font-semibold uppercase tracking-wider" for="title">Headline</label>
+<input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 font-headline text-xl text-primary px-0 py-3 transition-colors bg-transparent" id="title" placeholder="Enter formal title..." type="text"/>
+</div>
+<!-- Content Area -->
+<div>
+<label class="block text-xs font-body text-on-surface-variant mb-2 font-semibold uppercase tracking-wider" for="content">Editorial Content</label>
+<div class="bg-surface-container-low rounded-md p-2 mb-2 flex gap-2 border-b border-outline-variant/10">
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-sm">format_bold</span></button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-sm">format_italic</span></button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-sm">link</span></button>
+<div class="w-px bg-outline-variant/20 my-1 mx-1"></div>
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-sm">format_list_bulleted</span></button>
+</div>
+<textarea class="w-full bg-transparent border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 font-body text-sm text-primary px-0 py-2 resize-none" id="content" placeholder="Draft the announcement..." rows="8"></textarea>
+</div>
+<!-- Metadata & Toggles -->
+<div class="space-y-4 pt-4 border-t border-outline-variant/10">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-body font-semibold text-primary">Feature on Homepage</p>
+<p class="text-xs font-body text-on-surface-variant">Pin to the main library dashboard.</p>
+</div>
+<!-- Custom Toggle (No standard input styling) -->
+<button class="w-11 h-6 bg-surface-container-high rounded-full relative transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-secondary/50" type="button">
+<span class="absolute left-1 top-1 w-4 h-4 bg-outline rounded-full transition-transform duration-300"></span>
+</button>
+</div>
+<div>
+<label class="block text-xs font-body text-on-surface-variant mb-2 font-semibold uppercase tracking-wider">Category Tag</label>
+<select class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 font-body text-sm text-primary px-0 py-2 bg-transparent">
+<option>General Advisory</option>
+<option>Academic Event</option>
+<option>Collection Update</option>
+<option>System Maintenance</option>
+</select>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-4 pt-6">
+<button class="flex-1 bg-transparent border border-outline-variant/20 text-secondary font-body font-semibold py-3 rounded-md hover:bg-surface-variant transition-colors text-sm" type="button">
+                                    Save Draft
+                                </button>
+<button class="flex-1 bg-gradient-to-r from-primary to-primary-container text-on-primary font-body font-semibold py-3 rounded-md hover:opacity-90 transition-opacity text-sm" type="button">
+                                    Publish
+                                </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -426,10 +426,7 @@ Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin
     })->name('logs');
 
     Route::get('/news', function (Request $request) use ($adminView) {
-        return $adminView($request, 'admin.placeholder', [
-            'title' => 'News Management',
-            'description' => 'Phase 2 management surface for institutional announcements and controlled publishing.',
-        ]);
+        return $adminView($request, 'admin.news');
     })->name('news');
 
     Route::get('/feedback', function (Request $request) use ($adminView) {

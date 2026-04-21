@@ -51,9 +51,34 @@ class AdminOverviewPageTest extends TestCase
 
     public function test_admin_follow_on_placeholders_render_for_admin_session(): void
     {
-        $this->withSession($this->staffSession('admin'))->get('/admin/news')->assertOk()->assertSee('News Management', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/settings')->assertOk()->assertSee('System Settings', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/reports')->assertOk()->assertSee('Reports &amp; Analytics', false);
+    }
+
+    public function test_admin_news_page_renders_editorial_management_surface(): void
+    {
+        $response = $this->withSession($this->staffSession('admin'))->get('/admin/news');
+
+        $response->assertOk()
+            ->assertSee('Editorial Desk', false)
+            ->assertSee('News &amp; Announcements', false)
+            ->assertSee('Publication Ledger', false)
+            ->assertSee('Compose Dispatch', false)
+            ->assertSee('Published', false)
+            ->assertSee('Draft', false)
+            ->assertSee('Scheduled', false)
+            ->assertSee('Archived', false)
+            ->assertSee('Event', false)
+            ->assertSee('Announcement', false)
+            ->assertSee('Update', false)
+            ->assertSee('Schedule / Meeting', false)
+            ->assertSee('Digital Humanities Symposium', false)
+            ->assertSee('Revised Access Protocols', false)
+            ->assertSee('Extended Reading Hall Hours', false)
+            ->assertSee('Faculty Librarians Council', false)
+            ->assertSee('Feature on Homepage', false)
+            ->assertSee('Save Draft', false)
+            ->assertSee('Publish', false);
     }
 
     public function test_admin_feedback_page_renders_two_column_inbox_surface(): void
