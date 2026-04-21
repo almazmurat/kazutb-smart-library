@@ -33,23 +33,20 @@
       [
           'label' => 'History',
           'icon' => 'history',
-          'href' => '#',
-          'active' => false,
-          'disabled' => true,
+          'href' => route('member.history'),
+          'active' => request()->routeIs('member.history'),
       ],
       [
           'label' => 'Notifications',
           'icon' => 'notifications',
-          'href' => '#',
-          'active' => false,
-          'disabled' => true,
+          'href' => route('member.notifications'),
+          'active' => request()->routeIs('member.notifications'),
       ],
       [
           'label' => 'Messages',
           'icon' => 'chat_bubble',
-          'href' => '#',
-          'active' => false,
-          'disabled' => true,
+          'href' => route('member.messages'),
+          'active' => request()->routeIs('member.messages'),
       ],
   ];
 @endphp

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Borrowing History - Athenaeum Digital</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f3f4f5",
+                      "primary-container": "#001f3f",
+                      "on-tertiary": "#ffffff",
+                      "secondary": "#006a6a",
+                      "on-secondary-container": "#006e6e",
+                      "on-tertiary-container": "#76889d",
+                      "on-secondary-fixed-variant": "#004f4f",
+                      "background": "#f8f9fa",
+                      "primary": "#000613",
+                      "surface-tint": "#476083",
+                      "outline-variant": "#c4c6cf",
+                      "tertiary-fixed": "#d1e4fb",
+                      "tertiary-container": "#0d2031",
+                      "surface-variant": "#e1e3e4",
+                      "surface-container-high": "#e7e8e9",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed-dim": "#afc8f0",
+                      "on-tertiary-fixed-variant": "#36485b",
+                      "surface": "#f8f9fa",
+                      "inverse-surface": "#2e3132",
+                      "on-surface-variant": "#43474e",
+                      "surface-bright": "#f8f9fa",
+                      "on-primary-container": "#6f88ad",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#93f2f2",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#b5c8df",
+                      "on-tertiary-fixed": "#091d2e",
+                      "surface-dim": "#d9dadb",
+                      "on-surface": "#191c1d",
+                      "tertiary": "#000610",
+                      "on-background": "#191c1d",
+                      "on-secondary-fixed": "#002020",
+                      "secondary-container": "#90efef",
+                      "primary-fixed": "#d4e3ff",
+                      "secondary-fixed-dim": "#76d6d5",
+                      "on-error": "#ffffff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-primary-fixed": "#001c3a",
+                      "surface-container": "#edeeef",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed-variant": "#2f486a",
+                      "surface-container-highest": "#e1e3e4",
+                      "error": "#ba1a1a",
+                      "outline": "#74777f",
+                      "inverse-primary": "#afc8f0",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Newsreader", "serif"
+                      ],
+                      "body": [
+                              "Manrope", "sans-serif"
+                      ],
+                      "label": [
+                              "Manrope", "sans-serif"
+                      ]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen flex flex-col pt-20 pl-0 md:pl-72">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-lg shadow-[0_24px_48px_rgba(0,31,63,0.04)] text-on-surface flex justify-between items-center px-12 h-20 transition-all ease-in-out duration-300">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-headline italic tracking-tight text-primary">Athenaeum Digital</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex bg-surface-container-high rounded-DEFAULT px-4 py-2 items-center gap-2 outline-variant/20 border-b border-outline-variant/20">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-body text-on-surface placeholder:text-on-surface-variant w-64" placeholder="Search library..." type="text"/>
+</div>
+<button class="hover:text-secondary transition-colors duration-300 text-on-surface">
+<span class="material-symbols-outlined text-2xl" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar Component -->
+<nav class="hidden md:flex flex-col py-8 space-y-2 fixed left-0 top-20 h-[calc(100vh-5rem)] w-72 bg-surface text-on-surface z-40">
+<div class="px-8 pb-8 mb-4">
+<h2 class="font-headline text-xl text-primary">Library Access</h2>
+<p class="font-body text-sm text-on-surface-variant mt-1">The Scholar's Portal</p>
+</div>
+<div class="flex flex-col gap-1 px-4">
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high/50 hover:pl-6 transition-all duration-300 ease-out font-label text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high/50 hover:pl-6 transition-all duration-300 ease-out font-label text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="book_online">book_online</span>
+<span>Reservations</span>
+</a>
+<!-- Active State: History -->
+<a class="flex items-center gap-4 px-4 py-3 text-secondary font-bold border-r-2 border-secondary bg-surface-container-high/30 hover:pl-6 transition-all duration-300 ease-out font-label text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="history" data-weight="fill" style="font-variation-settings: 'FILL' 1;">history</span>
+<span>History</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high/50 hover:pl-6 transition-all duration-300 ease-out font-label text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="bookmark">bookmark</span>
+<span>My Shortlist</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high/50 hover:pl-6 transition-all duration-300 ease-out font-label text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="notifications">notifications</span>
+<span>Notifications</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high/50 hover:pl-6 transition-all duration-300 ease-out font-label text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span>
+<span>Messages</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-6xl mx-auto px-6 py-12 md:px-12">
+<!-- Header Section -->
+<div class="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div class="max-w-2xl pl-0 md:pl-8 border-l-0 md:border-l-4 border-transparent md:border-secondary/20">
+<h1 class="font-headline text-5xl md:text-[3.5rem] leading-tight text-primary mb-4 tracking-tight">Borrowing History</h1>
+<p class="font-body text-lg text-on-surface-variant leading-relaxed">A chronological archive of your academic requisitions, research materials, and intellectual pursuits.</p>
+</div>
+<!-- Filter/Sort Utility -->
+<div class="flex gap-4">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-DEFAULT border-b border-outline-variant/20 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">filter_list</span>
+<span class="font-label text-sm text-on-surface">Filter by Date</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-DEFAULT border-b border-outline-variant/20 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">sort</span>
+<span class="font-label text-sm text-on-surface">Sort Chronological</span>
+</div>
+</div>
+</div>
+<!-- Academic Timeline Structure -->
+<div class="space-y-16">
+<!-- Year Group: 2024 -->
+<section class="relative">
+<h2 class="font-headline text-2xl text-on-surface-variant mb-8 pl-0 md:pl-12 opacity-80">Autumn Term 2024</h2>
+<div class="space-y-8 pl-0 md:pl-12">
+<!-- Item 1 -->
+<article class="group bg-surface-container-low p-8 rounded-lg hover:bg-surface-container-lowest transition-all duration-500 ease-out shadow-[0_4px_24px_rgba(0,31,63,0.02)] hover:shadow-[0_12px_48px_rgba(0,31,63,0.06)] relative overflow-hidden flex flex-col md:flex-row gap-8">
+<div class="flex-shrink-0 w-32 h-48 bg-surface-variant rounded-DEFAULT overflow-hidden shadow-sm">
+<img alt="Book cover" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" data-alt="Classic leather bound book with gold foil lettering on dark wood table soft warm directional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_8Ato9FK6HacRzNuabOkmMg1eDZAKbDevMIwROBr6ahDVxmpzb2z5zy65E5xGNNuKy9rs9LmTkmCpn89ScnGwnTYdPVLLR8QOT5al_d7x1iL_UMcW9Cp0h87qJAoLp6b26yRZZgxtNC3xYBDvJYPxrzdxLYzJydXXlhXBGvj4Ds_mFw1D350eM7MB93sQF_D7qx4gxgX4dMxDX9K0J0PpWon3mzS6FClwp5OSc3HEfZi5fTk6VFaeUw0OiWwHdpA-_rE7bltmw8ed"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline text-2xl text-primary leading-tight">The Architecture of Complexity</h3>
+<span class="inline-flex items-center px-3 py-1 bg-surface-container-high rounded-full font-label text-xs text-on-surface-variant">
+                                        Returned
+                                    </span>
+</div>
+<p class="font-body text-base text-on-surface-variant mb-4">Herbert A. Simon • First Edition, 1962</p>
+<div class="grid grid-cols-2 gap-4 max-w-sm mb-6">
+<div>
+<p class="font-label text-xs text-on-surface-variant mb-1 uppercase tracking-wider">Borrowed</p>
+<p class="font-body text-sm text-on-surface">Oct 12, 2024</p>
+</div>
+<div>
+<p class="font-label text-xs text-on-surface-variant mb-1 uppercase tracking-wider">Returned</p>
+<p class="font-body text-sm text-on-surface">Nov 04, 2024</p>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="font-label text-sm text-secondary hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+                                    Request Again
+                                </button>
+<button class="font-label text-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">format_quote</span>
+                                    Cite
+                                </button>
+</div>
+</div>
+</article>
+<!-- Item 2 -->
+<article class="group bg-surface-container-lowest p-8 rounded-lg transition-all duration-500 ease-out shadow-[0_12px_48px_rgba(0,31,63,0.06)] relative overflow-hidden flex flex-col md:flex-row gap-8 border-l-4 border-secondary">
+<div class="flex-shrink-0 w-32 h-48 bg-surface-variant rounded-DEFAULT overflow-hidden shadow-sm">
+<img alt="Book cover" class="w-full h-full object-cover transition-all duration-700" data-alt="Stack of modern typography journals with minimalist covers neutral background soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFycpT2ZVknaS4p1mUJN-xzjdkkF1Qjw6cIn1pmUjUFGq1Awoo0O7snXTFdP-sPiCjgM35dhhzL5JGmvggAKpkYQbpN3KC61l-B-znRNEvb1xSXOctm542KzDbYoVe9BGK4GpyAmc0SwLqMKH1AvA71T1Q0QTX78VIlw20fDnynGvDpZiJGx_nZTCA2t0hDpDoY3FPb_j6Zx6kUFYP27KfbN5JMnH7bRbbFS3CMAzCfnei4CRm_spPR_yByDH-3c98ZWij5pb8VI14"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline text-2xl text-primary leading-tight">Typographic Systems</h3>
+<span class="inline-flex items-center px-3 py-1 bg-secondary/10 text-secondary rounded-full font-label text-xs font-bold">
+                                        Currently Borrowed
+                                    </span>
+</div>
+<p class="font-body text-base text-on-surface-variant mb-4">Kimberly Elam • 2007</p>
+<div class="grid grid-cols-2 gap-4 max-w-sm mb-6">
+<div>
+<p class="font-label text-xs text-on-surface-variant mb-1 uppercase tracking-wider">Borrowed</p>
+<p class="font-body text-sm text-on-surface">Nov 01, 2024</p>
+</div>
+<div>
+<p class="font-label text-xs text-secondary mb-1 uppercase tracking-wider font-bold">Due Date</p>
+<p class="font-body text-sm text-primary font-medium">Nov 28, 2024</p>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="font-label text-sm text-on-surface bg-transparent border-b border-outline-variant/20 hover:border-secondary hover:text-secondary transition-colors px-1 pb-1">
+                                    Renew Loan
+                                </button>
+</div>
+</div>
+</article>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile (Hidden on md and up) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_-8px_24px_rgba(0,31,63,0.06)] z-50 flex justify-around items-center py-4 px-2 border-t border-outline-variant/10">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span class="font-label text-[10px] uppercase">Dash</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="book_online">book_online</span>
+<span class="font-label text-[10px] uppercase">Rsv</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary font-bold" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="history" data-weight="fill" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-label text-[10px] uppercase">Hist</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="bookmark">bookmark</span>
+<span class="font-label text-[10px] uppercase">Saved</span>
+</a>
+</nav>
+</body></html>

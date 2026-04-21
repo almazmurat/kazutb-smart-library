@@ -234,6 +234,18 @@
 </aside>
 
 <main data-member-dashboard-page class="ml-72 flex-grow min-h-screen">
+  <div role="status" aria-live="polite" class="mx-8 lg:mx-12 mt-6 mb-2 max-w-[1440px] md:mx-auto">
+    <div class="flex items-start md:items-center gap-3 bg-secondary/10 text-on-surface border border-secondary/20 rounded-md px-4 py-3">
+      <span class="material-symbols-outlined text-secondary text-xl" aria-hidden="true">auto_awesome</span>
+      <p class="text-sm md:text-base leading-snug flex-1">
+        This legacy reader workspace is being retired. The canonical KazUTB Smart Library experience now lives at <strong>My Library → /dashboard</strong>.
+      </p>
+      <a href="/dashboard" class="inline-flex items-center gap-1 text-sm font-medium text-secondary hover:text-primary transition-colors whitespace-nowrap">
+        Try the new dashboard
+        <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+      </a>
+    </div>
+  </div>
   <header class="w-full sticky top-0 z-40 backdrop-blur-md bg-opacity-90 bg-[#F8F9FA]">
     <div class="flex justify-between items-center px-8 lg:px-12 py-6 max-w-[1440px] mx-auto gap-4">
       <div class="flex items-center gap-8 lg:gap-12">

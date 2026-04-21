@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Athenaeum Digital - Notifications</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600;1,6..72,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f3f4f5",
+                    "primary-container": "#001f3f",
+                    "on-tertiary": "#ffffff",
+                    "secondary": "#006a6a",
+                    "on-secondary-container": "#006e6e",
+                    "on-tertiary-container": "#76889d",
+                    "on-secondary-fixed-variant": "#004f4f",
+                    "background": "#f8f9fa",
+                    "primary": "#000613",
+                    "surface-tint": "#476083",
+                    "outline-variant": "#c4c6cf",
+                    "tertiary-fixed": "#d1e4fb",
+                    "tertiary-container": "#0d2031",
+                    "surface-variant": "#e1e3e4",
+                    "surface-container-high": "#e7e8e9",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#afc8f0",
+                    "on-tertiary-fixed-variant": "#36485b",
+                    "surface": "#f8f9fa",
+                    "inverse-surface": "#2e3132",
+                    "on-surface-variant": "#43474e",
+                    "surface-bright": "#f8f9fa",
+                    "on-primary-container": "#6f88ad",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#93f2f2",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#b5c8df",
+                    "on-tertiary-fixed": "#091d2e",
+                    "surface-dim": "#d9dadb",
+                    "on-surface": "#191c1d",
+                    "tertiary": "#000610",
+                    "on-background": "#191c1d",
+                    "on-secondary-fixed": "#002020",
+                    "secondary-container": "#90efef",
+                    "primary-fixed": "#d4e3ff",
+                    "secondary-fixed-dim": "#76d6d5",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f0f1f2",
+                    "on-primary-fixed": "#001c3a",
+                    "surface-container": "#edeeef",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#2f486a",
+                    "surface-container-highest": "#e1e3e4",
+                    "error": "#ba1a1a",
+                    "outline": "#74777f",
+                    "inverse-primary": "#afc8f0",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": [
+                            "Newsreader"
+                    ],
+                    "body": [
+                            "Manrope"
+                    ],
+                    "label": [
+                            "Manrope"
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            font-family: theme('fontFamily.body');
+        }
+        .text-editorial {
+            font-family: theme('fontFamily.headline');
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col md:flex-row">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg bg-slate-50 dark:bg-slate-900 shadow-[0_24px_48px_rgba(0,31,63,0.04)] hidden md:flex justify-between items-center px-12 h-20">
+<div class="flex items-center gap-6">
+<div class="text-2xl font-serif italic text-slate-900 dark:text-slate-50 font-['Newsreader'] tracking-tight">Athenaeum Digital</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-slate-600 dark:text-slate-400 font-medium hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300 ease-in-out">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-slate-600 dark:text-slate-400 font-medium hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300 ease-in-out">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Mobile Header (Visible only on mobile) -->
+<header class="md:hidden fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md h-16 flex items-center justify-between px-4 border-b border-outline-variant/20">
+<div class="text-xl font-headline italic text-primary">Athenaeum Digital</div>
+<button class="text-on-surface">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-20 h-[calc(100vh-5rem)] w-72 bg-slate-50 dark:bg-slate-900 bg-white/50 dark:bg-slate-800/50 hidden md:flex flex-col py-8 space-y-2 z-40">
+<div class="px-8 mb-8">
+<h2 class="font-serif text-xl text-slate-900 dark:text-slate-50">Library Access</h2>
+<p class="font-['Manrope'] text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-1">The Scholar's Portal</p>
+</div>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300 ease-out font-['Manrope'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300 ease-out font-['Manrope'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="book_online">book_online</span>
+<span>Reservations</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300 ease-out font-['Manrope'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>History</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300 ease-out font-['Manrope'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span>My Shortlist</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-teal-700 dark:text-teal-400 font-bold border-r-2 border-teal-700 dark:border-teal-400 bg-teal-50/50 dark:bg-teal-900/20 font-['Manrope'] text-sm uppercase tracking-widest transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span>Notifications</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300 ease-out font-['Manrope'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span>Messages</span>
+</a>
+</nav>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md flex justify-around items-center h-16 pb-safe border-t border-outline-variant/20">
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[0.65rem] mt-1 font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">book_online</span>
+<span class="text-[0.65rem] mt-1 font-medium">Reserve</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-secondary font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="text-[0.65rem] mt-1 font-medium">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="text-[0.65rem] mt-1 font-medium">Saved</span>
+</a>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-72 mt-16 md:mt-20 px-4 md:px-12 py-8 md:py-16 max-w-6xl mx-auto w-full pb-24 md:pb-16">
+<!-- Page Header -->
+<div class="mb-16 md:mb-24 flex justify-between items-end">
+<div>
+<h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-headline text-primary tracking-tight leading-tight mb-4">Chronicle</h1>
+<p class="text-lg text-on-surface-variant font-body max-w-2xl">Updates, alerts, and access notices from the Athenaeum archives.</p>
+</div>
+<div class="hidden md:flex gap-4">
+<button class="text-secondary text-sm font-label uppercase tracking-widest hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">done_all</span>
+                    Mark all as read
+                </button>
+</div>
+</div>
+<!-- Filter/Tabs -->
+<div class="flex gap-8 mb-12 border-b border-outline-variant/20 pb-4 overflow-x-auto no-scrollbar">
+<button class="text-primary font-bold text-sm tracking-wider uppercase whitespace-nowrap relative">
+                All Alerts
+                <span class="absolute -bottom-4 left-0 w-full h-[2px] bg-secondary"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors text-sm font-medium tracking-wider uppercase whitespace-nowrap">
+                Reservations
+            </button>
+<button class="text-on-surface-variant hover:text-primary transition-colors text-sm font-medium tracking-wider uppercase whitespace-nowrap">
+                Access Notices
+            </button>
+<button class="text-on-surface-variant hover:text-primary transition-colors text-sm font-medium tracking-wider uppercase whitespace-nowrap">
+                System
+            </button>
+</div>
+<!-- Timeline / Feed -->
+<div class="space-y-12">
+<!-- Date Group: Today -->
+<div class="relative">
+<div class="sticky top-20 md:top-24 z-10 bg-surface/90 backdrop-blur-sm py-4 mb-6">
+<h2 class="text-sm font-label uppercase tracking-widest text-on-surface-variant">Today, October 24</h2>
+</div>
+<div class="space-y-6">
+<!-- Notification Item: Unread, Actionable -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_24px_48px_rgba(0,6,19,0.02)] transition-colors duration-500 hover:bg-surface-container-low flex gap-6 relative overflow-hidden group">
+<!-- Unread Indicator -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary-container/5 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">book_online</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-lg font-headline font-medium text-primary">Reservation Ready</h3>
+<span class="text-xs text-on-surface-variant font-label">10:42 AM</span>
+</div>
+<p class="text-on-surface text-base mb-4">Your requested volume, <span class="italic font-headline">The Architecture of Silence</span>, has been retrieved from the vault and is awaiting pickup at the Main Circulation Desk.</p>
+<div class="flex gap-4">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
+                                    View Details
+                                </button>
+<button class="text-on-surface-variant border-b border-outline-variant/20 hover:text-primary hover:border-primary transition-colors px-2 py-2 text-sm font-medium">
+                                    Cancel Request
+                                </button>
+</div>
+</div>
+</div>
+<!-- Notification Item: Unread, Informational -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_24px_48px_rgba(0,6,19,0.02)] transition-colors duration-500 hover:bg-surface-container-low flex gap-6 relative overflow-hidden group">
+<!-- Unread Indicator -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lock_open</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-lg font-headline font-medium text-primary">New Digital Access Granted</h3>
+<span class="text-xs text-on-surface-variant font-label">08:15 AM</span>
+</div>
+<p class="text-on-surface text-base">You now have complete access to the newly digitized <span class="italic font-headline">19th Century Botanical Illustrations</span> collection.</p>
+<div class="mt-4">
+<a class="text-secondary hover:text-primary transition-colors text-sm font-medium flex items-center gap-1 w-fit" href="#">
+                                    Explore Collection <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Date Group: Yesterday -->
+<div class="relative">
+<div class="sticky top-20 md:top-24 z-10 bg-surface/90 backdrop-blur-sm py-4 mb-6">
+<h2 class="text-sm font-label uppercase tracking-widest text-on-surface-variant">Yesterday, October 23</h2>
+</div>
+<div class="space-y-6">
+<!-- Notification Item: Read, Warning -->
+<div class="bg-surface py-6 px-4 md:px-6 flex gap-6 border-b border-outline-variant/20 last:border-0 hover:bg-surface-container-lowest transition-colors duration-300 rounded-lg">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-error-container/20 flex items-center justify-center text-error">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-lg font-headline text-on-surface">Overdue Notice</h3>
+<span class="text-xs text-on-surface-variant font-label">2:30 PM</span>
+</div>
+<p class="text-on-surface-variant text-base mb-3">The loan period for <span class="italic font-headline">Modernist Paradigms</span> expired yesterday. Please return the physical copy or request an extension.</p>
+<button class="text-secondary border border-outline-variant/20 px-4 py-1.5 rounded-md text-sm font-medium hover:bg-surface-variant transition-colors">
+                                Renew Loan
+                            </button>
+</div>
+</div>
+<!-- Notification Item: Read, Standard -->
+<div class="bg-surface py-6 px-4 md:px-6 flex gap-6 border-b border-outline-variant/20 last:border-0 hover:bg-surface-container-lowest transition-colors duration-300 rounded-lg">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">system_update</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-lg font-headline text-on-surface">Archive Maintenance</h3>
+<span class="text-xs text-on-surface-variant font-label">09:00 AM</span>
+</div>
+<p class="text-on-surface-variant text-base">The Rare Books digital viewer will undergo scheduled maintenance on Oct 25th from 02:00 to 04:00 UTC.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Date Group: Older -->
+<div class="relative opacity-70">
+<div class="sticky top-20 md:top-24 z-10 bg-surface/90 backdrop-blur-sm py-4 mb-6">
+<h2 class="text-sm font-label uppercase tracking-widest text-on-surface-variant">October 18</h2>
+</div>
+<div class="space-y-6">
+<div class="bg-surface py-6 px-4 md:px-6 flex gap-6 border-b border-outline-variant/20 last:border-0 hover:bg-surface-container-lowest transition-colors duration-300 rounded-lg">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-lg font-headline text-on-surface">Return Confirmed</h3>
+<span class="text-xs text-on-surface-variant font-label">Oct 18</span>
+</div>
+<p class="text-on-surface-variant text-base">We have received your return of <span class="italic font-headline">Cartography of the Mind</span>. Thank you.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

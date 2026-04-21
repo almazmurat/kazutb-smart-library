@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Messages - Athenaeum Digital</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f3f4f5",
+                        "primary-container": "#001f3f",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#006a6a",
+                        "on-secondary-container": "#006e6e",
+                        "on-tertiary-container": "#76889d",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "background": "#f8f9fa",
+                        "primary": "#000613",
+                        "surface-tint": "#476083",
+                        "outline-variant": "#c4c6cf",
+                        "tertiary-fixed": "#d1e4fb",
+                        "tertiary-container": "#0d2031",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#afc8f0",
+                        "on-tertiary-fixed-variant": "#36485b",
+                        "surface": "#f8f9fa",
+                        "inverse-surface": "#2e3132",
+                        "on-surface-variant": "#43474e",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-container": "#6f88ad",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#93f2f2",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#b5c8df",
+                        "on-tertiary-fixed": "#091d2e",
+                        "surface-dim": "#d9dadb",
+                        "on-surface": "#191c1d",
+                        "tertiary": "#000610",
+                        "on-background": "#191c1d",
+                        "on-secondary-fixed": "#002020",
+                        "secondary-container": "#90efef",
+                        "primary-fixed": "#d4e3ff",
+                        "secondary-fixed-dim": "#76d6d5",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-primary-fixed": "#001c3a",
+                        "surface-container": "#edeeef",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "surface-container-highest": "#e1e3e4",
+                        "error": "#ba1a1a",
+                        "outline": "#74777f",
+                        "inverse-primary": "#afc8f0",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Newsreader', serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row">
+<!-- TopNavBar (Mobile Only) -->
+<header class="md:hidden bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg text-slate-900 dark:text-slate-50 font-['Newsreader'] italic tracking-tight fixed top-0 w-full z-50 bg-slate-50 dark:bg-slate-900 shadow-[0_24px_48px_rgba(0,31,63,0.04)] ease-in-out duration-300 flex justify-between items-center px-6 h-20 w-full border-b border-outline-variant/20">
+<div class="text-2xl font-serif italic text-slate-900 dark:text-slate-50">Athenaeum Digital</div>
+<div class="flex items-center gap-4">
+<button class="hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300">
+<span class="material-symbols-outlined text-2xl">account_circle</span>
+</button>
+<button class="hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar (Web Only) -->
+<nav class="hidden md:flex flex-col py-8 space-y-2 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 font-['Manrope'] text-sm uppercase tracking-widest fixed left-0 top-0 h-screen w-72 bg-white/50 dark:bg-slate-800/50 transition-all duration-300 ease-out z-40 border-r border-outline-variant/20">
+<div class="px-8 pb-12">
+<div class="font-serif text-xl italic mb-1 text-primary">Athenaeum Digital</div>
+<div class="text-xs text-on-surface-variant normal-case tracking-normal">The Scholar's Portal</div>
+</div>
+<div class="flex flex-col space-y-1 mt-8 w-full">
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">book_online</span>
+                Reservations
+            </a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">history</span>
+                History
+            </a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+                My Shortlist
+            </a>
+<a class="flex items-center gap-4 px-8 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:pl-10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">notifications</span>
+                Notifications
+            </a>
+<a class="flex items-center gap-4 px-8 py-3 text-teal-700 dark:text-teal-400 font-bold border-r-2 border-teal-700 dark:border-teal-400 bg-teal-50/50 dark:bg-teal-900/20 hover:pl-10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+                Messages
+            </a>
+</div>
+<div class="mt-auto px-8 pb-8 flex items-center gap-4">
+<img alt="Academic Member Avatar" class="w-10 h-10 rounded-full border border-outline-variant/20" data-alt="portrait of an academic professional in a softly lit library setting, conveying quiet authority" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCF4sFr6LGJUr_nqiwvESLXciJeJv0U_yDrvtIsBsnhyaBdkxq_lzBjYF_1xixK53MQDHzICqBnksBWZtJo5JREG0dzHyW2br0PZSj6NIFHXQQGYajvFAOMIWW3LqytDp2CMRcfPtRSeHwR3OzecNVC02gl2d5ZicP8ZayoYZgVelArXU18cKo33u0F7jDW3VSjz_ENZulXAp7_FKXTTxfJPX7M1zIP8w5zYiy54gu36CVwUsVSzlSbChA5QzRKHpUYq6VzTnee7qU"/>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-primary capitalize tracking-normal">Dr. E. Vance</span>
+<span class="text-[10px] text-on-surface-variant tracking-normal">Library Access</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-72 pt-24 md:pt-12 px-6 md:px-16 lg:px-24 pb-24 max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<header class="mb-16">
+<h1 class="text-5xl md:text-[3.5rem] font-headline text-primary leading-tight mb-4 tracking-tight">Direct Inquiries</h1>
+<p class="text-lg text-on-surface-variant font-body max-w-2xl leading-relaxed">Submit requests, pose academic queries, or raise concerns directly to the curation staff. All correspondence is securely logged for your reference.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+<!-- Composition Form (Bento Style Left Col) -->
+<section class="lg:col-span-7 flex flex-col space-y-8">
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-[0_24px_48px_rgba(0,6,19,0.04)] transition-colors duration-500 hover:bg-surface-container-low">
+<h2 class="text-2xl font-headline text-primary mb-6 border-b border-outline-variant/20 pb-4 inline-block w-full">Draft New Message</h2>
+<form class="space-y-6">
+<!-- Category Selection -->
+<div class="space-y-3">
+<label class="block text-sm font-semibold text-primary font-body uppercase tracking-wider">Nature of Inquiry</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<label class="cursor-pointer relative">
+<input checked="" class="peer sr-only" name="category" type="radio" value="request"/>
+<div class="p-4 bg-surface rounded-md border border-outline-variant/20 peer-checked:border-secondary peer-checked:bg-secondary/5 transition-all duration-300 text-center group">
+<span class="material-symbols-outlined block text-2xl mb-2 text-on-surface-variant group-hover:text-secondary peer-checked:text-secondary transition-colors">library_books</span>
+<span class="text-sm font-medium text-primary block">Request</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="category" type="radio" value="question"/>
+<div class="p-4 bg-surface rounded-md border border-outline-variant/20 peer-checked:border-secondary peer-checked:bg-secondary/5 transition-all duration-300 text-center group">
+<span class="material-symbols-outlined block text-2xl mb-2 text-on-surface-variant group-hover:text-secondary peer-checked:text-secondary transition-colors">help_center</span>
+<span class="text-sm font-medium text-primary block">Question</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="category" type="radio" value="complaint"/>
+<div class="p-4 bg-surface rounded-md border border-outline-variant/20 peer-checked:border-secondary peer-checked:bg-secondary/5 transition-all duration-300 text-center group">
+<span class="material-symbols-outlined block text-2xl mb-2 text-on-surface-variant group-hover:text-secondary peer-checked:text-secondary transition-colors">report_problem</span>
+<span class="text-sm font-medium text-primary block">Complaint</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Subject Line -->
+<div>
+<label class="block text-sm font-semibold text-primary font-body uppercase tracking-wider mb-2" for="subject">Subject</label>
+<input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 px-4 py-3 text-primary placeholder-on-surface-variant/50 transition-colors duration-300" id="subject" placeholder="e.g., Access to 19th Century Archives" type="text"/>
+</div>
+<!-- Message Body -->
+<div>
+<label class="block text-sm font-semibold text-primary font-body uppercase tracking-wider mb-2" for="message">Detailed Correspondence</label>
+<textarea class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 px-4 py-3 text-primary placeholder-on-surface-variant/50 transition-colors duration-300 resize-none" id="message" placeholder="Provide context or specific details regarding your inquiry..." rows="6"></textarea>
+</div>
+<!-- Actions -->
+<div class="flex justify-end pt-4">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-8 py-3 rounded-md font-medium text-sm hover:from-primary-container hover:to-primary transition-all duration-300 flex items-center gap-2 shadow-[0_8px_16px_rgba(0,6,19,0.1)]" type="submit">
+                                Submit Inquiry
+                                <span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</form>
+</div>
+</section>
+<!-- History Section (Right Col) -->
+<section class="lg:col-span-5 flex flex-col">
+<div class="flex items-end justify-between mb-8 border-b border-outline-variant/20 pb-4">
+<h2 class="text-2xl font-headline text-primary">Correspondence Ledger</h2>
+<button class="text-secondary text-sm font-medium hover:text-primary-container transition-colors duration-300 flex items-center gap-1">
+                        View Archive <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="space-y-6">
+<!-- History Item: Open -->
+<article class="group bg-surface p-6 rounded-lg border border-outline-variant/10 hover:bg-surface-container-lowest hover:shadow-[0_16px_32px_rgba(0,6,19,0.03)] transition-all duration-500 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg">library_books</span>
+<span class="text-xs font-bold text-secondary uppercase tracking-wider">Request</span>
+</div>
+<span class="px-2.5 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-sm uppercase tracking-widest">Open</span>
+</div>
+<h3 class="text-lg font-headline text-primary mb-2 pl-2">Digital Scan: Folio 44B</h3>
+<p class="text-sm text-on-surface-variant line-clamp-2 pl-2 mb-4">I am requesting a high-resolution scan of Folio 44B from the restricted collection for my upcoming dissertation review.</p>
+<div class="flex items-center gap-4 text-xs text-on-surface-variant/70 pl-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 12, 2023</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">tag</span> ID-8842</span>
+</div>
+</article>
+<!-- History Item: Resolved -->
+<article class="group bg-surface p-6 rounded-lg border border-outline-variant/10 hover:bg-surface-container-lowest hover:shadow-[0_16px_32px_rgba(0,6,19,0.03)] transition-all duration-500">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">help_center</span>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Question</span>
+</div>
+<span class="px-2.5 py-1 bg-surface-container-high text-on-surface-variant text-[10px] font-bold rounded-sm uppercase tracking-widest">Resolved</span>
+</div>
+<h3 class="text-lg font-headline text-primary mb-2">Access Hours During Holiday</h3>
+<p class="text-sm text-on-surface-variant line-clamp-2 mb-4">Could you clarify if the main reading room will remain open past 18:00 during the upcoming bank holiday weekend?</p>
+<div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> Sep 28, 2023</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">tag</span> ID-8719</span>
+</div>
+</article>
+<!-- History Item: Resolved -->
+<article class="group bg-surface p-6 rounded-lg border border-outline-variant/10 hover:bg-surface-container-lowest hover:shadow-[0_16px_32px_rgba(0,6,19,0.03)] transition-all duration-500">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">report_problem</span>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Complaint</span>
+</div>
+<span class="px-2.5 py-1 bg-surface-container-high text-on-surface-variant text-[10px] font-bold rounded-sm uppercase tracking-widest">Resolved</span>
+</div>
+<h3 class="text-lg font-headline text-primary mb-2">System Error on Checkout</h3>
+<p class="text-sm text-on-surface-variant line-clamp-2 mb-4">The digital reservation system timed out twice while attempting to secure the latest socio-economic journal.</p>
+<div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> Sep 14, 2023</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">tag</span> ID-8602</span>
+</div>
+</article>
+</div>
+</section>
+</div>
+</main>
+</body></html>

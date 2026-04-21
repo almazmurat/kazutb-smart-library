@@ -497,6 +497,18 @@ Route::prefix('dashboard')->middleware(['library.auth', 'member.reader'])->name(
     Route::get('/list', function (Request $request) use ($memberView) {
         return $memberView($request, 'member.list');
     })->name('list');
+
+    Route::get('/history', function (Request $request) use ($memberView) {
+        return $memberView($request, 'member.history');
+    })->name('history');
+
+    Route::get('/notifications', function (Request $request) use ($memberView) {
+        return $memberView($request, 'member.notifications');
+    })->name('notifications');
+
+    Route::get('/messages', function (Request $request) use ($memberView) {
+        return $memberView($request, 'member.messages');
+    })->name('messages');
 });
 
 Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin.')->group(function () use ($adminView) {
