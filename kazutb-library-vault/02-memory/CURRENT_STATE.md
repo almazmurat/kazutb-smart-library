@@ -2,25 +2,25 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-21 11:43:36 UTC
-- Commit: d0b9310
+- Time: 2026-04-21 12:36:43 UTC
+- Commit: 8ec69ff
 - Branch: main
 - Change type: UI/Blade view change
-- Files: resources/views/layouts/admin.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/overview.blade.php, routes/web.php
-- Commit message: feat(phase-1.4): 301 redirects /internal/* -> /librarian/* + canonical UI cleanup
+- Files: resources/views/layouts/member.blade.php, resources/views/member/dashboard.blade.php, resources/views/member/list.blade.php, resources/views/member/reservations.blade.php, routes/web.php
+- Commit message: feat(phase-2a): canonical member shell + /dashboard overview / reservations / list
 
 ## Latest Git Automation
-- Time: 2026-04-21 11:43:36 UTC
+- Time: 2026-04-21 12:36:43 UTC
 - Event: post-commit
 - Branch: main
-- Commit: d0b9310
-- Update: Git post-commit on main: feat(phase-1.4): 301 redirects /internal/* -> /librarian/* + canonical UI cleanup
-- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/layouts/admin.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/overview.blade.php, routes/web.php, tests/Feature/InternalToLibrarianRedirectsTest.php
+- Commit: 8ec69ff
+- Update: Git post-commit on main: feat(phase-2a): canonical member shell + /dashboard overview / reservations / list
+- Detail: Changed files: app/Http/Middleware/EnsureMemberReader.php, bootstrap/app.php, docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/layouts/member.blade.php, resources/views/member/dashboard.blade.php, resources/views/member/list.blade.php, resources/views/member/reservations.blade.php, routes/web.php, tests/Feature/MemberDashboardPageTest.php, tests/Feature/MemberListPageTest.php
 - Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
-Phases 0, 1.1, 1.2, 1.4, and **2a** are complete. The canonical member-facing shell is live: `layouts/member.blade.php` is reused by three new routes — `/dashboard` (name `member.dashboard`), `/dashboard/reservations` (name `member.reservations`), and `/dashboard/list` (name `member.list`). The new `member.reader` middleware (backed by `EnsureMemberReader`) gates the entire `/dashboard/*` family to ordinary users (`role='reader'`); librarians and admins receive `403` and continue to use their own `/librarian` and `/admin` shells. The transitional `/account` route is intentionally left untouched — reader `PostLoginRedirect` still lands on `/account`, and migration to `/dashboard` will happen only once feature parity is verified. Librarian surfaces continue as before: all four canonical `/librarian/*` screens remain live and the three 301 redirects from `/internal/*` are still in place. `/internal/review` and `/internal/ai-chat` remain functional under `library.auth`. Next logical phase is Phase 2b — member notifications / contact / history surfaces.
+Phases 0, 1.1, 1.2, 1.4, and **2a** are complete, followed by a small **post-audit stabilization pass** (2026-04-21): member sign-out now works via a new `POST /logout` web route (form + CSRF, session cleared + redirect to `/login`); admin sidebar CTA relabelled "Post Announcement" and cross-shell shortcut relabelled "Librarian Console →"; librarian sidebar disabled items now use the member shell's `aria-disabled` + "soon" micro-label pattern; fake librarian notification dot removed. Admin/librarian JS-based logout (`fetch('/api/v1/logout')`) left unchanged. The canonical member-facing shell is live: `layouts/member.blade.php` is reused by three routes — `/dashboard` (name `member.dashboard`), `/dashboard/reservations` (name `member.reservations`), and `/dashboard/list` (name `member.list`). The `member.reader` middleware (backed by `EnsureMemberReader`) gates the `/dashboard/*` family to ordinary users (`role='reader'`); librarians and admins receive `403`. The transitional `/account` route is intentionally left untouched — reader `PostLoginRedirect` still lands on `/account`, and migration to `/dashboard` will happen only once feature parity is verified. Librarian surfaces continue as before. Next logical phase is Phase 2b — member notifications / contact / history surfaces.
 
 ## What Is Done
 - Canonical product truth is consolidated in [[PROJECT_CONTEXT]]

@@ -172,13 +172,20 @@
 
     <nav class="flex-1 overflow-y-auto px-2 space-y-1" aria-label="Librarian navigation">
       @foreach ($librarianNav as $item)
+        @php $isDisabled = ($item['href'] ?? '#') === '#'; @endphp
         @if ($item['active'])
           <a href="{{ $item['href'] }}" class="bg-white text-secondary font-semibold rounded-r-full shadow-sm flex items-center gap-3 py-3 px-6 w-[95%] transition-all duration-500" aria-current="page">
             <span class="material-symbols-outlined fill">{{ $item['icon'] }}</span>
             <span>{{ $item['label'] }}</span>
           </a>
+        @elseif ($isDisabled)
+          <span class="text-slate-600 py-3 px-6 flex items-center gap-3 w-[95%] rounded-r-full opacity-50 cursor-not-allowed select-none" aria-disabled="true" role="link" tabindex="-1">
+            <span class="material-symbols-outlined">{{ $item['icon'] }}</span>
+            <span>{{ $item['label'] }}</span>
+            <span class="ml-auto text-[10px] uppercase tracking-wider text-on-surface-variant/70 font-semibold">soon</span>
+          </span>
         @else
-          <a href="{{ $item['href'] }}" class="text-slate-600 py-3 px-6 flex items-center gap-3 w-[95%] rounded-r-full hover:bg-surface-container hover:pl-8 hover:text-secondary transition-all duration-500 @if($item['href'] === '#') pointer-events-none opacity-50 @endif">
+          <a href="{{ $item['href'] }}" class="text-slate-600 py-3 px-6 flex items-center gap-3 w-[95%] rounded-r-full hover:bg-surface-container hover:pl-8 hover:text-secondary transition-all duration-500">
             <span class="material-symbols-outlined">{{ $item['icon'] }}</span>
             <span>{{ $item['label'] }}</span>
           </a>
@@ -217,9 +224,8 @@
       </div>
 
       <div class="flex items-center gap-2 md:gap-4">
-        <button class="text-slate-500 hover:text-primary-container hover:bg-slate-100 p-2 rounded-full transition-colors duration-300 relative" type="button" aria-label="Notifications">
+        <button class="text-slate-500 hover:text-primary-container hover:bg-slate-100 p-2 rounded-full transition-colors duration-300" type="button" aria-label="Notifications">
           <span class="material-symbols-outlined">notifications</span>
-          <span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
         </button>
         <button class="text-slate-500 hover:text-primary-container hover:bg-slate-100 p-2 rounded-full transition-colors duration-300 hidden sm:block" type="button" aria-label="Recent activity">
           <span class="material-symbols-outlined">history_edu</span>

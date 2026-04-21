@@ -231,6 +231,25 @@ Route::post('/login', function (Request $request) use ($postLoginDestination) {
     return back()->withErrors(['login' => 'Invalid credentials or authentication failed.']);
 });
 
+// Session-based sign-out used by the member shell (form POST + CSRF).
+// Admin and librarian shells use `fetch('/api/v1/logout')` for their JS-driven
+// header buttons; this web route exists for the member shell's form control and
+// keeps sign-out working without JavaScript. Accepts both POST (canonical form
+// submit) and GET (safety net for accidental navigation) — always clears the
+// library session keys and redirects to /login.
+Route::match(['POST', 'GET'], '/logout', function (Request $request) {
+    $request->session()->forget([
+        'library.user',
+        'library.crm_token',
+        'library.authenticated_at',
+        'library.demo_identity',
+    ]);
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login');
+})->name('logout');
+
 Route::get('/login', function (Request $request) {
     $lang = $request->query('lang', 'ru');
     $lang = in_array($lang, ['ru', 'kk', 'en'], true) ? $lang : 'ru';

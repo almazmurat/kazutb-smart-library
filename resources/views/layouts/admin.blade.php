@@ -121,11 +121,11 @@
     </div>
 
     <div class="px-4 mt-auto">
-      <a href="{{ route('admin.news') }}" class="w-full py-3 mb-6 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-md font-medium text-sm hover:opacity-90 transition-opacity inline-flex items-center justify-center">New Collection</a>
+      <a href="{{ route('admin.news') }}" class="w-full py-3 mb-6 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-md font-medium text-sm hover:opacity-90 transition-opacity inline-flex items-center justify-center">Post Announcement</a>
       <div class="flex flex-col gap-2">
         <a href="/librarian/data-cleanup" class="text-on-surface/70 mx-2 px-4 py-2 flex items-center gap-3 hover:bg-primary/5 transition-all duration-200 text-sm">
-          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
-          <span>Archive Access</span>
+          <span class="material-symbols-outlined text-[20px]">open_in_new</span>
+          <span>Librarian Console →</span>
         </a>
         <button id="admin-logout-btn" type="button" class="text-on-surface/70 mx-2 px-4 py-2 flex items-center gap-3 hover:bg-primary/5 transition-all duration-200 text-sm text-left">
           <span class="material-symbols-outlined text-[20px]">logout</span>
