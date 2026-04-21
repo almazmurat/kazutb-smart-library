@@ -51,8 +51,33 @@ class AdminOverviewPageTest extends TestCase
 
     public function test_admin_follow_on_placeholders_render_for_admin_session(): void
     {
-        $this->withSession($this->staffSession('admin'))->get('/admin/settings')->assertOk()->assertSee('System Settings', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/reports')->assertOk()->assertSee('Reports &amp; Analytics', false);
+    }
+
+    public function test_admin_settings_page_renders_configuration_surface(): void
+    {
+        $response = $this->withSession($this->staffSession('admin'))->get('/admin/settings');
+
+        $response->assertOk()
+            ->assertSee('System Settings', false)
+            ->assertSee('Integrations', false)
+            ->assertSee('Institutional Structure', false)
+            ->assertSee('Authentication', false)
+            ->assertSee('Global Preferences', false)
+            ->assertSee('CRM Authentication', false)
+            ->assertSee('Research Repositories', false)
+            ->assertSee('JSTOR Data API', false)
+            ->assertSee('EBSCOhost Integration', false)
+            ->assertSee('KazNEB National Repository', false)
+            ->assertSee('Main Library — Astana Campus', false)
+            ->assertSee('Rare Collections Vault C', false)
+            ->assertSee('System Health', false)
+            ->assertSee('Operational Policies', false)
+            ->assertSee('Controlled Digital Viewer', false)
+            ->assertSee('Maintenance', false)
+            ->assertSee('Rebuild Search Index', false)
+            ->assertSee('Clear Global Cache', false)
+            ->assertDontSee('Phase 2 management surface', false);
     }
 
     public function test_admin_news_page_renders_editorial_management_surface(): void

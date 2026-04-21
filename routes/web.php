@@ -434,10 +434,7 @@ Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin
     })->name('feedback');
 
     Route::get('/settings', function (Request $request) use ($adminView) {
-        return $adminView($request, 'admin.placeholder', [
-            'title' => 'System Settings',
-            'description' => 'Phase 2 management surface for operational configuration and platform governance.',
-        ]);
+        return $adminView($request, 'admin.settings');
     })->name('settings');
 
     Route::get('/reports', function (Request $request) use ($adminView) {

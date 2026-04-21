@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>System Settings - KazUTB Smart Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f8f9fa",
+                      "secondary-fixed": "#93f2f2",
+                      "primary-fixed": "#d4e3ff",
+                      "on-secondary-container": "#006e6e",
+                      "on-primary-fixed": "#001c3a",
+                      "surface-container": "#edeeef",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#2e3132",
+                      "error": "#ba1a1a",
+                      "on-surface": "#191c1d",
+                      "surface-dim": "#d9dadb",
+                      "primary-fixed-dim": "#afc8f0",
+                      "tertiary-fixed-dim": "#b5c8df",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed": "#091d2e",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#36485b",
+                      "surface-container-high": "#e7e8e9",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-container": "#76889d",
+                      "background": "#f8f9fa",
+                      "on-secondary-fixed": "#002020",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c4c6cf",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-surface-variant": "#43474e",
+                      "surface-tint": "#476083",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#6f88ad",
+                      "secondary-container": "#90efef",
+                      "secondary": "#006a6a",
+                      "outline": "#74777f",
+                      "primary": "#000613",
+                      "tertiary-fixed": "#d1e4fb",
+                      "inverse-primary": "#afc8f0",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e1e3e4",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-secondary-fixed-variant": "#004f4f",
+                      "on-background": "#191c1d",
+                      "tertiary-container": "#0d2031",
+                      "on-primary-fixed-variant": "#2f486a",
+                      "primary-container": "#001f3f",
+                      "secondary-fixed-dim": "#76d6d5",
+                      "surface-container-low": "#f3f4f5",
+                      "tertiary": "#000610"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Newsreader"
+                      ],
+                      "body": [
+                              "Manrope"
+                      ],
+                      "label": [
+                              "Manrope"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="bg-[#F8F9FA] dark:bg-[#000613] text-[#001F3F] dark:text-[#F8F9FA] font-['Manrope'] body-lg font-medium h-screen w-72 flex-col fixed left-0 top-0 bg-surface-container-lowest shadow-none flat no-shadows ease-in-out duration-300 flex border-r-0 border-transparent z-40 hidden md:flex">
+<div class="p-8 pb-4">
+<h1 class="font-['Newsreader'] text-2xl font-black text-[#001F3F]">Admin Portal</h1>
+<p class="text-sm text-on-surface-variant mt-1">High-Control Governance</p>
+</div>
+<div class="px-6 mb-6">
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-3 rounded-md font-semibold hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                 New Collection
+             </button>
+</div>
+<div class="flex-1 overflow-y-auto py-2 flex flex-col gap-1">
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 flex items-center gap-4 rounded-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Governance Dashboard
+            </a>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 flex items-center gap-4 rounded-md" href="#">
+<span class="material-symbols-outlined">library_books</span>
+                Collection Management
+            </a>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 flex items-center gap-4 rounded-md" href="#">
+<span class="material-symbols-outlined">group</span>
+                Patron Directory
+            </a>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 flex items-center gap-4 rounded-md" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Acquisition Flows
+            </a>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 flex items-center gap-4 rounded-md" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                Scholarly Analytics
+            </a>
+<a class="bg-[#001F3F] text-white dark:bg-[#006A6A] rounded-md mx-2 px-4 py-3 flex items-center gap-4" href="#">
+<span class="material-symbols-outlined">settings_suggest</span>
+                System Settings
+            </a>
+</div>
+<div class="p-4 mt-auto border-t border-outline-variant/20 flex flex-col gap-1">
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 flex items-center gap-4 rounded-md" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Archive Access
+            </a>
+<a class="text-[#191C1D]/70 dark:text-[#F8F9FA]/60 mx-2 px-4 py-3 hover:bg-[#001F3F]/5 dark:hover:bg-white/5 transition-all duration-200 flex items-center gap-4 rounded-md" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-white/80 dark:bg-[#000613]/80 backdrop-blur-xl text-[#001F3F] dark:text-[#F8F9FA] font-['Newsreader'] tracking-tight headline-md docked full-width top-0 sticky bg-surface-container-low no-border shadow-sm shadow-[#001F3F]/5 scale-98 active:opacity-80 transition-all flex justify-between items-center w-full px-8 py-3 z-50 h-[72px]">
+<div class="flex items-center gap-6 flex-1">
+<div class="md:hidden">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="font-['Newsreader'] text-xl font-bold text-[#001F3F] dark:text-[#F8F9FA] hidden md:block">
+                    KazUTB Smart Library
+                </div>
+<div class="flex-1 max-w-xl ml-8 hidden md:block">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 rounded-t-DEFAULT pl-12 pr-4 py-2 text-sm text-on-surface placeholder-on-surface-variant/70 transition-colors" placeholder="Search settings..." type="text"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-[#F8F9FA] dark:hover:bg-[#001F3F] transition-colors duration-300 flex items-center justify-center text-[#191C1D] dark:text-[#F8F9FA]/70">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-[#F8F9FA] dark:hover:bg-[#001F3F] transition-colors duration-300 flex items-center justify-center text-[#191C1D] dark:text-[#F8F9FA]/70">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-variant overflow-hidden ml-2 cursor-pointer ring-2 ring-transparent hover:ring-primary/20 transition-all">
+<img alt="Administrator Profile" class="w-full h-full object-cover" data-alt="professional headshot of a man with short hair wearing a dark sweater against a blurred light background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNtZeg-oKgPZZEuSX3OH7uz4fkokS9NdsFGl3Rq4gAirrhd0e_E5Nf4QXGKCwrQHAjrzCvPFW1P9Ue-_cYAm8VZhSZXlQ5YtNAzv3VjxEy6YrVdXqauVwFqR84sPwt8i-ALIVDWZm7hz_dKGwDqR87J7eNRDq1rT6nO-tWmICsc26JDbYEEMkuLyNBOzuK4SUaW6dRexmGnU8pmjN2eSedNdByji1cd1LeuwpArL-cmvNe9pwIenLS2HqGJxVHQpVyF6Eld2cjzOah"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 p-8 lg:p-12 max-w-7xl mx-auto w-full">
+<!-- Hero Header -->
+<div class="mb-12">
+<h2 class="font-headline text-[3.5rem] leading-none text-primary mb-4 tracking-tight">System Settings</h2>
+<p class="font-body text-body-lg text-on-surface-variant max-w-2xl">Manage external integrations, institutional structures, and global authentication protocols for the library network.</p>
+</div>
+<!-- Settings Content Tabs (Visual only) -->
+<div class="flex border-b border-outline-variant/20 mb-8 overflow-x-auto hide-scrollbar">
+<button class="px-6 py-3 font-body text-sm font-semibold text-secondary border-b-2 border-secondary whitespace-nowrap">Integrations</button>
+<button class="px-6 py-3 font-body text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap">Institutional Structure</button>
+<button class="px-6 py-3 font-body text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap">Authentication</button>
+<button class="px-6 py-3 font-body text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap">Global Preferences</button>
+</div>
+<!-- Bento Grid Layout for Settings -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Main Column (Integrations) -->
+<div class="lg:col-span-2 space-y-8">
+<!-- CRM Section -->
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_8px_30px_rgb(0,31,63,0.04)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-[100px] -z-10 transition-transform group-hover:scale-110 duration-700"></div>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-body text-title-lg font-bold text-primary flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">sync_alt</span>
+                                    CRM Authentication
+                                </h3>
+<p class="text-sm text-on-surface-variant mt-2">Manage connection to the university's central student information system.</p>
+</div>
+<div class="px-3 py-1 bg-secondary/10 text-secondary text-xs font-bold rounded-full uppercase tracking-wider">Active</div>
+</div>
+<div class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-xs font-semibold text-on-surface-variant mb-2 uppercase tracking-wide">Endpoint URL</label>
+<input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 rounded-t-DEFAULT px-4 py-3 text-sm text-on-surface transition-colors" readonly="" type="text" value="https://api.kazutb.edu.kz/v2/auth"/>
+</div>
+<div>
+<label class="block text-xs font-semibold text-on-surface-variant mb-2 uppercase tracking-wide">API Key (Masked)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-0 border-b border-outline-variant/20 focus:border-secondary focus:ring-0 rounded-t-DEFAULT px-4 py-3 text-sm text-on-surface transition-colors" type="password" value="************************"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex gap-4 pt-2">
+<button class="px-6 py-2 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-md font-semibold text-sm hover:opacity-90 transition-opacity shadow-sm">Test Connection</button>
+<button class="px-6 py-2 border border-outline-variant/20 text-secondary rounded-md font-semibold text-sm hover:bg-surface-variant transition-colors">Regenerate Keys</button>
+</div>
+</div>
+</section>
+<!-- External Resources -->
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_8px_30px_rgb(0,31,63,0.04)]">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h3 class="font-body text-title-lg font-bold text-primary flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">public</span>
+                                    Research Repositories
+                                </h3>
+<p class="text-sm text-on-surface-variant mt-2">Configured endpoints for external academic databases.</p>
+</div>
+<button class="text-secondary text-sm font-semibold flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span> Add Source
+                            </button>
+</div>
+<div class="space-y-4">
+<!-- Resource Item -->
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-DEFAULT bg-primary-container text-on-primary flex items-center justify-center">
+<span class="font-headline font-bold">J</span>
+</div>
+<div>
+<h4 class="font-semibold text-primary text-sm">JSTOR Data API</h4>
+<p class="text-xs text-on-surface-variant mt-0.5">Last synced: 2 hours ago</p>
+</div>
+</div>
+<div class="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-secondary"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="text-on-surface-variant hover:text-error"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</div>
+<!-- Resource Item -->
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-DEFAULT bg-surface-tint text-on-primary flex items-center justify-center">
+<span class="font-headline font-bold">E</span>
+</div>
+<div>
+<h4 class="font-semibold text-primary text-sm">EBSCOhost Integration</h4>
+<p class="text-xs text-on-surface-variant mt-0.5">Last synced: 12 mins ago</p>
+</div>
+</div>
+<div class="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-secondary"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="text-on-surface-variant hover:text-error"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Side Column (Quick Actions & Status) -->
+<div class="space-y-8">
+<!-- System Health Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_30px_rgb(0,31,63,0.04)]">
+<h3 class="font-headline text-xl text-primary font-bold mb-4">System Health</h3>
+<div class="space-y-5">
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant font-medium">API Rate Limit</span>
+<span class="text-primary font-bold">42%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-[42%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant font-medium">Storage Capacity</span>
+<span class="text-primary font-bold">88%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[88%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Maintenance Actions -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<h3 class="font-headline text-xl text-primary font-bold mb-4">Maintenance</h3>
+<p class="text-sm text-on-surface-variant mb-6">Perform routine system cache clears and index rebuilds.</p>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between p-3 bg-surface-container-lowest rounded-md text-sm font-semibold text-primary hover:bg-surface transition-colors shadow-sm">
+<span>Rebuild Search Index</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">manage_search</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 bg-surface-container-lowest rounded-md text-sm font-semibold text-primary hover:bg-surface transition-colors shadow-sm">
+<span>Clear Global Cache</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">cleaning_services</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Spacer -->
+<div class="h-24"></div>
+</div>
+</main>
+</body></html>
