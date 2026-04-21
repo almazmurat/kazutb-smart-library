@@ -433,10 +433,7 @@ Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin
     })->name('news');
 
     Route::get('/feedback', function (Request $request) use ($adminView) {
-        return $adminView($request, 'admin.placeholder', [
-            'title' => 'Feedback Inbox',
-            'description' => 'Phase 2 management surface for incoming reader requests and issue triage.',
-        ]);
+        return $adminView($request, 'admin.feedback');
     })->name('feedback');
 
     Route::get('/settings', function (Request $request) use ($adminView) {

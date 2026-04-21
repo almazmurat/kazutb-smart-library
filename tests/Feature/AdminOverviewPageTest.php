@@ -52,9 +52,28 @@ class AdminOverviewPageTest extends TestCase
     public function test_admin_follow_on_placeholders_render_for_admin_session(): void
     {
         $this->withSession($this->staffSession('admin'))->get('/admin/news')->assertOk()->assertSee('News Management', false);
-        $this->withSession($this->staffSession('admin'))->get('/admin/feedback')->assertOk()->assertSee('Feedback Inbox', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/settings')->assertOk()->assertSee('System Settings', false);
         $this->withSession($this->staffSession('admin'))->get('/admin/reports')->assertOk()->assertSee('Reports &amp; Analytics', false);
+    }
+
+    public function test_admin_feedback_page_renders_two_column_inbox_surface(): void
+    {
+        $response = $this->withSession($this->staffSession('admin'))->get('/admin/feedback');
+
+        $response->assertOk()
+            ->assertSee('Inbox', false)
+            ->assertSee('Institutional Feedback &amp; Requests', false)
+            ->assertSee('Request', false)
+            ->assertSee('Complaint', false)
+            ->assertSee('Improvement Suggestion', false)
+            ->assertSee('Question', false)
+            ->assertSee('Other', false)
+            ->assertSee('Access to Rare Archives', false)
+            ->assertSee('Study Room Booking Conflict', false)
+            ->assertSee('Extended Weekend Hours', false)
+            ->assertSee('Reply to User', false)
+            ->assertSee('Add Internal Note', false)
+            ->assertSee('Send Response', false);
     }
 
     public function test_admin_users_page_renders_full_user_management(): void
