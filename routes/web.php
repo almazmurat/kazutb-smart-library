@@ -414,18 +414,22 @@ Route::get('/book/{isbn}/read', function ($isbn) {
     return view('reader', ['isbn' => $isbn]);
 })->name('reader.transitional');
 
+// Phase 1.4 — transitional compatibility layer.
+// Canonical destinations live under /librarian/*; these paths 301-redirect so that
+// deep-links and bookmarks keep working while operational traffic migrates. The
+// canonical /librarian/* routes enforce their own auth + role gating, so the
+// redirects themselves are intentionally public.
+Route::permanentRedirect('/internal/dashboard', '/librarian');
+Route::permanentRedirect('/internal/circulation', '/librarian/circulation');
+Route::permanentRedirect('/internal/stewardship', '/librarian/data-cleanup');
+
 Route::prefix('internal')->middleware(['library.auth'])->group(function () use ($internalStaffView) {
-    Route::get('/dashboard', function (Request $request) use ($internalStaffView) {
-        return $internalStaffView($request, 'internal-dashboard');
-    });
+    // Remaining transitional surfaces — no confirmed canonical /librarian/* destination yet.
+    // /internal/review — "Quality Issues Overview" (DB-backed read-only review); candidate
+    //   canonical target is undecided between /librarian/data-cleanup and /librarian/repository.
+    // /internal/ai-chat — experimental staff AI assistant; no canonical surface in roadmap yet.
     Route::get('/review', function (Request $request) use ($internalStaffView) {
         return $internalStaffView($request, 'internal-review');
-    });
-    Route::get('/stewardship', function (Request $request) use ($internalStaffView) {
-        return $internalStaffView($request, 'internal-stewardship');
-    });
-    Route::get('/circulation', function (Request $request) use ($internalStaffView) {
-        return $internalStaffView($request, 'internal-circulation');
     });
     Route::get('/ai-chat', function (Request $request) use ($internalStaffView) {
         return $internalStaffView($request, 'internal-ai-chat');

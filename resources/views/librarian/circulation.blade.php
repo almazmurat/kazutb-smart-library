@@ -110,7 +110,7 @@
         <section class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex-1">
           <div class="flex justify-between items-center mb-6">
             <h2 class="font-headline text-xl text-primary-container">Recent Transactions</h2>
-            <a href="/internal/circulation" class="text-secondary text-sm font-medium hover:underline">View All</a>
+            <a href="{{ route('librarian.circulation') }}" class="text-secondary text-sm font-medium hover:underline">View All</a>
           </div>
           <ul class="space-y-4" aria-label="Recent transactions">
             @foreach ($recentTransactions as $tx)

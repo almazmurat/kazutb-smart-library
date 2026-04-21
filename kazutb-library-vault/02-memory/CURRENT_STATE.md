@@ -2,25 +2,25 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-21 10:53:07 UTC
-- Commit: 9a6e8b0
+- Time: 2026-04-21 11:16:16 UTC
+- Commit: 74e3531
 - Branch: main
 - Change type: UI/Blade view change
-- Files: resources/views/layouts/librarian.blade.php, resources/views/librarian/overview.blade.php, routes/web.php
-- Commit message: feat(phase-1.1): librarian shell + /librarian overview page
+- Files: resources/views/layouts/librarian.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/data-cleanup.blade.php, resources/views/librarian/repository.blade.php, routes/web.php
+- Commit message: feat(phase-1.2): canonical librarian circulation / data-cleanup / repository
 
 ## Latest Git Automation
-- Time: 2026-04-21 10:53:07 UTC
+- Time: 2026-04-21 11:16:16 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 9a6e8b0
-- Update: Git post-commit on main: feat(phase-1.1): librarian shell + /librarian overview page
-- Detail: Changed files: app/Http/Middleware/EnsureLibrarianStaff.php, bootstrap/app.php, docs/design-exports/canonical-design-map.md, docs/design-exports/circulation_desk/code.html, docs/design-exports/circulation_desk/screen.png, docs/design-exports/data_cleanup_stewardship/code.html, docs/design-exports/data_cleanup_stewardship/screen.png, docs/design-exports/librarian_overview/code.html, docs/design-exports/librarian_overview/screen.png, docs/design-exports/scientific_works_moderation_queue/code.html, docs/design-exports/scientific_works_moderation_queue/screen.png, kazutb-library-vault/02-memory/CURRENT_STATE.md
+- Commit: 74e3531
+- Update: Git post-commit on main: feat(phase-1.2): canonical librarian circulation / data-cleanup / repository
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/layouts/librarian.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/data-cleanup.blade.php, resources/views/librarian/repository.blade.php, routes/web.php, tests/Feature/LibrarianCirculationPageTest.php, tests/Feature/LibrarianDataCleanupPageTest.php, tests/Feature/LibrarianRepositoryPageTest.php
 - Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
-Phase 0 and Phase 1.1 are complete. **Phase 1.2 is complete** — the three remaining librarian screens are now ported to canonical `/librarian/*` routes: `/librarian/circulation` (Circulation Desk), `/librarian/data-cleanup` (Data Stewardship & Cleanup), and `/librarian/repository` (Scientific Works Moderation Queue). All four screens extend `layouts.librarian`; sidebar links now target canonical librarian routes. The `/internal/*` staff pages remain functional for transitional compatibility (no 301 redirects yet — that is Phase 1.4). The other three librarian exports have been flipped from design-ready to implemented — archive-reference in the canonical design map. Admins continue to land on `/admin`; members continue to land on `/account` (interim).
+Phases 0, 1.1, 1.2, and **1.4** are complete. All four canonical `/librarian/*` screens are live (`/librarian`, `/librarian/circulation`, `/librarian/data-cleanup`, `/librarian/repository`) and extend `layouts.librarian`. The transitional `/internal/*` layer has been compressed: `/internal/dashboard`, `/internal/circulation`, and `/internal/stewardship` now return `301` permanent redirects to their canonical `/librarian/*` counterparts. `/internal/review` (Quality Issues Overview) and `/internal/ai-chat` (experimental staff AI assistant) remain functional under `library.auth` because neither has a confirmed canonical `/librarian/*` destination in the roadmap. Active UI (admin sidebar, librarian overview snapshot CTAs, librarian circulation "View All") now points exclusively at `/librarian/*`. Admins continue to land on `/admin`; members continue to land on `/account` (interim). Next logical phase is Phase 2 — Member Dashboard Decomposition (`/account` → canonical `/dashboard/*`).
 
 ## What Is Done
 - Canonical product truth is consolidated in [[PROJECT_CONTEXT]]

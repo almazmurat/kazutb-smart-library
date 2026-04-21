@@ -41,14 +41,16 @@ Used only for the newly generated missing pages:
 | Librarian | Circulation Desk | `docs/design-exports/circulation_desk/` | `/librarian/circulation` | `librarian/circulation.blade.php` | implemented — archive-reference | Canonical librarian shell (`layouts.librarian`); Phase 1.2 |
 | Librarian | Data Stewardship & Cleanup | `docs/design-exports/data_cleanup_stewardship/` | `/librarian/data-cleanup` | `librarian/data-cleanup.blade.php` | implemented — archive-reference | Canonical librarian shell (`layouts.librarian`); Phase 1.2 |
 | Librarian | Scientific Works Moderation Queue | `docs/design-exports/scientific_works_moderation_queue/` | `/librarian/repository` | `librarian/repository.blade.php` | implemented — archive-reference | Canonical librarian shell; Phase 1.2 — merges with repository module in Phase 4 |
-| Internal (transitional) | Librarian Operations Center | Project A / Librarian Operations Center | `/internal/dashboard` | `internal-dashboard.blade.php` | transitional — superseded by `/librarian` | Kept working during Phase 1 migration; will be 301 → `/librarian` |
+| Internal (transitional) | Librarian Operations Center | Project A / Librarian Operations Center | `/internal/dashboard` → 301 `/librarian` | n/a (redirect) | transitional — 301 redirect (Phase 1.4) | Canonical surface: `/librarian` |
 | Internal (transitional) | Catalog Records Management | Project A / Catalog Records Management | future/internal records surface | staff records area | reference-only | Backend foundation first |
 | Internal (transitional) | Librarian Record Editor | Project A / Librarian Record Editor | future/internal editor surface | staff editor area | reference-only | Backend foundation first |
 | Internal (transitional) | Digital Asset & File Management | Project A / Digital Asset & File Management | future/internal asset surface | staff asset area | reference-only | Backend foundation first |
 | Internal (transitional) | Book Cover & Media Management | Project A / Book Cover & Media Management | future/internal media surface | staff media area | reference-only | Backend foundation first |
 | Internal (transitional) | Reader Access Clarification Hub | Project A / Reader Access Clarification Hub | internal reader clarification surface | internal reader support area | design-ready | Existing internal API support |
-| Internal (transitional) | Circulation & Waitlist Manager | Project A / Circulation & Waitlist Manager | `/internal/circulation` | `internal-circulation.blade.php` | transitional | Canonical target: `/librarian/circulation` |
-| Internal (transitional) | Metadata Quality & Curation Hub | Project A / Metadata Quality & Curation Hub | `/internal/review` | `internal-review.blade.php` | transitional | Canonical target: `/librarian/repository` |
+| Internal (transitional) | Circulation & Waitlist Manager | Project A / Circulation & Waitlist Manager | `/internal/circulation` → 301 `/librarian/circulation` | n/a (redirect) | transitional — 301 redirect (Phase 1.4) | Canonical surface: `/librarian/circulation` |
+| Internal (transitional) | Data Stewardship (legacy) | internal operations tooling | `/internal/stewardship` → 301 `/librarian/data-cleanup` | n/a (redirect) | transitional — 301 redirect (Phase 1.4) | Canonical surface: `/librarian/data-cleanup` |
+| Internal (transitional) | Metadata Quality & Curation Hub | Project A / Metadata Quality & Curation Hub | `/internal/review` | `internal-review.blade.php` | transitional — no canonical destination yet | Canonical target undecided between `/librarian/data-cleanup` (metadata anomalies) and `/librarian/repository` (scholarly moderation); retained functional pending Phase 4 review |
+| Internal (transitional) | Staff AI Chat (experimental) | internal assistant prototype | `/internal/ai-chat` | `internal-ai-chat.blade.php` | transitional — no canonical destination yet | Experimental; no canonical `/librarian/*` surface in roadmap |
 
 ### Admin-facing
 

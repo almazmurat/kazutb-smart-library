@@ -10,7 +10,7 @@
       'value' => 42,
       'note' => 'Requires automated notice dispatch or manual review.',
       'cta' => 'Process Batch',
-      'href' => '/internal/circulation',
+      'href' => route('librarian.circulation'),
       'eyebrow' => 'Circulation',
       'icon' => 'sync_alt',
   ];
@@ -22,7 +22,7 @@
           'body' => 'Duplicate catalog entries detected.',
           'value' => 18,
           'cta' => 'Review',
-          'href' => '/internal/stewardship',
+          'href' => route('librarian.data-cleanup'),
       ],
       [
           'eyebrow' => 'Reservations',
