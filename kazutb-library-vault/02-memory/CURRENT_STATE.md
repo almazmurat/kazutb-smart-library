@@ -2,20 +2,20 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-21 13:14:21 UTC
-- Commit: 33bc9e6
+- Time: 2026-04-21 13:30:04 UTC
+- Commit: 069b71f
 - Branch: main
 - Change type: UI/Blade view change
-- Files: resources/views/layouts/admin.blade.php, resources/views/layouts/librarian.blade.php, routes/web.php
-- Commit message: fix(stabilization): member logout + admin/librarian shell polish
+- Files: resources/views/account.blade.php, resources/views/layouts/member.blade.php, resources/views/member/history.blade.php, resources/views/member/messages.blade.php, resources/views/member/notifications.blade.php, routes/web.php
+- Commit message: feat(phase-2b): complete canonical member module — history/notifications/messages + /account transitional banner
 
 ## Latest Git Automation
-- Time: 2026-04-21 13:14:21 UTC
+- Time: 2026-04-21 13:30:04 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 33bc9e6
-- Update: Git post-commit on main: fix(stabilization): member logout + admin/librarian shell polish
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/layouts/admin.blade.php, resources/views/layouts/librarian.blade.php, routes/web.php, tests/Feature/MemberLogoutTest.php
+- Commit: 069b71f
+- Update: Git post-commit on main: feat(phase-2b): complete canonical member module — history/notifications/messages + /account transitional banner
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, docs/design-exports/contact_messages/code.html, docs/design-exports/contact_messages/screen.png, docs/design-exports/my_borrowing_history/code.html, docs/design-exports/my_borrowing_history/screen.png, docs/design-exports/notifications/code.html, docs/design-exports/notifications/screen.png, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/account.blade.php, resources/views/layouts/member.blade.php, resources/views/member/history.blade.php
 - Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
@@ -35,22 +35,27 @@ Phases 0, 1.1, 1.2, 1.4, **2a**, and **2b** are complete, plus a small post-audi
 - The vault itself has been rebuilt into a clean canonical structure
 
 ## What Is In Progress
-- Phase 1 planning: Stitch export of canonical `Librarian Operations Shell`, `layouts.librarian`, new `librarian.staff` middleware, migration of `/internal/*` → `/librarian/*` with 301 redirects
-- Member dashboard decomposition from single `/account` page to canonical `/dashboard/*` multi-route (Phase 2)
+- Nothing currently in flight. The shell-normalization arc (Phases 0 → 2b) is closed.
+- Next phase (not yet started): **Phase 3 — public-facing surface completion and redesign** (homepage, about + contacts, news surfaces, resources refinement, catalog / book detail / discovery polish).
 
 ## Active Blockers
-- `/internal/*` still lives outside canonical `/librarian/*` namespace; rename is Phase 1
-- Admin pages render hard-coded demo data; real data wiring is Phase 6
-- Scientific repository module has no routes, views, or schema yet (Phase 4)
-- Legacy data quality remains uneven after migration from MARC-SQL
-- CRM mirroring boundaries must stay conservative so the library remains the operational owner
+- None blocking Phase 3 kickoff.
+- Standing constraints (unchanged): admin pages still render hard-coded demo data until Phase 6 backend wiring; scientific repository module (Phase 4) has no routes/views/schema yet; `/account` is kept as transitional with an inline banner and is scheduled for retirement after Phase 3 (flip `$postLoginDestination` → `/dashboard`, then 301 `/account` → `/dashboard`).
 
 ## Immediate Next Actions
-- [ ] Phase 1.4a: Port `docs/design-exports/circulation_desk/` → `resources/views/librarian/circulation.blade.php` + mount `/librarian/circulation`
-- [ ] Phase 1.4b: Port `docs/design-exports/data_cleanup_stewardship/` → `resources/views/librarian/data-cleanup.blade.php` + mount `/librarian/data-cleanup`
-- [ ] Phase 1.4c: Port `docs/design-exports/scientific_works_moderation_queue/` → `resources/views/librarian/repository.blade.php` + mount `/librarian/repository` (or merge into Phase 4)
-- [ ] Phase 1.4d: Add 301 redirects from every `/internal/*` path to the new `/librarian/*` path; update sidebar hrefs in `layouts.librarian` accordingly
-- [ ] Phase 1.5: Remove `/internal/*` interim code paths once 301s are in place and no callers remain
+- [ ] Phase 3 kickoff — inspect public-facing design exports under `docs/design-exports/` (Homepage, Catalog, Book Details, Resources are listed as Project B "clean missing screens" in canonical-design-map.md; About/Discover/Login are already marked implemented).
+- [ ] Phase 3.1: Homepage redesign — port the Project B Homepage export to `welcome.blade.php` in KazUTB tone; preserve guest navbar behaviour and existing auth-aware Blade conditional.
+- [ ] Phase 3.2: About + Contacts consolidation — the `/about` and `/contacts` routes both currently render `about.blade.php`; verify consolidation is still desired or split them.
+- [ ] Phase 3.3: News surfaces — `/news` is currently a 301 redirect to `/`; decide if news returns as a standalone public surface or stays consolidated.
+- [ ] Phase 3.4: Resources page refinement — polish `resources.blade.php` for institutional tone.
+- [ ] Phase 3.5: Catalog / book detail / discovery polish — reader-facing catalog, `/book/{isbn}`, `/discover`.
+- [ ] After Phase 3 completes: retire `/account` (flip reader `$postLoginDestination` default to `/dashboard`, then 301 `/account` → `/dashboard`).
+
+## Next Session Starting Point
+1. Re-read `kazutb-library-vault/PROJECT_CONTEXT.md`, this file (`CURRENT_STATE.md`), and `OPEN_QUESTIONS.md` first.
+2. Confirm Phase 2b shipped: commit `069b71f` on `main` (pushed to `origin/main`); 74/74 tests green.
+3. Begin Phase 3.1 — Homepage redesign. Inspect `docs/design-exports/Enhanced Homepage/` (or the canonical Project B homepage export, whichever is the current source of truth per `canonical-design-map.md`) before touching `welcome.blade.php`.
+4. Do not touch the `/dashboard/*` family, the admin shell, or the librarian shell. Do not begin repository backend wiring (that is Phase 4/6).
 
 ## Known Technical Debt
 - Post-migration metadata correction and duplicate cleanup remain ongoing
