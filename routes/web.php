@@ -47,6 +47,12 @@ $librarianView = static function (Request $request, string $view, array $data = 
     ], $data));
 };
 
+$memberView = static function (Request $request, string $view, array $data = []) {
+    return view($view, array_merge([
+        'memberReader' => $request->session()->get('library.user'),
+    ], $data));
+};
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -454,6 +460,24 @@ Route::prefix('librarian')->middleware(['library.auth', 'librarian.staff'])->nam
     Route::get('/repository', function (Request $request) use ($librarianView) {
         return $librarianView($request, 'librarian.repository');
     })->name('repository');
+});
+
+// Phase 2a — canonical member-facing shell for ordinary users (role='reader').
+// Librarians and admins are rejected by the `member.reader` middleware and
+// redirected to their own operational shells via the standard 403 flow.
+// The transitional /account route is retained and unchanged for now.
+Route::prefix('dashboard')->middleware(['library.auth', 'member.reader'])->name('member.')->group(function () use ($memberView) {
+    Route::get('/', function (Request $request) use ($memberView) {
+        return $memberView($request, 'member.dashboard');
+    })->name('dashboard');
+
+    Route::get('/reservations', function (Request $request) use ($memberView) {
+        return $memberView($request, 'member.reservations');
+    })->name('reservations');
+
+    Route::get('/list', function (Request $request) use ($memberView) {
+        return $memberView($request, 'member.list');
+    })->name('list');
 });
 
 Route::prefix('admin')->middleware(['library.auth', 'admin.staff'])->name('admin.')->group(function () use ($adminView) {

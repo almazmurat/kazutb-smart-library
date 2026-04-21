@@ -2,25 +2,25 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-21 11:16:16 UTC
-- Commit: 74e3531
+- Time: 2026-04-21 11:43:36 UTC
+- Commit: d0b9310
 - Branch: main
 - Change type: UI/Blade view change
-- Files: resources/views/layouts/librarian.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/data-cleanup.blade.php, resources/views/librarian/repository.blade.php, routes/web.php
-- Commit message: feat(phase-1.2): canonical librarian circulation / data-cleanup / repository
+- Files: resources/views/layouts/admin.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/overview.blade.php, routes/web.php
+- Commit message: feat(phase-1.4): 301 redirects /internal/* -> /librarian/* + canonical UI cleanup
 
 ## Latest Git Automation
-- Time: 2026-04-21 11:16:16 UTC
+- Time: 2026-04-21 11:43:36 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 74e3531
-- Update: Git post-commit on main: feat(phase-1.2): canonical librarian circulation / data-cleanup / repository
-- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/layouts/librarian.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/data-cleanup.blade.php, resources/views/librarian/repository.blade.php, routes/web.php, tests/Feature/LibrarianCirculationPageTest.php, tests/Feature/LibrarianDataCleanupPageTest.php, tests/Feature/LibrarianRepositoryPageTest.php
+- Commit: d0b9310
+- Update: Git post-commit on main: feat(phase-1.4): 301 redirects /internal/* -> /librarian/* + canonical UI cleanup
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/layouts/admin.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/overview.blade.php, routes/web.php, tests/Feature/InternalToLibrarianRedirectsTest.php
 - Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
-Phases 0, 1.1, 1.2, and **1.4** are complete. All four canonical `/librarian/*` screens are live (`/librarian`, `/librarian/circulation`, `/librarian/data-cleanup`, `/librarian/repository`) and extend `layouts.librarian`. The transitional `/internal/*` layer has been compressed: `/internal/dashboard`, `/internal/circulation`, and `/internal/stewardship` now return `301` permanent redirects to their canonical `/librarian/*` counterparts. `/internal/review` (Quality Issues Overview) and `/internal/ai-chat` (experimental staff AI assistant) remain functional under `library.auth` because neither has a confirmed canonical `/librarian/*` destination in the roadmap. Active UI (admin sidebar, librarian overview snapshot CTAs, librarian circulation "View All") now points exclusively at `/librarian/*`. Admins continue to land on `/admin`; members continue to land on `/account` (interim). Next logical phase is Phase 2 — Member Dashboard Decomposition (`/account` → canonical `/dashboard/*`).
+Phases 0, 1.1, 1.2, 1.4, and **2a** are complete. The canonical member-facing shell is live: `layouts/member.blade.php` is reused by three new routes — `/dashboard` (name `member.dashboard`), `/dashboard/reservations` (name `member.reservations`), and `/dashboard/list` (name `member.list`). The new `member.reader` middleware (backed by `EnsureMemberReader`) gates the entire `/dashboard/*` family to ordinary users (`role='reader'`); librarians and admins receive `403` and continue to use their own `/librarian` and `/admin` shells. The transitional `/account` route is intentionally left untouched — reader `PostLoginRedirect` still lands on `/account`, and migration to `/dashboard` will happen only once feature parity is verified. Librarian surfaces continue as before: all four canonical `/librarian/*` screens remain live and the three 301 redirects from `/internal/*` are still in place. `/internal/review` and `/internal/ai-chat` remain functional under `library.auth`. Next logical phase is Phase 2b — member notifications / contact / history surfaces.
 
 ## What Is Done
 - Canonical product truth is consolidated in [[PROJECT_CONTEXT]]

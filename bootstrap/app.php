@@ -5,6 +5,7 @@ use App\Http\Middleware\EnsureAuthenticatedReader;
 use App\Http\Middleware\EnsureIntegrationBoundary;
 use App\Http\Middleware\EnsureInternalCirculationStaff;
 use App\Http\Middleware\EnsureLibrarianStaff;
+use App\Http\Middleware\EnsureMemberReader;
 use App\Http\Middleware\LogIntegrationRequest;
 use App\Http\Middleware\SetRequestLocale;
 use Illuminate\Foundation\Application;
@@ -30,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'integration.log' => LogIntegrationRequest::class,
             'librarian.staff' => EnsureLibrarianStaff::class,
             'library.auth' => EnsureAuthenticatedReader::class,
+            'member.reader' => EnsureMemberReader::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

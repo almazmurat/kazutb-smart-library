@@ -72,6 +72,16 @@ Used only for the newly generated missing pages:
 |---|---|---|---|---|---|---|
 | Public | Login | Project A / Secure Institutional Access (`docs/design-exports/Secure Access/`) | `/login` | `auth.blade.php` | implemented — archive-reference | Behavior preserved; no active redesign |
 
+### Member — canonical member shell (Phase 2a)
+
+| Surface | Page Type | Canonical Source | Target Route / Surface | Target View / Area | Status | Notes |
+|---|---|---|---|---|---|---|
+| Member | Member Overview Dashboard | `docs/design-exports/member_overview_dashboard/` | `/dashboard` (name `member.dashboard`) | `layouts/member.blade.php` + `member/dashboard.blade.php` | implemented — archive-reference | Role-gated to `reader`; copy adapted to KazUTB; placeholder loan / research / shortlist data until backend wiring |
+| Member | My Reservations | `docs/design-exports/my_reservations/` | `/dashboard/reservations` (name `member.reservations`) | `member/reservations.blade.php` | implemented — archive-reference | Canonical status vocabulary (pending · confirmed · ready_for_pickup · fulfilled · cancelled · expired); placeholder cards until reservation backend lands |
+| Member | My Literature Shortlist | `docs/design-exports/my_literature_shortlist/` | `/dashboard/list` (name `member.list`) | `member/list.blade.php` | implemented — archive-reference | Personal shortlist shell; real data pending integration with `ShortlistStorageService` |
+
+> Transitional `/account` route remains untouched for now and keeps serving as the current reader landing target from post-login redirect. Migration to the new `/dashboard` family is staged and will be cut over once feature parity and safe transition are verified.
+
 ### Removed
 
 - `docs/design-exports/athenaeum_digital/` — **deleted 2026-04-21**. This direction was explicitly identified as non-canonical in [[PROJECT_CONTEXT]] §31.2 and must never be reintroduced.
