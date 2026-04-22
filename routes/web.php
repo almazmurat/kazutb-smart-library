@@ -649,7 +649,15 @@ Route::get('/contacts', function () {
 });
 
 Route::get('/resources', function () {
-    return view('resources', ['activePage' => 'resources']);
+    $externalResourceService = app(\App\Services\ExternalResourceService::class);
+    $resources = $externalResourceService->list();
+    $categories = $externalResourceService->categories();
+    
+    return view('resources', [
+        'activePage' => 'resources',
+        'resources' => $resources,
+        'categories' => $categories,
+    ]);
 });
 
 Route::get('/for-teachers', fn () => redirect('/resources', 301));

@@ -1232,24 +1232,68 @@
     <section id="resources-filter-bar" class="resources-filters">
       <span class="resources-filter-label">{{ ['ru' => 'Фильтр по дисциплине', 'kk' => 'Пән бойынша сүзгі', 'en' => 'Filter by Discipline'][$lang] }}</span>
       <button type="button" class="resources-filter-btn is-active" data-filter="all">{{ ['ru' => 'Все ресурсы', 'kk' => 'Барлық ресурстар', 'en' => 'All Access'][$lang] }}</button>
-      <button type="button" class="resources-filter-btn" data-filter="engineering">Engineering</button>
-      <button type="button" class="resources-filter-btn" data-filter="economics">Economics</button>
-      <button type="button" class="resources-filter-btn" data-filter="social">Social Sciences</button>
-      <button type="button" class="resources-filter-btn" data-filter="technology">Technology</button>
+      @foreach($categories as $categoryKey => $category)
+      <button type="button" class="resources-filter-btn" data-filter="{{ $categoryKey }}">{{ $category['label'] }}</button>
+      @endforeach
     </section>
 
     <div id="resources-grid" class="resources-bento" data-resource-grid>
-      <article class="resource-card resource-card--featured">
+      @php
+        $featured = $resources->first();
+        $rest = $resources->slice(1);
+        $accessTypeLabels = config('external_resources.access_types', []);
+        $categoryLabels = config('external_resources.categories', []);
+      @endphp
+      
+      @if($featured)
+      <article class="resource-card resource-card--featured" data-category="{{ $featured['category'] }}">
         <div>
           <div class="resource-badge-row">
-            <span class="resource-badge">{{ ['ru' => 'Премиум доступ', 'kk' => 'Премиум қолжетімділік', 'en' => 'Premium Access'][$lang] }}</span>
-            <span class="resource-badge resource-badge--neutral">{{ ['ru' => 'Общий академический доступ', 'kk' => 'Жалпы академиялық қолжетімділік', 'en' => 'General Research'][$lang] }}</span>
+            @php
+              $accessInfo = $accessTypeLabels[$featured['access_type']] ?? [];
+              $categoryInfo = $categoryLabels[$featured['category']] ?? [];
+            @endphp
+            <span class="resource-badge">{{ $accessInfo['label'] ?? $featured['access_type'] }}</span>
+            <span class="resource-badge resource-badge--neutral">{{ $categoryInfo['label'] ?? $featured['category'] }}</span>
           </div>
-          <h3 class="resource-card-title">{{ ['ru' => 'Загрузка платформ...', 'kk' => 'Платформалар жүктелуде...', 'en' => 'Loading platforms...'][$lang] }}</h3>
-          <p class="resource-card-desc">{{ ['ru' => 'Подготавливаем лицензированные и открытые ресурсы библиотеки.', 'kk' => 'Кітапхананың лицензиялық және ашық ресурстары дайындалуда.', 'en' => 'Preparing the library’s licensed and open resources.'][$lang] }}</p>
+          <h3 class="resource-card-title">{{ $featured['title'] }}</h3>
+          <p class="resource-card-desc">{{ $featured['description'] }}</p>
+          <div class="resource-feature-ghost">📚</div>
+        </div>
+        <div class="resource-actions">
+          <a href="{{ $featured['url'] }}" class="resource-primary" target="_blank" rel="noopener noreferrer">{{ ['ru' => 'Открыть ресурс', 'kk' => 'Ресурсты ашу', 'en' => 'Access Resource'][$lang] }}</a>
+          <a href="{{ $routeWithLang('/contacts') }}" class="resource-secondary">{{ ['ru' => 'Как подключиться', 'kk' => 'Қалай байланыстырылады', 'en' => 'User Guide'][$lang] }}</a>
         </div>
       </article>
+      @endif
+      
+      @foreach($rest as $resource)
+      <article class="resource-card resource-card--small" data-category="{{ $resource['category'] }}">
+        <div>
+          @php
+            $categoryInfo = $categoryLabels[$resource['category']] ?? [];
+            $bgColor = match($categoryInfo['color'] ?? 'blue') {
+              'blue' => 'linear-gradient(135deg, #000613, #214c6f)',
+              'violet' => 'linear-gradient(135deg, #5b3f79, #8f1f5b)',
+              'green' => 'linear-gradient(135deg, #1b6d71, #14696d)',
+              'pink' => 'linear-gradient(135deg, #6f3a2b, #9a5a2d)',
+              default => 'linear-gradient(135deg, #000613, #214c6f)'
+            };
+          @endphp
+          <div class="resource-icon-tile" style="background: {{ $bgColor }}; color: #fff; margin-bottom: .75rem;">
+            <span>{{ $categoryInfo['icon'] ?? '📖' }}</span>
+          </div>
+          <h3 class="resource-card-title">{{ $resource['title'] }}</h3>
+          <p class="resource-card-desc">{{ $resource['description'] }}</p>
+        </div>
+        <div class="resource-actions">
+          <a href="{{ $resource['url'] }}" class="resource-primary" target="_blank" rel="noopener noreferrer" style="width: 100%;">{{ ['ru' => 'Открыть ресурс', 'kk' => 'Ресурсты ашу', 'en' => 'Access Resource'][$lang] }}</a>
+        </div>
+      </article>
+      @endforeach
     </div>
+
+
 
     <section id="resource-support-section" class="resources-support">
       <div class="resources-support-copy">

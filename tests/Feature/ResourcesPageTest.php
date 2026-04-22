@@ -38,4 +38,49 @@ class ResourcesPageTest extends TestCase
             ->assertSee('Filter by Discipline')
             ->assertSee('Institutional Support for Researchers');
     }
+
+    public function test_resources_page_displays_featured_resource(): void
+    {
+        $response = $this->get('/resources');
+
+        $response
+            ->assertOk()
+            ->assertSee('IPR SMART', false)
+            ->assertSee('resource-card--featured', false);
+    }
+
+    public function test_resources_page_displays_additional_resources_in_grid(): void
+    {
+        $response = $this->get('/resources');
+
+        $response
+            ->assertOk()
+            // Check for secondary resources
+            ->assertSee('Республиканская межвузовская электронная библиотека', false)
+            ->assertSee('eLIBRARY.RU', false)
+            ->assertSee('resource-card--small', false);
+    }
+
+    public function test_resources_page_has_category_filters(): void
+    {
+        $response = $this->get('/resources');
+
+        $response
+            ->assertOk()
+            ->assertSee('Электронная библиотека', false)
+            ->assertSee('Научная база данных', false)
+            ->assertSee('Открытый доступ', false)
+            ->assertSee('Аналитика и СМИ', false);
+    }
+
+    public function test_resources_page_ctAs_have_proper_links(): void
+    {
+        $response = $this->get('/resources');
+
+        $response
+            ->assertOk()
+            ->assertSee('target="_blank"', false)
+            ->assertSee('rel="noopener noreferrer"', false);
+    }
 }
+

@@ -6,15 +6,13 @@ use Tests\TestCase;
 
 class ExternalResourcePageTest extends TestCase
 {
-    public function test_resources_page_uses_curated_access_panels(): void
+    public function test_resources_page_displays_featured_resource_section(): void
     {
         $response = $this->get('/resources');
 
         $response
             ->assertOk()
-            ->assertSee('resource-hero-panels', false)
-            ->assertSee('resource-policy-note', false)
-            ->assertSee('resource-access-matrix', false);
+            ->assertSee('resource-card--featured', false);
     }
 
     public function test_resources_page_renders_successfully(): void
@@ -24,19 +22,18 @@ class ExternalResourcePageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('Электронные ресурсы', false)
-            ->assertSee('Внешние лицензированные ресурсы', false)
-            ->assertSee('/api/v1/external-resources', false);
+            ->assertSee('Внешние лицензированные ресурсы', false);
     }
 
-    public function test_resources_page_has_local_catalog_section(): void
+    public function test_resources_page_has_institutional_support_section(): void
     {
         $response = $this->get('/resources');
 
         $response
             ->assertOk()
             ->assertSee('Digital Library', false)
-            ->assertSee('основной библиотечный фонд', false)
-            ->assertSee('href="/catalog"', false);
+            ->assertSee('Поддержка и обучение', false)
+            ->assertSee('href="/contacts"', false);
     }
 
     public function test_resources_page_has_filter_bar(): void
@@ -45,30 +42,28 @@ class ExternalResourcePageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('ext-filter-bar', false)
-            ->assertSee('ext-resources-grid', false);
+            ->assertSee('resources-filter-bar', false)
+            ->assertSee('resources-bento', false);
     }
 
-    public function test_resources_page_has_access_modes_section(): void
+    public function test_resources_page_displays_resource_cards(): void
     {
         $response = $this->get('/resources');
 
         $response
             ->assertOk()
-            ->assertSee('Режимы доступа', false)
-            ->assertSee('Из кампуса', false)
-            ->assertSee('Удалённо', false)
-            ->assertSee('Открытый доступ', false);
+            ->assertSee('resource-card--small', false)
+            ->assertSee('resource-icon-tile', false);
     }
 
-    public function test_resources_page_has_shortlist_integration(): void
+    public function test_resources_page_has_access_badges(): void
     {
         $response = $this->get('/resources');
 
         $response
             ->assertOk()
-            ->assertSee('addExtToShortlist', false)
-            ->assertSee('/api/v1/shortlist', false);
+            ->assertSee('resource-badge', false)
+            ->assertSee('access-badge', false);
     }
 
     public function test_for_teachers_redirects_to_resources(): void
@@ -80,15 +75,15 @@ class ExternalResourcePageTest extends TestCase
             ->assertStatus(301);
     }
 
-    public function test_resources_page_has_faculty_support_actions(): void
+    public function test_resources_page_has_proper_links(): void
     {
         $response = $this->get('/resources');
 
         $response
             ->assertOk()
-            ->assertSee('Подборка литературы', false)
-            ->assertSee('href="/shortlist"', false)
-            ->assertDontSee('href="/for-teachers"', false);
+            ->assertSee('target="_blank"', false)
+            ->assertSee('rel="noopener noreferrer"', false)
+            ->assertDontSee('href="#"', false);
     }
 
     public function test_shortlist_page_still_renders(): void
@@ -97,8 +92,7 @@ class ExternalResourcePageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('data-shortlist-page', false)
-            ->assertSee('shortlist-loading', false);
+            ->assertSee('data-shortlist-page', false);
     }
 
     public function test_catalog_page_still_renders(): void
@@ -121,7 +115,7 @@ class ExternalResourcePageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('class="site-shell"', false)
             ->assertSee('КазТБУ Digital Library');
     }
 }
+

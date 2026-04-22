@@ -37,7 +37,7 @@ Used only for the newly generated missing pages:
 | Public | Login | Project A / Secure Institutional Access | `/login` | `auth.blade.php` | implemented | Refined; preserve auth behavior |
 | Public | Catalog | Project B / Catalog | `/catalog` | `catalog.blade.php` | pending — **Cluster A** | Phase 3 Cluster A.3. Existing surface; needs export-backed refinement. |
 | Public / Member | Book Details | Project B / Book Details | book detail route / reader record page | `book.blade.php` or target detail view | pending — **Cluster A** | Phase 3 Cluster A.4. Existing surface; needs export-backed refinement. Legacy debt signals; highest-risk in Cluster A. |
-| Public / Member | Resources | Project B / Resources | `/resources` | `resources.blade.php` | pending — **Cluster A — NEXT** | Phase 3 Cluster A.1. **Next implementation target after reconciliation.** Existing surface; polish against `docs/design-exports/resources` export for institutional tone. |
+| Public / Member | Resources | Project B / Resources | `/resources` | `resources.blade.php` | implemented — archive-reference | Phase 3 Cluster A.1 completed. Refined to display 8 curated external resources (IPR SMART featured, 7 in grid) from config/external_resources.php via ExternalResourceService. Dynamic category badges, access type indicators, external URLs. Tri-lingual (ru/kk/en). Support section with contact links. |
 | Member | Shortlist | Project A / Research Workspace / Shortlist | `/shortlist` | `shortlist.blade.php` | pending | Preserve real shortlist behavior |
 | Member | Member Dashboard | Project A / Member Dashboard | `/account` | `account.blade.php` | pending | Students and teachers share same experience |
 
