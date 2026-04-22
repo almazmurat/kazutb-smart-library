@@ -1,1792 +1,800 @@
 @extends('layouts.public')
 
 @php
+  // Phase 3 Cluster D — /resources canonical-exact rebuild per
+  // docs/design-exports/institutional_resources_canonical/code.html.
+  //
+  // Retired the previous pathways + filter-bar + featured/small-grid + support-section
+  // shell; legacy markers (pathways id, filter-bar id, resource-grid data attr, support
+  // section id, featured and small card modifiers, pathway panels, core-databases
+  // label) are no longer emitted. The new layout mirrors the canonical export:
+  //
+  //   1. Hero (8/12 + 4/12 off-campus access card)
+  //   2. Main two-column layout
+  //      2a. Sidebar — "Refine Search" (Discipline + Resource Type, UI-only)
+  //      2b. Content stack
+  //          • "Premium Databases" — 2-col card grid (subscription databases,
+  //            remote_auth + campus access types)
+  //          • "Open Access Tools"  — list rows (open access type)
+  //
+  // Data source unchanged: App\Services\ExternalResourceService, fed by
+  // config/external_resources.php — resource title, provider, url, description,
+  // access_type are preserved verbatim. Tri-lingual support covers UI chrome
+  // (hero, sidebar labels, section headings, access-type labels, chrome copy);
+  // resource descriptions stay in their canonical language as supplied by config.
+
   $lang = request()->query('lang', 'ru');
   $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
-  $routeWithLang = static function (string $path) use ($lang): string {
-    if ($lang === 'ru') {
-      return $path;
-    }
+  $activePage = $activePage ?? 'resources';
 
-    $separator = str_contains($path, '?') ? '&' : '?';
-    return $path . $separator . 'lang=' . $lang;
+  $routeWithLang = static function (string $path, array $query = []) use ($lang): string {
+      if ($lang !== 'ru' && ! array_key_exists('lang', $query)) {
+          $query['lang'] = $lang;
+      }
+      $queryString = http_build_query(array_filter($query, static fn ($v) => $v !== null && $v !== ''));
+      return $path . ($queryString !== '' ? ('?' . $queryString) : '');
+  };
+
+  $resources = $resources ?? collect();
+  $premiumResources = collect($resources)->filter(
+      fn ($r) => in_array($r['access_type'] ?? null, ['remote_auth', 'campus'], true)
+          && ($r['status'] ?? 'active') !== 'inactive'
+  )->values();
+  $openResources = collect($resources)->filter(
+      fn ($r) => ($r['access_type'] ?? null) === 'open'
+          && ($r['status'] ?? 'active') !== 'inactive'
+  )->values();
+
+  $openIconFor = static function (array $resource): string {
+      $category = $resource['category'] ?? null;
+      return match ($category) {
+          'open_access' => 'public',
+          'analytics' => 'insights',
+          'research_database' => 'dataset',
+          'electronic_library' => 'menu_book',
+          default => 'public',
+      };
+  };
+
+  $emblemFor = static function (array $resource): string {
+      $title = trim((string) ($resource['title'] ?? ''));
+      if ($title !== '' && preg_match('/[A-Za-zА-Яа-яЁё]/u', $title, $m)) {
+          return mb_strtoupper(mb_substr($m[0], 0, 1));
+      }
+      $slug = (string) ($resource['slug'] ?? '?');
+      return mb_strtoupper(mb_substr($slug, 0, 1));
   };
 
   $copy = [
-    'ru' => [
-      'meta' => 'Ресурсы — Digital Library',
-      'eyebrow' => 'Институциональные ресурсы',
-      'hero_start' => 'Институциональные',
-      'hero_emphasis' => 'ресурсы',
-      'hero_end' => 'и глобальные исследовательские инструменты',
-      'lead' => 'Кураторский шлюз к лицензированным внешним базам данных, академическим журналам и специализированной исследовательской инфраструктуре Казахского университета технологии и бизнеса.',
-      'pathways_title' => 'Адресные направления',
-      'pathways_view_all' => 'Показать всё',
-      'students_title' => 'Для студентов',
-      'students_desc' => 'Учебные пособия, справочники, инструменты цитирования и базовые базы данных для поддержки курсовой работы и разработки диссертаций.',
-      'students_cta' => 'Учебный центр',
-      'faculty_title' => 'Для преподавателей',
-      'faculty_desc' => 'Кураторство материалов курса, инструменты интеграции учебных программ, педагогические журналы и услуги поддержки научных публикаций.',
-      'faculty_cta' => 'Центр преподавателей',
-      'researchers_title' => 'Для исследователей',
-      'researchers_desc' => 'Передовые наборы данных, индексы рецензируемых исследований, инструменты поиска грантов и специализированные институциональные архивы для глубокого анализа.',
-      'researchers_cta' => 'Центр исследователей',
-      'core_label' => 'Институциональные подписки',
-      'core_title' => 'Основные базы данных',
-      'support_label' => 'Поддержка и обучение',
-      'support_title' => 'Институциональная поддержка исследователей',
-      'support_body' => 'Если возникают сложности с доступом к внешним ресурсам, библиотека помогает с подключением, навигацией по платформам и быстрыми консультациями для преподавателей и студентов.',
-    ],
-    'kk' => [
-      'meta' => 'Ресурстар — Digital Library',
-      'eyebrow' => 'Институционалдық ресурстар',
-      'hero_start' => 'Институционалдық',
-      'hero_emphasis' => 'ресурстар',
-      'hero_end' => 'және жаһандық зерттеу құралдары',
-      'lead' => 'ҚазТБУ қауымдастығына арналған лицензиялық сыртқы дерекқорларға, академиялық журналдарға және зерттеу инфрақұрылымына ашылатын сенімді кітапхана шлюзі.',
-      'pathways_title' => 'Ынамдалған бағыттар',
-      'pathways_view_all' => 'Барлығын көрсету',
-      'students_title' => 'Студенттер үшін',
-      'students_desc' => 'Оқу құралдары, анықтамалық материалдар, дәйектеу құралдары және барлық курсты тіндеу және диссертация дайындау үшін қажетті негіздегі дерекқорлар.',
-      'students_cta' => 'Студент орталығын зерттеу',
-      'faculty_title' => 'Оқытушылар үшін',
-      'faculty_desc' => 'Курс материалдарын ұйымдастыру, оқу бағдарламасын интеграциялау құралдары, педагогикалық журналдар және ғылыми басылымдарды қолдау қызметтері.',
-      'faculty_cta' => 'Оқытушылар орталығын зерттеу',
-      'researchers_title' => 'Зерттеушілер үшін',
-      'researchers_desc' => 'Ынамдалған деректер жиынтығы, рецензирленген индекстер, гранттарды табу құралдары және тереңдік зерттеу үшін бағалы институционалдық архивтер.',
-      'researchers_cta' => 'Зерттеушілер орталығын зерттеу',
-      'core_label' => 'Институционалдық жазылымдар',
-      'core_title' => 'Негіздегі дерекқорлар',
-      'support_label' => 'Қолдау және оқыту',
-      'support_title' => 'Зерттеушілерге институционалдық қолдау',
-      'support_body' => 'Сыртқы ресурстарға қолжетімділік қиындаса, кітапхана платформалармен жұмыс істеуге, қосылуға және оқытушылар мен студенттерге кеңес беруге көмектеседі.',
-    ],
-    'en' => [
-      'meta' => 'Resources — Digital Library',
-      'eyebrow' => 'Institutional resources',
-      'hero_start' => 'Institutional',
-      'hero_emphasis' => 'Resources',
-      'hero_end' => '& Global Research Tools',
-      'lead' => 'A curated gateway to licensed external databases, academic journals, and specialized research infrastructure provided by the Kazakh University of Technology and Business.',
-      'pathways_title' => 'Tailored Pathways',
-      'pathways_view_all' => 'View All',
-      'students_title' => 'For Students',
-      'students_desc' => 'Essential textbooks, study guides, citation tools, and foundational databases to support coursework and thesis development.',
-      'students_cta' => 'Student Resources',
-      'faculty_title' => 'For Faculty & Teachers',
-      'faculty_desc' => 'Course material curation, syllabus integration tools, pedagogical journals, and academic publishing support services.',
-      'faculty_cta' => 'Faculty Resources',
-      'researchers_title' => 'For Researchers',
-      'researchers_desc' => 'Advanced data sets, peer-reviewed indices, grant finding tools, and specialized institutional archives for deep inquiry.',
-      'researchers_cta' => 'Research Resources',
-      'core_label' => 'Institutional Subscriptions',
-      'core_title' => 'Core Databases',
-      'support_label' => 'Assistance & training',
-      'support_title' => 'Institutional Support for Researchers',
-      'support_body' => 'Experiencing difficulty accessing external resources? Our library staff provides one-on-one training sessions and technical support for faculty and students.',
-    ],
+      'ru' => [
+          'title' => 'Институциональные ресурсы — KazUTB Smart Library',
+          'hero_eyebrow' => 'Справочник',
+          'hero_title_a' => 'Институциональные',
+          'hero_title_b' => 'ресурсы',
+          'hero_body' => 'Кураторская коллекция академических баз данных, журналов и аналитических инструментов, доступных научному сообществу КазУТБ. Доступ требует институциональной авторизации.',
+          'off_campus_title' => 'Доступ вне кампуса',
+          'off_campus_cta' => 'Как настроить удалённый доступ',
+          'sidebar_title' => 'Фильтр поиска',
+          'sidebar_discipline' => 'Дисциплина',
+          'sidebar_resource_type' => 'Тип ресурса',
+          'discipline_engineering' => 'Инженерия и технологии',
+          'discipline_sciences' => 'Естественные науки',
+          'discipline_business' => 'Бизнес и экономика',
+          'discipline_humanities' => 'Гуманитарные науки',
+          'type_journals' => 'Журналы',
+          'type_proceedings' => 'Материалы конференций',
+          'type_datasets' => 'Наборы данных',
+          'premium_title' => 'Премиальные базы данных',
+          'premium_count_one' => ':count подписка',
+          'premium_count_few' => ':count подписки',
+          'premium_count_many' => ':count подписок',
+          'premium_badge' => 'Институциональный доступ',
+          'premium_cta' => 'Перейти к ресурсу',
+          'open_title' => 'Инструменты открытого доступа',
+          'open_count_label' => 'Открытый доступ',
+          'open_cta' => 'Открыть инструмент',
+      ],
+      'kk' => [
+          'title' => 'Институционалдық ресурстар — KazUTB Smart Library',
+          'hero_eyebrow' => 'Анықтамалық',
+          'hero_title_a' => 'Институционалдық',
+          'hero_title_b' => 'ресурстар',
+          'hero_body' => 'KazUTB ғылыми қауымдастығы үшін қолжетімді академиялық дерекқорлар, журналдар және аналитикалық құралдардың кураторлық жинағы. Қолжетімділік үшін институционалдық авторизация қажет.',
+          'off_campus_title' => 'Кампустан тыс қол жеткізу',
+          'off_campus_cta' => 'Қашықтан қол жеткізуді баптау',
+          'sidebar_title' => 'Іздеуді нақтылау',
+          'sidebar_discipline' => 'Пән',
+          'sidebar_resource_type' => 'Ресурс түрі',
+          'discipline_engineering' => 'Инженерия және технологиялар',
+          'discipline_sciences' => 'Жаратылыстану ғылымдары',
+          'discipline_business' => 'Бизнес және экономика',
+          'discipline_humanities' => 'Гуманитарлық ғылымдар',
+          'type_journals' => 'Журналдар',
+          'type_proceedings' => 'Конференция материалдары',
+          'type_datasets' => 'Деректер жиынтықтары',
+          'premium_title' => 'Премиум дерекқорлар',
+          'premium_count_one' => ':count жазылым',
+          'premium_count_few' => ':count жазылым',
+          'premium_count_many' => ':count жазылым',
+          'premium_badge' => 'Институционалдық қолжетімділік',
+          'premium_cta' => 'Ресурсқа өту',
+          'open_title' => 'Ашық қол жеткізу құралдары',
+          'open_count_label' => 'Ашық қол жеткізу',
+          'open_cta' => 'Құралды ашу',
+      ],
+      'en' => [
+          'title' => 'Institutional Resources — KazUTB Smart Library',
+          'hero_eyebrow' => 'Directory',
+          'hero_title_a' => 'Institutional',
+          'hero_title_b' => 'Resources',
+          'hero_body' => 'A curated collection of academic databases, journals, and analytical tools accessible to the KazUTB scholarly community. Access requires institutional authentication.',
+          'off_campus_title' => 'Off-Campus Access',
+          'off_campus_cta' => 'Configure Proxy Settings',
+          'sidebar_title' => 'Refine Search',
+          'sidebar_discipline' => 'Discipline',
+          'sidebar_resource_type' => 'Resource Type',
+          'discipline_engineering' => 'Engineering & Tech',
+          'discipline_sciences' => 'Natural Sciences',
+          'discipline_business' => 'Business & Economics',
+          'discipline_humanities' => 'Humanities',
+          'type_journals' => 'Journals',
+          'type_proceedings' => 'Conference Proceedings',
+          'type_datasets' => 'Datasets',
+          'premium_title' => 'Premium Databases',
+          'premium_count_one' => ':count Subscription',
+          'premium_count_few' => ':count Subscriptions',
+          'premium_count_many' => ':count Subscriptions',
+          'premium_badge' => 'Institutional',
+          'premium_cta' => 'Access Resource',
+          'open_title' => 'Open Access Tools',
+          'open_count_label' => 'Public',
+          'open_cta' => 'Open Tool',
+      ],
   ][$lang];
+
+  $pluralizePremium = static function (int $n) use ($copy, $lang): string {
+      if ($lang === 'ru') {
+          $mod10 = $n % 10;
+          $mod100 = $n % 100;
+          if ($mod10 === 1 && $mod100 !== 11) { $key = 'premium_count_one'; }
+          elseif (in_array($mod10, [2,3,4], true) && ! in_array($mod100, [12,13,14], true)) { $key = 'premium_count_few'; }
+          else { $key = 'premium_count_many'; }
+      } else {
+          $key = $n === 1 ? 'premium_count_one' : 'premium_count_few';
+      }
+      return str_replace(':count', (string) $n, $copy[$key]);
+  };
+  $premiumCountLabel = $pluralizePremium($premiumResources->count());
 @endphp
 
-@section('title', $copy['meta'])
+@section('title', $copy['title'])
+
+@section('content')
+  {{-- Cluster D — canonical-exact rebuild of /resources per institutional_resources_canonical.
+       Section markers (canonical order): resources-canonical-hero, resources-canonical-main,
+       resources-canonical-sidebar, resources-canonical-premium, resources-canonical-open-access. --}}
+  <div class="resources-canonical">
+
+    {{-- Hero: 8/12 copy + 4/12 off-campus access card. --}}
+    <header class="resources-canonical__hero" data-section="resources-canonical-hero">
+      <div class="resources-canonical__hero-copy">
+        <span class="resources-canonical__eyebrow">{{ $copy['hero_eyebrow'] }}</span>
+        <h1 class="resources-canonical__display">
+          {{ $copy['hero_title_a'] }}<br>
+          <span class="resources-canonical__display-italic">{{ $copy['hero_title_b'] }}</span>
+        </h1>
+        <p class="resources-canonical__lead">{{ $copy['hero_body'] }}</p>
+      </div>
+      <aside class="resources-canonical__hero-aside">
+        <div class="resources-canonical__off-campus" data-test-id="resources-canonical-off-campus">
+          <div class="resources-canonical__off-campus-icon" aria-hidden="true">
+            <span class="material-symbols-outlined">vpn_key</span>
+          </div>
+          <div class="resources-canonical__off-campus-copy">
+            <h3 class="resources-canonical__off-campus-title">{{ $copy['off_campus_title'] }}</h3>
+            <a class="resources-canonical__off-campus-cta"
+               href="{{ $routeWithLang('/contacts') }}"
+               data-test-id="resources-canonical-off-campus-cta">
+              {{ $copy['off_campus_cta'] }} →
+            </a>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    {{-- Main two-column layout: 1/4 sidebar + 3/4 categorized content. --}}
+    <div class="resources-canonical__main" data-section="resources-canonical-main">
+
+      {{-- Refine Search sidebar. Checkboxes are UI-only per canonical export. --}}
+      <aside class="resources-canonical__sidebar" data-section="resources-canonical-sidebar">
+        <div class="resources-canonical__sidebar-card">
+          <h3 class="resources-canonical__sidebar-title">{{ $copy['sidebar_title'] }}</h3>
+
+          <div class="resources-canonical__facet">
+            <h4 class="resources-canonical__facet-heading">{{ $copy['sidebar_discipline'] }}</h4>
+            <ul class="resources-canonical__facet-list">
+              @foreach([
+                  'engineering' => $copy['discipline_engineering'],
+                  'sciences'    => $copy['discipline_sciences'],
+                  'business'    => $copy['discipline_business'],
+                  'humanities'  => $copy['discipline_humanities'],
+              ] as $slug => $label)
+                <li>
+                  <label class="resources-canonical__facet-option" data-facet-slot data-facet-type="discipline" data-facet-slug="{{ $slug }}">
+                    <input type="checkbox" name="discipline[]" value="{{ $slug }}">
+                    <span>{{ $label }}</span>
+                  </label>
+                </li>
+              @endforeach
+            </ul>
+          </div>
+
+          <hr class="resources-canonical__facet-divider">
+
+          <div class="resources-canonical__facet">
+            <h4 class="resources-canonical__facet-heading">{{ $copy['sidebar_resource_type'] }}</h4>
+            <ul class="resources-canonical__facet-list">
+              @foreach([
+                  'journals'    => $copy['type_journals'],
+                  'proceedings' => $copy['type_proceedings'],
+                  'datasets'    => $copy['type_datasets'],
+              ] as $slug => $label)
+                <li>
+                  <label class="resources-canonical__facet-option" data-facet-slot data-facet-type="resource-type" data-facet-slug="{{ $slug }}">
+                    <input type="checkbox" name="resource_type[]" value="{{ $slug }}">
+                    <span>{{ $label }}</span>
+                  </label>
+                </li>
+              @endforeach
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      {{-- Categorized directory: Premium → card grid, Open Access → list rows. --}}
+      <div class="resources-canonical__directory">
+
+        <section class="resources-canonical__section" data-section="resources-canonical-premium">
+          <div class="resources-canonical__section-head">
+            <h2 class="resources-canonical__section-title">{{ $copy['premium_title'] }}</h2>
+            <span class="resources-canonical__section-count" data-test-id="resources-canonical-premium-count">
+              {{ $premiumCountLabel }}
+            </span>
+          </div>
+          <div class="resources-canonical__card-grid">
+            @foreach($premiumResources as $resource)
+              <article
+                class="resources-canonical__card"
+                data-premium-resource
+                data-resource-slug="{{ $resource['slug'] }}"
+                data-resource-access="{{ $resource['access_type'] }}"
+                data-test-id="resources-canonical-premium-card-{{ $resource['slug'] }}"
+              >
+                <div class="resources-canonical__card-body">
+                  <div class="resources-canonical__card-head">
+                    <div class="resources-canonical__card-emblem" aria-hidden="true">
+                      <span>{{ $emblemFor($resource) }}</span>
+                    </div>
+                    <span class="resources-canonical__card-badge">
+                      <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+                      <span>{{ $copy['premium_badge'] }}</span>
+                    </span>
+                  </div>
+                  <h3 class="resources-canonical__card-title">{{ $resource['title'] }}</h3>
+                  <p class="resources-canonical__card-desc">{{ $resource['description'] }}</p>
+                </div>
+                <div class="resources-canonical__card-foot">
+                  <span class="resources-canonical__card-provider">{{ $resource['provider'] }}</span>
+                  <a class="resources-canonical__card-link"
+                     href="{{ $resource['url'] }}"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     data-test-id="resources-canonical-premium-link-{{ $resource['slug'] }}">
+                    <span>{{ $copy['premium_cta'] }}</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                  </a>
+                </div>
+              </article>
+            @endforeach
+          </div>
+        </section>
+
+        <div class="resources-canonical__section-spacer" aria-hidden="true"></div>
+
+        <section class="resources-canonical__section" data-section="resources-canonical-open-access">
+          <div class="resources-canonical__section-head">
+            <h2 class="resources-canonical__section-title">{{ $copy['open_title'] }}</h2>
+            <span class="resources-canonical__section-count" data-test-id="resources-canonical-open-count">
+              {{ $copy['open_count_label'] }}
+            </span>
+          </div>
+          <div class="resources-canonical__list">
+            @foreach($openResources as $resource)
+              <div
+                class="resources-canonical__row"
+                data-open-resource
+                data-resource-slug="{{ $resource['slug'] }}"
+                data-test-id="resources-canonical-open-row-{{ $resource['slug'] }}"
+              >
+                <div class="resources-canonical__row-main">
+                  <div class="resources-canonical__row-icon" aria-hidden="true">
+                    <span class="material-symbols-outlined">{{ $openIconFor($resource) }}</span>
+                  </div>
+                  <div class="resources-canonical__row-copy">
+                    <h3 class="resources-canonical__row-title">{{ $resource['title'] }}</h3>
+                    <p class="resources-canonical__row-desc">{{ $resource['description'] }}</p>
+                  </div>
+                </div>
+                <a class="resources-canonical__row-link"
+                   href="{{ $resource['url'] }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   data-test-id="resources-canonical-open-link-{{ $resource['slug'] }}">
+                  {{ $copy['open_cta'] }}
+                </a>
+              </div>
+            @endforeach
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+@endsection
 
 @section('head')
 <style>
-    :root {
-      --res-bg: #f4f6f8;
-      --res-surface: #ffffff;
-      --res-border: rgba(179, 191, 207, .55);
-      --res-text: #0f1f3a;
-      --res-muted: #526071;
-      --res-ink: #0b2347;
-      --res-accent: #14696d;
-      --res-accent-soft: rgba(20, 105, 109, .08);
-      --res-shadow: 0 12px 30px rgba(15, 23, 42, .05);
-      --res-space-1: 8px;
-      --res-space-2: 12px;
-      --res-space-3: 16px;
-      --res-space-4: 24px;
-      --res-space-5: 32px;
-    }
-
-    .resources-shell {
-      background: var(--res-bg);
-      padding: var(--shell-first-section-gap) 0 72px;
-    }
-
-    .resources-layout {
-      display: grid;
-      grid-template-columns: 264px minmax(0, 1fr);
-      gap: 28px;
-      align-items: start;
-    }
-
-    .support-rail {
-      position: sticky;
-      top: calc(var(--shell-sticky-offset) + 8px);
-      background: linear-gradient(180deg, #fbfdff, #f3f6fa);
-      border: 1px solid var(--res-border);
-      border-radius: 2px;
-      padding: 18px 14px;
-      box-shadow: var(--res-shadow);
-      display: grid;
-      gap: 16px;
-    }
-
-    .support-rail-head h3 {
-      margin: 0;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 30px;
-      color: var(--res-ink);
-      line-height: 1;
-      letter-spacing: -.2px;
-    }
-
-    .support-rail-head p {
-      margin: 6px 0 0;
-      font-size: 11px;
-      letter-spacing: .11em;
-      text-transform: uppercase;
-      color: var(--res-accent);
-      font-weight: 800;
-    }
-
-    .support-rail-nav {
-      display: grid;
-      gap: 4px;
-    }
-
-    .support-rail-link {
-      display: block;
-      padding: 10px 10px;
-      border-left: 2px solid transparent;
-      color: var(--res-muted);
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .support-rail-link:hover,
-    .support-rail-link.is-active {
-      color: var(--res-ink);
-      border-left-color: var(--res-accent);
-      background: rgba(20,105,109,.04);
-    }
-
-    .support-rail-cta {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 42px;
-      background: var(--res-ink);
-      color: #fff;
-      border: 1px solid var(--res-ink);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .resources-main {
-      display: grid;
-      gap: 28px;
-      align-content: start;
-    }
-
-    .hero-card {
-      border: 1px solid var(--res-border);
-      background: radial-gradient(circle at right top, rgba(20,105,109,.08), rgba(20,105,109,0) 38%), #fdfefe;
-      box-shadow: var(--res-shadow);
-      padding: 34px 38px 32px;
-    }
-
-    .hero-eyebrow {
-      margin: 0 0 12px;
-      font-size: 11px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--res-accent);
-      font-weight: 800;
-    }
-
-    .hero-title {
-      margin: 0;
-      color: var(--res-ink);
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(48px, 5.2vw, 68px);
-      line-height: .97;
-      letter-spacing: -.6px;
-      max-width: 780px;
-      text-wrap: balance;
-    }
-
-    .hero-lead {
-      margin: 16px 0 0;
-      color: var(--res-muted);
-      font-size: 21px;
-      line-height: 1.58;
-      max-width: 840px;
-    }
-
-    .hero-metrics {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .hero-metric {
-      border: 1px solid var(--res-border);
-      background: #fff;
-      padding: 12px;
-      min-height: 96px;
-      display: grid;
-      align-content: start;
-      gap: 6px;
-    }
-
-    .hero-metric strong {
-      color: var(--res-ink);
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 34px;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: -.4px;
-    }
-
-    .hero-metric span {
-      color: var(--res-muted);
-      font-size: 13px;
-      line-height: 1.4;
-      font-weight: 600;
-    }
-
-    .resource-hero-panels {
-      margin-top: 18px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
-      gap: 14px;
-    }
-
-    .resource-policy-note,
-    .resource-access-matrix {
-      border: 1px solid var(--res-border);
-      background: #fff;
-      padding: 16px 18px;
-      min-height: 100%;
-    }
-
-    .resource-policy-note strong,
-    .resource-access-matrix strong {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--res-ink);
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .resource-policy-note p,
-    .resource-access-matrix p {
-      margin: 0;
-      color: var(--res-muted);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .resource-access-modes {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .resource-access-modes span {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--res-ink);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .resource-access-modes span::before {
-      content: '•';
-      color: var(--res-accent);
-      font-size: 16px;
-      line-height: 1;
-    }
-
-    .guidance-grid {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .guidance-card {
-      border: 1px solid var(--res-border);
-      background: #fff;
-      padding: 18px;
-      min-height: 184px;
-      display: grid;
-      align-content: start;
-      gap: 8px;
-    }
-
-    .guidance-card span {
-      margin: 0;
-      color: var(--res-accent);
-      font-size: 10px;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .guidance-card h3 {
-      margin: 0;
-      color: var(--res-ink);
-      font-size: 34px;
-      line-height: .98;
-      font-family: 'Newsreader', Georgia, serif;
-      letter-spacing: -.25px;
-      text-wrap: balance;
-    }
-
-    .guidance-card p {
-      margin: 0;
-      color: var(--res-muted);
-      font-size: 14px;
-      line-height: 1.62;
-    }
-
-    .section-block {
-      border: 1px solid var(--res-border);
-      background: #fff;
-      box-shadow: var(--res-shadow);
-      padding: 32px;
-    }
-
-    .section-heading {
-      display: grid;
-      gap: 12px;
-      max-width: 860px;
-    }
-
-    .section-eyebrow {
-      margin: 0;
-      color: var(--res-accent);
-      font-size: 11px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .section-title {
-      margin: 0;
-      color: var(--res-ink);
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(36px, 4vw, 50px);
-      line-height: .98;
-      letter-spacing: -.45px;
-      text-wrap: balance;
-      max-width: 14ch;
-    }
-
-    .section-lead {
-      margin: 0;
-      color: var(--res-muted);
-      font-size: 16px;
-      line-height: 1.78;
-      max-width: 760px;
-    }
-
-    .ext-filter-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 28px 0 24px;
-    }
-
-    .ext-filter-btn {
-      min-height: 40px;
-      padding: 0 16px;
-      border: 1px solid var(--res-border);
-      border-radius: 999px;
-      background: #f7f9fb;
-      font-size: 12px;
-      letter-spacing: .02em;
-      color: var(--res-muted);
-      font-weight: 700;
-      cursor: pointer;
-      transition: border-color .18s ease, background-color .18s ease, color .18s ease, transform .18s ease;
-    }
-
-    .ext-filter-btn:hover {
-      color: var(--res-ink);
-      border-color: rgba(11,35,71,.22);
-      background: #fff;
-      transform: translateY(-1px);
-    }
-
-    .ext-filter-btn--active {
-      background: var(--res-ink);
-      border-color: var(--res-ink);
-      color: #fff;
-    }
-
-    .ext-resources-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .ext-resource-card {
-      border: 1px solid rgba(171, 184, 201, .72);
-      border-radius: 12px;
-      background: linear-gradient(180deg, #ffffff, #fafbfd 92%);
-      padding: 20px;
-      min-height: 388px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
-      box-shadow: 0 10px 24px rgba(15,23,42,.035);
-    }
-
-    .ext-resource-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(11,35,71,.26);
-      box-shadow: 0 18px 34px rgba(15,23,42,.07);
-      background: linear-gradient(180deg, #ffffff, #f7fafc 100%);
-    }
-
-    .ext-resource-card__availability {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      min-height: 30px;
-    }
-
-    .ext-resource-card__provider {
-      color: #6f8094;
-      font-size: 11px;
-      letter-spacing: .09em;
-      text-transform: uppercase;
-      font-weight: 700;
-      line-height: 1.35;
-    }
-
-    .ext-resource-card__header {
-      display: grid;
-      grid-template-columns: 44px minmax(0, 1fr);
-      align-items: start;
-      gap: 14px;
-    }
-
-    .ext-resource-card__icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      color: #fff;
-      font-size: 17px;
-      flex-shrink: 0;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
-    }
-
-    .ext-resource-card__icon--blue { background: linear-gradient(135deg, var(--res-ink), #214c6f); }
-    .ext-resource-card__icon--violet { background: linear-gradient(135deg, #5b3f79, #8f1f5b); }
-    .ext-resource-card__icon--green { background: linear-gradient(135deg, #1b6d71, #14696d); }
-    .ext-resource-card__icon--pink { background: linear-gradient(135deg, #6f3a2b, #9a5a2d); }
-
-    .ext-resource-card__title {
-      margin: 0;
-      color: var(--res-ink);
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 25px;
-      line-height: 1.08;
-      letter-spacing: -.18px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 3.3em;
-      text-wrap: balance;
-    }
-
-    .ext-resource-card__desc {
-      margin: 0;
-      color: var(--res-muted);
-      font-size: 14px;
-      line-height: 1.78;
-      display: -webkit-box;
-      -webkit-line-clamp: 5;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 8.9em;
-    }
-
-    .ext-resource-card__footer {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding-top: 2px;
-      margin-top: auto;
-    }
-
-    .ext-resource-card__badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 0 11px;
-      border-radius: 8px;
-      background: #eef3f6;
-      color: #314255;
-      font-size: 10px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .ext-resource-card__category {
-      display: inline-flex;
-      align-items: center;
-      min-height: 28px;
-      padding: 0 10px;
-      border-radius: 8px;
-      background: rgba(20, 105, 109, .08);
-      color: var(--res-accent);
-      font-size: 10px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .access-badge--campus {
-      background: rgba(15, 31, 58, .08);
-      color: #0f1f3a;
-    }
-
-    .access-badge--remote {
-      background: rgba(20, 105, 109, .12);
-      color: #14696d;
-    }
-
-    .access-badge--open {
-      background: rgba(138, 105, 45, .15);
-      color: #6f4f13;
-    }
-
-    .ext-resource-card__expiry {
-      color: #6b7280;
-      font-size: 11px;
-      font-weight: 600;
-      line-height: 1.45;
-    }
-
-    .ext-resource-card__actions {
-      margin-top: 2px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(128px, .95fr);
-      align-items: center;
-      gap: 10px;
-    }
-
-    .ext-resource-card__actions a,
-    .ext-resource-card__actions button {
-      min-height: 42px;
-      padding: 0 16px;
-      border: 1px solid rgba(167, 181, 200, .75);
-      background: #fff;
-      color: var(--res-text);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .01em;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: 10px;
-      transition: border-color .18s ease, background-color .18s ease, color .18s ease, transform .18s ease;
-    }
-
-    .ext-resource-card__actions--single {
-      grid-template-columns: minmax(148px, .95fr);
-      justify-content: end;
-    }
-
-    .ext-resource-card__actions .ext-link-btn {
-      background: var(--res-ink);
-      color: #fff;
-      border-color: var(--res-ink);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
-    }
-
-    .ext-resource-card__actions .ext-link-btn:hover {
-      background: #12345e;
-      border-color: #12345e;
-    }
-
-    .ext-resource-card__actions .ext-shortlist-btn {
-      background: #fff;
-    }
-
-    .ext-resource-card__actions .ext-shortlist-btn:hover {
-      border-color: rgba(11,35,71,.26);
-      background: #f8fafc;
-      color: var(--res-ink);
-      transform: translateY(-1px);
-    }
-
-    .ext-resource-card__actions .ext-shortlist-btn--added {
-      border-color: rgba(20,105,109,.4);
-      background: rgba(20,105,109,.1);
-      color: var(--res-accent);
-      pointer-events: none;
-    }
-
-    .support-section-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.18fr) minmax(312px, .82fr);
-      gap: 24px;
-      align-items: start;
-      margin-top: 34px;
-    }
-
-    .support-section-heading {
-      gap: 14px;
-      max-width: 760px;
-    }
-
-    .support-section-heading .section-title {
-      max-width: 12.5ch;
-      line-height: 1.01;
-      letter-spacing: -.38px;
-    }
-
-    .support-section-heading .section-lead {
-      max-width: 690px;
-      line-height: 1.84;
-      color: #5a6879;
-    }
-
-    .support-steps {
-      border: 1px solid rgba(188, 198, 212, .46);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,252,253,.96));
-      padding: 10px;
-      display: grid;
-      gap: 0;
-    }
-
-    .support-step {
-      display: grid;
-      grid-template-columns: 40px minmax(0, 1fr);
-      gap: 14px;
-      align-items: start;
-      padding: 20px 18px;
-      border-radius: 14px;
-      transition: background-color .18s ease, box-shadow .18s ease;
-    }
-
-    .support-step + .support-step {
-      border-top: 1px solid rgba(188, 198, 212, .3);
-    }
-
-    .support-step:hover {
-      background: rgba(247, 250, 252, .9);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
-    }
-
-    .support-step-index {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-size: 11px;
-      font-weight: 900;
-      line-height: 1;
-      background: linear-gradient(180deg, rgba(20,105,109,.15), rgba(20,105,109,.08));
-      color: var(--res-accent);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.56);
-      margin-top: 2px;
-    }
-
-    .support-step h4 {
-      margin: 0 0 6px;
-      font-size: 20px;
-      color: var(--res-ink);
-      font-family: 'Newsreader', Georgia, serif;
-      line-height: 1.08;
-      letter-spacing: -.12px;
-    }
-
-    .support-step p {
-      margin: 0;
-      color: var(--res-muted);
-      font-size: 14px;
-      line-height: 1.76;
-    }
-
-    .help-card {
-      border-radius: 20px;
-      background: linear-gradient(180deg, #102b51, #0b2242 68%, #091b34 100%);
-      color: #e5edf7;
-      padding: 26px 24px 24px;
-      border: 1px solid rgba(152, 180, 215, .24);
-      box-shadow: 0 18px 36px rgba(9, 27, 52, .16);
-      display: grid;
-      gap: 14px;
-    }
-
-    .help-card__eyebrow {
-      margin: 0;
-      color: #9bc7d0;
-      font-size: 10px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .help-card h3 {
-      margin: 0;
-      color: #fff;
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 32px;
-      line-height: 1.01;
-      letter-spacing: -.2px;
-    }
-
-    .help-card p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.76;
-      color: #c5d4e8;
-    }
-
-    .help-meta {
-      display: grid;
-      gap: 7px;
-      padding: 16px 0 6px;
-      border-top: 1px solid rgba(197, 212, 232, .16);
-      font-size: 12px;
-      line-height: 1.5;
-      font-weight: 700;
-    }
-
-    .help-card a {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 44px;
-      width: auto;
-      min-width: 210px;
-      padding: 0 20px;
-      border-radius: 10px;
-      background: #e8f3f3;
-      color: #0b2347;
-      border: 1px solid rgba(232, 243, 243, .65);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.45);
-      text-decoration: none;
-      font-size: 12px;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    @media (max-width: 1200px) {
-      .resources-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .support-rail {
-        position: static;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        align-items: start;
-      }
-
-      .support-rail-head {
-        grid-column: 1 / -1;
-      }
-
-      .support-rail-nav {
-        grid-column: 1 / span 2;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 4px 8px;
-      }
-
-      .support-rail-cta {
-        align-self: end;
-      }
-
-      .section-block {
-        padding: 28px;
-      }
-
-      .hero-metrics {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .resource-hero-panels,
-      .guidance-grid,
-      .ext-resources-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 820px) {
-      .resources-shell {
-        padding: var(--shell-first-section-gap) 0 40px;
-      }
-
-      .hero-card,
-      .section-block,
-      .support-rail {
-        padding: 16px;
-      }
-
-      .section-heading {
-        gap: 10px;
-      }
-
-      .section-title {
-        max-width: none;
-      }
-
-      .hero-title {
-        font-size: clamp(34px, 8.2vw, 46px);
-      }
-
-      .hero-lead {
-        font-size: 16px;
-      }
-
-      .ext-filter-bar {
-        margin: 22px 0 20px;
-      }
-
-      .resource-hero-panels,
-      .guidance-grid,
-      .ext-resources-grid,
-      .hero-metrics {
-        grid-template-columns: 1fr;
-      }
-
-      .support-section-layout {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .support-section-heading .section-title,
-      .support-section-heading .section-lead {
-        max-width: none;
-      }
-
-      .support-rail {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .support-rail-nav {
-        grid-column: auto;
-        grid-template-columns: 1fr;
-      }
-
-      .ext-resource-card {
-        min-height: auto;
-        padding: 18px;
-      }
-
-      .ext-resource-card__availability {
-        gap: 8px;
-      }
-
-      .ext-resource-card__desc,
-      .ext-resource-card__title {
-        min-height: 0;
-      }
-
-      .ext-resource-card__actions {
-        grid-template-columns: 1fr;
-      }
-
-      .ext-resource-card__actions .ext-shortlist-btn,
-      .ext-resource-card__actions .ext-link-btn {
-        width: 100%;
-      }
-
-      .support-steps {
-        padding: 4px;
-      }
-
-      .support-step {
-        grid-template-columns: 38px minmax(0, 1fr);
-        gap: 12px;
-        padding: 16px;
-      }
-
-      .help-card {
-        padding: 20px;
-      }
-
-      .help-card a {
-        width: 100%;
-      }
-    }
-  .resources-page {
-    background: #f8f9fa;
-    padding: 3.75rem 0 4.5rem;
+  /* Cluster D — /resources canonical-exact rebuild.
+     Scoped to .resources-canonical; mirrors institutional_resources_canonical/code.html. */
+
+  .resources-canonical {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 96px 16px 96px;
+    color: #191c1d;
+    font-family: 'Manrope', sans-serif;
   }
 
-  .resources-hero {
-    max-width: 58rem;
-    margin-bottom: 3.5rem;
+  @media (min-width: 768px) {
+    .resources-canonical { padding: 128px 32px 96px; }
   }
 
-  .resources-title {
-    margin: 0 0 1.5rem;
-    color: #000613;
-    font-family: 'Newsreader', serif;
-    font-size: clamp(3rem, 5.8vw, 4.7rem);
-    line-height: .96;
-    letter-spacing: -.04em;
-    max-width: 48rem;
-    text-wrap: balance;
-  }
-
-  .resources-title .accent {
-    font-style: italic;
-    font-weight: 500;
-  }
-
-  .resources-lead {
-    max-width: 44rem;
-    margin: 0;
-    color: #5b6372;
-    font-size: 1.125rem;
-    line-height: 1.75;
-  }
-
-  .resources-filter-label {
-    width: 100%;
-    color: #14696d;
-    font-size: .7rem;
-    font-weight: 800;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-  }
-
-  .resources-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .75rem;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-
-  .resources-filter-btn {
-    border: 1px solid #d7dce3;
-    border-radius: 999px;
-    background: #e9ecef;
-    padding: .65rem 1rem;
-    color: #4d5563;
-    font-size: .85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all .18s ease;
-  }
-
-  .resources-filter-btn:hover {
-    background: #dfe4ea;
-  }
-
-  .resources-filter-btn.is-active {
-    background: #000613;
-    color: #fff;
-    border-color: #000613;
-  }
-
-  .resources-bento {
+  /* --- Hero --------------------------------------------------------------- */
+  .resources-canonical__hero {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 1rem;
-    margin-bottom: 4rem;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: end;
+    margin-bottom: 80px;
   }
 
-  .resource-card {
-    border: 1px solid rgba(196, 198, 207, .45);
-    border-radius: 1rem;
-    background: #fff;
-    padding: 1.35rem;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, .035);
-    display: flex;
-    flex-direction: column;
-    gap: .95rem;
-    min-height: 12rem;
+  @media (min-width: 1024px) {
+    .resources-canonical__hero {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
   }
 
-  .resource-card--featured {
-    grid-column: span 8;
-    min-height: 15rem;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
+  @media (min-width: 1024px) {
+    .resources-canonical__hero-copy { grid-column: span 8 / span 8; }
   }
 
-  .resource-card--side {
-    grid-column: span 4;
-    min-height: 15rem;
-  }
-
-  .resource-card--small {
-    grid-column: span 4;
-    min-height: 12.5rem;
-  }
-
-  .resource-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(15, 23, 42, .05);
-  }
-
-  .resource-badge-row {
-    display: flex;
-    gap: .6rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .resource-badge {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 999px;
-    padding: .28rem .6rem;
-    background: rgba(20, 105, 109, .12);
-    color: #14696d;
-    font-size: .6rem;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  .resource-badge.resource-badge--neutral {
-    background: transparent;
-    color: #6b7280;
-    padding-inline: 0;
-  }
-
-  .resource-icon-tile {
-    width: 3rem;
-    height: 3rem;
-    border-radius: .85rem;
-    display: inline-grid;
-    place-items: center;
-    background: #e9ecef;
+  .resources-canonical__eyebrow {
+    display: block;
     color: #006a6a;
-  }
-
-  .resource-card-title {
-    margin: 0;
-    color: #0b2242;
-    font-family: 'Newsreader', serif;
-    font-size: clamp(1.55rem, 2.3vw, 2.45rem);
-    line-height: 1.08;
-  }
-
-  .resource-card--small .resource-card-title,
-  .resource-card--side .resource-card-title {
-    font-size: 2rem;
-  }
-
-  .resource-card-desc {
-    margin: 0;
-    color: #5b6372;
-    font-size: .95rem;
-    line-height: 1.7;
-  }
-
-  .resource-feature-ghost {
-    position: absolute;
-    right: 1.4rem;
-    top: 1rem;
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: .9rem;
-    background: rgba(15, 23, 42, .04);
-    color: rgba(15, 23, 42, .12);
-    display: grid;
-    place-items: center;
-    font-size: 3rem;
-  }
-
-  .resource-actions {
-    display: flex;
-    gap: .75rem;
-    flex-wrap: wrap;
-    margin-top: auto;
-  }
-
-  .resource-actions a,
-  .resource-actions button {
-    min-height: 2.6rem;
-    border-radius: .45rem;
-    border: 1px solid #d3d8df;
-    padding: 0 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: .4rem;
-    text-decoration: none;
-    font-size: .76rem;
-    font-weight: 800;
-    letter-spacing: .01em;
-    cursor: pointer;
-    background: #fff;
-    color: #0b2242;
-  }
-
-  .resource-actions .resource-primary {
-    background: #000613;
-    border-color: #000613;
-    color: #fff;
-  }
-
-  .resource-actions .resource-secondary {
-    color: #14696d;
-  }
-
-  .resources-support {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr);
-    gap: 1.5rem;
-    border-radius: 1.25rem;
-    background: linear-gradient(180deg, #04101f 0%, #010a15 100%);
-    color: #f5f8fb;
-    padding: 2rem;
-    overflow: hidden;
-  }
-
-  .resources-support-copy span {
-    display: block;
-    margin-bottom: 1rem;
-    color: rgba(217, 243, 247, .7);
-    font-size: .68rem;
-    font-weight: 800;
-    letter-spacing: .18em;
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
   }
 
-  .resources-support-copy h2 {
-    margin: 0 0 1rem;
+  .resources-canonical__display {
     font-family: 'Newsreader', serif;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    line-height: 1.08;
-  }
-
-  .resources-support-copy p {
-    margin: 0 0 1.25rem;
-    color: rgba(229, 237, 247, .8);
-    line-height: 1.8;
-  }
-
-  .resources-support-meta {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .resources-support-meta strong {
-    display: block;
-    margin-bottom: .3rem;
-    font-size: .68rem;
-    color: rgba(217, 243, 247, .7);
-    letter-spacing: .15em;
-    text-transform: uppercase;
-  }
-
-  .resources-support-cta {
-    display: inline-flex;
-    margin-top: 1rem;
-    min-height: 2.7rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: .5rem;
-    padding: 0 1rem;
-    background: #eaf3f4;
-    color: #04101f;
-    text-decoration: none;
-    font-size: .8rem;
-    font-weight: 800;
-  }
-
-  .resources-support-image {
-    min-height: 18rem;
-    border-radius: 1rem;
-    background: linear-gradient(rgba(4, 16, 31, .15), rgba(4, 16, 31, .6)), url('/images/news/default-library.jpg') center/cover no-repeat;
-  }
-
-  .resources-empty {
-    grid-column: 1 / -1;
-    border: 1px solid rgba(196, 198, 207, .45);
-    border-radius: 1rem;
-    background: #fff;
-    padding: 2rem;
-    color: #5b6372;
-  }
-
-  @media (max-width: 900px) {
-    .resource-card--featured,
-    .resource-card--side,
-    .resource-card--small {
-      grid-column: span 12;
-    }
-
-    .resources-support {
-      grid-template-columns: 1fr;
-    }
-
-    .resources-support-meta {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Tailored Pathways Section */
-  .resources-pathways {
-    margin-bottom: 4rem;
-    padding: 0;
-  }
-
-  .resources-pathways-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 2.5rem;
-    border-bottom: 1px solid rgba(196, 198, 207, .35);
-    padding-bottom: 1rem;
-  }
-
-  .resources-pathways-title {
-    margin: 0;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1.05;
     color: #000613;
-    font-family: 'Newsreader', serif;
-    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-    line-height: 1.1;
-    letter-spacing: -.02em;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px -2px;
   }
 
-  .resources-pathways-header a {
-    color: #14696d;
-    font-size: .9rem;
-    font-weight: 700;
-    text-decoration: none;
+  @media (min-width: 768px) {
+    .resources-canonical__display { font-size: 60px; }
+  }
+
+  .resources-canonical__display-italic {
+    font-style: italic;
+    color: #001f3f;
+  }
+
+  .resources-canonical__lead {
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #43474e;
+    max-width: 640px;
+    margin: 0;
+  }
+
+  .resources-canonical__hero-aside {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  @media (min-width: 1024px) {
+    .resources-canonical__hero-aside {
+      grid-column: span 4 / span 4;
+      justify-content: flex-end;
+    }
+  }
+
+  .resources-canonical__off-campus {
+    background: #f3f4f5;
+    padding: 24px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: .4rem;
-    transition: gap .18s ease, color .18s ease;
+    gap: 16px;
+    max-width: 360px;
   }
 
-  .resources-pathways-header a:hover {
-    color: #0b2347;
-    gap: .6rem;
+  .resources-canonical__off-campus-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: #90efef;
+    color: #006e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
-  .resources-pathways-grid {
+  .resources-canonical__off-campus-title {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    color: #000613;
+    margin: 0 0 4px;
+  }
+
+  .resources-canonical__off-campus-cta {
+    display: inline-block;
+    color: #006a6a;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-top: 2px;
+  }
+
+  .resources-canonical__off-campus-cta:hover { text-decoration: underline; }
+
+  /* --- Main layout -------------------------------------------------------- */
+  .resources-canonical__main {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 48px;
   }
 
-  .pathway-card {
-    background: #fff;
-    border: 1px solid rgba(196, 198, 207, .45);
-    border-radius: 1rem;
-    padding: 1.75rem;
-    min-height: 16rem;
+  @media (min-width: 1024px) {
+    .resources-canonical__main {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* --- Sidebar ----------------------------------------------------------- */
+  .resources-canonical__sidebar { min-width: 0; }
+
+  @media (min-width: 1024px) {
+    .resources-canonical__sidebar { grid-column: span 1 / span 1; }
+  }
+
+  .resources-canonical__sidebar-card {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  }
+
+  @media (min-width: 1024px) {
+    .resources-canonical__sidebar-card {
+      position: sticky;
+      top: 128px;
+    }
+  }
+
+  .resources-canonical__sidebar-title {
+    font-family: 'Newsreader', serif;
+    font-size: 20px;
+    color: #000613;
+    margin: 0 0 24px;
+  }
+
+  .resources-canonical__facet-heading {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #191c1d;
+    margin: 0 0 12px;
+  }
+
+  .resources-canonical__facet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    position: relative;
-    overflow: hidden;
+    gap: 10px;
   }
 
-  .pathway-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: -2rem;
-    width: 6rem;
-    height: 6rem;
-    border-radius: 50%;
-    opacity: .08;
-    pointer-events: none;
-    transition: opacity .18s ease;
-  }
-
-  .pathway-card.pathway-students::before {
-    background: #14696d;
-  }
-
-  .pathway-card.pathway-faculty::before {
-    background: #0b2347;
-  }
-
-  .pathway-card.pathway-researchers::before {
-    background: #6f4f13;
-  }
-
-  .pathway-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(11, 35, 71, .22);
-    box-shadow: 0 12px 28px rgba(15, 23, 42, .05);
-  }
-
-  .pathway-card:hover::before {
-    opacity: .15;
-  }
-
-  .pathway-icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: .65rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: .5rem;
-  }
-
-  .pathway-students .pathway-icon {
-    background: linear-gradient(135deg, #006a6a, #14696d);
-  }
-
-  .pathway-faculty .pathway-icon {
-    background: linear-gradient(135deg, #000613, #214c6f);
-  }
-
-  .pathway-researchers .pathway-icon {
-    background: linear-gradient(135deg, #6f4f13, #9a5a2d);
-  }
-
-  .pathway-title {
-    margin: 0;
-    color: #0b2242;
-    font-family: 'Newsreader', serif;
-    font-size: 1.35rem;
-    line-height: 1.15;
-    letter-spacing: -.01em;
-  }
-
-  .pathway-desc {
-    margin: 0;
-    color: #5b6372;
-    font-size: .95rem;
-    line-height: 1.7;
-    flex-grow: 1;
-  }
-
-  .pathway-cta {
+  .resources-canonical__facet-option {
     display: inline-flex;
     align-items: center;
-    gap: .5rem;
-    color: #14696d;
-    font-size: .85rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: gap .18s ease, color .18s ease;
-    margin-top: auto;
+    gap: 8px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #43474e;
+    cursor: pointer;
+    transition: color 0.2s ease;
   }
 
-  .pathway-cta:hover {
-    color: #0b2347;
-    gap: .75rem;
+  .resources-canonical__facet-option:hover { color: #000613; }
+
+  .resources-canonical__facet-option input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #c4c6cf;
+    border-radius: 2px;
+    accent-color: #006a6a;
   }
 
-  .pathway-arrow {
-    font-size: .75rem;
-    transition: transform .18s ease;
+  .resources-canonical__facet-divider {
+    border: 0;
+    border-top: 1px solid rgba(196, 198, 207, 0.2);
+    margin: 24px 0;
   }
 
-  .pathway-card:hover .pathway-arrow {
-    transform: translateX(.2rem);
+  /* --- Directory (content column) ---------------------------------------- */
+  .resources-canonical__directory {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
-  /* Core Databases Label */
-  .resources-core-label {
-    display: block;
-    margin: 2.5rem 0 .75rem;
-    color: #14696d;
-    font-size: .7rem;
-    font-weight: 800;
-    letter-spacing: .16em;
-    text-transform: uppercase;
+  @media (min-width: 1024px) {
+    .resources-canonical__directory { grid-column: span 3 / span 3; }
   }
 
-  @media (max-width: 900px) {
-    .resources-pathways-grid {
+  .resources-canonical__section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .resources-canonical__section-title {
+    font-family: 'Newsreader', serif;
+    font-size: 28px;
+    color: #000613;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .resources-canonical__section-title { font-size: 30px; }
+  }
+
+  .resources-canonical__section-count {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #43474e;
+    background: #e7e8e9;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .resources-canonical__section-spacer { height: 32px; }
+
+  /* --- Premium card grid ------------------------------------------------- */
+  .resources-canonical__card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  @media (min-width: 768px) {
+    .resources-canonical__card-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (max-width: 640px) {
-    .resources-pathways-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
+  .resources-canonical__card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
 
-    .pathway-card {
-      padding: 1.25rem;
-      min-height: auto;
-    }
+  .resources-canonical__card:hover {
+    background: #e7e8e9;
+    transform: translateY(-2px);
+  }
 
-    .resources-pathways-header {
-      flex-direction: column;
-      gap: 1rem;
-      align-items: flex-start;
-    }
+  .resources-canonical__card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
 
-    .resources-pathways-title {
-      font-size: 1.5rem;
+  .resources-canonical__card-emblem {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: #e1e3e4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Newsreader', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #000613;
+  }
+
+  .resources-canonical__card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: #091d2e;
+    background: #d1e4fb;
+    padding: 4px 8px;
+    border-radius: 9999px;
+  }
+
+  .resources-canonical__card-badge .material-symbols-outlined { font-size: 14px; }
+
+  .resources-canonical__card-title {
+    font-family: 'Newsreader', serif;
+    font-size: 22px;
+    color: #000613;
+    margin: 0 0 8px;
+    transition: color 0.3s ease;
+  }
+
+  .resources-canonical__card:hover .resources-canonical__card-title { color: #006a6a; }
+
+  .resources-canonical__card-desc {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #43474e;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .resources-canonical__card-foot {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(196, 198, 207, 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .resources-canonical__card-provider {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: #74777f;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .resources-canonical__card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #006a6a;
+    text-decoration: none;
+  }
+
+  .resources-canonical__card:hover .resources-canonical__card-link { text-decoration: underline; }
+
+  .resources-canonical__card-link .material-symbols-outlined { font-size: 16px; }
+
+  /* --- Open access list -------------------------------------------------- */
+  .resources-canonical__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .resources-canonical__row {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  @media (min-width: 768px) {
+    .resources-canonical__row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
     }
+  }
+
+  .resources-canonical__row:hover { background: #e7e8e9; }
+
+  .resources-canonical__row-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .resources-canonical__row-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: rgba(144, 239, 239, 0.3);
+    color: #006e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .resources-canonical__row-title {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    color: #000613;
+    margin: 0 0 4px;
+  }
+
+  .resources-canonical__row-desc {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #43474e;
+    margin: 0;
+  }
+
+  .resources-canonical__row-link {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000613;
+    background: transparent;
+    border: 1px solid rgba(196, 198, 207, 0.4);
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .resources-canonical__row-link:hover {
+    color: #006a6a;
+    border-color: rgba(0, 106, 106, 0.5);
   }
 </style>
-@endsection
-
-@section('content')
-<section id="resources-page" class="resources-page">
-  <div class="container">
-    <header class="resources-hero">
-      <p class="resources-filter-label">{{ strtoupper($copy['eyebrow']) }}</p>
-      <h1 class="resources-title">{{ $copy['hero_start'] }} <span class="accent">{{ $copy['hero_emphasis'] }}</span> {{ $copy['hero_end'] }}</h1>
-      <p class="resources-lead">{{ $copy['lead'] }}</p>
-    </header>
-
-    <!-- Tailored Pathways Section -->
-    <section id="resources-pathways" class="resources-pathways" data-test-id="resources-pathways">
-      <div class="resources-pathways-header">
-        <h2 class="resources-pathways-title">{{ $copy['pathways_title'] }}</h2>
-      </div>
-      <div class="resources-pathways-grid">
-        <!-- For Students -->
-        <a href="{{ $routeWithLang('/resources') }}" class="pathway-card pathway-students" data-test-id="pathway-students">
-          <div class="pathway-icon">👨‍🎓</div>
-          <h3 class="pathway-title">{{ $copy['students_title'] }}</h3>
-          <p class="pathway-desc">{{ $copy['students_desc'] }}</p>
-          <span class="pathway-cta">{{ $copy['students_cta'] }} <span class="pathway-arrow">→</span></span>
-        </a>
-        <!-- For Faculty & Teachers -->
-        <a href="{{ $routeWithLang('/resources') }}" class="pathway-card pathway-faculty" data-test-id="pathway-faculty">
-          <div class="pathway-icon">📚</div>
-          <h3 class="pathway-title">{{ $copy['faculty_title'] }}</h3>
-          <p class="pathway-desc">{{ $copy['faculty_desc'] }}</p>
-          <span class="pathway-cta">{{ $copy['faculty_cta'] }} <span class="pathway-arrow">→</span></span>
-        </a>
-        <!-- For Researchers -->
-        <a href="{{ $routeWithLang('/resources') }}" class="pathway-card pathway-researchers" data-test-id="pathway-researchers">
-          <div class="pathway-icon">🔬</div>
-          <h3 class="pathway-title">{{ $copy['researchers_title'] }}</h3>
-          <p class="pathway-desc">{{ $copy['researchers_desc'] }}</p>
-          <span class="pathway-cta">{{ $copy['researchers_cta'] }} <span class="pathway-arrow">→</span></span>
-        </a>
-      </div>
-    </section>
-
-    <section id="resources-filter-bar" class="resources-filters">
-      <span class="resources-filter-label">{{ ['ru' => 'Фильтр по дисциплине', 'kk' => 'Пән бойынша сүзгі', 'en' => 'Filter by Discipline'][$lang] }}</span>
-      <button type="button" class="resources-filter-btn is-active" data-filter="all">{{ ['ru' => 'Все ресурсы', 'kk' => 'Барлық ресурстар', 'en' => 'All Access'][$lang] }}</button>
-      @foreach($categories as $categoryKey => $category)
-      <button type="button" class="resources-filter-btn" data-filter="{{ $categoryKey }}">{{ $category['label'] }}</button>
-      @endforeach
-    </section>
-
-    <!-- Core Databases Label -->
-    <span class="resources-core-label" data-test-id="core-databases-label">{{ $copy['core_label'] }}</span>
-
-    <div id="resources-grid" class="resources-bento" data-resource-grid>
-      @php
-        $featured = $resources->first();
-        $rest = $resources->slice(1);
-        $accessTypeLabels = config('external_resources.access_types', []);
-        $categoryLabels = config('external_resources.categories', []);
-      @endphp
-      
-      @if($featured)
-      <article class="resource-card resource-card--featured" data-category="{{ $featured['category'] }}">
-        <div>
-          <div class="resource-badge-row">
-            @php
-              $accessInfo = $accessTypeLabels[$featured['access_type']] ?? [];
-              $categoryInfo = $categoryLabels[$featured['category']] ?? [];
-            @endphp
-            <span class="resource-badge">{{ $accessInfo['label'] ?? $featured['access_type'] }}</span>
-            <span class="resource-badge resource-badge--neutral">{{ $categoryInfo['label'] ?? $featured['category'] }}</span>
-          </div>
-          <h3 class="resource-card-title">{{ $featured['title'] }}</h3>
-          <p class="resource-card-desc">{{ $featured['description'] }}</p>
-          <div class="resource-feature-ghost">📚</div>
-        </div>
-        <div class="resource-actions">
-          <a href="{{ $featured['url'] }}" class="resource-primary" target="_blank" rel="noopener noreferrer">{{ ['ru' => 'Открыть ресурс', 'kk' => 'Ресурсты ашу', 'en' => 'Access Resource'][$lang] }}</a>
-          <a href="{{ $routeWithLang('/contacts') }}" class="resource-secondary">{{ ['ru' => 'Как подключиться', 'kk' => 'Қалай байланыстырылады', 'en' => 'User Guide'][$lang] }}</a>
-        </div>
-      </article>
-      @endif
-      
-      @foreach($rest as $resource)
-      <article class="resource-card resource-card--small" data-category="{{ $resource['category'] }}">
-        <div>
-          @php
-            $categoryInfo = $categoryLabels[$resource['category']] ?? [];
-            $bgColor = match($categoryInfo['color'] ?? 'blue') {
-              'blue' => 'linear-gradient(135deg, #000613, #214c6f)',
-              'violet' => 'linear-gradient(135deg, #5b3f79, #8f1f5b)',
-              'green' => 'linear-gradient(135deg, #1b6d71, #14696d)',
-              'pink' => 'linear-gradient(135deg, #6f3a2b, #9a5a2d)',
-              default => 'linear-gradient(135deg, #000613, #214c6f)'
-            };
-          @endphp
-          <div class="resource-icon-tile" style="background: {{ $bgColor }}; color: #fff; margin-bottom: .75rem;">
-            <span>{{ $categoryInfo['icon'] ?? '📖' }}</span>
-          </div>
-          <h3 class="resource-card-title">{{ $resource['title'] }}</h3>
-          <p class="resource-card-desc">{{ $resource['description'] }}</p>
-        </div>
-        <div class="resource-actions">
-          <a href="{{ $resource['url'] }}" class="resource-primary" target="_blank" rel="noopener noreferrer" style="width: 100%;">{{ ['ru' => 'Открыть ресурс', 'kk' => 'Ресурсты ашу', 'en' => 'Access Resource'][$lang] }}</a>
-        </div>
-      </article>
-      @endforeach
-    </div>
-
-
-
-    <section id="resource-support-section" class="resources-support">
-      <div class="resources-support-copy">
-        <span>{{ $copy['support_label'] }}</span>
-        <h2>{{ $copy['support_title'] }}</h2>
-        <p>{{ $copy['support_body'] }}</p>
-        <div class="resources-support-meta">
-          <div>
-            <strong>{{ ['ru' => 'Email inquiry', 'kk' => 'Email inquiry', 'en' => 'Email inquiry'][$lang] }}</strong>
-            <div>library-support@kazutb.edu.kz</div>
-          </div>
-          <div>
-            <strong>{{ ['ru' => 'Live consultation', 'kk' => 'Live consultation', 'en' => 'Live consultation'][$lang] }}</strong>
-            <div>Room 402, Block B</div>
-          </div>
-        </div>
-        <a class="resources-support-cta" href="{{ $routeWithLang('/contacts') }}">{{ ['ru' => 'Связаться с библиотекой', 'kk' => 'Кітапханамен байланысу', 'en' => 'Contact Librarian'][$lang] }}</a>
-      </div>
-      <div class="resources-support-image" aria-hidden="true"></div>
-    </section>
-  </div>
-</section>
-@endsection
-
-@section('scripts')
-<script>
-(function () {
-  const API_URL = '/api/v1/external-resources';
-  const CONTACT_URL = @json($routeWithLang('/contacts'));
-  const RES_LANG = @json($lang);
-  const copy = {
-    ru: {
-      loading: 'Загрузка ресурсов...',
-      empty: 'Подходящие ресурсы скоро появятся в этом разделе.',
-      support: 'Связаться с библиотекой',
-      open: 'Access Resource',
-      guide: 'User Guide',
-      login: 'LOG IN VIA INSTITUTION',
-      database: 'ACCESS DATABASE',
-      explore: 'EXPLORE CITATIONS',
-      repository: 'OPEN REPOSITORY',
-      premium: 'Premium Access',
-      general: 'General Research',
-      openBadge: 'Open access',
-      remoteBadge: 'Remote access',
-      campusBadge: 'Campus only'
-    },
-    kk: {
-      loading: 'Ресурстар жүктелуде...',
-      empty: 'Бұл бөлімге лайық ресурстар жақында қосылады.',
-      support: 'Кітапханамен байланысу',
-      open: 'Access Resource',
-      guide: 'User Guide',
-      login: 'LOG IN VIA INSTITUTION',
-      database: 'ACCESS DATABASE',
-      explore: 'EXPLORE CITATIONS',
-      repository: 'OPEN REPOSITORY',
-      premium: 'Premium Access',
-      general: 'General Research',
-      openBadge: 'Open access',
-      remoteBadge: 'Remote access',
-      campusBadge: 'Campus only'
-    },
-    en: {
-      loading: 'Loading resources...',
-      empty: 'Matching resources will appear here soon.',
-      support: 'Contact Librarian',
-      open: 'Access Resource',
-      guide: 'User Guide',
-      login: 'LOG IN VIA INSTITUTION',
-      database: 'ACCESS DATABASE',
-      explore: 'EXPLORE CITATIONS',
-      repository: 'OPEN REPOSITORY',
-      premium: 'Premium Access',
-      general: 'General Research',
-      openBadge: 'Open access',
-      remoteBadge: 'Remote access',
-      campusBadge: 'Campus only'
-    }
-  }[RES_LANG] || {
-    loading: 'Loading resources...',
-    empty: 'Matching resources will appear here soon.',
-    support: 'Contact Librarian',
-    open: 'Access Resource',
-    guide: 'User Guide',
-    login: 'LOG IN VIA INSTITUTION',
-    database: 'ACCESS DATABASE',
-    explore: 'EXPLORE CITATIONS',
-    repository: 'OPEN REPOSITORY',
-    premium: 'Premium Access',
-    general: 'General Research',
-    openBadge: 'Open access',
-    remoteBadge: 'Remote access',
-    campusBadge: 'Campus only'
-  };
-
-  const iconMap = {
-    electronic_library: 'menu_book',
-    research_database: 'history_edu',
-    analytics: 'query_stats',
-    open_access: 'library_books'
-  };
-
-  const filterButtons = Array.from(document.querySelectorAll('[data-filter]'));
-  const grid = document.getElementById('resources-grid');
-  let resources = [];
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = String(text || '');
-    return div.innerHTML;
-  }
-
-  function guessDiscipline(item) {
-    const haystack = `${item.title || ''} ${item.provider || ''} ${item.category || ''}`.toLowerCase();
-    if (/econ|business|polpred|analytic/.test(haystack)) return 'economics';
-    if (/jstor|рмэб|rmeb|elibrary|social|human/.test(haystack)) return 'social';
-    if (/science|engineering|springer|elsevier|doaj/.test(haystack)) return 'engineering';
-    return 'technology';
-  }
-
-  function accessLabel(kind) {
-    if (kind === 'open') return copy.openBadge;
-    if (kind === 'remote_auth') return copy.remoteBadge;
-    return copy.campusBadge;
-  }
-
-  function normalizeItem(item, index) {
-    return {
-      slug: item.slug || `resource-${index}`,
-      title: item.title || 'Library Resource',
-      provider: item.provider || 'KazUTB Digital Library',
-      description: item.description || item.access_note || 'Institutional access to scholarly materials and curated research support.',
-      category: item.category || 'electronic_library',
-      accessType: item.access_type || 'campus',
-      url: item.url || CONTACT_URL,
-      discipline: guessDiscipline(item),
-      icon: iconMap[item.category] || 'open_in_new'
-    };
-  }
-
-  function secondaryActionLabel(index) {
-    return [copy.login, copy.database, copy.explore, copy.repository][index] || copy.database;
-  }
-
-  function featuredCard(item) {
-    return `
-      <article class="resource-card resource-card--featured">
-        <div class="resource-feature-ghost">
-          <span class="material-symbols-outlined">article</span>
-        </div>
-        <div>
-          <div class="resource-badge-row">
-            <span class="resource-badge">${copy.premium}</span>
-            <span class="resource-badge resource-badge--neutral">${copy.general}</span>
-          </div>
-          <h3 class="resource-card-title">${escapeHtml(item.title)}</h3>
-          <p class="resource-card-desc">${escapeHtml(item.description)}</p>
-        </div>
-        <div class="resource-actions">
-          <a class="resource-primary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${copy.open} <span class="material-symbols-outlined text-sm">open_in_new</span></a>
-          <a class="resource-secondary" href="${escapeHtml(CONTACT_URL)}">${copy.guide}</a>
-        </div>
-      </article>`;
-  }
-
-  function smallCard(item, modifier, index) {
-    return `
-      <article class="resource-card ${modifier}">
-        <div class="resource-icon-tile">
-          <span class="material-symbols-outlined">${item.icon}</span>
-        </div>
-        <h3 class="resource-card-title">${escapeHtml(item.title)}</h3>
-        <p class="resource-card-desc">${escapeHtml(item.description)}</p>
-        <div class="resource-badge-row">
-          <span class="resource-badge">${escapeHtml(accessLabel(item.accessType))}</span>
-        </div>
-        <div class="resource-actions">
-          <a class="resource-secondary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${secondaryActionLabel(index)}</a>
-        </div>
-      </article>`;
-  }
-
-  function render(filter) {
-    const filtered = filter === 'all' ? resources : resources.filter((item) => item.discipline === filter);
-    if (!filtered.length) {
-      grid.innerHTML = `<article class="resources-empty">${escapeHtml(copy.empty)}</article>`;
-      return;
-    }
-
-    const items = filtered.slice(0, 5);
-    const blocks = [];
-    if (items[0]) blocks.push(featuredCard(items[0]));
-    if (items[1]) blocks.push(smallCard(items[1], 'resource-card--side', 0));
-    items.slice(2, 5).forEach((item, index) => blocks.push(smallCard(item, 'resource-card--small', index + 1)));
-    grid.innerHTML = blocks.join('');
-  }
-
-  filterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      filterButtons.forEach((btn) => btn.classList.remove('is-active'));
-      button.classList.add('is-active');
-      render(button.dataset.filter || 'all');
-    });
-  });
-
-  async function init() {
-    try {
-      const response = await fetch(API_URL, { headers: { Accept: 'application/json' } });
-      const payload = await response.json();
-      resources = Array.isArray(payload?.data) ? payload.data.map(normalizeItem) : [];
-      render('all');
-    } catch (error) {
-      grid.innerHTML = `<article class="resources-empty">${escapeHtml(copy.empty)}</article>`;
-      console.error('Resources load failed:', error);
-    }
-  }
-
-  init();
-})();
-</script>
 @endsection

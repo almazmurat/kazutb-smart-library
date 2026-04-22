@@ -1,13 +1,31 @@
 # Current State — KazUTB Library Platform
-> Last updated: 2026-04-22
+> Last updated: 2026-04-23
 
-## Last changed
-- Time: 2026-04-22 (post-Cluster-C cleanup)
-- Commit: (pending — post-Cluster-C public-layer consolidation)
+## Last changed (Cluster D — /resources canonical rebuild)
+- Time: 2026-04-23 UTC
 - Branch: main
-- Change type: Cleanup (view de-duplication, test brand refresh, doc/export drift)
-- Files: resources/views/about.blade.php (dual-variant → about-only), tests/Feature/PublicShellTest.php (legacy brand/copy assertions refreshed), docs/design-exports/athenaeum_digital/ (removed — matches canonical-design-map)
+- Change type: UI/Blade view change + test rewrite
+- Files: resources/views/resources.blade.php, tests/Feature/ResourcesPageTest.php
+- Summary: Canonical-exact rebuild of `/resources` per `docs/design-exports/institutional_resources_canonical`. Retired the pathways + filter-bar + featured/small-card + support-section shell; new layout is hero (8/12 copy + 4/12 off-campus card) → main (1/4 Refine Search sidebar + 3/4 categorized directory) with Premium Databases card grid (remote_auth + campus access types) and Open Access Tools list rows (open access type). Real `ExternalResourceService` data preserved verbatim (8 resources split 4 premium / 4 open). Tri-lingual ru/kk/en UI chrome, UI-only sidebar facets, `/for-teachers` → `/resources` 301 redirect unchanged. `ResourcesPageTest` rewritten with 15 canonical-aware tests (102 assertions).
+- Verification: 14-class public suite 158/158 pass (878 assertions, 16.39s).
+
+## Previously changed (cleanup)
+- Time: 2026-04-22 22:33:36 UTC
+- Commit: 1992f03
+- Branch: main
+- Change type: UI/Blade view change
+- Files: resources/views/about.blade.php
 - Commit message: chore(phase-3.cleanup): post-Cluster-C public-layer consolidation
+
+## Latest Git Automation
+- Time: 2026-04-22 22:33:36 UTC
+- Event: post-commit
+- Branch: main
+- Commit: 1992f03
+- Update: Git post-commit on main: chore(phase-3.cleanup): post-Cluster-C public-layer consolidation
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, tests/Feature/PublicShellTest.php
+- Semantic: UI/Blade view change
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (C.2)
 - Time: 2026-04-22 22:12:23 UTC
@@ -16,16 +34,6 @@
 - Change type: UI/Blade view change
 - Files: resources/views/events/show.blade.php, routes/web.php
 - Commit message: feat(phase-3.c.2): public /events/{slug} detail per event_detail_canonical
-
-## Latest Git Automation
-- Time: 2026-04-22 22:12:23 UTC
-- Event: post-commit
-- Branch: main
-- Commit: ed1ea9d
-- Update: Git post-commit on main: feat(phase-3.c.2): public /events/{slug} detail per event_detail_canonical
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/events/show.blade.php, routes/web.php, tests/Feature/EventsDetailPageTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (C.1)
 - Time: 2026-04-22 22:02:16 UTC
