@@ -24,7 +24,7 @@ Used only for the newly generated missing pages:
 | Surface | Page Type | Canonical Source | Target Route / Surface | Target View / Area | Status | Notes |
 |---|---|---|---|---|---|---|
 | Public | Homepage | Project B / Homepage (`docs/design-exports/Enhanced Homepage/`) | `/` | `welcome.blade.php` | implemented — archive-reference | Phase 3.1 — canonical KazUTB Smart Library homepage. All hero / bento / hours+news / stats / repository / guides sections ported from the export with trilingual ru/kk/en copy. Authenticated Member Workspace card routes to `/dashboard` (canonical member shell); guest link goes to `/login`. |
-| Public | About | Project A / About the Institution | `/about`, `/contacts` | `about.blade.php` | implemented | Reduced minimalist public informational page |
+| Public | About | Project A / About the Institution | `/about`, `/contacts` | `about.blade.php` | implemented — archive-reference | Phase 3.2 — consolidated KazUTB Smart Library informational surface. Both `/about` and `/contacts` render the same view; `$activePage='about'` renders mission-first ordering, `$activePage='contacts'` renders contacts + Librarian-on-Duty first. Librarian-on-Duty block routes authenticated readers to `/dashboard` and guests to `/login`. Trilingual ru/kk/en parity. Single catalog CTA at the end. |
 | Public | Discover | Project A / Academic Discovery Hub | `/discover` | `discover.blade.php` | pending | Keep UDC-first logic |
 | Public | Login | Project A / Secure Institutional Access | `/login` | `auth.blade.php` | implemented | Refined; preserve auth behavior |
 | Public | Catalog | Project B / Catalog | `/catalog` | `catalog.blade.php` | pending | Reader-facing catalog, not marketplace |

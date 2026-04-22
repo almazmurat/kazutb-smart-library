@@ -415,7 +415,7 @@ Route::get('/about', function () {
 });
 
 Route::get('/contacts', function () {
-    return view('about', ['activePage' => 'about']);
+    return view('about', ['activePage' => 'contacts']);
 });
 
 Route::get('/resources', function () {

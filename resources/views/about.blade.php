@@ -3,6 +3,11 @@
 @php
   $lang = request()->query('lang', 'ru');
   $lang = in_array($lang, ['kk', 'ru', 'en'], true) ? $lang : 'ru';
+  $activePage = $activePage ?? 'about';
+  $sessionUser = session('library.user');
+  $isAuthenticated = ! empty($sessionUser);
+  $workspaceHref = $isAuthenticated ? '/dashboard' : '/login';
+
   $routeWithLang = static function (string $path, array $query = []) use ($lang): string {
       if ($lang !== 'ru' && ! array_key_exists('lang', $query)) {
           $query['lang'] = $lang;
@@ -15,118 +20,145 @@
 
   $copy = [
       'ru' => [
-          'title' => 'О библиотеке — Digital Library',
-          'hero_eyebrow' => 'О библиотеке',
-          'hero_title' => 'КазТБУ Digital Library',
-          'hero_body' => 'Цифровая библиотека КазТБУ объединяет каталог, поиск по темам, доступ к материалам и рабочие маршруты для читателя и преподавателя.',
-          'hero_body_secondary' => 'Здесь можно быстро перейти к фонду, электронным ресурсам и основным сервисам без лишней навигации.',
+          'title' => $activePage === 'contacts'
+              ? 'Контакты — KazUTB Smart Library'
+              : 'О библиотеке — KazUTB Smart Library',
+          'brand' => 'KazUTB Smart Library',
+          'hero_eyebrow' => $activePage === 'contacts' ? 'Контакты' : 'О библиотеке',
+          'hero_title' => $activePage === 'contacts'
+              ? 'Связаться с библиотекой'
+              : 'KazUTB Smart Library',
+          'hero_body' => 'KazUTB Smart Library объединяет каталог, тематическую навигацию, доступ к печатным и цифровым материалам и рабочие маршруты для читателей и преподавателей университета.',
+          'hero_body_secondary' => 'Отсюда можно быстро перейти к фонду, научным ресурсам и ключевым сервисам библиотеки без лишней навигации.',
           'hero_primary' => 'Открыть каталог',
           'hero_secondary' => 'Научные ресурсы',
-          'contact_eyebrow' => 'Контакты и режим',
-          'contact_title' => 'Как связаться с библиотекой',
-          'contact_body' => 'Если нужна помощь с поиском, доступом или работой с материалами, используйте реальные контакты библиотеки.',
+          'about_eyebrow' => 'Миссия и фонд',
+          'about_title' => 'Институциональная библиотека КазУТБ',
+          'about_body' => 'Библиотека служит учебной и исследовательской деятельности университета: ведёт институциональный фонд, поддерживает каталог и электронные материалы, сохраняет научный архив и обеспечивает контролируемый доступ читателей и преподавателей.',
+          'about_points' => [
+              ['title' => 'Каталог и фонд', 'body' => 'Единый каталог печатных и цифровых материалов с тематической навигацией по УДК и быстрым переходом к записям.'],
+              ['title' => 'Научный архив', 'body' => 'Институциональный репозиторий с проверенными научными работами и долговременным хранением.'],
+              ['title' => 'Доступ и сопровождение', 'body' => 'Читательские маршруты, подборки, уведомления и поддержка библиотекарем в каждом ключевом сценарии.'],
+          ],
+          'about_cta' => 'Перейти в каталог',
+          'contacts_eyebrow' => 'Контакты и режим',
+          'contacts_title' => 'Как связаться с библиотекой',
+          'contacts_body' => 'Если нужна помощь с поиском, доступом или работой с материалами, используйте реальные каналы связи университетской библиотеки.',
           'contacts' => [
-              ['label' => 'Телефон', 'value' => '+7 (7172) 64-58-58', 'href' => 'tel:+77172645858'],
-              ['label' => 'Email', 'value' => 'library@digital-library.demo', 'href' => 'mailto:library@digital-library.demo'],
               ['label' => 'Адрес', 'value' => 'Астана, ул. Кайыма Мухамедханова, 37A'],
+              ['label' => 'Телефон (кампус)', 'value' => '+7 (7172) 64-58-58', 'href' => 'tel:+77172645858'],
+              ['label' => 'Email', 'value' => 'library@kazutb.edu.kz', 'href' => 'mailto:library@kazutb.edu.kz'],
           ],
           'hours_title' => 'Режим работы',
           'hours' => [
-              ['label' => 'Понедельник – Пятница', 'value' => '09:00 – 18:00'],
-              ['label' => 'Суббота', 'value' => '10:00 – 14:00'],
+              ['label' => 'Понедельник – Пятница', 'value' => '09:00 – 20:00'],
+              ['label' => 'Суббота', 'value' => '10:00 – 16:00'],
               ['label' => 'Воскресенье', 'value' => 'Выходной'],
           ],
-          'cards_eyebrow' => 'Что доступно на платформе',
-          'cards' => [
-              ['title' => 'Каталог и навигация', 'body' => 'Поиск по фонду, академическая навигация по темам и быстрый переход к нужным записям.'],
-              ['title' => 'Печатные и цифровые материалы', 'body' => 'Книги, электронные материалы и внешние ресурсы собраны в одном понятном маршруте доступа.'],
-              ['title' => 'Кабинет, подборка и доступ', 'body' => 'Читатель и преподаватель могут собирать рабочие списки, переходить к ресурсам и продолжать работу без лишних шагов.'],
-          ],
-            'cta_eyebrow' => 'Начать работу',
-          'cta_title' => 'Переходите сразу к нужному разделу',
-          'cta_body' => 'Откройте каталог, навигацию по темам, подборку или раздел ресурсов и продолжайте работу без лишних объяснений.',
-            'cta_links' => [
-              ['label' => 'Каталог', 'href' => '/catalog'],
-              ['label' => 'Навигация по УДК', 'href' => '/discover'],
-              ['label' => 'Shortlist', 'href' => '/shortlist'],
-              ['label' => 'Ресурсы', 'href' => '/resources'],
-            ],
+          'duty_eyebrow' => 'Дежурный библиотекарь',
+          'duty_title' => 'Librarian-on-Duty',
+          'duty_body' => $isAuthenticated
+              ? 'Продолжите работу в личном кабинете — история, заявки и сообщения библиотекарю доступны в рабочей панели читателя.'
+              : 'Войдите под университетской учётной записью, чтобы написать библиотекарю, посмотреть заявки и продолжить работу в личном кабинете.',
+          'duty_cta' => $isAuthenticated ? 'Открыть личный кабинет' : 'Войти в систему',
+          'cta_eyebrow' => 'Начать работу',
+          'cta_title' => 'Перейдите в каталог',
+          'cta_body' => 'Каталог — основная точка входа: поиск, тематическая навигация и доступ к фонду библиотеки.',
+          'cta_link' => 'Открыть каталог',
       ],
       'kk' => [
-          'title' => 'Кітапхана туралы — Digital Library',
-          'hero_eyebrow' => 'Кітапхана туралы',
-          'hero_title' => 'KazTBU Digital Library',
-          'hero_body' => 'KazTBU цифрлық кітапханасы каталогты, тақырып бойынша іздеуді, материалдарға қолжетімділікті және оқырман мен оқытушыға арналған негізгі маршруттарды біріктіреді.',
-          'hero_body_secondary' => 'Мұнда қорға, электрондық ресурстарға және негізгі сервистерге артық түсіндірмесіз тез өтуге болады.',
+          'title' => $activePage === 'contacts'
+              ? 'Байланыс — KazUTB Smart Library'
+              : 'Кітапхана туралы — KazUTB Smart Library',
+          'brand' => 'KazUTB Smart Library',
+          'hero_eyebrow' => $activePage === 'contacts' ? 'Байланыс' : 'Кітапхана туралы',
+          'hero_title' => $activePage === 'contacts'
+              ? 'Кітапханамен байланысу'
+              : 'KazUTB Smart Library',
+          'hero_body' => 'KazUTB Smart Library — университеттің оқу және зерттеу қызметіне арналған каталог, тақырыптық навигация, баспа және цифрлық материалдарға қолжетімділік пен оқырман мен оқытушыға арналған негізгі маршруттарды біріктіретін институционалдық кітапхана.',
+          'hero_body_secondary' => 'Осы беттен қорға, ғылыми ресурстарға және кітапхананың негізгі сервистеріне артық түсіндірмесіз тез өтуге болады.',
           'hero_primary' => 'Каталогты ашу',
           'hero_secondary' => 'Ғылыми ресурстар',
-          'contact_eyebrow' => 'Байланыс және кесте',
-          'contact_title' => 'Кітапханамен қалай байланысуға болады',
-          'contact_body' => 'Іздеу, қолжетімділік немесе материалдар бойынша көмек керек болса, кітапхананың нақты байланыс арналарына жүгініңіз.',
+          'about_eyebrow' => 'Миссия және қор',
+          'about_title' => 'ҚазУТБ институционалдық кітапханасы',
+          'about_body' => 'Кітапхана университеттің оқу-зерттеу қызметіне қызмет етеді: институционалдық қорды жүргізеді, каталог пен электрондық материалдарды қолдайды, ғылыми мұрағатты сақтайды және оқырман мен оқытушы үшін бақыланатын қолжетімділікті қамтамасыз етеді.',
+          'about_points' => [
+              ['title' => 'Каталог және қор', 'body' => 'Баспа және цифрлық материалдардың бірыңғай каталогы: ӘОЖ бойынша тақырыптық навигация және қажет жазбаға тез өту.'],
+              ['title' => 'Ғылыми мұрағат', 'body' => 'Тексерілген ғылыми еңбектер мен ұзақ мерзімді сақтауға арналған институционалдық репозиторий.'],
+              ['title' => 'Қолжетімділік пен сүйемелдеу', 'body' => 'Оқырман маршруттары, жинақтар, хабарламалар және негізгі сценарийлерде кітапханашының қолдауы.'],
+          ],
+          'about_cta' => 'Каталогқа өту',
+          'contacts_eyebrow' => 'Байланыс және кесте',
+          'contacts_title' => 'Кітапханамен қалай байланысуға болады',
+          'contacts_body' => 'Іздеу, қолжетімділік немесе материалдармен жұмыс бойынша көмек қажет болса, университет кітапханасының нақты байланыс арналарын пайдаланыңыз.',
           'contacts' => [
-              ['label' => 'Телефон', 'value' => '+7 (7172) 64-58-58', 'href' => 'tel:+77172645858'],
-              ['label' => 'Email', 'value' => 'library@digital-library.demo', 'href' => 'mailto:library@digital-library.demo'],
               ['label' => 'Мекенжай', 'value' => 'Астана, Қайым Мұхамедханов көшесі, 37A'],
+              ['label' => 'Телефон (кампус)', 'value' => '+7 (7172) 64-58-58', 'href' => 'tel:+77172645858'],
+              ['label' => 'Email', 'value' => 'library@kazutb.edu.kz', 'href' => 'mailto:library@kazutb.edu.kz'],
           ],
           'hours_title' => 'Жұмыс уақыты',
           'hours' => [
-              ['label' => 'Дүйсенбі – Жұма', 'value' => '09:00 – 18:00'],
-              ['label' => 'Сенбі', 'value' => '10:00 – 14:00'],
+              ['label' => 'Дүйсенбі – Жұма', 'value' => '09:00 – 20:00'],
+              ['label' => 'Сенбі', 'value' => '10:00 – 16:00'],
               ['label' => 'Жексенбі', 'value' => 'Демалыс'],
           ],
-          'cards_eyebrow' => 'Платформада не істеуге болады',
-          'cards' => [
-              ['title' => 'Каталог және навигация', 'body' => 'Қор бойынша іздеу, тақырыппен жүру және қажет материалға тез өту бір маршрутта жиналған.'],
-              ['title' => 'Баспа және цифрлық материалдар', 'body' => 'Кітаптар, электрондық материалдар және сыртқы ресурстар бір түсінікті қолжетімділік логикасында берілген.'],
-              ['title' => 'Кабинет, shortlist және қолжетімділік', 'body' => 'Оқырман мен оқытушы жұмыс тізімдерін жинап, ресурстарға өтіп, жұмысты артық қадамсыз жалғастыра алады.'],
-          ],
-            'cta_eyebrow' => 'Жұмысты бастау',
-          'cta_title' => 'Қажетті бөлімге бірден өтіңіз',
-          'cta_body' => 'Каталогты, тақырыптық навигацияны, shortlist-ті немесе ресурстар бөлімін ашып, жұмысты бірден жалғастырыңыз.',
-            'cta_links' => [
-              ['label' => 'Каталог', 'href' => '/catalog'],
-              ['label' => 'ӘОЖ навигациясы', 'href' => '/discover'],
-              ['label' => 'Shortlist', 'href' => '/shortlist'],
-              ['label' => 'Ресурстар', 'href' => '/resources'],
-            ],
+          'duty_eyebrow' => 'Кезекші кітапханашы',
+          'duty_title' => 'Librarian-on-Duty',
+          'duty_body' => $isAuthenticated
+              ? 'Жеке кабинетте жұмысты жалғастырыңыз — тарих, өтінімдер және кітапханашыға хабарламалар оқырманның жұмыс панелінде қолжетімді.'
+              : 'Кітапханашыға жазу, өтінімдерді қарау және жеке кабинетте жұмысты жалғастыру үшін университеттің есептік жазбасымен кіріңіз.',
+          'duty_cta' => $isAuthenticated ? 'Жеке кабинетті ашу' : 'Жүйеге кіру',
+          'cta_eyebrow' => 'Жұмысты бастау',
+          'cta_title' => 'Каталогқа өтіңіз',
+          'cta_body' => 'Каталог — негізгі кіру нүктесі: іздеу, тақырыптық навигация және кітапхана қорына қолжетімділік.',
+          'cta_link' => 'Каталогты ашу',
       ],
       'en' => [
-          'title' => 'About Library — Digital Library',
-          'hero_eyebrow' => 'About Library',
-          'hero_title' => 'KazTBU Digital Library',
-          'hero_body' => 'KazTBU Digital Library brings together catalog search, subject navigation, access to materials, and core routes for readers and faculty.',
-          'hero_body_secondary' => 'From here, people can move quickly into the collection, digital resources, and everyday library services.',
+          'title' => $activePage === 'contacts'
+              ? 'Contacts — KazUTB Smart Library'
+              : 'About — KazUTB Smart Library',
+          'brand' => 'KazUTB Smart Library',
+          'hero_eyebrow' => $activePage === 'contacts' ? 'Contacts' : 'About the Library',
+          'hero_title' => $activePage === 'contacts'
+              ? 'Reach the library'
+              : 'KazUTB Smart Library',
+          'hero_body' => 'KazUTB Smart Library is the institutional library of KazUTB: catalog search, subject navigation, access to print and digital materials, and core routes for readers and faculty converge on one surface.',
+          'hero_body_secondary' => 'From here, people move quickly into the collection, the scholarly resources layer, and the everyday services the library runs.',
           'hero_primary' => 'Open catalog',
           'hero_secondary' => 'Research resources',
-          'contact_eyebrow' => 'Contacts and hours',
-          'contact_title' => 'How to reach the library',
-          'contact_body' => 'Use the library contact details when you need help with search, access, or working with materials.',
+          'about_eyebrow' => 'Mission & collection',
+          'about_title' => 'The institutional library of KazUTB',
+          'about_body' => 'The library supports teaching and research at the university: it maintains the institutional collection, runs the catalog and digital materials layer, preserves the scholarly archive, and provides controlled access for readers and faculty.',
+          'about_points' => [
+              ['title' => 'Catalog & collection', 'body' => 'A single catalog for print and digital materials, with UDC subject navigation and direct routes to the records that matter.'],
+              ['title' => 'Scholarly archive', 'body' => 'An institutional repository that preserves reviewed scholarly works and keeps long-term access open.'],
+              ['title' => 'Access & stewardship', 'body' => 'Reader journeys, shortlists, notifications, and librarian support across every key scenario.'],
+          ],
+          'about_cta' => 'Go to the catalog',
+          'contacts_eyebrow' => 'Contacts and hours',
+          'contacts_title' => 'How to reach the library',
+          'contacts_body' => 'Use the library contact details when you need help with search, access, or working with materials.',
           'contacts' => [
-              ['label' => 'Phone', 'value' => '+7 (7172) 64-58-58', 'href' => 'tel:+77172645858'],
-              ['label' => 'Email', 'value' => 'library@digital-library.demo', 'href' => 'mailto:library@digital-library.demo'],
               ['label' => 'Address', 'value' => '37A Kayym Mukhamedkhanov Street, Astana'],
+              ['label' => 'Phone (campus)', 'value' => '+7 (7172) 64-58-58', 'href' => 'tel:+77172645858'],
+              ['label' => 'Email', 'value' => 'library@kazutb.edu.kz', 'href' => 'mailto:library@kazutb.edu.kz'],
           ],
           'hours_title' => 'Opening hours',
           'hours' => [
-              ['label' => 'Monday – Friday', 'value' => '09:00 – 18:00'],
-              ['label' => 'Saturday', 'value' => '10:00 – 14:00'],
+              ['label' => 'Monday – Friday', 'value' => '09:00 – 20:00'],
+              ['label' => 'Saturday', 'value' => '10:00 – 16:00'],
               ['label' => 'Sunday', 'value' => 'Closed'],
           ],
-          'cards_eyebrow' => 'What people can do here',
-          'cards' => [
-              ['title' => 'Catalog and navigation', 'body' => 'Search the collection, move by subject, and get to the right records without extra steps.'],
-              ['title' => 'Print and digital materials', 'body' => 'Books, electronic materials, and external resources are gathered into one clear access route.'],
-              ['title' => 'Account, shortlist, and access', 'body' => 'Readers and faculty can collect working lists, move into resources, and continue their work smoothly.'],
-          ],
-            'cta_eyebrow' => 'Start working',
-          'cta_title' => 'Go directly to the section you need',
-          'cta_body' => 'Open the catalog, subject navigation, shortlist, or resources and continue from there.',
-            'cta_links' => [
-              ['label' => 'Catalog', 'href' => '/catalog'],
-              ['label' => 'UDC navigation', 'href' => '/discover'],
-              ['label' => 'Shortlist', 'href' => '/shortlist'],
-              ['label' => 'Resources', 'href' => '/resources'],
-            ],
+          'duty_eyebrow' => 'Librarian-on-Duty',
+          'duty_title' => 'Librarian-on-Duty',
+          'duty_body' => $isAuthenticated
+              ? 'Continue in the member workspace — history, reservations, and messages to the librarian are available from the reader dashboard.'
+              : 'Sign in with your university account to message a librarian, review your reservations, and continue in the member workspace.',
+          'duty_cta' => $isAuthenticated ? 'Open member workspace' : 'Sign in',
+          'cta_eyebrow' => 'Start here',
+          'cta_title' => 'Go to the catalog',
+          'cta_body' => 'The catalog is the primary entry point: search, subject navigation, and access to the library collection.',
+          'cta_link' => 'Open catalog',
       ],
   ][$lang];
 @endphp
@@ -147,17 +179,17 @@
         </div>
         <div class="about-hero-media" aria-hidden="true">
           <div class="about-hero-media__chips">
+            <span>{{ $copy['brand'] }}</span>
             <span>Catalog</span>
-            <span>Resources</span>
-            <span>Shortlist</span>
+            <span>Archive</span>
           </div>
         </div>
       </div>
 
-      <aside class="about-contact-card">
-        <span>{{ $copy['contact_eyebrow'] }}</span>
-        <strong>{{ $copy['contact_title'] }}</strong>
-        <p>{{ $copy['contact_body'] }}</p>
+      <aside class="about-contact-card" data-section="contacts-summary">
+        <span>{{ $copy['contacts_eyebrow'] }}</span>
+        <strong>{{ $copy['contacts_title'] }}</strong>
+        <p>{{ $copy['contacts_body'] }}</p>
         <div class="about-contact-list">
           @foreach($copy['contacts'] as $item)
             <div class="contact-row">
@@ -185,37 +217,92 @@
     </div>
   </section>
 
-  <section class="page-section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow eyebrow--violet">{{ $copy['cards_eyebrow'] }}</div>
+  @if($activePage === 'contacts')
+    {{-- /contacts surface: Librarian-on-Duty block rendered first, then mission narrative. --}}
+    <section class="page-section" data-section="librarian-on-duty">
+      <div class="container">
+        <div class="about-cta-band">
+          <div>
+            <div class="eyebrow eyebrow--green">{{ $copy['duty_eyebrow'] }}</div>
+            <h2>{{ $copy['duty_title'] }}</h2>
+            <p>{{ $copy['duty_body'] }}</p>
+          </div>
+          <div class="about-cta-links">
+            <a href="{{ $routeWithLang($workspaceHref) }}">{{ $copy['duty_cta'] }}</a>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="about-card-grid">
-        @foreach($copy['cards'] as $card)
-          <article class="about-card">
-            <h3>{{ $card['title'] }}</h3>
-            <p>{{ $card['body'] }}</p>
-          </article>
-        @endforeach
+    <section class="page-section" data-section="about-mission">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--violet">{{ $copy['about_eyebrow'] }}</div>
+            <h2>{{ $copy['about_title'] }}</h2>
+            <p>{{ $copy['about_body'] }}</p>
+          </div>
+        </div>
+
+        <div class="about-card-grid">
+          @foreach($copy['about_points'] as $card)
+            <article class="about-card">
+              <h3>{{ $card['title'] }}</h3>
+              <p>{{ $card['body'] }}</p>
+            </article>
+          @endforeach
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  @else
+    {{-- /about surface: mission narrative first, then Librarian-on-Duty block. --}}
+    <section class="page-section" data-section="about-mission">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--violet">{{ $copy['about_eyebrow'] }}</div>
+            <h2>{{ $copy['about_title'] }}</h2>
+            <p>{{ $copy['about_body'] }}</p>
+          </div>
+        </div>
 
-  <section class="page-section">
+        <div class="about-card-grid">
+          @foreach($copy['about_points'] as $card)
+            <article class="about-card">
+              <h3>{{ $card['title'] }}</h3>
+              <p>{{ $card['body'] }}</p>
+            </article>
+          @endforeach
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" data-section="librarian-on-duty">
+      <div class="container">
+        <div class="about-cta-band">
+          <div>
+            <div class="eyebrow eyebrow--green">{{ $copy['duty_eyebrow'] }}</div>
+            <h2>{{ $copy['duty_title'] }}</h2>
+            <p>{{ $copy['duty_body'] }}</p>
+          </div>
+          <div class="about-cta-links">
+            <a href="{{ $routeWithLang($workspaceHref) }}">{{ $copy['duty_cta'] }}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  @endif
+
+  <section class="page-section" data-section="catalog-cta">
     <div class="container">
       <div class="about-cta-band">
         <div>
-          <div class="eyebrow eyebrow--green">{{ $copy['cta_eyebrow'] }}</div>
+          <div class="eyebrow eyebrow--blue">{{ $copy['cta_eyebrow'] }}</div>
           <h2>{{ $copy['cta_title'] }}</h2>
           <p>{{ $copy['cta_body'] }}</p>
         </div>
         <div class="about-cta-links">
-          @foreach($copy['cta_links'] as $link)
-            <a href="{{ $routeWithLang($link['href']) }}">{{ $link['label'] }}</a>
-          @endforeach
+          <a href="{{ $routeWithLang('/catalog') }}">{{ $copy['cta_link'] }}</a>
         </div>
       </div>
     </div>
