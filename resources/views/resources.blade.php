@@ -72,13 +72,13 @@
       'pathways_view_all' => 'View All',
       'students_title' => 'For Students',
       'students_desc' => 'Essential textbooks, study guides, citation tools, and foundational databases to support coursework and thesis development.',
-      'students_cta' => 'Explore Student Hub',
+      'students_cta' => 'Student Resources',
       'faculty_title' => 'For Faculty & Teachers',
       'faculty_desc' => 'Course material curation, syllabus integration tools, pedagogical journals, and academic publishing support services.',
-      'faculty_cta' => 'Explore Faculty Hub',
+      'faculty_cta' => 'Faculty Resources',
       'researchers_title' => 'For Researchers',
       'researchers_desc' => 'Advanced data sets, peer-reviewed indices, grant finding tools, and specialized institutional archives for deep inquiry.',
-      'researchers_cta' => 'Explore Researcher Hub',
+      'researchers_cta' => 'Research Resources',
       'core_label' => 'Institutional Subscriptions',
       'core_title' => 'Core Databases',
       'support_label' => 'Assistance & training',
@@ -1474,7 +1474,6 @@
     <section id="resources-pathways" class="resources-pathways" data-test-id="resources-pathways">
       <div class="resources-pathways-header">
         <h2 class="resources-pathways-title">{{ $copy['pathways_title'] }}</h2>
-        <a href="{{ $routeWithLang('/resources') }}">{{ $copy['pathways_view_all'] }} <span class="pathway-arrow">→</span></a>
       </div>
       <div class="resources-pathways-grid">
         <!-- For Students -->
