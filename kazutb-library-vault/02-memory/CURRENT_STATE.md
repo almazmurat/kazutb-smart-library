@@ -1,14 +1,30 @@
 # Current State — KazUTB Library Platform
-> Last updated: 2026-04-20
+> Last updated: 2026-04-22
 
 ## Last changed
-- Time: 2026-04-22 (Cluster B.5 canonical-exact /about rebuild)
-- Commit: pending
+- Time: 2026-04-22 (Cluster B.6)
+- Branch: main
+- Change type: UI/Blade view change + route rewiring
+- Files: resources/views/contacts.blade.php (new), routes/web.php (added $contactsSeedProvider + rewired /contacts), tests/Feature/ContactsCanonicalPageTest.php (new), tests/Feature/PublicAboutPageTest.php (pruned /contacts-specific tests), tests/Feature/ContactsLocationFundRoomsTest.php (deleted)
+- Commit message: feat(phase-3.b.6): canonical-exact /contacts rebuild per contacts_canonical
+
+## Previously changed (B.5)
+- Time: 2026-04-22 13:06:44 UTC
+- Commit: 3f3cf8b
 - Branch: main
 - Change type: UI/Blade view change
-- Files: resources/views/about.blade.php, tests/Feature/PublicAboutPageTest.php (rewritten), tests/Feature/AboutCollectionDirectoryTest.php (removed)
+- Files: resources/views/about.blade.php
 - Commit message: feat(phase-3.b.5): canonical-exact /about rebuild per about_library_canonical
-- Note: B.4's embed-into-old-shell approach on /about has been deliberately replaced by a canonical-exact rebuild per docs/design-exports/about_library_canonical. /contacts variant is intentionally untouched and is the next canonical target in a future pass.
+
+## Latest Git Automation
+- Time: 2026-04-22 13:06:44 UTC
+- Event: post-commit
+- Branch: main
+- Commit: 3f3cf8b
+- Update: Git post-commit on main: feat(phase-3.b.5): canonical-exact /about rebuild per about_library_canonical
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, tests/Feature/AboutCollectionDirectoryTest.php, tests/Feature/PublicAboutPageTest.php
+- Semantic: UI/Blade view change
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed
 - Time: 2026-04-22 12:47:16 UTC
@@ -17,16 +33,6 @@
 - Change type: UI/Blade view change
 - Files: resources/views/about.blade.php
 - Commit message: feat(phase-3.b.4): embed collection profile + institutional directory into /about
-
-## Latest Git Automation
-- Time: 2026-04-22 12:47:16 UTC
-- Event: post-commit
-- Branch: main
-- Commit: f5775b6
-- Update: Git post-commit on main: feat(phase-3.b.4): embed collection profile + institutional directory into /about
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, tests/Feature/AboutCollectionDirectoryTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
 Phases 0, 1.1, 1.2, 1.4, **2a**, **2b**, a post-audit **stabilization pass** (2026-04-21), **3.1 — Homepage** (2026-04-22), **3.2 — About + Contacts consolidation** (2026-04-22), and **3.3 — Public News module** (2026-04-22) are complete. Phase 3.3 reverses the previous `/news → /` 301 redirect and restores `/news` as the canonical KazUTB Smart Library public news index (`news/index.blade.php`), plus a new `/news/{slug}` detail surface (`news/show.blade.php`), both extending `layouts.public`. Seeded article data lives in a single `$newsSeedProvider` closure in `routes/web.php` — deliberately DB-replaceable later. Trilingual ru/kk/en parity across chrome and article copy; public brand and local-image stabilization pass shipped in commit `4fa272f`. The transitional `/account` route is intentionally **kept in place**; reader `PostLoginRedirect` still targets `/account`, and the cut-over is scheduled for after Phase 3 completes.

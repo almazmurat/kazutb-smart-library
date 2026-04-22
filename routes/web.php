@@ -1242,12 +1242,316 @@ Route::get('/news/{slug}', function (string $slug) use ($newsSeedProvider) {
     ]);
 })->where('slug', '[a-z0-9-]+');
 
+// Phase 3 Cluster B.6 — seeded public contacts content for /contacts.
+//
+// Scoped strictly to this page; structure mirrors $rulesSeedProvider and
+// $leadershipSeedProvider so a future backend phase can replace the
+// closure with a DB-backed source. The three v1 fund rooms (1/200,
+// 1/202, 1/203) are the public wayfinding truth and MUST remain stable.
+$contactsSeedProvider = static function (): array {
+    $departmentOptions = [
+        'ru' => [
+            'faculty' => 'Преподавателям / исследователям',
+            'student' => 'Студентам / магистрантам',
+            'college' => 'Колледж',
+            'other' => 'Другое / гость',
+        ],
+        'kk' => [
+            'faculty' => 'Оқытушылар / зерттеушілер',
+            'student' => 'Студенттер / магистранттар',
+            'college' => 'Колледж',
+            'other' => 'Басқа / қонақ',
+        ],
+        'en' => [
+            'faculty' => 'Faculty / researchers',
+            'student' => 'Students / master\'s candidates',
+            'college' => 'College',
+            'other' => 'Other / guest',
+        ],
+    ];
+
+    $supportChannels = [
+        'ru' => [
+            [
+                'slug' => 'research',
+                'icon' => 'local_library',
+                'title' => 'Библиотекарь-консультант',
+                'body' => 'Помощь в поиске литературы, работе с подпиской и базами данных, оформлении списков источников и цитирований.',
+                'email' => 'library@kazutb.edu.kz',
+                'phone' => '+7 (7172) 64-58-58',
+            ],
+            [
+                'slug' => 'technical',
+                'icon' => 'computer',
+                'title' => 'Техническая поддержка',
+                'body' => 'Вход через корпоративный аккаунт, доступ к цифровой библиотеке, ошибки в каталоге и кабинете читателя.',
+                'email' => 'support@kazutb.edu.kz',
+                'phone' => '+7 (7172) 64-58-58',
+            ],
+        ],
+        'kk' => [
+            [
+                'slug' => 'research',
+                'icon' => 'local_library',
+                'title' => 'Кітапханашы-кеңесші',
+                'body' => 'Әдебиет іздеу, жазылымдар мен дерекқорлармен жұмыс, дереккөздер тізімі мен сілтемелерді ресімдеуге көмек.',
+                'email' => 'library@kazutb.edu.kz',
+                'phone' => '+7 (7172) 64-58-58',
+            ],
+            [
+                'slug' => 'technical',
+                'icon' => 'computer',
+                'title' => 'Техникалық қолдау',
+                'body' => 'Корпоративтік аккаунт арқылы кіру, цифрлық кітапханаға қолжетімділік, каталог пен оқырман кабинетіндегі қателер.',
+                'email' => 'support@kazutb.edu.kz',
+                'phone' => '+7 (7172) 64-58-58',
+            ],
+        ],
+        'en' => [
+            [
+                'slug' => 'research',
+                'icon' => 'local_library',
+                'title' => 'Librarian consultation',
+                'body' => 'Help with finding literature, working with subscriptions and databases, preparing reference lists and citations.',
+                'email' => 'library@kazutb.edu.kz',
+                'phone' => '+7 (7172) 64-58-58',
+            ],
+            [
+                'slug' => 'technical',
+                'icon' => 'computer',
+                'title' => 'Technical support',
+                'body' => 'Institutional sign-in, access to the digital library, and issues in the catalog or reader workspace.',
+                'email' => 'support@kazutb.edu.kz',
+                'phone' => '+7 (7172) 64-58-58',
+            ],
+        ],
+    ];
+
+    $fundRooms = [
+        'ru' => [
+            [
+                'room' => '1/200',
+                'floor' => 'Корпус 1 · 2 этаж',
+                'fund_label' => 'Технологический фонд',
+                'short_description' => 'Учебная и научная литература по инженерным, ИТ и прикладным направлениям.',
+                'access_note' => 'Открытый доступ для читателей университета.',
+            ],
+            [
+                'room' => '1/202',
+                'floor' => 'Корпус 1 · 2 этаж',
+                'fund_label' => 'Фонд колледжа',
+                'short_description' => 'Учебные материалы и методические пособия для программ колледжа КазУТБ.',
+                'access_note' => 'Приоритетный доступ для студентов колледжа.',
+            ],
+            [
+                'room' => '1/203',
+                'floor' => 'Корпус 1 · 2 этаж',
+                'fund_label' => 'Экономический фонд',
+                'short_description' => 'Литература по экономике, менеджменту, финансам и праву.',
+                'access_note' => 'Открытый доступ для читателей университета.',
+            ],
+        ],
+        'kk' => [
+            [
+                'room' => '1/200',
+                'floor' => '1-корпус · 2-қабат',
+                'fund_label' => 'Технологиялық қор',
+                'short_description' => 'Инженерлік, IT және қолданбалы бағыттар бойынша оқу және ғылыми әдебиет.',
+                'access_note' => 'Университет оқырмандары үшін ашық қолжетімділік.',
+            ],
+            [
+                'room' => '1/202',
+                'floor' => '1-корпус · 2-қабат',
+                'fund_label' => 'Колледж қоры',
+                'short_description' => 'ҚазУТБ колледжі бағдарламалары үшін оқу материалдары мен әдістемелік құралдар.',
+                'access_note' => 'Колледж студенттеріне басым қолжетімділік.',
+            ],
+            [
+                'room' => '1/203',
+                'floor' => '1-корпус · 2-қабат',
+                'fund_label' => 'Экономикалық қор',
+                'short_description' => 'Экономика, менеджмент, қаржы және құқық бойынша әдебиет.',
+                'access_note' => 'Университет оқырмандары үшін ашық қолжетімділік.',
+            ],
+        ],
+        'en' => [
+            [
+                'room' => '1/200',
+                'floor' => 'Building 1 · Level 2',
+                'fund_label' => 'Technology fund',
+                'short_description' => 'Teaching and research materials for engineering, IT, and applied programmes.',
+                'access_note' => 'Open access for university readers.',
+            ],
+            [
+                'room' => '1/202',
+                'floor' => 'Building 1 · Level 2',
+                'fund_label' => 'College fund',
+                'short_description' => 'Teaching materials and methodological guides for KazUTB college programmes.',
+                'access_note' => 'Priority access for college students.',
+            ],
+            [
+                'room' => '1/203',
+                'floor' => 'Building 1 · Level 2',
+                'fund_label' => 'Economics fund',
+                'short_description' => 'Literature for economics, management, finance, and law programmes.',
+                'access_note' => 'Open access for university readers.',
+            ],
+        ],
+    ];
+
+    $hoursRows = [
+        'ru' => [
+            ['days' => 'Пн – Пт', 'hours' => '09:00 – 18:00'],
+            ['days' => 'Сб', 'hours' => '10:00 – 15:00'],
+            ['days' => 'Вс', 'hours' => 'Закрыто'],
+        ],
+        'kk' => [
+            ['days' => 'Дс – Жм', 'hours' => '09:00 – 18:00'],
+            ['days' => 'Сб', 'hours' => '10:00 – 15:00'],
+            ['days' => 'Жс', 'hours' => 'Жабық'],
+        ],
+        'en' => [
+            ['days' => 'Mon – Fri', 'hours' => '09:00 – 18:00'],
+            ['days' => 'Sat', 'hours' => '10:00 – 15:00'],
+            ['days' => 'Sun', 'hours' => 'Closed'],
+        ],
+    ];
+
+    return [
+        'ru' => [
+            'hero_title_a' => 'Прямые обращения',
+            'hero_title_b' => 'и академическая поддержка.',
+            'hero_body' => 'Свяжитесь с командой KazUTB Smart Library — консультации по фонду, помощь с цифровой подпиской, техническая поддержка доступа и административные вопросы.',
+            'support_heading' => 'Каналы поддержки',
+            'support_channels' => $supportChannels['ru'],
+            'form_title' => 'Отправить запрос',
+            'form_note' => 'Заполните форму — она откроет письмо в почтовом клиенте с темой запроса. Мы отвечаем в рабочие часы библиотеки.',
+            'form_label_name' => 'Имя и фамилия',
+            'form_placeholder_name' => 'например, Айгерим Омарова',
+            'form_label_email' => 'Академическая почта',
+            'form_placeholder_email' => 'username@kazutb.edu.kz',
+            'form_label_department' => 'Факультет / категория',
+            'form_placeholder_department' => 'Выберите вариант',
+            'form_departments' => $departmentOptions['ru'],
+            'form_label_message' => 'Сообщение',
+            'form_placeholder_message' => 'Опишите ваш запрос как можно подробнее…',
+            'form_submit' => 'Отправить запрос',
+            'location_title' => 'Физический адрес',
+            'location_address_line_a' => 'Астана, ул. Кайыма Мухамедханова, 37A',
+            'location_address_line_b' => 'Главный корпус КазУТБ · Читательские залы — 2 этаж, корпус 1',
+            'location_phone' => '+7 (7172) 64-58-58',
+            'location_email' => 'library@kazutb.edu.kz',
+            'location_directions_cta' => 'Открыть в Google Maps',
+            'hours_label' => 'Режим работы',
+            'hours_rows' => $hoursRows['ru'],
+            'wayfinding_title' => 'Фонды и навигация по залам',
+            'wayfinding_body' => 'В главном корпусе университета работают три читательских фонда, каждый поддерживает свою академическую программу. Ниже — коды залов, их тематическое назначение и условия доступа.',
+            'map_label' => 'Главный корпус КазУТБ, Астана',
+            'map_caption' => 'Статический ориентир: читательские залы и фонды расположены на 2 этаже корпуса 1.',
+            'room_prefix' => 'Зал',
+            'fund_rooms' => $fundRooms['ru'],
+            'visit_title' => 'Перед визитом',
+            'visit_body' => 'Перед первым посещением рекомендуем ознакомиться с правилами работы библиотеки и узнать, к кому обращаться по профильным вопросам.',
+            'visit_link_rules_title' => 'Правила библиотеки',
+            'visit_link_rules_body' => 'Условия записи, выдачи, пользования фондом и доступа к цифровым ресурсам.',
+            'visit_link_leadership_title' => 'Руководство библиотеки',
+            'visit_link_leadership_body' => 'Роли и зоны ответственности — для профильных запросов и эскалации.',
+        ],
+        'kk' => [
+            'hero_title_a' => 'Тікелей сұраулар',
+            'hero_title_b' => 'және академиялық қолдау.',
+            'hero_body' => 'KazUTB Smart Library командасына хабарласыңыз — қор бойынша кеңестер, цифрлық жазылыммен көмек, қолжетімділіктің техникалық қолдауы және әкімшілік сұрақтар.',
+            'support_heading' => 'Қолдау арналары',
+            'support_channels' => $supportChannels['kk'],
+            'form_title' => 'Сұрау жіберу',
+            'form_note' => 'Форманы толтырыңыз — ол пошта клиентінде тақырыбы көрсетілген хатты ашады. Біз кітапхананың жұмыс сағаттарында жауап береміз.',
+            'form_label_name' => 'Аты-жөні',
+            'form_placeholder_name' => 'мысалы, Айгерім Омарова',
+            'form_label_email' => 'Академиялық пошта',
+            'form_placeholder_email' => 'username@kazutb.edu.kz',
+            'form_label_department' => 'Факультет / санат',
+            'form_placeholder_department' => 'Нұсқаны таңдаңыз',
+            'form_departments' => $departmentOptions['kk'],
+            'form_label_message' => 'Хабарлама',
+            'form_placeholder_message' => 'Сұрауыңызды мүмкіндігінше толық сипаттаңыз…',
+            'form_submit' => 'Сұрау жіберу',
+            'location_title' => 'Физикалық мекенжай',
+            'location_address_line_a' => 'Астана, Қайым Мұхамедханов көшесі, 37A',
+            'location_address_line_b' => 'ҚазУТБ басты корпусы · Оқу залдары — 2-қабат, 1-корпус',
+            'location_phone' => '+7 (7172) 64-58-58',
+            'location_email' => 'library@kazutb.edu.kz',
+            'location_directions_cta' => 'Google Maps-те ашу',
+            'hours_label' => 'Жұмыс режимі',
+            'hours_rows' => $hoursRows['kk'],
+            'wayfinding_title' => 'Қорлар және залдар бойынша навигация',
+            'wayfinding_body' => 'Университеттің басты корпусында үш оқу қоры жұмыс істейді, әрқайсысы өз академиялық бағдарламасын қолдайды. Төменде — залдардың кодтары, тақырыптық бағыты және қолжетімділік шарттары.',
+            'map_label' => 'ҚазУТБ басты корпусы, Астана',
+            'map_caption' => 'Статикалық ориентир: оқу залдары мен қорлар 1-корпустың 2-қабатында орналасқан.',
+            'room_prefix' => 'Зал',
+            'fund_rooms' => $fundRooms['kk'],
+            'visit_title' => 'Келмес бұрын',
+            'visit_body' => 'Алғашқы келер алдында кітапхана жұмысының ережелерімен танысып, бағытты сұрақтар бойынша кімге жүгіну керегін білген жөн.',
+            'visit_link_rules_title' => 'Кітапхана ережелері',
+            'visit_link_rules_body' => 'Тіркелу, беру, қорды пайдалану және цифрлық ресурстарға қолжетімділік шарттары.',
+            'visit_link_leadership_title' => 'Кітапхана басшылығы',
+            'visit_link_leadership_body' => 'Рөлдер мен жауапкершілік аймақтары — бағытты сұраулар мен эскалация үшін.',
+        ],
+        'en' => [
+            'hero_title_a' => 'Direct Inquiries',
+            'hero_title_b' => '& Academic Support.',
+            'hero_body' => 'Connect with the KazUTB Smart Library team — collection consultations, digital subscription help, access troubleshooting, and administrative inquiries.',
+            'support_heading' => 'Support Channels',
+            'support_channels' => $supportChannels['en'],
+            'form_title' => 'Submit an Inquiry',
+            'form_note' => 'Fill in the form — it opens a pre-filled email in your mail client. We respond during library working hours.',
+            'form_label_name' => 'Full name',
+            'form_placeholder_name' => 'e.g. Aigerim Omarova',
+            'form_label_email' => 'Academic email',
+            'form_placeholder_email' => 'username@kazutb.edu.kz',
+            'form_label_department' => 'Department / category',
+            'form_placeholder_department' => 'Select an option',
+            'form_departments' => $departmentOptions['en'],
+            'form_label_message' => 'Message',
+            'form_placeholder_message' => 'Please describe your inquiry in as much detail as possible…',
+            'form_submit' => 'Send inquiry',
+            'location_title' => 'Physical Location',
+            'location_address_line_a' => '37A Kayym Mukhamedkhanov Street, Astana',
+            'location_address_line_b' => 'KazUTB main building · Reading rooms — 2nd floor, Building 1',
+            'location_phone' => '+7 (7172) 64-58-58',
+            'location_email' => 'library@kazutb.edu.kz',
+            'location_directions_cta' => 'Open in Google Maps',
+            'hours_label' => 'Opening hours',
+            'hours_rows' => $hoursRows['en'],
+            'wayfinding_title' => 'Fund Guidance & Wayfinding',
+            'wayfinding_body' => 'Three reading funds operate on the 2nd floor of the main building, each supporting a specific academic programme. Codes, thematic coverage, and access notes are listed below.',
+            'map_label' => 'KazUTB main building, Astana',
+            'map_caption' => 'Static reference: reading rooms and funds are on the 2nd floor of Building 1.',
+            'room_prefix' => 'Room',
+            'fund_rooms' => $fundRooms['en'],
+            'visit_title' => 'Before you visit',
+            'visit_body' => 'Before a first visit we recommend reviewing the library usage rules and checking who to contact for specialised questions.',
+            'visit_link_rules_title' => 'Library usage rules',
+            'visit_link_rules_body' => 'Registration, loans, use of the collection, and access to digital resources.',
+            'visit_link_leadership_title' => 'Library leadership',
+            'visit_link_leadership_body' => 'Roles and areas of responsibility — for specialised inquiries and escalation.',
+        ],
+    ];
+};
+
 Route::get('/about', function () {
     return view('about', ['activePage' => 'about']);
 });
 
-Route::get('/contacts', function () {
-    return view('about', ['activePage' => 'contacts']);
+// Phase 3 Cluster B.6 — canonical-exact /contacts page.
+// Replaces the previous shared-view activePage='contacts' branch on
+// resources/views/about.blade.php with a standalone canonical page that
+// mirrors docs/design-exports/contacts_canonical + integrates the three
+// v1 fund rooms (1/200, 1/202, 1/203) as public wayfinding truth.
+Route::get('/contacts', function () use ($contactsSeedProvider) {
+    return view('contacts', [
+        'activePage' => 'contacts',
+        'contacts' => $contactsSeedProvider(),
+    ]);
 });
 
 // Phase 3 Cluster B.1 — standalone public leadership surface.

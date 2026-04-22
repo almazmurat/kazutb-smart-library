@@ -155,41 +155,10 @@ class PublicAboutPageTest extends TestCase
         }
     }
 
-    public function test_guest_can_view_contacts_page(): void
+    public function test_guest_can_view_about_page_with_canonical_brand(): void
     {
-        $response = $this->get('/contacts?lang=en');
-
-        $response->assertOk();
-        $response->assertSee('KazUTB Smart Library', false);
-        $response->assertSee('Reach the library', false);
-        $response->assertSee('How to reach the library', false);
-        $response->assertSee('37A Kayym Mukhamedkhanov Street, Astana', false);
-        $response->assertSee('+7 (7172) 64-58-58', false);
-        $response->assertSee('library@kazutb.edu.kz', false);
-        $response->assertSee('Opening hours', false);
-        $response->assertSee('Librarian-on-Duty', false);
-    }
-
-    public function test_guest_librarian_on_duty_on_contacts_routes_to_login(): void
-    {
-        $response = $this->get('/contacts?lang=en');
-
-        $response->assertOk();
-        $response->assertSee('Sign in', false);
-        $response->assertSee('href="/login?lang=en"', false);
-        $response->assertDontSee('href="/dashboard?lang=en"', false);
-    }
-
-    public function test_authenticated_reader_contacts_librarian_on_duty_routes_to_dashboard(): void
-    {
-        $this->loginAs('student');
-
-        $response = $this->get('/contacts?lang=en');
-
-        $response->assertOk();
-        $response->assertSee('KazUTB Smart Library', false);
-        $response->assertSee('Sign out', false);
-        $response->assertSee('href="/dashboard?lang=en"', false);
+        $response = $this->get('/about?lang=en');
+        $response->assertOk()->assertSee('KazUTB Smart Library', false);
     }
 
     public function test_authenticated_reader_can_view_about_page(): void
