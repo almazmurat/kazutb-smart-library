@@ -65,6 +65,62 @@
           'cta_title' => 'Перейдите в каталог',
           'cta_body' => 'Каталог — основная точка входа: поиск, тематическая навигация и доступ к фонду библиотеки.',
           'cta_link' => 'Открыть каталог',
+          // Cluster B.4 — collection / fund narrative + institutional directory (About variant only).
+          'collection_eyebrow' => 'Коллекция и фонд',
+          'collection_title' => 'Что читатель найдёт в фонде библиотеки',
+          'collection_body' => 'Фонд KazUTB Smart Library собран вокруг реальной академической программы университета: инженерия и технологии, экономика и менеджмент, социально-гуманитарные дисциплины и специальные материалы колледжа. Ниже — публичные ориентиры для читателя, не внутренняя отчётность.',
+          'collection_areas' => [
+              [
+                  'slug' => 'technology',
+                  'icon' => '🔧',
+                  'title' => 'Инженерия и технологии',
+                  'body' => 'Инженерные дисциплины, информатика, прикладная математика и технологические направления — основа технологического фонда университета.',
+              ],
+              [
+                  'slug' => 'economy',
+                  'icon' => '📊',
+                  'title' => 'Экономика, менеджмент и право',
+                  'body' => 'Экономические и управленческие дисциплины, финансы, право и смежные общественные науки — профильный фонд экономического направления.',
+              ],
+              [
+                  'slug' => 'humanities',
+                  'icon' => '📚',
+                  'title' => 'Социально-гуманитарные дисциплины',
+                  'body' => 'Языки, история, педагогика и общеобразовательные материалы, которые поддерживают преподавание и исследование за пределами профильных программ.',
+              ],
+              [
+                  'slug' => 'college',
+                  'icon' => '🎓',
+                  'title' => 'Учебные материалы колледжа',
+                  'body' => 'Учебная литература, справочные издания и методические материалы для образовательных программ колледжа, включая предвузовскую подготовку.',
+              ],
+          ],
+          'directory_eyebrow' => 'Институциональный справочник',
+          'directory_title' => 'Куда идти дальше',
+          'directory_body' => 'Короткий справочник по ключевым институциональным страницам библиотеки — правилам, руководству и контактам.',
+          'directory_rows' => [
+              [
+                  'slug' => 'rules',
+                  'title' => 'Правила библиотеки',
+                  'body' => 'Правила пользования фондом, цифровыми материалами и читательскими залами.',
+                  'href' => '/rules',
+                  'cta' => 'Открыть правила',
+              ],
+              [
+                  'slug' => 'leadership',
+                  'title' => 'Руководство библиотеки',
+                  'body' => 'Состав и зоны ответственности руководства библиотеки университета.',
+                  'href' => '/leadership',
+                  'cta' => 'Открыть раздел',
+              ],
+              [
+                  'slug' => 'contacts',
+                  'title' => 'Контакты и расположение',
+                  'body' => 'Адрес, режим работы, фондовые комнаты и способы связаться с библиотекой.',
+                  'href' => '/contacts',
+                  'cta' => 'Открыть контакты',
+              ],
+          ],
           // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
           'location_eyebrow' => 'Как нас найти',
           'location_title' => 'Расположение и вход в библиотеку',
@@ -175,6 +231,62 @@
           'cta_title' => 'Каталогқа өтіңіз',
           'cta_body' => 'Каталог — негізгі кіру нүктесі: іздеу, тақырыптық навигация және кітапхана қорына қолжетімділік.',
           'cta_link' => 'Каталогты ашу',
+          // Cluster B.4 — collection / fund narrative + institutional directory (About variant only).
+          'collection_eyebrow' => 'Жинақ және қор',
+          'collection_title' => 'Оқырман кітапхана қорынан нені табады',
+          'collection_body' => 'KazUTB Smart Library қоры университеттің нақты академиялық бағдарламасы айналасында жиналған: инженерия және технологиялар, экономика және менеджмент, әлеуметтік-гуманитарлық пәндер және колледждің арнайы материалдары. Төменде оқырманға арналған көпшілік бағдарлар берілген — ішкі есеп емес.',
+          'collection_areas' => [
+              [
+                  'slug' => 'technology',
+                  'icon' => '🔧',
+                  'title' => 'Инженерия және технологиялар',
+                  'body' => 'Инженерлік пәндер, информатика, қолданбалы математика және технологиялық бағыттар — университеттің технологиялық қорының негізі.',
+              ],
+              [
+                  'slug' => 'economy',
+                  'icon' => '📊',
+                  'title' => 'Экономика, менеджмент және құқық',
+                  'body' => 'Экономикалық және басқарушылық пәндер, қаржы, құқық және іргелес қоғамдық ғылымдар — экономикалық бағыттың бейіндік қоры.',
+              ],
+              [
+                  'slug' => 'humanities',
+                  'icon' => '📚',
+                  'title' => 'Әлеуметтік-гуманитарлық пәндер',
+                  'body' => 'Тілдер, тарих, педагогика және жалпы білім беру материалдары — бейіндік бағдарламалардан тыс оқыту мен зерттеуді қолдайды.',
+              ],
+              [
+                  'slug' => 'college',
+                  'icon' => '🎓',
+                  'title' => 'Колледж оқу материалдары',
+                  'body' => 'Колледждің білім беру бағдарламаларына арналған оқу әдебиеті, анықтамалық басылымдар мен әдістемелік материалдар, оның ішінде жоғары оқу алды дайындық.',
+              ],
+          ],
+          'directory_eyebrow' => 'Институционалдық анықтамалық',
+          'directory_title' => 'Әрі қарай қайда өту керек',
+          'directory_body' => 'Кітапхананың негізгі институционалдық беттеріне — ережелерге, басшылыққа және байланысқа — қысқаша анықтамалық.',
+          'directory_rows' => [
+              [
+                  'slug' => 'rules',
+                  'title' => 'Кітапхана ережелері',
+                  'body' => 'Қорды, цифрлық материалдарды және оқу залдарын пайдалану ережелері.',
+                  'href' => '/rules',
+                  'cta' => 'Ережелерді ашу',
+              ],
+              [
+                  'slug' => 'leadership',
+                  'title' => 'Кітапхана басшылығы',
+                  'body' => 'Университет кітапханасы басшылығының құрамы және жауапкершілік аймақтары.',
+                  'href' => '/leadership',
+                  'cta' => 'Бөлімді ашу',
+              ],
+              [
+                  'slug' => 'contacts',
+                  'title' => 'Байланыс және орналасу',
+                  'body' => 'Мекенжай, жұмыс режимі, қор бөлмелері және кітапханамен байланысу жолдары.',
+                  'href' => '/contacts',
+                  'cta' => 'Байланысты ашу',
+              ],
+          ],
           // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
           'location_eyebrow' => 'Бізді қалай табуға болады',
           'location_title' => 'Кітапхананың орналасуы және кіру',
@@ -285,6 +397,62 @@
           'cta_title' => 'Go to the catalog',
           'cta_body' => 'The catalog is the primary entry point: search, subject navigation, and access to the library collection.',
           'cta_link' => 'Open catalog',
+          // Cluster B.4 — collection / fund narrative + institutional directory (About variant only).
+          'collection_eyebrow' => 'Collection and fund',
+          'collection_title' => 'What readers find in the library collection',
+          'collection_body' => 'The KazUTB Smart Library collection is built around the university\'s real academic programme: engineering and technology, economics and management, social sciences and humanities, and the dedicated college materials. The areas below are public reader-facing signposts — not internal stock accounting.',
+          'collection_areas' => [
+              [
+                  'slug' => 'technology',
+                  'icon' => '🔧',
+                  'title' => 'Engineering and technology',
+                  'body' => 'Engineering disciplines, computer science, applied mathematics, and technology tracks — the core of the university\'s technology fund.',
+              ],
+              [
+                  'slug' => 'economy',
+                  'icon' => '📊',
+                  'title' => 'Economics, management and law',
+                  'body' => 'Economics and management disciplines, finance, law, and adjacent social sciences — the profile fund for the economic track.',
+              ],
+              [
+                  'slug' => 'humanities',
+                  'icon' => '📚',
+                  'title' => 'Social sciences and humanities',
+                  'body' => 'Languages, history, pedagogy, and general-education materials that support teaching and research beyond the profile programmes.',
+              ],
+              [
+                  'slug' => 'college',
+                  'icon' => '🎓',
+                  'title' => 'College teaching materials',
+                  'body' => 'Textbooks, reference works, and teaching methodology for the college programmes, including pre-university preparation.',
+              ],
+          ],
+          'directory_eyebrow' => 'Institutional directory',
+          'directory_title' => 'Where to go next',
+          'directory_body' => 'A short directory of the library\'s key institutional pages — rules, leadership, and contacts.',
+          'directory_rows' => [
+              [
+                  'slug' => 'rules',
+                  'title' => 'Library rules',
+                  'body' => 'Rules for using the collection, digital materials, and the reading rooms.',
+                  'href' => '/rules',
+                  'cta' => 'Open the rules',
+              ],
+              [
+                  'slug' => 'leadership',
+                  'title' => 'Library leadership',
+                  'body' => 'The leadership team of the university library and their areas of responsibility.',
+                  'href' => '/leadership',
+                  'cta' => 'Open the section',
+              ],
+              [
+                  'slug' => 'contacts',
+                  'title' => 'Contacts and location',
+                  'body' => 'Address, opening hours, fund rooms, and ways to reach the library.',
+                  'href' => '/contacts',
+                  'cta' => 'Open contacts',
+              ],
+          ],
           // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
           'location_eyebrow' => 'How to find us',
           'location_title' => 'Library location and entrance',
@@ -478,6 +646,56 @@
             <a href="{{ $routeWithLang($workspaceHref) }}">{{ $copy['duty_cta'] }}</a>
           </div>
         </div>
+      </div>
+    </section>
+
+    {{-- Cluster B.4 — collection / fund narrative + institutional directory, only on /about. --}}
+    <section class="page-section" data-section="about-collection-profile">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--teal">{{ $copy['collection_eyebrow'] }}</div>
+            <h2>{{ $copy['collection_title'] }}</h2>
+            <p>{{ $copy['collection_body'] }}</p>
+          </div>
+        </div>
+
+        <div class="about-collection-grid">
+          @foreach($copy['collection_areas'] as $area)
+            <article class="about-collection-card" data-collection-area data-area-slug="{{ $area['slug'] }}">
+              <div class="about-collection-card__icon" aria-hidden="true">{{ $area['icon'] }}</div>
+              <h3>{{ $area['title'] }}</h3>
+              <p>{{ $area['body'] }}</p>
+            </article>
+          @endforeach
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" data-section="about-institutional-directory">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--violet">{{ $copy['directory_eyebrow'] }}</div>
+            <h2>{{ $copy['directory_title'] }}</h2>
+            <p>{{ $copy['directory_body'] }}</p>
+          </div>
+        </div>
+
+        <ul class="about-directory-list">
+          @foreach($copy['directory_rows'] as $row)
+            <li class="about-directory-row" data-directory-slot data-directory-slug="{{ $row['slug'] }}">
+              <div class="about-directory-row__copy">
+                <h3>{{ $row['title'] }}</h3>
+                <p>{{ $row['body'] }}</p>
+              </div>
+              <a class="about-directory-row__cta" href="{{ $routeWithLang($row['href']) }}" data-test-id="about-directory-link-{{ $row['slug'] }}">
+                {{ $row['cta'] }}
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          @endforeach
+        </ul>
       </div>
     </section>
   @endif
@@ -1090,6 +1308,117 @@
     .contacts-fund-grid,
     .contacts-visit-list {
       grid-template-columns: 1fr;
+    }
+  }
+
+  /* Cluster B.4 — embedded collection / fund narrative + institutional directory. */
+  .about-collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .about-collection-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .about-collection-card__icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .about-collection-card h3 {
+    margin: 4px 0 0;
+    font-family: var(--font-head, 'Newsreader', serif);
+    font-size: 1.1rem;
+    color: var(--ink, #191c1d);
+  }
+
+  .about-collection-card p {
+    margin: 0;
+    color: var(--muted, #43474e);
+    line-height: 1.6;
+    font-size: .95rem;
+  }
+
+  .about-directory-list {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .about-directory-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+    transition: border-color .18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .about-directory-row:hover {
+    border-color: rgba(0,31,63,.35);
+    box-shadow: 0 8px 24px rgba(25,28,29,.05);
+  }
+
+  .about-directory-row__copy h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-head, 'Newsreader', serif);
+    font-size: 1.05rem;
+    color: var(--ink, #191c1d);
+  }
+
+  .about-directory-row__copy p {
+    margin: 0;
+    color: var(--muted, #43474e);
+    line-height: 1.55;
+    font-size: .93rem;
+  }
+
+  .about-directory-row__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(195,198,209,.55);
+    background: rgba(255,255,255,.9);
+    color: var(--blue, #001f3f);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .about-directory-row__cta:hover {
+    border-color: rgba(0,31,63,.4);
+    color: var(--teal, #006a6a);
+  }
+
+  @media (max-width: 960px) {
+    .about-collection-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-directory-row {
+      grid-template-columns: 1fr;
+    }
+
+    .about-directory-row__cta {
+      justify-self: flex-start;
     }
   }
 </style>
