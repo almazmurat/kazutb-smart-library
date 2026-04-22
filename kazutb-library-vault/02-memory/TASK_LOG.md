@@ -5,6 +5,8 @@
 
 ---
 
+2026-04-22 | polish(phase-3.a.4): book detail selective refinement — metadata hierarchy and availability summary clarity | [UI/Blade view change — BOOK DETAIL PAGE] | commit: pending | branch: main
+2026-04-22 | polish(phase-3.a.3): add removable active filter chips on catalog | [UI/Blade view change — CATALOG PAGE] | commit: 9f9dc5a | branch: main
 2026-04-22 | polish(phase-3.a.3): catalog selective refinement — active filter chips strip with removable tokens | [UI/Blade view change] | commit: pending | branch: main
 2026-04-22 | polish(phase-3.a.2): align discover pathways KPI label | [UI/Blade view change] | commit: 473cb1f | branch: main
 2026-04-22 | vault: log phase-3.a.2 discover-enrichment task | [No app-surface change detected] | commit: 40dac9b | branch: main

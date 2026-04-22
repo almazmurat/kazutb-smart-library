@@ -84,6 +84,9 @@ class BookPageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('id="book-detail-page"', false)
+            ->assertSee('id="detail-bibliographic-grid"', false)
+            ->assertSee('id="detail-metadata-panel"', false)
+            ->assertSee('id="detail-availability-summary"', false)
             ->assertSee('id="detail-abstract"', false)
             ->assertSee('id="detail-actions"', false)
             ->assertSee('data-detail-cover', false)

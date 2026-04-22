@@ -2054,6 +2054,12 @@
             const available = Number(book?.copies?.available || 0);
             const total = Number(book?.copies?.total || 0);
             const authors = Array.isArray(book?.authors) ? book.authors : [];
+            const authorList = authors
+                .map((author) => normalizeText(author?.name || author?.displayName || ''))
+                .filter(Boolean);
+            if (authorList.length === 0) {
+                authorList.push(rawAuthor);
+            }
             const locations = Array.isArray(book?.availability?.locations) ? book.availability.locations : [];
             const classification = Array.isArray(book?.classification) ? book.classification.filter((item) => normalizeText(item?.label)) : [];
             const needsReview = !!(book?.quality?.needsReview);
@@ -2067,6 +2073,9 @@
             const primaryLocation = locations.length ? formatLocationLabel(locations[0]) : BOOK_I18N.locationPending;
             const copySummaryText = BOOK_I18N.copySummary.replace('{available}', String(available)).replace('{total}', String(total || 0));
             const accessSummaryText = total > 0 ? (isAvailable ? BOOK_I18N.physicalAvailable : BOOK_I18N.physicalUnavailable) : BOOK_I18N.physicalPending;
+            const profileText = classification.length
+                ? classification.map((item) => normalizeText(item?.label)).filter(Boolean).slice(0, 3).join(' · ')
+                : BOOK_I18N.classificationPending;
             const descriptionText = rawDescription || BOOK_I18N.generatedSummary
                 .replace('{title}', rawTitle)
                 .replace('{publisher}', rawPublisher)
@@ -2077,6 +2086,23 @@
                 .replace('{total}', String(total));
             const descriptionParagraphs = splitIntoParagraphs(descriptionText, accessSummaryText);
             const citeText = `${rawAuthor}. ${rawTitle}. ${rawYear}. ISBN: ${rawIsbn}.`;
+            const metadataRows = [
+                { label: BOOK_I18N.publisher, value: rawPublisher },
+                { label: BOOK_I18N.authors, value: authorList.slice(0, 3).join(' · ') },
+                { label: 'ISBN', value: rawIsbn },
+                { label: 'UDC', value: udcText },
+                { label: BOOK_I18N.udcSourceLabel, value: udcSource },
+                { label: BOOK_I18N.publicationLanguage, value: `${rawLanguage} (${languageCode})` },
+                { label: BOOK_I18N.profileLabel, value: profileText },
+                { label: BOOK_I18N.totalCopies, value: String(total || 0) },
+                { label: BOOK_I18N.availableNowLabel, value: String(available) },
+            ];
+            const metadataRowsHtml = metadataRows
+                .map((row) => `<div class="meta-line"><span>${escapeHtml(row.label)}</span><span>${escapeHtml(row.value)}</span></div>`)
+                .join('');
+            const authorChipsHtml = authorList.length > 1
+                ? `<div class="flex flex-wrap gap-2 mt-2">${authorList.slice(0, 4).map((author) => `<span class="px-2 py-1 rounded-full text-xs bg-surface-container-high text-on-surface">${escapeHtml(author)}</span>`).join('')}</div>`
+                : '';
             const subjectHtml = classification.length
                 ? classification.slice(0, 4).map((item) => `<span class="bg-surface-container-high px-4 py-2 rounded-full text-xs font-medium">${escapeHtml(item.label)}</span>`).join('')
                 : `<span class="bg-surface-container-high px-4 py-2 rounded-full text-xs font-medium">${escapeHtml(BOOK_I18N.classificationPending)}</span>`;
@@ -2150,10 +2176,11 @@
                                 <h1 class="text-5xl md:text-6xl text-primary font-headline font-bold leading-tight mb-4 italic">${escapeHtml(rawTitle)}</h1>
                                 ${rawSubtitle ? `<p class="text-lg leading-relaxed text-on-surface-variant mb-8 max-w-3xl">${escapeHtml(rawSubtitle)}</p>` : ''}
 
-                                <div class="flex flex-wrap items-center gap-x-8 gap-y-4 mb-12">
+                                <div id="detail-bibliographic-grid" class="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-12">
                                     <div>
                                         <p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">${BOOK_I18N.author}</p>
-                                        <p class="text-lg text-primary font-semibold">${escapeHtml(rawAuthor)}</p>
+                                        <p class="text-lg text-primary font-semibold">${escapeHtml(authorList[0])}</p>
+                                        ${authorChipsHtml}
                                     </div>
                                     <div>
                                         <p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">${BOOK_I18N.publicationYear}</p>
@@ -2198,6 +2225,31 @@
                                 </div>
 
                                 ${reviewHtml}
+
+                                <div id="detail-metadata-panel" class="mb-12 grid grid-cols-1 xl:grid-cols-5 gap-8 rounded-xl border border-outline-variant/20 bg-surface-container-low/40 p-6">
+                                    <div class="xl:col-span-3">
+                                        <h2 class="text-2xl text-primary font-headline font-bold mb-4">${BOOK_I18N.metadata}</h2>
+                                        <div class="meta-list">${metadataRowsHtml}</div>
+                                    </div>
+                                    <div id="detail-availability-summary" class="xl:col-span-2 rounded-lg border border-outline-variant/20 bg-white p-5">
+                                        <h3 class="text-xs text-secondary font-label font-bold uppercase tracking-widest mb-3">${BOOK_I18N.statusInStorage}</h3>
+                                        <p class="text-sm leading-relaxed text-on-surface-variant mb-5">${escapeHtml(accessSummaryText)}</p>
+                                        <div class="space-y-3 text-sm">
+                                            <div class="flex items-start justify-between gap-3 border-b border-outline-variant/20 pb-2">
+                                                <span class="text-on-surface-variant">${BOOK_I18N.locationLabel}</span>
+                                                <strong class="text-right text-on-surface">${escapeHtml(primaryLocation)}</strong>
+                                            </div>
+                                            <div class="flex items-start justify-between gap-3 border-b border-outline-variant/20 pb-2">
+                                                <span class="text-on-surface-variant">${BOOK_I18N.totalCopies}</span>
+                                                <strong class="text-right text-on-surface">${escapeHtml(String(total || 0))}</strong>
+                                            </div>
+                                            <div class="flex items-start justify-between gap-3">
+                                                <span class="text-on-surface-variant">${BOOK_I18N.availableNowLabel}</span>
+                                                <strong class="text-right ${isAvailable ? 'text-secondary' : 'text-error'}">${escapeHtml(String(available))}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div id="detail-abstract" class="space-y-8">
                                     <h2 class="text-2xl text-primary font-headline font-bold">${BOOK_I18N.abstract}</h2>
