@@ -40,6 +40,43 @@
           'status_label' => 'Статус обновления',
           'status_text' => 'Репозиторий синхронизирован с живыми факультетскими, кафедральными и специализационными записями.',
           'resources_cta' => 'Открыть ресурсы',
+          'pathways_title' => 'Институциональные маршруты',
+          'pathways_body' => 'Исследуйте коллекцию через структуру университета. Каждый факультет ведёт к профильным UDC-кодам и актуальным изданиям.',
+          'pathways_count' => '4 факультета',
+          'faculties' => [
+              [
+                  'icon' => 'science',
+                  'udc_code' => '66',
+                  'udc_label' => 'UDC 66–67',
+                  'title' => 'Технологический факультет',
+                  'subtitle' => 'Прикладные науки, дизайн и стандартизация',
+                  'depts' => ['Технология и стандартизация', 'Технология лёгкой промышленности и дизайна', 'Социально-гуманитарные дисциплины'],
+              ],
+              [
+                  'icon' => 'trending_up',
+                  'udc_code' => '33',
+                  'udc_label' => 'UDC 33',
+                  'title' => 'Факультет экономики и бизнеса',
+                  'subtitle' => 'Экономика, финансы и управление',
+                  'depts' => ['Туризм и сервис', 'Экономика и управление', 'Финансы и учёт'],
+              ],
+              [
+                  'icon' => 'memory',
+                  'udc_code' => '004',
+                  'udc_label' => 'UDC 004 / 62',
+                  'title' => 'Факультет инжиниринга и ИТ',
+                  'subtitle' => 'Инженерия и информационные технологии',
+                  'depts' => ['Информационные технологии', 'Компьютерная инженерия и автоматизация', 'Химия, химическая технология и экология'],
+              ],
+              [
+                  'icon' => 'shield',
+                  'udc_code' => '355',
+                  'udc_label' => 'UDC 355',
+                  'title' => 'Военная кафедра',
+                  'subtitle' => 'Военная подготовка и оборонные дисциплины',
+                  'depts' => [],
+              ],
+          ],
           'bridge' => [
               ['title' => 'Библиотечный каталог', 'body' => 'Доступ к основной базе данных с расширенным поиском и UDC-фильтрами.', 'cta' => 'Войти в базу', 'url' => $withLang('/catalog')],
               ['title' => 'Научные ресурсы', 'body' => 'Навигаторы по цитированию, библиотечным базам и академическим платформам.', 'cta' => 'Открыть гиды', 'url' => $withLang('/resources')],
@@ -89,6 +126,43 @@
           'status_label' => 'Жаңарту күйі',
           'status_text' => 'Репозиторий тірі факультет, кафедра және мамандандыру жазбаларымен синхрондалған.',
           'resources_cta' => 'Ресурстарды ашу',
+          'pathways_title' => 'Институционалдық маршруттар',
+          'pathways_body' => 'Топтаманы университет құрылымы арқылы зерттеңіз. Әр факультет профильдік ӘОЖ кодтарына және өзекті басылымдарға апарады.',
+          'pathways_count' => '4 факультет',
+          'faculties' => [
+              [
+                  'icon' => 'science',
+                  'udc_code' => '66',
+                  'udc_label' => 'UDC 66–67',
+                  'title' => 'Технологиялық факультет',
+                  'subtitle' => 'Қолданбалы ғылымдар, дизайн және стандарттау',
+                  'depts' => ['Технология және стандарттау', 'Жеңіл өнеркәсіп технологиясы және дизайн', 'Әлеуметтік-гуманитарлық пәндер'],
+              ],
+              [
+                  'icon' => 'trending_up',
+                  'udc_code' => '33',
+                  'udc_label' => 'UDC 33',
+                  'title' => 'Экономика және бизнес факультеті',
+                  'subtitle' => 'Экономика, қаржы және басқару',
+                  'depts' => ['Туризм және сервис', 'Экономика және басқару', 'Қаржы және есеп'],
+              ],
+              [
+                  'icon' => 'memory',
+                  'udc_code' => '004',
+                  'udc_label' => 'UDC 004 / 62',
+                  'title' => 'Инжиниринг және АТ факультеті',
+                  'subtitle' => 'Инженерия және ақпараттық технологиялар',
+                  'depts' => ['Ақпараттық технологиялар', 'Компьютерлік инженерия және автоматтандыру', 'Химия, химиялық технология және экология'],
+              ],
+              [
+                  'icon' => 'shield',
+                  'udc_code' => '355',
+                  'udc_label' => 'UDC 355',
+                  'title' => 'Әскери кафедра',
+                  'subtitle' => 'Әскери дайындық және қорғаныс пәндері',
+                  'depts' => [],
+              ],
+          ],
           'bridge' => [
               ['title' => 'Кітапхана каталогы', 'body' => 'Кеңейтілген іздеу және ӘОЖ сүзгілері бар негізгі дерекқорға қолжетімділік.', 'cta' => 'Дерекқорға өту', 'url' => $withLang('/catalog')],
               ['title' => 'Ғылыми ресурстар', 'body' => 'Дәйексөздеу, кітапханалық базалар және академиялық платформалар бойынша гидтер.', 'cta' => 'Гидтерді көру', 'url' => $withLang('/resources')],
@@ -138,6 +212,43 @@
           'status_label' => 'Update Status',
           'status_text' => 'Repository synced with live faculty, department, and specialization records.',
           'resources_cta' => 'View Resources',
+          'pathways_title' => 'Institutional Pathways',
+          'pathways_body' => 'Explore the collection through the university\'s academic structure. Each faculty links to relevant UDC codes and current publications.',
+          'pathways_count' => '4 Faculties',
+          'faculties' => [
+              [
+                  'icon' => 'science',
+                  'udc_code' => '66',
+                  'udc_label' => 'UDC 66–67',
+                  'title' => 'Faculty of Technology',
+                  'subtitle' => 'Applied Sciences, Design & Standardization',
+                  'depts' => ['Technology & Standardization', 'Light Industry Technology & Design', 'Humanities & Social Sciences'],
+              ],
+              [
+                  'icon' => 'trending_up',
+                  'udc_code' => '33',
+                  'udc_label' => 'UDC 33',
+                  'title' => 'Faculty of Economics & Business',
+                  'subtitle' => 'Economics, Finance & Management',
+                  'depts' => ['Tourism & Service Management', 'Economics & Management', 'Finance & Accounting'],
+              ],
+              [
+                  'icon' => 'memory',
+                  'udc_code' => '004',
+                  'udc_label' => 'UDC 004 / 62',
+                  'title' => 'Faculty of Engineering & IT',
+                  'subtitle' => 'Engineering & Information Technology',
+                  'depts' => ['Information Technology', 'Computer Engineering & Automation', 'Chemistry, Chemical Technology & Ecology'],
+              ],
+              [
+                  'icon' => 'shield',
+                  'udc_code' => '355',
+                  'udc_label' => 'UDC 355',
+                  'title' => 'Military Department',
+                  'subtitle' => 'Military Training & Defence Studies',
+                  'depts' => [],
+              ],
+          ],
           'bridge' => [
               ['title' => 'Library Catalog', 'body' => 'Access the main database with advanced query builders and UDC filters.', 'cta' => 'Enter Database', 'url' => $withLang('/catalog')],
               ['title' => 'Research Resources', 'body' => 'Guides for citation formatting, licensed databases, and bibliography tools.', 'cta' => 'View Guides', 'url' => $withLang('/resources')],
@@ -264,6 +375,54 @@
             <a href="{{ $withLang('/catalog') }}" class="discover-btn discover-btn-teal">{{ $copy['launch_catalog'] }}</a>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="discover-pathways" class="discover-pathways-section" data-test-id="institutional-pathways">
+    <div class="discover-shell">
+      <div class="discover-section-head">
+        <div>
+          <h2>{{ $copy['pathways_title'] }}</h2>
+          <p>{{ $copy['pathways_body'] }}</p>
+        </div>
+        <div class="discover-volume-panel">
+          <span>{{ $copy['volume_label'] }}</span>
+          <strong>{{ $copy['pathways_count'] }}</strong>
+        </div>
+      </div>
+
+      <div class="discover-faculty-grid">
+        @foreach ($copy['faculties'] as $faculty)
+          <article class="discover-faculty-card">
+            <div class="discover-faculty-icon-bg" aria-hidden="true">
+              <span class="material-symbols-outlined">{{ $faculty['icon'] }}</span>
+            </div>
+            <div class="discover-faculty-header">
+              <div>
+                <h3>{{ $faculty['title'] }}</h3>
+                <p class="discover-faculty-subtitle">{{ $faculty['subtitle'] }}</p>
+              </div>
+              <span class="discover-udc-pill">{{ $faculty['udc_label'] }}</span>
+            </div>
+            @if (!empty($faculty['depts']))
+              <ul class="discover-dept-list">
+                @foreach ($faculty['depts'] as $dept)
+                  <li>
+                    <a href="{{ $withLang('/catalog', ['udc' => $faculty['udc_code'], 'q' => $dept]) }}">
+                      <span>{{ $dept }}</span>
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                  </li>
+                @endforeach
+              </ul>
+            @endif
+            <a href="{{ $withLang('/catalog', ['udc' => $faculty['udc_code']]) }}" class="discover-inline-link">
+              {{ $copy['launch_catalog'] }}
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+          </article>
+        @endforeach
       </div>
     </div>
   </section>
@@ -825,6 +984,125 @@
     padding-bottom: 4px;
   }
 
+  /* ── Institutional Pathways ─────────────────────────────────── */
+  .discover-pathways-section {
+    padding: 72px 0;
+    background: #ffffff;
+  }
+
+  .discover-faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .discover-faculty-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    border-radius: 16px;
+    background: #f3f4f5;
+    overflow: hidden;
+    transition: background .3s ease, transform .3s ease;
+  }
+
+  .discover-faculty-card:hover {
+    background: #eef5f5;
+    transform: translateY(-2px);
+  }
+
+  .discover-faculty-icon-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 20px;
+    pointer-events: none;
+    opacity: .05;
+    transition: opacity .4s ease;
+  }
+
+  .discover-faculty-card:hover .discover-faculty-icon-bg {
+    opacity: .1;
+  }
+
+  .discover-faculty-icon-bg .material-symbols-outlined {
+    font-size: 100px;
+    font-variation-settings: 'FILL' 0;
+  }
+
+  .discover-faculty-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .discover-faculty-header h3 {
+    margin: 0 0 6px;
+    font-family: 'Newsreader', serif;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: #000613;
+  }
+
+  .discover-faculty-subtitle {
+    margin: 0;
+    color: #74777f;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .discover-dept-list {
+    position: relative;
+    z-index: 1;
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 16px 0 0;
+    border-top: 1px solid #e7e8e9;
+    flex: 1;
+  }
+
+  .discover-dept-list li + li {
+    border-top: 1px solid #e7e8e9;
+  }
+
+  .discover-dept-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    color: #000613;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .2s ease;
+  }
+
+  .discover-dept-list a:hover {
+    color: #006a6a;
+  }
+
+  .discover-dept-list a .material-symbols-outlined {
+    font-size: 16px;
+    color: #74777f;
+    transition: transform .2s ease, color .2s ease;
+  }
+
+  .discover-dept-list a:hover .material-symbols-outlined {
+    transform: translateX(3px);
+    color: #006a6a;
+  }
+
+  .discover-faculty-card > .discover-inline-link {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+  }
+
   @media (max-width: 1100px) {
     .discover-hero-grid,
     .discover-metadata-grid,
@@ -846,6 +1124,7 @@
 
     .discover-export-hero,
     .discover-disciplines-section,
+    .discover-pathways-section,
     .discover-workflow-section,
     .discover-metadata-section,
     .discover-bridge-section {
@@ -857,7 +1136,8 @@
     .discover-card-grid,
     .discover-workflow-grid,
     .discover-metadata-grid,
-    .discover-bridge-panel {
+    .discover-bridge-panel,
+    .discover-faculty-grid {
       grid-template-columns: 1fr;
     }
 
