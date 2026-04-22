@@ -43,13 +43,19 @@ class PublicShellTest extends TestCase
 
     public function test_contacts_page_can_render_in_english(): void
     {
+        // Post-Cluster-B.6 cleanup: /contacts is now a standalone canonical view
+        // (resources/views/contacts.blade.php). The legacy brand string
+        // "KazTBU Digital Library" has been replaced by the canonical
+        // "KazUTB Smart Library" brand used consistently across the public layer,
+        // and the legacy "How to reach the library" helper copy was superseded by
+        // the canonical "Support Channels" section heading.
         $response = $this->get('/contacts?lang=en');
 
         $response
             ->assertOk()
             ->assertSee('<html lang="en">', false)
-            ->assertSee('KazTBU Digital Library')
-            ->assertSee('How to reach the library');
+            ->assertSee('KazUTB Smart Library')
+            ->assertSee('Support Channels');
     }
 
     public function test_public_shell_localizes_navbar_actions_in_all_supported_languages(): void

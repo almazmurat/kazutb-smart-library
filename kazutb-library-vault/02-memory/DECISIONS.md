@@ -436,6 +436,90 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+
+## 2026-04-22 — feat(phase-3.b.2): add public /rules page
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/partials/footer.blade.php, resources/views/rules.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** ac3884a on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit ac3884a
+
+---
+
+
+## 2026-04-22 — feat(phase-3.b.3): embed location / fund rooms / visit notes into /contacts
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/about.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** d376c3b on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit d376c3b
+
+---
+
+
+## 2026-04-22 — feat(phase-3.b.4): embed collection profile + institutional directory into /about
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/about.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** f5775b6 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit f5775b6
+
+---
+
+
+## 2026-04-22 — feat(phase-3.b.5): canonical-exact /about rebuild per about_library_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/about.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** 3f3cf8b on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 3f3cf8b
+
+---
+
+
+## 2026-04-22 — feat(phase-3.b.6): canonical-exact /contacts rebuild per contacts_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/contacts.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 50a44d7 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 50a44d7
+
+---
+
+
+## 2026-04-22 — feat(phase-3.c.1): public /events index per events_index_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/events/index.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 41c8755 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 41c8755
+
+---
+
+
+## 2026-04-22 — feat(phase-3.c.2): public /events/{slug} detail per event_detail_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/events/show.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** ed1ea9d on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit ed1ea9d
+
+---
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]
@@ -443,3 +527,16 @@ Each entry: Date | Decision | Why | Who
 
 
 
+
+## 2026-04-22 — Post-Cluster-C public-layer cleanup pass
+**Decision:** `resources/views/about.blade.php` is now a single-variant, about-only view (885 lines). The `$activePage === 'contacts'` branch is retired; `/contacts` is served exclusively by the standalone canonical `resources/views/contacts.blade.php` (Cluster B.6). Orphaned Cluster-B.4 secondary-copy keys and CSS (zero HTML consumers) were removed at the same time as superseded-by-B.5 dead code.
+
+**Also decided:** `tests/Feature/PublicShellTest.php::test_contacts_page_can_render_in_english` asserts against the current public brand `KazUTB Smart Library` and the canonical `Support Channels` section heading — not the legacy `KazTBU Digital Library` / `How to reach the library` strings, which no longer appear in the rendered `/contacts` output.
+
+**Also decided:** `docs/design-exports/athenaeum_digital/` is removed from the filesystem to match `docs/design-exports/canonical-design-map.md:98` ("deleted 2026-04-21") and [[PROJECT_CONTEXT]] §31.2. It must not be reintroduced.
+
+**Reason:** Eliminate drift between canonical design docs, tests, and views after Clusters B+C. Keep the public layer tightly consolidated before any next implementation wave begins.
+
+**Files affected:** `resources/views/about.blade.php`, `tests/Feature/PublicShellTest.php`, `docs/design-exports/athenaeum_digital/` (deleted), vault: `02-memory/CURRENT_STATE.md`, `02-memory/TASK_LOG.md`, `02-memory/DECISIONS.md`.
+
+**Verification:** 14-class targeted public suite — 154 passed (826 assertions, 16.44s), 0 failures.

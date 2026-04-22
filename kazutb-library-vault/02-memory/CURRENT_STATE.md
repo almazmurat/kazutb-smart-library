@@ -2,11 +2,30 @@
 > Last updated: 2026-04-22
 
 ## Last changed
-- Time: 2026-04-22 (Cluster C.2)
+- Time: 2026-04-22 (post-Cluster-C cleanup)
+- Commit: (pending — post-Cluster-C public-layer consolidation)
 - Branch: main
-- Change type: UI/Blade view change + new route
-- Files: resources/views/events/show.blade.php (new), routes/web.php (added $eventDetailProvider + /events/{slug} route), tests/Feature/EventsDetailPageTest.php (new)
+- Change type: Cleanup (view de-duplication, test brand refresh, doc/export drift)
+- Files: resources/views/about.blade.php (dual-variant → about-only), tests/Feature/PublicShellTest.php (legacy brand/copy assertions refreshed), docs/design-exports/athenaeum_digital/ (removed — matches canonical-design-map)
+- Commit message: chore(phase-3.cleanup): post-Cluster-C public-layer consolidation
+
+## Previously changed (C.2)
+- Time: 2026-04-22 22:12:23 UTC
+- Commit: ed1ea9d
+- Branch: main
+- Change type: UI/Blade view change
+- Files: resources/views/events/show.blade.php, routes/web.php
 - Commit message: feat(phase-3.c.2): public /events/{slug} detail per event_detail_canonical
+
+## Latest Git Automation
+- Time: 2026-04-22 22:12:23 UTC
+- Event: post-commit
+- Branch: main
+- Commit: ed1ea9d
+- Update: Git post-commit on main: feat(phase-3.c.2): public /events/{slug} detail per event_detail_canonical
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/events/show.blade.php, routes/web.php, tests/Feature/EventsDetailPageTest.php
+- Semantic: UI/Blade view change
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (C.1)
 - Time: 2026-04-22 22:02:16 UTC
@@ -15,16 +34,6 @@
 - Change type: UI/Blade view change
 - Files: resources/views/events/index.blade.php, routes/web.php
 - Commit message: feat(phase-3.c.1): public /events index per events_index_canonical
-
-## Latest Git Automation
-- Time: 2026-04-22 22:02:16 UTC
-- Event: post-commit
-- Branch: main
-- Commit: 41c8755
-- Update: Git post-commit on main: feat(phase-3.c.1): public /events index per events_index_canonical
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/events/index.blade.php, routes/web.php, tests/Feature/EventsIndexPageTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (B.6)
 - Time: 2026-04-22 13:45:46 UTC
