@@ -18,8 +18,8 @@
 
   $copy = [
       'ru' => [
-          'brand' => 'КазТБУ',
-          'desc' => 'Каталог, электронные ресурсы и читательские сервисы в едином интерфейсе КазТБУ.',
+          'brand' => 'KazUTB Smart Library',
+          'desc' => 'Каталог, электронные ресурсы и читательские сервисы в едином интерфейсе KazUTB Smart Library.',
           'navigation' => 'Навигация',
           'support' => 'Поддержка',
           'nav_links' => [
@@ -35,8 +35,8 @@
           'copyright' => 'Институциональный библиотечный интерфейс.',
       ],
       'kk' => [
-          'brand' => 'КазТБУ',
-          'desc' => 'Каталог, электрондық ресурстар және оқырман сервистері КазТБУ-дың бірыңғай интерфейсінде берілген.',
+          'brand' => 'KazUTB Smart Library',
+          'desc' => 'Каталог, электрондық ресурстар және оқырман сервистері KazUTB Smart Library-дің бірыңғай интерфейсінде берілген.',
           'navigation' => 'Навигация',
           'support' => 'Қолдау',
           'nav_links' => [
@@ -52,8 +52,8 @@
           'copyright' => 'Институционалдық кітапхана интерфейсі.',
       ],
       'en' => [
-          'brand' => 'KazUTB',
-          'desc' => 'Catalog search, electronic resources, and reader services in one KazTBU library interface.',
+          'brand' => 'KazUTB Smart Library',
+          'desc' => 'Catalog search, electronic resources, and reader services in one KazUTB Smart Library interface.',
           'navigation' => 'Navigation',
           'support' => 'Support',
           'nav_links' => [

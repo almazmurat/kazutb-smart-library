@@ -3,7 +3,7 @@
 return [
     'skip_to_main' => 'Перейти к основному содержимому',
     'brand' => [
-        'title' => 'KazTBU Digital Library',
+        'title' => 'KazUTB Smart Library',
         'subtitle' => 'Since 2003',
         'home_aria' => 'Перейти на главную страницу Digital Library',
     ],

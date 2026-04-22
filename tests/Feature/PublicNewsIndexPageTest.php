@@ -77,6 +77,16 @@ class PublicNewsIndexPageTest extends TestCase
         $response->assertSee('href="/news/digital-access-partner-institutions?lang=en"', false);
     }
 
+    public function test_news_index_uses_valid_local_image_assets(): void
+    {
+        $response = $this->get('/news?lang=en');
+
+        $response->assertOk();
+        $response->assertSee('/images/news/campus-library.jpg', false);
+        $response->assertSee('/images/news/classics-event.jpg', false);
+        $response->assertSee('/images/news/author-visit.jpg', false);
+    }
+
     public function test_news_index_does_not_reintroduce_legacy_brand(): void
     {
         $response = $this->get('/news?lang=en');
@@ -87,6 +97,7 @@ class PublicNewsIndexPageTest extends TestCase
         // drift that is out of scope until the layout-level pass).
         $response->assertDontSee('Athenaeum', false);
         $response->assertDontSee('Curator Archive', false);
+        $response->assertDontSee('KazTBU Digital Library', false);
         $response->assertDontSee('KazUTB Digital Library', false);
     }
 

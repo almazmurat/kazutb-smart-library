@@ -53,6 +53,8 @@ class PublicNewsDetailPageTest extends TestCase
         $response->assertSee('Outcomes and next steps', false);
         // Inline CTA.
         $response->assertSee('Open the repository', false);
+        // Hero media uses local project asset path.
+        $response->assertSee('/images/news/campus-library.jpg', false);
         // Related articles block.
         $response->assertSee('Related articles', false);
         $response->assertSee('Integration of the 19th-Century Eurasian Manuscripts', false);
@@ -84,6 +86,7 @@ class PublicNewsDetailPageTest extends TestCase
         $response->assertOk();
         $response->assertDontSee('Athenaeum', false);
         $response->assertDontSee('Curator Archive', false);
+        $response->assertDontSee('KazTBU Digital Library', false);
         $response->assertDontSee('KazUTB Digital Library', false);
     }
 

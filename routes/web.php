@@ -162,7 +162,7 @@ $newsSeedProvider = static function (): array {
                 'en' => 'More than four thousand digitised manuscripts from the central steppe archives are indexed and available for academic search in the catalog.',
             ],
             'hero' => [
-                'image' => 'images/news/collection-initiative.jpg',
+                'image' => 'images/news/classics-event.jpg',
                 'alt' => [
                     'ru' => 'Стеллажи с архивными материалами',
                     'kk' => 'Мұрағат материалдарының сөрелері',
@@ -214,7 +214,7 @@ $newsSeedProvider = static function (): array {
                 'en' => 'Controlled-access mechanisms for partner universities have been updated — lower the barrier for international researchers without weakening library policy.',
             ],
             'hero' => [
-                'image' => 'images/news/research-support.jpg',
+                'image' => 'images/news/author-visit.jpg',
                 'alt' => [
                     'ru' => 'Читатель работает с цифровыми материалами',
                     'kk' => 'Оқырман цифрлық материалдармен жұмыс істеуде',
