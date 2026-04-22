@@ -42,6 +42,7 @@
           'resources_cta' => 'Открыть ресурсы',
           'pathways_title' => 'Институциональные маршруты',
           'pathways_body' => 'Исследуйте коллекцию через структуру университета. Каждый факультет ведёт к профильным UDC-кодам и актуальным изданиям.',
+          'pathways_count_label' => 'Индекс охвата',
           'pathways_count' => '4 факультета',
           'faculties' => [
               [
@@ -128,6 +129,7 @@
           'resources_cta' => 'Ресурстарды ашу',
           'pathways_title' => 'Институционалдық маршруттар',
           'pathways_body' => 'Топтаманы университет құрылымы арқылы зерттеңіз. Әр факультет профильдік ӘОЖ кодтарына және өзекті басылымдарға апарады.',
+          'pathways_count_label' => 'Қамту индексі',
           'pathways_count' => '4 факультет',
           'faculties' => [
               [
@@ -214,6 +216,7 @@
           'resources_cta' => 'View Resources',
           'pathways_title' => 'Institutional Pathways',
           'pathways_body' => 'Explore the collection through the university\'s academic structure. Each faculty links to relevant UDC codes and current publications.',
+          'pathways_count_label' => 'Coverage Index',
           'pathways_count' => '4 Faculties',
           'faculties' => [
               [
@@ -387,7 +390,7 @@
           <p>{{ $copy['pathways_body'] }}</p>
         </div>
         <div class="discover-volume-panel">
-          <span>{{ $copy['volume_label'] }}</span>
+          <span>{{ $copy['pathways_count_label'] }}</span>
           <strong>{{ $copy['pathways_count'] }}</strong>
         </div>
       </div>

@@ -5,6 +5,7 @@
 
 ---
 
+2026-04-22 | vault: log phase-3.a.2 discover-enrichment task | [No app-surface change detected] | commit: 40dac9b | branch: main
 2026-04-22 | feat(phase-3.a.2): discover-enrichment — add Institutional Pathways section | [UI/Blade view change] | commit: 0857ff1 | branch: main
 2026-04-22 | polish(resources): remove circular view-all self-link, soften english CTA copy | [UI/Blade view change] | commit: edf1aaa | branch: main
 2026-04-22 | chore(vault): log resources page selective enrichment to TASK_LOG and CURRENT_STATE | [No app-surface change detected] | commit: 4efb722 | branch: main
@@ -156,3 +157,4 @@ Changed: resources/views/discover.blade.php, tests/Feature/DiscoverPageTest.php
 Status: done — commit 0857ff1 pushed to main
 Added: #discover-pathways section — 4 faculty cards (2×2 grid) with real department data from PROJECT_CONTEXT §9.2.
 Tri-lingual (ru/kk/en). 7 tests, 45 assertions pass.
+2026-04-22 | polish(phase-3.a.2): discover pathways KPI label alignment (coverage index) | [UI/Blade view change] | commit: pending | branch: main
