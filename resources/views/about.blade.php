@@ -121,6 +121,30 @@
                   'cta' => 'Открыть контакты',
               ],
           ],
+          // Cluster B.5 — canonical /about (docs/design-exports/about_library_canonical). About variant only.
+          'canon_hero_eyebrow' => 'Учреждение',
+          'canon_hero_title_a' => 'Сохраняем знание.',
+          'canon_hero_title_b' => 'Поддерживаем исследования.',
+          'canon_hero_body' => 'KazUTB Smart Library — университетская библиотека, соединяющая академическую традицию и цифровой сервис, чтобы поддерживать учебную и исследовательскую работу читателей университета.',
+          'canon_hero_image_alt' => 'Читательский зал университетской библиотеки с книжными стеллажами и столами для работы',
+          'canon_hero_badge_title' => 'Институциональная библиотека',
+          'canon_hero_badge_body' => 'Поддержка академических программ кампуса и колледжа КазУТБ.',
+          'canon_mission_title' => 'Наша миссия',
+          'canon_mission_body' => 'Собирать, сохранять и открывать доступ к учебным и научным материалам, необходимым программам университета. Мы поддерживаем среду сосредоточенной академической работы, где цифровые сервисы остаются незаметными, а читатель и работа с материалами — в центре.',
+          'canon_mission_cta' => 'Открыть каталог',
+          'canon_stats' => [
+              ['value' => '3', 'label' => 'Комнаты фонда'],
+              ['value' => '3', 'label' => 'Языка интерфейса'],
+          ],
+          'canon_collection_header_title' => 'Профиль коллекции',
+          'canon_collection_header_body' => 'Коллекция выстроена вокруг реальной академической программы КазУТБ и покрывает четыре ключевых направления.',
+          'canon_directory_title' => 'Институциональный справочник',
+          'canon_areas_material_icons' => [
+              'technology' => 'science',
+              'economy' => 'business_center',
+              'humanities' => 'history_edu',
+              'college' => 'school',
+          ],
           // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
           'location_eyebrow' => 'Как нас найти',
           'location_title' => 'Расположение и вход в библиотеку',
@@ -286,6 +310,30 @@
                   'href' => '/contacts',
                   'cta' => 'Байланысты ашу',
               ],
+          ],
+          // Cluster B.5 — canonical /about (docs/design-exports/about_library_canonical). About variant only.
+          'canon_hero_eyebrow' => 'Мекеме',
+          'canon_hero_title_a' => 'Білімді сақтаймыз.',
+          'canon_hero_title_b' => 'Зерттеуді қолдаймыз.',
+          'canon_hero_body' => 'KazUTB Smart Library — академиялық дәстүр мен цифрлық қызметті біріктіріп, университет оқырмандарының оқу мен зерттеу жұмысын қолдайтын университет кітапханасы.',
+          'canon_hero_image_alt' => 'Көп қабатты сөрелері мен оқу үстелдері бар университет кітапханасының оқу залы',
+          'canon_hero_badge_title' => 'Институционалдық кітапхана',
+          'canon_hero_badge_body' => 'KazUTB университеті мен колледжінің академиялық бағдарламаларын қолдау.',
+          'canon_mission_title' => 'Біздің миссиямыз',
+          'canon_mission_body' => 'Университет бағдарламаларына қажет оқу және зерттеу материалдарын жинау, сақтау және қолжетімді ету. Біз цифрлық қызмет байқалмай тұратын, академиялық жұмыстың өзі бірінші орынға шығатын ортаны қолдаймыз.',
+          'canon_mission_cta' => 'Каталогты ашу',
+          'canon_stats' => [
+              ['value' => '3', 'label' => 'Қор бөлмелері'],
+              ['value' => '3', 'label' => 'Интерфейс тілдері'],
+          ],
+          'canon_collection_header_title' => 'Қор профилі',
+          'canon_collection_header_body' => 'Қор KazUTB академиялық бағдарламасының төңірегінде құрылған және төрт негізгі бағытты қамтиды.',
+          'canon_directory_title' => 'Институционалдық анықтамалық',
+          'canon_areas_material_icons' => [
+              'technology' => 'science',
+              'economy' => 'business_center',
+              'humanities' => 'history_edu',
+              'college' => 'school',
           ],
           // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
           'location_eyebrow' => 'Бізді қалай табуға болады',
@@ -453,6 +501,30 @@
                   'cta' => 'Open contacts',
               ],
           ],
+          // Cluster B.5 — canonical /about (docs/design-exports/about_library_canonical). About variant only.
+          'canon_hero_eyebrow' => 'Institution',
+          'canon_hero_title_a' => 'Preserving Knowledge.',
+          'canon_hero_title_b' => 'Supporting Research.',
+          'canon_hero_body' => 'The KazUTB Smart Library is the university library that brings together academic tradition and digital service to support the teaching and research work of the university\'s readers.',
+          'canon_hero_image_alt' => 'Reading room of the university library with shelves and study desks',
+          'canon_hero_badge_title' => 'Institutional library',
+          'canon_hero_badge_body' => 'Supporting the academic programmes of the KazUTB university and college campus.',
+          'canon_mission_title' => 'Our Mission',
+          'canon_mission_body' => 'To collect, preserve and provide access to the teaching and research materials that the university\'s programmes rely on. We support an environment of focused academic work where digital services step back and the reader\'s work with materials comes first.',
+          'canon_mission_cta' => 'Open catalog',
+          'canon_stats' => [
+              ['value' => '3', 'label' => 'Fund rooms'],
+              ['value' => '3', 'label' => 'Interface languages'],
+          ],
+          'canon_collection_header_title' => 'The Collection Profile',
+          'canon_collection_header_body' => 'The collection is built around the university\'s real academic programme and covers four core areas.',
+          'canon_directory_title' => 'Institutional Directory',
+          'canon_areas_material_icons' => [
+              'technology' => 'science',
+              'economy' => 'business_center',
+              'humanities' => 'history_edu',
+              'college' => 'school',
+          ],
           // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
           'location_eyebrow' => 'How to find us',
           'location_title' => 'Library location and entrance',
@@ -523,6 +595,8 @@
 @section('title', $copy['title'])
 
 @section('content')
+@if($activePage === 'contacts')
+  {{-- Contacts variant: existing shell kept intact (shared hero + contacts branches + catalog-cta). --}}
   <section class="page-hero about-hero">
     <div class="container about-hero-shell">
       <div class="about-hero-copy">
@@ -574,224 +648,133 @@
     </div>
   </section>
 
-  @if($activePage === 'contacts')
-    {{-- /contacts surface: Librarian-on-Duty block rendered first, then mission narrative. --}}
-    <section class="page-section" data-section="librarian-on-duty">
-      <div class="container">
-        <div class="about-cta-band">
-          <div>
-            <div class="eyebrow eyebrow--green">{{ $copy['duty_eyebrow'] }}</div>
-            <h2>{{ $copy['duty_title'] }}</h2>
-            <p>{{ $copy['duty_body'] }}</p>
-          </div>
-          <div class="about-cta-links">
-            <a href="{{ $routeWithLang($workspaceHref) }}">{{ $copy['duty_cta'] }}</a>
-          </div>
+  {{-- /contacts surface: Librarian-on-Duty block rendered first, then mission narrative. --}}
+  <section class="page-section" data-section="librarian-on-duty">
+    <div class="container">
+      <div class="about-cta-band">
+        <div>
+          <div class="eyebrow eyebrow--green">{{ $copy['duty_eyebrow'] }}</div>
+          <h2>{{ $copy['duty_title'] }}</h2>
+          <p>{{ $copy['duty_body'] }}</p>
+        </div>
+        <div class="about-cta-links">
+          <a href="{{ $routeWithLang($workspaceHref) }}">{{ $copy['duty_cta'] }}</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="page-section" data-section="about-mission">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--violet">{{ $copy['about_eyebrow'] }}</div>
-            <h2>{{ $copy['about_title'] }}</h2>
-            <p>{{ $copy['about_body'] }}</p>
-          </div>
-        </div>
-
-        <div class="about-card-grid">
-          @foreach($copy['about_points'] as $card)
-            <article class="about-card">
-              <h3>{{ $card['title'] }}</h3>
-              <p>{{ $card['body'] }}</p>
-            </article>
-          @endforeach
+  <section class="page-section" data-section="about-mission">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow eyebrow--violet">{{ $copy['about_eyebrow'] }}</div>
+          <h2>{{ $copy['about_title'] }}</h2>
+          <p>{{ $copy['about_body'] }}</p>
         </div>
       </div>
-    </section>
-  @else
-    {{-- /about surface: mission narrative first, then Librarian-on-Duty block. --}}
-    <section class="page-section" data-section="about-mission">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--violet">{{ $copy['about_eyebrow'] }}</div>
-            <h2>{{ $copy['about_title'] }}</h2>
-            <p>{{ $copy['about_body'] }}</p>
-          </div>
-        </div>
 
-        <div class="about-card-grid">
-          @foreach($copy['about_points'] as $card)
-            <article class="about-card">
-              <h3>{{ $card['title'] }}</h3>
-              <p>{{ $card['body'] }}</p>
-            </article>
-          @endforeach
+      <div class="about-card-grid">
+        @foreach($copy['about_points'] as $card)
+          <article class="about-card">
+            <h3>{{ $card['title'] }}</h3>
+            <p>{{ $card['body'] }}</p>
+          </article>
+        @endforeach
+      </div>
+    </div>
+  </section>
+
+  {{-- Cluster B.3 — embedded location / fund rooms / visit notes, only on /contacts. --}}
+  <section class="page-section" data-section="contacts-location">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow eyebrow--cyan">{{ $copy['location_eyebrow'] }}</div>
+          <h2>{{ $copy['location_title'] }}</h2>
+          <p>{{ $copy['location_body'] }}</p>
         </div>
       </div>
-    </section>
 
-    <section class="page-section" data-section="librarian-on-duty">
-      <div class="container">
-        <div class="about-cta-band">
-          <div>
-            <div class="eyebrow eyebrow--green">{{ $copy['duty_eyebrow'] }}</div>
-            <h2>{{ $copy['duty_title'] }}</h2>
-            <p>{{ $copy['duty_body'] }}</p>
-          </div>
-          <div class="about-cta-links">
-            <a href="{{ $routeWithLang($workspaceHref) }}">{{ $copy['duty_cta'] }}</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {{-- Cluster B.4 — collection / fund narrative + institutional directory, only on /about. --}}
-    <section class="page-section" data-section="about-collection-profile">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--teal">{{ $copy['collection_eyebrow'] }}</div>
-            <h2>{{ $copy['collection_title'] }}</h2>
-            <p>{{ $copy['collection_body'] }}</p>
-          </div>
-        </div>
-
-        <div class="about-collection-grid">
-          @foreach($copy['collection_areas'] as $area)
-            <article class="about-collection-card" data-collection-area data-area-slug="{{ $area['slug'] }}">
-              <div class="about-collection-card__icon" aria-hidden="true">{{ $area['icon'] }}</div>
-              <h3>{{ $area['title'] }}</h3>
-              <p>{{ $area['body'] }}</p>
-            </article>
-          @endforeach
-        </div>
-      </div>
-    </section>
-
-    <section class="page-section" data-section="about-institutional-directory">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--violet">{{ $copy['directory_eyebrow'] }}</div>
-            <h2>{{ $copy['directory_title'] }}</h2>
-            <p>{{ $copy['directory_body'] }}</p>
-          </div>
-        </div>
-
-        <ul class="about-directory-list">
-          @foreach($copy['directory_rows'] as $row)
-            <li class="about-directory-row" data-directory-slot data-directory-slug="{{ $row['slug'] }}">
-              <div class="about-directory-row__copy">
-                <h3>{{ $row['title'] }}</h3>
-                <p>{{ $row['body'] }}</p>
-              </div>
-              <a class="about-directory-row__cta" href="{{ $routeWithLang($row['href']) }}" data-test-id="about-directory-link-{{ $row['slug'] }}">
-                {{ $row['cta'] }}
-                <span aria-hidden="true">→</span>
+      <div class="contacts-location-grid">
+        <div class="contacts-location-branches">
+          @foreach($copy['location_branches'] as $branch)
+            <article class="contacts-location-card" data-branch-slot data-branch-slug="{{ $branch['slug'] }}">
+              <h3>{{ $branch['label'] }}</h3>
+              <p class="contacts-location-address">{{ $branch['address'] }}</p>
+              <p class="contacts-location-entrance">{{ $branch['entrance'] }}</p>
+              <p class="contacts-location-floor">{{ $branch['floor_note'] }}</p>
+              <a class="contacts-location-cta" href="https://www.google.com/maps/search/?api=1&amp;query={{ urlencode($branch['address']) }}" target="_blank" rel="noopener noreferrer" data-test-id="contacts-location-directions">
+                {{ $copy['location_directions_cta'] }}
               </a>
-            </li>
-          @endforeach
-        </ul>
-      </div>
-    </section>
-  @endif
-
-  @if($activePage === 'contacts')
-    {{-- Cluster B.3 — embedded location / fund rooms / visit notes, only on /contacts. --}}
-    <section class="page-section" data-section="contacts-location">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--cyan">{{ $copy['location_eyebrow'] }}</div>
-            <h2>{{ $copy['location_title'] }}</h2>
-            <p>{{ $copy['location_body'] }}</p>
-          </div>
-        </div>
-
-        <div class="contacts-location-grid">
-          <div class="contacts-location-branches">
-            @foreach($copy['location_branches'] as $branch)
-              <article class="contacts-location-card" data-branch-slot data-branch-slug="{{ $branch['slug'] }}">
-                <h3>{{ $branch['label'] }}</h3>
-                <p class="contacts-location-address">{{ $branch['address'] }}</p>
-                <p class="contacts-location-entrance">{{ $branch['entrance'] }}</p>
-                <p class="contacts-location-floor">{{ $branch['floor_note'] }}</p>
-                <a class="contacts-location-cta" href="https://www.google.com/maps/search/?api=1&amp;query={{ urlencode($branch['address']) }}" target="_blank" rel="noopener noreferrer" data-test-id="contacts-location-directions">
-                  {{ $copy['location_directions_cta'] }}
-                </a>
-              </article>
-            @endforeach
-          </div>
-
-          <figure class="contacts-location-map" aria-label="{{ $copy['location_map_label'] }}" data-test-id="contacts-location-map">
-            <div class="contacts-location-map__canvas" role="img" aria-hidden="true">
-              <span class="contacts-location-map__pin">📍</span>
-              <span class="contacts-location-map__label">{{ $copy['location_map_label'] }}</span>
-            </div>
-            <figcaption>{{ $copy['location_map_caption'] }}</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="page-section" data-section="contacts-fund-rooms">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--teal">{{ $copy['fund_rooms_eyebrow'] }}</div>
-            <h2>{{ $copy['fund_rooms_title'] }}</h2>
-            <p>{{ $copy['fund_rooms_body'] }}</p>
-          </div>
-        </div>
-
-        <div class="contacts-fund-grid">
-          @foreach($copy['fund_rooms'] as $room)
-            <article class="contacts-fund-card" data-fund-room-slot data-room-code="{{ $room['room'] }}">
-              <div class="contacts-fund-card__head">
-                <span class="contacts-fund-card__room">{{ $room['room'] }}</span>
-                <span class="contacts-fund-card__floor">{{ $room['floor'] }}</span>
-              </div>
-              <h3 class="contacts-fund-card__label">{{ $room['fund_label'] }}</h3>
-              <p class="contacts-fund-card__branch">{{ $room['branch'] }}</p>
-              <p class="contacts-fund-card__desc">{{ $room['short_description'] }}</p>
-              <p class="contacts-fund-card__access">{{ $room['access_note'] }}</p>
             </article>
           @endforeach
         </div>
-      </div>
-    </section>
 
-    <section class="page-section" data-section="contacts-visit-notes">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow eyebrow--violet">{{ $copy['visit_notes_eyebrow'] }}</div>
-            <h2>{{ $copy['visit_notes_title'] }}</h2>
-            <p>{{ $copy['visit_notes_body'] }}</p>
+        <figure class="contacts-location-map" aria-label="{{ $copy['location_map_label'] }}" data-test-id="contacts-location-map">
+          <div class="contacts-location-map__canvas" role="img" aria-hidden="true">
+            <span class="contacts-location-map__pin">📍</span>
+            <span class="contacts-location-map__label">{{ $copy['location_map_label'] }}</span>
           </div>
-        </div>
+          <figcaption>{{ $copy['location_map_caption'] }}</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 
-        <ul class="contacts-visit-list">
-          @foreach($copy['visit_notes_items'] as $note)
-            <li class="contacts-visit-item">
-              <h3>{{ $note['title'] }}</h3>
-              <p>{{ $note['body'] }}</p>
-            </li>
-          @endforeach
-        </ul>
-
-        <div class="contacts-visit-footer">
-          <a class="contacts-visit-rules-cta" href="{{ $routeWithLang('/rules') }}" data-test-id="contacts-visit-rules-link">
-            {{ $copy['visit_notes_rules_cta'] }}
-          </a>
+  <section class="page-section" data-section="contacts-fund-rooms">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow eyebrow--teal">{{ $copy['fund_rooms_eyebrow'] }}</div>
+          <h2>{{ $copy['fund_rooms_title'] }}</h2>
+          <p>{{ $copy['fund_rooms_body'] }}</p>
         </div>
       </div>
-    </section>
-  @endif
+
+      <div class="contacts-fund-grid">
+        @foreach($copy['fund_rooms'] as $room)
+          <article class="contacts-fund-card" data-fund-room-slot data-room-code="{{ $room['room'] }}">
+            <div class="contacts-fund-card__head">
+              <span class="contacts-fund-card__room">{{ $room['room'] }}</span>
+              <span class="contacts-fund-card__floor">{{ $room['floor'] }}</span>
+            </div>
+            <h3 class="contacts-fund-card__label">{{ $room['fund_label'] }}</h3>
+            <p class="contacts-fund-card__branch">{{ $room['branch'] }}</p>
+            <p class="contacts-fund-card__desc">{{ $room['short_description'] }}</p>
+            <p class="contacts-fund-card__access">{{ $room['access_note'] }}</p>
+          </article>
+        @endforeach
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" data-section="contacts-visit-notes">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow eyebrow--violet">{{ $copy['visit_notes_eyebrow'] }}</div>
+          <h2>{{ $copy['visit_notes_title'] }}</h2>
+          <p>{{ $copy['visit_notes_body'] }}</p>
+        </div>
+      </div>
+
+      <ul class="contacts-visit-list">
+        @foreach($copy['visit_notes_items'] as $note)
+          <li class="contacts-visit-item">
+            <h3>{{ $note['title'] }}</h3>
+            <p>{{ $note['body'] }}</p>
+          </li>
+        @endforeach
+      </ul>
+
+      <div class="contacts-visit-footer">
+        <a class="contacts-visit-rules-cta" href="{{ $routeWithLang('/rules') }}" data-test-id="contacts-visit-rules-link">
+          {{ $copy['visit_notes_rules_cta'] }}
+        </a>
+      </div>
+    </div>
+  </section>
 
   <section class="page-section" data-section="catalog-cta">
     <div class="container">
@@ -807,6 +790,111 @@
       </div>
     </div>
   </section>
+@else
+  {{-- Cluster B.5 — canonical-exact /about rebuild per docs/design-exports/about_library_canonical.
+       Deliberately replaces the old About shell (shared page-hero about-hero with
+       contacts aside, about-mission card grid, librarian-on-duty CTA band, the
+       Cluster B.4 embedded sections and the trailing catalog-cta). The Contacts
+       variant is unaffected. Markers: about-canonical-hero, about-canonical-mission-stats,
+       about-canonical-collection, about-canonical-directory. --}}
+  <div class="about-canonical">
+    <section class="about-canonical__section about-canonical__hero" data-section="about-canonical-hero">
+      <div class="about-canonical__hero-copy">
+        <div class="about-canonical__eyebrow">
+          <span class="material-symbols-outlined" aria-hidden="true">account_balance</span>
+          <span>{{ $copy['canon_hero_eyebrow'] }}</span>
+        </div>
+        <h1 class="about-canonical__display">
+          {{ $copy['canon_hero_title_a'] }}<br>
+          <span class="about-canonical__display-italic">{{ $copy['canon_hero_title_b'] }}</span>
+        </h1>
+        <p class="about-canonical__lead">{{ $copy['canon_hero_body'] }}</p>
+      </div>
+      <div class="about-canonical__hero-media">
+        <div class="about-canonical__hero-frame" aria-hidden="true">
+          <div class="about-canonical__hero-frame-inner">
+            <span class="material-symbols-outlined about-canonical__hero-frame-glyph" aria-hidden="true">local_library</span>
+          </div>
+          <div class="about-canonical__hero-frame-overlay"></div>
+        </div>
+        <div class="about-canonical__hero-badge" data-test-id="about-canonical-hero-badge">
+          <p class="about-canonical__hero-badge-title">{{ $copy['canon_hero_badge_title'] }}</p>
+          <p class="about-canonical__hero-badge-body">{{ $copy['canon_hero_badge_body'] }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-canonical__section about-canonical__bento" data-section="about-canonical-mission-stats">
+      <div class="about-canonical__mission-card">
+        <div>
+          <h2 class="about-canonical__mission-title">{{ $copy['canon_mission_title'] }}</h2>
+          <p class="about-canonical__mission-body">{{ $copy['canon_mission_body'] }}</p>
+        </div>
+        <div class="about-canonical__mission-cta-row">
+          <a class="about-canonical__mission-cta" href="{{ $routeWithLang('/catalog') }}" data-test-id="about-canonical-mission-cta">
+            {{ $copy['canon_mission_cta'] }}
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+      <div class="about-canonical__stats-card">
+        <div class="about-canonical__stats-glow" aria-hidden="true"></div>
+        <div class="about-canonical__stats-inner">
+          @foreach($copy['canon_stats'] as $stat)
+            <div class="about-canonical__stat" data-stat-slot>
+              <p class="about-canonical__stat-value">{{ $stat['value'] }}</p>
+              <p class="about-canonical__stat-label">{{ $stat['label'] }}</p>
+            </div>
+          @endforeach
+        </div>
+      </div>
+    </section>
+
+    <section class="about-canonical__section about-canonical__collection" data-section="about-canonical-collection">
+      <div class="about-canonical__collection-head">
+        <h2 class="about-canonical__collection-title">{{ $copy['canon_collection_header_title'] }}</h2>
+        <p class="about-canonical__collection-body">{{ $copy['canon_collection_header_body'] }}</p>
+      </div>
+      <div class="about-canonical__collection-grid">
+        @foreach($copy['collection_areas'] as $area)
+          <article class="about-canonical__area" data-collection-area data-area-slug="{{ $area['slug'] }}">
+            <div class="about-canonical__area-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">{{ $copy['canon_areas_material_icons'][$area['slug']] ?? 'menu_book' }}</span>
+            </div>
+            <h3 class="about-canonical__area-title">{{ $area['title'] }}</h3>
+            <p class="about-canonical__area-body">{{ $area['body'] }}</p>
+          </article>
+        @endforeach
+      </div>
+    </section>
+
+    <section class="about-canonical__section about-canonical__directory" data-section="about-canonical-directory">
+      <h2 class="about-canonical__directory-title">{{ $copy['canon_directory_title'] }}</h2>
+      <div class="about-canonical__directory-list">
+        @foreach($copy['directory_rows'] as $row)
+          <div class="about-canonical__directory-row" data-directory-slot data-directory-slug="{{ $row['slug'] }}">
+            <div class="about-canonical__directory-col about-canonical__directory-col--title">
+              <h3>{{ $row['title'] }}</h3>
+            </div>
+            <div class="about-canonical__directory-col about-canonical__directory-col--body">
+              <p>{{ $row['body'] }}</p>
+            </div>
+            <div class="about-canonical__directory-col about-canonical__directory-col--action">
+              <a
+                class="about-canonical__directory-arrow"
+                href="{{ $routeWithLang($row['href']) }}"
+                aria-label="{{ $row['cta'] }}"
+                data-test-id="about-canonical-directory-link-{{ $row['slug'] }}"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+              </a>
+            </div>
+          </div>
+        @endforeach
+      </div>
+    </section>
+  </div>
+@endif
 @endsection
 
 @section('head')
@@ -1420,6 +1508,539 @@
     .about-directory-row__cta {
       justify-self: flex-start;
     }
+  }
+
+  /* Cluster B.5 — canonical-exact /about (docs/design-exports/about_library_canonical).
+     Scoped under .about-canonical so /contacts styles remain untouched. */
+  .about-canonical {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 96px 16px 96px;
+    color: #191c1d;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical {
+      padding: 128px 24px 96px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about-canonical {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+
+  .about-canonical__section {
+    margin-bottom: 128px;
+  }
+
+  .about-canonical__section:last-child {
+    margin-bottom: 80px;
+  }
+
+  /* Hero — 3/5 + 2/5 split, eyebrow + display heading + lead + image with badge */
+  .about-canonical__hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 48px;
+    margin-top: 48px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__hero {
+      flex-direction: row;
+      margin-top: 80px;
+    }
+  }
+
+  .about-canonical__hero-copy {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__hero-copy {
+      width: 60%;
+    }
+  }
+
+  .about-canonical__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #006a6a;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .about-canonical__eyebrow .material-symbols-outlined {
+    font-size: 16px;
+  }
+
+  .about-canonical__display {
+    font-family: 'Newsreader', serif;
+    font-weight: 300;
+    font-size: 48px;
+    line-height: 1.05;
+    color: #000613;
+    letter-spacing: -0.02em;
+    margin: 0 0 0 -2px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__display {
+      font-size: 72px;
+    }
+  }
+
+  .about-canonical__display-italic {
+    font-style: italic;
+    color: #001f3f;
+  }
+
+  .about-canonical__lead {
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    line-height: 1.65;
+    color: #43474e;
+    max-width: 640px;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__lead {
+      font-size: 20px;
+    }
+  }
+
+  .about-canonical__hero-media {
+    position: relative;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__hero-media {
+      width: 40%;
+    }
+  }
+
+  .about-canonical__hero-frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: #e7e8e9;
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-canonical__hero-frame-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e1e3e4 0%, #d4e3ff 60%, #afc8f0 100%);
+    mix-blend-mode: multiply;
+    opacity: 0.9;
+  }
+
+  .about-canonical__hero-frame-glyph {
+    font-size: 96px !important;
+    color: #001f3f;
+    opacity: 0.55;
+  }
+
+  .about-canonical__hero-frame-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,6,19,0.4), transparent);
+  }
+
+  .about-canonical__hero-badge {
+    position: absolute;
+    bottom: -32px;
+    left: -32px;
+    max-width: 280px;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 24px 48px rgba(0,6,19,0.04);
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .about-canonical__hero-badge {
+      display: block;
+    }
+  }
+
+  .about-canonical__hero-badge-title {
+    font-family: 'Newsreader', serif;
+    font-size: 22px;
+    color: #000613;
+    margin: 0 0 8px;
+  }
+
+  .about-canonical__hero-badge-body {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #43474e;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Mission + Stats bento — 2/3 light card + 1/3 dark stats card */
+  .about-canonical__bento {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__bento {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .about-canonical__mission-card {
+    background: #f3f4f5;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__mission-card {
+      padding: 48px;
+    }
+  }
+
+  .about-canonical__mission-title {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    color: #000613;
+    margin: 0 0 24px;
+  }
+
+  .about-canonical__mission-body {
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #43474e;
+    max-width: 720px;
+    margin: 0;
+  }
+
+  .about-canonical__mission-cta-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .about-canonical__mission-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(196,198,207,0.35);
+    padding: 0 0 4px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    color: #006a6a;
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .about-canonical__mission-cta:hover {
+    border-bottom-color: #006a6a;
+  }
+
+  .about-canonical__mission-cta .material-symbols-outlined {
+    font-size: 16px;
+  }
+
+  .about-canonical__stats-card {
+    position: relative;
+    background: #000613;
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__stats-card {
+      padding: 48px;
+    }
+  }
+
+  .about-canonical__stats-glow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 256px;
+    height: 256px;
+    background: #001f3f;
+    border-radius: 9999px;
+    filter: blur(48px);
+    margin: -80px -80px 0 0;
+    opacity: 0.5;
+  }
+
+  .about-canonical__stats-inner {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .about-canonical__stat-value {
+    font-family: 'Newsreader', serif;
+    font-weight: 300;
+    font-size: 48px;
+    line-height: 1;
+    margin: 0 0 8px;
+    color: #ffffff;
+  }
+
+  .about-canonical__stat-label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #6f88ad;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 0;
+  }
+
+  /* Collection Profile — 4-column icon+heading+body grid */
+  .about-canonical__collection-head {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__collection-head {
+      flex-direction: row;
+    }
+  }
+
+  .about-canonical__collection-title {
+    font-family: 'Newsreader', serif;
+    font-size: 36px;
+    color: #000613;
+    margin: 0;
+  }
+
+  .about-canonical__collection-body {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    color: #43474e;
+    max-width: 420px;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .about-canonical__collection-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 32px;
+    row-gap: 64px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__collection-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about-canonical__collection-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .about-canonical__area {
+    cursor: default;
+  }
+
+  .about-canonical__area-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: #e7e8e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  .about-canonical__area:hover .about-canonical__area-icon {
+    background: #90efef;
+  }
+
+  .about-canonical__area-icon .material-symbols-outlined {
+    font-size: 24px;
+    color: #000613;
+    transition: color 0.5s ease;
+  }
+
+  .about-canonical__area:hover .about-canonical__area-icon .material-symbols-outlined {
+    color: #006e6e;
+  }
+
+  .about-canonical__area-title {
+    font-family: 'Newsreader', serif;
+    font-size: 22px;
+    color: #000613;
+    margin: 0 0 12px;
+  }
+
+  .about-canonical__area-body {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #43474e;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Institutional Directory — asymmetric list with NE arrow circles */
+  .about-canonical__directory {
+    background: #f3f4f5;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 80px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__directory {
+      padding: 64px;
+    }
+  }
+
+  .about-canonical__directory-title {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    color: #000613;
+    margin: 0 0 48px;
+  }
+
+  .about-canonical__directory-list {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .about-canonical__directory-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__directory-row {
+      flex-direction: row;
+      align-items: center;
+      gap: 64px;
+    }
+  }
+
+  .about-canonical__directory-col--title {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__directory-col--title {
+      width: 25%;
+    }
+  }
+
+  .about-canonical__directory-col--title h3 {
+    font-family: 'Newsreader', serif;
+    font-size: 22px;
+    color: #000613;
+    margin: 0;
+  }
+
+  .about-canonical__directory-col--body {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__directory-col--body {
+      width: 50%;
+    }
+  }
+
+  .about-canonical__directory-col--body p {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    color: #43474e;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .about-canonical__directory-col--action {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .about-canonical__directory-col--action {
+      width: 25%;
+      justify-content: flex-end;
+    }
+  }
+
+  .about-canonical__directory-arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    border: 1px solid rgba(196,198,207,0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #000613;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .about-canonical__directory-arrow:hover {
+    background: #000613;
+    color: #ffffff;
+    border-color: #000613;
+  }
+
+  .about-canonical__directory-arrow .material-symbols-outlined {
+    font-size: 16px;
   }
 </style>
 @endsection

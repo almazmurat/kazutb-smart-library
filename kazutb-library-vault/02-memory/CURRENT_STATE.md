@@ -2,20 +2,29 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-22 12:36:42 UTC
-- Commit: d376c3b
+- Time: 2026-04-22 (Cluster B.5 canonical-exact /about rebuild)
+- Commit: pending
+- Branch: main
+- Change type: UI/Blade view change
+- Files: resources/views/about.blade.php, tests/Feature/PublicAboutPageTest.php (rewritten), tests/Feature/AboutCollectionDirectoryTest.php (removed)
+- Commit message: feat(phase-3.b.5): canonical-exact /about rebuild per about_library_canonical
+- Note: B.4's embed-into-old-shell approach on /about has been deliberately replaced by a canonical-exact rebuild per docs/design-exports/about_library_canonical. /contacts variant is intentionally untouched and is the next canonical target in a future pass.
+
+## Previously changed
+- Time: 2026-04-22 12:47:16 UTC
+- Commit: f5775b6
 - Branch: main
 - Change type: UI/Blade view change
 - Files: resources/views/about.blade.php
-- Commit message: feat(phase-3.b.3): embed location / fund rooms / visit notes into /contacts
+- Commit message: feat(phase-3.b.4): embed collection profile + institutional directory into /about
 
 ## Latest Git Automation
-- Time: 2026-04-22 12:36:42 UTC
+- Time: 2026-04-22 12:47:16 UTC
 - Event: post-commit
 - Branch: main
-- Commit: d376c3b
-- Update: Git post-commit on main: feat(phase-3.b.3): embed location / fund rooms / visit notes into /contacts
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, tests/Feature/ContactsLocationFundRoomsTest.php
+- Commit: f5775b6
+- Update: Git post-commit on main: feat(phase-3.b.4): embed collection profile + institutional directory into /about
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, tests/Feature/AboutCollectionDirectoryTest.php
 - Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 

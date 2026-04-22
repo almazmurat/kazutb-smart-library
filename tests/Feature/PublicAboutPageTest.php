@@ -7,18 +7,17 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Tests\TestCase;
 
 /**
- * Phase 3.2 — Public About + Contacts consolidation feature coverage.
+ * Phase 3 Cluster B.5 — canonical-exact /about + preserved /contacts variant.
  *
- * /about and /contacts both render resources/views/about.blade.php but the
- * route passes a different $activePage value, which flips section ordering
- * (contacts-first vs. about-first) and adjusts the hero eyebrow/title.
- *
- * These tests lock down:
- *   - both routes return 200 to guests and contain the canonical section markers
- *   - brand is unified to "KazUTB Smart Library"; no Athenaeum or legacy brand drift
- *   - the Librarian-on-Duty block routes guests to /login and authenticated
- *     readers to /dashboard (canonical member shell)
- *   - auth-aware navbar toggles Sign in / Sign out via session('library.user')
+ * /about now follows docs/design-exports/about_library_canonical exactly:
+ *   - hero (eyebrow "Institution" + two-line display + lead + framed media
+ *     with institutional badge)
+ *   - mission + stats bento (2/3 light + 1/3 dark)
+ *   - Collection Profile (4-column icon grid)
+ *   - Institutional Directory (3 asymmetric rows with NE arrow circles)
+ * Contacts variant is intentionally left on the pre-canonical shell (shared
+ * page-hero with aside, librarian-on-duty, mission narrative, B.3 location
+ * blocks, catalog-cta) and is NOT in scope for this rebuild.
  */
 class PublicAboutPageTest extends TestCase
 {
@@ -49,37 +48,97 @@ class PublicAboutPageTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('KazUTB Smart Library', false);
-        // About-first ordering on /about.
-        $response->assertSee('About the Library', false);
-        $response->assertSee('The institutional library of KazUTB', false);
-        // Mission points markers.
-        $response->assertSee('Catalog &amp; collection', false);
-        $response->assertSee('Scholarly archive', false);
-        // Contacts summary remains visible in hero aside.
-        $response->assertSee('Opening hours', false);
-        $response->assertSee('Address', false);
-        // Librarian-on-Duty block.
-        $response->assertSee('Librarian-on-Duty', false);
-        // Catalog CTA.
-        $response->assertSee('Open catalog', false);
+        $response->assertSee('data-section="about-canonical-hero"', false);
+        $response->assertSee('data-section="about-canonical-mission-stats"', false);
+        $response->assertSee('data-section="about-canonical-collection"', false);
+        $response->assertSee('data-section="about-canonical-directory"', false);
+        $response->assertSee('Institution', false);
+        $response->assertSee('Preserving Knowledge.', false);
+        $response->assertSee('Supporting Research.', false);
+        $response->assertSee('Our Mission', false);
+        $response->assertSee('The Collection Profile', false);
+        $response->assertSee('Institutional Directory', false);
     }
 
-    public function test_guest_can_view_contacts_page(): void
+    public function test_about_page_does_not_render_old_about_shell_markers(): void
     {
-        $response = $this->get('/contacts?lang=en');
+        $response = $this->get('/about?lang=en');
 
         $response->assertOk();
-        $response->assertSee('KazUTB Smart Library', false);
-        // Contacts-first ordering on /contacts: hero title flips.
-        $response->assertSee('Reach the library', false);
-        $response->assertSee('How to reach the library', false);
-        // Full contact + hours block.
-        $response->assertSee('37A Kayym Mukhamedkhanov Street, Astana', false);
-        $response->assertSee('+7 (7172) 64-58-58', false);
-        $response->assertSee('library@kazutb.edu.kz', false);
-        $response->assertSee('Opening hours', false);
-        // Librarian-on-Duty block.
-        $response->assertSee('Librarian-on-Duty', false);
+        $response->assertDontSee('data-section="contacts-summary"', false);
+        $response->assertDontSee('data-section="about-mission"', false);
+        $response->assertDontSee('data-section="librarian-on-duty"', false);
+        $response->assertDontSee('data-section="about-collection-profile"', false);
+        $response->assertDontSee('data-section="about-institutional-directory"', false);
+        $response->assertDontSee('data-section="catalog-cta"', false);
+    }
+
+    public function test_about_page_renders_canonical_sections_in_order(): void
+    {
+        $response = $this->get('/about?lang=en');
+
+        $response->assertOk();
+        $response->assertSeeInOrder([
+            'data-section="about-canonical-hero"',
+            'data-section="about-canonical-mission-stats"',
+            'data-section="about-canonical-collection"',
+            'data-section="about-canonical-directory"',
+        ], false);
+    }
+
+    public function test_about_page_renders_four_collection_areas(): void
+    {
+        $response = $this->get('/about?lang=en');
+
+        $response->assertOk();
+        $response->assertSee('data-area-slug="technology"', false);
+        $response->assertSee('data-area-slug="economy"', false);
+        $response->assertSee('data-area-slug="humanities"', false);
+        $response->assertSee('data-area-slug="college"', false);
+    }
+
+    public function test_about_directory_links_to_rules_leadership_and_contacts(): void
+    {
+        $response = $this->get('/about?lang=en');
+
+        $response->assertOk();
+        $response->assertSee('data-test-id="about-canonical-directory-link-rules"', false);
+        $response->assertSee('data-test-id="about-canonical-directory-link-leadership"', false);
+        $response->assertSee('data-test-id="about-canonical-directory-link-contacts"', false);
+        $response->assertSee('href="/rules?lang=en"', false);
+        $response->assertSee('href="/leadership?lang=en"', false);
+        $response->assertSee('href="/contacts?lang=en"', false);
+    }
+
+    public function test_about_ru_variant_renders_canonical_copy(): void
+    {
+        $response = $this->get('/about?lang=ru');
+
+        $response->assertOk();
+        $response->assertSee('Учреждение', false);
+        $response->assertSee('Сохраняем знание.', false);
+        $response->assertSee('Поддерживаем исследования.', false);
+        $response->assertSee('Наша миссия', false);
+        $response->assertSee('Профиль коллекции', false);
+        $response->assertSee('Институциональный справочник', false);
+        $response->assertSee('href="/rules"', false);
+        $response->assertSee('href="/leadership"', false);
+        $response->assertSee('href="/contacts"', false);
+    }
+
+    public function test_about_kk_variant_renders_canonical_copy_and_preserves_lang(): void
+    {
+        $response = $this->get('/about?lang=kk');
+
+        $response->assertOk();
+        $response->assertSee('Мекеме', false);
+        $response->assertSee('Білімді сақтаймыз.', false);
+        $response->assertSee('Зерттеуді қолдаймыз.', false);
+        $response->assertSee('Біздің миссиямыз', false);
+        $response->assertSee('Қор профилі', false);
+        $response->assertSee('href="/rules?lang=kk"', false);
+        $response->assertSee('href="/leadership?lang=kk"', false);
+        $response->assertSee('href="/contacts?lang=kk"', false);
     }
 
     public function test_about_surface_never_reintroduces_athenaeum_or_legacy_brand(): void
@@ -90,30 +149,38 @@ class PublicAboutPageTest extends TestCase
         $about->assertOk();
         $contacts->assertOk();
 
-        // Regression guard scoped to the view under test (about.blade.php).
-        // The shared layouts.public footer still references legacy "KazTBU
-        // Digital Library" strings — that is out of scope for Phase 3.2 and
-        // belongs to a future layout-level pass, so we only lock down the
-        // tokens owned by this view.
         foreach ([$about, $contacts] as $response) {
             $response->assertDontSee('Athenaeum', false);
             $response->assertDontSee('KazUTB Digital Library', false);
         }
     }
 
-    public function test_guest_librarian_on_duty_routes_to_login(): void
+    public function test_guest_can_view_contacts_page(): void
     {
         $response = $this->get('/contacts?lang=en');
 
         $response->assertOk();
-        // Guest navbar state.
+        $response->assertSee('KazUTB Smart Library', false);
+        $response->assertSee('Reach the library', false);
+        $response->assertSee('How to reach the library', false);
+        $response->assertSee('37A Kayym Mukhamedkhanov Street, Astana', false);
+        $response->assertSee('+7 (7172) 64-58-58', false);
+        $response->assertSee('library@kazutb.edu.kz', false);
+        $response->assertSee('Opening hours', false);
+        $response->assertSee('Librarian-on-Duty', false);
+    }
+
+    public function test_guest_librarian_on_duty_on_contacts_routes_to_login(): void
+    {
+        $response = $this->get('/contacts?lang=en');
+
+        $response->assertOk();
         $response->assertSee('Sign in', false);
-        // Librarian-on-Duty CTA routes unauthenticated visitors to /login.
         $response->assertSee('href="/login?lang=en"', false);
         $response->assertDontSee('href="/dashboard?lang=en"', false);
     }
 
-    public function test_authenticated_reader_librarian_on_duty_routes_to_dashboard(): void
+    public function test_authenticated_reader_contacts_librarian_on_duty_routes_to_dashboard(): void
     {
         $this->loginAs('student');
 
@@ -121,10 +188,7 @@ class PublicAboutPageTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('KazUTB Smart Library', false);
-        // Authenticated navbar state.
         $response->assertSee('Sign out', false);
-        // Librarian-on-Duty CTA routes authenticated readers to the canonical
-        // /dashboard member shell.
         $response->assertSee('href="/dashboard?lang=en"', false);
     }
 
@@ -137,9 +201,8 @@ class PublicAboutPageTest extends TestCase
         $response->assertOk();
         $response->assertSee('KazUTB Smart Library', false);
         $response->assertSee('Sign out', false);
-        // On /about the Librarian-on-Duty block still routes to /dashboard
-        // for authenticated readers.
-        $response->assertSee('href="/dashboard?lang=en"', false);
+        $response->assertSee('data-test-id="about-canonical-mission-cta"', false);
+        $response->assertSee('href="/catalog?lang=en"', false);
     }
 
     public function test_librarian_can_view_public_about_and_contacts(): void
