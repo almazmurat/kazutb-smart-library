@@ -26,6 +26,7 @@
               ['label' => 'Главная', 'href' => $routeWithLang('/')],
               ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
               ['label' => 'Руководство', 'href' => $routeWithLang('/leadership')],
+              ['label' => 'Правила библиотеки', 'href' => $routeWithLang('/rules')],
           ],
           'support_links' => [
               ['label' => 'Подборка', 'href' => $routeWithLang('/shortlist')],
@@ -44,6 +45,7 @@
               ['label' => 'Басты бет', 'href' => $routeWithLang('/')],
               ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
               ['label' => 'Басшылық', 'href' => $routeWithLang('/leadership')],
+              ['label' => 'Кітапхана ережелері', 'href' => $routeWithLang('/rules')],
           ],
           'support_links' => [
               ['label' => 'Іріктеме', 'href' => $routeWithLang('/shortlist')],
@@ -62,6 +64,7 @@
               ['label' => 'Home', 'href' => $routeWithLang('/')],
               ['label' => 'Catalog', 'href' => $routeWithLang('/catalog')],
               ['label' => 'Leadership', 'href' => $routeWithLang('/leadership')],
+              ['label' => 'Library Rules', 'href' => $routeWithLang('/rules')],
           ],
           'support_links' => [
               ['label' => 'Shortlist', 'href' => $routeWithLang('/shortlist')],

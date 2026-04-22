@@ -418,6 +418,442 @@ $leadershipSeedProvider = static function (): array {
     ];
 };
 
+// Phase 3 Cluster B.2 — seeded public library-rules content for /rules.
+//
+// Scoped strictly to this page; structure mirrors $newsSeedProvider and
+// $leadershipSeedProvider so a future backend phase can replace the
+// closure with a DB-backed policy source. Section order is frozen per
+// Cluster B Content Contract §2 and the anchor IDs (#general, #borrowing,
+// #digital, #conduct, #penalties) are a public contract — they MUST remain
+// stable.
+$rulesSeedProvider = static function (): array {
+    $header = [
+        'ru' => [
+            'eyebrow' => 'Официальный документ библиотеки',
+            'headline' => 'Правила пользования библиотекой',
+            'subtitle_secondary_lang' => 'Library Usage Rules',
+            'preamble' => 'Настоящие правила регулируют пользование помещениями, фондами и электронными ресурсами KazUTB Smart Library. Документ обеспечивает равный доступ к коллекциям, сохранность фонда и академическую среду, пригодную для учебной и исследовательской работы.',
+            'effective_label' => 'Действует с',
+            'effective_date' => '2026-04-01',
+            'reviewed_label' => 'Последняя проверка',
+        ],
+        'kk' => [
+            'eyebrow' => 'Кітапхананың ресми құжаты',
+            'headline' => 'Кітапхананы пайдалану ережелері',
+            'subtitle_secondary_lang' => 'Library Usage Rules',
+            'preamble' => 'Осы ережелер KazUTB Smart Library ғимараттарын, қорларын және электрондық ресурстарын пайдалану тәртібін реттейді. Құжат жинаққа тең қолжетімділікті, қордың сақталуын және оқу мен ғылыми жұмысқа қолайлы академиялық ортаны қамтамасыз етеді.',
+            'effective_label' => 'Күшіне енген күні',
+            'effective_date' => '2026-04-01',
+            'reviewed_label' => 'Соңғы тексеру',
+        ],
+        'en' => [
+            'eyebrow' => 'Official library policy document',
+            'headline' => 'Library Usage Rules',
+            'subtitle_secondary_lang' => 'Правила пользования библиотекой',
+            'preamble' => 'These rules govern use of the facilities, collections, and digital resources of KazUTB Smart Library. The document supports equitable access to the collection, preservation of holdings, and an academic environment suitable for study and research.',
+            'effective_label' => 'Effective from',
+            'effective_date' => '2026-04-01',
+            'reviewed_label' => 'Last reviewed',
+        ],
+    ];
+
+    $toc = [
+        'ru' => [
+            'label' => 'Содержание',
+            'items' => [
+                ['href' => '#general', 'label' => '1. Общие положения'],
+                ['href' => '#borrowing', 'label' => '2. Выдача и возврат'],
+                ['href' => '#digital', 'label' => '3. Электронный доступ'],
+                ['href' => '#conduct', 'label' => '4. Правила поведения'],
+                ['href' => '#penalties', 'label' => '5. Нарушения и взыскания'],
+            ],
+        ],
+        'kk' => [
+            'label' => 'Мазмұны',
+            'items' => [
+                ['href' => '#general', 'label' => '1. Жалпы ережелер'],
+                ['href' => '#borrowing', 'label' => '2. Беру және қайтару'],
+                ['href' => '#digital', 'label' => '3. Электрондық қолжетімділік'],
+                ['href' => '#conduct', 'label' => '4. Мінез-құлық ережелері'],
+                ['href' => '#penalties', 'label' => '5. Бұзушылықтар мен шаралар'],
+            ],
+        ],
+        'en' => [
+            'label' => 'Contents',
+            'items' => [
+                ['href' => '#general', 'label' => '1. General provisions'],
+                ['href' => '#borrowing', 'label' => '2. Borrowing and returns'],
+                ['href' => '#digital', 'label' => '3. Digital access'],
+                ['href' => '#conduct', 'label' => '4. Code of conduct'],
+                ['href' => '#penalties', 'label' => '5. Violations and penalties'],
+            ],
+        ],
+    ];
+
+    $general = [
+        'ru' => [
+            'number' => '1',
+            'eyebrow' => 'Раздел 1',
+            'title' => 'Общие положения',
+            'lede' => 'KazUTB Smart Library обслуживает академическое сообщество университета и обеспечивает доступ к печатным и электронным коллекциям через единые институциональные правила.',
+            'items' => [
+                'Библиотека обслуживает студентов, преподавателей, научных сотрудников и авторизованных исследователей KazUTB.',
+                'Действующее удостоверение университета служит основным читательским документом; использование чужого удостоверения не допускается.',
+                'Читательские права не передаются третьим лицам, включая членов семьи.',
+                'Сотрудники библиотеки вправе запросить предъявление удостоверения и подтверждение академического статуса.',
+            ],
+        ],
+        'kk' => [
+            'number' => '1',
+            'eyebrow' => '1-бөлім',
+            'title' => 'Жалпы ережелер',
+            'lede' => 'KazUTB Smart Library университеттің академиялық қауымдастығына қызмет көрсетеді және баспа мен электрондық жинақтарға бірыңғай институционалдық ережелер арқылы қол жеткізуді қамтамасыз етеді.',
+            'items' => [
+                'Кітапхана KazUTB студенттеріне, оқытушыларына, ғылыми қызметкерлеріне және уәкілетті зерттеушілеріне қызмет көрсетеді.',
+                'Университеттің қолданыстағы жеке куәлігі оқырманның негізгі құжаты болып табылады; басқа адамның куәлігін пайдалануға тыйым салынады.',
+                'Оқырман құқықтары үшінші тұлғаларға, оның ішінде отбасы мүшелеріне берілмейді.',
+                'Кітапхана қызметкерлері жеке куәлікті көрсетуді және академиялық мәртебені растауды сұрауға құқылы.',
+            ],
+        ],
+        'en' => [
+            'number' => '1',
+            'eyebrow' => 'Section 1',
+            'title' => 'General provisions',
+            'lede' => 'KazUTB Smart Library serves the university academic community and provides access to print and digital collections under a unified set of institutional rules.',
+            'items' => [
+                'The library serves enrolled students, faculty, research staff, and authorized researchers of KazUTB.',
+                'A valid university ID serves as the primary library credential; use of another person\'s ID is not permitted.',
+                'Library privileges are non-transferable, including to family members.',
+                'Library staff may request presentation of a valid ID and confirmation of academic status.',
+            ],
+        ],
+    ];
+
+    $borrowing = [
+        'ru' => [
+            'number' => '2',
+            'eyebrow' => 'Раздел 2',
+            'title' => 'Выдача и возврат',
+            'lede' => 'Лимиты выдачи, сроки пользования и продления зависят от академического статуса читателя. Возврат в срок — базовое условие равного доступа для других читателей.',
+            'groups' => [
+                [
+                    'audience' => 'Студенты бакалавриата',
+                    'icon' => 'menu_book',
+                    'rows' => [
+                        ['label' => 'Одновременно', 'value' => 'до 5 единиц'],
+                        ['label' => 'Срок выдачи', 'value' => '14 дней'],
+                        ['label' => 'Продление', 'value' => '1 раз, если нет очереди'],
+                    ],
+                ],
+                [
+                    'audience' => 'Магистранты и докторанты',
+                    'icon' => 'school',
+                    'rows' => [
+                        ['label' => 'Одновременно', 'value' => 'до 10 единиц'],
+                        ['label' => 'Срок выдачи', 'value' => '21 день'],
+                        ['label' => 'Продление', 'value' => '2 раза, если нет очереди'],
+                    ],
+                ],
+                [
+                    'audience' => 'Преподаватели и научные сотрудники',
+                    'icon' => 'auto_stories',
+                    'rows' => [
+                        ['label' => 'Одновременно', 'value' => 'до 15 единиц'],
+                        ['label' => 'Срок выдачи', 'value' => '30 дней'],
+                        ['label' => 'Продление', 'value' => '2 раза, если нет очереди'],
+                    ],
+                ],
+            ],
+            'notes' => [
+                'Редкие, справочные и учебно-обязательные издания могут выдаваться только в читальном зале.',
+                'Продление невозможно, если книга уже забронирована другим читателем.',
+                'Читатель обязан проверить физическое состояние издания при получении.',
+            ],
+        ],
+        'kk' => [
+            'number' => '2',
+            'eyebrow' => '2-бөлім',
+            'title' => 'Беру және қайтару',
+            'lede' => 'Беру лимиттері, пайдалану мерзімі және ұзарту оқырманның академиялық мәртебесіне байланысты. Уақытында қайтару — басқа оқырмандарға тең қолжетімділіктің негізгі шарты.',
+            'groups' => [
+                [
+                    'audience' => 'Бакалавриат студенттері',
+                    'icon' => 'menu_book',
+                    'rows' => [
+                        ['label' => 'Бір мезгілде', 'value' => '5 данаға дейін'],
+                        ['label' => 'Беру мерзімі', 'value' => '14 күн'],
+                        ['label' => 'Ұзарту', 'value' => 'кезек болмаса — 1 рет'],
+                    ],
+                ],
+                [
+                    'audience' => 'Магистранттар мен докторанттар',
+                    'icon' => 'school',
+                    'rows' => [
+                        ['label' => 'Бір мезгілде', 'value' => '10 данаға дейін'],
+                        ['label' => 'Беру мерзімі', 'value' => '21 күн'],
+                        ['label' => 'Ұзарту', 'value' => 'кезек болмаса — 2 рет'],
+                    ],
+                ],
+                [
+                    'audience' => 'Оқытушылар мен ғылыми қызметкерлер',
+                    'icon' => 'auto_stories',
+                    'rows' => [
+                        ['label' => 'Бір мезгілде', 'value' => '15 данаға дейін'],
+                        ['label' => 'Беру мерзімі', 'value' => '30 күн'],
+                        ['label' => 'Ұзарту', 'value' => 'кезек болмаса — 2 рет'],
+                    ],
+                ],
+            ],
+            'notes' => [
+                'Сирек, анықтамалық және міндетті оқу басылымдары тек оқу залында беріледі.',
+                'Егер кітапты басқа оқырман брондаған болса, ұзарту мүмкін емес.',
+                'Оқырман басылымның физикалық күйін алған кезде тексеруге міндетті.',
+            ],
+        ],
+        'en' => [
+            'number' => '2',
+            'eyebrow' => 'Section 2',
+            'title' => 'Borrowing and returns',
+            'lede' => 'Borrowing limits, loan periods, and renewals depend on the reader\'s academic status. Timely return is the baseline condition for equitable access for other readers.',
+            'groups' => [
+                [
+                    'audience' => 'Undergraduate students',
+                    'icon' => 'menu_book',
+                    'rows' => [
+                        ['label' => 'At one time', 'value' => 'up to 5 items'],
+                        ['label' => 'Loan period', 'value' => '14 days'],
+                        ['label' => 'Renewals', 'value' => '1, if not reserved by another reader'],
+                    ],
+                ],
+                [
+                    'audience' => 'Master\'s and doctoral students',
+                    'icon' => 'school',
+                    'rows' => [
+                        ['label' => 'At one time', 'value' => 'up to 10 items'],
+                        ['label' => 'Loan period', 'value' => '21 days'],
+                        ['label' => 'Renewals', 'value' => '2, if not reserved by another reader'],
+                    ],
+                ],
+                [
+                    'audience' => 'Faculty and research staff',
+                    'icon' => 'auto_stories',
+                    'rows' => [
+                        ['label' => 'At one time', 'value' => 'up to 15 items'],
+                        ['label' => 'Loan period', 'value' => '30 days'],
+                        ['label' => 'Renewals', 'value' => '2, if not reserved by another reader'],
+                    ],
+                ],
+            ],
+            'notes' => [
+                'Rare, reference, and core-curriculum items may be consulted in the reading room only.',
+                'Renewal is not available when the item is already reserved by another reader.',
+                'Readers are expected to check the physical condition of an item at the time of checkout.',
+            ],
+        ],
+    ];
+
+    $digital = [
+        'ru' => [
+            'number' => '3',
+            'eyebrow' => 'Раздел 3',
+            'title' => 'Электронный доступ',
+            'lede' => 'Электронные материалы и лицензионные базы данных предоставляются для академического и некоммерческого использования через институциональную аутентификацию.',
+            'items' => [
+                'Электронные материалы библиотеки открываются в контролируемом просмотрщике без возможности скачивания.',
+                'Лицензионные базы данных и электронные журналы используются исключительно в академических и некоммерческих целях.',
+                'Массовое скачивание, автоматизированная выгрузка и систематическое копирование содержимого запрещены и могут привести к блокировке доступа университета.',
+                'Удалённый доступ предоставляется только через официальную институциональную аутентификацию (SSO KazUTB).',
+                'Передача учётных данных, в том числе в пределах одной рабочей группы, не допускается.',
+            ],
+        ],
+        'kk' => [
+            'number' => '3',
+            'eyebrow' => '3-бөлім',
+            'title' => 'Электрондық қолжетімділік',
+            'lede' => 'Электрондық материалдар мен лицензияланған дерекқорлар институционалдық аутентификация арқылы академиялық және коммерциялық емес мақсатта ұсынылады.',
+            'items' => [
+                'Кітапхананың электрондық материалдары жүктеу мүмкіндігінсіз бақыланатын қарау құралында ашылады.',
+                'Лицензияланған дерекқорлар мен электрондық журналдар тек академиялық және коммерциялық емес мақсатта пайдаланылады.',
+                'Жаппай жүктеу, автоматтандырылған көшіру және мазмұнды жүйелі түрде сақтау шектеулі және университеттің қол жеткізу құқығының тоқтатылуына әкелуі мүмкін.',
+                'Қашықтан қолжетімділік тек ресми институционалдық аутентификация арқылы (KazUTB SSO) беріледі.',
+                'Есептік жазба деректерін беруге, оның ішінде бір жұмыс тобы шегінде беруге тыйым салынады.',
+            ],
+        ],
+        'en' => [
+            'number' => '3',
+            'eyebrow' => 'Section 3',
+            'title' => 'Digital access',
+            'lede' => 'Digital materials and licensed databases are provided for academic and non-commercial use via institutional authentication.',
+            'items' => [
+                'Library digital materials are opened in a controlled viewer with no download path.',
+                'Licensed databases and e-journals are used strictly for academic and non-commercial purposes.',
+                'Bulk downloading, automated harvesting, and systematic copying of content are prohibited and may result in suspension of university-wide access.',
+                'Remote access is available only through the official institutional authentication (KazUTB SSO).',
+                'Sharing of credentials, including within a working group, is not permitted.',
+            ],
+        ],
+    ];
+
+    $conduct = [
+        'ru' => [
+            'number' => '4',
+            'eyebrow' => 'Раздел 4',
+            'title' => 'Правила поведения',
+            'lede' => 'В библиотеке поддерживается академическая среда, уважительное отношение к персоналу и сохранность фонда.',
+            'items' => [
+                'В читальных зонах сохраняется тихий режим работы; для совместного обсуждения используются выделенные пространства.',
+                'Приём пищи запрещён; допускается вода в закрытой ёмкости вне читальных зон.',
+                'Мобильные устройства переводятся в беззвучный режим; разговоры по телефону — вне читальных зон.',
+                'Материалы не помечаются, не подчёркиваются и не складываются корешком наружу; бережное обращение обязательно.',
+                'Любые формы притеснения и нарушения академической среды не допускаются.',
+                'Требования сотрудников библиотеки в рамках настоящих правил обязательны к исполнению.',
+            ],
+        ],
+        'kk' => [
+            'number' => '4',
+            'eyebrow' => '4-бөлім',
+            'title' => 'Мінез-құлық ережелері',
+            'lede' => 'Кітапханада академиялық орта, қызметкерлерге құрметпен қарау және қордың сақталуы қолдау табады.',
+            'items' => [
+                'Оқу аймақтарында тыныш режим сақталады; бірлескен талқылау үшін арнайы кеңістіктер пайдаланылады.',
+                'Тамақтануға тыйым салынады; оқу аймақтарынан тыс жерде жабық ыдыстағы суға рұқсат етіледі.',
+                'Мобильді құрылғылар үнсіз режимге ауыстырылады; телефонмен сөйлесу тек оқу аймақтарынан тыс жерде рұқсат етіледі.',
+                'Материалдарға белгі қою, астын сызу және жырынды сыртқа қаратып жинауға тыйым салынады; ұқыпты пайдалану міндетті.',
+                'Қысым көрсету мен академиялық ортаны бұзудың кез келген түрі рұқсат етілмейді.',
+                'Кітапхана қызметкерлерінің осы ережелер шеңберіндегі талаптары міндетті түрде орындалуға тиіс.',
+            ],
+        ],
+        'en' => [
+            'number' => '4',
+            'eyebrow' => 'Section 4',
+            'title' => 'Code of conduct',
+            'lede' => 'The library maintains an academic environment, respectful interaction with staff, and preservation of the collection.',
+            'items' => [
+                'Reading areas are quiet zones; designated spaces are provided for group discussion.',
+                'Eating is not permitted; water in a closed container is allowed outside reading areas.',
+                'Mobile devices are kept on silent mode; phone calls are taken outside reading areas.',
+                'Do not mark, underline, or shelve items spine-out; careful handling is required.',
+                'Harassment and any behavior that degrades the academic environment are not tolerated.',
+                'Requests from library staff made within these rules are to be followed.',
+            ],
+        ],
+    ];
+
+    $penalties = [
+        'ru' => [
+            'number' => '5',
+            'eyebrow' => 'Раздел 5',
+            'title' => 'Нарушения и взыскания',
+            'lede' => 'При нарушениях применяются пропорциональные меры, направленные на восстановление доступа и сохранность фонда, а не на наказание.',
+            'items' => [
+                'Задержка возврата приводит к временной приостановке прав на новые выдачи до возврата издания.',
+                'Повреждение издания возмещается по текущей восстановительной стоимости, определяемой библиотекой.',
+                'Утеря издания возмещается по восстановительной стоимости либо равноценной заменой, согласованной с библиотекой.',
+                'Нарушения электронного доступа (массовое скачивание, передача учётных данных, коммерческое использование) влекут временное приостановление доступа и эскалацию в университет.',
+                'Повторные или умышленные нарушения рассматриваются вместе с администрацией университета.',
+            ],
+            'suspension_ladder_label' => 'Шкала приостановки доступа',
+            'suspension_ladder' => [
+                ['level' => 'Напоминание', 'detail' => 'Первое обращение сотрудника библиотеки, без ограничений доступа.'],
+                ['level' => 'Временная приостановка', 'detail' => 'Приостановка новых выдач и брони до устранения нарушения.'],
+                ['level' => 'Эскалация', 'detail' => 'Передача вопроса в администрацию университета при повторных или серьёзных нарушениях.'],
+            ],
+            'appeal_label' => 'Право обжалования',
+            'appeal_text' => 'Читатель вправе обратиться к руководству библиотеки через страницу /leadership или на официальную почту, указанную на странице /contacts, для пересмотра применённой меры.',
+        ],
+        'kk' => [
+            'number' => '5',
+            'eyebrow' => '5-бөлім',
+            'title' => 'Бұзушылықтар мен шаралар',
+            'lede' => 'Бұзушылықтар болған жағдайда жаза емес, қолжетімділікті қалпына келтіруге және қордың сақталуына бағытталған мөлшерлес шаралар қолданылады.',
+            'items' => [
+                'Қайтарудың кешіктірілуі басылым қайтарылғанға дейін жаңа беруге арналған құқықтардың уақытша тоқтатылуына әкеледі.',
+                'Басылымның зақымдалуы кітапхана белгілеген қалпына келтіру құнымен өтеледі.',
+                'Басылымның жоғалуы қалпына келтіру құнымен немесе кітапханамен келісілген тең бағалы алмастырумен өтеледі.',
+                'Электрондық қолжетімділіктің бұзылуы (жаппай жүктеу, есептік деректерді беру, коммерциялық пайдалану) қолжетімділіктің уақытша тоқтатылуына және университетке эскалацияға әкеледі.',
+                'Қайталанатын немесе қасақана бұзушылықтар университет әкімшілігімен бірге қаралады.',
+            ],
+            'suspension_ladder_label' => 'Қолжетімділікті тоқтата тұру сатылары',
+            'suspension_ladder' => [
+                ['level' => 'Ескерту', 'detail' => 'Кітапхана қызметкерінің бірінші хабарласуы, қолжетімділік шектелмейді.'],
+                ['level' => 'Уақытша тоқтата тұру', 'detail' => 'Бұзушылық жойылғанға дейін жаңа беру мен брондауды тоқтата тұру.'],
+                ['level' => 'Эскалация', 'detail' => 'Қайталанатын немесе елеулі бұзушылықтар кезінде мәселе университет әкімшілігіне беріледі.'],
+            ],
+            'appeal_label' => 'Шағымдану құқығы',
+            'appeal_text' => 'Оқырман қолданылған шараны қайта қарау үшін /leadership бетінде немесе /contacts бетінде көрсетілген ресми пошта арқылы кітапхана басшылығына жүгінуге құқылы.',
+        ],
+        'en' => [
+            'number' => '5',
+            'eyebrow' => 'Section 5',
+            'title' => 'Violations and penalties',
+            'lede' => 'Responses are proportionate and aimed at restoring access and preserving the collection, not at punishment.',
+            'items' => [
+                'Overdue returns result in a temporary hold on new checkouts until the item is returned.',
+                'Damage is settled at the current replacement value determined by the library.',
+                'Loss is settled at the replacement value or by an equivalent replacement agreed with the library.',
+                'Digital-access violations (bulk downloading, credential sharing, commercial use) lead to temporary suspension of access and escalation to the university.',
+                'Repeated or intentional violations are reviewed jointly with the university administration.',
+            ],
+            'suspension_ladder_label' => 'Access suspension ladder',
+            'suspension_ladder' => [
+                ['level' => 'Reminder', 'detail' => 'First notice from library staff, no access restriction.'],
+                ['level' => 'Temporary hold', 'detail' => 'Hold on new checkouts and reservations until the issue is resolved.'],
+                ['level' => 'Escalation', 'detail' => 'Matter referred to the university administration for repeated or serious violations.'],
+            ],
+            'appeal_label' => 'Right of appeal',
+            'appeal_text' => 'Readers may request review of a measure through the /leadership page or by writing to the official address listed on /contacts.',
+        ],
+    ];
+
+    $footerMeta = [
+        'ru' => [
+            'eyebrow' => 'Вопросы по документу',
+            'heading' => 'Вопросы по настоящим правилам',
+            'body' => 'По вопросам толкования настоящих правил, предложений по уточнению или обжалования применённых мер обращайтесь в библиотеку.',
+            'contacts_label' => 'Перейти к контактам',
+            'contacts_href' => '/contacts',
+            'leadership_label' => 'Руководство библиотеки',
+            'leadership_href' => '/leadership',
+            'version_label' => 'Версия документа',
+            'version_value' => 'v1.0 (2026-04-22)',
+        ],
+        'kk' => [
+            'eyebrow' => 'Құжат бойынша сұрақтар',
+            'heading' => 'Осы ережелер бойынша сұрақтар',
+            'body' => 'Осы ережелерді түсіндіру, нақтылау бойынша ұсыныстар немесе қолданылған шараларды шағымдану мәселелері бойынша кітапханаға жүгініңіз.',
+            'contacts_label' => 'Байланыс бетіне өту',
+            'contacts_href' => '/contacts',
+            'leadership_label' => 'Кітапхана басшылығы',
+            'leadership_href' => '/leadership',
+            'version_label' => 'Құжат нұсқасы',
+            'version_value' => 'v1.0 (2026-04-22)',
+        ],
+        'en' => [
+            'eyebrow' => 'Questions about this document',
+            'heading' => 'Questions about these rules',
+            'body' => 'For questions of interpretation, suggestions for clarification, or appeals of applied measures, please contact the library.',
+            'contacts_label' => 'Open contacts',
+            'contacts_href' => '/contacts',
+            'leadership_label' => 'Library leadership',
+            'leadership_href' => '/leadership',
+            'version_label' => 'Document version',
+            'version_value' => 'v1.0 (2026-04-22)',
+        ],
+    ];
+
+    return [
+        'header' => $header,
+        'toc' => $toc,
+        'general' => $general,
+        'borrowing' => $borrowing,
+        'digital' => $digital,
+        'conduct' => $conduct,
+        'penalties' => $penalties,
+        'footer_meta' => $footerMeta,
+        'last_reviewed_at' => '2026-04-22',
+    ];
+};
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -823,6 +1259,18 @@ Route::get('/leadership', function () use ($leadershipSeedProvider) {
     return view('leadership', [
         'activePage' => 'leadership',
         'leadership' => $leadershipSeedProvider(),
+    ]);
+});
+
+// Phase 3 Cluster B.2 — standalone public library-rules surface.
+// Content is driven by $rulesSeedProvider (trilingual; frozen section
+// order + stable anchor IDs per Cluster B Content Contract §2). Per
+// contract §8 this route is NOT added to the primary navbar; global
+// access is via the footer.
+Route::get('/rules', function () use ($rulesSeedProvider) {
+    return view('rules', [
+        'activePage' => 'rules',
+        'rules' => $rulesSeedProvider(),
     ]);
 });
 
