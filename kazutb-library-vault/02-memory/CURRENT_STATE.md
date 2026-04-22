@@ -2,25 +2,25 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-22 05:51:26 UTC
-- Commit: 7d7e137
+- Time: 2026-04-22 06:10:53 UTC
+- Commit: f23721d
 - Branch: main
 - Change type: UI/Blade view change
-- Files: resources/views/welcome.blade.php
-- Commit message: feat(phase-3.1): canonical homepage — KazUTB Smart Library brand + /dashboard workspace routing
+- Files: resources/views/about.blade.php, routes/web.php
+- Commit message: feat(phase-3.2): canonical about + contacts — consolidated KazUTB Smart Library informational surface
 
 ## Latest Git Automation
-- Time: 2026-04-22 05:51:26 UTC
+- Time: 2026-04-22 06:10:53 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 7d7e137
-- Update: Git post-commit on main: feat(phase-3.1): canonical homepage — KazUTB Smart Library brand + /dashboard workspace routing
-- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/welcome.blade.php, tests/Feature/PublicHomepagePageTest.php
+- Commit: f23721d
+- Update: Git post-commit on main: feat(phase-3.2): canonical about + contacts — consolidated KazUTB Smart Library informational surface
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, routes/web.php, tests/Feature/PublicAboutPageTest.php
 - Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
-Phases 0, 1.1, 1.2, 1.4, **2a**, **2b**, a post-audit **stabilization pass** (2026-04-21), **3.1 — Homepage** (2026-04-22), and **3.2 — About + Contacts consolidation** (2026-04-22) are complete. `/about` and `/contacts` now both render a single canonical KazUTB Smart Library informational surface (`about.blade.php`) with section ordering driven by `$activePage` — contacts-first on `/contacts`, mission-first on `/about`. A new `Librarian-on-Duty` block routes authenticated readers to `/dashboard` and guests to `/login`, reusing the same server-side `session('library.user')` Blade conditional pattern as the navbar. Brand unified to "KazUTB Smart Library" in all three locales (ru/kk/en); view-scoped regression asserts no legacy brand drift in `about.blade.php` (shared layout footer still carries legacy strings — out of scope here). The transitional `/account` route is intentionally **kept in place**; reader `PostLoginRedirect` still targets `/account`, and the cut-over is scheduled for after Phase 3 completes. Next logical phase is **Phase 3.3 — News surfaces** (`/news` currently 301 → `/`; decision needed on whether to restore a standalone public surface).
+Phases 0, 1.1, 1.2, 1.4, **2a**, **2b**, a post-audit **stabilization pass** (2026-04-21), **3.1 — Homepage** (2026-04-22), **3.2 — About + Contacts consolidation** (2026-04-22), and **3.3 — Public News module** (2026-04-22) are complete. Phase 3.3 reverses the previous `/news → /` 301 redirect and restores `/news` as the canonical KazUTB Smart Library public news index (`news/index.blade.php`), plus a new `/news/{slug}` detail surface (`news/show.blade.php`), both extending `layouts.public`. Seeded article data lives in a single `$newsSeedProvider` closure in `routes/web.php` — deliberately DB-replaceable later. Trilingual ru/kk/en parity across chrome and article copy; view-scoped regression guards against "Athenaeum", "Curator Archive", and "KazUTB Digital Library" drift in both news views (layouts.public footer drift still out of scope). The transitional `/account` route is intentionally **kept in place**; reader `PostLoginRedirect` still targets `/account`, and the cut-over is scheduled for after Phase 3 completes. Next logical phase is **Phase 3.4 — Resources page refinement**.
 
 ## What Is Done
 - Canonical product truth is consolidated in [[PROJECT_CONTEXT]]
@@ -43,17 +43,17 @@ Phases 0, 1.1, 1.2, 1.4, **2a**, **2b**, a post-audit **stabilization pass** (20
 - Standing constraints (unchanged): admin pages still render hard-coded demo data until Phase 6 backend wiring; scientific repository module (Phase 4) has no routes/views/schema yet; `/account` is kept as transitional with an inline banner and is scheduled for retirement after Phase 3 (flip `$postLoginDestination` → `/dashboard`, then 301 `/account` → `/dashboard`).
 
 ## Immediate Next Actions
-- [ ] Phase 3.3: News surfaces — `/news` is currently a 301 redirect to `/`; decide if news returns as a standalone public surface or stays consolidated. See OPEN_QUESTIONS.md (MED-priority).
 - [ ] Phase 3.4: Resources page refinement — polish `resources.blade.php` for institutional tone.
 - [ ] Phase 3.5: Catalog / book detail / discovery polish — reader-facing catalog, `/book/{isbn}`, `/discover`.
+- [ ] Future backend phase: replace the inline `$newsSeedProvider` closure in `routes/web.php` with a DB-backed news source wired through the admin news CRUD (Phase 6).
 - [ ] After Phase 3 completes: retire `/account` (flip reader `$postLoginDestination` default to `/dashboard`, then 301 `/account` → `/dashboard`).
 - [ ] Separate out-of-scope item: shared `layouts.public` footer still contains legacy "KazTBU Digital Library" strings — rebrand pass to "KazUTB Smart Library" should be planned as a standalone small commit (not inside Phase 3.3).
 
 ## Next Session Starting Point
 1. Re-read `kazutb-library-vault/PROJECT_CONTEXT.md`, this file (`CURRENT_STATE.md`), and `OPEN_QUESTIONS.md` first.
-2. Confirm Phase 3.2 shipped on `main` and 89/89 canonical regression tests are green (new baseline includes PublicAboutPage 8/8).
-3. Begin Phase 3.3 — News surfaces. First answer the open question: should `/news` remain a 301 to `/` or become a standalone public surface? Choose scope before touching routes/views.
-4. Do not touch the homepage, `/about`, `/contacts`, the `/dashboard/*` family, the admin shell, or the librarian shell. Do not begin repository backend wiring (Phase 4/6).
+2. Confirm Phase 3.3 shipped on `main` and 103/103 canonical regression tests are green (new baseline includes PublicNewsIndexPage 7/7 + PublicNewsDetailPage 7/7).
+3. Begin Phase 3.4 — Resources page refinement. Port `docs/design-exports/resources/` into `resources.blade.php` extending `layouts.public` with `activePage='resources'`. Keep the external-resource link-out policy: no direct file downloads; honor the institutional tone.
+4. Do not touch the homepage, `/about`, `/contacts`, `/news`, the `/dashboard/*` family, the admin shell, or the librarian shell. Do not begin repository backend wiring (Phase 4/6).
 
 ## Known Technical Debt
 - Post-migration metadata correction and duplicate cleanup remain ongoing

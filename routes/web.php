@@ -53,6 +53,205 @@ $memberView = static function (Request $request, string $view, array $data = [])
     ], $data));
 };
 
+// Phase 3.3 — seeded public news catalog.
+// Representative content for the canonical /news index + /news/{slug} detail.
+// The structure is deliberately DB-replaceable later: an array of article
+// records keyed by `slug`, each carrying trilingual copy, metadata, and an
+// optional long-form body for the detail route. Ordering of the index is
+// controlled by $orderedSlugs (most recent first).
+$newsSeedProvider = static function (): array {
+    $articles = [
+        'global-symposium-archival-integrity' => [
+            'slug' => 'global-symposium-archival-integrity',
+            'featured' => true,
+            'published_at' => '2026-04-14',
+            'published_display' => [
+                'ru' => '14 апреля 2026',
+                'kk' => '2026 жылғы 14 сәуір',
+                'en' => 'April 14, 2026',
+            ],
+            'category' => [
+                'ru' => 'Главный материал',
+                'kk' => 'Басты материал',
+                'en' => 'Featured Report',
+            ],
+            'title' => [
+                'ru' => 'Международный симпозиум по целостности архивов прошёл в Астане',
+                'kk' => 'Астанада мұрағат тұтастығы бойынша халықаралық симпозиум өтті',
+                'en' => 'Global Symposium on Archival Integrity Concludes in Astana',
+            ],
+            'excerpt' => [
+                'ru' => 'Исследователи и специалисты по цифровому сохранению обсудили задачи обеспечения исторической непрерывности в эпоху быстро меняющихся цифровых форматов.',
+                'kk' => 'Зерттеушілер мен цифрлық сақтау мамандары жылдам өзгеретін цифрлық форматтар дәуіріндегі тарихи сабақтастықты қамтамасыз ету мәселесін талқылады.',
+                'en' => 'Researchers and digital preservation specialists addressed the challenge of maintaining historical continuity in an era of rapidly evolving digital formats.',
+            ],
+            'hero' => [
+                'image' => 'images/news/campus-library.jpg',
+                'alt' => [
+                    'ru' => 'Университетский читальный зал с участниками симпозиума',
+                    'kk' => 'Университеттің оқу залы, симпозиум қатысушылары',
+                    'en' => 'University reading room during the symposium',
+                ],
+            ],
+            'body' => [
+                'ru' => [
+                    ['type' => 'lead', 'text' => 'KazUTB Smart Library провёл международный симпозиум по целостности архивов — площадку для обсуждения практик долговременного сохранения цифровых и гибридных коллекций в университетских библиотеках.'],
+                    ['type' => 'h2', 'text' => 'Темы программы'],
+                    ['type' => 'p', 'text' => 'Программа объединила библиотекарей, архивистов и исследователей. В центре обсуждения — связность метаданных, устойчивость форматов и контролируемый доступ к институциональному архиву.'],
+                    ['type' => 'list', 'items' => [
+                        ['term' => 'Метаданные и провенанс', 'text' => 'Сохранение контекста и источников при переводе коллекций в цифровую среду.'],
+                        ['term' => 'Устойчивость форматов', 'text' => 'Долговременное хранение материалов и планирование миграций.'],
+                        ['term' => 'Контролируемый доступ', 'text' => 'Политики читательского доступа к закрытым и лицензируемым материалам.'],
+                    ]],
+                    ['type' => 'h2', 'text' => 'Итоги и следующие шаги'],
+                    ['type' => 'p', 'text' => 'По итогам симпозиума библиотека публикует методические рекомендации по работе с институциональным архивом и расширяет программу проверенных поступлений в научном репозитории университета.'],
+                ],
+                'kk' => [
+                    ['type' => 'lead', 'text' => 'KazUTB Smart Library университет кітапханаларындағы цифрлық және гибридті жинақтарды ұзақ мерзімді сақтау тәжірибесін талқылауға арналған мұрағат тұтастығы жөніндегі халықаралық симпозиумды өткізді.'],
+                    ['type' => 'h2', 'text' => 'Бағдарлама тақырыптары'],
+                    ['type' => 'p', 'text' => 'Бағдарлама кітапханашылар, архивистер мен зерттеушілерді біріктірді. Негізгі тақырыптар: метадерек байланыстылығы, формат тұрақтылығы және институционалдық мұрағатқа бақыланатын қолжетімділік.'],
+                    ['type' => 'list', 'items' => [
+                        ['term' => 'Метадерек және провенанс', 'text' => 'Жинақтарды цифрлық ортаға көшіру кезіндегі контекст пен дереккөздерді сақтау.'],
+                        ['term' => 'Формат тұрақтылығы', 'text' => 'Материалдарды ұзақ мерзімде сақтау және миграцияны жоспарлау.'],
+                        ['term' => 'Бақыланатын қолжетімділік', 'text' => 'Шектеулі және лицензияланған материалдарға оқырман қолжетімділігінің саясаты.'],
+                    ]],
+                    ['type' => 'h2', 'text' => 'Қорытындылар және келесі қадамдар'],
+                    ['type' => 'p', 'text' => 'Симпозиум қорытындысы бойынша кітапхана институционалдық мұрағатпен жұмысқа арналған әдістемелік ұсынымдарды жариялайды және университеттің ғылыми репозиторийіндегі тексерілген түсімдер бағдарламасын кеңейтеді.'],
+                ],
+                'en' => [
+                    ['type' => 'lead', 'text' => 'KazUTB Smart Library hosted an international symposium on archival integrity — a working space to discuss long-term preservation practice for digital and hybrid collections in university libraries.'],
+                    ['type' => 'h2', 'text' => 'Programme themes'],
+                    ['type' => 'p', 'text' => 'The programme brought together librarians, archivists, and researchers. Central themes were metadata continuity, format resilience, and controlled access to the institutional archive.'],
+                    ['type' => 'list', 'items' => [
+                        ['term' => 'Metadata and provenance', 'text' => 'Preserving context and sources as collections move into digital environments.'],
+                        ['term' => 'Format resilience', 'text' => 'Long-term preservation of materials and planned migrations across formats.'],
+                        ['term' => 'Controlled access', 'text' => 'Reader access policies for restricted and licensed materials.'],
+                    ]],
+                    ['type' => 'h2', 'text' => 'Outcomes and next steps'],
+                    ['type' => 'p', 'text' => 'Following the symposium the library is publishing guidance for working with the institutional archive and is expanding the reviewed-intake programme of the university scholarly repository.'],
+                ],
+            ],
+            'cta' => [
+                'ru' => ['heading' => 'Продолжить работу', 'body' => 'Перейдите в научный репозиторий KazUTB Smart Library, чтобы ознакомиться с проверенными публикациями.', 'label' => 'Открыть репозиторий', 'href' => '/discover'],
+                'kk' => ['heading' => 'Жұмысты жалғастыру', 'body' => 'Тексерілген жарияланымдармен танысу үшін KazUTB Smart Library ғылыми репозиторийіне өтіңіз.', 'label' => 'Репозиторийді ашу', 'href' => '/discover'],
+                'en' => ['heading' => 'Continue from here', 'body' => 'Open the KazUTB Smart Library scholarly repository to browse reviewed publications.', 'label' => 'Open the repository', 'href' => '/discover'],
+            ],
+        ],
+        'eurasian-manuscripts-integration' => [
+            'slug' => 'eurasian-manuscripts-integration',
+            'featured' => false,
+            'published_at' => '2026-04-10',
+            'published_display' => [
+                'ru' => '10 апреля 2026',
+                'kk' => '2026 жылғы 10 сәуір',
+                'en' => 'April 10, 2026',
+            ],
+            'category' => [
+                'ru' => 'Обновления фонда',
+                'kk' => 'Қор жаңартулары',
+                'en' => 'Collection Updates',
+            ],
+            'title' => [
+                'ru' => 'Цифровая интеграция евразийских рукописей XIX века',
+                'kk' => 'XIX ғасырдың еуразиялық қолжазбаларының цифрлық интеграциясы',
+                'en' => 'Integration of the 19th-Century Eurasian Manuscripts',
+            ],
+            'excerpt' => [
+                'ru' => 'Более четырёх тысяч оцифрованных рукописей из центральных степных архивов индексированы и доступны для академического поиска в каталоге.',
+                'kk' => 'Орталық дала мұрағаттарынан алынған төрт мыңнан астам цифрландырылған қолжазба академиялық іздеуге дайын және каталогта қолжетімді.',
+                'en' => 'More than four thousand digitised manuscripts from the central steppe archives are indexed and available for academic search in the catalog.',
+            ],
+            'hero' => [
+                'image' => 'images/news/collection-initiative.jpg',
+                'alt' => [
+                    'ru' => 'Стеллажи с архивными материалами',
+                    'kk' => 'Мұрағат материалдарының сөрелері',
+                    'en' => 'Shelves of archival materials',
+                ],
+            ],
+            'body' => [
+                'ru' => [
+                    ['type' => 'lead', 'text' => 'Библиотека завершила базовый этап цифровой интеграции коллекции евразийских рукописей XIX века в институциональный архив KazUTB Smart Library.'],
+                    ['type' => 'p', 'text' => 'Материалы прошли проверку метаданных, получили устойчивые идентификаторы и связаны с каталогом. Читатели и преподаватели могут обращаться к коллекции через обычный академический поиск.'],
+                ],
+                'kk' => [
+                    ['type' => 'lead', 'text' => 'Кітапхана XIX ғасырдың еуразиялық қолжазбалар жинағын KazUTB Smart Library институционалдық мұрағатына цифрлық интеграциялаудың базалық кезеңін аяқтады.'],
+                    ['type' => 'p', 'text' => 'Материалдар метадеректер тексеруінен өтті, тұрақты идентификаторларды алды және каталогпен байланыстырылды. Оқырмандар мен оқытушылар жинаққа қалыпты академиялық іздеу арқылы өте алады.'],
+                ],
+                'en' => [
+                    ['type' => 'lead', 'text' => 'The library has completed the foundation stage of digital integration for the 19th-century Eurasian manuscript collection into the KazUTB Smart Library institutional archive.'],
+                    ['type' => 'p', 'text' => 'Materials have been validated against metadata standards, assigned stable identifiers, and linked to the catalog. Readers and faculty can now reach the collection through ordinary academic search.'],
+                ],
+            ],
+            'cta' => [
+                'ru' => ['heading' => 'Открыть коллекцию', 'body' => 'Каталог KazUTB Smart Library содержит проиндексированные материалы — используйте тематическую навигацию по УДК.', 'label' => 'Открыть каталог', 'href' => '/catalog'],
+                'kk' => ['heading' => 'Жинақты ашу', 'body' => 'KazUTB Smart Library каталогында индекстелген материалдар бар — ӘОЖ бойынша тақырыптық навигацияны пайдаланыңыз.', 'label' => 'Каталогты ашу', 'href' => '/catalog'],
+                'en' => ['heading' => 'Open the collection', 'body' => 'The KazUTB Smart Library catalog contains the indexed materials — use UDC subject navigation to explore.', 'label' => 'Open the catalog', 'href' => '/catalog'],
+            ],
+        ],
+        'digital-access-partner-institutions' => [
+            'slug' => 'digital-access-partner-institutions',
+            'featured' => false,
+            'published_at' => '2026-04-05',
+            'published_display' => [
+                'ru' => '5 апреля 2026',
+                'kk' => '2026 жылғы 5 сәуір',
+                'en' => 'April 5, 2026',
+            ],
+            'category' => [
+                'ru' => 'Цифровой доступ',
+                'kk' => 'Цифрлық қолжетімділік',
+                'en' => 'Digital Access',
+            ],
+            'title' => [
+                'ru' => 'Расширение цифрового доступа для внешних академических партнёров',
+                'kk' => 'Сыртқы академиялық серіктестер үшін цифрлық қолжетімділікті кеңейту',
+                'en' => 'Expanded Digital Access for External Academic Partners',
+            ],
+            'excerpt' => [
+                'ru' => 'Обновлены механизмы контролируемого доступа для партнёрских университетов — снижены барьеры для международных исследователей без ослабления политик библиотеки.',
+                'kk' => 'Серіктес университеттер үшін бақыланатын қолжетімділік механизмдері жаңартылды — халықаралық зерттеушілер үшін тосқауылдар азайды, бірақ саясат босаңсымайды.',
+                'en' => 'Controlled-access mechanisms for partner universities have been updated — lower the barrier for international researchers without weakening library policy.',
+            ],
+            'hero' => [
+                'image' => 'images/news/research-support.jpg',
+                'alt' => [
+                    'ru' => 'Читатель работает с цифровыми материалами',
+                    'kk' => 'Оқырман цифрлық материалдармен жұмыс істеуде',
+                    'en' => 'Reader working with digital materials',
+                ],
+            ],
+            'body' => [
+                'ru' => [
+                    ['type' => 'lead', 'text' => 'Библиотека расширила программу цифрового доступа для партнёрских университетов. Политика доступа и журнал обращений остаются под полным контролем KazUTB Smart Library.'],
+                    ['type' => 'p', 'text' => 'Обновлённые потоки доступа поддерживают существующие уровни контроля и работают только в рамках подтверждённых академических соглашений.'],
+                ],
+                'kk' => [
+                    ['type' => 'lead', 'text' => 'Кітапхана серіктес университеттер үшін цифрлық қолжетімділік бағдарламасын кеңейтті. Қолжетімділік саясаты мен өтініш журналы толығымен KazUTB Smart Library бақылауында қалады.'],
+                    ['type' => 'p', 'text' => 'Жаңартылған қолжетімділік ағындары қолданыстағы бақылау деңгейлерін қолдайды және тек расталған академиялық келісімдер шеңберінде жұмыс істейді.'],
+                ],
+                'en' => [
+                    ['type' => 'lead', 'text' => 'The library has expanded its digital-access programme for partner universities. Access policy and the request journal remain fully under KazUTB Smart Library control.'],
+                    ['type' => 'p', 'text' => 'Updated access flows respect existing control levels and operate only within confirmed academic agreements.'],
+                ],
+            ],
+            'cta' => [
+                'ru' => ['heading' => 'Проверить доступ', 'body' => 'Если вы представляете партнёрскую организацию, свяжитесь с библиотекой, чтобы уточнить маршруты доступа.', 'label' => 'Связаться с библиотекой', 'href' => '/contacts'],
+                'kk' => ['heading' => 'Қолжетімділікті тексеру', 'body' => 'Серіктес ұйымның өкілі болсаңыз, қолжетімділік маршруттарын нақтылау үшін кітапханаға хабарласыңыз.', 'label' => 'Кітапханамен байланысу', 'href' => '/contacts'],
+                'en' => ['heading' => 'Confirm your access', 'body' => 'If you represent a partner institution, contact the library to confirm the right access routes for your team.', 'label' => 'Contact the library', 'href' => '/contacts'],
+            ],
+        ],
+    ];
+
+    $orderedSlugs = [
+        'global-symposium-archival-integrity',
+        'eurasian-manuscripts-integration',
+        'digital-access-partner-institutions',
+    ];
+
+    return ['articles' => $articles, 'ordered' => $orderedSlugs];
+};
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -407,9 +606,40 @@ Route::get('/login', function (Request $request) {
     ]);
 })->name('login');
 
-// Consolidated pages: /services and /news removed — redirects to prevent 404s.
+// Consolidated pages: /services removed — redirect to prevent 404s.
+// Phase 3.3 — /news reinstated as the canonical public news index.
 Route::get('/services', fn () => redirect('/', 301));
-Route::get('/news', fn () => redirect('/', 301));
+
+Route::get('/news', function () use ($newsSeedProvider) {
+    $seed = $newsSeedProvider();
+    $articles = array_map(
+        static fn (string $slug) => $seed['articles'][$slug],
+        $seed['ordered']
+    );
+
+    return view('news.index', [
+        'activePage' => 'news',
+        'newsArticles' => $articles,
+    ]);
+});
+
+Route::get('/news/{slug}', function (string $slug) use ($newsSeedProvider) {
+    $seed = $newsSeedProvider();
+    abort_unless(isset($seed['articles'][$slug]), 404);
+
+    $article = $seed['articles'][$slug];
+    $related = array_values(array_filter(
+        array_map(static fn (string $relatedSlug) => $seed['articles'][$relatedSlug], $seed['ordered']),
+        static fn (array $candidate) => $candidate['slug'] !== $slug,
+    ));
+
+    return view('news.show', [
+        'activePage' => 'news',
+        'article' => $article,
+        'relatedArticles' => $related,
+    ]);
+})->where('slug', '[a-z0-9-]+');
+
 Route::get('/about', function () {
     return view('about', ['activePage' => 'about']);
 });
