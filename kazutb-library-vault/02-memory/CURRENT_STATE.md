@@ -1,13 +1,28 @@
 # Current State — KazUTB Library Platform
 > Last updated: 2026-04-23
 
-## Last changed (Cluster D — /resources canonical rebuild)
+## Last changed
 - Time: 2026-04-23 UTC
 - Branch: main
 - Change type: UI/Blade view change + test rewrite
+- Files: resources/views/discover.blade.php, tests/Feature/DiscoverPageTest.php
+- Commit message: feat(phase-3.e): public /discover canonical-led rebuild per academic_discovery_hub_canonical
+
+## Last changed (Cluster E — /discover canonical-led rebuild)
+- Time: 2026-04-23 UTC
+- Branch: main
+- Change type: UI/Blade view change + test rewrite
+- Files: resources/views/discover.blade.php, tests/Feature/DiscoverPageTest.php
+- Summary: Canonical-led rebuild of `/discover` per `docs/design-exports/academic_discovery_hub_canonical`. Retired the full legacy brochure shell (hero-actions orbit, visual-chip constellation, quote card, disciplines section, institutional pathways section, research workflow section, institutional metadata section, bridge section — ~1200 lines of dead template code removed). New layout strictly follows the canonical export: (1) single-column hero with eyebrow + display + lead + filter chips row, (2) Faculties bento grid 2+1+1+2 with accent wash on span-2 cards, (3) UDC Knowledge Pathways four-card grid + "View Full UDC Tree" CTA. Preserved discovery truth: UDC-first axis (hero lead explicitly names UDC, dedicated UDC section with four primary pathways 0/50–60/61–69/8), faculty/department as secondary axis only (each bento card carries a UDC chip and links to `/catalog?faculty=X&udc=Y`). Tri-lingual ru/kk/en chrome. All internal wiring points to real `/catalog` query strings. `DiscoverPageTest` extended with canonical-layout guards (hero single-column shape, bento 2+1+1+2 span positions, accent wash count, legacy-shell id/class retirement).
+- Verification: 14-class public suite 165/165 pass (954 assertions, 16.83s). DiscoverPageTest 14/14 pass (121 assertions).
+
+## Previously changed (Cluster D — /resources canonical rebuild)
+- Time: 2026-04-22 22:51:25 UTC
+- Commit: 6fb3607
+- Branch: main
+- Change type: UI/Blade view change + test rewrite
 - Files: resources/views/resources.blade.php, tests/Feature/ResourcesPageTest.php
-- Summary: Canonical-exact rebuild of `/resources` per `docs/design-exports/institutional_resources_canonical`. Retired the pathways + filter-bar + featured/small-card + support-section shell; new layout is hero (8/12 copy + 4/12 off-campus card) → main (1/4 Refine Search sidebar + 3/4 categorized directory) with Premium Databases card grid (remote_auth + campus access types) and Open Access Tools list rows (open access type). Real `ExternalResourceService` data preserved verbatim (8 resources split 4 premium / 4 open). Tri-lingual ru/kk/en UI chrome, UI-only sidebar facets, `/for-teachers` → `/resources` 301 redirect unchanged. `ResourcesPageTest` rewritten with 15 canonical-aware tests (102 assertions).
-- Verification: 14-class public suite 158/158 pass (878 assertions, 16.39s).
+- Commit message: feat(phase-3.d): public /resources canonical-exact rebuild per institutional_resources_canonical
 
 ## Previously changed (cleanup)
 - Time: 2026-04-22 22:33:36 UTC
@@ -16,16 +31,6 @@
 - Change type: UI/Blade view change
 - Files: resources/views/about.blade.php
 - Commit message: chore(phase-3.cleanup): post-Cluster-C public-layer consolidation
-
-## Latest Git Automation
-- Time: 2026-04-22 22:33:36 UTC
-- Event: post-commit
-- Branch: main
-- Commit: 1992f03
-- Update: Git post-commit on main: chore(phase-3.cleanup): post-Cluster-C public-layer consolidation
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, tests/Feature/PublicShellTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (C.2)
 - Time: 2026-04-22 22:12:23 UTC
