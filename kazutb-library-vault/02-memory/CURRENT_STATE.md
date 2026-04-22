@@ -2,11 +2,29 @@
 > Last updated: 2026-04-22
 
 ## Last changed
-- Time: 2026-04-22 (Cluster C.1)
+- Time: 2026-04-22 (Cluster C.2)
 - Branch: main
 - Change type: UI/Blade view change + new route
-- Files: resources/views/events/index.blade.php (new), routes/web.php (added $eventsSeedProvider + /events route), tests/Feature/EventsIndexPageTest.php (new)
+- Files: resources/views/events/show.blade.php (new), routes/web.php (added $eventDetailProvider + /events/{slug} route), tests/Feature/EventsDetailPageTest.php (new)
+- Commit message: feat(phase-3.c.2): public /events/{slug} detail per event_detail_canonical
+
+## Previously changed (C.1)
+- Time: 2026-04-22 22:02:16 UTC
+- Commit: 41c8755
+- Branch: main
+- Change type: UI/Blade view change
+- Files: resources/views/events/index.blade.php, routes/web.php
 - Commit message: feat(phase-3.c.1): public /events index per events_index_canonical
+
+## Latest Git Automation
+- Time: 2026-04-22 22:02:16 UTC
+- Event: post-commit
+- Branch: main
+- Commit: 41c8755
+- Update: Git post-commit on main: feat(phase-3.c.1): public /events index per events_index_canonical
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/events/index.blade.php, routes/web.php, tests/Feature/EventsIndexPageTest.php
+- Semantic: UI/Blade view change
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (B.6)
 - Time: 2026-04-22 13:45:46 UTC
@@ -15,16 +33,6 @@
 - Change type: UI/Blade view change
 - Files: resources/views/contacts.blade.php, routes/web.php
 - Commit message: feat(phase-3.b.6): canonical-exact /contacts rebuild per contacts_canonical
-
-## Latest Git Automation
-- Time: 2026-04-22 13:45:46 UTC
-- Event: post-commit
-- Branch: main
-- Commit: 50a44d7
-- Update: Git post-commit on main: feat(phase-3.b.6): canonical-exact /contacts rebuild per contacts_canonical
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/contacts.blade.php, routes/web.php, tests/Feature/ContactsCanonicalPageTest.php, tests/Feature/ContactsLocationFundRoomsTest.php, tests/Feature/PublicAboutPageTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (B.5)
 - Time: 2026-04-22 13:06:44 UTC
