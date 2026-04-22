@@ -10,13 +10,13 @@
 - Commit message: fix(phase-3.3): stabilize public news brand and image assets
 
 ## Latest Git Automation
-- Time: 2026-04-22 07:01:16 UTC
+- Time: 2026-04-22 07:25:15 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 4fa272f
-- Update: Git post-commit on main: fix(phase-3.3): stabilize public news brand and image assets
-- Detail: Changed files: lang/en/ui.php, lang/kk/ui.php, lang/ru/ui.php, resources/views/layouts/public.blade.php, resources/views/partials/footer.blade.php, routes/web.php, tests/Feature/PublicNewsDetailPageTest.php, tests/Feature/PublicNewsIndexPageTest.php
-- Semantic: UI/Blade view change
+- Commit: 7c3f4fd
+- Update: Git post-commit on main: chore(vault): sync expanded public product scope context
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/01-master/DELIVERY_ROADMAP.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/DECISIONS.md, kazutb-library-vault/02-memory/OPEN_QUESTIONS.md, kazutb-library-vault/02-memory/TASK_LOG.md, kazutb-library-vault/PROJECT_CONTEXT.md
+- Semantic: No app-surface change detected
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
@@ -45,18 +45,22 @@ Post-3.3 product-context sync (2026-04-22) expanded planned public scope with: h
 - Standing constraints (unchanged): admin pages still render hard-coded demo data until Phase 6 backend wiring; scientific repository module (Phase 4) has no routes/views/schema yet; `/account` is kept as transitional with an inline banner and is scheduled for retirement after Phase 3 (flip `$postLoginDestination` → `/dashboard`, then 301 `/account` → `/dashboard`).
 
 ## Immediate Next Actions
-- [ ] Resolve public route decomposition for newly ratified informational/discovery surfaces: `/leadership`, `/rules`, `/events`, and enhanced location/map presentation strategy.
-- [ ] Phase 3.4: Resources page refinement — polish `resources.blade.php` for institutional tone.
-- [ ] Phase 3.5: Catalog / book detail / discovery polish — reader-facing catalog, `/book/{isbn}`, `/discover`.
-- [ ] Future backend phase: replace the inline `$newsSeedProvider` closure in `routes/web.php` with a DB-backed news source wired through the admin news CRUD (Phase 6).
-- [ ] After Phase 3 completes: retire `/account` (flip reader `$postLoginDestination` default to `/dashboard`, then 301 `/account` → `/dashboard`).
+- [x] Public master-plan reconciliation performed (2026-04-22) — public Phase 3 decomposed into five clusters (A–E). See [[DELIVERY_ROADMAP]] Phase 3 for full cluster detail.
+- [ ] **Next implementation (Cluster A.1): Resources refinement** — polish `resources.blade.php` against `docs/design-exports/resources` export.
+- [ ] Cluster A.2–A.4: Discover / Catalog / Book detail refinement (after Resources done).
+- [ ] Cluster B: Leadership, Rules, Location/wayfinding, Collection/fund info (needs Stitch for new surfaces).
+- [ ] Cluster C: Events module `/events`, `/events/{slug}` (needs Stitch — no canonical export yet).
+- [ ] Cluster D: Latest arrivals block on homepage (decide data source first — see OPEN_QUESTIONS).
+- [ ] Cluster E: Faculty/department knowledge-map layer in discover/catalog (additive, alongside Cluster A).
+- [ ] Future backend phase: replace `$newsSeedProvider` closure with DB-backed news source (Phase 6).
+- [ ] After Phase 3 completes: retire `/account` → flip `$postLoginDestination` reader default to `/dashboard`, then 301.
 
 ## Next Session Starting Point
 1. Re-read `kazutb-library-vault/PROJECT_CONTEXT.md`, this file (`CURRENT_STATE.md`), and `OPEN_QUESTIONS.md` first.
-2. Confirm Phase 3.3 + stabilization shipped on `main` (`3f244fe`, `4fa272f`) and canonical public regression remains green.
-3. Apply the updated public-scope context before any new implementation: latest arrivals, leadership, rules, events, map/location truth, and knowledge-map discovery requirements.
-4. Only after route decomposition decisions are clear, begin the next implementation slice (currently expected: Phase 3.4 resources refinement).
-5. Do not begin repository backend wiring (Phase 4/6) while public-surface scope decomposition is unresolved.
+2. Confirm Phase 3.3 + stabilization + public-reconciliation shipped on `main`.
+3. **Public phase is now cluster-decomposed — do NOT revert to a linear single-page sequence.**
+4. Begin Cluster A.1: Resources refinement. Use `docs/design-exports/resources` as the canonical export anchor.
+5. Do not begin repository backend wiring (Phase 4/6) while public-cluster execution is in progress.
 
 ## Known Technical Debt
 - Post-migration metadata correction and duplicate cleanup remain ongoing

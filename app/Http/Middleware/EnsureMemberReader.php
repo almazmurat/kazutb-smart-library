@@ -36,7 +36,12 @@ class EnsureMemberReader
                 return $this->forbiddenResponse();
             }
 
-            abort(403);
+            // Redirect staff/admin users to their canonical shells instead of returning 403.
+            return match ($role) {
+                'admin'     => redirect('/admin'),
+                'librarian' => redirect('/librarian'),
+                default     => redirect('/login'),
+            };
         }
 
         $request->attributes->set('member_reader', $user);

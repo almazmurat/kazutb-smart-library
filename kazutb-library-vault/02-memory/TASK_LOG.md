@@ -5,6 +5,9 @@
 
 ---
 
+2026-04-22 | fix(middleware): EnsureMemberReader — replace abort(403) with role-based redirect for admin/librarian users hitting /dashboard | [Middleware change] | commit: pending | branch: main
+2026-04-22 | chore(vault): public master-plan reconciliation — Phase 3 decomposed into clusters A–E; DELIVERY_ROADMAP, CURRENT_STATE, OPEN_QUESTIONS, DECISIONS, canonical-design-map updated; next implementation = Cluster A.1 Resources refinement | [Vault/planning only] | commit: pending | branch: main
+2026-04-22 | chore(vault): sync expanded public product scope context | [No app-surface change detected] | commit: 7c3f4fd | branch: main
 2026-04-22 | chore(vault): product-context expansion sync — public scope refinement (latest arrivals, leadership, rules, events, map/wayfinding, knowledge-map, collection truth) | [Vault/context update only] | commit: pending | branch: main
 
 2026-04-22 | fix(phase-3.3): stabilize public news brand and image assets | [UI/Blade view change] | commit: 4fa272f | branch: main

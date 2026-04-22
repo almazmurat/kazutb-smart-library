@@ -65,18 +65,94 @@ Exit: members navigate a real multi-page dashboard; `/account` is legacy-redirec
 
 ## Phase 3 — Public Surface Uplift
 
-Goal: bring public pages to canonical visual standard.
+Goal: bring all public pages to canonical visual and product standard.
 
-- [ ] Implement canonical Enhanced Homepage into `welcome.blade.php`.
-- [ ] Add homepage "Latest Arrivals / New Additions" block backed by real recent-ingest semantics (not static decoration).
-- [ ] Implement public `/news` index + `/news/{id}` detail (reverse the legacy 301). Stitch export may be regenerated.
-- [ ] Implement distinct public events module (`/events`, `/events/{id}`) separate from news.
-- [ ] Implement standalone public informational pages: `/leadership` (Library Leadership) and `/rules` (Library Usage Rules).
-- [ ] Expand public contact/location layer with map + wayfinding + room-level fund locations (`1/200`, `1/202`, `1/203`).
-- [ ] Integrate faculty/department knowledge-map entry into discover/public navigation (UDC remains primary axis).
-- [ ] Refresh `/catalog`, `/book/{isbn}`, `/discover`, `/resources`, `/about`, `/contacts` against their design exports.
+Completed sub-phases:
+- [x] **3.1** — Homepage (`welcome.blade.php`) — canonical KazUTB Smart Library brand, auth-aware navbar, `/dashboard` workspace routing.
+- [x] **3.2** — About + Contacts (`about.blade.php`) — consolidated informational surface, real address/hours, Librarian-on-Duty block.
+- [x] **3.3** — Public News module (`/news`, `/news/{slug}`) — reversed 301, trilingual seeded articles, index + detail views.
+- [x] **3.3-stab** — Stabilization pass — brand regression + broken image assets corrected.
 
-Exit: public surfaces match canonical design map with no placeholder pages.
+> **2026-04-22 reconciliation note:** The remaining public scope is now formally decomposed into five clusters.
+> Do NOT treat this as a simple linear checklist of pages.
+> Each cluster has its own readiness level, export coverage, and Stitch requirements.
+
+---
+
+### Phase 3 Cluster A — Export-backed Refinement (next implementation target)
+
+Goal: bring already-existing public surfaces up to canonical design standard using available exports.
+
+- [ ] **3-A.1** Resources refinement — `resources.blade.php` against `docs/design-exports/resources` export. ← **NEXT IMPLEMENTATION STEP**
+- [ ] **3-A.2** Discover refinement — `discover.blade.php` against `docs/design-exports/Academic Discovery Hub` export.
+- [ ] **3-A.3** Catalog refinement — `catalog.blade.php` against `docs/design-exports/catalog` export.
+- [ ] **3-A.4** Book detail refinement — `book.blade.php` against `docs/design-exports/book_details` export.
+
+Exit: all four surfaces match canonical export anchors with KazUTB institutional tone.
+
+---
+
+### Phase 3 Cluster B — Informational Institutional Surfaces
+
+Goal: new standalone public informational pages that do not yet exist as runtime surfaces.
+Stitch cycle required for: Leadership, Rules (no canonical export yet).
+Location enhancement may fit within existing `/contacts` surface or as a dedicated view (decision pending).
+
+- [ ] **3-B.1** Leadership page — standalone `/leadership` (library administration, team structure, institutional mandate).
+- [ ] **3-B.2** Library Usage Rules page — standalone `/rules` (reader policy, usage rules, borrowing rules).
+- [ ] **3-B.3** Location / map / wayfinding enhancement — explicit coverage of room-level fund locations: `1/200` (технологический фонд), `1/202` (фонд колледжа), `1/203` (экономический фонд библиотеки) + map component. Decide standalone `/location` vs enhanced `/contacts` block before implementing.
+- [ ] **3-B.4** Collection/fund informational content — public reader-facing narrative for each collection area.
+
+Exit: public IA has credible institutional depth layer beyond catalog/discovery.
+
+---
+
+### Phase 3 Cluster C — Events Module
+
+Goal: distinct public events surface separate from news (ratified in [[DECISIONS]] 2026-04-22).
+Stitch cycle required (no canonical export yet).
+
+- [ ] **3-C.1** Events index — `/events` list surface with upcoming and past events.
+- [ ] **3-C.2** Event detail — `/events/{slug}` individual event page.
+
+Exit: events are discoverable independently from news; news–events boundary is clean.
+
+---
+
+### Phase 3 Cluster D — Homepage Enhancement
+
+Goal: add the "Latest Arrivals / New Additions" block to homepage as a real product feature, not a decorative widget.
+
+- [ ] **3-D.1** Latest arrivals block on homepage — backed by recent-ingest semantics from catalog (not static). Decide data source (catalog ingest chronology / curated librarian picks / hybrid) before implementing.
+
+Exit: homepage surfaces freshness signal for recent additions.
+
+---
+
+### Phase 3 Cluster E — Knowledge-Navigation Enrichment
+
+Goal: extend discover/catalog IA with faculty/department knowledge-map layer alongside primary UDC axis.
+UDC remains primary; this is an additive secondary axis.
+
+- [ ] **3-E.1** Faculty/department knowledge-map discovery layer — integrated into `/discover` or `/catalog` navigation (not a separate page).
+- [ ] **3-E.2** Discovery/catalog IA enrichment around academic structure — browse by faculty/department current directions.
+
+Exit: academic users have a faculty/discipline entry point alongside UDC subject navigation.
+
+---
+
+### Phase 3 cluster sequencing (ratified 2026-04-22)
+
+Recommended order: **A → E (partial) → B → C → D**
+- Cluster A first: lowest risk, export-backed, existing runtime surfaces.
+- Cluster E partial integration alongside or after A: discover is in A, enrichment is lightweight additive.
+- Cluster B next: needs Stitch for Leadership/Rules, can run in parallel once A is done.
+- Cluster C after B: events module, requires Stitch, standalone build.
+- Cluster D last or alongside A: latest arrivals needs stable catalog semantics.
+
+Exit (Phase 3 complete): all five clusters shipped; public surfaces match canonical design map; no placeholder pages.
+
+---
 
 ---
 

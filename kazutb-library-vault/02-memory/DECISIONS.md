@@ -24,11 +24,19 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+## 2026-04-22 — Public Phase 3 is governed by cluster decomposition, not local-code gravity
+**Decision:** The remaining public Phase 3 work is managed as five explicit clusters (A–E), not a linear page-by-page sequence derived from what already exists in the codebase.
+**Reason:** New product scope (leadership, rules, events, latest arrivals, location/map, knowledge-map) entered the canonical truth after the last implementation session. Continuing with "resources next because it exists" without acknowledging the broader decomposition would cause the local code state to silently override the product plan.
+**Alternatives considered:** Continue directly with resources refinement without reconciliation.
+**Impact:** DELIVERY_ROADMAP.md Phase 3 is now cluster-structured. Next implementation = Cluster A.1 (Resources refinement), but explicitly ratified within the cluster plan — not by default.
+
+---
+
 ## 2026-04-22 — Events are a distinct public module from news
-**Decision:** Public events/calendar will be tracked as a separate surface (`/events`, `/events/{id}`) and not merged blindly into `/news`.
+**Decision:** Public events/calendar will be tracked as a separate surface (`/events`, `/events/{slug}`) and not merged blindly into `/news`.
 **Reason:** News and events have different user intents, information structure, and lifecycle needs; combining them degrades discoverability.
 **Alternatives considered:** Keep only news and embed event posts as regular news items.
-**Impact:** Roadmap and canonical context now carry events as explicit planned public surfaces.
+**Impact:** Events are Phase 3 Cluster C. Requires new Stitch cycle before implementation.
 
 ---
 
