@@ -68,7 +68,12 @@ Exit: members navigate a real multi-page dashboard; `/account` is legacy-redirec
 Goal: bring public pages to canonical visual standard.
 
 - [ ] Implement canonical Enhanced Homepage into `welcome.blade.php`.
+- [ ] Add homepage "Latest Arrivals / New Additions" block backed by real recent-ingest semantics (not static decoration).
 - [ ] Implement public `/news` index + `/news/{id}` detail (reverse the legacy 301). Stitch export may be regenerated.
+- [ ] Implement distinct public events module (`/events`, `/events/{id}`) separate from news.
+- [ ] Implement standalone public informational pages: `/leadership` (Library Leadership) and `/rules` (Library Usage Rules).
+- [ ] Expand public contact/location layer with map + wayfinding + room-level fund locations (`1/200`, `1/202`, `1/203`).
+- [ ] Integrate faculty/department knowledge-map entry into discover/public navigation (UDC remains primary axis).
 - [ ] Refresh `/catalog`, `/book/{isbn}`, `/discover`, `/resources`, `/about`, `/contacts` against their design exports.
 
 Exit: public surfaces match canonical design map with no placeholder pages.

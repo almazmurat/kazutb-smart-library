@@ -16,6 +16,22 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+## 2026-04-22 — External references are inspiration, not canonical product truth
+**Decision:** Externally provided example pages/screenshots/exports are inspiration and quality references only; they are not canonical source-of-truth contracts.
+**Reason:** Product coherence and domain correctness must be governed by `PROJECT_CONTEXT.md` and ratified decision memory, not by one-to-one mimicry of third-party examples.
+**Alternatives considered:** Treat every incoming reference screen as authoritative implementation spec.
+**Impact:** Future planning and implementation must adapt references to KazUTB Smart Library goals, preserving product integrity over strict visual copying.
+
+---
+
+## 2026-04-22 — Events are a distinct public module from news
+**Decision:** Public events/calendar will be tracked as a separate surface (`/events`, `/events/{id}`) and not merged blindly into `/news`.
+**Reason:** News and events have different user intents, information structure, and lifecycle needs; combining them degrades discoverability.
+**Alternatives considered:** Keep only news and embed event posts as regular news items.
+**Impact:** Roadmap and canonical context now carry events as explicit planned public surfaces.
+
+---
+
 ## 2026-04-17 — Canonical memory startup rule
 **Decision:** Treat the active master and memory layers as the current operating truth and treat old archive material as historical reference only.
 **Reason:** Archive-heavy navigation was polluting the graph and confusing session recovery.
@@ -277,6 +293,138 @@ Each entry: Date | Decision | Why | Who
 **Impact:** Frontend visual change — verify in browser after deploy
 **Keywords:** feat
 **Source:** Git hook auto-capture from commit 9c97e4e
+
+---
+
+
+## 2026-04-21 — feat(phase-0): role-based login redirect + /internal/* auth + design-export cleanup
+**Type:** feat (Routing)
+**Files changed:** routes/web.php
+**What changed:** Route definition update
+**Commit:** 0dd6dcb on main
+**Impact:** Routing change — check page map
+**Keywords:** feat, auth
+**Source:** Git hook auto-capture from commit 0dd6dcb
+
+---
+
+
+## 2026-04-21 — feat(phase-1.1): librarian shell + /librarian overview page
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/layouts/librarian.blade.php, resources/views/librarian/overview.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 9a6e8b0 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 9a6e8b0
+
+---
+
+
+## 2026-04-21 — feat(phase-1.2): canonical librarian circulation / data-cleanup / repository
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/layouts/librarian.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/data-cleanup.blade.php, resources/views/librarian/repository.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 74e3531 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 74e3531
+
+---
+
+
+## 2026-04-21 — feat(phase-1.4): 301 redirects /internal/* -> /librarian/* + canonical UI cleanup
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/layouts/admin.blade.php, resources/views/librarian/circulation.blade.php, resources/views/librarian/overview.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** d0b9310 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat, ui
+**Source:** Git hook auto-capture from commit d0b9310
+
+---
+
+
+## 2026-04-21 — feat(phase-2a): canonical member shell + /dashboard overview / reservations / list
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/layouts/member.blade.php, resources/views/member/dashboard.blade.php, resources/views/member/list.blade.php, resources/views/member/reservations.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 8ec69ff on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 8ec69ff
+
+---
+
+
+## 2026-04-21 — fix(stabilization): member logout + admin/librarian shell polish
+**Type:** fix (UI/Frontend)
+**Files changed:** resources/views/layouts/admin.blade.php, resources/views/layouts/librarian.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 33bc9e6 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** fix
+**Source:** Git hook auto-capture from commit 33bc9e6
+
+---
+
+
+## 2026-04-21 — feat(phase-2b): complete canonical member module — history/notifications/messages + /account transitional banner
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/account.blade.php, resources/views/layouts/member.blade.php, resources/views/member/history.blade.php, resources/views/member/messages.blade.php, resources/views/member/notifications.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 069b71f on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 069b71f
+
+---
+
+
+## 2026-04-22 — feat(phase-3.1): canonical homepage — KazUTB Smart Library brand + /dashboard workspace routing
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/welcome.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** 7d7e137 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 7d7e137
+
+---
+
+
+## 2026-04-22 — feat(phase-3.2): canonical about + contacts — consolidated KazUTB Smart Library informational surface
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/about.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** f23721d on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit f23721d
+
+---
+
+
+## 2026-04-22 — feat(phase-3.3): canonical public news index + detail surfaces
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/news/index.blade.php, resources/views/news/show.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 3f244fe on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 3f244fe
+
+---
+
+
+## 2026-04-22 — fix(phase-3.3): stabilize public news brand and image assets
+**Type:** fix (UI/Frontend)
+**Files changed:** resources/views/layouts/public.blade.php, resources/views/partials/footer.blade.php, routes/web.php
+**What changed:** Blade view modification — library UI
+**Commit:** 4fa272f on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** fix
+**Source:** Git hook auto-capture from commit 4fa272f
 
 ---
 

@@ -746,6 +746,16 @@ Faculty/Department is a **visible secondary browsing entry point**, not the main
 
 Each faculty/department page or filter leads to relevant UDC codes and associated books.
 
+### 9.3 Knowledge Map & Current Directions Requirement
+
+The public discovery layer must provide a **knowledge map** experience that is visually clear and meaningful, not only a flat filter list.
+
+Required behavior:
+- Users can enter discovery through faculty/department context and then pivot to UDC-aligned collections.
+- The interface should expose "current directions" (актуальные направления) per faculty/department so users quickly understand where to start.
+- Knowledge-map navigation remains a secondary axis under UDC primary discovery, but it must be first-class in UX quality and clarity.
+- This requirement is product-level truth and must be carried into future public discovery implementations.
+
 ---
 
 ## 10. Personal Literature Shortlist
@@ -1003,6 +1013,14 @@ Ordinary users and guests: **read only.**
 - Separate `/news` page
 - Member dashboard notifications feed
 
+### 16.5 Boundary with Events Module
+
+News and events are related but **not the same module**.
+
+- News/announcements remain editorial communication posts.
+- Events/calendar is a distinct planned public surface with its own listing and detail flow.
+- Event content may be referenced from news, but events are not to be blindly merged into the news module.
+
 ---
 
 ## 17. Homepage
@@ -1024,6 +1042,16 @@ It is the face of the new library platform.
 8. **CTA for login / member tools** — personalized experience prompt
 9. **Institutional trust / metrics** — e.g. "X books in the fund, Y resources available"
 10. **Quick links** — catalog, repository, resources, contact
+11. **Latest additions / New arrivals** — recently added materials and collections with clear freshness signals
+
+### 17.4 Latest Arrivals Requirement
+
+The homepage/public layer must explicitly surface **recently added content**.
+
+Minimum requirement:
+- Dedicated "Latest Arrivals" (or equivalent) block on homepage and/or discover entry.
+- Items should represent recent additions to local collections, digital materials, or repository-adjacent holdings.
+- This is a core public-facing feature, not an optional decorative widget.
 
 ### 17.3 Visual & Animation Strategy
 
@@ -1095,6 +1123,19 @@ The system must respect:
 - Clear distinction between owned fund and licensed external content
 
 Future: deeper contract-aware management module with expiry alerts.
+
+### 18.6 Public Collection Narrative (Fund Content Truth)
+
+The platform must preserve and communicate the library's major fund categories as public domain truth.
+
+Core categories:
+- **Негізгі қор** — the main physical collection foundation for учебная/научная литература.
+- **Электрондық қор** (including МЭҚҚ / ҚазҰЭК context) — structured electronic holdings and partner-connected digital access layers.
+- **Ресми және нормативтік басылымдар қоры** — official and regulatory publications used in governance/compliance-oriented study.
+- **Диссертациялар мен авторефераттар қоры** — dissertations and author abstracts for advanced academic research.
+- **Сирек кітаптар қоры** — rare books collection of high heritage and research value.
+
+These are large, meaningful public-facing collection categories and must be reflected in informational and discovery surfaces.
 
 ---
 
@@ -1267,6 +1308,25 @@ Authenticated users can send messages, requests, complaints, or improvement sugg
 | Can user see their submitted messages | ✅ Yes — in member dashboard |
 | Email response from library head | Manual (outside system, via email) |
 | In-app response to user | Future enhancement |
+
+### 21.7 Public Location & Wayfinding Requirement
+
+The public informational layer must clearly answer **how to find the library** and where physical collections are located.
+
+Required location truth:
+- `1/200` — технологический фонд
+- `1/202` — фонд колледжа
+- `1/203` — экономический фонд библиотеки
+
+A public map/location component is required in the future contact/location implementation.
+
+### 21.8 Public Informational Pages (Standalone)
+
+The public informational layer includes dedicated standalone pages:
+- **Library Leadership / Руководство библиотеки** — public-facing leadership and administration presentation.
+- **Library Usage Rules / Правила пользования библиотекой** — clear reader policy and usage rules.
+
+These are planned as first-class public surfaces, not minor subsections hidden inside unrelated pages.
 
 ---
 
@@ -1593,7 +1653,11 @@ Language switcher must be visible on all pages.
 /catalog/{id}           → Book detail card
 /resources              → External resources
 /news                   → News & Announcements
-/news/{id}              → Single news/event post
+/news/{id}              → Single news post
+/events                 → Events calendar/list (distinct from news)
+/events/{id}            → Single event detail
+/leadership             → Library Leadership / Руководство библиотеки
+/rules                  → Library Usage Rules / Правила пользования библиотекой
 /login                  → Login page
 /repository             → Scientific works repository (metadata browsable by all)
 /repository/{id}        → Single scientific work metadata page
@@ -1701,6 +1765,17 @@ When integrating exported HTML into Blade templates, the implementing agent must
 - All list endpoints support pagination, filtering, sorting
 - Consistent error response format: `{ "error": "...", "message": "...", "code": "..." }`
 - All endpoints that modify data produce an audit log entry
+
+### 31.5 Design Reference Interpretation Rule
+
+Externally provided example pages, screenshots, and exports are **inspiration/reference only**.
+
+They are not canonical product truth by themselves. Canonical truth is defined by this document and ratified decision memory.
+
+Implementation rule:
+- Use external references to inform direction and quality.
+- Do not copy them blindly or treat them as immutable product contracts.
+- Prefer cohesive KazUTB Smart Library product integrity over one-to-one mimicry.
 
 ---
 
