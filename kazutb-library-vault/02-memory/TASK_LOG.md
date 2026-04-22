@@ -5,6 +5,8 @@
 
 ---
 
+2026-04-22 | polish(phase-3.a.3): catalog selective refinement — active filter chips strip with removable tokens | [UI/Blade view change] | commit: pending | branch: main
+2026-04-22 | polish(phase-3.a.2): align discover pathways KPI label | [UI/Blade view change] | commit: 473cb1f | branch: main
 2026-04-22 | vault: log phase-3.a.2 discover-enrichment task | [No app-surface change detected] | commit: 40dac9b | branch: main
 2026-04-22 | feat(phase-3.a.2): discover-enrichment — add Institutional Pathways section | [UI/Blade view change] | commit: 0857ff1 | branch: main
 2026-04-22 | polish(resources): remove circular view-all self-link, soften english CTA copy | [UI/Blade view change] | commit: edf1aaa | branch: main

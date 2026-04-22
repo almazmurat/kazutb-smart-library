@@ -921,6 +921,14 @@
         </div>
       </div>
 
+      <div id="catalog-active-filters" class="mb-8 rounded-xl border border-outline-variant/20 bg-surface-container-low/60 p-3 md:p-4" hidden>
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">{{ $copy['filters'] }}</span>
+          <button id="catalog-active-filters-clear" type="button" onclick="clearAllFilters()" class="text-xs font-semibold text-secondary hover:underline">{{ $copy['clear_filters'] }}</button>
+        </div>
+        <div id="catalog-active-filters-list" class="flex flex-wrap gap-2"></div>
+      </div>
+
       <div id="catalog-results-list" class="space-y-16">
         @forelse($initialResults as $index => $record)
           @php
@@ -1084,6 +1092,24 @@
     author: 'author'
   };
   const SORT_LABELS = @json($copy['sort_options']);
+  const FILTER_LABELS = {
+    material_type: @json($copy['material_type']),
+    publication_date: @json($copy['publication_date']),
+    language: @json($copy['language']),
+    collection: @json($copy['collection']),
+    available_only: @json($copy['available_only']),
+    physical_only: @json($copy['physical_only']),
+    field_title: @json($copy['field_title']),
+    field_author: @json($copy['field_author']),
+    field_publisher: @json($copy['field_publisher']),
+    field_isbn: @json($copy['field_isbn']),
+    field_udc: @json($copy['field_udc']),
+  };
+  const MATERIAL_TYPE_LABELS = {
+    all: '',
+    digital: @json($copy['types'][1] ?? 'Digital'),
+    archive: @json($copy['types'][2] ?? 'Archive'),
+  };
   const YEAR_BOUNDS = { min: @json($yearMin), max: @json($yearMax) };
 
   let searchDebounceId = null;
@@ -1120,6 +1146,109 @@
 
     const badge = document.getElementById('filter-count-badge');
     if (badge) badge.textContent = String(active);
+  }
+
+  function resetFilterByKey(key) {
+    if (key === 'q') window.catalogState.q = '';
+    if (key === 'title') window.catalogState.title = '';
+    if (key === 'author') window.catalogState.author = '';
+    if (key === 'publisher') window.catalogState.publisher = '';
+    if (key === 'isbn') window.catalogState.isbn = '';
+    if (key === 'udc') window.catalogState.udc = '';
+    if (key === 'materialType') window.catalogState.materialType = 'all';
+    if (key === 'language') window.catalogState.language = 'all';
+    if (key === 'yearRange') {
+      window.catalogState.yearFrom = String(YEAR_BOUNDS.min);
+      window.catalogState.yearTo = String(YEAR_BOUNDS.max);
+    }
+    if (key === 'institution') window.catalogState.institution = '';
+    if (key === 'availableOnly') window.catalogState.availableOnly = false;
+    if (key === 'physicalOnly') window.catalogState.physicalOnly = false;
+  }
+
+  function collectActiveFilters() {
+    const active = [];
+    const pushChip = (key, label, value) => {
+      active.push({ key, label, value });
+    };
+
+    if ((window.catalogState.q || '') !== '') pushChip('q', '', window.catalogState.q);
+    if ((window.catalogState.title || '') !== '') pushChip('title', FILTER_LABELS.field_title, window.catalogState.title);
+    if ((window.catalogState.author || '') !== '') pushChip('author', FILTER_LABELS.field_author, window.catalogState.author);
+    if ((window.catalogState.publisher || '') !== '') pushChip('publisher', FILTER_LABELS.field_publisher, window.catalogState.publisher);
+    if ((window.catalogState.isbn || '') !== '') pushChip('isbn', FILTER_LABELS.field_isbn, window.catalogState.isbn);
+    if ((window.catalogState.udc || '') !== '') pushChip('udc', FILTER_LABELS.field_udc, window.catalogState.udc);
+
+    if ((window.catalogState.materialType || 'all') !== 'all') {
+      pushChip('materialType', FILTER_LABELS.material_type, MATERIAL_TYPE_LABELS[window.catalogState.materialType] || window.catalogState.materialType);
+    }
+
+    if ((window.catalogState.language || 'all') !== 'all') {
+      pushChip('language', FILTER_LABELS.language, String(window.catalogState.language || '').toUpperCase());
+    }
+
+    const from = Number(window.catalogState.yearFrom || YEAR_BOUNDS.min);
+    const to = Number(window.catalogState.yearTo || YEAR_BOUNDS.max);
+    if (from !== YEAR_BOUNDS.min || to !== YEAR_BOUNDS.max) {
+      pushChip('yearRange', FILTER_LABELS.publication_date, `${from}–${to}`);
+    }
+
+    if ((window.catalogState.institution || '') !== '') {
+      const selectedOption = document.querySelector(`#institution-select option[value="${window.catalogState.institution}"]`);
+      const institutionLabel = selectedOption ? selectedOption.textContent.trim() : window.catalogState.institution;
+      pushChip('institution', FILTER_LABELS.collection, institutionLabel);
+    }
+
+    if (window.catalogState.availableOnly) pushChip('availableOnly', '', FILTER_LABELS.available_only);
+    if (window.catalogState.physicalOnly) pushChip('physicalOnly', '', FILTER_LABELS.physical_only);
+
+    return active;
+  }
+
+  function renderActiveFilters() {
+    const wrapper = document.getElementById('catalog-active-filters');
+    const list = document.getElementById('catalog-active-filters-list');
+    if (!wrapper || !list) return;
+
+    const activeFilters = collectActiveFilters();
+    if (!activeFilters.length) {
+      wrapper.hidden = true;
+      list.innerHTML = '';
+      return;
+    }
+
+    wrapper.hidden = false;
+    list.innerHTML = activeFilters.map((item) => {
+      const label = item.label ? `<span class="text-on-surface-variant">${escapeHtml(item.label)}:</span>` : '';
+      return `
+        <button type="button" data-remove-filter="${escapeHtml(item.key)}" class="inline-flex items-center gap-2 rounded-full bg-white border border-outline-variant/30 px-3 py-1.5 text-xs text-on-surface hover:border-secondary/40">
+          ${label}
+          <span class="font-semibold">${escapeHtml(item.value)}</span>
+          <span class="material-symbols-outlined text-sm text-on-surface-variant">close</span>
+        </button>
+      `;
+    }).join('');
+
+    list.querySelectorAll('[data-remove-filter]').forEach((button) => {
+      button.addEventListener('click', () => {
+        resetFilterByKey(button.dataset.removeFilter || '');
+
+        const searchInput = document.getElementById('catalog-search-input');
+        if (searchInput) searchInput.value = window.catalogState.q || '';
+        document.getElementById('advanced-title-input').value = window.catalogState.title || '';
+        document.getElementById('advanced-author-input').value = window.catalogState.author || '';
+        document.getElementById('advanced-publisher-input').value = window.catalogState.publisher || '';
+        document.getElementById('advanced-isbn-input').value = window.catalogState.isbn || '';
+        document.getElementById('advanced-udc-input').value = window.catalogState.udc || '';
+        document.getElementById('filter-available-only').checked = !!window.catalogState.availableOnly;
+        document.getElementById('filter-physical-only').checked = !!window.catalogState.physicalOnly;
+        document.getElementById('institution-select').value = window.catalogState.institution || '';
+
+        updateYearRangeVisual();
+        window.catalogState.page = 1;
+        loadCatalog();
+      });
+    });
   }
 
   function clearAllFilters() {
@@ -1690,6 +1819,7 @@
     }
 
     updateFilterBadge();
+    renderActiveFilters();
     updateYearRangeVisual();
     syncLanguageButtons();
     syncMaterialButtons();
@@ -1853,6 +1983,7 @@
   });
 
   updateFilterBadge();
+  renderActiveFilters();
   updateYearRangeVisual();
   syncLanguageButtons();
   syncMaterialButtons();

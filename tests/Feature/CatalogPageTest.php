@@ -14,6 +14,7 @@ class CatalogPageTest extends TestCase
             ->assertOk()
             ->assertSee('Каталог книг', false)
             ->assertSee('/api/v1/catalog-db', false)
+            ->assertSee('id="catalog-active-filters"', false)
             ->assertSee('id="language-chips"', false)
             ->assertSee('id="year-from-input"', false)
             ->assertSee('id="year-to-input"', false)
@@ -103,6 +104,7 @@ class CatalogPageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('data-sort-menu', false)
+            ->assertSee('id="catalog-active-filters-list"', false)
             ->assertSee('id="year-from-range"', false)
             ->assertSee('id="year-to-range"', false)
             ->assertSee('id="advanced-search-panel"', false)
