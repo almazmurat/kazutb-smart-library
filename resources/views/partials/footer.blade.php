@@ -25,6 +25,7 @@
           'nav_links' => [
               ['label' => 'Главная', 'href' => $routeWithLang('/')],
               ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
+              ['label' => 'Руководство', 'href' => $routeWithLang('/leadership')],
           ],
           'support_links' => [
               ['label' => 'Подборка', 'href' => $routeWithLang('/shortlist')],
@@ -42,6 +43,7 @@
           'nav_links' => [
               ['label' => 'Басты бет', 'href' => $routeWithLang('/')],
               ['label' => 'Каталог', 'href' => $routeWithLang('/catalog')],
+              ['label' => 'Басшылық', 'href' => $routeWithLang('/leadership')],
           ],
           'support_links' => [
               ['label' => 'Іріктеме', 'href' => $routeWithLang('/shortlist')],
@@ -59,6 +61,7 @@
           'nav_links' => [
               ['label' => 'Home', 'href' => $routeWithLang('/')],
               ['label' => 'Catalog', 'href' => $routeWithLang('/catalog')],
+              ['label' => 'Leadership', 'href' => $routeWithLang('/leadership')],
           ],
           'support_links' => [
               ['label' => 'Shortlist', 'href' => $routeWithLang('/shortlist')],

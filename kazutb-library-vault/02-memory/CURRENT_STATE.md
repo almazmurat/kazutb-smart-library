@@ -2,21 +2,21 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-22 09:57:54 UTC
-- Commit: 9f9dc5a
+- Time: 2026-04-22 10:13:29 UTC
+- Commit: a1306b3
 - Branch: main
-- Change type: UI/Blade view change — CATALOG PAGE
-- Files: resources/views/catalog.blade.php
-- Commit message: polish(phase-3.a.3): add removable active filter chips on catalog
+- Change type: UI/Blade view change — BOOK DETAIL PAGE
+- Files: resources/views/book.blade.php
+- Commit message: polish(phase-3.a.4): refine book detail metadata hierarchy
 
 ## Latest Git Automation
-- Time: 2026-04-22 09:57:54 UTC
+- Time: 2026-04-22 10:13:29 UTC
 - Event: post-commit
 - Branch: main
-- Commit: 9f9dc5a
-- Update: Git post-commit on main: polish(phase-3.a.3): add removable active filter chips on catalog
-- Detail: Changed files: kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/catalog.blade.php, tests/Feature/CatalogPageTest.php
-- Semantic: UI/Blade view change — CATALOG PAGE
+- Commit: a1306b3
+- Update: Git post-commit on main: polish(phase-3.a.4): refine book detail metadata hierarchy
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/book.blade.php, tests/Feature/BookPageTest.php
+- Semantic: UI/Blade view change — BOOK DETAIL PAGE
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Project Phase
@@ -50,8 +50,9 @@ Post-3.3 product-context sync (2026-04-22) expanded planned public scope with: h
 - [x] **Resources page selective enrichment** — ✅ COMPLETED (2026-04-22). Added tri-lingual "Tailored Pathways" section (For Students / Faculty & Teachers / Researchers) with role-based cards, descriptions, and CTAs. Added "Institutional Subscriptions" label before resource grid. Preserved all existing sections (hero, filter bar, grid, support). CSS: new pathway card styles with gradients, hover effects, responsive grid. HTML: 3 pathway anchors with data-test-id markers, emojis, role-contextual copy. Tests: ResourcesPageTest upgraded 8→11 tests; all pass. Regression: 38 public-page tests pass. Commit ff5c39a.
 - [x] **Phase 3-D.1: Homepage Latest Arrivals enrichment** — ✅ COMPLETED (2026-04-22). Welcome.blade.php updated with new "Latest Arrivals / Recent Additions" section placed between stats and repository blocks. Tri-lingual copy (ru/kk/en) + 3 seeded items. Section includes editorial cards with year/material type/author/title/collection metadata, and links to catalog search. 10 new tests added to PublicHomepagePageTest.php verifying: guest/auth access, locale variants, metadata display, placement order. Git committed.
 - [x] **Cluster A.4: Book detail selective refinement** — ✅ COMPLETED (2026-04-22). `book.blade.php` refined in-place without route/service changes: clearer bibliographic hierarchy, structured metadata panel, and explicit availability summary block while preserving locale behavior, back-to-catalog flow, shortlist/reservation/digital-actions wiring, and existing API contracts. Tests updated in `BookPageTest.php`; Book and Reader convergence suites pass.
+- [x] **Cluster B.1: Public `/leadership` page** — ✅ COMPLETED (2026-04-22). New standalone public surface at `/leadership` per frozen Cluster B Content Contract v1. Route + `$leadershipSeedProvider` closure in `routes/web.php` (DB-replaceable seed pattern mirroring `$newsSeedProvider`). View `resources/views/leadership.blade.php` extends `layouts.public` and implements the 4 frozen sections (`leadership-header`, `leadership-mandate`, `leadership-directory`, `leadership-support-cta`) with role-first trilingual content and no invented personal names (v1 ships 3 role slots: director, digital-collections, reader-services; portraits null → initial-letter fallback; no external CDN URLs). Support CTA points to `/contacts` with `?lang` preservation. Footer minimally extended with a single "Руководство / Басшылық / Leadership" link in the Navigation column; primary navbar unchanged (stays flat at 5 items per contract §8). New `tests/Feature/LeadershipPageTest.php` — 14 tests / 64 assertions — all pass.
 - [ ] Cluster A.2 and A.5: Discover / Shortlist refinement (next)
-- [ ] Cluster B: Leadership, Rules, Location/wayfinding, Collection/fund info (needs Stitch for new surfaces).
+- [ ] Cluster B (remaining): B.2 Rules, B.3 Location/wayfinding embed into about.blade.php, B.4 Collection/fund narrative embed.
 - [ ] Cluster C: Events module `/events`, `/events/{slug}` (needs Stitch — no canonical export yet).
 - [ ] Cluster D: Latest arrivals block on homepage (decide data source first — see OPEN_QUESTIONS).
 - [ ] Cluster E: Faculty/department knowledge-map layer in discover/catalog (additive, alongside Cluster A).

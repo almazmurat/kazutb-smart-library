@@ -252,6 +252,172 @@ $newsSeedProvider = static function (): array {
     return ['articles' => $articles, 'ordered' => $orderedSlugs];
 };
 
+// Phase 3 Cluster B.1 — seeded public leadership content for /leadership.
+//
+// Scoped strictly to this page; structure mirrors $newsSeedProvider so a
+// future backend phase can replace the closure with a DB-backed source.
+// Content is role-first (no invented personal names). Real names, titles,
+// bios, and portrait assets are populated by library leadership once
+// approved per Cluster B Content Contract §4 (ownership matrix) and §5
+// (trilingual requirements).
+$leadershipSeedProvider = static function (): array {
+    $header = [
+        'ru' => [
+            'eyebrow' => 'Руководство библиотеки',
+            'headline' => 'Руководство KazUTB Smart Library',
+            'lede' => 'Руководство библиотеки отвечает за институциональный фонд, электронные коллекции, научный архив и читательские сервисы KazUTB Smart Library. Контакты и маршруты обращения ведутся через официальные каналы университета.',
+        ],
+        'kk' => [
+            'eyebrow' => 'Кітапхана басшылығы',
+            'headline' => 'KazUTB Smart Library басшылығы',
+            'lede' => 'Кітапхана басшылығы KazUTB Smart Library-дің институционалдық қорын, электрондық жинақтарын, ғылыми мұрағатын және оқырман сервистерін үйлестіреді. Байланыс пен өтініш маршруттары университеттің ресми арналары арқылы жүргізіледі.',
+        ],
+        'en' => [
+            'eyebrow' => 'Library Leadership',
+            'headline' => 'Leadership of KazUTB Smart Library',
+            'lede' => 'Library leadership stewards the institutional collection, digital materials, scholarly archive, and reader services of KazUTB Smart Library. Contact and inquiry routes are maintained through official university channels.',
+        ],
+    ];
+
+    $mandate = [
+        'ru' => [
+            'eyebrow' => 'Институциональный мандат',
+            'title' => 'Ответственность библиотеки',
+            'paragraph' => 'Руководство библиотеки отвечает за сохранность и развитие институционального фонда, качество метаданных каталога, контролируемый доступ к электронным материалам, ведение научного репозитория университета и поддержку читателей в рабочих маршрутах. Решения согласуются с академической и административной политикой университета.',
+            'reports_to_label' => 'Подчинённость',
+            'reports_to_value' => 'Администрация КазУТБ',
+        ],
+        'kk' => [
+            'eyebrow' => 'Институционалдық мандат',
+            'title' => 'Кітапхананың жауапкершілігі',
+            'paragraph' => 'Кітапхана басшылығы институционалдық қордың сақталуы мен дамуына, каталог метадерегінің сапасына, электрондық материалдарға бақыланатын қолжетімділікке, университеттің ғылыми репозиторийін жүргізуге және оқырмандарды жұмыс маршруттарында қолдауға жауапты. Шешімдер университеттің академиялық және әкімшілік саясатымен үйлестіріледі.',
+            'reports_to_label' => 'Бағыныстылық',
+            'reports_to_value' => 'КазУТБ әкімшілігі',
+        ],
+        'en' => [
+            'eyebrow' => 'Institutional mandate',
+            'title' => 'Scope of library responsibility',
+            'paragraph' => 'Library leadership is responsible for preservation and development of the institutional collection, catalog metadata quality, controlled access to digital materials, stewardship of the university scholarly repository, and support for readers throughout their workflows. Decisions are aligned with the academic and administrative policy of the university.',
+            'reports_to_label' => 'Reports to',
+            'reports_to_value' => 'KazUTB university administration',
+        ],
+    ];
+
+    // v1 directory: role-based slots. `full_name` intentionally omitted —
+    // per Cluster B Content Contract §9 risk R-B1.2, real names are populated
+    // only after director approval. Portraits are local assets; a null
+    // portrait triggers the initial-letter fallback treatment in the view.
+    $profiles = [
+        [
+            'slug' => 'director',
+            'order' => 1,
+            'portrait' => null,
+            'portrait_initials' => [
+                'ru' => 'Д',
+                'kk' => 'Д',
+                'en' => 'D',
+            ],
+            'role_title' => [
+                'ru' => 'Директор библиотеки',
+                'kk' => 'Кітапхана директоры',
+                'en' => 'Library Director',
+            ],
+            'role_scope_line' => [
+                'ru' => 'Общее руководство и стратегия',
+                'kk' => 'Жалпы басшылық және стратегия',
+                'en' => 'Overall leadership and strategy',
+            ],
+            'role_description' => [
+                'ru' => 'Отвечает за стратегию развития библиотеки, институциональный фонд и согласование академической и административной политики. Представляет библиотеку во внутренних и внешних академических процессах.',
+                'kk' => 'Кітапхананың даму стратегиясы, институционалдық қор және академиялық пен әкімшілік саясатты үйлестіру үшін жауап береді. Кітапхананы ішкі және сыртқы академиялық процестерде таныстырады.',
+                'en' => 'Responsible for library strategy, the institutional collection, and alignment of academic and administrative policy. Represents the library in internal and external academic processes.',
+            ],
+        ],
+        [
+            'slug' => 'digital-collections',
+            'order' => 2,
+            'portrait' => null,
+            'portrait_initials' => [
+                'ru' => 'ЦК',
+                'kk' => 'ЦЖ',
+                'en' => 'DC',
+            ],
+            'role_title' => [
+                'ru' => 'Заведующий электронными коллекциями',
+                'kk' => 'Электрондық жинақтар жетекшісі',
+                'en' => 'Head of Digital Collections',
+            ],
+            'role_scope_line' => [
+                'ru' => 'Электронные ресурсы и репозиторий',
+                'kk' => 'Электрондық ресурстар және репозиторий',
+                'en' => 'Digital materials and repository',
+            ],
+            'role_description' => [
+                'ru' => 'Ведёт работу с электронными материалами, лицензируемыми ресурсами и институциональным научным репозиторием. Отвечает за качество метаданных и корректную работу контролируемого читательского доступа.',
+                'kk' => 'Электрондық материалдармен, лицензияланған ресурстармен және институционалдық ғылыми репозиториймен жұмысты жүргізеді. Метадерек сапасы мен бақыланатын оқырман қолжетімділігінің дұрыс жұмысы үшін жауапты.',
+                'en' => 'Leads work with digital materials, licensed resources, and the institutional scholarly repository. Responsible for metadata quality and correct operation of controlled reader access.',
+            ],
+        ],
+        [
+            'slug' => 'reader-services',
+            'order' => 3,
+            'portrait' => null,
+            'portrait_initials' => [
+                'ru' => 'ЧС',
+                'kk' => 'ОС',
+                'en' => 'RS',
+            ],
+            'role_title' => [
+                'ru' => 'Координатор читательских сервисов',
+                'kk' => 'Оқырман сервистерінің үйлестірушісі',
+                'en' => 'Reader Services Coordinator',
+            ],
+            'role_scope_line' => [
+                'ru' => 'Выдача, возврат и сопровождение читателей',
+                'kk' => 'Беру, қайтару және оқырмандарды қолдау',
+                'en' => 'Circulation and reader support',
+            ],
+            'role_description' => [
+                'ru' => 'Координирует повседневные читательские процессы: выдачу и возврат, работу с подборками, консультации преподавателей и студентов, а также маршруты обращения к библиотекарю.',
+                'kk' => 'Күнделікті оқырман процестерін үйлестіреді: беру мен қайтару, іріктемелермен жұмыс, оқытушылар мен студенттерге кеңес беру және кітапханашыға жүгіну маршруттары.',
+                'en' => 'Coordinates day-to-day reader workflows: circulation, shortlist and reservation support, consultations for faculty and students, and routes of inquiry to the librarian-on-duty.',
+            ],
+        ],
+    ];
+
+    $supportCta = [
+        'ru' => [
+            'eyebrow' => 'Связаться с библиотекой',
+            'heading' => 'Общие обращения и академические запросы',
+            'body' => 'Для общих вопросов, обращений преподавателей и внешних академических запросов используйте официальные контакты KazUTB Smart Library.',
+            'label' => 'Перейти к контактам',
+            'href' => '/contacts',
+        ],
+        'kk' => [
+            'eyebrow' => 'Кітапханамен байланысу',
+            'heading' => 'Жалпы өтініштер мен академиялық сұраулар',
+            'body' => 'Жалпы сұрақтар, оқытушылардың өтініштері және сыртқы академиялық сұраулар бойынша KazUTB Smart Library-дің ресми байланыс арналарын пайдаланыңыз.',
+            'label' => 'Байланыс бетіне өту',
+            'href' => '/contacts',
+        ],
+        'en' => [
+            'eyebrow' => 'Contact the library',
+            'heading' => 'General inquiries and academic requests',
+            'body' => 'For general questions, faculty inquiries, and external academic requests, please use the official contact routes of KazUTB Smart Library.',
+            'label' => 'Open contacts',
+            'href' => '/contacts',
+        ],
+    ];
+
+    return [
+        'header' => $header,
+        'mandate' => $mandate,
+        'profiles' => $profiles,
+        'support_cta' => $supportCta,
+        'last_reviewed_at' => '2026-04-22',
+    ];
+};
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -646,6 +812,18 @@ Route::get('/about', function () {
 
 Route::get('/contacts', function () {
     return view('about', ['activePage' => 'contacts']);
+});
+
+// Phase 3 Cluster B.1 — standalone public leadership surface.
+// Content is driven by $leadershipSeedProvider (trilingual, role-first).
+// Per Cluster B Content Contract §8 this route is NOT added to the primary
+// navbar; global access is via the footer and (later) the Institutional
+// Directory block on /about.
+Route::get('/leadership', function () use ($leadershipSeedProvider) {
+    return view('leadership', [
+        'activePage' => 'leadership',
+        'leadership' => $leadershipSeedProvider(),
+    ]);
 });
 
 Route::get('/resources', function () {
