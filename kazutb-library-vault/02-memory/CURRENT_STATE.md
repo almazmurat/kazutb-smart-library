@@ -3,12 +3,31 @@
 
 ## Last changed
 - Time: 2026-04-23 UTC
+- Commit: (pending)
 - Branch: main
 - Change type: UI/Blade view change + test rewrite
-- Files: resources/views/discover.blade.php, tests/Feature/DiscoverPageTest.php
-- Commit message: feat(phase-3.e): public /discover canonical-led rebuild per academic_discovery_hub_canonical
+- Files: resources/views/news/index.blade.php, tests/Feature/PublicNewsIndexPageTest.php
+- Commit message: feat(phase-3.f): public /news index canonical-exact rebuild per news_index_canonical
 
-## Last changed (Cluster E — /discover canonical-led rebuild)
+## Latest Git Automation
+- Time: 2026-04-22 23:25:38 UTC
+- Event: post-commit
+- Branch: main
+- Commit: b0319cf
+- Update: Git post-commit on main: feat(phase-3.e): public /discover canonical-led rebuild per academic_discovery_hub_canonical
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/discover.blade.php, tests/Feature/DiscoverPageTest.php
+- Semantic: UI/Blade view change
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
+
+## Last changed (Cluster F — /news index canonical-exact rebuild)
+- Time: 2026-04-23 UTC
+- Branch: main
+- Change type: UI/Blade view change + test rewrite
+- Files: resources/views/news/index.blade.php, tests/Feature/PublicNewsIndexPageTest.php
+- Summary: Canonical-exact rebuild of `/news` index per `docs/design-exports/news_index_canonical`. Old 266-line shell (data-section="news-intro/news-featured/news-grid", CSS classes: news-intro, news-featured-grid, news-grid, news-card, news-card-link) fully replaced. New layout matches canonical: (1) page header — eyebrow "Institutional Updates" + Newsreader display "Library Dispatch" + Manrope lead (max-w 720px); (2) featured lead story — full-width horizontal card (image 60% / copy 40% on md+) wrapping `<a>` to `/news/{slug}?lang=en`; (3) grid bar with h3 "Recent Articles" + 3 UI-only filter buttons (All Topics / Events / Research) with data-test-id hooks; (4) 3-col article grid with regular cards + bento highlight card (span-2, dark navy bg, CTA to `/events`); (5) Load More button. Tri-lingual chrome: eyebrow/heading/lead/filter labels/load-more. Real seeded articles wired from `$newsSeedProvider` (3 articles via `routes/web.php` closure). Featured article (`global-symposium-archival-integrity`) to featured lead; two non-featured articles to grid cards; bento is static events CTA. Scoped CSS in `@section('head')` using `.news-canonical__*` BEM prefix. 5 data-section markers + 7 data-test-id anchors added. Old shell markers verified absent in tests.
+- Verification: PublicNewsIndexPageTest 22/22 pass (92 assertions). Public regression: 68/69 pass (1 pre-existing ExternalResourcePageTest failure from /about rebuild — not caused by news changes).
+
+
 - Time: 2026-04-23 UTC
 - Branch: main
 - Change type: UI/Blade view change + test rewrite
@@ -107,8 +126,9 @@ Post-3.3 product-context sync (2026-04-22) expanded planned public scope with: h
 - [x] **Cluster B.3: Contacts — embedded location / fund rooms / visit notes** — ✅ COMPLETED (2026-04-22). Scope kept tightly inside the existing `/contacts` variant of `resources/views/about.blade.php` per Cluster B Content Contract v1 §3 §6 — no new route, no standalone location page, no backend change, no external map provider. Three new `data-section` markers added only on the Contacts variant: `contacts-location` (branch card + address + entrance + floor note + static v1 map placeholder + "Get directions" CTA to google.com/maps/search with URL-encoded address, opens in new tab with `rel="noopener noreferrer"`), `contacts-fund-rooms` (frozen v1 room set only — `1/200` технологический фонд, `1/202` фонд колледжа, `1/203` экономический фонд библиотеки; each card has `room`/`fund_label`/`branch`/`floor`/`short_description`/`access_note`), and `contacts-visit-notes` (ID, quiet zones, accessibility + CTA to `/rules` with `?lang` preserved). Trilingual ru/kk/en from day one. Existing Contacts chrome kept intact (hero `contacts-summary` aside, `librarian-on-duty` auth-aware block, real address/phone/email, Opening hours, `catalog-cta`). About variant is deliberately untouched. New `tests/Feature/ContactsLocationFundRoomsTest.php` — 11 tests / 59 assertions — all pass. Regression: `PublicAboutPageTest` 9/9, `LeadershipPageTest` 14/14, `RulesPageTest` 15/15 — all green.
 - [x] **Cluster B.2: Public `/rules` page** — ✅ COMPLETED (2026-04-22). New standalone public surface at `/rules` per frozen Cluster B Content Contract v1. Route + `$rulesSeedProvider` closure in `routes/web.php` (DB-replaceable seed pattern mirroring `$leadershipSeedProvider`). View `resources/views/rules.blade.php` extends `layouts.public` and implements the frozen section tree (`rules-header`, `rules-toc`, `rules-general` `#general`, `rules-borrowing` `#borrowing`, `rules-digital-access` `#digital`, `rules-conduct` `#conduct`, `rules-penalties` `#penalties`, `rules-footer-meta`). Anchor IDs preserved as public contract. Sticky TOC on md+ degrading to a jump list on mobile; full rules content readable on first load (no accordions). Trilingual ru/kk/en with a bilingual title pattern in the header. Header carries `effective_date` (2026-04-01) and `last_reviewed_at` (2026-04-22) both rendered as `<time>` elements. Borrowing section is audience-grouped (Undergraduate / Master's & doctoral / Faculty & research). Digital access section carries the no-download + SSO-only + no-credential-sharing policy. Penalties section adds a numbered access-suspension ladder (Reminder → Temporary hold → Escalation) and a right-of-appeal block routing to `/leadership` + `/contacts`. Footer-meta CTA targets `/contacts` and `/leadership` with `?lang` preservation. Footer minimally extended with a single "Правила библиотеки / Кітапхана ережелері / Library Rules" link added after Leadership in the Navigation column; primary navbar unchanged (stays flat at 5 items per contract §8). New `tests/Feature/RulesPageTest.php` — 15 tests / 89 assertions — all pass.
 - [x] **Cluster B.1: Public `/leadership` page** — ✅ COMPLETED (2026-04-22). New standalone public surface at `/leadership` per frozen Cluster B Content Contract v1. Route + `$leadershipSeedProvider` closure in `routes/web.php` (DB-replaceable seed pattern mirroring `$newsSeedProvider`). View `resources/views/leadership.blade.php` extends `layouts.public` and implements the 4 frozen sections (`leadership-header`, `leadership-mandate`, `leadership-directory`, `leadership-support-cta`) with role-first trilingual content and no invented personal names (v1 ships 3 role slots: director, digital-collections, reader-services; portraits null → initial-letter fallback; no external CDN URLs). Support CTA points to `/contacts` with `?lang` preservation. Footer minimally extended with a single "Руководство / Басшылық / Leadership" link in the Navigation column; primary navbar unchanged (stays flat at 5 items per contract §8). New `tests/Feature/LeadershipPageTest.php` — 14 tests / 64 assertions — all pass.
-- [ ] Cluster A.2 and A.5: Discover / Shortlist refinement (next)
-- [ ] Cluster C: Events module `/events`, `/events/{slug}` (needs Stitch — no canonical export yet).
+- [x] **Cluster F: /news index canonical-exact rebuild** — ✅ COMPLETED (2026-04-23). Rebuilt `news/index.blade.php` per `docs/design-exports/news_index_canonical`. Old shell (data-section="news-intro/news-featured/news-grid", .news-card, .news-featured-grid, .news-grid classes) replaced wholesale. 4-section canonical layout: page header → featured lead story (horizontal card with image 60%/copy 40%) → grid bar with filter hooks → 3-col article grid + bento events CTA. Tri-lingual chrome. Real seeded articles from `$newsSeedProvider` closure. `PublicNewsIndexPageTest` rewritten 8→22 tests (92 assertions), all pass. Pre-existing `ExternalResourcePageTest` failure is from `/about` rebuild, unrelated.
+- [ ] **Cluster F.2: /news detail canonical-exact rebuild** — next
+- [ ] **Homepage canonicalization** — after news detail
 - [ ] Cluster D: Latest arrivals block on homepage (decide data source first — see OPEN_QUESTIONS).
 - [ ] Cluster E: Faculty/department knowledge-map layer in discover/catalog (additive, alongside Cluster A).
 - [ ] Future backend phase: replace `$newsSeedProvider` closure with DB-backed news source (Phase 6).

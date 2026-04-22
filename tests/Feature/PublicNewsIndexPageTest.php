@@ -7,12 +7,20 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Tests\TestCase;
 
 /**
- * Phase 3.3 — Public News index (/news).
+ * Phase 3.f — Public News index (/news) — canonical-exact rebuild.
  *
- * The legacy Route::get('/news', fn () => redirect('/', 301)) has been
- * reversed in Phase 3.3. /news now renders resources/views/news/index.blade.php
- * extending layouts.public, with a featured editorial lead + "Recent Updates"
- * grid seeded from a representative array in routes/web.php.
+ * The old news shell (data-section="news-intro", "news-featured", "news-grid",
+ * CSS classes news-intro / news-featured-grid / news-grid / news-card) has been
+ * replaced wholesale with the news_index_canonical layout structure.
+ *
+ * Covers:
+ *   1. /news returns 200
+ *   2. canonical major structure markers render
+ *   3. old obsolete shell markers are absent
+ *   4. seeded articles still render
+ *   5. tri-lingual chrome renders correctly
+ *   6. article detail links are well-formed
+ *   7. no incorrect legacy brand strings appear
  */
 class PublicNewsIndexPageTest extends TestCase
 {
@@ -30,100 +38,258 @@ class PublicNewsIndexPageTest extends TestCase
 
         $this->get('/login');
         $this->post('/login', [
-            '_token' => csrf_token(),
-            'login' => $identity['login'],
-            'password' => $identity['password'],
+            '_token'      => csrf_token(),
+            'login'       => $identity['login'],
+            'password'    => $identity['password'],
             'device_name' => 'phpunit',
         ]);
     }
 
+    // ── 1. HTTP status ────────────────────────────────────────────────
+
+    public function test_news_index_returns_200(): void
+    {
+        $this->get('/news')->assertOk();
+        $this->get('/news?lang=en')->assertOk();
+        $this->get('/news?lang=kk')->assertOk();
+        $this->get('/news?lang=ru')->assertOk();
+    }
+
+    /** @deprecated alias kept for CI history grep */
     public function test_legacy_news_redirect_is_reversed(): void
     {
-        $response = $this->get('/news?lang=en');
-
-        // Phase 3.3 reversed the legacy 301 /news -> / redirect.
-        $response->assertOk();
-        $response->assertStatus(200);
+        $this->get('/news?lang=en')->assertOk()->assertStatus(200);
     }
+
+    // ── 2. Canonical structure markers ───────────────────────────────
+
+    public function test_canonical_page_section_marker_renders(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertSee('data-section="news-canonical-page"', false);
+        $r->assertSee('data-section="news-canonical-featured"', false);
+        $r->assertSee('data-section="news-canonical-grid"', false);
+    }
+
+    public function test_canonical_test_id_markers_render(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertSee('data-test-id="news-canonical-header"', false);
+        $r->assertSee('data-test-id="news-canonical-featured"', false);
+        $r->assertSee('data-test-id="news-canonical-filter"', false);
+        $r->assertSee('data-test-id="news-canonical-bento"', false);
+    }
+
+    public function test_canonical_css_prefix_applied(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertSee('news-canonical__header', false);
+        $r->assertSee('news-canonical__display', false);
+        $r->assertSee('news-canonical__featured-card', false);
+        $r->assertSee('news-canonical__grid', false);
+        $r->assertSee('news-canonical__bento', false);
+    }
+
+    // ── 3. Old obsolete shell markers must be absent ──────────────────
+
+    public function test_old_shell_section_markers_are_gone(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertDontSee('data-section="news-intro"', false);
+        $r->assertDontSee('data-section="news-featured"', false);
+        $r->assertDontSee('data-section="news-grid"', false);
+    }
+
+    public function test_old_shell_css_classes_are_gone(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertDontSee('class="page-section news-intro"', false);
+        $r->assertDontSee('news-featured-grid', false);
+        $r->assertDontSee('class="news-grid"', false);
+        $r->assertDontSee('class="news-card"', false);
+        $r->assertDontSee('class="news-card-link"', false);
+    }
+
+    public function test_old_intro_heading_copy_is_gone(): void
+    {
+        // Old shell used: "KazUTB Smart Library news" as intro_heading.
+        // Canonical uses "Library Dispatch" as display h1.
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertDontSee('KazUTB Smart Library news', false);
+    }
+
+    // ── 4. Seeded articles still render ──────────────────────────────
+
+    public function test_guest_can_view_news_index_with_seeded_articles(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        // Canonical chrome present
+        $r->assertSee('Library Dispatch', false);
+        $r->assertSee('Institutional Updates', false);
+        $r->assertSee('Recent Articles', false);
+        // Featured article title from seed
+        $r->assertSee('Global Symposium on Archival Integrity Concludes in Astana', false);
+        // Grid articles
+        $r->assertSee('Integration of the 19th-Century Eurasian Manuscripts', false);
+        $r->assertSee('Expanded Digital Access for External Academic Partners', false);
+        // Bento canonical element
+        $r->assertSee('Library Events', false);
+        // Load more
+        $r->assertSee('Load More Dispatches', false);
+    }
+
+    public function test_featured_article_category_and_read_cta_render(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        // Featured article category tag (from seed data)
+        $r->assertSee('Featured Report', false);
+        // New canonical CTA text (old was "Read Full Coverage")
+        $r->assertSee('Read full dispatch', false);
+    }
+
+    // ── 5. Tri-lingual chrome ─────────────────────────────────────────
+
+    public function test_russian_chrome_renders(): void
+    {
+        $r = $this->get('/news?lang=ru');
+
+        $r->assertOk();
+        $r->assertSee('Библиотечный вестник', false);
+        $r->assertSee('Институциональные обновления', false);
+        $r->assertSee('Последние статьи', false);
+        $r->assertSee('Читать полностью', false);
+        $r->assertSee('Загрузить ещё', false);
+    }
+
+    public function test_kazakh_chrome_renders(): void
+    {
+        $r = $this->get('/news?lang=kk');
+
+        $r->assertOk();
+        $r->assertSee('Кітапхана хабаршысы', false);
+        $r->assertSee('Институционалдық жаңартулар', false);
+        $r->assertSee('Соңғы мақалалар', false);
+        $r->assertSee('Толығырақ оқу', false);
+        $r->assertSee('Тағы жүктеу', false);
+    }
+
+    public function test_english_chrome_renders(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertSee('Library Dispatch', false);
+        $r->assertSee('Institutional Updates', false);
+        $r->assertSee('Recent Articles', false);
+        $r->assertSee('Read full dispatch', false);
+        $r->assertSee('Load More Dispatches', false);
+    }
+
+    // ── 6. Article detail links are well-formed ──────────────────────
+
+    public function test_article_links_are_well_formed_with_lang(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        // Featured article link with ?lang=en preserved
+        $r->assertSee('href="/news/global-symposium-archival-integrity?lang=en"', false);
+        // Grid article links
+        $r->assertSee('href="/news/eurasian-manuscripts-integration?lang=en"', false);
+        $r->assertSee('href="/news/digital-access-partner-institutions?lang=en"', false);
+    }
+
+    public function test_bento_events_link_is_well_formed(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertSee('href="/events?lang=en"', false);
+        $r->assertSee('View all events', false);
+    }
+
+    public function test_default_lang_links_omit_lang_param(): void
+    {
+        $r = $this->get('/news');
+
+        $r->assertOk();
+        // Default lang (ru) links should NOT append ?lang=ru
+        $r->assertSee('href="/news/global-symposium-archival-integrity"', false);
+        $r->assertSee('href="/events"', false);
+    }
+
+    // ── Image assets ─────────────────────────────────────────────────
+
+    public function test_seeded_image_assets_render(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        $r->assertSee('/images/news/campus-library.jpg', false);
+        $r->assertSee('/images/news/classics-event.jpg', false);
+        $r->assertSee('/images/news/author-visit.jpg', false);
+    }
+
+    // ── 7. No legacy brand strings ────────────────────────────────────
+
+    public function test_no_legacy_brand_strings_appear(): void
+    {
+        $r = $this->get('/news?lang=en');
+
+        $r->assertOk();
+        // View-scoped regression guards — shared layout may carry "Digital Library"
+        // so guard specifically for erroneous legacy brand variants only.
+        $r->assertDontSee('Athenaeum', false);
+        $r->assertDontSee('Curator Archive', false);
+        $r->assertDontSee('KazTBU Digital Library', false);
+        $r->assertDontSee('KazUTB Digital Library', false);
+    }
+
+    // ── Auth access ───────────────────────────────────────────────────
 
     public function test_guest_can_view_news_index(): void
     {
-        $response = $this->get('/news?lang=en');
-
-        $response->assertOk();
-        $response->assertSee('KazUTB Smart Library', false);
-        // Canonical intro block.
-        $response->assertSee('KazUTB Smart Library news', false);
-        // Editorial hero (Featured Report) markers.
-        $response->assertSee('Featured Report', false);
-        $response->assertSee('Read Full Coverage', false);
-        // Recent Updates grid heading.
-        $response->assertSee('Recent Updates', false);
-        // Seeded articles exposed on the index.
-        $response->assertSee('Global Symposium on Archival Integrity Concludes in Astana', false);
-        $response->assertSee('Integration of the 19th-Century Eurasian Manuscripts', false);
-        $response->assertSee('Expanded Digital Access for External Academic Partners', false);
-    }
-
-    public function test_news_index_links_to_detail_route_with_lang(): void
-    {
-        $response = $this->get('/news?lang=en');
-
-        $response->assertOk();
-        // Hero CTA preserves ?lang=en on the detail slug.
-        $response->assertSee('href="/news/global-symposium-archival-integrity?lang=en"', false);
-        // Grid cards also link to detail slugs.
-        $response->assertSee('href="/news/eurasian-manuscripts-integration?lang=en"', false);
-        $response->assertSee('href="/news/digital-access-partner-institutions?lang=en"', false);
-    }
-
-    public function test_news_index_uses_valid_local_image_assets(): void
-    {
-        $response = $this->get('/news?lang=en');
-
-        $response->assertOk();
-        $response->assertSee('/images/news/campus-library.jpg', false);
-        $response->assertSee('/images/news/classics-event.jpg', false);
-        $response->assertSee('/images/news/author-visit.jpg', false);
-    }
-
-    public function test_news_index_does_not_reintroduce_legacy_brand(): void
-    {
-        $response = $this->get('/news?lang=en');
-
-        $response->assertOk();
-        // View-scoped regression guard (see PublicAboutPageTest rationale:
-        // layouts.public footer still carries legacy "KazTBU Digital Library"
-        // drift that is out of scope until the layout-level pass).
-        $response->assertDontSee('Athenaeum', false);
-        $response->assertDontSee('Curator Archive', false);
-        $response->assertDontSee('KazTBU Digital Library', false);
-        $response->assertDontSee('KazUTB Digital Library', false);
+        $this->get('/news?lang=en')->assertOk()->assertSee('Library Dispatch', false);
     }
 
     public function test_authenticated_reader_can_view_news_index(): void
     {
         $this->loginAs('student');
 
-        $response = $this->get('/news?lang=en');
-
-        $response->assertOk();
-        $response->assertSee('KazUTB Smart Library', false);
-        $response->assertSee('Recent Updates', false);
-        $response->assertSee('Sign out', false);
+        $r = $this->get('/news?lang=en');
+        $r->assertOk();
+        $r->assertSee('Library Dispatch', false);
+        $r->assertSee('Recent Articles', false);
+        $r->assertSee('Sign out', false);
     }
 
     public function test_librarian_can_view_news_index(): void
     {
         $this->loginAs('librarian');
 
-        $this->get('/news?lang=en')->assertOk()->assertSee('KazUTB Smart Library', false);
+        $this->get('/news?lang=en')->assertOk()->assertSee('Library Dispatch', false);
     }
 
     public function test_admin_can_view_news_index(): void
     {
         $this->loginAs('admin');
 
-        $this->get('/news?lang=en')->assertOk()->assertSee('KazUTB Smart Library', false);
+        $this->get('/news?lang=en')->assertOk()->assertSee('Library Dispatch', false);
     }
 }
