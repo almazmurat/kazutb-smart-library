@@ -84,6 +84,14 @@
                   ['label' => 'Техническая поддержка', 'href' => $withLang('/contacts')],
               ]],
           ],
+          'latest_arrivals_title' => 'Последние поступления',
+          'latest_arrivals_subtitle' => 'Недавно добавленные материалы',
+          'latest_arrivals_cta' => 'Открыть каталог',
+          'latest_arrivals' => [
+              ['year' => '2024', 'author' => 'Амалина К.Б.', 'title' => 'Искусственный интеллект в управлении энергосетями', 'collection' => 'Электротехника', 'material_type' => 'Монография'],
+              ['year' => '2024', 'author' => 'Сейсенов З.М.', 'title' => 'Цифровая трансформация в архитектуре: Европейский опыт', 'collection' => 'Архитектура', 'material_type' => 'Сборник статей'],
+              ['year' => '2024', 'author' => 'Салихова М.Р.', 'title' => 'Циркулярная экономика для развивающихся рынков', 'collection' => 'Экономика', 'material_type' => 'Диссертация'],
+          ],
           'contact_title' => 'Прямая связь',
           'contact_name' => 'Дежурный библиотекарь',
           'contact_body' => 'Чат доступен в часы работы главного зала.',
@@ -153,6 +161,14 @@
                   ['label' => 'Техникалық көмек', 'href' => $withLang('/contacts')],
               ]],
           ],
+          'latest_arrivals_title' => 'Соңғы поступления',
+          'latest_arrivals_subtitle' => 'Жақында қосылған материалдар',
+          'latest_arrivals_cta' => 'Каталогты ашу',
+          'latest_arrivals' => [
+              ['year' => '2024', 'author' => 'Амалина К.Б.', 'title' => 'Энергожүйелерді басқарудағы бәсеңдік ақы', 'collection' => 'Электротехника', 'material_type' => 'Монография'],
+              ['year' => '2024', 'author' => 'Сейсенов З.М.', 'title' => 'Архитектурадағы цифрлық түрлену: Еуропалық тәжірибе', 'collection' => 'Архитектура', 'material_type' => 'Мақала жинағы'],
+              ['year' => '2024', 'author' => 'Салихова М.Р.', 'title' => 'Дамушы нарықтар үшін циркулярлық экономика', 'collection' => 'Экономика', 'material_type' => 'Диссертация'],
+          ],
           'contact_title' => 'Тікелей байланыс',
           'contact_name' => 'Кезекші кітапханашы',
           'contact_body' => 'Чат негізгі оқу залының уақытында қолжетімді.',
@@ -221,6 +237,14 @@
                   ['label' => 'Submit a Thesis', 'href' => $withLang('/contacts')],
                   ['label' => 'Technical Support Desk', 'href' => $withLang('/contacts')],
               ]],
+          ],
+          'latest_arrivals_title' => 'Latest Arrivals',
+          'latest_arrivals_subtitle' => 'Recently Added Materials',
+          'latest_arrivals_cta' => 'Explore Catalog',
+          'latest_arrivals' => [
+              ['year' => '2024', 'author' => 'Amalina K.B.', 'title' => 'Artificial Intelligence in Power Grid Management', 'collection' => 'Electrical Engineering', 'material_type' => 'Monograph'],
+              ['year' => '2024', 'author' => 'Seysenov Z.M.', 'title' => 'Digital Transformation in Architecture: European Case Studies', 'collection' => 'Architecture', 'material_type' => 'Collected Works'],
+              ['year' => '2024', 'author' => 'Salikhova M.R.', 'title' => 'Circular Economy for Emerging Markets', 'collection' => 'Economics', 'material_type' => 'Dissertation'],
           ],
           'contact_title' => 'Direct Contact',
           'contact_name' => 'Librarian-on-Duty',
@@ -412,6 +436,38 @@
           <path d="M44.7,-76.4C58.1,-69.2,69.2,-58.1,76.4,-44.7C83.5,-31.4,86.7,-15.7,85.6,-0.6C84.5,14.5,79.1,28.9,71.2,42.1C63.2,55.3,52.7,67.3,39.6,74.9C26.5,82.5,10.8,85.7,-4.1,82.8C-19,79.9,-33.1,70.9,-45.1,60.8C-57.1,50.7,-67,39.6,-73.4,26.5C-79.8,13.4,-82.7,-1.8,-79.8,-15.7C-76.9,-29.6,-68.2,-42.2,-57,-51C-45.7,-59.8,-31.9,-64.8,-18.2,-69.9C-4.5,-75,9.1,-80.2,24.1,-81.4C39.1,-82.6,55.5,-79.8,44.7,-76.4Z" fill="white" transform="translate(100 100)"></path>
         </svg>
       </div>
+    </div>
+  </section>
+
+  <!-- Latest Arrivals / Recent Acquisitions Section -->
+  <section class="max-w-screen-2xl mx-auto px-8 pb-32 border-b border-outline-variant/20">
+    <div class="mb-12">
+      <span class="text-xs font-label text-secondary uppercase tracking-[0.2em] font-bold">{{ $copy['latest_arrivals_subtitle'] }}</span>
+      <h2 class="font-headline text-4xl text-primary mt-2">{{ $copy['latest_arrivals_title'] }}</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-test-id="latest-arrivals-grid">
+      @foreach($copy['latest_arrivals'] as $item)
+        <div class="group p-6 bg-surface-container-low rounded-lg border border-outline-variant/20 hover:border-secondary/40 hover:shadow-lg transition-all">
+          <div class="flex flex-col gap-4">
+            <div class="space-y-2">
+              <p class="text-xs font-label uppercase tracking-widest text-secondary">{{ $item['year'] }} · {{ $item['material_type'] }}</p>
+              <h3 class="font-headline text-lg text-primary leading-tight">{{ $item['title'] }}</h3>
+            </div>
+
+            <div class="space-y-1 text-sm text-on-surface-variant">
+              <p><span class="font-bold">{{ $item['author'] }}</span></p>
+              <p>{{ $item['collection'] }}</p>
+            </div>
+
+            <div class="pt-2">
+              <a href="{{ $withLang('/catalog', ['q' => $item['title']]) }}" class="inline-flex text-xs font-label text-secondary hover:text-secondary/80 transition-colors gap-1">
+                {{ $copy['latest_arrivals_cta'] }} <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_outward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      @endforeach
     </div>
   </section>
 
