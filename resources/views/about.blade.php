@@ -65,6 +65,69 @@
           'cta_title' => 'Перейдите в каталог',
           'cta_body' => 'Каталог — основная точка входа: поиск, тематическая навигация и доступ к фонду библиотеки.',
           'cta_link' => 'Открыть каталог',
+          // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
+          'location_eyebrow' => 'Как нас найти',
+          'location_title' => 'Расположение и вход в библиотеку',
+          'location_body' => 'Библиотека КазУТБ находится в главном учебном корпусе университета в Астане. Ниже — точный адрес, рабочий вход и ориентир по этажу, где размещены читательские залы.',
+          'location_branches' => [
+              [
+                  'slug' => 'main-building',
+                  'label' => 'Главный корпус',
+                  'address' => 'Астана, ул. Кайыма Мухамедханова, 37A',
+                  'entrance' => 'Вход со стороны главного фасада; внутренняя навигация — по указателям «Библиотека».',
+                  'floor_note' => 'Читательские залы и фондовые комнаты — на 2-м этаже корпуса 1.',
+              ],
+          ],
+          'location_map_label' => 'Схема расположения',
+          'location_map_caption' => 'Статическая схема v1 — актуальный маршрут и интерактивная карта появятся позже.',
+          'location_directions_cta' => 'Построить маршрут',
+          'fund_rooms_eyebrow' => 'Фондовые комнаты',
+          'fund_rooms_title' => 'Где находятся фонды библиотеки',
+          'fund_rooms_body' => 'В главном корпусе для читателей открыты три фондовые комнаты. Это ориентир для посещения: где работать с каким фондом и к кому обращаться за помощью.',
+          'fund_rooms' => [
+              [
+                  'room' => '1/200',
+                  'fund_label' => 'Технологический фонд',
+                  'branch' => 'Главный корпус',
+                  'floor' => '2-й этаж',
+                  'short_description' => 'Технические и естественно-научные дисциплины: инженерия, информатика, прикладная математика, технологии.',
+                  'access_note' => 'Открыт для читателей в рабочие часы библиотеки.',
+              ],
+              [
+                  'room' => '1/202',
+                  'fund_label' => 'Фонд колледжа',
+                  'branch' => 'Главный корпус',
+                  'floor' => '2-й этаж',
+                  'short_description' => 'Материалы для образовательных программ колледжа: учебная литература, справочные издания, методика.',
+                  'access_note' => 'Приоритетно обслуживаются читатели колледжа; университетским читателям — по запросу.',
+              ],
+              [
+                  'room' => '1/203',
+                  'fund_label' => 'Экономический фонд библиотеки',
+                  'branch' => 'Главный корпус',
+                  'floor' => '2-й этаж',
+                  'short_description' => 'Экономика, менеджмент, финансы, право и смежные социальные науки.',
+                  'access_note' => 'Открыт для читателей в рабочие часы библиотеки.',
+              ],
+          ],
+          'visit_notes_eyebrow' => 'Перед визитом',
+          'visit_notes_title' => 'Что важно знать до визита',
+          'visit_notes_body' => 'Несколько практических рекомендаций, которые помогут спокойно и результативно работать в читательских залах.',
+          'visit_notes_items' => [
+              [
+                  'title' => 'Документ, удостоверяющий личность',
+                  'body' => 'При входе в библиотеку может потребоваться университетский идентификатор или документ, подтверждающий статус читателя.',
+              ],
+              [
+                  'title' => 'Тихие зоны',
+                  'body' => 'Читательские залы — это зоны тихой работы. Звонки и разговоры ведутся вне рабочих зон; устройства — в беззвучном режиме.',
+              ],
+              [
+                  'title' => 'Доступность и поддержка',
+                  'body' => 'Если нужна помощь с ориентированием, доступом к материалам или специальные условия — обратитесь к библиотекарю на стойке или напишите на указанную выше почту.',
+              ],
+          ],
+          'visit_notes_rules_cta' => 'Полные правила библиотеки',
       ],
       'kk' => [
           'title' => $activePage === 'contacts'
@@ -112,6 +175,69 @@
           'cta_title' => 'Каталогқа өтіңіз',
           'cta_body' => 'Каталог — негізгі кіру нүктесі: іздеу, тақырыптық навигация және кітапхана қорына қолжетімділік.',
           'cta_link' => 'Каталогты ашу',
+          // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
+          'location_eyebrow' => 'Бізді қалай табуға болады',
+          'location_title' => 'Кітапхананың орналасуы және кіру',
+          'location_body' => 'ҚазУТБ кітапханасы Астанадағы университеттің басты оқу корпусында орналасқан. Төменде нақты мекенжай, жұмыс кірісі және оқу залдары орналасқан қабат бойынша бағдар көрсетілген.',
+          'location_branches' => [
+              [
+                  'slug' => 'main-building',
+                  'label' => 'Басты корпус',
+                  'address' => 'Астана, Қайым Мұхамедханов көшесі, 37A',
+                  'entrance' => 'Басты фасад жағындағы кіріс; ішкі навигация — «Кітапхана» көрсеткіштері бойынша.',
+                  'floor_note' => 'Оқу залдары мен қор бөлмелері — 1-корпустың 2-қабатында.',
+              ],
+          ],
+          'location_map_label' => 'Орналасу сызбасы',
+          'location_map_caption' => 'v1 нұсқасындағы статикалық сызба — өзекті маршрут пен интерактивті карта кейінірек қосылады.',
+          'location_directions_cta' => 'Бағыт құру',
+          'fund_rooms_eyebrow' => 'Қор бөлмелері',
+          'fund_rooms_title' => 'Кітапхана қорлары қайда орналасқан',
+          'fund_rooms_body' => 'Басты корпуста оқырмандарға үш қор бөлмесі ашық. Бұл — кіму қандай қормен жұмыс істейтінін және көмек үшін кімге жүгінетінін түсінуге арналған бағдар.',
+          'fund_rooms' => [
+              [
+                  'room' => '1/200',
+                  'fund_label' => 'Технологиялық қор',
+                  'branch' => 'Басты корпус',
+                  'floor' => '2-қабат',
+                  'short_description' => 'Техникалық және жаратылыстану пәндері: инженерия, информатика, қолданбалы математика, технологиялар.',
+                  'access_note' => 'Кітапхананың жұмыс сағаттарында оқырмандарға ашық.',
+              ],
+              [
+                  'room' => '1/202',
+                  'fund_label' => 'Колледж қоры',
+                  'branch' => 'Басты корпус',
+                  'floor' => '2-қабат',
+                  'short_description' => 'Колледж білім беру бағдарламаларына арналған материалдар: оқу әдебиеті, анықтамалық басылымдар, әдістеме.',
+                  'access_note' => 'Колледж оқырмандары басымдықпен қызмет көреді; университет оқырмандарына — сұраныс бойынша.',
+              ],
+              [
+                  'room' => '1/203',
+                  'fund_label' => 'Кітапхананың экономикалық қоры',
+                  'branch' => 'Басты корпус',
+                  'floor' => '2-қабат',
+                  'short_description' => 'Экономика, менеджмент, қаржы, құқық және іргелес әлеуметтік ғылымдар.',
+                  'access_note' => 'Кітапхананың жұмыс сағаттарында оқырмандарға ашық.',
+              ],
+          ],
+          'visit_notes_eyebrow' => 'Келер алдында',
+          'visit_notes_title' => 'Келуден бұрын нені ескеру қажет',
+          'visit_notes_body' => 'Оқу залдарында тыныш және нәтижелі жұмыс істеуге көмектесетін бірнеше практикалық ұсыныс.',
+          'visit_notes_items' => [
+              [
+                  'title' => 'Жеке куәлік',
+                  'body' => 'Кітапханаға кірер кезде университет идентификаторы немесе оқырман мәртебесін растайтын құжат талап етілуі мүмкін.',
+              ],
+              [
+                  'title' => 'Тыныш аймақтар',
+                  'body' => 'Оқу залдары — тыныш жұмыс аймақтары. Қоңыраулар мен әңгімелер жұмыс аймағынан тыс жүргізіледі; құрылғылар — үнсіз режимде.',
+              ],
+              [
+                  'title' => 'Қолжетімділік және қолдау',
+                  'body' => 'Бағдар, материалдарға қолжетімділік немесе арнайы жағдайлар бойынша көмек қажет болса — стендтегі кітапханашыға жүгініңіз немесе жоғарыда көрсетілген поштаға жазыңыз.',
+              ],
+          ],
+          'visit_notes_rules_cta' => 'Кітапхананың толық ережелері',
       ],
       'en' => [
           'title' => $activePage === 'contacts'
@@ -159,6 +285,69 @@
           'cta_title' => 'Go to the catalog',
           'cta_body' => 'The catalog is the primary entry point: search, subject navigation, and access to the library collection.',
           'cta_link' => 'Open catalog',
+          // Cluster B.3 — embedded location / fund rooms / visit notes (Contacts variant only).
+          'location_eyebrow' => 'How to find us',
+          'location_title' => 'Library location and entrance',
+          'location_body' => 'The KazUTB Library is in the main university teaching building in Astana. Below are the exact address, the working entrance, and the floor where the reading rooms are located.',
+          'location_branches' => [
+              [
+                  'slug' => 'main-building',
+                  'label' => 'Main building',
+                  'address' => '37A Kayym Mukhamedkhanov Street, Astana',
+                  'entrance' => 'Use the main-facade entrance; follow the internal "Library" signage.',
+                  'floor_note' => 'Reading rooms and fund rooms are on the 2nd floor of Building 1.',
+              ],
+          ],
+          'location_map_label' => 'Location diagram',
+          'location_map_caption' => 'Static v1 diagram — a live route and an interactive map will follow.',
+          'location_directions_cta' => 'Get directions',
+          'fund_rooms_eyebrow' => 'Fund rooms',
+          'fund_rooms_title' => 'Where the library funds are located',
+          'fund_rooms_body' => 'Three fund rooms in the main building are open to readers. This is a wayfinding reference: where to work with which fund, and who to ask for help on site.',
+          'fund_rooms' => [
+              [
+                  'room' => '1/200',
+                  'fund_label' => 'Technology fund',
+                  'branch' => 'Main building',
+                  'floor' => '2nd floor',
+                  'short_description' => 'Technical and natural-science disciplines: engineering, computer science, applied mathematics, technology.',
+                  'access_note' => 'Open to readers during library working hours.',
+              ],
+              [
+                  'room' => '1/202',
+                  'fund_label' => 'College fund',
+                  'branch' => 'Main building',
+                  'floor' => '2nd floor',
+                  'short_description' => 'Materials for the college programs: textbooks, reference works, and teaching methodology.',
+                  'access_note' => 'College readers served first; university readers served on request.',
+              ],
+              [
+                  'room' => '1/203',
+                  'fund_label' => 'Economic fund of the library',
+                  'branch' => 'Main building',
+                  'floor' => '2nd floor',
+                  'short_description' => 'Economics, management, finance, law, and related social sciences.',
+                  'access_note' => 'Open to readers during library working hours.',
+              ],
+          ],
+          'visit_notes_eyebrow' => 'Before you visit',
+          'visit_notes_title' => 'What to know before you visit',
+          'visit_notes_body' => 'A few practical notes that make it easier to work in the reading rooms calmly and productively.',
+          'visit_notes_items' => [
+              [
+                  'title' => 'ID requirement',
+                  'body' => 'You may be asked for a university ID or another document that confirms your reader status when you enter the library.',
+              ],
+              [
+                  'title' => 'Quiet zones',
+                  'body' => 'Reading rooms are quiet-work zones. Please take calls and conversations outside the working areas and keep devices on silent.',
+              ],
+              [
+                  'title' => 'Accessibility and support',
+                  'body' => 'If you need help with wayfinding, access to materials, or specific accommodations, ask the librarian at the desk or write to the email shown above.',
+              ],
+          ],
+          'visit_notes_rules_cta' => 'Full library rules',
       ],
   ][$lang];
 @endphp
@@ -288,6 +477,99 @@
           <div class="about-cta-links">
             <a href="{{ $routeWithLang($workspaceHref) }}">{{ $copy['duty_cta'] }}</a>
           </div>
+        </div>
+      </div>
+    </section>
+  @endif
+
+  @if($activePage === 'contacts')
+    {{-- Cluster B.3 — embedded location / fund rooms / visit notes, only on /contacts. --}}
+    <section class="page-section" data-section="contacts-location">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--cyan">{{ $copy['location_eyebrow'] }}</div>
+            <h2>{{ $copy['location_title'] }}</h2>
+            <p>{{ $copy['location_body'] }}</p>
+          </div>
+        </div>
+
+        <div class="contacts-location-grid">
+          <div class="contacts-location-branches">
+            @foreach($copy['location_branches'] as $branch)
+              <article class="contacts-location-card" data-branch-slot data-branch-slug="{{ $branch['slug'] }}">
+                <h3>{{ $branch['label'] }}</h3>
+                <p class="contacts-location-address">{{ $branch['address'] }}</p>
+                <p class="contacts-location-entrance">{{ $branch['entrance'] }}</p>
+                <p class="contacts-location-floor">{{ $branch['floor_note'] }}</p>
+                <a class="contacts-location-cta" href="https://www.google.com/maps/search/?api=1&amp;query={{ urlencode($branch['address']) }}" target="_blank" rel="noopener noreferrer" data-test-id="contacts-location-directions">
+                  {{ $copy['location_directions_cta'] }}
+                </a>
+              </article>
+            @endforeach
+          </div>
+
+          <figure class="contacts-location-map" aria-label="{{ $copy['location_map_label'] }}" data-test-id="contacts-location-map">
+            <div class="contacts-location-map__canvas" role="img" aria-hidden="true">
+              <span class="contacts-location-map__pin">📍</span>
+              <span class="contacts-location-map__label">{{ $copy['location_map_label'] }}</span>
+            </div>
+            <figcaption>{{ $copy['location_map_caption'] }}</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" data-section="contacts-fund-rooms">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--teal">{{ $copy['fund_rooms_eyebrow'] }}</div>
+            <h2>{{ $copy['fund_rooms_title'] }}</h2>
+            <p>{{ $copy['fund_rooms_body'] }}</p>
+          </div>
+        </div>
+
+        <div class="contacts-fund-grid">
+          @foreach($copy['fund_rooms'] as $room)
+            <article class="contacts-fund-card" data-fund-room-slot data-room-code="{{ $room['room'] }}">
+              <div class="contacts-fund-card__head">
+                <span class="contacts-fund-card__room">{{ $room['room'] }}</span>
+                <span class="contacts-fund-card__floor">{{ $room['floor'] }}</span>
+              </div>
+              <h3 class="contacts-fund-card__label">{{ $room['fund_label'] }}</h3>
+              <p class="contacts-fund-card__branch">{{ $room['branch'] }}</p>
+              <p class="contacts-fund-card__desc">{{ $room['short_description'] }}</p>
+              <p class="contacts-fund-card__access">{{ $room['access_note'] }}</p>
+            </article>
+          @endforeach
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" data-section="contacts-visit-notes">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow eyebrow--violet">{{ $copy['visit_notes_eyebrow'] }}</div>
+            <h2>{{ $copy['visit_notes_title'] }}</h2>
+            <p>{{ $copy['visit_notes_body'] }}</p>
+          </div>
+        </div>
+
+        <ul class="contacts-visit-list">
+          @foreach($copy['visit_notes_items'] as $note)
+            <li class="contacts-visit-item">
+              <h3>{{ $note['title'] }}</h3>
+              <p>{{ $note['body'] }}</p>
+            </li>
+          @endforeach
+        </ul>
+
+        <div class="contacts-visit-footer">
+          <a class="contacts-visit-rules-cta" href="{{ $routeWithLang('/rules') }}" data-test-id="contacts-visit-rules-link">
+            {{ $copy['visit_notes_rules_cta'] }}
+          </a>
         </div>
       </div>
     </section>
@@ -572,6 +854,242 @@
 
     .about-cta-links {
       justify-content: flex-start;
+    }
+  }
+
+  /* Cluster B.3 — embedded location / fund rooms / visit notes. */
+  .contacts-location-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .contacts-location-branches {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contacts-location-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+  }
+
+  .contacts-location-card h3 {
+    margin: 0 0 8px;
+    font-family: var(--font-head, 'Newsreader', serif);
+    font-size: 1.25rem;
+    color: var(--ink, #191c1d);
+  }
+
+  .contacts-location-address,
+  .contacts-location-entrance,
+  .contacts-location-floor {
+    margin: 0 0 6px;
+    color: var(--muted, #43474e);
+    line-height: 1.6;
+    font-size: .95rem;
+  }
+
+  .contacts-location-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(195,198,209,.55);
+    background: rgba(255,255,255,.9);
+    color: var(--teal, #006a6a);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .contacts-location-cta:hover {
+    border-color: rgba(0,106,106,.45);
+    color: var(--blue, #001f3f);
+  }
+
+  .contacts-location-map {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contacts-location-map__canvas {
+    position: relative;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    min-height: 280px;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,106,106,.06) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, rgba(0,106,106,.06) 0 1px, transparent 1px 40px),
+      linear-gradient(135deg, rgba(0,30,64,.05), rgba(20,105,109,.06));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--blue, #001f3f);
+  }
+
+  .contacts-location-map__pin {
+    font-size: 1.8rem;
+  }
+
+  .contacts-location-map__label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--teal, #006a6a);
+  }
+
+  .contacts-location-map figcaption {
+    color: var(--muted, #43474e);
+    font-size: .85rem;
+    line-height: 1.5;
+  }
+
+  .contacts-fund-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .contacts-fund-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contacts-fund-card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(195,198,209,.45);
+  }
+
+  .contacts-fund-card__room {
+    font-family: var(--font-head, 'Newsreader', serif);
+    font-size: 1.4rem;
+    color: var(--blue, #001f3f);
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+
+  .contacts-fund-card__floor {
+    display: inline-flex;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(0,106,106,.08);
+    color: var(--teal, #006a6a);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .contacts-fund-card__label {
+    margin: 4px 0 0;
+    font-family: var(--font-head, 'Newsreader', serif);
+    font-size: 1.05rem;
+    color: var(--ink, #191c1d);
+  }
+
+  .contacts-fund-card__branch {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--muted, #43474e);
+    font-weight: 600;
+  }
+
+  .contacts-fund-card__desc {
+    margin: 4px 0 0;
+    color: var(--muted, #43474e);
+    font-size: .95rem;
+    line-height: 1.55;
+  }
+
+  .contacts-fund-card__access {
+    margin: auto 0 0;
+    padding-top: 8px;
+    border-top: 1px solid rgba(195,198,209,.45);
+    color: var(--teal, #006a6a);
+    font-size: .85rem;
+    font-weight: 600;
+  }
+
+  .contacts-visit-list {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .contacts-visit-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,244,245,.94));
+  }
+
+  .contacts-visit-item h3 {
+    margin: 0 0 6px;
+    font-family: var(--font-head, 'Newsreader', serif);
+    font-size: 1.05rem;
+    color: var(--ink, #191c1d);
+  }
+
+  .contacts-visit-item p {
+    margin: 0;
+    color: var(--muted, #43474e);
+    line-height: 1.6;
+    font-size: .95rem;
+  }
+
+  .contacts-visit-footer {
+    margin-top: 18px;
+  }
+
+  .contacts-visit-rules-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(195,198,209,.55);
+    background: rgba(255,255,255,.9);
+    color: var(--blue, #001f3f);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .contacts-visit-rules-cta:hover {
+    border-color: rgba(0,31,63,.4);
+    color: var(--teal, #006a6a);
+  }
+
+  @media (max-width: 960px) {
+    .contacts-location-grid,
+    .contacts-fund-grid,
+    .contacts-visit-list {
+      grid-template-columns: 1fr;
     }
   }
 </style>
