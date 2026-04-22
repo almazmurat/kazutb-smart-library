@@ -21,8 +21,8 @@
 
   $copy = [
       'ru' => [
-          'title' => 'KazUTB Digital Library | Главная',
-          'brand' => 'Библиотека КазТБУ',
+          'title' => 'KazUTB Smart Library | Главная',
+          'brand' => 'KazUTB Smart Library',
           'hero_prefix' => 'Научное',
           'hero_accent' => 'академическое',
           'hero_suffix' => 'пространство',
@@ -33,7 +33,7 @@
           'cards' => [
               ['icon' => 'auto_stories', 'title' => 'Научные ресурсы', 'body' => 'Доступ к журналам, статьям и зарегистрированным технологическим материалам университета.', 'cta' => 'Открыть коллекцию', 'href' => $withLang('/resources'), 'tone' => 'light'],
               ['icon' => 'history_edu', 'title' => 'Архив', 'body' => 'Оцифрованные рукописи, университетские хроники и редкие региональные публикации.', 'cta' => 'Открыть архив', 'href' => $withLang('/discover'), 'tone' => 'soft'],
-              ['icon' => 'workspace_premium', 'title' => 'Рабочее пространство', 'body' => 'Сохранение подборок, работа с библиографией и прямой вход в личный кабинет читателя.', 'cta' => session('library.user') ? 'Открыть кабинет' : 'Войти в пространство', 'href' => session('library.user') ? $withLang('/account') : $withLang('/login'), 'tone' => 'dark'],
+              ['icon' => 'workspace_premium', 'title' => 'Рабочее пространство', 'body' => 'Сохранение подборок, работа с библиографией и прямой вход в личный кабинет читателя.', 'cta' => session('library.user') ? 'Открыть кабинет' : 'Войти в пространство', 'href' => session('library.user') ? $withLang('/dashboard') : $withLang('/login'), 'tone' => 'dark'],
           ],
           'hours_title' => 'Часы работы',
           'hours_note' => 'В летний период график может меняться. Уточняйте режим в календаре университета.',
@@ -62,7 +62,7 @@
           'repo_title_prefix' => 'Наследие',
           'repo_title_accent' => 'технологического',
           'repo_title_suffix' => 'совершенства',
-          'repo_body' => 'KazUTB Digital Library хранит и упорядочивает интеллектуальный результат университета, объединяя инженерные, бизнес- и технологические направления в одном маршруте.',
+          'repo_body' => 'KazUTB Smart Library хранит и упорядочивает интеллектуальный результат университета, объединяя инженерные, бизнес- и технологические направления в одном маршруте.',
           'points' => [
               ['icon' => 'verified', 'title' => 'Проверенные источники', 'body' => 'Каждый материал проходит метаданные и библиотечную верификацию.'],
               ['icon' => 'public', 'title' => 'Глобальная интеграция', 'body' => 'Платформа связана с международными исследовательскими сетями и DOI-сервисами.'],
@@ -90,8 +90,8 @@
           'contact_cta' => 'Связаться',
       ],
       'kk' => [
-          'title' => 'KazUTB Digital Library | Басты бет',
-          'brand' => 'КазТБУ кітапханасы',
+          'title' => 'KazUTB Smart Library | Басты бет',
+          'brand' => 'KazUTB Smart Library',
           'hero_prefix' => 'Ғылыми',
           'hero_accent' => 'академиялық',
           'hero_suffix' => 'кеңістік',
@@ -102,7 +102,7 @@
           'cards' => [
               ['icon' => 'auto_stories', 'title' => 'Ғылыми ресурстар', 'body' => 'Университет журналдарына, мақалаларына және технологиялық материалдарына қолжетімділік.', 'cta' => 'Коллекцияны ашу', 'href' => $withLang('/resources'), 'tone' => 'light'],
               ['icon' => 'history_edu', 'title' => 'Архив', 'body' => 'Цифрланған қолжазбалар, университет шежіресі және сирек аймақтық басылымдар.', 'cta' => 'Архивті ашу', 'href' => $withLang('/discover'), 'tone' => 'soft'],
-              ['icon' => 'workspace_premium', 'title' => 'Жұмыс кеңістігі', 'body' => 'Іріктемелерді сақтау, библиографиямен жұмыс істеу және жеке кабинетке тікелей өту.', 'cta' => session('library.user') ? 'Кабинетті ашу' : 'Кеңістікке кіру', 'href' => session('library.user') ? $withLang('/account') : $withLang('/login'), 'tone' => 'dark'],
+              ['icon' => 'workspace_premium', 'title' => 'Жұмыс кеңістігі', 'body' => 'Іріктемелерді сақтау, библиографиямен жұмыс істеу және жеке кабинетке тікелей өту.', 'cta' => session('library.user') ? 'Кабинетті ашу' : 'Кеңістікке кіру', 'href' => session('library.user') ? $withLang('/dashboard') : $withLang('/login'), 'tone' => 'dark'],
           ],
           'hours_title' => 'Жұмыс уақыты',
           'hours_note' => 'Жазғы кезеңде кесте өзгеруі мүмкін. Университет күнтізбесін тексеріңіз.',
@@ -131,7 +131,7 @@
           'repo_title_prefix' => 'Технологиялық',
           'repo_title_accent' => 'жетістіктің',
           'repo_title_suffix' => 'мұрасы',
-          'repo_body' => 'KazUTB Digital Library университеттің зияткерлік нәтижелерін біріктіріп, инженерлік, бизнес және технология салаларын бір жүйеге келтіреді.',
+          'repo_body' => 'KazUTB Smart Library университеттің зияткерлік нәтижелерін біріктіріп, инженерлік, бизнес және технология салаларын бір жүйеге келтіреді.',
           'points' => [
               ['icon' => 'verified', 'title' => 'Тексерілген дереккөздер', 'body' => 'Әрбір материал метадерек және кітапханалық тексеруден өтеді.'],
               ['icon' => 'public', 'title' => 'Жаһандық интеграция', 'body' => 'Платформа халықаралық зерттеу желілерімен және DOI қызметтерімен байланысты.'],
@@ -159,8 +159,8 @@
           'contact_cta' => 'Байланысу',
       ],
       'en' => [
-          'title' => 'KazUTB Digital Library | Home',
-          'brand' => 'KazTBU Library',
+          'title' => 'KazUTB Smart Library | Home',
+          'brand' => 'KazUTB Smart Library',
           'hero_prefix' => 'The',
           'hero_accent' => 'Scholarly',
           'hero_suffix' => 'Commons',
@@ -171,7 +171,7 @@
           'cards' => [
               ['icon' => 'auto_stories', 'title' => 'Scholarly Resources', 'body' => 'Access journals, peer-reviewed papers, and technological materials registered by KazUTB faculty.', 'cta' => 'Explore collection', 'href' => $withLang('/resources'), 'tone' => 'light'],
               ['icon' => 'history_edu', 'title' => 'The Archive', 'body' => 'A historical repository with digitized manuscripts, university chronicles, and rare regional publications.', 'cta' => 'Open repository', 'href' => $withLang('/discover'), 'tone' => 'soft'],
-              ['icon' => 'workspace_premium', 'title' => 'Member Workspace', 'body' => 'Manage citations, save bibliographies, and move directly into the reader account environment.', 'cta' => session('library.user') ? 'Open workspace' : 'Sign into workspace', 'href' => session('library.user') ? $withLang('/account') : $withLang('/login'), 'tone' => 'dark'],
+              ['icon' => 'workspace_premium', 'title' => 'Member Workspace', 'body' => 'Manage citations, save bibliographies, and move directly into the reader account environment.', 'cta' => session('library.user') ? 'Open workspace' : 'Sign into workspace', 'href' => session('library.user') ? $withLang('/dashboard') : $withLang('/login'), 'tone' => 'dark'],
           ],
           'hours_title' => 'Operational Hours',
           'hours_note' => 'Summer hours may vary. Please check the institutional calendar for public holidays.',
@@ -200,7 +200,7 @@
           'repo_title_prefix' => 'A Legacy of',
           'repo_title_accent' => 'Technological',
           'repo_title_suffix' => 'Excellence',
-          'repo_body' => 'The KazUTB Digital Library serves as the custodian of the university’s intellectual output, connecting engineering, business, and technology disciplines in one academic route.',
+          'repo_body' => 'The KazUTB Smart Library serves as the custodian of the university’s intellectual output, connecting engineering, business, and technology disciplines in one academic route.',
           'points' => [
               ['icon' => 'verified', 'title' => 'Verified Sources', 'body' => 'Every document is metadata-validated for academic integrity.'],
               ['icon' => 'public', 'title' => 'Global Integration', 'body' => 'Seamlessly connected to international research networks and DOI registries.'],

@@ -23,7 +23,7 @@ Used only for the newly generated missing pages:
 
 | Surface | Page Type | Canonical Source | Target Route / Surface | Target View / Area | Status | Notes |
 |---|---|---|---|---|---|---|
-| Public | Homepage | Project B / Homepage | `/` | `welcome.blade.php` or replacement homepage view | design-ready | New missing page generated in clean project |
+| Public | Homepage | Project B / Homepage (`docs/design-exports/Enhanced Homepage/`) | `/` | `welcome.blade.php` | implemented — archive-reference | Phase 3.1 — canonical KazUTB Smart Library homepage. All hero / bento / hours+news / stats / repository / guides sections ported from the export with trilingual ru/kk/en copy. Authenticated Member Workspace card routes to `/dashboard` (canonical member shell); guest link goes to `/login`. |
 | Public | About | Project A / About the Institution | `/about`, `/contacts` | `about.blade.php` | implemented | Reduced minimalist public informational page |
 | Public | Discover | Project A / Academic Discovery Hub | `/discover` | `discover.blade.php` | pending | Keep UDC-first logic |
 | Public | Login | Project A / Secure Institutional Access | `/login` | `auth.blade.php` | implemented | Refined; preserve auth behavior |
