@@ -2,11 +2,29 @@
 > Last updated: 2026-04-22
 
 ## Last changed
-- Time: 2026-04-22 (Cluster B.6)
+- Time: 2026-04-22 (Cluster C.1)
 - Branch: main
-- Change type: UI/Blade view change + route rewiring
-- Files: resources/views/contacts.blade.php (new), routes/web.php (added $contactsSeedProvider + rewired /contacts), tests/Feature/ContactsCanonicalPageTest.php (new), tests/Feature/PublicAboutPageTest.php (pruned /contacts-specific tests), tests/Feature/ContactsLocationFundRoomsTest.php (deleted)
+- Change type: UI/Blade view change + new route
+- Files: resources/views/events/index.blade.php (new), routes/web.php (added $eventsSeedProvider + /events route), tests/Feature/EventsIndexPageTest.php (new)
+- Commit message: feat(phase-3.c.1): public /events index per events_index_canonical
+
+## Previously changed (B.6)
+- Time: 2026-04-22 13:45:46 UTC
+- Commit: 50a44d7
+- Branch: main
+- Change type: UI/Blade view change
+- Files: resources/views/contacts.blade.php, routes/web.php
 - Commit message: feat(phase-3.b.6): canonical-exact /contacts rebuild per contacts_canonical
+
+## Latest Git Automation
+- Time: 2026-04-22 13:45:46 UTC
+- Event: post-commit
+- Branch: main
+- Commit: 50a44d7
+- Update: Git post-commit on main: feat(phase-3.b.6): canonical-exact /contacts rebuild per contacts_canonical
+- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/contacts.blade.php, routes/web.php, tests/Feature/ContactsCanonicalPageTest.php, tests/Feature/ContactsLocationFundRoomsTest.php, tests/Feature/PublicAboutPageTest.php
+- Semantic: UI/Blade view change
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed (B.5)
 - Time: 2026-04-22 13:06:44 UTC
@@ -15,16 +33,6 @@
 - Change type: UI/Blade view change
 - Files: resources/views/about.blade.php
 - Commit message: feat(phase-3.b.5): canonical-exact /about rebuild per about_library_canonical
-
-## Latest Git Automation
-- Time: 2026-04-22 13:06:44 UTC
-- Event: post-commit
-- Branch: main
-- Commit: 3f3cf8b
-- Update: Git post-commit on main: feat(phase-3.b.5): canonical-exact /about rebuild per about_library_canonical
-- Detail: Changed files: kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/about.blade.php, tests/Feature/AboutCollectionDirectoryTest.php, tests/Feature/PublicAboutPageTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Previously changed
 - Time: 2026-04-22 12:47:16 UTC

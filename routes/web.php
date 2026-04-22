@@ -1212,6 +1212,175 @@ Route::get('/login', function (Request $request) {
 // Phase 3.3 — /news reinstated as the canonical public news index.
 Route::get('/services', fn () => redirect('/', 301));
 
+// Phase 3 Cluster C.1 — seeded public events content for /events.
+//
+// Scoped strictly to this page; structure mirrors $newsSeedProvider and
+// $contactsSeedProvider so a future backend phase can replace the closure
+// with a DB-backed events source (Phase 3 Cluster C.2 — event detail).
+// The /events/{slug} detail surface is NOT in scope for Cluster C.1;
+// the slugs defined here establish the future public route contract.
+$eventsSeedProvider = static function (): array {
+    $chrome = [
+        'ru' => [
+            'title' => 'События — KazUTB Smart Library',
+            'hero_title' => 'Календарь событий',
+            'hero_body' => 'Расписание симпозиумов, семинаров и книжных выставок KazUTB Smart Library. Присоединяйтесь к академическому сообществу университета.',
+            'event_details_cta' => 'Подробнее о событии',
+            'load_more' => 'Показать больше событий',
+        ],
+        'kk' => [
+            'title' => 'Іс-шаралар — KazUTB Smart Library',
+            'hero_title' => 'Іс-шаралар күнтізбесі',
+            'hero_body' => 'KazUTB Smart Library ұйымдастыратын симпозиумдар, семинарлар мен кітап көрмелерінің кестесі. Университеттің академиялық қауымдастығына қосылыңыз.',
+            'event_details_cta' => 'Іс-шара туралы толығырақ',
+            'load_more' => 'Қосымша іс-шараларды көрсету',
+        ],
+        'en' => [
+            'title' => 'Events — KazUTB Smart Library',
+            'hero_title' => 'Public Events Index',
+            'hero_body' => 'A curated calendar of upcoming symposiums, seminars, and book exhibits hosted by the KazUTB Smart Library. Join our academic community.',
+            'event_details_cta' => 'Event details',
+            'load_more' => 'Load more events',
+        ],
+    ];
+
+    $items = [
+        [
+            'slug' => 'digital-preservation-symposium-2026',
+            'featured' => true,
+            'category_slug' => 'symposium',
+            'iso_date' => '2026-05-14',
+            'i18n' => [
+                'ru' => [
+                    'category' => 'Симпозиум',
+                    'date_month_day' => '14 мая',
+                    'date_year_time' => '2026 · 10:00',
+                    'title' => 'Цифровое сохранение фондов в академических библиотеках',
+                    'description' => 'Открытая сессия для преподавателей и исследователей: методологии цифрового сохранения научных материалов, работа с метаданными и политика долгосрочного хранения.',
+                    'venue' => 'Главный читальный зал, корпус 1',
+                ],
+                'kk' => [
+                    'category' => 'Симпозиум',
+                    'date_month_day' => '14 мамыр',
+                    'date_year_time' => '2026 · 10:00',
+                    'title' => 'Академиялық кітапханалардағы қорларды цифрлық сақтау',
+                    'description' => 'Оқытушылар мен зерттеушілерге арналған ашық сессия: ғылыми материалдарды цифрлық сақтау әдіснамасы, метадеректермен жұмыс және ұзақ мерзімді сақтау саясаты.',
+                    'venue' => 'Басты оқу залы, 1-корпус',
+                ],
+                'en' => [
+                    'category' => 'Symposium',
+                    'date_month_day' => 'May 14',
+                    'date_year_time' => '2026 · 10:00',
+                    'title' => 'Digital Preservation of Collections in Academic Libraries',
+                    'description' => 'An open session for faculty and researchers: methodologies for digital preservation of scholarly materials, metadata workflows, and long-term retention policy.',
+                    'venue' => 'Main Reading Room, Building 1',
+                ],
+            ],
+        ],
+        [
+            'slug' => 'open-access-publishing-seminar-2026',
+            'featured' => false,
+            'category_slug' => 'seminar',
+            'iso_date' => '2026-05-28',
+            'i18n' => [
+                'ru' => [
+                    'category' => 'Семинар',
+                    'date_month_day' => '28 мая',
+                    'date_year_time' => '2026 · 14:00',
+                    'title' => 'Открытый доступ и академическая публикация',
+                    'description' => 'Практический семинар для магистрантов и докторантов: выбор журналов, идентификация хищнических изданий, требования к Open Access и оформление авторских прав.',
+                    'venue' => 'Семинарский зал B, корпус 1',
+                ],
+                'kk' => [
+                    'category' => 'Семинар',
+                    'date_month_day' => '28 мамыр',
+                    'date_year_time' => '2026 · 14:00',
+                    'title' => 'Ашық қолжетімділік және академиялық жариялау',
+                    'description' => 'Магистранттар мен докторанттарға арналған тәжірибелік семинар: журналдарды таңдау, жыртқыш басылымдарды анықтау, Open Access талаптары және авторлық құқықты рәсімдеу.',
+                    'venue' => 'B семинар залы, 1-корпус',
+                ],
+                'en' => [
+                    'category' => 'Seminar',
+                    'date_month_day' => 'May 28',
+                    'date_year_time' => '2026 · 14:00',
+                    'title' => 'Open Access and Academic Publishing',
+                    'description' => 'A practical seminar for master\'s and doctoral candidates: journal selection, identifying predatory publishers, Open Access requirements, and copyright handling.',
+                    'venue' => 'Seminar Hall B, Building 1',
+                ],
+            ],
+        ],
+        [
+            'slug' => 'rare-collections-exhibit-2026',
+            'featured' => false,
+            'category_slug' => 'book-exhibit',
+            'iso_date' => '2026-06-10',
+            'i18n' => [
+                'ru' => [
+                    'category' => 'Книжная выставка',
+                    'date_month_day' => '10 июня',
+                    'date_year_time' => '2026 · весь день',
+                    'title' => 'Редкие издания и научное наследие фонда',
+                    'description' => 'Куратирская экспозиция редких изданий и отреставрированных научных материалов — приоритетные направления: ранняя инженерная литература и региональная история.',
+                    'venue' => 'Зал 1/200, технологический фонд',
+                ],
+                'kk' => [
+                    'category' => 'Кітап көрмесі',
+                    'date_month_day' => '10 маусым',
+                    'date_year_time' => '2026 · толық күн',
+                    'title' => 'Сирек басылымдар және қордың ғылыми мұрасы',
+                    'description' => 'Сирек басылымдар мен қалпына келтірілген ғылыми материалдардың кураторлық экспозициясы — басым бағыттар: ерте инженерлік әдебиет пен өңірлік тарих.',
+                    'venue' => '1/200 залы, технологиялық қор',
+                ],
+                'en' => [
+                    'category' => 'Book Exhibit',
+                    'date_month_day' => 'Jun 10',
+                    'date_year_time' => '2026 · All day',
+                    'title' => 'Rare Editions and the Scholarly Heritage of the Collection',
+                    'description' => 'A curated exhibition of rare editions and restored scholarly materials — priority areas: early engineering literature and regional history.',
+                    'venue' => 'Room 1/200, Technology Fund',
+                ],
+            ],
+        ],
+        [
+            'slug' => 'research-workshop-thesis-citations-2026',
+            'featured' => false,
+            'category_slug' => 'workshop',
+            'iso_date' => '2026-06-24',
+            'i18n' => [
+                'ru' => [
+                    'category' => 'Мастер-класс',
+                    'date_month_day' => '24 июня',
+                    'date_year_time' => '2026 · 15:00',
+                    'title' => 'Работа с источниками и оформление библиографий',
+                    'description' => 'Практикум для студентов старших курсов и магистрантов: работа с подписными базами данных, корректное цитирование и подготовка библиографического списка.',
+                    'venue' => 'Зал 1/202, фонд колледжа',
+                ],
+                'kk' => [
+                    'category' => 'Мастер-класс',
+                    'date_month_day' => '24 маусым',
+                    'date_year_time' => '2026 · 15:00',
+                    'title' => 'Дереккөздермен жұмыс және библиографияны рәсімдеу',
+                    'description' => 'Жоғары курс студенттері мен магистранттарға арналған практикум: жазылымдық дерекқорлармен жұмыс, дұрыс сілтеме жасау және библиографиялық тізімді дайындау.',
+                    'venue' => '1/202 залы, колледж қоры',
+                ],
+                'en' => [
+                    'category' => 'Workshop',
+                    'date_month_day' => 'Jun 24',
+                    'date_year_time' => '2026 · 15:00',
+                    'title' => 'Working with Sources and Preparing Bibliographies',
+                    'description' => 'A practical session for senior students and master\'s candidates: working with subscribed databases, correct citation, and preparation of a bibliographic list.',
+                    'venue' => 'Room 1/202, College Fund',
+                ],
+            ],
+        ],
+    ];
+
+    return [
+        'chrome' => $chrome,
+        'items' => $items,
+    ];
+};
+
 Route::get('/news', function () use ($newsSeedProvider) {
     $seed = $newsSeedProvider();
     $articles = array_map(
@@ -1551,6 +1720,19 @@ Route::get('/contacts', function () use ($contactsSeedProvider) {
     return view('contacts', [
         'activePage' => 'contacts',
         'contacts' => $contactsSeedProvider(),
+    ]);
+});
+
+// Phase 3 Cluster C.1 — standalone public events index surface.
+// Mirrors docs/design-exports/events_index_canonical — header + vertical
+// event card list (1/4 date rail + 3/4 content with venue + details link)
+// + Load More. Content is driven by $eventsSeedProvider (trilingual).
+// /events/{slug} detail is deliberately NOT in scope for this slice; the
+// slugs defined in the provider establish the future public URL contract.
+Route::get('/events', function () use ($eventsSeedProvider) {
+    return view('events.index', [
+        'activePage' => 'events',
+        'events' => $eventsSeedProvider(),
     ]);
 });
 
