@@ -22,6 +22,7 @@ class ResourcesPageTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('id="resources-page"', false)
+            ->assertSee('id="resources-pathways"', false)
             ->assertSee('id="resources-filter-bar"', false)
             ->assertSee('data-resource-grid', false)
             ->assertSee('id="resource-support-section"', false)
@@ -36,7 +37,51 @@ class ResourcesPageTest extends TestCase
             ->assertOk()
             ->assertSee('Global Research Tools')
             ->assertSee('Filter by Discipline')
-            ->assertSee('Institutional Support for Researchers');
+            ->assertSee('Institutional Support for Researchers')
+            ->assertSee('Tailored Pathways')
+            ->assertSee('For Students')
+            ->assertSee('For Faculty & Teachers')
+            ->assertSee('For Researchers');
+    }
+
+    public function test_resources_page_displays_tailored_pathways_section(): void
+    {
+        $response = $this->get('/resources');
+
+        $response
+            ->assertOk()
+            ->assertSee('data-test-id="resources-pathways"', false)
+            ->assertSee('data-test-id="pathway-students"', false)
+            ->assertSee('data-test-id="pathway-faculty"', false)
+            ->assertSee('data-test-id="pathway-researchers"', false);
+    }
+
+    public function test_resources_page_displays_core_databases_label(): void
+    {
+        $response = $this->get('/resources');
+
+        $response
+            ->assertOk()
+            ->assertSee('data-test-id="core-databases-label"', false)
+            ->assertSee('Институциональные подписки', false);
+    }
+
+    public function test_resources_page_tailored_pathways_trilingual(): void
+    {
+        // English
+        $response = $this->get('/resources?lang=en');
+        $response->assertSee('Essential textbooks, study guides, citation tools')
+            ->assertSee('Course material curation, syllabus integration')
+            ->assertSee('Advanced data sets, peer-reviewed indices');
+
+        // Russian
+        $response = $this->get('/resources?lang=ru');
+        $response->assertSee('Учебные пособия, справочники, инструменты цитирования')
+            ->assertSee('Кураторство материалов курса');
+
+        // Kazakh
+        $response = $this->get('/resources?lang=kk');
+        $response->assertSee('Ынамдалған бағыттар');
     }
 
     public function test_resources_page_displays_featured_resource(): void
@@ -82,5 +127,23 @@ class ResourcesPageTest extends TestCase
             ->assertSee('target="_blank"', false)
             ->assertSee('rel="noopener noreferrer"', false);
     }
+
+    public function test_resources_page_preserves_section_order(): void
+    {
+        $response = $this->get('/resources');
+
+        $response->assertOk();
+        
+        // Verify order: pathways > filter bar > grid > support
+        $pathwaysPos = strpos($response->getContent(), 'id="resources-pathways"');
+        $filterPos = strpos($response->getContent(), 'id="resources-filter-bar"');
+        $gridPos = strpos($response->getContent(), 'data-resource-grid');
+        $supportPos = strpos($response->getContent(), 'id="resource-support-section"');
+
+        $this->assertLessThan($filterPos, $pathwaysPos, 'Pathways section should come before filter bar');
+        $this->assertLessThan($gridPos, $filterPos, 'Filter bar should come before grid');
+        $this->assertLessThan($supportPos, $gridPos, 'Grid should come before support section');
+    }
 }
+
 

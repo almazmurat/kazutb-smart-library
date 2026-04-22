@@ -20,6 +20,19 @@
       'hero_emphasis' => 'ресурсы',
       'hero_end' => 'и глобальные исследовательские инструменты',
       'lead' => 'Кураторский шлюз к лицензированным внешним базам данных, академическим журналам и специализированной исследовательской инфраструктуре Казахского университета технологии и бизнеса.',
+      'pathways_title' => 'Адресные направления',
+      'pathways_view_all' => 'Показать всё',
+      'students_title' => 'Для студентов',
+      'students_desc' => 'Учебные пособия, справочники, инструменты цитирования и базовые базы данных для поддержки курсовой работы и разработки диссертаций.',
+      'students_cta' => 'Учебный центр',
+      'faculty_title' => 'Для преподавателей',
+      'faculty_desc' => 'Кураторство материалов курса, инструменты интеграции учебных программ, педагогические журналы и услуги поддержки научных публикаций.',
+      'faculty_cta' => 'Центр преподавателей',
+      'researchers_title' => 'Для исследователей',
+      'researchers_desc' => 'Передовые наборы данных, индексы рецензируемых исследований, инструменты поиска грантов и специализированные институциональные архивы для глубокого анализа.',
+      'researchers_cta' => 'Центр исследователей',
+      'core_label' => 'Институциональные подписки',
+      'core_title' => 'Основные базы данных',
       'support_label' => 'Поддержка и обучение',
       'support_title' => 'Институциональная поддержка исследователей',
       'support_body' => 'Если возникают сложности с доступом к внешним ресурсам, библиотека помогает с подключением, навигацией по платформам и быстрыми консультациями для преподавателей и студентов.',
@@ -31,6 +44,19 @@
       'hero_emphasis' => 'ресурстар',
       'hero_end' => 'және жаһандық зерттеу құралдары',
       'lead' => 'ҚазТБУ қауымдастығына арналған лицензиялық сыртқы дерекқорларға, академиялық журналдарға және зерттеу инфрақұрылымына ашылатын сенімді кітапхана шлюзі.',
+      'pathways_title' => 'Ынамдалған бағыттар',
+      'pathways_view_all' => 'Барлығын көрсету',
+      'students_title' => 'Студенттер үшін',
+      'students_desc' => 'Оқу құралдары, анықтамалық материалдар, дәйектеу құралдары және барлық курсты тіндеу және диссертация дайындау үшін қажетті негіздегі дерекқорлар.',
+      'students_cta' => 'Студент орталығын зерттеу',
+      'faculty_title' => 'Оқытушылар үшін',
+      'faculty_desc' => 'Курс материалдарын ұйымдастыру, оқу бағдарламасын интеграциялау құралдары, педагогикалық журналдар және ғылыми басылымдарды қолдау қызметтері.',
+      'faculty_cta' => 'Оқытушылар орталығын зерттеу',
+      'researchers_title' => 'Зерттеушілер үшін',
+      'researchers_desc' => 'Ынамдалған деректер жиынтығы, рецензирленген индекстер, гранттарды табу құралдары және тереңдік зерттеу үшін бағалы институционалдық архивтер.',
+      'researchers_cta' => 'Зерттеушілер орталығын зерттеу',
+      'core_label' => 'Институционалдық жазылымдар',
+      'core_title' => 'Негіздегі дерекқорлар',
       'support_label' => 'Қолдау және оқыту',
       'support_title' => 'Зерттеушілерге институционалдық қолдау',
       'support_body' => 'Сыртқы ресурстарға қолжетімділік қиындаса, кітапхана платформалармен жұмыс істеуге, қосылуға және оқытушылар мен студенттерге кеңес беруге көмектеседі.',
@@ -42,6 +68,19 @@
       'hero_emphasis' => 'Resources',
       'hero_end' => '& Global Research Tools',
       'lead' => 'A curated gateway to licensed external databases, academic journals, and specialized research infrastructure provided by the Kazakh University of Technology and Business.',
+      'pathways_title' => 'Tailored Pathways',
+      'pathways_view_all' => 'View All',
+      'students_title' => 'For Students',
+      'students_desc' => 'Essential textbooks, study guides, citation tools, and foundational databases to support coursework and thesis development.',
+      'students_cta' => 'Explore Student Hub',
+      'faculty_title' => 'For Faculty & Teachers',
+      'faculty_desc' => 'Course material curation, syllabus integration tools, pedagogical journals, and academic publishing support services.',
+      'faculty_cta' => 'Explore Faculty Hub',
+      'researchers_title' => 'For Researchers',
+      'researchers_desc' => 'Advanced data sets, peer-reviewed indices, grant finding tools, and specialized institutional archives for deep inquiry.',
+      'researchers_cta' => 'Explore Researcher Hub',
+      'core_label' => 'Institutional Subscriptions',
+      'core_title' => 'Core Databases',
       'support_label' => 'Assistance & training',
       'support_title' => 'Institutional Support for Researchers',
       'support_body' => 'Experiencing difficulty accessing external resources? Our library staff provides one-on-one training sessions and technical support for faculty and students.',
@@ -1217,6 +1256,208 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* Tailored Pathways Section */
+  .resources-pathways {
+    margin-bottom: 4rem;
+    padding: 0;
+  }
+
+  .resources-pathways-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(196, 198, 207, .35);
+    padding-bottom: 1rem;
+  }
+
+  .resources-pathways-title {
+    margin: 0;
+    color: #000613;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+  }
+
+  .resources-pathways-header a {
+    color: #14696d;
+    font-size: .9rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    transition: gap .18s ease, color .18s ease;
+  }
+
+  .resources-pathways-header a:hover {
+    color: #0b2347;
+    gap: .6rem;
+  }
+
+  .resources-pathways-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .pathway-card {
+    background: #fff;
+    border: 1px solid rgba(196, 198, 207, .45);
+    border-radius: 1rem;
+    padding: 1.75rem;
+    min-height: 16rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pathway-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -2rem;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    opacity: .08;
+    pointer-events: none;
+    transition: opacity .18s ease;
+  }
+
+  .pathway-card.pathway-students::before {
+    background: #14696d;
+  }
+
+  .pathway-card.pathway-faculty::before {
+    background: #0b2347;
+  }
+
+  .pathway-card.pathway-researchers::before {
+    background: #6f4f13;
+  }
+
+  .pathway-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(11, 35, 71, .22);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .05);
+  }
+
+  .pathway-card:hover::before {
+    opacity: .15;
+  }
+
+  .pathway-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: .65rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: .5rem;
+  }
+
+  .pathway-students .pathway-icon {
+    background: linear-gradient(135deg, #006a6a, #14696d);
+  }
+
+  .pathway-faculty .pathway-icon {
+    background: linear-gradient(135deg, #000613, #214c6f);
+  }
+
+  .pathway-researchers .pathway-icon {
+    background: linear-gradient(135deg, #6f4f13, #9a5a2d);
+  }
+
+  .pathway-title {
+    margin: 0;
+    color: #0b2242;
+    font-family: 'Newsreader', serif;
+    font-size: 1.35rem;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+
+  .pathway-desc {
+    margin: 0;
+    color: #5b6372;
+    font-size: .95rem;
+    line-height: 1.7;
+    flex-grow: 1;
+  }
+
+  .pathway-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    color: #14696d;
+    font-size: .85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: gap .18s ease, color .18s ease;
+    margin-top: auto;
+  }
+
+  .pathway-cta:hover {
+    color: #0b2347;
+    gap: .75rem;
+  }
+
+  .pathway-arrow {
+    font-size: .75rem;
+    transition: transform .18s ease;
+  }
+
+  .pathway-card:hover .pathway-arrow {
+    transform: translateX(.2rem);
+  }
+
+  /* Core Databases Label */
+  .resources-core-label {
+    display: block;
+    margin: 2.5rem 0 .75rem;
+    color: #14696d;
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 900px) {
+    .resources-pathways-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .resources-pathways-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .pathway-card {
+      padding: 1.25rem;
+      min-height: auto;
+    }
+
+    .resources-pathways-header {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .resources-pathways-title {
+      font-size: 1.5rem;
+    }
+  }
 </style>
 @endsection
 
@@ -1229,6 +1470,37 @@
       <p class="resources-lead">{{ $copy['lead'] }}</p>
     </header>
 
+    <!-- Tailored Pathways Section -->
+    <section id="resources-pathways" class="resources-pathways" data-test-id="resources-pathways">
+      <div class="resources-pathways-header">
+        <h2 class="resources-pathways-title">{{ $copy['pathways_title'] }}</h2>
+        <a href="{{ $routeWithLang('/resources') }}">{{ $copy['pathways_view_all'] }} <span class="pathway-arrow">→</span></a>
+      </div>
+      <div class="resources-pathways-grid">
+        <!-- For Students -->
+        <a href="{{ $routeWithLang('/resources') }}" class="pathway-card pathway-students" data-test-id="pathway-students">
+          <div class="pathway-icon">👨‍🎓</div>
+          <h3 class="pathway-title">{{ $copy['students_title'] }}</h3>
+          <p class="pathway-desc">{{ $copy['students_desc'] }}</p>
+          <span class="pathway-cta">{{ $copy['students_cta'] }} <span class="pathway-arrow">→</span></span>
+        </a>
+        <!-- For Faculty & Teachers -->
+        <a href="{{ $routeWithLang('/resources') }}" class="pathway-card pathway-faculty" data-test-id="pathway-faculty">
+          <div class="pathway-icon">📚</div>
+          <h3 class="pathway-title">{{ $copy['faculty_title'] }}</h3>
+          <p class="pathway-desc">{{ $copy['faculty_desc'] }}</p>
+          <span class="pathway-cta">{{ $copy['faculty_cta'] }} <span class="pathway-arrow">→</span></span>
+        </a>
+        <!-- For Researchers -->
+        <a href="{{ $routeWithLang('/resources') }}" class="pathway-card pathway-researchers" data-test-id="pathway-researchers">
+          <div class="pathway-icon">🔬</div>
+          <h3 class="pathway-title">{{ $copy['researchers_title'] }}</h3>
+          <p class="pathway-desc">{{ $copy['researchers_desc'] }}</p>
+          <span class="pathway-cta">{{ $copy['researchers_cta'] }} <span class="pathway-arrow">→</span></span>
+        </a>
+      </div>
+    </section>
+
     <section id="resources-filter-bar" class="resources-filters">
       <span class="resources-filter-label">{{ ['ru' => 'Фильтр по дисциплине', 'kk' => 'Пән бойынша сүзгі', 'en' => 'Filter by Discipline'][$lang] }}</span>
       <button type="button" class="resources-filter-btn is-active" data-filter="all">{{ ['ru' => 'Все ресурсы', 'kk' => 'Барлық ресурстар', 'en' => 'All Access'][$lang] }}</button>
@@ -1236,6 +1508,9 @@
       <button type="button" class="resources-filter-btn" data-filter="{{ $categoryKey }}">{{ $category['label'] }}</button>
       @endforeach
     </section>
+
+    <!-- Core Databases Label -->
+    <span class="resources-core-label" data-test-id="core-databases-label">{{ $copy['core_label'] }}</span>
 
     <div id="resources-grid" class="resources-bento" data-resource-grid>
       @php
