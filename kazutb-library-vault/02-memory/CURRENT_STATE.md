@@ -2,20 +2,20 @@
 > Last updated: 2026-04-20
 
 ## Last changed
-- Time: 2026-04-22 08:52:45 UTC
-- Commit: b31b1a6
+- Time: 2026-04-22 09:21:16 UTC
+- Commit: ff5c39a
 - Branch: main
 - Change type: UI/Blade view change
-- Files: resources/views/resources.blade.php, routes/web.php
-- Commit message: feat(phase-3.a.1): resources refinement — populate from ExternalResourceService config
+- Files: resources/views/resources.blade.php
+- Commit message: feat(phase-3.a.1): resources-enrichment — add Tailored Pathways section
 
 ## Latest Git Automation
-- Time: 2026-04-22 08:52:45 UTC
+- Time: 2026-04-22 09:21:16 UTC
 - Event: post-commit
 - Branch: main
-- Commit: b31b1a6
-- Update: Git post-commit on main: feat(phase-3.a.1): resources refinement — populate from ExternalResourceService config
-- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/resources.blade.php, routes/web.php, tests/Feature/ExternalResourcePageTest.php, tests/Feature/ResourcesPageTest.php
+- Commit: ff5c39a
+- Update: Git post-commit on main: feat(phase-3.a.1): resources-enrichment — add Tailored Pathways section
+- Detail: Changed files: resources/views/resources.blade.php, tests/Feature/ResourcesPageTest.php
 - Semantic: UI/Blade view change
 - Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
@@ -47,6 +47,7 @@ Post-3.3 product-context sync (2026-04-22) expanded planned public scope with: h
 ## Immediate Next Actions
 - [x] Public master-plan reconciliation performed (2026-04-22) — public Phase 3 decomposed into five clusters (A–E). See [[DELIVERY_ROADMAP]] Phase 3 for full cluster detail.
 - [x] **Cluster A.1: Resources refinement** — ✅ COMPLETED (2026-04-22). Route now injects ExternalResourceService data. Resources.blade.php displays 8 curated external resources (IPR SMART featured, 7 in grid) with dynamic category badges, access types, and external links. Tri-lingual support maintained. Tests updated. Canonical design map marked as implemented.
+- [x] **Resources page selective enrichment** — ✅ COMPLETED (2026-04-22). Added tri-lingual "Tailored Pathways" section (For Students / Faculty & Teachers / Researchers) with role-based cards, descriptions, and CTAs. Added "Institutional Subscriptions" label before resource grid. Preserved all existing sections (hero, filter bar, grid, support). CSS: new pathway card styles with gradients, hover effects, responsive grid. HTML: 3 pathway anchors with data-test-id markers, emojis, role-contextual copy. Tests: ResourcesPageTest upgraded 8→11 tests; all pass. Regression: 38 public-page tests pass. Commit ff5c39a.
 - [x] **Phase 3-D.1: Homepage Latest Arrivals enrichment** — ✅ COMPLETED (2026-04-22). Welcome.blade.php updated with new "Latest Arrivals / Recent Additions" section placed between stats and repository blocks. Tri-lingual copy (ru/kk/en) + 3 seeded items. Section includes editorial cards with year/material type/author/title/collection metadata, and links to catalog search. 10 new tests added to PublicHomepagePageTest.php verifying: guest/auth access, locale variants, metadata display, placement order. Git committed.
 - [ ] Cluster A.2–A.5: Discover / Catalog / Book detail / Shortlist refinement (next)
 - [ ] Cluster B: Leadership, Rules, Location/wayfinding, Collection/fund info (needs Stitch for new surfaces).
