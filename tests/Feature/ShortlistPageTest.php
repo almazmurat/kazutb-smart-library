@@ -67,6 +67,6 @@ class ShortlistPageTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('href="/account"', false);
+            ->assertSee('href="/dashboard"', false);
     }
 }

@@ -1,5 +1,30 @@
 # Current State — KazUTB Library Platform
-> Last updated: 2026-04-24
+> Last updated: 2026-04-23
+
+## Last changed (Wave 1 — Shell IA / /account retirement / trilingual switcher / footer expansion)
+- Time: 2026-04-23 UTC
+- Branch: main
+- Change type: Public shell IA pass (navbar + footer + locale switcher + post-login routing)
+- Files: routes/web.php, resources/views/partials/navbar.blade.php, resources/views/partials/footer.blade.php, resources/views/auth.blade.php, resources/views/shortlist.blade.php, resources/views/reader.blade.php, tests/Feature/PostLoginRedirectTest.php, tests/Feature/Api/AuthHardeningTest.php, tests/Feature/ShortlistPageTest.php, tests/Feature/PublicShellIATest.php (new)
+- Summary: `/account` retired from public shell — `/dashboard` is now the single canonical authenticated landing for member readers. `/account` route remains alive as hidden backward-compat surface (consumed by ~30 functional tests). Navbar restructured as 5 primary links (Catalog · Discover · Resources · News · Events) + `<details>` "Institution" disclosure (About · Leadership · Rules · Contacts) + visible compact pill locale switcher (kk/ru/en) + Sign in / Dashboard CTA. Footer expanded into 4 trilingual columns (Navigation · Updates · Institution · Support) plus a secondary language row using full names (Қазақша / Русский / English). Both switchers use `request()->fullUrlWithQuery(['lang' => …])` so current path + safe query params are preserved on locale change. Post-login redirect for student/teacher/reader now lands on `/dashboard`; admin/librarian destinations unchanged. JS fallback redirects in auth.blade.php and reader.blade.php updated. New PublicShellIATest locks in the Wave 1 contract (9 assertions covering primary IA, footer columns, visible switcher, route preservation, post-login destination, /account compat retention, trilingual chrome). All targeted suites pass; pre-existing 56-test failure baseline unchanged.
+
+## Last changed
+- Time: 2026-04-23 04:16:57 UTC
+- Commit: cc20683
+- Branch: main
+- Change type: UI/Blade view change — CATALOG PAGE
+- Files: resources/views/catalog.blade.php
+- Commit message: polish(catalog): align heading size and filter spacing to canonical
+
+## Latest Git Automation
+- Time: 2026-04-23 04:33:45 UTC
+- Event: post-commit
+- Branch: main
+- Commit: d586d16
+- Update: Git post-commit on main: fix(tests): update SpaCatalogWiringTest to match PHP-side URL wiring
+- Detail: Changed files: tests/Feature/SpaCatalogWiringTest.php
+- Semantic: No app-surface change detected
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Last changed (Visual QA correction pass round 2)
 - Time: 2026-04-24 UTC

@@ -50,19 +50,19 @@ class PostLoginRedirectTest extends TestCase
             ->assertRedirect('/librarian');
     }
 
-    public function test_student_login_redirects_to_account(): void
+    public function test_student_login_redirects_to_dashboard(): void
     {
         $identity = config('demo_auth.identities.student');
 
         $this->postLogin($identity['login'], $identity['password'])
-            ->assertRedirect('/account');
+            ->assertRedirect('/dashboard');
     }
 
-    public function test_teacher_login_redirects_to_account(): void
+    public function test_teacher_login_redirects_to_dashboard(): void
     {
         $identity = config('demo_auth.identities.teacher');
 
         $this->postLogin($identity['login'], $identity['password'])
-            ->assertRedirect('/account');
+            ->assertRedirect('/dashboard');
     }
 }

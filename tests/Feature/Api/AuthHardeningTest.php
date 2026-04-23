@@ -202,7 +202,7 @@ class AuthHardeningTest extends TestCase
                 'password' => 'correct-pass',
             ]);
 
-        $response->assertRedirect('/account');
+        $response->assertRedirect('/dashboard');
         $this->assertSame('crm-browser-token-123', session('library.crm_token'));
         $this->assertSame('browser@example.com', session('library.user.email'));
     }

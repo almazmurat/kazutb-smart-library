@@ -145,7 +145,7 @@
           <div class="research-shortlist-list-column" data-shortlist-items>
             @if(session('library.user'))
               <div class="account-return-link-wrap">
-                <a href="{{ $withLang('/account') }}" class="account-return-link">{{ $copy['back_to_account'] }}</a>
+                <a href="{{ $withLang('/dashboard') }}" class="account-return-link">{{ $copy['back_to_account'] }}</a>
               </div>
             @endif
 

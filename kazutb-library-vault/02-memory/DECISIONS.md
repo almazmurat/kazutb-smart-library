@@ -520,6 +520,66 @@ Each entry: Date | Decision | Why | Who
 
 ---
 
+
+## 2026-04-22 — feat(phase-3.d): public /resources canonical-exact rebuild per institutional_resources_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/resources.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** 6fb3607 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 6fb3607
+
+---
+
+
+## 2026-04-22 — feat(phase-3.e): public /discover canonical-led rebuild per academic_discovery_hub_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/discover.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** b0319cf on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit b0319cf
+
+---
+
+
+## 2026-04-22 — feat(phase-3.f): public /news index canonical-exact rebuild per news_index_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/news/index.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** 2b9173b on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 2b9173b
+
+---
+
+
+## 2026-04-23 — feat(phase-3.g): public /news/{slug} detail canonical-exact rebuild per news_detail_canonical
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/news/show.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** 37a0467 on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 37a0467
+
+---
+
+
+## 2026-04-23 — feat(phase-3.h): public homepage canonical-exact rebuild
+**Type:** feat (UI/Frontend)
+**Files changed:** resources/views/layouts/public.blade.php, resources/views/welcome.blade.php
+**What changed:** Blade view modification — library UI
+**Commit:** 378cf1a on main
+**Impact:** Frontend visual change — verify in browser after deploy
+**Keywords:** feat
+**Source:** Git hook auto-capture from commit 378cf1a
+
+---
+
 ## Links
 - [[PROJECT_CONTEXT]]
 - [[CURRENT_STATE]]
@@ -540,3 +600,40 @@ Each entry: Date | Decision | Why | Who
 **Files affected:** `resources/views/about.blade.php`, `tests/Feature/PublicShellTest.php`, `docs/design-exports/athenaeum_digital/` (deleted), vault: `02-memory/CURRENT_STATE.md`, `02-memory/TASK_LOG.md`, `02-memory/DECISIONS.md`.
 
 **Verification:** 14-class targeted public suite — 154 passed (826 assertions, 16.44s), 0 failures.
+
+## 2026-04-23 | Wave 1 — `/account` retired from public shell, `/dashboard` is canonical | Why | Copilot CLI (Wave 1)
+**Decision:** `/account` is no longer linked from any public shell surface (navbar, footer, post-login redirect, JS fallbacks, account icon). All member-reader entry points now route to `/dashboard`. The `/account` route itself is **retained as a hidden backward-compatibility surface**, not redirected.
+**Why:** The product mandate is single-canonical user landing on `/dashboard`. ~30 pre-existing functional tests (LoanVisibility, AccountRenewal, ReaderAccessProtection, Consolidation, AccountReservations, ReaderAccountCompletion, IdentityMappingE2E, DigitalMaterial, ReaderReservation, AccountPage) hit `/account` directly with auth session and assert 200; converting to a redirect would mass-break out-of-Wave-1 functional surface. Compromise = "remove all shell usage and leave hidden compatibility route" (option 3 from the spec).
+**Files affected:** routes/web.php, resources/views/{partials/navbar,partials/footer,auth,shortlist,reader}.blade.php
+
+## 2026-04-23 | Wave 1 — Navbar IA model: 5 primary + Institution disclosure | Why | Copilot CLI (Wave 1)
+**Decision:** Public navbar uses **5 primary links + 1 disclosure dropdown** model:
+- Primary (always visible): Catalog · Discover · Resources · News · Events
+- "Institution" `<details>` disclosure (auto-opens on active page): About · Leadership · Rules · Contacts
+- Right side: visible pill locale switcher (kk/ru/en) + Sign in (guest) OR Dashboard + Sign out + account icon→/dashboard (auth)
+**Why:** Compact primary keeps shell scannable; institution group is editorial and benefits from grouping. `<details>` is pure HTML/CSS — no JS dependency, accessible, auto-opens when current route is one of the four. Avoids navbar overload while making every major public surface discoverable.
+**Files affected:** resources/views/partials/navbar.blade.php
+
+## 2026-04-23 | Wave 1 — Footer IA: 4 columns + secondary language row | Why | Copilot CLI (Wave 1)
+**Decision:** Footer is now a structured 4-column system footer:
+1. **Navigation / Навигация / Басқару** — Home, Catalog, Discover, Resources
+2. **Updates / Обновления / Жаңартулар** — News, Events
+3. **Institution / Институт** — About, Leadership, Rules, Contacts
+4. **Support / Поддержка / Қолдау** — Shortlist, Open portal (→/dashboard), Contact Librarian, +Sign in (guest)
+Bottom row: copyright + secondary language switcher using full names (Қазақша / Русский / English).
+**Why:** Mirrors and reinforces navbar IA, ensures every major public surface is reachable from any page, exposes a fallback locale switcher, and makes "Open portal" → /dashboard explicit. Preserved exact label strings asserted by PublicShellTest (Главная/Подборка/Открыть кабинет + KK/EN equivalents).
+**Files affected:** resources/views/partials/footer.blade.php
+
+## 2026-04-23 | Wave 1 — Language switching: fullUrlWithQuery preserves route + safe query | Why | Copilot CLI (Wave 1)
+**Decision:** Both the navbar pill switcher and the footer secondary switcher generate per-locale targets using `request()->fullUrlWithQuery(['lang' => $code])`. This:
+- preserves the current path (including slug-bearing routes like `/news/{slug}`, `/events/{slug}`),
+- preserves all other current query parameters (e.g. `?udc=33` on /catalog),
+- only overwrites the `lang` key,
+- works for ru (default → bare path), kk, en (path + ?lang=…),
+- gracefully falls through to the default locale when a label has no custom translation (existing $copy fallback pattern).
+The locale-resolution layer (lang query → app()->setLocale → $pageLang whitelist) was NOT changed — only the switcher visibility was promoted from sr-only to a visible pill row, and a duplicate secondary switcher was added to the footer.
+**Files affected:** resources/views/partials/{navbar,footer}.blade.php
+
+## 2026-04-23 | Wave 1 — Explicit scope boundaries | Why | Copilot CLI (Wave 1)
+**Decision:** Wave 1 is shell/IA/localization/route-cleanup ONLY. Out of scope (deferred to later waves): guest/user/librarian/admin feature completion, dashboard feature completion, profile management, deep DB/news/log architecture, full catalog functional repair, book-detail logic redesign, admin/librarian panel redesign, new design generation for private surfaces. The 32KB legacy `account.blade.php` view is untouched (still served by the compat route). The 56-test pre-existing failure baseline is unchanged.
+**Files affected:** none (scope statement)

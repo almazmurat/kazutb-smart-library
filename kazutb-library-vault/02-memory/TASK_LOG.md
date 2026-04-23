@@ -3,6 +3,8 @@
 > One-line entries per session. Newest at top.
 > Format: YYYY-MM-DD | What was done | What was left
 
+2026-04-23 | Wave 1 stabilization (shell IA + /account retirement + trilingual switcher + footer expansion): retired /account from public shell in favor of /dashboard as the single canonical authenticated landing (route kept alive as hidden backward-compat surface for ~30 functional tests). Navbar rewritten with 5 primary links (Catalog · Discover · Resources · News · Events) + <details> "Institution" disclosure (About · Leadership · Rules · Contacts) + visible compact pill locale switcher (kk/ru/en) + Sign in/Dashboard CTA. Footer rewritten as 4-column trilingual IA (Navigation · Updates · Institution · Support) + secondary language row (Қазақша / Русский / English). Both switchers preserve current route + query via fullUrlWithQuery. Post-login destination for student/teacher/reader now /dashboard. New PublicShellIATest (9 cases / 45 assertions) locks the contract. Smoke-tested all 11 major public surfaces × 3 locales = 33 variants all 200 OK. Pre-existing 56-test failure baseline unchanged. Changed: routes/web.php, resources/views/partials/{navbar,footer}.blade.php, resources/views/{auth,shortlist,reader}.blade.php, tests/Feature/{PostLoginRedirectTest,ShortlistPageTest,PublicShellIATest,Api/AuthHardeningTest}.php. Status: done.
+
 2026-04-25 | protected-surface combined polish pass: public-layer freeze review + protected-surface planning review (read-only) completed; combined catalog+book surgical polish applied. catalog.blade.php: heading text-5xl → text-[3.5rem] (canonical heading scale), filter sidebar space-y-10 → space-y-8 (canonical filter rhythm). book.blade.php: investigation confirmed all canonical features already present in JS renderBook() template (lg:grid-cols-12 grid, arrow_back breadcrumb, #detail-availability-summary, all test IDs) — zero changes needed. All 15 targeted tests pass (CatalogPageTest 8/8, BookPageTest 7/7). Pre-existing SpaCatalogWiringTest failure confirmed unrelated to our changes. Commit: cc20683. | Changed: resources/views/catalog.blade.php | Status: done
 
 2026-04-24 | visual QA correction pass round 2 — contacts alignment defect fixed (hero moved into left grid column for cross-column baseline alignment), leadership header/mandate/CTA density increased, news/show + events/show sidebar sticky positioning added, rules header padding increased. All 209 public tests pass (974 assertions). Commit: 647eab3, pushed origin/main. Priority 2/3 pages inspected, left unchanged. | Changed: contacts.blade.php, leadership.blade.php, news/show.blade.php, events/show.blade.php, rules.blade.php | Status: done
@@ -87,6 +89,9 @@ From: main To: main
 
 ---
 
+2026-04-23 | fix(tests): update SpaCatalogWiringTest to match PHP-side URL wiring | [No app-surface change detected] | commit: d586d16 | branch: main
+2026-04-23 | fix(tests): update 7 stale ConsolidationTest assertions to canonical-era markers | [No app-surface change detected] | commit: 99ab1c5 | branch: main
+2026-04-23 | chore(vault): log protected-surface polish pass completion | [No app-surface change detected] | commit: c81a6d9 | branch: main
 2026-04-23 | polish(catalog): align heading size and filter spacing to canonical | [UI/Blade view change — CATALOG PAGE] | commit: cc20683 | branch: main
 2026-04-23 | chore(vault): update CURRENT_STATE + TASK_LOG for visual QA round 2 completion | [No app-surface change detected] | commit: a9b03c7 | branch: main
 2026-04-23 | visual: QA correction pass round 2 — contacts alignment, leadership density, sticky sidebars, rules header | [UI/Blade view change] | commit: 647eab3 | branch: main
@@ -219,3 +224,36 @@ Status: done — commit 0857ff1 pushed to main
 Added: #discover-pathways section — 4 faculty cards (2×2 grid) with real department data from PROJECT_CONTEXT §9.2.
 Tri-lingual (ru/kk/en). 7 tests, 45 assertions pass.
 2026-04-22 | polish(phase-3.a.2): discover pathways KPI label alignment (coverage index) | [UI/Blade view change] | commit: pending | branch: main
+
+---
+2025-01-31 Fix 7 stale ConsolidationTest assertions (canonical-era update)
+Changed: tests/Feature/Api/ConsolidationTest.php
+Status: done
+Details:
+- 7 test assertions updated to reflect canonical-rebuilt page markers
+- about: old digital-library demo copy → data-section="about-canonical-hero" + KazUTB Smart Library
+- contacts: old placeholder email → library@kazutb.edu.kz + Каналы поддержки
+- resources: old Wave 2 shortlist/chip/banner markers → canonical data-section/data-test-id markers
+- catalog: old class="chip" → data-lang= pattern; old limit 12 → apiParams.set('limit', '10')
+- ConsolidationTest: 40/40 pass
+- Full suite: 806 pass, 57 fail (down from 64 — exactly 7 fixed, 0 regressions)
+- Commit: 99ab1c5
+
+## 2025-07-17 — SpaCatalogWiringTest stale assertion fix
+
+**Changed:** `tests/Feature/SpaCatalogWiringTest.php`
+**Status:** done
+
+Fixed the one remaining actionable public-surface test failure.
+
+Root cause: test expected `urlParams.get('institution')` / `urlParams.get('physical_only')` (client-side URL parsing), but catalog uses PHP server-side parsing → `@json($institution)` / `@json($physicalOnly)` JS state bootstrap.
+
+Updated assertions to verify the actual implementation contract:
+- `institution: @json($institution)` — PHP-to-JS bridge
+- `physicalOnly: @json($physicalOnly)` — PHP-to-JS bridge
+- `params.set('institution'` — JS-to-API wiring (was already passing)
+- `params.set('physical_only'` — JS-to-API wiring (was already passing)
+
+SpaCatalogWiringTest: 5/5 ✅
+Full suite: **807 pass / 56 fail** (0 regressions, 1 more passing than before)
+Commit: `d586d16`

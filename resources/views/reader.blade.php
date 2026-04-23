@@ -687,7 +687,7 @@
             window.history.back();
         });
         document.getElementById('cabinetBtn')?.addEventListener('click', () => {
-            window.location.href = withLang('/account');
+            window.location.href = withLang('/dashboard');
         });
 
         document.addEventListener('keydown', (e) => {

@@ -24,14 +24,17 @@ $internalStaffView = static function (Request $request, string $view) {
 
 // Role-based post-login landing destination.
 // Canonical page map (PROJECT_CONTEXT §30) expects: admin -> /admin,
-// librarian -> /librarian, member -> /dashboard (interim: /account).
+// librarian -> /librarian, member -> /dashboard.
+// Wave 1: /account is no longer a primary surface; member readers land on
+// /dashboard. The legacy /account route is retained ONLY as a hidden
+// backward-compatibility surface for bookmarks and existing tests.
 $postLoginDestination = static function (array $user): string {
     $role = mb_strtolower(trim((string) ($user['role'] ?? '')));
 
     return match ($role) {
         'admin' => '/admin',
         'librarian' => '/librarian',
-        default => '/account',
+        default => '/dashboard',
     };
 };
 
@@ -935,6 +938,11 @@ Route::get('/digital-viewer/{materialId}', function (Request $request, string $m
     return view('digital-viewer', ['materialId' => $materialId]);
 });
 
+// Wave 1 — /account retained as a hidden backward-compatibility route only.
+// The shell (navbar/footer/login) no longer surfaces /account; canonical user
+// landing is /dashboard. This route remains for legacy bookmarks and for the
+// existing API test harness that uses /account as a vehicle to assert
+// authenticated reader behaviour. Do NOT add new shell links to /account.
 Route::get('/account', function (Request $request) {
     $user = $request->session()->get('library.user');
     $lang = $request->query('lang', 'ru');
@@ -1056,7 +1064,8 @@ Route::get('/login', function (Request $request) {
     $lang = in_array($lang, ['ru', 'kk', 'en'], true) ? $lang : 'ru';
 
     if (is_array($request->session()->get('library.user'))) {
-        return redirect($lang === 'ru' ? '/account' : ('/account?lang='.$lang));
+        // Wave 1: already-authenticated readers land on /dashboard, not legacy /account.
+        return redirect($lang === 'ru' ? '/dashboard' : ('/dashboard?lang='.$lang));
     }
 
     $demoEnabled = (bool) config('demo_auth.enabled');

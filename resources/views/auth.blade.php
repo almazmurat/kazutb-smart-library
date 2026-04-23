@@ -3,7 +3,7 @@
   $authLang = in_array($authLang, ['kk', 'ru', 'en'], true) ? $authLang : 'ru';
   $pageCopy = is_array($copy ?? null) ? ($copy[$authLang] ?? $copy['ru'] ?? []) : [];
   $footerLinks = $pageCopy['footerLinks'] ?? [];
-  $redirectTarget = request()->query('redirect', $authLang === 'ru' ? '/account' : ('/account?lang=' . $authLang));
+  $redirectTarget = request()->query('redirect', $authLang === 'ru' ? '/dashboard' : ('/dashboard?lang=' . $authLang));
 @endphp
 <!DOCTYPE html>
 <html class="light" lang="{{ $authLang }}">
@@ -429,7 +429,7 @@
         const params = new URLSearchParams(window.location.search);
         const redirectTo = params.get('redirect') || @json($redirectTarget);
         window.setTimeout(() => {
-          window.location.href = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
+          window.location.href = redirectTo.startsWith('/') ? redirectTo : withLang('/dashboard');
         }, 300);
       } catch (error) {
         showMessage(error?.message || AUTH_I18N.submitError, 'error');
@@ -472,7 +472,7 @@
         const params = new URLSearchParams(window.location.search);
         const redirectTo = params.get('redirect') || @json($redirectTarget);
         window.setTimeout(() => {
-          window.location.href = redirectTo.startsWith('/') ? redirectTo : withLang('/account');
+          window.location.href = redirectTo.startsWith('/') ? redirectTo : withLang('/dashboard');
         }, 300);
       } catch (error) {
         showMessage(error?.message || AUTH_I18N.demoError, 'error');
