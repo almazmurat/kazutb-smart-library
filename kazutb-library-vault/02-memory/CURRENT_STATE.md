@@ -1,30 +1,20 @@
 # Current State — KazUTB Library Platform
 > Last updated: 2026-04-24
 
+## Last changed (Visual QA correction pass round 2)
+- Time: 2026-04-24 UTC
+- Commit: 647eab3
+- Branch: main
+- Change type: Visual QA correction pass (CSS + HTML structural fix)
+- Files: resources/views/contacts.blade.php, resources/views/leadership.blade.php, resources/views/news/show.blade.php, resources/views/events/show.blade.php, resources/views/rules.blade.php
+- Summary: Second-stage visual hardening pass across canonical public layer. Key correctness fix: contacts.blade.php hero cross-column baseline alignment defect resolved (hero moved from standalone full-width section into left grid column as .contacts-canonical__hero-inline, col-left-wrap flex wrapper added, align-items:start on 1024px grid breakpoint). Leadership: header padding-top 48→72px, mandate-meta padding strengthened + box-shadow, CTA card padding strengthened + box-shadow. news/show.blade.php sidebar and events/show.blade.php aside: position:sticky top:96px added at 1024px breakpoint. rules.blade.php: header padding-top 48→64px. Priority 2/3 pages (discover, welcome, about, resources, news/index, events/index) inspected and left unchanged as already structurally solid. All 209 public tests pass (974 assertions). No pre-existing failures introduced.
+
 ## Last changed (Phase 3.h — homepage canonical-exact rebuild)
 - Time: 2026-04-24 UTC
 - Branch: main
 - Change type: UI/Blade view change + test rewrite
 - Files: resources/views/welcome.blade.php, tests/Feature/PublicHomepagePageTest.php, tests/Feature/PublicShellTest.php, resources/views/layouts/public.blade.php, tests/e2e/public-smoke.spec.ts
 - Summary: Canonical-exact rebuild of `/` per `homepage_canonical`. Old 8-section Enhanced Homepage shell replaced with 3-section canonical layout: Hero → Bento Collections → Scholarly Services. Tri-lingual ru/kk/en $chrome data. Backward-compat markers for ConsolidationTest preserved. Stale layout span `data-homepage-stitch-reset` removed from public.blade.php. Tests: PublicHomepagePageTest 23/23 pass (89 assertions). PublicShellTest 7/7 pass (56 assertions).
-
-## Last changed
-- Time: 2026-04-23 00:11:34 UTC
-- Commit: 37a0467
-- Branch: main
-- Change type: UI/Blade view change
-- Files: resources/views/news/show.blade.php
-- Commit message: feat(phase-3.g): public /news/{slug} detail canonical-exact rebuild per news_detail_canonical
-
-## Latest Git Automation
-- Time: 2026-04-23 00:11:34 UTC
-- Event: post-commit
-- Branch: main
-- Commit: 37a0467
-- Update: Git post-commit on main: feat(phase-3.g): public /news/{slug} detail canonical-exact rebuild per news_detail_canonical
-- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/news/show.blade.php, tests/Feature/Api/ConsolidationTest.php, tests/Feature/PublicNewsDetailPageTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Last changed (Cluster F.2 — /news detail canonical-exact rebuild)
 - Time: 2026-04-23 UTC
