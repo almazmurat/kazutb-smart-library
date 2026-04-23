@@ -33,10 +33,11 @@ class SpaCatalogWiringTest extends TestCase
         $source = file_get_contents(base_path('resources/views/catalog.blade.php'));
 
         $this->assertIsString($source);
+        // URL → PHP (server-side) → JS state bootstrap → API params
         $this->assertStringContainsString("params.set('institution'", $source);
         $this->assertStringContainsString("params.set('physical_only'", $source);
-        $this->assertStringContainsString("urlParams.get('institution')", $source);
-        $this->assertStringContainsString("urlParams.get('physical_only')", $source);
+        $this->assertStringContainsString("institution: @json(\$institution)", $source);
+        $this->assertStringContainsString("physicalOnly: @json(\$physicalOnly)", $source);
     }
 
     public function test_spa_catalog_component_resets_pagination_when_filters_change(): void
