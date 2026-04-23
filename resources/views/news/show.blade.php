@@ -263,6 +263,11 @@
       align-items: start;
       padding: 32px 32px 80px;
     }
+    .news-detail-canonical__sidebar {
+      position: sticky;
+      top: 96px;
+      align-self: flex-start;
+    }
   }
 
   .news-detail-canonical__article {

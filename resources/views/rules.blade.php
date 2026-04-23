@@ -250,7 +250,7 @@
 
 @section('head')
 <style>
-  .rules-header { padding-top: 48px; }
+  .rules-header { padding-top: 64px; }
   .rules-headline { display: block; }
   .rules-headline-secondary {
     display: block;

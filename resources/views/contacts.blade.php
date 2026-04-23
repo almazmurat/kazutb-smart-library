@@ -25,19 +25,20 @@
 
 @section('content')
   <div class="contacts-canonical">
-    {{-- Hero — display heading + lead paragraph. --}}
-    <section class="contacts-canonical__section contacts-canonical__hero" data-section="contacts-canonical-hero">
-      <div class="contacts-canonical__hero-glow" aria-hidden="true"></div>
-      <h1 class="contacts-canonical__display">
-        {{ $copy['hero_title_a'] }}<br>
-        <span class="contacts-canonical__display-accent">{{ $copy['hero_title_b'] }}</span>
-      </h1>
-      <p class="contacts-canonical__lead">{{ $copy['hero_body'] }}</p>
-    </section>
-
-    {{-- Support Channels (7/12) + Inquiry Form + Location (5/12). --}}
+    {{-- Left (7fr): hero intro + support channels. Right (5fr): form + location. --}}
+    {{-- Hero is the first child of the left column so it baseline-aligns with the form card. --}}
     <div class="contacts-canonical__grid">
-      <section class="contacts-canonical__col-left" data-section="contacts-canonical-support">
+      <div class="contacts-canonical__col-left-wrap">
+        <div class="contacts-canonical__hero-inline" data-section="contacts-canonical-hero">
+          <div class="contacts-canonical__hero-glow" aria-hidden="true"></div>
+          <h1 class="contacts-canonical__display">
+            {{ $copy['hero_title_a'] }}<br>
+            <span class="contacts-canonical__display-accent">{{ $copy['hero_title_b'] }}</span>
+          </h1>
+          <p class="contacts-canonical__lead">{{ $copy['hero_body'] }}</p>
+        </div>
+
+        <section class="contacts-canonical__col-left" data-section="contacts-canonical-support">
         <h2 class="contacts-canonical__section-heading">{{ $copy['support_heading'] }}</h2>
         <div class="contacts-canonical__channels">
           @foreach($copy['support_channels'] as $channel)
@@ -63,6 +64,7 @@
           @endforeach
         </div>
       </section>
+      </div>{{-- /.contacts-canonical__col-left-wrap --}}
 
       <aside class="contacts-canonical__col-right">
         {{-- Inquiry form — UI-only surface; submit opens mailto to main library inbox. --}}
@@ -287,6 +289,7 @@
     .contacts-canonical__grid {
       grid-template-columns: 7fr 5fr;
       gap: 48px;
+      align-items: start;
     }
   }
 
@@ -301,6 +304,17 @@
   .contacts-canonical__col-left {
     display: flex;
     flex-direction: column;
+  }
+
+  .contacts-canonical__col-left-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contacts-canonical__hero-inline {
+    position: relative;
+    padding-top: 32px;
+    margin-bottom: 48px;
   }
 
   .contacts-canonical__channels {

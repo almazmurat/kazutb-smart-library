@@ -152,7 +152,7 @@
 
 @section('head')
 <style>
-  .leadership-header { padding-top: 48px; }
+  .leadership-header { padding-top: 72px; }
   .leadership-meta {
     margin-top: 18px;
     font-family: 'Manrope', sans-serif;
@@ -187,10 +187,11 @@
   .leadership-mandate-meta {
     display: grid;
     gap: 4px;
-    padding: 20px 24px;
+    padding: 24px 28px;
     background: var(--surface-container-low, #f3f4f5);
     border-radius: var(--radius-lg, 16px);
     border: 1px solid rgba(195, 198, 209, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 6, 19, .06);
   }
   .leadership-mandate-meta dt {
     font-family: 'Manrope', sans-serif;
@@ -318,10 +319,11 @@
     display: grid;
     gap: 14px;
     justify-items: start;
-    padding: 40px;
+    padding: 48px 40px;
     background: var(--surface-container-low, #f3f4f5);
     border-radius: var(--radius-lg, 16px);
     border: 1px solid rgba(195, 198, 209, 0.4);
+    box-shadow: 0 2px 12px rgba(0, 6, 19, .04);
     max-width: 820px;
   }
   .leadership-cta-card .heading-lg { margin: 0; }

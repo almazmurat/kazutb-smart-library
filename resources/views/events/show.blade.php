@@ -246,7 +246,12 @@
             gap: 64px;
         }
         .event-detail__main { grid-column: span 8 / span 8; }
-        .event-detail__aside { grid-column: span 4 / span 4; }
+        .event-detail__aside {
+            grid-column: span 4 / span 4;
+            position: sticky;
+            top: 96px;
+            align-self: start;
+        }
     }
     .event-detail__section-heading {
         font-family: 'Newsreader', serif;
