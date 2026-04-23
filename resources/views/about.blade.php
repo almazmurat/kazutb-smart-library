@@ -729,8 +729,8 @@
   }
 
   .about-canonical__area-icon {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 9999px;
     background: #e7e8e9;
     display: flex;
@@ -745,7 +745,7 @@
   }
 
   .about-canonical__area-icon .material-symbols-outlined {
-    font-size: 24px;
+    font-size: 28px;
     color: #000613;
     transition: color 0.5s ease;
   }

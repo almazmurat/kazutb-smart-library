@@ -173,7 +173,7 @@
 <style>
 .homepage-canonical__hero-img {
     position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; mix-blend-multiply; opacity: .9;
+    object-fit: cover; mix-blend-mode: multiply; opacity: .9;
 }
 .homepage-canonical__bento-img {
     position: absolute; inset: 0; width: 100%; height: 100%;

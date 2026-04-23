@@ -223,12 +223,13 @@
   .leadership-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 28px;
+    gap: 36px;
+    padding-top: 64px;
   }
   .leadership-card {
-    display: grid;
-    gap: 20px;
-    padding: 28px 24px 26px;
+    position: relative;
+    display: block;
+    padding: 80px 28px 28px;
     background: #fff;
     border: 1px solid rgba(195, 198, 209, 0.5);
     border-radius: var(--radius-lg, 16px);
@@ -242,15 +243,19 @@
     border-color: rgba(0, 106, 106, 0.3);
   }
   .leadership-card-portrait {
-    width: 88px;
-    height: 88px;
+    position: absolute;
+    top: -52px;
+    left: 28px;
+    width: 104px;
+    height: 104px;
     border-radius: 999px;
     background: linear-gradient(135deg, #e7e8e9 0%, #f3f4f5 100%);
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border: 1px solid rgba(195, 198, 209, 0.55);
+    border: 3px solid #fff;
+    box-shadow: 0 4px 16px rgba(0, 6, 19, 0.10);
     font-family: 'Newsreader', Georgia, serif;
     color: var(--blue, #000613);
   }
@@ -264,7 +269,7 @@
   }
   .leadership-card:hover .leadership-card-portrait-img { filter: grayscale(0); }
   .leadership-card-portrait-initials {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 600;
     letter-spacing: 0.02em;
   }
