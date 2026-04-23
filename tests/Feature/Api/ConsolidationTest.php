@@ -36,11 +36,11 @@ class ConsolidationTest extends TestCase
         $response->assertStatus(301);
     }
 
-    public function test_news_redirects_to_homepage(): void
+    public function test_news_renders_as_canonical_page(): void
     {
         $response = $this->get('/news');
-        $response->assertRedirect('/');
-        $response->assertStatus(301);
+        $response->assertStatus(200);
+        $response->assertSee('data-section="news-canonical-page"', false);
     }
 
     public function test_about_renders_directly(): void

@@ -1,3 +1,5 @@
+{{-- resources/views/news/show.blade.php --}}
+{{-- Phase 3.g: /news/{slug} detail canonical-exact rebuild per docs/design-exports/news_detail_canonical --}}
 @extends('layouts.public')
 
 @php
@@ -13,19 +15,52 @@
 
   $chrome = [
       'ru' => [
-          'back' => 'Вернуться к новостям',
-          'related_heading' => 'Связанные материалы',
-          'title_suffix' => 'KazUTB Smart Library',
+          'title_suffix'       => 'KazUTB Smart Library',
+          'back'               => 'Вернуться к новостям',
+          'read_time'          => '5 мин. чтение',
+          'tags_label'         => 'Теги:',
+          'share_label'        => 'Поделиться:',
+          'editorial_label'    => 'Редакционная группа',
+          'editorial_role'     => 'Институциональные коммуникации',
+          'editorial_bio'      => 'Институциональные обновления, исследовательские инициативы и новости цифровых коллекций KazUTB Smart Library.',
+          'editorial_articles' => 'Все публикации',
+          'related_heading'    => 'Связанные материалы',
+          'newsletter_heading' => 'Будьте в курсе',
+          'newsletter_body'    => 'Подпишитесь на институциональный вестник — ежемесячные новости о новых поступлениях и научных программах.',
+          'newsletter_email'   => 'Институциональный email',
+          'newsletter_cta'     => 'Подписаться',
       ],
       'kk' => [
-          'back' => 'Жаңалықтарға оралу',
-          'related_heading' => 'Қатысты материалдар',
-          'title_suffix' => 'KazUTB Smart Library',
+          'title_suffix'       => 'KazUTB Smart Library',
+          'back'               => 'Жаңалықтарға оралу',
+          'read_time'          => '5 мин. оқу',
+          'tags_label'         => 'Тегтер:',
+          'share_label'        => 'Бөлісу:',
+          'editorial_label'    => 'Редакциялық топ',
+          'editorial_role'     => 'Институционалдық коммуникациялар',
+          'editorial_bio'      => 'KazUTB Smart Library институционалдық жаңартулары, зерттеу бастамалары және цифрлық жинақтар жаңалықтары.',
+          'editorial_articles' => 'Барлық жарияланымдар',
+          'related_heading'    => 'Байланысты материалдар',
+          'newsletter_heading' => 'Хабардар болыңыз',
+          'newsletter_body'    => 'Жаңа жинақтар мен ғылыми бағдарламалар туралы ай сайынғы жаңартулар алу үшін институционалдық хабаршыға жазылыңыз.',
+          'newsletter_email'   => 'Мекемелік email',
+          'newsletter_cta'     => 'Жазылу',
       ],
       'en' => [
-          'back' => 'Back to news',
-          'related_heading' => 'Related articles',
-          'title_suffix' => 'KazUTB Smart Library',
+          'title_suffix'       => 'KazUTB Smart Library',
+          'back'               => 'Return to News & Announcements',
+          'read_time'          => '5 min read',
+          'tags_label'         => 'Tags:',
+          'share_label'        => 'Share:',
+          'editorial_label'    => 'Editorial Team',
+          'editorial_role'     => 'Institutional Communications',
+          'editorial_bio'      => 'Institutional updates, research initiatives, and digital collections news for KazUTB Smart Library.',
+          'editorial_articles' => 'All dispatches',
+          'related_heading'    => 'Related Updates',
+          'newsletter_heading' => 'Stay Informed',
+          'newsletter_body'    => 'Subscribe to the scholarly digest for monthly updates on new collections and research programmes.',
+          'newsletter_email'   => 'Institutional Email',
+          'newsletter_cta'     => 'Subscribe',
       ],
   ][$lang];
 @endphp
@@ -33,152 +68,304 @@
 @section('title', $article['title'][$lang] . ' — ' . $chrome['title_suffix'])
 
 @section('content')
-  <section class="page-section news-detail" data-section="news-detail">
-    <div class="container">
-      <div class="news-detail-grid">
-        <article class="news-detail-article">
-          <a href="{{ $routeWithLang('/news') }}" class="news-back-link">
-            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
-            {{ $chrome['back'] }}
-          </a>
+<div class="news-detail-canonical" data-section="news-detail-canonical-page">
 
-          <header class="news-detail-head">
-            <div class="news-meta">
-              <span class="news-meta-badge">{{ $article['category'][$lang] }}</span>
-              <time datetime="{{ $article['published_at'] }}" class="news-meta-date">{{ $article['published_display'][$lang] }}</time>
-            </div>
-            <h1 class="news-detail-title">{{ $article['title'][$lang] }}</h1>
-          </header>
+  {{-- ── Article column ──────────────────────────────────────────────── --}}
+  <article class="news-detail-canonical__article" data-section="news-detail-canonical-article">
 
-          @if(!empty($article['hero']['image']))
-            <figure class="news-detail-hero">
-              <img src="{{ asset($article['hero']['image']) }}" alt="{{ $article['hero']['alt'][$lang] ?? '' }}" loading="lazy" />
-            </figure>
-          @endif
+    {{-- Back link --}}
+    <a href="{{ $routeWithLang('/news') }}"
+       class="news-detail-canonical__back"
+       data-test-id="news-detail-canonical-back">
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      {{ $chrome['back'] }}
+    </a>
 
-          <div class="news-detail-body">
-            @foreach($article['body'][$lang] as $block)
-              @switch($block['type'])
-                @case('lead')
-                  <p class="news-body-lead">{{ $block['text'] }}</p>
-                  @break
-                @case('h2')
-                  <h2 class="news-body-h2">{{ $block['text'] }}</h2>
-                  @break
-                @case('list')
-                  <ul class="news-body-list">
-                    @foreach($block['items'] as $item)
-                      <li>
-                        <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-                        <span><strong>{{ $item['term'] }}:</strong> {{ $item['text'] }}</span>
-                      </li>
-                    @endforeach
-                  </ul>
-                  @break
-                @default
-                  <p>{{ $block['text'] }}</p>
-              @endswitch
-            @endforeach
+    {{-- Article header --}}
+    <header class="news-detail-canonical__header">
+      <div class="news-detail-canonical__meta">
+        <span class="news-detail-canonical__category">{{ $article['category'][$lang] }}</span>
+        <span class="news-detail-canonical__meta-sep" aria-hidden="true">•</span>
+        <time datetime="{{ $article['published_at'] }}" class="news-detail-canonical__date">{{ $article['published_display'][$lang] }}</time>
+        <span class="news-detail-canonical__meta-sep" aria-hidden="true">•</span>
+        <span class="news-detail-canonical__read-time">{{ $chrome['read_time'] }}</span>
+      </div>
+      <h1 class="news-detail-canonical__title">{{ $article['title'][$lang] }}</h1>
+      <p class="news-detail-canonical__subtitle">{{ $article['excerpt'][$lang] }}</p>
+    </header>
 
-            @if(!empty($article['cta']))
-              <aside class="news-body-cta">
-                <h3>{{ $article['cta'][$lang]['heading'] }}</h3>
-                <p>{{ $article['cta'][$lang]['body'] }}</p>
-                <a href="{{ $routeWithLang($article['cta'][$lang]['href']) }}" class="btn btn-primary">
-                  {{ $article['cta'][$lang]['label'] }}
-                </a>
-              </aside>
-            @endif
-          </div>
-        </article>
+    {{-- Hero figure --}}
+    @if(! empty($article['hero']['image']))
+    <figure class="news-detail-canonical__hero">
+      <img src="{{ asset($article['hero']['image']) }}"
+           alt="{{ $article['hero']['alt'][$lang] ?? '' }}"
+           class="news-detail-canonical__hero-img"
+           loading="lazy" />
+      @if(! empty($article['hero']['alt'][$lang]))
+      <figcaption class="news-detail-canonical__hero-caption">{{ $article['hero']['alt'][$lang] }}</figcaption>
+      @endif
+    </figure>
+    @endif
 
-        @if(! empty($relatedArticles))
-          <aside class="news-detail-sidebar" aria-label="{{ $chrome['related_heading'] }}">
-            <div class="news-sidebar-sticky">
-              <h2 class="news-sidebar-heading">{{ $chrome['related_heading'] }}</h2>
-              <ul class="news-sidebar-list">
-                @foreach($relatedArticles as $related)
-                  <li>
-                    <a href="{{ $routeWithLang('/news/' . $related['slug']) }}" class="news-sidebar-item">
-                      <span class="news-sidebar-eyebrow">{{ $related['category'][$lang] }}</span>
-                      <span class="news-sidebar-title">{{ $related['title'][$lang] }}</span>
-                      <time class="news-sidebar-date">{{ $related['published_display'][$lang] }}</time>
-                    </a>
-                  </li>
+    {{-- Article body --}}
+    <div class="news-detail-canonical__body" data-test-id="news-detail-canonical-body">
+      @foreach($article['body'][$lang] as $block)
+        @switch($block['type'])
+          @case('lead')
+            <p class="news-detail-canonical__lead">{{ $block['text'] }}</p>
+            @break
+          @case('h2')
+            <h2 class="news-detail-canonical__h2">{{ $block['text'] }}</h2>
+            @break
+          @case('list')
+            <div class="news-detail-canonical__highlight">
+              @if(! empty($block['items'][0]['term']))
+              <h3 class="news-detail-canonical__highlight-heading">{{ $block['items'][0]['term'] }}</h3>
+              @endif
+              <ul class="news-detail-canonical__highlight-list">
+                @foreach($block['items'] as $item)
+                <li><strong>{{ $item['term'] }}</strong>: {{ $item['text'] }}</li>
                 @endforeach
               </ul>
             </div>
-          </aside>
-        @endif
+            @break
+          @default
+            <p>{{ $block['text'] }}</p>
+        @endswitch
+      @endforeach
+
+      {{-- Inline CTA --}}
+      @if(! empty($article['cta']) && ! empty($article['cta'][$lang]))
+      <div class="news-detail-canonical__cta" data-test-id="news-detail-canonical-cta">
+        <h3 class="news-detail-canonical__cta-heading">{{ $article['cta'][$lang]['heading'] }}</h3>
+        <p class="news-detail-canonical__cta-body">{{ $article['cta'][$lang]['body'] }}</p>
+        <a href="{{ $routeWithLang($article['cta'][$lang]['href']) }}"
+           class="news-detail-canonical__cta-btn">{{ $article['cta'][$lang]['label'] }}</a>
+      </div>
+      @endif
+    </div>
+
+    {{-- Article footer: tags + share (static UI) --}}
+    <footer class="news-detail-canonical__footer">
+      <div class="news-detail-canonical__tags">
+        <span class="news-detail-canonical__tags-label">{{ $chrome['tags_label'] }}</span>
+        <a href="{{ $routeWithLang('/news') }}" class="news-detail-canonical__tag">{{ $article['category'][$lang] }}</a>
+      </div>
+      <div class="news-detail-canonical__share">
+        <span class="news-detail-canonical__share-label">{{ $chrome['share_label'] }}</span>
+        <button class="news-detail-canonical__share-btn" type="button" aria-label="{{ $chrome['share_label'] }}">
+          <span class="material-symbols-outlined" aria-hidden="true">share</span>
+        </button>
+        <button class="news-detail-canonical__share-btn" type="button" aria-label="Bookmark">
+          <span class="material-symbols-outlined" aria-hidden="true">bookmark_add</span>
+        </button>
+      </div>
+    </footer>
+
+  </article>
+
+  {{-- ── Sidebar ─────────────────────────────────────────────────────── --}}
+  <aside class="news-detail-canonical__sidebar" data-section="news-detail-canonical-sidebar">
+
+    {{-- Editorial / author card --}}
+    <div class="news-detail-canonical__author" data-test-id="news-detail-canonical-author">
+      <div class="news-detail-canonical__author-info">
+        <div class="news-detail-canonical__author-portrait">
+          <span class="material-symbols-outlined news-detail-canonical__author-icon" aria-hidden="true">edit_note</span>
+        </div>
+        <div>
+          <h4 class="news-detail-canonical__author-name">{{ $chrome['editorial_label'] }}</h4>
+          <p class="news-detail-canonical__author-role">{{ $chrome['editorial_role'] }}</p>
+        </div>
+      </div>
+      <p class="news-detail-canonical__author-bio">{{ $chrome['editorial_bio'] }}</p>
+      <a href="{{ $routeWithLang('/news') }}" class="news-detail-canonical__author-link">
+        {{ $chrome['editorial_articles'] }}
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+      </a>
+    </div>
+
+    {{-- Related updates --}}
+    @if(! empty($relatedArticles))
+    <div class="news-detail-canonical__related" data-section="news-detail-canonical-related">
+      <h3 class="news-detail-canonical__related-heading">{{ $chrome['related_heading'] }}</h3>
+      <div class="news-detail-canonical__related-list">
+        @foreach($relatedArticles as $rel)
+        <a href="{{ $routeWithLang('/news/' . $rel['slug']) }}"
+           class="news-detail-canonical__related-item">
+          @if(! empty($rel['hero']['image']))
+          <img src="{{ asset($rel['hero']['image']) }}"
+               alt="{{ $rel['hero']['alt'][$lang] ?? '' }}"
+               class="news-detail-canonical__related-thumb"
+               loading="lazy" />
+          @else
+          <div class="news-detail-canonical__related-thumb-placeholder">
+            <span class="material-symbols-outlined" aria-hidden="true">article</span>
+          </div>
+          @endif
+          <div class="news-detail-canonical__related-copy">
+            <span class="news-detail-canonical__related-eyebrow">{{ $rel['category'][$lang] }}</span>
+            <h4 class="news-detail-canonical__related-title">{{ $rel['title'][$lang] }}</h4>
+            <time class="news-detail-canonical__related-date">{{ $rel['published_display'][$lang] }}</time>
+          </div>
+        </a>
+        @endforeach
       </div>
     </div>
-  </section>
+    @endif
+
+    {{-- Newsletter (static UI) --}}
+    <div class="news-detail-canonical__newsletter" data-test-id="news-detail-canonical-newsletter">
+      <div class="news-detail-canonical__newsletter-bg-icon" aria-hidden="true">
+        <span class="material-symbols-outlined">drafts</span>
+      </div>
+      <div class="news-detail-canonical__newsletter-content">
+        <h3 class="news-detail-canonical__newsletter-heading">{{ $chrome['newsletter_heading'] }}</h3>
+        <p class="news-detail-canonical__newsletter-body">{{ $chrome['newsletter_body'] }}</p>
+        <form class="news-detail-canonical__newsletter-form" onsubmit="return false;">
+          <input type="email"
+                 class="news-detail-canonical__newsletter-input"
+                 placeholder="{{ $chrome['newsletter_email'] }}"
+                 required />
+          <button type="submit" class="news-detail-canonical__newsletter-btn">{{ $chrome['newsletter_cta'] }}</button>
+        </form>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
 @endsection
 
 @section('head')
 <style>
-  .news-detail { padding-top: 48px; padding-bottom: 64px; }
-  .news-detail-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-    gap: 64px;
-    align-items: start;
+  /* ============================================================
+     news-detail-canonical — Phase 3.g
+     Scoped to /news/{slug} detail only.
+     Canonical source: docs/design-exports/news_detail_canonical/code.html
+     ============================================================ */
+
+  /* ── Layout ─────────────────────────────────────────────────── */
+
+  .news-detail-canonical {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 16px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
   }
-  .news-back-link {
+
+  @media (min-width: 1024px) {
+    .news-detail-canonical {
+      flex-direction: row;
+      gap: 64px;
+      align-items: start;
+      padding: 32px 32px 80px;
+    }
+  }
+
+  .news-detail-canonical__article {
+    flex: 2 2 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .news-detail-canonical__sidebar {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* ── Back link ───────────────────────────────────────────────── */
+
+  .news-detail-canonical__back {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: var(--blue, #000613);
+    color: #006a6a;
     font-family: 'Manrope', sans-serif;
     font-size: 14px;
+    font-weight: 500;
     text-decoration: none;
-    margin-bottom: 28px;
     transition: color .2s;
   }
-  .news-back-link:hover { color: var(--teal, #006a6a); }
-  .news-back-link .material-symbols-outlined { font-size: 18px; }
+  .news-detail-canonical__back:hover { color: #004f4f; }
+  .news-detail-canonical__back .material-symbols-outlined {
+    font-size: 20px;
+    transition: transform .2s;
+  }
+  .news-detail-canonical__back:hover .material-symbols-outlined { transform: translateX(-4px); }
 
-  .news-detail-head { margin-bottom: 28px; }
-  .news-meta {
+  /* ── Article Header ─────────────────────────────────────────── */
+
+  .news-detail-canonical__header {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .news-detail-canonical__meta {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-  .news-meta-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 12px;
-    border-radius: 999px;
-    background: rgba(0, 31, 63, 0.08);
-    color: var(--blue, #000613);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-  }
-  .news-meta-date {
-    color: var(--muted);
-    font-size: 13px;
     font-family: 'Manrope', sans-serif;
-  }
-  .news-detail-title {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
-    line-height: 1.08;
-    color: var(--blue, #000613);
-    margin: 0;
-    letter-spacing: -0.01em;
+    font-size: 14px;
+    color: #43474e;
   }
 
-  .news-detail-hero {
-    margin: 0 0 40px;
-    border-radius: var(--radius-lg, 16px);
-    overflow: hidden;
-    background: rgba(195,198,209,.2);
+  .news-detail-canonical__category {
+    background: #e7e8e9;
+    padding: 2px 12px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #000613;
   }
-  .news-detail-hero img {
+
+  .news-detail-canonical__meta-sep { color: #74777f; }
+
+  .news-detail-canonical__date,
+  .news-detail-canonical__read-time {
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+  }
+
+  .news-detail-canonical__title {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: #000613;
+    margin: 0 -4px;
+  }
+
+  .news-detail-canonical__subtitle {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: #43474e;
+    margin: 0;
+  }
+
+  /* ── Hero ────────────────────────────────────────────────────── */
+
+  .news-detail-canonical__hero {
+    margin: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,6,19,.08);
+  }
+
+  .news-detail-canonical__hero-img {
     width: 100%;
     height: auto;
     display: block;
@@ -186,115 +373,436 @@
     object-fit: cover;
   }
 
-  .news-detail-body {
+  .news-detail-canonical__hero-caption {
+    margin: 12px 0 0;
+    padding: 0 4px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    color: #74777f;
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* ── Article Body ────────────────────────────────────────────── */
+
+  .news-detail-canonical__body {
     font-family: 'Manrope', sans-serif;
     font-size: 1.0625rem;
-    line-height: 1.75;
-    color: var(--on-surface, #191c1d);
-  }
-  .news-detail-body p { margin: 0 0 18px; }
-  .news-body-lead {
-    font-size: 1.25rem;
-    line-height: 1.6;
-    color: var(--blue, #000613);
-    font-weight: 500;
-    margin: 0 0 28px !important;
-  }
-  .news-body-h2 {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 1.75rem;
-    line-height: 1.2;
-    color: var(--blue, #000613);
-    margin: 40px 0 18px;
-  }
-  .news-body-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 32px;
-    display: grid;
-    gap: 14px;
-  }
-  .news-body-list li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 14px;
-    align-items: start;
-  }
-  .news-body-list .material-symbols-outlined {
-    color: var(--teal, #006a6a);
-    font-size: 20px;
-    margin-top: 3px;
-  }
-
-  .news-body-cta {
-    background: var(--surface-container-low, #f3f4f5);
-    border-radius: var(--radius-lg, 16px);
-    padding: 28px;
-    display: grid;
-    gap: 14px;
-    margin-top: 36px;
-    align-items: start;
-    justify-items: start;
-  }
-  .news-body-cta h3 {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 1.5rem;
-    margin: 0;
-    color: var(--blue, #000613);
-  }
-  .news-body-cta p {
-    margin: 0;
-    color: var(--muted);
-  }
-
-  .news-detail-sidebar { min-width: 0; }
-  .news-sidebar-sticky { position: sticky; top: 96px; }
-  .news-sidebar-heading {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 1.5rem;
-    color: var(--blue, #000613);
-    margin: 0 0 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(195,198,209,.45);
-  }
-  .news-sidebar-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
+    line-height: 1.8;
+    color: #191c1d;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
   }
-  .news-sidebar-item {
-    display: grid;
-    gap: 8px;
-    padding: 14px;
-    border-radius: var(--radius-lg, 16px);
-    text-decoration: none;
-    color: inherit;
-    transition: background .2s;
-  }
-  .news-sidebar-item:hover { background: #fff; }
-  .news-sidebar-eyebrow {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--teal, #006a6a);
-  }
-  .news-sidebar-title {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 1.125rem;
-    line-height: 1.3;
-    color: var(--blue, #000613);
-  }
-  .news-sidebar-date {
-    font-size: 12px;
-    color: var(--muted);
+  .news-detail-canonical__body p { margin: 0; }
+
+  .news-detail-canonical__lead {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.1875rem;
+    line-height: 1.65;
+    color: #000613;
+    font-weight: 500;
+    margin: 0;
   }
 
-  @media (max-width: 960px) {
-    .news-detail-grid { grid-template-columns: 1fr; gap: 40px; }
-    .news-sidebar-sticky { position: static; }
+  .news-detail-canonical__h2 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #000613;
+    margin: 8px 0 0;
   }
+
+  .news-detail-canonical__highlight {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,6,19,.04);
+    border: 1px solid rgba(196,198,207,.2);
+    margin: 8px 0;
+  }
+
+  .news-detail-canonical__highlight-heading {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #000613;
+    margin: 0 0 16px;
+  }
+
+  .news-detail-canonical__highlight-list {
+    list-style: disc;
+    padding-left: 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #43474e;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  /* ── Inline CTA ─────────────────────────────────────────────── */
+
+  .news-detail-canonical__cta {
+    background: #f3f4f5;
+    border-radius: 8px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .news-detail-canonical__cta-heading {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: #000613;
+    margin: 0;
+  }
+
+  .news-detail-canonical__cta-body {
+    font-family: 'Manrope', sans-serif;
+    font-size: .9375rem;
+    line-height: 1.65;
+    color: #43474e;
+    margin: 0;
+  }
+
+  .news-detail-canonical__cta-btn {
+    display: inline-block;
+    background: #001f3f;
+    color: #ffffff;
+    font-family: 'Manrope', sans-serif;
+    font-size: .875rem;
+    font-weight: 600;
+    padding: 8px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .news-detail-canonical__cta-btn:hover { opacity: .88; }
+
+  /* ── Article Footer ─────────────────────────────────────────── */
+
+  .news-detail-canonical__footer {
+    margin-top: 8px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(196,198,207,.2);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .news-detail-canonical__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .news-detail-canonical__tags-label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #43474e;
+  }
+
+  .news-detail-canonical__tag {
+    background: #f3f4f5;
+    color: #000613;
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background .2s;
+  }
+  .news-detail-canonical__tag:hover { background: #edeeef; }
+
+  .news-detail-canonical__share {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .news-detail-canonical__share-label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #43474e;
+  }
+
+  .news-detail-canonical__share-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000613;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,6,19,.08);
+    transition: background .2s;
+  }
+  .news-detail-canonical__share-btn:hover { background: #e7e8e9; }
+  .news-detail-canonical__share-btn .material-symbols-outlined { font-size: 20px; }
+
+  /* ── Author / Editorial Card ─────────────────────────────────── */
+
+  .news-detail-canonical__author {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,6,19,.06);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .news-detail-canonical__author-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .news-detail-canonical__author-portrait {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #001f3f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .news-detail-canonical__author-icon {
+    color: #ffffff;
+    font-size: 28px;
+  }
+
+  .news-detail-canonical__author-name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000613;
+    margin: 0;
+  }
+
+  .news-detail-canonical__author-role {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: #43474e;
+    margin: 4px 0 0;
+  }
+
+  .news-detail-canonical__author-bio {
+    font-family: 'Manrope', sans-serif;
+    font-size: .875rem;
+    line-height: 1.65;
+    color: #43474e;
+    margin: 0;
+  }
+
+  .news-detail-canonical__author-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #006a6a;
+    font-family: 'Manrope', sans-serif;
+    font-size: .875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .2s;
+    margin-top: 4px;
+  }
+  .news-detail-canonical__author-link:hover { color: #004f4f; }
+  .news-detail-canonical__author-link .material-symbols-outlined { font-size: 16px; }
+
+  /* ── Related Updates ─────────────────────────────────────────── */
+
+  .news-detail-canonical__related {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .news-detail-canonical__related-heading {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: #000613;
+    margin: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(196,198,207,.2);
+  }
+
+  .news-detail-canonical__related-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .news-detail-canonical__related-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    text-decoration: none;
+    color: inherit;
+    padding: 12px;
+    margin: -12px;
+    border-radius: 8px;
+    transition: background .2s;
+  }
+  .news-detail-canonical__related-item:hover { background: #ffffff; }
+
+  .news-detail-canonical__related-thumb {
+    width: 96px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,6,19,.08);
+  }
+
+  .news-detail-canonical__related-thumb-placeholder {
+    width: 96px;
+    height: 80px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: #e7e8e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c4c6cf;
+  }
+  .news-detail-canonical__related-thumb-placeholder .material-symbols-outlined { font-size: 28px; }
+
+  .news-detail-canonical__related-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .news-detail-canonical__related-eyebrow {
+    font-family: 'Manrope', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #006a6a;
+  }
+
+  .news-detail-canonical__related-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: .875rem;
+    font-weight: 700;
+    color: #000613;
+    line-height: 1.3;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color .2s;
+  }
+  .news-detail-canonical__related-item:hover .news-detail-canonical__related-title { color: #006a6a; }
+
+  .news-detail-canonical__related-date {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    color: #74777f;
+    margin-top: 4px;
+  }
+
+  /* ── Newsletter ──────────────────────────────────────────────── */
+
+  .news-detail-canonical__newsletter {
+    background: linear-gradient(135deg, #000613, #001f3f);
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,6,19,.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .news-detail-canonical__newsletter-bg-icon {
+    position: absolute;
+    right: -16px;
+    bottom: -16px;
+    opacity: .1;
+    pointer-events: none;
+  }
+  .news-detail-canonical__newsletter-bg-icon .material-symbols-outlined {
+    font-size: 120px;
+    color: #ffffff;
+  }
+
+  .news-detail-canonical__newsletter-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .news-detail-canonical__newsletter-heading {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .news-detail-canonical__newsletter-body {
+    font-family: 'Manrope', sans-serif;
+    font-size: .875rem;
+    line-height: 1.65;
+    color: rgba(196,210,232,.75);
+    margin: 0;
+  }
+
+  .news-detail-canonical__newsletter-form {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .news-detail-canonical__newsletter-input {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(196,198,207,.3);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: 'Manrope', sans-serif;
+    font-size: .875rem;
+    color: #ffffff;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .news-detail-canonical__newsletter-input::placeholder { color: rgba(255,255,255,.45); }
+  .news-detail-canonical__newsletter-input:focus { border-color: #006a6a; }
+
+  .news-detail-canonical__newsletter-btn {
+    background: #006a6a;
+    color: #ffffff;
+    font-family: 'Manrope', sans-serif;
+    font-size: .875rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .news-detail-canonical__newsletter-btn:hover { background: #004f4f; }
 </style>
 @endsection

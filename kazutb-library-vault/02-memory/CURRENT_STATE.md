@@ -1,23 +1,13 @@
 # Current State — KazUTB Library Platform
 > Last updated: 2026-04-23
 
-## Last changed
+## Last changed (Cluster F.2 — /news detail canonical-exact rebuild)
 - Time: 2026-04-23 UTC
-- Commit: (pending)
 - Branch: main
 - Change type: UI/Blade view change + test rewrite
-- Files: resources/views/news/index.blade.php, tests/Feature/PublicNewsIndexPageTest.php
-- Commit message: feat(phase-3.f): public /news index canonical-exact rebuild per news_index_canonical
-
-## Latest Git Automation
-- Time: 2026-04-22 23:25:38 UTC
-- Event: post-commit
-- Branch: main
-- Commit: b0319cf
-- Update: Git post-commit on main: feat(phase-3.e): public /discover canonical-led rebuild per academic_discovery_hub_canonical
-- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/discover.blade.php, tests/Feature/DiscoverPageTest.php
-- Semantic: UI/Blade view change
-- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
+- Files: resources/views/news/show.blade.php, tests/Feature/PublicNewsDetailPageTest.php, tests/Feature/Api/ConsolidationTest.php
+- Summary: Canonical-exact rebuild of `/news/{slug}` detail per `docs/design-exports/news_detail_canonical`. Old shell (`.news-detail-grid` CSS grid 8fr/4fr, `.news-back-link`, `.news-meta-badge`, text-only related list, no author card, no newsletter, data-section="news-detail") fully replaced. New layout: 2-column flex (article col 2:1 ratio at 1024px+) with 9 data-section/data-test-id canonical markers. Article column: back link → header (meta + h1 + subtitle) → hero figure → body block renderer (lead/h2/list/p types) → inline CTA → footer (tags + share). Sidebar: author card (institutional, Material icon, editorial bio) → related updates (horizontal thumbnail cards excluding current article) → newsletter (dark gradient, drafts icon). BEM prefix `news-detail-canonical__*`. Tri-lingual ru/kk/en chrome. Seeded data from 3-article `$newsSeedProvider` preserved verbatim. Fixed stale ConsolidationTest `test_news_redirects_to_homepage` → `test_news_renders_as_canonical_page` (asserting 200 + canonical marker instead of 301 redirect to `/`).
+- Verification: PublicNewsDetailPageTest 44/44 pass (54 assertions). Public suite 843 total; 66 pre-existing failures (ConsolidationTest /about/resources/catalog from prior rebuilds, SpaCatalogWiringTest, AccountRenewal/Reservations, ExternalResourcePageTest) — all pre-existing, 0 new failures from this change.
 
 ## Last changed (Cluster F — /news index canonical-exact rebuild)
 - Time: 2026-04-23 UTC
