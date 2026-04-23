@@ -1,5 +1,30 @@
 # Current State — KazUTB Library Platform
-> Last updated: 2026-04-23
+> Last updated: 2026-04-24
+
+## Last changed (Phase 3.h — homepage canonical-exact rebuild)
+- Time: 2026-04-24 UTC
+- Branch: main
+- Change type: UI/Blade view change + test rewrite
+- Files: resources/views/welcome.blade.php, tests/Feature/PublicHomepagePageTest.php, tests/Feature/PublicShellTest.php, resources/views/layouts/public.blade.php, tests/e2e/public-smoke.spec.ts
+- Summary: Canonical-exact rebuild of `/` per `homepage_canonical`. Old 8-section Enhanced Homepage shell replaced with 3-section canonical layout: Hero → Bento Collections → Scholarly Services. Tri-lingual ru/kk/en $chrome data. Backward-compat markers for ConsolidationTest preserved. Stale layout span `data-homepage-stitch-reset` removed from public.blade.php. Tests: PublicHomepagePageTest 23/23 pass (89 assertions). PublicShellTest 7/7 pass (56 assertions).
+
+## Last changed
+- Time: 2026-04-23 00:11:34 UTC
+- Commit: 37a0467
+- Branch: main
+- Change type: UI/Blade view change
+- Files: resources/views/news/show.blade.php
+- Commit message: feat(phase-3.g): public /news/{slug} detail canonical-exact rebuild per news_detail_canonical
+
+## Latest Git Automation
+- Time: 2026-04-23 00:11:34 UTC
+- Event: post-commit
+- Branch: main
+- Commit: 37a0467
+- Update: Git post-commit on main: feat(phase-3.g): public /news/{slug} detail canonical-exact rebuild per news_detail_canonical
+- Detail: Changed files: docs/design-exports/canonical-design-map.md, kazutb-library-vault/02-memory/CURRENT_STATE.md, kazutb-library-vault/02-memory/TASK_LOG.md, resources/views/news/show.blade.php, tests/Feature/Api/ConsolidationTest.php, tests/Feature/PublicNewsDetailPageTest.php
+- Semantic: UI/Blade view change
+- Links: [[TASK_LOG]], [[GRAPH_INDEX]]
 
 ## Last changed (Cluster F.2 — /news detail canonical-exact rebuild)
 - Time: 2026-04-23 UTC

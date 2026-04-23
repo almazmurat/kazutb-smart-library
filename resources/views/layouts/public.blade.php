@@ -98,9 +98,6 @@
   @include('partials.navbar', ['activePage' => $activePage ?? ''])
 
   <main id="main-content" class="page-main" tabindex="-1">
-    @if(($activePage ?? '') === 'home')
-      <span class="sr-only" data-homepage-stitch-reset data-homepage-subjects>homepage markers</span>
-    @endif
     @yield('content')
   </main>
 

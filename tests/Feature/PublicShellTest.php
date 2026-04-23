@@ -6,16 +6,15 @@ use Tests\TestCase;
 
 class PublicShellTest extends TestCase
 {
-    public function test_homepage_exposes_stitch_aligned_search_and_subject_sections(): void
+    public function test_homepage_exposes_canonical_sections(): void
     {
         $response = $this->get('/');
 
         $response
             ->assertOk()
-            ->assertSee('data-homepage-stitch-reset', false)
-            ->assertSee('data-hero-search', false)
-            ->assertSee('data-homepage-subjects', false)
-            ->assertSee('Digital Library');
+            ->assertSee('data-section="homepage-canonical-hero"', false)
+            ->assertSee('data-section="homepage-canonical-collections"', false)
+            ->assertSee('data-section="homepage-canonical-services"', false);
     }
 
     public function test_resources_page_uses_accessible_shared_public_shell(): void
