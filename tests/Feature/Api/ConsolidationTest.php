@@ -47,8 +47,8 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/about');
         $response->assertOk();
-        $response->assertSee('КазТБУ Digital Library');
-        $response->assertSee('Каталог и навигация');
+        $response->assertSee('data-section="about-canonical-hero"', false);
+        $response->assertSee('KazUTB Smart Library');
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -72,9 +72,9 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/contacts');
         $response->assertOk();
-        $response->assertSee('Как связаться с библиотекой');
+        $response->assertSee('Каналы поддержки');
         $response->assertSee('Режим работы');
-        $response->assertSee('library@digital-library.demo');
+        $response->assertSee('library@kazutb.edu.kz');
     }
 
     public function test_resources_renders(): void
@@ -315,8 +315,8 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/resources');
         $response->assertOk();
-        $response->assertSee('Подборка литературы', false);
-        $response->assertSee('href="/shortlist"', false);
+        $response->assertSee('data-test-id="resources-canonical-off-campus"', false);
+        $response->assertSee('data-section="resources-canonical-premium"', false);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -327,14 +327,14 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/resources');
         $response->assertOk();
-        $response->assertSee('local-catalog-banner', false);
+        $response->assertSee('data-section="resources-canonical-sidebar"', false);
     }
 
     public function test_resources_has_inline_access_chips(): void
     {
         $response = $this->get('/resources');
         $response->assertOk();
-        $response->assertSee('access-chip', false);
+        $response->assertSee('data-section="resources-canonical-open-access"', false);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -345,7 +345,7 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/catalog');
         $response->assertOk();
-        $response->assertSee('<button type="button" class="chip', false);
+        $response->assertSee('<button type="button" data-lang=', false);
     }
 
     public function test_catalog_has_active_filters_container(): void
@@ -360,7 +360,7 @@ class ConsolidationTest extends TestCase
     {
         $response = $this->get('/catalog');
         $response->assertOk();
-        $response->assertSee("'limit', 12", false);
+        $response->assertSee("apiParams.set('limit', '10')", false);
     }
 
     // ═══════════════════════════════════════════════════════════
