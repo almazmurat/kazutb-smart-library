@@ -3,6 +3,8 @@
 > One-line entries per session. Newest at top.
 > Format: YYYY-MM-DD | What was done | What was left
 
+2026-04-25 | protected-surface combined polish pass: public-layer freeze review + protected-surface planning review (read-only) completed; combined catalog+book surgical polish applied. catalog.blade.php: heading text-5xl → text-[3.5rem] (canonical heading scale), filter sidebar space-y-10 → space-y-8 (canonical filter rhythm). book.blade.php: investigation confirmed all canonical features already present in JS renderBook() template (lg:grid-cols-12 grid, arrow_back breadcrumb, #detail-availability-summary, all test IDs) — zero changes needed. All 15 targeted tests pass (CatalogPageTest 8/8, BookPageTest 7/7). Pre-existing SpaCatalogWiringTest failure confirmed unrelated to our changes. Commit: cc20683. | Changed: resources/views/catalog.blade.php | Status: done
+
 2026-04-24 | visual QA correction pass round 2 — contacts alignment defect fixed (hero moved into left grid column for cross-column baseline alignment), leadership header/mandate/CTA density increased, news/show + events/show sidebar sticky positioning added, rules header padding increased. All 209 public tests pass (974 assertions). Commit: 647eab3, pushed origin/main. Priority 2/3 pages inspected, left unchanged. | Changed: contacts.blade.php, leadership.blade.php, news/show.blade.php, events/show.blade.php, rules.blade.php | Status: done
 
 
@@ -85,6 +87,8 @@ From: main To: main
 
 ---
 
+2026-04-23 | polish(catalog): align heading size and filter spacing to canonical | [UI/Blade view change — CATALOG PAGE] | commit: cc20683 | branch: main
+2026-04-23 | chore(vault): update CURRENT_STATE + TASK_LOG for visual QA round 2 completion | [No app-surface change detected] | commit: a9b03c7 | branch: main
 2026-04-23 | visual: QA correction pass round 2 — contacts alignment, leadership density, sticky sidebars, rules header | [UI/Blade view change] | commit: 647eab3 | branch: main
 2026-04-23 | visual-qa: tighten canonical fidelity across public surface family | [UI/Blade view change] | commit: 3b2c461 | branch: main
 2026-04-23 | feat(phase-3.h): public homepage canonical-exact rebuild | [UI/Blade view change] | commit: 378cf1a | branch: main
