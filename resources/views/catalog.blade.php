@@ -753,7 +753,7 @@
 <div class="catalog-export flex-grow w-full max-w-screen-2xl mx-auto px-4 md:px-8 pt-12 pb-24">
   <section class="mb-16">
     <div class="max-w-4xl">
-      <h1 class="text-5xl font-newsreader font-medium text-primary mb-6 tracking-tight">{{ $copy['heading'] }}</h1>
+      <h1 class="text-[3.5rem] font-newsreader font-medium text-primary mb-6 tracking-tight">{{ $copy['heading'] }}</h1>
       <div class="relative group">
         <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
           <span class="material-symbols-outlined text-outline" data-icon="search">search</span>
@@ -810,7 +810,7 @@
   </button>
 
   <div class="flex flex-col md:flex-row gap-12">
-    <aside id="catalog-filters" class="w-full md:w-64 flex-shrink-0 space-y-10">
+    <aside id="catalog-filters" class="w-full md:w-64 flex-shrink-0 space-y-8">
       <div>
         <h3 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">{{ $copy['material_type'] }}</h3>
         <ul class="space-y-3">
